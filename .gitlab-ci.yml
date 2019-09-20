@@ -1,0 +1,10 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  GIT_SSL_NO_VERIFY: "true"
+  CI_REGISTRY_USER: "sonar-runner"
+
+stages:
+ - SONAR
+ 
+include:
+  - template: sonar-scanner.gitlab-ci.yml
