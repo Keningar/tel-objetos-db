@@ -7,6 +7,7 @@ CREATE OR REPLACE PACKAGE DB_EXTERNO.EXKG_MD_CONSULTS AS
    * Proceso encargado de obtener todas las promociones en estado Pendiente.
    *
    * Costo Query Pr_Promociones : 10
+   * Costo Query C_Parametros   : 4
    *
    * @Param Pv_FechaInicio   IN  VARCHAR2      : Fecha Inicio de consulta de las promociones (RRRR-MM-DD).
    * @Param Pv_FechaFin      IN  VARCHAR2      : Fecha Fin de consulta de las promociones (RRRR-MM-DD).
@@ -18,6 +19,10 @@ CREATE OR REPLACE PACKAGE DB_EXTERNO.EXKG_MD_CONSULTS AS
    *
    * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-09-2019
+   *
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @version 1.1 12-11-2019 - Se agrega el cursor 'C_Parametros' para obtener la cantidad de días permitidos
+   *                           para consultar los procesos de promoción.
    */
   PROCEDURE P_OBTIENE_PROMOCIONES(Pv_FechaInicio   IN  VARCHAR2,
                                   Pv_FechaFin      IN  VARCHAR2,
@@ -26,7 +31,7 @@ CREATE OR REPLACE PACKAGE DB_EXTERNO.EXKG_MD_CONSULTS AS
                                   Pv_LoginPunto    IN  VARCHAR2,
                                   Pr_Promociones   OUT SYS_REFCURSOR,
                                   Pv_Mensaje       OUT VARCHAR2);
-  
+
 END EXKG_MD_CONSULTS;
 /
 CREATE OR REPLACE PACKAGE BODY DB_EXTERNO.EXKG_MD_CONSULTS AS
@@ -39,17 +44,47 @@ CREATE OR REPLACE PACKAGE BODY DB_EXTERNO.EXKG_MD_CONSULTS AS
                                   Pr_Promociones   OUT SYS_REFCURSOR,
                                   Pv_Mensaje       OUT VARCHAR2) IS
 
-    Ld_FechaInicio  DATE;
-    Ld_FechaFin     DATE;
-    Lv_Error        VARCHAR2(4000);
-    Lv_FechaActual  VARCHAR2(10) := TO_CHAR(SYSDATE,'RRRR-MM-DD');
-    Ld_FechaActual  DATE         := TO_DATE(Lv_FechaActual,'RRRR-MM-DD');
-    Le_MyException  EXCEPTION;
+    CURSOR C_Parametros(Cv_NombreParametro VARCHAR2,
+                        Cv_Valor1          VARCHAR2,
+                        Cv_EstadoCab       VARCHAR2,
+                        Cv_EstadoDet       VARCHAR2)
+    IS
+      SELECT APDET.*
+        FROM DB_GENERAL.ADMI_PARAMETRO_CAB APCAB,
+             DB_GENERAL.ADMI_PARAMETRO_DET APDET
+      WHERE APCAB.ID_PARAMETRO     = APDET.PARAMETRO_ID
+        AND APCAB.NOMBRE_PARAMETRO = Cv_NombreParametro
+        AND APDET.VALOR1           = Cv_Valor1
+        AND APCAB.ESTADO           = Cv_EstadoCab
+        AND APDET.ESTADO           = Cv_EstadoDet;
+
+    --Variables Locales
+    Ld_FechaInicio     DATE;
+    Ld_FechaFin        DATE;
+    Lv_Error           VARCHAR2(4000);
+    Lv_FechaActual     VARCHAR2(10) := TO_CHAR(SYSDATE,'RRRR-MM-DD');
+    Ld_FechaActual     DATE         := TO_DATE(Lv_FechaActual,'RRRR-MM-DD');
+    Le_MyException     EXCEPTION;
+    Lc_Parametros      C_Parametros%ROWTYPE;
+    Ln_DiasPermitidos  NUMBER := 4; --días por defecto
 
   BEGIN
 
+    IF C_Parametros%ISOPEN THEN
+      CLOSE C_Parametros;
+    END IF;
+
     IF Pr_Promociones%ISOPEN THEN
       CLOSE Pr_Promociones;
+    END IF;
+
+    --Cursor que obtiene los días permitidos de consulta para los procesos de promoción.
+    OPEN C_Parametros('DIAS_CONSULTA_PROCESOS_PROMOCION','DIAS_PERMITIDOS','Activo','Activo');
+      FETCH C_Parametros INTO Lc_Parametros;
+    CLOSE C_Parametros;
+
+    IF Lc_Parametros.VALOR2 IS NOT NULL THEN
+      Ln_DiasPermitidos := COALESCE(TO_NUMBER(REGEXP_SUBSTR(Lc_Parametros.VALOR2,'^\d+')),Ln_DiasPermitidos);
     END IF;
 
     IF Pv_FechaInicio IS NULL OR Pv_FechaFin IS NULL OR Pv_TipoPromocion IS NULL OR Pv_TipoProceso IS NULL THEN
@@ -85,8 +120,8 @@ CREATE OR REPLACE PACKAGE BODY DB_EXTERNO.EXKG_MD_CONSULTS AS
       RAISE Le_MyException;
     END IF;
 
-    IF Ld_FechaInicio < (Ld_FechaActual - 4)THEN
-      Lv_Error := 'La Fecha Inicio debe ser como máximo 4 días antes de la Fecha Actual.';
+    IF Ld_FechaInicio < (Ld_FechaActual - Ln_DiasPermitidos)THEN
+      Lv_Error := 'La Fecha Inicio debe ser como máximo '||Ln_DiasPermitidos||' día(s) antes de la Fecha Actual.';
       RAISE Le_MyException;
     END IF;
 
