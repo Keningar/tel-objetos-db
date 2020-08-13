@@ -95,6 +95,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
    *
    * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
+   *
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @version 1.1 12-08-2020 - Se modifica el método en la parte de crear los recursos para
+   *                           almacenar los datos solo si el atributo de 'dataRecurso.recursos'
+   *                           no se encuentra vacio.
    */
   PROCEDURE P_CREAR_SOLUCION(Pcl_Request IN  CLOB,
                              Pn_Solucion OUT NUMBER,
@@ -1266,7 +1271,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     /*
      * Creamos los recursos de la solución.
      */
-    Ln_Total := APEX_JSON.GET_COUNT(P_PATH => 'dataRecurso', P_VALUES => Lt_JsonIndex);
+    Ln_Total := APEX_JSON.GET_COUNT(P_PATH => 'dataRecurso.recursos', P_VALUES => Lt_JsonIndex);
 
     IF Ln_Total > 0 AND Ln_Total IS NOT NULL THEN
 
@@ -1279,55 +1284,49 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       APEX_JSON.WRITE('estado'         , Lv_Estado);
       APEX_JSON.OPEN_ARRAY('recursos');
 
-      Ln_Total := APEX_JSON.GET_COUNT(P_PATH => 'dataRecurso.recursos', P_VALUES => Lt_JsonIndex);
+      FOR i IN 1..Ln_Total LOOP
 
-      IF Ln_Total > 0 AND Ln_Total IS NOT NULL THEN
+        APEX_JSON.OPEN_OBJECT;
 
-        FOR i IN 1..Ln_Total LOOP
+        APEX_JSON.WRITE('tipoRecurso'        , APEX_JSON.GET_VARCHAR2(P_PATH => 'dataRecurso.recursos[%d].tipoRecurso',
+          p0 => i, P_VALUES => Lt_JsonIndex));
+        APEX_JSON.WRITE('descripcionRecurso' , APEX_JSON.GET_VARCHAR2(P_PATH => 'dataRecurso.recursos[%d].descripcionRecurso',
+          p0 => i, P_VALUES => Lt_JsonIndex));
+        APEX_JSON.WRITE('servicioId'         , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].servicioId',
+          p0 => i, P_VALUES => Lt_JsonIndex));
+        APEX_JSON.WRITE('solicitudId'        , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].solicitudId',
+          p0 => i, P_VALUES => Lt_JsonIndex));
+        APEX_JSON.WRITE('cantidad'           , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].cantidad',
+          p0 => i, P_VALUES => Lt_JsonIndex));
+        APEX_JSON.OPEN_ARRAY('detalle');
 
-          APEX_JSON.OPEN_OBJECT;
+        Ln_Detalle := APEX_JSON.GET_COUNT(P_PATH => 'dataRecurso.recursos[%d].detalle', p0 => i, P_VALUES => Lt_JsonIndex);
 
-          APEX_JSON.WRITE('tipoRecurso'        , APEX_JSON.GET_VARCHAR2(P_PATH => 'dataRecurso.recursos[%d].tipoRecurso',
-            p0 => i, P_VALUES => Lt_JsonIndex));
-          APEX_JSON.WRITE('descripcionRecurso' , APEX_JSON.GET_VARCHAR2(P_PATH => 'dataRecurso.recursos[%d].descripcionRecurso',
-            p0 => i, P_VALUES => Lt_JsonIndex));
-          APEX_JSON.WRITE('servicioId'         , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].servicioId',
-            p0 => i, P_VALUES => Lt_JsonIndex));
-          APEX_JSON.WRITE('solicitudId'        , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].solicitudId',
-            p0 => i, P_VALUES => Lt_JsonIndex));
-          APEX_JSON.WRITE('cantidad'           , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].cantidad',
-            p0 => i, P_VALUES => Lt_JsonIndex));
-          APEX_JSON.OPEN_ARRAY('detalle');
+        IF Ln_Detalle > 0 AND Ln_Detalle IS NOT NULL THEN
 
-          Ln_Detalle := APEX_JSON.GET_COUNT(P_PATH => 'dataRecurso.recursos[%d].detalle', p0 => i, P_VALUES => Lt_JsonIndex);
+          FOR j IN 1..Ln_Detalle LOOP
 
-          IF Ln_Detalle > 0 AND Ln_Detalle IS NOT NULL THEN
+            APEX_JSON.OPEN_OBJECT;
 
-            FOR j IN 1..Ln_Detalle LOOP
+            APEX_JSON.WRITE('elementoId'      , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].detalle[%d].elementoId',
+              p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
+            APEX_JSON.WRITE('cantidad'        , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].detalle[%d].cantidad',
+              p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
+            APEX_JSON.WRITE('refRecursoDetId' , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].detalle[%d].refRecursoDetId',
+              p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
+            APEX_JSON.WRITE('descripcion'     , APEX_JSON.GET_VARCHAR2(P_PATH => 'dataRecurso.recursos[%d].detalle[%d].descripcion',
+              p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
 
-              APEX_JSON.OPEN_OBJECT;
+            APEX_JSON.CLOSE_OBJECT;
 
-              APEX_JSON.WRITE('elementoId'      , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].detalle[%d].elementoId',
-                p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
-              APEX_JSON.WRITE('cantidad'        , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].detalle[%d].cantidad',
-                p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
-              APEX_JSON.WRITE('refRecursoDetId' , APEX_JSON.GET_NUMBER(P_PATH   => 'dataRecurso.recursos[%d].detalle[%d].refRecursoDetId',
-                p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
-              APEX_JSON.WRITE('descripcion'     , APEX_JSON.GET_VARCHAR2(P_PATH => 'dataRecurso.recursos[%d].detalle[%d].descripcion',
-                p0 => i, p1 => j, P_VALUES => Lt_JsonIndex));
+          END LOOP;
 
-              APEX_JSON.CLOSE_OBJECT;
+        END IF;
 
-            END LOOP;
+        APEX_JSON.CLOSE_ARRAY();
+        APEX_JSON.CLOSE_OBJECT;
 
-          END IF;
-
-          APEX_JSON.CLOSE_ARRAY();
-          APEX_JSON.CLOSE_OBJECT;
-
-        END LOOP;
-
-      END IF;
+      END LOOP;
 
       APEX_JSON.CLOSE_ARRAY();
       APEX_JSON.CLOSE_OBJECT;
