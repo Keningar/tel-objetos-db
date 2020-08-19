@@ -60,8 +60,6 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   * [
   *   descripcionRol      := Descripcion de rol,
   *   rolId               := Id de rol,
-  *   descripcionTipoRol  := Descripcion de tipo de rol,
-  *   tipoRolId           := Id de tipo de rol,
   *   estado              := Estado Default 'Activo',
   *   idPersona           := Id de persona,
   *   empresaId           := Id de empresa Defaul '10',
@@ -184,7 +182,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Region IS NULL THEN
-      Pv_Mensaje := 'El parámetro region esta vacío';
+      Pv_Mensaje := 'El parámetro region está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -269,7 +267,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Ln_EmpresaId IS NULL AND Lv_PrefijoEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro empresaId o prefijoEmpresa esta vacío';
+      Pv_Mensaje := 'El parámetro empresaId o prefijoEmpresa está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -329,37 +327,33 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                              Pv_Mensaje   OUT VARCHAR2,
                              Pcl_Response OUT SYS_REFCURSOR)
   AS
-    Lcl_Query              CLOB;
-    Lcl_Select         	   CLOB;
-    Lcl_From           	   CLOB;
-    Lcl_WhereAndJoin       CLOB;
-    Lcl_OrderAnGroup   	   CLOB;
-    Lv_DescripcionRol      VARCHAR2(100);
-    Lv_DescripcionTipoRol  VARCHAR2(100);
-    Lv_Estado              VARCHAR2(500);
-    Lv_Identificacion      VARCHAR2(1000);
-    Lv_Login               VARCHAR2(1000);
-    Ln_RolId           	   NUMBER;
-    Ln_TipoRolId           NUMBER;
-    Ln_IdPersona           NUMBER;
-    Ln_EmpresaId           NUMBER;
-    Le_Errors              EXCEPTION;
+    Lcl_Query          CLOB;
+    Lcl_Select         CLOB;
+    Lcl_From           CLOB;
+    Lcl_WhereAndJoin   CLOB;
+    Lcl_OrderAnGroup   CLOB;
+    Lv_DescripcionRol  VARCHAR2(100);
+    Lv_Estado          VARCHAR2(500);
+    Lv_Identificacion  VARCHAR2(1000);
+    Lv_Login           VARCHAR2(1000);
+    Ln_RolId           NUMBER;
+    Ln_IdPersona       NUMBER;
+    Ln_EmpresaId       NUMBER;
+    Le_Errors          EXCEPTION;
   BEGIN
     -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
-    Lv_DescripcionRol     := APEX_JSON.get_varchar2(p_path => 'descripcionRol');
-    Ln_RolId              := APEX_JSON.get_number(p_path => 'rolId');
-    Ln_TipoRolId          := APEX_JSON.get_number(p_path => 'tipoRolId');
-    Lv_DescripcionTipoRol := APEX_JSON.get_varchar2(p_path => 'descripcionTipoRol');
-    Lv_Estado             := APEX_JSON.get_varchar2(p_path => 'estado');
-    Ln_IdPersona          := APEX_JSON.get_number(p_path => 'idPersona');
-    Ln_EmpresaId          := APEX_JSON.get_number(p_path => 'empresaId');
-    Lv_Identificacion     := APEX_JSON.get_varchar2(p_path => 'identificacion');
-    Lv_Login              := APEX_JSON.get_varchar2(p_path => 'login');
+    Lv_DescripcionRol := APEX_JSON.get_varchar2(p_path => 'descripcionRol');
+    Ln_RolId          := APEX_JSON.get_number(p_path => 'rolId');
+    Lv_Estado         := APEX_JSON.get_varchar2(p_path => 'estado');
+    Ln_IdPersona      := APEX_JSON.get_number(p_path => 'idPersona');
+    Ln_EmpresaId      := APEX_JSON.get_number(p_path => 'empresaId');
+    Lv_Identificacion := APEX_JSON.get_varchar2(p_path => 'identificacion');
+    Lv_Login          := APEX_JSON.get_varchar2(p_path => 'login');
     
     -- VALIDACIONES
-    IF Ln_RolId IS NULL AND Lv_DescripcionRol IS NULL AND Ln_TipoRolId IS NULL AND Lv_DescripcionTipoRol IS NULL THEN
-      Pv_Mensaje := 'El parámetro rolId o descripcionRol para rol y tipoRolId o descripcionTipoRol para tipo de rol está vacío';
+    IF Ln_RolId IS NULL AND Lv_DescripcionRol IS NULL THEN
+      Pv_Mensaje := 'El parámetro rolId o descripcionRol está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -375,28 +369,20 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
               FROM DB_COMERCIAL.INFO_PERSONA IP,
                    DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
                    DB_COMERCIAL.INFO_EMPRESA_ROL IER,
-                   DB_GENERAL.ADMI_ROL AR,
-                   DB_GENERAL.ADMI_TIPO_ROL ATR';
+                   DB_GENERAL.ADMI_ROL AR';
     Lcl_WhereAndJoin := '
               WHERE IP.ID_PERSONA = IPER.PERSONA_ID
                 AND IPER.EMPRESA_ROL_ID = IER.ID_EMPRESA_ROL
                 AND IER.ROL_ID = AR.ID_ROL
-                AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL
                 AND IP.ESTADO = '''||Lv_Estado||'''
+                AND IPER.DEPARTAMENTO_ID IS NOT NULL
                 AND IPER.ESTADO = ''Activo''
-                AND ATR.ESTADO = ''Activo''
                 AND IER.EMPRESA_COD = '||Ln_EmpresaId||'';
     IF Ln_RolId IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AR.ID_ROL = '||Ln_RolId;
     END IF;
     IF Lv_DescripcionRol IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AR.DESCRIPCION_ROL = '''||Lv_DescripcionRol||'''';
-    END IF;
-    IF Ln_TipoRolId IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATR.ID_TIPO_ROL = '||Ln_TipoRolId;
-    END IF;
-    IF Lv_DescripcionTipoRol IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATR.DESCRIPCION_TIPO_ROL = '''||Lv_DescripcionTipoRol||'''';
     END IF;
     IF Ln_IdPersona IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ID_PERSONA = '||Ln_IdPersona;
@@ -456,7 +442,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Ln_DepartamentoId IS NULL AND Lv_NombreDepartamento IS NULL THEN
-      Pv_Mensaje := 'El parámetro departamentoId o nombreDepartamento esta vacío';
+      Pv_Mensaje := 'El parámetro departamentoId o nombreDepartamento está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -535,15 +521,15 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_FechaInicio IS NULL THEN
-      Pv_Mensaje := 'El parámetro fechaInicio esta vacío';
+      Pv_Mensaje := 'El parámetro fechaInicio está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_FechaFin IS NULL THEN
-      Pv_Mensaje := 'El parámetro fechaFin esta vacío';
+      Pv_Mensaje := 'El parámetro fechaFin está vacío';
       RAISE Le_Errors;
     END IF;
     IF Ln_ServicioId IS NULL THEN
-      Pv_Mensaje := 'El parámetro servicioId esta vacío';
+      Pv_Mensaje := 'El parámetro servicioId está vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -598,7 +584,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Login IS NULL THEN
-      Pv_Mensaje := 'El parámetro login esta vacío';
+      Pv_Mensaje := 'El parámetro login está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
