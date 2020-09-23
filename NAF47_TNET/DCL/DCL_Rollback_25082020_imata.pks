@@ -1,0 +1,8 @@
+
+-- REVOKE para poder revocar los permisos de la tabla ADMI_CUADRILLA.
+REVOKE SELECT ON DB_COMERCIAL.ADMI_CUADRILLA FROM NAF47_TNET;
+
+
+
+
+/
