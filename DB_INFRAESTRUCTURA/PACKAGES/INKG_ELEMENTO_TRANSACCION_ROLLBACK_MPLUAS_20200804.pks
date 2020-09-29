@@ -1,4 +1,6 @@
+SET DEFINE OFF;
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
+
   /**
    * Documentación para el procedimiento 'P_ACTUALIZAR_RELACION_ELEMENTO'
    *
@@ -152,60 +154,18 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                              Pn_IdEmpresaElementoUbica  OUT NUMBER,
                                              Pv_Status                  OUT VARCHAR2,
                                              Pv_Mensaje                 OUT VARCHAR2);
-                                             
-  /**
-  * Documentación para el procedimiento P_ASIGNAR_UBICACION_ELEM
-  *
-  * Método encargado de asignar una ubicación o filial a un elemento.
-  *
-  * @param Pcl_Request    IN   CLOB Recibe json request
-  * [
-  *   empresaCod          := Código de empresa
-  *   elementoId          := Id elemento
-  *   oficinaId           := Id oficina (filial)
-  *   usrCreacion         := Usuario de creación
-  *   ipCreacion          := Ip de creación
-  * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  *
-  * @author Marlon Plúas <mpluas@telconet.ec>
-  * @version 1.0 04-08-2020
-  */                       
-  PROCEDURE P_ASIGNAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
-                                     Pv_Status    OUT VARCHAR2,
-                                     Pv_Mensaje   OUT VARCHAR2);
-                                     
-  /**
-  * Documentación para el procedimiento P_MODIFICAR_UBICACION_ELEM
-  *
-  * Método encargado de modificar una ubicación o filial de un elemento.
-  *
-  * @param Pcl_Request    IN   CLOB Recibe json request
-  * [
-  *   empresaCod          := Código de empresa
-  *   elementoId          := Id elemento
-  *   oficinaId           := Id oficina (filial)
-  *   usrCreacion         := Usuario de creación
-  *   ipCreacion          := Ip de creación
-  * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  *
-  * @author Marlon Plúas <mpluas@telconet.ec>
-  * @version 1.0 04-08-2020
-  */                       
-  PROCEDURE P_MODIFICAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
-                                       Pv_Status    OUT VARCHAR2,
-                                       Pv_Mensaje   OUT VARCHAR2);
+
 END INKG_ELEMENTO_TRANSACCION;
 /
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
+----
+----
   PROCEDURE P_ACTUALIZAR_RELACION_ELEMENTO(Pcl_Request IN  CLOB,
                                            Pv_Mensaje  OUT VARCHAR2,
                                            Pv_Status   OUT VARCHAR2)
   IS
 
+    Lcl_Request           CLOB;
     Ln_IdRelacionElemento NUMBER;
     Ln_elementoIdA        NUMBER;
     Ln_elementoIdB        NUMBER;
@@ -250,6 +210,8 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
     Ln_idElemento     NUMBER;
     Le_Exception      EXCEPTION;
     Lv_Mensaje        VARCHAR2(3000);
+    Le_InfoElemento   DB_INFRAESTRUCTURA.INFO_ELEMENTO%ROWTYPE;
+    Lv_Result         VARCHAR2(3000) := '';
 
   BEGIN
 
@@ -744,312 +706,8 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       Pn_IdEmpresaElementoUbica :=  0;
 
   END P_GUARDAR_EMPRESA_ELEMENTO_UBI;
-  
-  PROCEDURE P_ASIGNAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
-                                     Pv_Status    OUT VARCHAR2,
-                                     Pv_Mensaje   OUT VARCHAR2)
-  AS
-    -- CURSORES
-    CURSOR C_EXISTE_ELEMENTO(Cn_IdElemento NUMBER) 
-    IS
-      SELECT IE.*
-      FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO IE
-      WHERE IE.ID_ELEMENTO = Cn_IdElemento;
-      
-    CURSOR C_EXISTE_OFICINA(Cn_IdOficina NUMBER) 
-    IS
-      SELECT IOG.* 
-      FROM DB_COMERCIAL.INFO_OFICINA_GRUPO IOG
-      WHERE IOG.ID_OFICINA = Cn_IdOficina
-        AND IOG.ESTADO = 'Activo';
-        
-    CURSOR C_EXISTE_PARROQUIA(Cn_IdParroquia NUMBER) 
-    IS
-      SELECT AP.* 
-      FROM DB_GENERAL.ADMI_PARROQUIA AP
-      WHERE AP.ID_PARROQUIA = Cn_IdParroquia
-        AND AP.ESTADO = 'Activo';
-        
-    CURSOR C_VALIDAR_UBICACION_ELEM(Cn_IdElemento NUMBER) 
-    IS
-      SELECT IEUU.* 
-      FROM DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEUU
-      WHERE IEUU.ELEMENTO_ID = Cn_IdElemento;
-  
-    Lv_EmpresaCod     VARCHAR2(100);
-    Ln_ElementoId     NUMBER;
-    Ln_OficinaId      NUMBER;
-    Lv_UsrCreacion    VARCHAR2(500);
-    Lv_IpCreacion     VARCHAR2(500);
-    Ln_IdUbicacion    NUMBER;
-    Ln_IdEmpElemUbic  NUMBER;
-    Ln_ParroquiaId    NUMBER;
-    Lv_DireccionUbic  VARCHAR2(2000);
-    Ln_LongitudUbic   NUMBER;
-    Ln_LatitudUbic    NUMBER;
-    Ln_AlturaSNM      NUMBER;
-    Lc_Elemento       C_EXISTE_ELEMENTO%ROWTYPE;
-    Lc_ValUbicaElem   C_VALIDAR_UBICACION_ELEM%ROWTYPE;
-    Lc_Oficina        C_EXISTE_OFICINA%ROWTYPE;
-    Lc_Parroquia      C_EXISTE_PARROQUIA%ROWTYPE;
-    Le_Errors         EXCEPTION;
-  BEGIN
-    -- RETORNO LAS VARIABLES DEL REQUEST
-    APEX_JSON.PARSE(Pcl_Request);
-    Lv_EmpresaCod     := APEX_JSON.get_varchar2(p_path => 'empresaCod');
-    Ln_ElementoId     := APEX_JSON.get_number(p_path => 'elementoId');
-    Ln_OficinaId      := APEX_JSON.get_number(p_path => 'oficinaId');
-    Lv_UsrCreacion    := APEX_JSON.get_varchar2(p_path => 'usrCreacion');
-    Lv_IpCreacion     := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
-    Ln_ParroquiaId    := APEX_JSON.get_number(p_path => 'parroquiaId');
-    Lv_DireccionUbic  := APEX_JSON.get_varchar2(p_path => 'direccionUbicacion');
-    Ln_LongitudUbic   := APEX_JSON.get_number(p_path => 'longitudUbicacion');
-    Ln_LatitudUbic    := APEX_JSON.get_number(p_path => 'latitudUbicacion');
-    Ln_AlturaSNM      := APEX_JSON.get_number(p_path => 'alturaSNM');
-
-    -- VALIDACIONES
-    IF Lv_EmpresaCod IS NULL THEN
-      Pv_Mensaje := 'El parámetro empresaCod está vacío';
-      RAISE Le_Errors;
-    END IF;
-    IF Ln_ElementoId IS NULL THEN
-      Pv_Mensaje := 'El parámetro elementoId está vacío';
-      RAISE Le_Errors;
-    END IF;
-    OPEN  C_EXISTE_ELEMENTO(Ln_ElementoId);
-    FETCH C_EXISTE_ELEMENTO INTO Lc_Elemento;
-    CLOSE C_EXISTE_ELEMENTO;
-    IF Lc_Elemento.Id_Elemento IS NULL THEN
-      Pv_Mensaje := 'El elemento '||Ln_ElementoId||' no existe';
-      RAISE Le_Errors;
-    END IF;
-    OPEN  C_VALIDAR_UBICACION_ELEM(Lc_Elemento.Id_Elemento);
-    FETCH C_VALIDAR_UBICACION_ELEM INTO Lc_ValUbicaElem;
-    CLOSE C_VALIDAR_UBICACION_ELEM;
-    IF Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion IS NOT NULL THEN
-      Pv_Mensaje := 'Ya existe la ubicación '||Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion||' del elemento '||Ln_ElementoId;
-      RAISE Le_Errors;
-    END IF;
-    IF Ln_OficinaId IS NULL THEN
-      Pv_Mensaje := 'El parámetro oficinaId está vacío';
-      RAISE Le_Errors;
-    END IF;
-    OPEN  C_EXISTE_OFICINA(Ln_OficinaId);
-    FETCH C_EXISTE_OFICINA INTO Lc_Oficina;
-    CLOSE C_EXISTE_OFICINA;
-    IF Lc_Oficina.Id_Oficina IS NULL THEN
-      Pv_Mensaje := 'La oficina '||Ln_OficinaId||' no existe o no se encuentra Activo';
-      RAISE Le_Errors;
-    END IF;
-    IF Lv_UsrCreacion IS NULL THEN
-      Lv_UsrCreacion := NVL(SYS_CONTEXT('USERENV','OS_USER'),USER);
-    END IF;
-    IF Lv_IpCreacion IS NULL THEN
-      Lv_IpCreacion := NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1');
-    END IF;
-    IF Ln_ParroquiaId IS NOT NULL THEN
-      OPEN  C_EXISTE_PARROQUIA(Ln_ParroquiaId);
-      FETCH C_EXISTE_PARROQUIA INTO Lc_Parroquia;
-      CLOSE C_EXISTE_PARROQUIA;
-      IF Lc_Parroquia.Id_Parroquia IS NULL THEN
-        Pv_Mensaje := 'La parroquia '||Ln_ParroquiaId||' no existe o no se encuentra Activo';
-        RAISE Le_Errors;
-      END IF;
-    END IF;
-    
-    -- CREAR NUEVO DATO EN INFO_UBICACION CON DATOS POR DEFECTO
-    Ln_IdUbicacion := DB_INFRAESTRUCTURA.SEQ_INFO_UBICACION.NEXTVAL;
-    INSERT INTO DB_INFRAESTRUCTURA.INFO_UBICACION(
-        ID_UBICACION, 
-        PARROQUIA_ID, 
-        DIRECCION_UBICACION, 
-        LONGITUD_UBICACION, 
-        LATITUD_UBICACION, 
-        ALTURA_SNM, 
-        USR_CREACION, 
-        FE_CREACION, 
-        IP_CREACION, 
-        OFICINA_ID
-     )  VALUES (
-        Ln_IdUbicacion,
-        NVL(Lc_Parroquia.Id_Parroquia, 1),
-        NVL(Lv_DireccionUbic,'NA'),
-        NVL(Ln_LongitudUbic,0),
-        NVL(Ln_LatitudUbic,0),
-        NVL(Ln_AlturaSNM,0),
-        Lv_UsrCreacion,
-        SYSDATE,
-        Lv_IpCreacion,
-        Lc_Oficina.Id_Oficina
-    );
-    
-    -- ASIGNAR LA UBICACION AL ELEMENTO
-    Ln_IdEmpElemUbic := DB_INFRAESTRUCTURA.SEQ_INFO_EMPRESA_ELEMENTO_UBI.NEXTVAL;
-    INSERT INTO DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA(
-        ID_EMPRESA_ELEMENTO_UBICACION, 
-        EMPRESA_COD, 
-        ELEMENTO_ID, 
-        UBICACION_ID, 
-        USR_CREACION, 
-        FE_CREACION, 
-        IP_CREACION 
-     )  VALUES (
-        Ln_IdEmpElemUbic,
-        Lv_EmpresaCod,
-        Lc_Elemento.Id_Elemento,
-        Ln_IdUbicacion,
-        Lv_UsrCreacion,
-        SYSDATE,
-        Lv_IpCreacion
-    );
-    
-    Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Asignación de ubicación al elemento '||Ln_ElementoId||' exitosa';
-    COMMIT;
-  EXCEPTION
-    WHEN Le_Errors THEN
-      ROLLBACK;
-      Pv_Status  := 'ERROR';
-    WHEN OTHERS THEN
-      ROLLBACK;
-      Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
-  END P_ASIGNAR_UBICACION_ELEM;
-  
-  PROCEDURE P_MODIFICAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
-                                       Pv_Status    OUT VARCHAR2,
-                                       Pv_Mensaje   OUT VARCHAR2)
-  AS
-    -- CURSORES
-    CURSOR C_EXISTE_ELEMENTO(Cn_IdElemento NUMBER) 
-    IS
-      SELECT IE.*
-      FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO IE
-      WHERE IE.ID_ELEMENTO = Cn_IdElemento;
-      
-    CURSOR C_EXISTE_OFICINA(Cn_IdOficina NUMBER) 
-    IS
-      SELECT IOG.* 
-      FROM DB_COMERCIAL.INFO_OFICINA_GRUPO IOG
-      WHERE IOG.ID_OFICINA = Cn_IdOficina
-        AND IOG.ESTADO = 'Activo';
-        
-    CURSOR C_EXISTE_PARROQUIA(Cn_IdParroquia NUMBER) 
-    IS
-      SELECT AP.* 
-      FROM DB_GENERAL.ADMI_PARROQUIA AP
-      WHERE AP.ID_PARROQUIA = Cn_IdParroquia
-        AND AP.ESTADO = 'Activo';
-        
-    CURSOR C_VALIDAR_UBICACION_ELEM(Cn_IdElemento NUMBER) 
-    IS
-      SELECT IEUU.* 
-      FROM DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEUU
-      WHERE IEUU.ELEMENTO_ID = Cn_IdElemento;
-      
-    CURSOR C_EXISTE_UBICACION(Cn_IdUbicacion NUMBER) 
-    IS
-      SELECT IU.*
-      FROM DB_INFRAESTRUCTURA.INFO_UBICACION IU
-      WHERE IU.ID_UBICACION = Cn_IdUbicacion;
-  
-    Lv_EmpresaCod     VARCHAR2(100);
-    Ln_ElementoId     NUMBER;
-    Ln_OficinaId      NUMBER;
-    Ln_ParroquiaId    NUMBER;
-    Lv_DireccionUbic  VARCHAR2(2000);
-    Ln_LongitudUbic   NUMBER;
-    Ln_LatitudUbic    NUMBER;
-    Ln_AlturaSNM      NUMBER;
-    Lc_Elemento       C_EXISTE_ELEMENTO%ROWTYPE;
-    Lc_ValUbicaElem   C_VALIDAR_UBICACION_ELEM%ROWTYPE;
-    Lc_Oficina        C_EXISTE_OFICINA%ROWTYPE;
-    Lc_Parroquia      C_EXISTE_PARROQUIA%ROWTYPE;
-    Lc_Ubicacion      C_EXISTE_UBICACION%ROWTYPE;
-    Le_Errors         EXCEPTION;
-  BEGIN
-    -- RETORNO LAS VARIABLES DEL REQUEST
-    APEX_JSON.PARSE(Pcl_Request);
-    Lv_EmpresaCod     := APEX_JSON.get_varchar2(p_path => 'empresaCod');
-    Ln_ElementoId     := APEX_JSON.get_number(p_path => 'elementoId');
-    Ln_OficinaId      := APEX_JSON.get_number(p_path => 'oficinaId');
-    Ln_ParroquiaId    := APEX_JSON.get_number(p_path => 'parroquiaId');
-    Lv_DireccionUbic  := APEX_JSON.get_varchar2(p_path => 'direccionUbicacion');
-    Ln_LongitudUbic   := APEX_JSON.get_number(p_path => 'longitudUbicacion');
-    Ln_LatitudUbic    := APEX_JSON.get_number(p_path => 'latitudUbicacion');
-    Ln_AlturaSNM      := APEX_JSON.get_number(p_path => 'alturaSNM');
-
-    -- VALIDACIONES
-    IF Ln_ElementoId IS NULL THEN
-      Pv_Mensaje := 'El parámetro elementoId está vacío';
-      RAISE Le_Errors;
-    END IF;
-    OPEN  C_EXISTE_ELEMENTO(Ln_ElementoId);
-    FETCH C_EXISTE_ELEMENTO INTO Lc_Elemento;
-    CLOSE C_EXISTE_ELEMENTO;
-    IF Lc_Elemento.Id_Elemento IS NULL THEN
-      Pv_Mensaje := 'El elemento '||Ln_ElementoId||' no existe';
-      RAISE Le_Errors;
-    END IF;
-    OPEN  C_VALIDAR_UBICACION_ELEM(Lc_Elemento.Id_Elemento);
-    FETCH C_VALIDAR_UBICACION_ELEM INTO Lc_ValUbicaElem;
-    CLOSE C_VALIDAR_UBICACION_ELEM;
-    IF Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion IS NULL THEN
-      Pv_Mensaje := 'La ubicación del elemento '||Ln_ElementoId||' no existe';
-      RAISE Le_Errors;
-    END IF;
-    IF Ln_OficinaId IS NULL THEN
-      Pv_Mensaje := 'El parámetro oficinaId está vacío';
-      RAISE Le_Errors;
-    END IF;
-    OPEN  C_EXISTE_OFICINA(Ln_OficinaId);
-    FETCH C_EXISTE_OFICINA INTO Lc_Oficina;
-    CLOSE C_EXISTE_OFICINA;
-    IF Lc_Oficina.Id_Oficina IS NULL THEN
-      Pv_Mensaje := 'La oficina '||Ln_OficinaId||' no existe o no se encuentra Activo';
-      RAISE Le_Errors;
-    END IF;
-    IF Ln_ParroquiaId IS NOT NULL THEN
-      OPEN  C_EXISTE_PARROQUIA(Ln_ParroquiaId);
-      FETCH C_EXISTE_PARROQUIA INTO Lc_Parroquia;
-      CLOSE C_EXISTE_PARROQUIA;
-      IF Lc_Parroquia.Id_Parroquia IS NULL THEN
-        Pv_Mensaje := 'La parroquia '||Ln_ParroquiaId||' no existe o no se encuentra Activo';
-        RAISE Le_Errors;
-      END IF;
-    END IF;
-    
-    OPEN  C_EXISTE_UBICACION(Lc_ValUbicaElem.Ubicacion_Id);
-    FETCH C_EXISTE_UBICACION INTO Lc_Ubicacion;
-    CLOSE C_EXISTE_UBICACION;
-    -- ACTUALIZAR LOS DATOS DE LA UBICACION
-    UPDATE DB_INFRAESTRUCTURA.INFO_UBICACION IU SET
-      IU.PARROQUIA_ID = NVL(Lc_Parroquia.Id_Parroquia, Lc_Ubicacion.Parroquia_Id),
-      IU.DIRECCION_UBICACION = NVL(Lv_DireccionUbic, Lc_Ubicacion.Direccion_Ubicacion),
-      IU.LONGITUD_UBICACION = NVL(Ln_LongitudUbic, Lc_Ubicacion.Longitud_Ubicacion),
-      IU.LATITUD_UBICACION = NVL(Ln_LatitudUbic, Lc_Ubicacion.Latitud_Ubicacion),
-      IU.ALTURA_SNM = NVL(Ln_AlturaSNM, Lc_Ubicacion.Altura_Snm),
-      IU.OFICINA_ID = NVL(Lc_Oficina.Id_Oficina, Lc_Ubicacion.Oficina_Id)
-    WHERE IU.ID_UBICACION = Lc_Ubicacion.Id_Ubicacion;
-    
-    IF Lv_EmpresaCod IS NOT NULL THEN
-      UPDATE DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEEU SET
-        IEEU.EMPRESA_COD = Lv_EmpresaCod
-      WHERE IEEU.ID_EMPRESA_ELEMENTO_UBICACION = Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion;
-    END IF;
-    
-    Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Modificación de la ubicación al elemento '||Ln_ElementoId||' exitosa';
-    COMMIT;
-  EXCEPTION
-    WHEN Le_Errors THEN
-      ROLLBACK;
-      Pv_Status  := 'ERROR';
-    WHEN OTHERS THEN
-      ROLLBACK;
-      Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
-  END P_MODIFICAR_UBICACION_ELEM;
+----
+----
 END INKG_ELEMENTO_TRANSACCION;
 /
 

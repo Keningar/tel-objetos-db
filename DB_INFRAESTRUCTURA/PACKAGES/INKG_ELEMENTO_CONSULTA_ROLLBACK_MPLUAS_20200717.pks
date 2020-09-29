@@ -181,7 +181,7 @@ create or replace package DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   estado              := Estado Default 'Activo',
-  *   idElemento          := Id de elemento,
+  *   idElemento          := Id de elemento
   *   nombreElemento      := Nombre de elemento
   * ]
   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
@@ -195,33 +195,6 @@ create or replace package DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                     Pv_Status    OUT VARCHAR2,
                                     Pv_Mensaje   OUT VARCHAR2,
                                     Pcl_Response OUT SYS_REFCURSOR);
-  
-  /**
-  * Documentación para el procedimiento P_ELEM_POR_DEPARTAMENTO_PARAMS
-  *
-  * Método encargado de retornar la lista de elementos por Departamento.
-  *
-  * @param Pcl_Request    IN   CLOB Recibe json request
-  * [
-  *   estado              := Estado Default 'Activo',
-  *   idElemento          := Id de elemento,
-  *   nombreElemento      := Nombre de elemento,
-  *   departamentoId      := Id de departamento,
-  *   nombreDepartamento  := Nombre del departamento,
-  *   tipoElementoId      := Id de tipo elemento,
-  *   nombreTipoElemento  := Nombre de tipo de elemento
-  * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
-  *
-  * @author Marlon Plúas <mpluas@telconet.ec>
-  * @version 1.0 17-07-2020
-  */                                 
-  PROCEDURE P_ELEM_POR_DEPARTAMENTO_PARAMS(Pcl_Request  IN  CLOB,
-                                           Pv_Status    OUT VARCHAR2,
-                                           Pv_Mensaje   OUT VARCHAR2,
-                                           Pcl_Response OUT SYS_REFCURSOR);
        
   /**
   * Documentación para el procedimiento P_DATOS_VEHICULO
@@ -1150,98 +1123,6 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
       Pv_Mensaje := SQLERRM;
   END P_ELEM_POR_MONITORIZADO;
 
-  PROCEDURE P_ELEM_POR_DEPARTAMENTO_PARAMS(Pcl_Request  IN  CLOB,
-                                           Pv_Status    OUT VARCHAR2,
-                                           Pv_Mensaje   OUT VARCHAR2,
-                                           Pcl_Response OUT SYS_REFCURSOR)
-  AS
-    Lcl_Query             CLOB;
-    Lcl_Select            CLOB;
-    Lcl_From              CLOB;
-    Lcl_WhereAndJoin      CLOB;
-    Lcl_OrderAnGroup      CLOB;
-    Lv_Estado             VARCHAR2(500);
-    Lv_NombreElemento     VARCHAR2(1000);
-    Ln_IdElemento         NUMBER;
-    Lv_NombreDepartamento VARCHAR2(1000);
-    Ln_DepartamentoId     NUMBER;
-    Lv_NombreTipoElemento VARCHAR2(1000);
-    Ln_TipoElementoId     NUMBER;
-    Le_Errors             EXCEPTION;
-  BEGIN
-    -- RETORNO LAS VARIABLES DEL REQUEST
-    APEX_JSON.PARSE(Pcl_Request);
-    Lv_Estado             := APEX_JSON.get_varchar2(p_path => 'estado');
-    Ln_IdElemento         := APEX_JSON.get_number(p_path => 'idElemento');
-    Lv_NombreElemento     := APEX_JSON.get_varchar2(p_path => 'nombreElemento');
-    Ln_DepartamentoId     := APEX_JSON.get_number(p_path => 'departamentoId');
-    Lv_NombreDepartamento := APEX_JSON.get_varchar2(p_path => 'nombreDepartamento');
-    Ln_TipoElementoId     := APEX_JSON.get_number(p_path => 'tipoId');
-    Lv_NombreTipoElemento := APEX_JSON.get_varchar2(p_path => 'nombreTipo');
-
-    -- VALIDACIONES
-    IF Ln_DepartamentoId IS NULL AND Lv_NombreDepartamento IS NULL THEN
-      Pv_Mensaje := 'El parámetro departamentoId o nombreDepartamento está vacío';
-      RAISE Le_Errors;
-    END IF;
-    
-    IF Lv_Estado IS NULL THEN
-      Lv_Estado := 'Activo';
-    END IF;
-
-    Lcl_Select       := '
-              SELECT IE.*';
-    Lcl_From         := '
-              FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO IE,
-                   DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO AME,
-                   DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO ATE,
-                   DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO IDE,
-                   DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
-                   DB_GENERAL.ADMI_DEPARTAMENTO AD';
-    Lcl_WhereAndJoin := '
-              WHERE IE.MODELO_ELEMENTO_ID = AME.ID_MODELO_ELEMENTO
-                AND AME.TIPO_ELEMENTO_ID = ATE.ID_TIPO_ELEMENTO
-                AND IE.ID_ELEMENTO = IDE.ELEMENTO_ID
-                AND IDE.DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                AND IDE.DETALLE_VALOR = IPER.ID_PERSONA_ROL
-                AND IPER.DEPARTAMENTO_ID = AD.ID_DEPARTAMENTO
-                AND IE.ESTADO = '''||Lv_Estado||'''';
-    IF Ln_IdElemento IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IE.ID_ELEMENTO = '||Ln_IdElemento;
-    END IF;
-    IF Lv_NombreElemento IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IE.NOMBRE_ELEMENTO = '''||Lv_NombreElemento||'''';
-    END IF;
-    IF Ln_DepartamentoId IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AD.ID_DEPARTAMENTO = '||Ln_DepartamentoId;
-    END IF;
-    IF Lv_NombreDepartamento IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AD.NOMBRE_DEPARTAMENTO = '''||Lv_NombreDepartamento||'''';
-    END IF;
-    IF Ln_TipoElementoId IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATE.ID_TIPO_ELEMENTO = '||Ln_TipoElementoId;
-    END IF;
-    IF Lv_NombreTipoElemento IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATE.NOMBRE_TIPO_ELEMENTO = '''||Lv_NombreTipoElemento||'''';
-    END IF;
-    Lcl_OrderAnGroup := '
-              ORDER BY
-                IE.ID_ELEMENTO DESC';
-
-    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-
-    OPEN Pcl_Response FOR Lcl_Query;
-
-    Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
-  EXCEPTION
-    WHEN Le_Errors THEN
-      Pv_Status  := 'ERROR';
-    WHEN OTHERS THEN
-      Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
-  END P_ELEM_POR_DEPARTAMENTO_PARAMS;
-
   PROCEDURE P_DATOS_VEHICULO(Pcl_Request  IN  CLOB,
                              Pv_Status    OUT VARCHAR2,
                              Pv_Mensaje   OUT VARCHAR2,
@@ -1631,14 +1512,12 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
     Lcl_OrderAnGroup  CLOB;
     Lv_Estado         VARCHAR2(500);
     Ln_GrupoId        NUMBER;
-    Ln_ElementoId     NUMBER;
     Le_Errors         EXCEPTION;
   BEGIN
     -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
     Lv_Estado         := APEX_JSON.get_varchar2(p_path => 'estado');
-    Ln_GrupoId        := APEX_JSON.get_number(p_path => 'grupoId');
-    Ln_ElementoId     := APEX_JSON.get_number(p_path => 'elementoId');
+    Ln_GrupoId        := APEX_JSON.get_number(p_path => 'grupoId');  
 
     -- VALIDACIONES
     IF Ln_GrupoId IS NULL
@@ -1646,12 +1525,15 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
       Pv_Mensaje := 'El parámetro grupoId está vacío';    
       RAISE Le_Errors;
     END IF;
+   
+    IF Lv_Estado IS NULL THEN
+      Lv_Estado := 'Activo';
+    END IF;
+   
 
     Lcl_Select       := '
               SELECT E.ID_ELEMENTO,
-                     CASE WHEN T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO'' THEN
-                       E.NOMBRE_ELEMENTO
-                     END AS PLACA,
+                     E.NOMBRE_ELEMENTO        AS PLACA,
                      E.DESCRIPCION_ELEMENTO,
                      M.NOMBRE_MODELO_ELEMENTO AS MODELO,
                      T.NOMBRE_TIPO_ELEMENTO   AS TIPO,
@@ -1659,75 +1541,60 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                       FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                       WHERE ELEMENTO_ID = E.ID_ELEMENTO
                         AND DETALLE_NOMBRE = ''DISCO''
-                        AND ESTADO = ''Activo'') AS DISCO,
+                        AND ESTADO = ''Activo''
+                     )                        AS DISCO,
                      (SELECT DETALLE_VALOR
                       FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                       WHERE ELEMENTO_ID = E.ID_ELEMENTO
                         AND DETALLE_NOMBRE = ''MOTOR''
-                        AND ESTADO = ''Activo'') AS MOTOR,
+                        AND ESTADO = ''Activo''
+                     )                        AS MOTOR,
                      (SELECT DETALLE_VALOR
                       FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                       WHERE ELEMENTO_ID = E.ID_ELEMENTO
                         AND DETALLE_NOMBRE = ''CHASIS''
-                        AND ESTADO = ''Activo'') AS CHASIS,
-                     CASE WHEN T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO'' THEN
-                       (SELECT DETALLE_VALOR
-                        FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                        WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                          AND DETALLE_NOMBRE = ''CUADRILLA''
-                          AND ESTADO = ''Activo'')
-                     WHEN T.NOMBRE_TIPO_ELEMENTO = ''TABLET'' THEN
-                       (SELECT TO_CHAR(IPER.CUADRILLA_ID)
-                        FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
-                        WHERE IPER.ID_PERSONA_ROL = (SELECT DETALLE_VALOR
-                                                     FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                     WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                       AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                                       AND ESTADO = ''Activo''))
-                     END AS CUADRILLA,
-                     CASE WHEN T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO'' THEN
-                       (SELECT NOMBRE_CUADRILLA
-                        FROM DB_COMERCIAL.ADMI_CUADRILLA
-                        WHERE ID_CUADRILLA = (SELECT DETALLE_VALOR
-                                              FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                              WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                AND DETALLE_NOMBRE = ''CUADRILLA''
-                                                AND ESTADO = ''Activo''))
-                     WHEN T.NOMBRE_TIPO_ELEMENTO = ''TABLET'' THEN
-                        (SELECT NOMBRE_CUADRILLA
-                        FROM DB_COMERCIAL.ADMI_CUADRILLA
-                        WHERE ID_CUADRILLA = (SELECT IPER.CUADRILLA_ID
-                                              FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
-                                              WHERE IPER.ID_PERSONA_ROL = (SELECT DETALLE_VALOR
-                                                                           FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                                           WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                                             AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                                                             AND ESTADO = ''Activo'')))
-                     END AS NOMBRE_CUADRILLA,
+                        AND ESTADO = ''Activo''
+                     )                        AS CHASIS,
+                     (SELECT DETALLE_VALOR
+                      FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
+                      WHERE ELEMENTO_ID = E.ID_ELEMENTO
+                        AND DETALLE_NOMBRE = ''CUADRILLA''
+                        AND ESTADO = ''Activo''
+                     )                        AS CUADRILLA,
+                     (SELECT NOMBRE_CUADRILLA
+                      FROM DB_COMERCIAL.ADMI_CUADRILLA
+                      WHERE ID_CUADRILLA = (SELECT DETALLE_VALOR
+                                            FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
+                                            WHERE ELEMENTO_ID = E.ID_ELEMENTO
+                                              AND DETALLE_NOMBRE = ''CUADRILLA''
+                                              AND ESTADO = ''Activo''
+                                           )
+                     )                        AS NOMBRE_CUADRILLA,
                      (SELECT NOMBRE_ELEMENTO
                       FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO
                       WHERE ID_ELEMENTO = (SELECT DETALLE_VALOR
                                            FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                                            WHERE ELEMENTO_ID = E.ID_ELEMENTO
                                              AND DETALLE_NOMBRE = ''GPS''
-                                             AND ESTADO = ''Activo'')
-                        AND ESTADO = ''Activo'') AS GPS,
-                     CASE WHEN T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO'' THEN
-                       (SELECT DETALLE_VALOR
-                        FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                        WHERE DETALLE_NOMBRE = ''IMEI''
-                          AND ELEMENTO_ID = (SELECT ID_ELEMENTO
-                                             FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO
-                                             WHERE ID_ELEMENTO = (SELECT DETALLE_VALOR
-                                                                  FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                                  WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                                    AND DETALLE_NOMBRE = ''GPS''
-                                                                    AND ESTADO = ''Activo'')
-                                               AND ESTADO = ''Activo'')
-                          AND ESTADO = ''Activo'')
-                     WHEN T.NOMBRE_TIPO_ELEMENTO = ''TABLET'' THEN
-                       E.NOMBRE_ELEMENTO
-                     END AS IMEI,
+                                             AND ESTADO = ''Activo''
+                                          )
+                        AND ESTADO = ''Activo''
+                     )                        AS GPS,
+                     (SELECT DETALLE_VALOR
+                      FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
+                      WHERE DETALLE_NOMBRE = ''IMEI''
+                        AND ELEMENTO_ID = (SELECT ID_ELEMENTO
+                                           FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO
+                                           WHERE ID_ELEMENTO = (SELECT DETALLE_VALOR
+                                                                FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
+                                                                WHERE ELEMENTO_ID = E.ID_ELEMENTO
+                                                                  AND DETALLE_NOMBRE = ''GPS''
+                                                                  AND ESTADO = ''Activo''
+                                                               )
+                                             AND ESTADO = ''Activo''
+                                          )
+                        AND ESTADO = ''Activo''
+                     )                        AS IMEI,
                      (SELECT DETALLE_VALOR
                       FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                       WHERE DETALLE_NOMBRE = ''CHIP''
@@ -1737,69 +1604,28 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                                                 FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                                                                 WHERE ELEMENTO_ID = E.ID_ELEMENTO
                                                                   AND DETALLE_NOMBRE = ''GPS''
-                                                                  AND ESTADO = ''Activo'')
-                                             AND ESTADO = ''Activo'')
-                        AND ESTADO = ''Activo'') AS CHIP,
-                     AME.NOMBRE_MARCA_ELEMENTO AS MARCA,
-                     (SELECT IU.OFICINA_ID
-                      FROM DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEEU, DB_INFRAESTRUCTURA.INFO_UBICACION IU
-                      WHERE IEEU.UBICACION_ID = IU.ID_UBICACION
-                        AND IEEU.ELEMENTO_ID = E.ID_ELEMENTO
-                        AND ROWNUM = 1) AS OFICINA_ID,
-                     (SELECT DETALLE_VALOR
-                      FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                      WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                        AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                        AND ESTADO = ''Activo'') AS RESPONSABLE_TABLET,
-                     (SELECT IP.ID_PERSONA 
-                      FROM DB_COMERCIAL.INFO_PERSONA IP, DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
-                      WHERE IP.ID_PERSONA = IPER.PERSONA_ID
-                        AND IPER.ID_PERSONA_ROL = (SELECT DETALLE_VALOR
-                                                  FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                  WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                    AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                                    AND ESTADO = ''Activo'')) AS RESPONSABLE_TABLET_PERSONA_ID,
-                     (SELECT AD.ID_DEPARTAMENTO
-                      FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER, DB_GENERAL.ADMI_DEPARTAMENTO AD
-                      WHERE IPER.DEPARTAMENTO_ID = AD.ID_DEPARTAMENTO
-                        AND IPER.ID_PERSONA_ROL = (SELECT DETALLE_VALOR
-                                                   FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                   WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                     AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                                     AND ESTADO = ''Activo'')) AS RESPONSABLE_DEPARTAMENTO_ID,
-                     (SELECT AD.NOMBRE_DEPARTAMENTO
-                      FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER, DB_GENERAL.ADMI_DEPARTAMENTO AD
-                      WHERE IPER.DEPARTAMENTO_ID = AD.ID_DEPARTAMENTO
-                        AND IPER.ID_PERSONA_ROL = (SELECT DETALLE_VALOR
-                                                   FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                   WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                     AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                                     AND ESTADO = ''Activo'')) AS RESPONSABLE_DEPARTAMENTO,
-                     E.OBSERVACION,
-                     E.FE_CREACION,
-                     E.USR_CREACION,
+                                                                  AND ESTADO = ''Activo''
+                                                               )
+                                             AND ESTADO = ''Activo''
+                                          )
+                        AND ESTADO = ''Activo''
+                     )                        AS CHIP,
                      E.ESTADO';
     Lcl_From         := '
               FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO E,
                    DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO M,
                    DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO T,
-                   DB_INFRAESTRUCTURA.ADMI_MARCA_ELEMENTO AME,
                    DB_MONITOREO.INFO_GRUPO_DETALLE D';
     Lcl_WhereAndJoin := '
               WHERE E.MODELO_ELEMENTO_ID = M.ID_MODELO_ELEMENTO
                 AND M.TIPO_ELEMENTO_ID = T.ID_TIPO_ELEMENTO
-                AND M.MARCA_ELEMENTO_ID = AME.ID_MARCA_ELEMENTO
                 AND D.ELEMENTO_ID = E.ID_ELEMENTO
-                AND D.ESTADO = ''Activo''
+		AND D.ESTADO = ''Activo''
+                AND E.ESTADO = '''||Lv_Estado||'''
                 AND D.GRUPO_ID = '||Ln_GrupoId||'';
-    IF Ln_ElementoId IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND D.ELEMENTO_ID = '||Ln_ElementoId;
-    END IF;                                
+                                    
     Lcl_OrderAnGroup := '';
-    IF Lv_Estado IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND E.ESTADO = '''||Lv_Estado||'''';
-    END IF;
-
+  
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
 
     OPEN Pcl_Response FOR Lcl_Query;
