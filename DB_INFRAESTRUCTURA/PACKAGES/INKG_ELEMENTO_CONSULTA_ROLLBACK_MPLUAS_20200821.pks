@@ -336,31 +336,6 @@ create or replace package DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                              Pv_Status    OUT VARCHAR2,
                              Pv_Mensaje   OUT VARCHAR2,
                              Pcl_Response OUT SYS_REFCURSOR);
-                             
-  /**
-  * Documentación para el procedimiento P_ELEM_POR_CUADRILLA_PARAMS
-  *
-  * Método encargado de retornar la lista de elementos por Cuadrilla.
-  *
-  * @param Pcl_Request    IN   CLOB Recibe json request
-  * [
-  *   estado              := Estado Default 'Activo',
-  *   idElemento          := Id de elemento,
-  *   nombreElemento      := Nombre de elemento,
-  *   cuadrillaId         := Id de departamento,
-  *   nombreCuadrilla     := Nombre del departamento
-  * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
-  *
-  * @author Marlon Plúas <mpluas@telconet.ec>
-  * @version 1.0 21-08-2020
-  */                                 
-  PROCEDURE P_ELEM_POR_CUADRILLA_PARAMS(Pcl_Request  IN  CLOB,
-                                        Pv_Status    OUT VARCHAR2,
-                                        Pv_Mensaje   OUT VARCHAR2,
-                                        Pcl_Response OUT SYS_REFCURSOR);
 
 end INKG_ELEMENTO_CONSULTA;
 /
@@ -1729,29 +1704,14 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                                                              AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
                                                                              AND ESTADO = ''Activo'')))
                      END AS NOMBRE_CUADRILLA,
-                     CASE WHEN T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO'' THEN
-                      (SELECT NOMBRE_ELEMENTO
-                        FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO
-                        WHERE ID_ELEMENTO = (SELECT DETALLE_VALOR
-                                             FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                             WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                               AND DETALLE_NOMBRE = ''GPS''
-                                               AND ESTADO = ''Activo'')
-                          AND ESTADO = ''Activo'')
-                     WHEN T.NOMBRE_TIPO_ELEMENTO = ''TABLET'' THEN
-                      (SELECT IE.NOMBRE_ELEMENTO FROM
-                        DB_INFRAESTRUCTURA.INFO_ELEMENTO IE,
-                        DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO IDE
-                        WHERE IDE.ELEMENTO_ID = IE.ID_ELEMENTO
-                          AND IDE.DETALLE_NOMBRE = ''COLABORADOR''
-                          AND IDE.ESTADO = ''Activo''
-                          AND IDE.DETALLE_VALOR = (SELECT DETALLE_VALOR
-                                                          FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                                                          WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                                          AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                                          AND ESTADO = ''Activo'')
-                          AND IE.ESTADO = ''Activo'')
-                     END AS GPS,
+                     (SELECT NOMBRE_ELEMENTO
+                      FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO
+                      WHERE ID_ELEMENTO = (SELECT DETALLE_VALOR
+                                           FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
+                                           WHERE ELEMENTO_ID = E.ID_ELEMENTO
+                                             AND DETALLE_NOMBRE = ''GPS''
+                                             AND ESTADO = ''Activo'')
+                        AND ESTADO = ''Activo'') AS GPS,
                      CASE WHEN T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO'' THEN
                        (SELECT DETALLE_VALOR
                         FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
@@ -1815,9 +1775,6 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                                    WHERE ELEMENTO_ID = E.ID_ELEMENTO
                                                      AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
                                                      AND ESTADO = ''Activo'')) AS RESPONSABLE_DEPARTAMENTO,
-                     E.OBSERVACION,
-                     E.FE_CREACION,
-                     E.USR_CREACION,
                      E.ESTADO';
     Lcl_From         := '
               FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO E,
@@ -1853,87 +1810,6 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_ELEM_POR_GRUPO;
-  
-  PROCEDURE P_ELEM_POR_CUADRILLA_PARAMS(Pcl_Request  IN  CLOB,
-                                        Pv_Status    OUT VARCHAR2,
-                                        Pv_Mensaje   OUT VARCHAR2,
-                                        Pcl_Response OUT SYS_REFCURSOR)
-  AS
-    Lcl_Query             CLOB;
-    Lcl_Select            CLOB;
-    Lcl_From              CLOB;
-    Lcl_WhereAndJoin      CLOB;
-    Lcl_OrderAnGroup      CLOB;
-    Lv_Estado             VARCHAR2(500);
-    Lv_NombreElemento     VARCHAR2(1000);
-    Ln_IdElemento         NUMBER;
-    Lv_NombreCuadrilla    VARCHAR2(1000);
-    Ln_CuadrillaId        NUMBER;
-    Le_Errors             EXCEPTION;
-  BEGIN
-    -- RETORNO LAS VARIABLES DEL REQUEST
-    APEX_JSON.PARSE(Pcl_Request);
-    Lv_Estado             := APEX_JSON.get_varchar2(p_path => 'estado');
-    Ln_IdElemento         := APEX_JSON.get_number(p_path => 'idElemento');
-    Lv_NombreElemento     := APEX_JSON.get_varchar2(p_path => 'nombreElemento');
-    Ln_CuadrillaId        := APEX_JSON.get_number(p_path => 'cuadrillaId');
-    Lv_NombreCuadrilla    := APEX_JSON.get_varchar2(p_path => 'nombreCuadrilla');
-
-    -- VALIDACIONES
-    IF Ln_CuadrillaId IS NULL AND Lv_NombreCuadrilla IS NULL THEN
-      Pv_Mensaje := 'El parámetro cuadrillaId o nombreCuadrilla está vacío';
-      RAISE Le_Errors;
-    END IF;
-    
-    IF Lv_Estado IS NULL THEN
-      Lv_Estado := 'Activo';
-    END IF;
-
-    Lcl_Select       := '
-              SELECT IE.*';
-    Lcl_From         := '
-              FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
-                   DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO IDE,
-                   DB_INFRAESTRUCTURA.INFO_ELEMENTO IE,
-                   DB_COMERCIAL.ADMI_CUADRILLA AC';
-    Lcl_WhereAndJoin := '
-              WHERE IPER.ID_PERSONA_ROL = IDE.DETALLE_VALOR
-                AND IDE.ELEMENTO_ID = IE.ID_ELEMENTO
-                AND AC.ID_CUADRILLA = IPER.CUADRILLA_ID
-                AND IDE.DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                AND IDE.ESTADO = ''Activo''
-                AND IDE.DETALLE_VALOR = IPER.ID_PERSONA_ROL
-                AND IPER.ESTADO = ''Activo''
-                AND IE.ESTADO = '''||Lv_Estado||'''';
-    IF Ln_IdElemento IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IE.ID_ELEMENTO = '||Ln_IdElemento;
-    END IF;
-    IF Lv_NombreElemento IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IE.NOMBRE_ELEMENTO = '''||Lv_NombreElemento||'''';
-    END IF;
-    IF Ln_CuadrillaId IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AC.ID_CUADRILLA = '||Ln_CuadrillaId;
-    END IF;
-    IF Lv_NombreCuadrilla IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AC.NOMBRE_CUADRILLA = '''||Lv_NombreCuadrilla||'''';
-    END IF;
-    Lcl_OrderAnGroup := '
-              ORDER BY
-                IE.ID_ELEMENTO DESC';
-
-    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-
-    OPEN Pcl_Response FOR Lcl_Query;
-
-    Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
-  EXCEPTION
-    WHEN Le_Errors THEN
-      Pv_Status  := 'ERROR';
-    WHEN OTHERS THEN
-      Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
-  END P_ELEM_POR_CUADRILLA_PARAMS;
 end INKG_ELEMENTO_CONSULTA;
 /
 
