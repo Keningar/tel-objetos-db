@@ -312,7 +312,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
       ELSIF Lv_NombrePantalla = 'Autorizacion' THEN
             
-             IF LvEsSuperUsuario= 'S' THEN 
+             IF LvEsSuperUsuario= 'Gerencia' THEN 
              
                  Lcl_Join         := ' 
                      LEFT JOIN(SELECT DISTINCT IHSO.ID_HORAS_SOLICITUD,ATHE.TIPO_HORAS_EXTRA,IHSD.HORAS
@@ -342,12 +342,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              END IF;
               
              
-             IF Lv_Estado IS NULL AND LvEsSuperUsuario = 'S' THEN
+             IF Lv_Estado IS NULL AND LvEsSuperUsuario = 'Gerencia' THEN
              
                 Lcl_Where := Lcl_Where || ' AND IHS.ESTADO IN (''Pre-Autorizada'') ';
                 
                 
-             ELSIF Lv_Estado IS NULL AND LvEsSuperUsuario = 'N' THEN
+             ELSIF Lv_Estado IS NULL AND LvEsSuperUsuario = 'Jefatura' THEN
              
                  Lcl_Where := Lcl_Where || ' AND IHS.ESTADO IN (''Pendiente'') ';
                  

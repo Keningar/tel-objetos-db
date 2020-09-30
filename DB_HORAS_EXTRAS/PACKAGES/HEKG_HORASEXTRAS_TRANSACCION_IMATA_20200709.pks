@@ -405,6 +405,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_Contador1                   NUMBER:=0;
      Ln_Contador2                   NUMBER:=0;
      Ln_ContadorDocumentos          NUMBER:=0;
+     Ln_ContadorEmpleado            NUMBER:=0;
+     Ln_ContadoreEmp                NUMBER:=1;
      
      Ld_Fecha                       VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
@@ -439,6 +441,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA IN(Cv_TipoHorasExtra1,Cv_TipoHorasExtra2)
        ORDER BY ID_TIPO_HORAS_EXTRA ASC;
+       
+     CURSOR C_EXISTE_EMPLEADO(Cv_No_Emple VARCHAR2, Cv_Fecha Varchar2, Cv_Empresa VARCHAR2) IS
+      SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.NOMBRE FROM INFO_HORAS_SOLICITUD IHS 
+        JOIN INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
+        JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
+       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHSE.ESTADO='Pendiente' AND VEE.NO_CIA=Cv_Empresa;
      
      Ln_NoEmpleado                  apex_t_varchar2;
      Lv_TareaId                     apex_t_varchar2;
@@ -447,6 +455,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_IdHorasSolicitud            DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.ID_HORAS_SOLICITUD%TYPE;
      Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
      Ln_IdHorasSolicitudDetalle     DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE.ID_HORAS_SOLICITUD_DETALLE%TYPE;
+     Lr_ExisteEmpleado              C_EXISTE_EMPLEADO%ROWTYPE;
      Lr_idTipoHoraExtra             C_TIPO_HORAS_EXTRA%ROWTYPE;
      Le_Errors                      EXCEPTION;
      
@@ -473,6 +482,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_EsFinDeSemana       := APEX_JSON.get_varchar2(p_path => 'esFinDeSemana');
     Lv_EsDiaLibre          := APEX_JSON.get_varchar2(p_path => 'esDiaLibre');
     Lv_Descripcion         := APEX_JSON.get_varchar2(p_path => 'descripcion');
+   
     
     
     IF Ld_Fecha IS NULL THEN
@@ -503,6 +513,26 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Mensaje := 'El parámetro jornadaEmpleado está vacío';
       RAISE Le_Errors;
     END IF;
+    
+    
+    Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
+    
+    WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
+    
+        IF C_EXISTE_EMPLEADO%ISOPEN THEN CLOSE C_EXISTE_EMPLEADO; END IF;
+        OPEN C_EXISTE_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),TO_DATE(Ld_Fecha,'DD-MM-YYYY'),Lv_EmpresaCod);
+        FETCH C_EXISTE_EMPLEADO INTO Lr_ExisteEmpleado;
+    
+        IF C_EXISTE_EMPLEADO%FOUND THEN
+          Pv_Mensaje := 'El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia de hoy '||Ld_Fecha||' ';
+          RAISE Le_Errors;
+        END IF;
+        
+        Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
+    
+    END LOOP;
+    
+    
     
       
       --Consulta de parametros de horarios de horas extras
