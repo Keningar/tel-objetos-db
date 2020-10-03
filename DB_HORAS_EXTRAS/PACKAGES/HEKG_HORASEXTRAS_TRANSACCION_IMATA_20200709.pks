@@ -358,7 +358,6 @@ END HEKG_HORASEXTRAS_TRANSACCION;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
    
-  
      PROCEDURE P_GUARDAR_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2)
@@ -460,9 +459,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Le_Errors                      EXCEPTION;
      
      
-     
-     
-     
   BEGIN
   
      -- RETORNO LAS VARIABLES DEL REQUEST
@@ -532,9 +528,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     
     END LOOP;
     
-    
-    
-      
       --Consulta de parametros de horarios de horas extras
       
       SELECT HORA_FIN
@@ -601,9 +594,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   
   IF Lv_EsFinDeSemana = 'N' THEN
   
-      
-      
-      
       IF(Lv_JornadaEmpleado = 'M')THEN
 
           IF(Lv_HoraFin = Lv_HoraFinDia AND  Ld_HoraInicio1>= Ld_HoraInicioSimples1 AND Ld_HoraInicio1<=Ld_HoraFin1+1) THEN
@@ -636,6 +626,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+             
+             IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+             END IF;
         
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
         
@@ -673,6 +667,14 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFinSimples1 - Ld_HoraInicio1)*24*60,60));
              Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24,24));
              Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24*60,60));
+             
+             IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+             END IF;
+             
+             IF(Lv_TotalMinutosDobles='29')THEN
+                Lv_TotalMinutosDobles:='30';
+             END IF;
            
            
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
@@ -717,14 +719,14 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
           IF(Ld_HoraInicio1 >= Ld_HoraInicioDobles1 AND Ld_HoraInicio1< Ld_HoraFinDobles1)
           AND(Ld_HoraFin1 > Ld_HoraInicioDobles1 AND Ld_HoraFin1 <= Ld_HoraFinDobles1)THEN
-          
-              
         
               Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
               
+              IF(Lv_TotalMinutosDobles='29')THEN
+                Lv_TotalMinutosDobles:='30';
+             END IF;
               
-          
               Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
               
               Ln_Contador :=1;
@@ -755,16 +757,50 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
       ELSE
           -- JORNADA NOCTURNA
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
+          
+          
+          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
              Pv_Mensaje := 'Error 04: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
-        
-          IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
+          
+          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
+              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
+              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
+             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
+              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
+          
+              Pv_Mensaje := 'Error 06: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
+              Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          
+          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
+          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
+             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          
+           IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND Ld_HoraInicio1>= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<= Ld_HoraFinDia1+1
+          AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
             Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
           
+          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1)THEN
+             Ld_HoraInicio1 := Ld_HoraInicio1+1;
+             Ld_HoraFin1 := Ld_HoraFin1+1;
+          END IF;
+        
           
           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1 +1)THEN
@@ -772,6 +808,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
          
@@ -795,17 +835,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            
            END IF;
            
-            
            IF (((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
-           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1+1)) THEN
+           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
               
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
+              
+              IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+              END IF;
+              
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
@@ -854,19 +902,48 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
      IF(Lv_JornadaEmpleado = 'N') THEN
      
-          IF(Lv_HoraFin = Lv_HoraFinDia) THEN
-             Ld_HoraFin1 := Ld_HoraFin1+1;
-          END IF;
-     
          -- JORNADA NOCTURNA
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+         
+          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
+             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
-        
-          IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
+          
+          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
+              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
+              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
+             Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
+              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
+          
+              Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
+              Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          
+          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
+          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
+             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          
+           IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND Ld_HoraInicio1>= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<= Ld_HoraFinDia1+1
+          AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
             Ld_HoraFin1 := Ld_HoraFin1+1;
+          END IF;
+          
+          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1)THEN
+             Ld_HoraInicio1 := Ld_HoraInicio1+1;
+             Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
           
           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
@@ -875,6 +952,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
          
@@ -902,13 +983,21 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            IF (((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
-           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1+1)) THEN
+           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
               
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
+              
+              IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+              END IF;
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
@@ -960,6 +1049,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
           
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
@@ -990,6 +1083,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
           
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
@@ -1036,6 +1133,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
           
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
@@ -1063,8 +1164,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
      IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 <= Ld_HoraFinGeneral + 1)AND 
       (Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
+          
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
           
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
@@ -1091,7 +1197,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   END IF;
     
   IF(Ln_Contador = 0)THEN
-     Pv_Mensaje := 'Error 06: La hora inicio y hora fin ingresadas no entran en el rango de horas extra ';
+     Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresadas no entran en el rango de horas extra ';
      RAISE Le_Errors;
   END IF;
     
@@ -1695,25 +1801,24 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       -- HORA FIN DIA
       Ld_HoraFinDia1 := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
     
-  IF Lv_EsFinDeSemana = 'N' THEN
+    IF Lv_EsFinDeSemana = 'N' THEN
   
       IF(Lv_JornadaEmpleado = 'M')THEN
 
-
-          IF(Lv_HoraFin = Lv_HoraFinDia) THEN
+          IF(Lv_HoraFin = Lv_HoraFinDia AND  Ld_HoraInicio1>= Ld_HoraInicioSimples1 AND Ld_HoraInicio1<=Ld_HoraFin1+1) THEN
              Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
 
           --JORNADA MATUTINA
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 01: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 01: La hora inicio y hora fin ingresados no entran en el rango de horas extras ';
              RAISE Le_Errors;
           END IF;
       
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 OR Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 <= Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1)THEN
-             Pv_Mensaje := 'Error 02: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 02:La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
   
@@ -1724,11 +1829,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           END IF;
           
           
+          
           IF(Ld_HoraInicio1 >= Ld_HoraInicioSimples1  AND Ld_HoraInicio1 < Ld_HoraFinSimples1+1)
           AND (Ld_HoraFin1 > Ld_HoraInicioSimples1  AND Ld_HoraFin1 <= Ld_HoraFinSimples1+1) THEN
       
              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+             
+             IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+             END IF;
         
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
         
@@ -1752,6 +1862,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
           END IF;
       
+          
           IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadas1) THEN
              Ld_HoraFin1 := Ld_HoraFin1+1;
              Ld_HoraFinSimples1 := Ld_HoraFinSimples1+1;
@@ -1765,6 +1876,14 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFinSimples1 - Ld_HoraInicio1)*24*60,60));
              Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24,24));
              Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24*60,60));
+             
+             IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+             END IF;
+             
+             IF(Lv_TotalMinutosDobles='29')THEN
+                Lv_TotalMinutosDobles:='30';
+             END IF;
            
            
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
@@ -1804,15 +1923,21 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            
            
           END IF;
+          
+          
       
           IF(Ld_HoraInicio1 >= Ld_HoraInicioDobles1 AND Ld_HoraInicio1< Ld_HoraFinDobles1)
           AND(Ld_HoraFin1 > Ld_HoraInicioDobles1 AND Ld_HoraFin1 <= Ld_HoraFinDobles1)THEN
         
               Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-          
+              
+              IF(Lv_TotalMinutosDobles='29')THEN
+                Lv_TotalMinutosDobles:='30';
+             END IF;
+              
               Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-           
+              
               Ln_Contador :=1;
         
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
@@ -1825,9 +1950,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               C_ListaHoras.extend;
               C_TipoHorasExtra.extend;
               C_FechaDet.extend;
+              
+              
+              
               C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
               C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
+              
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
            
@@ -1837,16 +1966,49 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
       ELSE
           -- JORNADA NOCTURNA
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
+          
+          
+          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
              Pv_Mensaje := 'Error 04: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
-        
-          IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
+          
+          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
+              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
+              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
+             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
+              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
+          
+              Pv_Mensaje := 'Error 06: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
+              Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          
+          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
+          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
+             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          
+           IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND Ld_HoraInicio1>= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<= Ld_HoraFinDia1+1
+          AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
             Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
           
+          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1)THEN
+             Ld_HoraInicio1 := Ld_HoraInicio1+1;
+             Ld_HoraFin1 := Ld_HoraFin1+1;
+          END IF;
         
           
           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
@@ -1855,6 +2017,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
          
@@ -1878,17 +2044,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            
            END IF;
            
-            
            IF (((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
-           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1+1)) THEN
+           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
               
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
+              
+              IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+              END IF;
+              
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
@@ -1933,22 +2107,52 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   
   ELSIF(Lv_EsFinDeSemana = 'S') THEN
   
-  
-   IF(Lv_JornadaEmpleado = 'N')THEN
      
-          IF(Lv_HoraFin = Lv_HoraFinDia) THEN
-             Ld_HoraFin1 := Ld_HoraFin1+1;
-          END IF;
+     
+     IF(Lv_JornadaEmpleado = 'N') THEN
      
          -- JORNADA NOCTURNA
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+         
+          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
+             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
-        
-          IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
+          
+          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
+              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
+              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
+             Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
+              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
+          
+              Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
+              Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              RAISE Le_Errors;
+          END IF;
+          
+          
+          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
+          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
+             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             RAISE Le_Errors;
+          END IF;
+          
+          
+           IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND Ld_HoraInicio1>= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<= Ld_HoraFinDia1+1
+          AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
             Ld_HoraFin1 := Ld_HoraFin1+1;
+          END IF;
+          
+          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1)THEN
+             Ld_HoraInicio1 := Ld_HoraInicio1+1;
+             Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
           
           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
@@ -1957,6 +2161,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
          
@@ -1981,15 +2189,24 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            END IF;
            
             
-           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
+           IF (((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1) THEN
+           AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
+           AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
               
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
+              
+              IF(Lv_TotalMinutosNocturno='29')THEN
+                Lv_TotalMinutosNocturno:='30';
+              END IF;
+              
+              IF(Lv_TotalMinutosSimples='29')THEN
+                Lv_TotalMinutosSimples:='30';
+              END IF;
          
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
@@ -2028,77 +2245,83 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            END IF;
      
      ELSE
-     
-           --ASIGNACION HORAS DOBLES PARA FERIADOS Y FIN DE SEMANA
+        --ASIGNACION HORAS DOBLES PARA FERIADOS Y FIN DE SEMANA
       
-           Ld_HoraFinGeneral := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
+        Ld_HoraFinGeneral := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
       
-           IF(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1 < Ld_HoraInicio1)THEN
-               Ld_HoraFin1:= Ld_HoraFin1 +1;
-           END IF;
-      
-  
-           IF(Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 <= Ld_HoraFinGeneral + 1) AND(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1<= Ld_HoraFinGeneral + 1) THEN 
-     
-               Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-               Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-           
-               Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-           
-               Ln_Contador :=1;
+        IF(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1 < Ld_HoraInicio1)THEN
+           Ld_HoraFin1:= Ld_HoraFin1 +1;
+        END IF;
         
-               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-               OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
-               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-               CLOSE C_TIPO_HORAS_EXTRA;
-        
-               C_HoraInicioDet.extend;
-               C_HoraFinDet.extend;
-               C_ListaHoras.extend;
-               C_TipoHorasExtra.extend;
-               C_FechaDet.extend;
-               C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-               C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+        IF(Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 <= Ld_HoraFinGeneral + 1) 
+         AND(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1<= Ld_HoraFinGeneral + 1) THEN 
+     
+           Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
+           Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
            
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
            END IF;
-     
-     
-     
-           IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 <= Ld_HoraFinGeneral + 1)AND 
-           (Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
-           
-               Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-               Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
           
-               Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
+           Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
-               Ln_Contador :=1;
+           Ln_Contador :=1;
         
-               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-               OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
-               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-               CLOSE C_TIPO_HORAS_EXTRA;
+           IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
+           OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
+           FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
+           CLOSE C_TIPO_HORAS_EXTRA;
         
-               C_HoraInicioDet.extend;
-               C_HoraFinDet.extend;
-               C_ListaHoras.extend;
-               C_TipoHorasExtra.extend;
-               C_FechaDet.extend;
-               C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-               C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+           C_HoraInicioDet.extend;
+           C_HoraFinDet.extend;
+           C_ListaHoras.extend;
+           C_TipoHorasExtra.extend;
+           C_FechaDet.extend;
+           C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
+           C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
+           C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
+           C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
+           C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+           
+         END IF;
+     
+     
+     
+         IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 <= Ld_HoraFinGeneral + 1)AND 
+            (Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
+            
+           Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
+           Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
+          
+           Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
+           
+           Ln_Contador :=1;
+        
+           IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
+           OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
+           FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
+           CLOSE C_TIPO_HORAS_EXTRA;
+        
+           C_HoraInicioDet.extend;
+           C_HoraFinDet.extend;
+           C_ListaHoras.extend;
+           C_TipoHorasExtra.extend;
+           C_FechaDet.extend;
+           C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
+           C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
+           C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
+           C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
+           C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
      
       
-           END IF;
+         END IF;
      
      END IF;
-  
-     
+      
      
   
   
@@ -2119,6 +2342,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
           
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
@@ -2146,8 +2373,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
      IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 <= Ld_HoraFinGeneral + 1)AND 
       (Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
+          
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
+           
+           IF(Lv_TotalMinutosDobles='29')THEN
+              Lv_TotalMinutosDobles:='30';
+           END IF;
           
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
@@ -2171,12 +2403,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
      END IF;
   
-  END IF;
+   END IF;
   
-    IF(Ln_Contador = 0)THEN
-       Pv_Mensaje := 'Error 06: La hora inicio y fin ingresadas no entran en el rango de horas extra';
-       RAISE Le_Errors;
-    END IF;
+   IF(Ln_Contador = 0)THEN
+     Pv_Mensaje := 'Error 14: La hora inicio y fin ingresadas no entran en el rango de horas extra';
+     RAISE Le_Errors;
+   END IF;
     
     
     --Modificación de tablas
@@ -3034,6 +3266,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            Lv_MsjResultado          VARCHAR2(2000);
            Lv_Estado                VARCHAR2(50);
            Lv_Mensaje               VARCHAR2(1000);
+           Ln_Contador              NUMBER:=1;
+           Lv_Nombres               VARCHAR2(40);
+           Ln_Segundos              NUMBER:=0;
+           Ln_SegundosB             NUMBER:=0;
+           Lv_TotalHoras            VARCHAR2(10);
            Lfile_ArchivoRs          UTL_FILE.FILE_TYPE;
            Lfile_Archivo            UTL_FILE.FILE_TYPE;
            Pv_Status                VARCHAR2(1000);
@@ -3041,7 +3278,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            Le_Errors                EXCEPTION;
                               
 
-             CURSOR C_REPORTE_SOLICITUDES_DET(Cv_EmpresaCod VARCHAR2) IS
+                CURSOR C_REPORTE_SOLICITUDES_DET(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
                          IHS.FECHA, IHS.OBSERVACION, 
                          IHS.ID_HORAS_SOLICITUD, IHSD.HORA_INICIO_DET HORA_INICIO, 
@@ -3053,29 +3290,31 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                          JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
                        WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
                           AND TO_CHAR(IHS.FE_MODIFICACION,'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND IHS.ESTADO='Autorizada' AND IHSE.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
+                       ORDER BY VEE.NOMBRE_DEPTO,VEE.NOMBRE, IHS.ID_HORAS_SOLICITUD;
+                       
+                CURSOR C_REPORTE_SOLICITUDES_DET_B(Cv_EmpresaCod VARCHAR2) IS
+                  SELECT VEE.CEDULA, VEE.NOMBRE,
+                         IHS.FECHA, IHS.OBSERVACION, 
+                         IHS.ID_HORAS_SOLICITUD, IHSD.HORA_INICIO_DET HORA_INICIO, 
+                         IHSD.HORA_FIN_DET HORA_FIN,IHSD.HORAS, ATHE.TIPO_HORAS_EXTRA,VEE.NOMBRE_DEPTO
+                       FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
+                         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                         JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON IHSE.NO_EMPLE = VEE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
+                         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                         JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
+                       WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
+                          AND TO_CHAR(IHS.FE_MODIFICACION,'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
                           AND IHS.ESTADO='Autorizada' AND IHSE.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
                        ORDER BY VEE.NOMBRE_DEPTO,VEE.NOMBRE, IHS.ID_HORAS_SOLICITUD;
       
-             CURSOR C_REPORTE_SOLICITUDES_RESUMIDO(Cv_EmpresaCod VARCHAR2) IS
-                SELECT VEE.NOMBRE,
-                         TO_CHAR(TO_DATE(TO_CHAR(SUM(TO_NUMBER(TO_CHAR(TO_DATE(IHS.FECHA||' '||IHSD.HORAS,'DD-MM-YY HH24:mi'),
-                        'HH24mi'))),'0000'),'HH24:MI'),'HH24:MI')HORAS,VEE.NOMBRE_DEPTO
-                      FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS
-                        JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                        JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON IHSE.NO_EMPLE = VEE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
-                        JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                        JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
-                      WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
-                        AND IHS.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
-                        AND TO_CHAR(TO_DATE(IHS.FE_MODIFICACION,'DD-MM-YY'),'MM-YY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YY')
-                      GROUP BY VEE.NOMBRE,VEE.NOMBRE_DEPTO
-                      ORDER BY VEE.NOMBRE_DEPTO;
-
               CURSOR C_SOLICITUDES_PENDIENTES IS
                   SELECT IHS.ID_HORAS_SOLICITUD
                      FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS
                     WHERE TO_CHAR(IHS.FE_CREACION,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
-                     AND ESTADO ='Pendiente'; 
+                     AND ESTADO ='Pendiente';
     
     
     BEGIN
@@ -3083,11 +3322,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                   IF C_REPORTE_SOLICITUDES_DET%ISOPEN THEN
                         CLOSE C_REPORTE_SOLICITUDES_DET;
                   END IF;
-    
-                  IF C_REPORTE_SOLICITUDES_RESUMIDO%ISOPEN THEN
-                        CLOSE C_REPORTE_SOLICITUDES_RESUMIDO;
+                  
+                  IF C_REPORTE_SOLICITUDES_DET_B%ISOPEN THEN
+                        CLOSE C_REPORTE_SOLICITUDES_DET_B;
                   END IF;
-    
+                  
     
                   IF C_SOLICITUDES_PENDIENTES%ISOPEN THEN
                          CLOSE C_SOLICITUDES_PENDIENTES;
@@ -3095,10 +3334,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                   
                   
                   -- REPORTE DETALLADO
-                  Lv_Cuerpo            := 'Reporte Mensual de solicitudes de horas extras autorizadas';
+                  Lv_Cuerpo            := 'Estimados el presente correo Reporte Mensual de solicitudes de horas extras autorizadas';
                   Lv_Destinatario      := 'notificaciones_sistemas@telconet.ec';
     
-                  Lv_NombreArchivo     := 'ReporteSolicitudHoresExtra_'||Lv_FechaReporte||'.csv';
+                  Lv_NombreArchivo     := 'ReporteSolicitudesDetalladoHE_'||Lv_FechaReporte||'.csv';
                   Lv_Gzip              := 'gzip /base/'||Lv_NombreArchivo;
                   Lv_NombreArchivoZip  := Lv_NombreArchivo||'.gz';
                   Lfile_Archivo        := UTL_FILE.FOPEN(Lv_Directorio,Lv_NombreArchivo,'w',3000);
@@ -3136,46 +3375,74 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      
                            UTL_FILE.fclose(Lfile_Archivo);
     
-                           --REPORTE_SOLICITUD_RESUMIDO
+                           --REPORTE_SOLICITUDES_RESUMIDO
     
-                  Lv_NombreArchivoRs     := 'ReporteSolicitudResumidoHoresExtra_'||Lv_FechaReporte||'.csv';
-                  Lv_GzipRs              := 'gzip /base/'||Lv_NombreArchivo;
-                  Lv_NombreArchivoZipRs  := Lv_NombreArchivo||'.gz';
-                  Lfile_ArchivoRs        := UTL_FILE.FOPEN(Lv_Directorio,Lv_NombreArchivoRs,'w',3000);
-                  --
-                  utl_file.put_line(Lfile_ArchivoRs,'NOMBRE'          ||Lv_Delimitador
-                                          ||'TOTAL HORAS MES'         ||Lv_Delimitador
-                                          ||'DEPARTAMENTO'            ||Lv_Delimitador);
-                      
-                      
-                  FOR Lr_ReporteSolicitudesRs IN C_REPORTE_SOLICITUDES_RESUMIDO(Pv_EmpresaCod) LOOP
-    
-                             UTL_FILE.PUT_LINE(Lfile_ArchivoRs,
-                                  NVL(Lr_ReporteSolicitudesRs.NOMBRE, '')                 ||Lv_Delimitador
-                                 ||NVL(Lr_ReporteSolicitudesRs.HORAS, '')                 ||Lv_Delimitador
-                                 ||NVL(Lr_ReporteSolicitudesRs.NOMBRE_DEPTO, '')          ||Lv_Delimitador
-                            );
-    
-                  END LOOP;
-    
-    
-                  DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
-                                                            Lv_Destinatario,
-                                                            Lv_Asunto, 
-                                                            Lv_Cuerpo, 
-                                                            Lv_Directorio,
-                                                            Lv_NombreArchivoZip);
-
-                  UTL_FILE.FREMOVE (Lv_Directorio,Lv_NombreArchivoZip);
+                     Lv_NombreArchivoRs     := 'ReporteSolicitudesResumidoHE_'||Lv_FechaReporte||'.csv';
+                     Lv_GzipRs              := 'gzip /base/'||Lv_NombreArchivoRs;
+                     Lv_NombreArchivoZipRs  := Lv_NombreArchivoRs||'.gz';
+                     Lfile_ArchivoRs        := UTL_FILE.FOPEN(Lv_Directorio,Lv_NombreArchivoRs,'w',32767);
+                     --
+                     utl_file.put_line(Lfile_ArchivoRs,'NOMBRE'          ||Lv_Delimitador
+                                             ||'TOTAL HORAS MES'         ||Lv_Delimitador
+                                             ||'DEPARTAMENTO'            ||Lv_Delimitador);
                           
-                  DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
-                                                            Lv_Destinatario,
-                                                            Lv_Asunto, 
-                                                            Lv_Cuerpo, 
-                                                            Lv_Directorio,
-                                                            Lv_NombreArchivoZipRs);
+                      
+                      
+                       FOR Lr_ReporteSolicitudes IN C_REPORTE_SOLICITUDES_DET(Pv_EmpresaCod) LOOP
+                          
+                                  
+                                  IF(Lv_Nombres != Lr_ReporteSolicitudes.NOMBRE OR Ln_Contador=1)THEN
+                                  
+                                  
+                                        FOR Lr_ReporteSolicitudesB IN C_REPORTE_SOLICITUDES_DET_B(Pv_EmpresaCod) LOOP
+                                              IF(Lr_ReporteSolicitudesB.NOMBRE=Lr_ReporteSolicitudes.NOMBRE)THEN
+                                                 SELECT REGEXP_SUBSTR(Lr_ReporteSolicitudesB.HORAS,'[^:]+',1,1)*60*60 + REGEXP_SUBSTR(Lr_ReporteSolicitudesB.HORAS,'[^:]+',1,2)*60 
+                                                   INTO Ln_Segundos from dual;
+                                                   
+                                                   Ln_SegundosB:=Ln_SegundosB+Ln_Segundos;
+                                                 
+                                              END IF;
+                                           
+                                        END LOOP;
+                                        
+                                        SELECT TO_CHAR(TRUNC((Ln_SegundosB)/3600),'FM9900') || ':' ||TO_CHAR(TRUNC(MOD((Ln_SegundosB),3600)/60),'FM00') INTO Lv_totalHoras
+                                               FROM DUAL;
+                                               
+                                        
+                                       UTL_FILE.PUT_LINE(Lfile_ArchivoRs,
+                                                NVL(Lr_ReporteSolicitudes.NOMBRE, '')         ||Lv_Delimitador
+                                              ||NVL(Lv_totalHoras, '')                        ||Lv_Delimitador
+                                              ||NVL(Lr_ReporteSolicitudes.NOMBRE_DEPTO, '')   ||Lv_Delimitador
+                                       );
+                                        
+                                        
+                                        Ln_Segundos:=0;
+                                        Ln_SegundosB:=0;
+                                  END IF;
+                          
+                                  Lv_Nombres:= Lr_ReporteSolicitudes.NOMBRE;
+                                  Ln_Contador:=Ln_Contador+1;
+                     END LOOP;
+                     
+                     UTL_FILE.fclose(Lfile_ArchivoRs);
+    
+                     DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
+                                                               Lv_Destinatario,
+                                                               Lv_Asunto, 
+                                                               Lv_Cuerpo, 
+                                                               Lv_Directorio,
+                                                               Lv_NombreArchivoZip);
 
-                  UTL_FILE.FREMOVE (Lv_Directorio,Lv_NombreArchivoZip);
+                    UTL_FILE.FREMOVE (Lv_Directorio,Lv_NombreArchivoZip);
+                           
+                    DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
+                                                              Lv_Destinatario,
+                                                              Lv_Asunto, 
+                                                              Lv_Cuerpo, 
+                                                              Lv_Directorio,
+                                                              Lv_NombreArchivoZipRs);
+
+                    UTL_FILE.FREMOVE(Lv_Directorio,Lv_NombreArchivoZipRs);
    
                   
                   FOR Ln_SolicitudesPendientes IN C_SOLICITUDES_PENDIENTES 
@@ -3215,6 +3482,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
             
     
-    END P_REPORTE_AUTORIZACIONES;
+    END P_REPORTE_AUTORIZACIONES; 
+     
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
