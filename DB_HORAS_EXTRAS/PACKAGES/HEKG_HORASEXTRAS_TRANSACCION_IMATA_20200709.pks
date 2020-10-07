@@ -1,7 +1,7 @@
 SET DEFINE OFF;
 create or replace package                                                   DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
 
-       /**
+  /**
   * Documentación para el procedimiento P_GUARDAR_HORASEXTRA
   *
   * Método encargado de guardar la solicitud de horas extra
@@ -276,6 +276,7 @@ create or replace package                                                   DB_H
                                     Pv_Estado           IN VARCHAR2,
                                     Pv_NomPantalla      IN VARCHAR2,
                                     Pv_Usuario          IN VARCHAR2,
+                                    Pv_EmpresaCod       IN VARCHAR2,
                                     Pv_Status           OUT VARCHAR2,
                                     Pv_Mensaje          OUT VARCHAR2);
                                     
@@ -354,6 +355,26 @@ create or replace package                                                   DB_H
     PROCEDURE P_REPORTE_AUTORIZACIONES(Pv_EmpresaCod IN VARCHAR2,
                                        Pv_Remitente  IN VARCHAR2,
                                        Pv_Asunto     IN VARCHAR2);
+                                       
+    
+    
+    /**
+    * Documentación para el procedimiento P_ENVIAR_MAIL_GENERAL
+    *
+    * Método encargado de notificar mediante correo una vez anulada o autorizada una solicitud.
+    *
+    * @param Pv_Proceso          IN VARCHAR2
+    * @param Pv_EmpresaCod       IN VARCHAR2
+    * @param Pn_IdHorasSolicitud IN NUMBER
+    * @param Pv_Observacion      IN VARCHAR2
+    * @author Ivan Mata <imata@telconet.ec>
+    * @version 1.0 06-10-2020
+    */             
+    PROCEDURE P_ENVIAR_MAIL_GENERAL(Pv_Proceso          IN VARCHAR2,
+                                    Pv_EmpresaCod       IN VARCHAR2,
+                                    Pn_IdHorasSolicitud IN NUMBER,
+                                    Pv_Observacion      IN VARCHAR2);
+      
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
@@ -389,6 +410,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ld_HoraInicioNoEstimadasNt1    DATE;
      Ld_HoraFinNoEstimadasNt1       DATE;
      Ld_HoraFinDia1                 DATE;
+     Ld_HoraInicioEncontrada        DATE;
+     Ld_HoraFinEncontrada           DATE;
 
      Lv_TotalHorasSimples           NUMBER;
      Lv_TotalMinutosSimples         NUMBER;
@@ -406,6 +429,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_ContadorDocumentos          NUMBER:=0;
      Ln_ContadorEmpleado            NUMBER:=0;
      Ln_ContadoreEmp                NUMBER:=1;
+     Ln_Contador3                   NUMBER:=0;
      
      Ld_Fecha                       VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
@@ -421,6 +445,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_JornadaEmpleado             VARCHAR2(2); 
      Lv_EsFinDeSemana               VARCHAR2(2);
      Lv_EsDiaLibre                  VARCHAR2(2);
+     
      
      TYPE C_ListTotalHoras          IS VARRAY(4) OF VARCHAR2(20);
      C_ListaHoras                   C_ListTotalHoras :=C_ListTotalHoras();
@@ -442,10 +467,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        ORDER BY ID_TIPO_HORAS_EXTRA ASC;
        
      CURSOR C_EXISTE_EMPLEADO(Cv_No_Emple VARCHAR2, Cv_Fecha Varchar2, Cv_Empresa VARCHAR2) IS
-      SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.NOMBRE FROM INFO_HORAS_SOLICITUD IHS 
-        JOIN INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
+      SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.NOMBRE,IHS.HORA_INICIO,IHS.HORA_FIN FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
+        JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
         JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
-       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHSE.ESTADO='Pendiente' AND VEE.NO_CIA=Cv_Empresa;
+       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHSE.ESTADO='Pendiente' AND VEE.NO_CIA=Cv_Empresa
+       ORDER BY IHS.ID_HORAS_SOLICITUD ASC;
      
      Ln_NoEmpleado                  apex_t_varchar2;
      Lv_TareaId                     apex_t_varchar2;
@@ -511,22 +537,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     END IF;
     
     
-    Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
-    
-    WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
-    
-        IF C_EXISTE_EMPLEADO%ISOPEN THEN CLOSE C_EXISTE_EMPLEADO; END IF;
-        OPEN C_EXISTE_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),TO_DATE(Ld_Fecha,'DD-MM-YYYY'),Lv_EmpresaCod);
-        FETCH C_EXISTE_EMPLEADO INTO Lr_ExisteEmpleado;
-    
-        IF C_EXISTE_EMPLEADO%FOUND THEN
-          Pv_Mensaje := 'El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia de hoy '||Ld_Fecha||' ';
-          RAISE Le_Errors;
-        END IF;
-        
-        Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
-    
-    END LOOP;
     
       --Consulta de parametros de horarios de horas extras
       
@@ -561,7 +571,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        WHERE TIPO_HORAS_EXTRA = 'NOCTURNO';
        
       
-       
+      
+      --HORA INICIO Y FIN INGRESADOS
       Ld_HoraInicio1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraInicio),'DD-MM-YYYY HH24:MI');   
       Ld_HoraFin1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFin),'DD-MM-YYYY HH24:MI'); 
       
@@ -590,7 +601,73 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
       -- HORA FIN DIA
       Ld_HoraFinDia1 := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
+      
+      
+      
+      Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
+      WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
+      
+         IF C_EXISTE_EMPLEADO%ISOPEN THEN CLOSE C_EXISTE_EMPLEADO; END IF;
+         FOR Lr_ExisteEmpleado IN C_EXISTE_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),TO_DATE(Ld_Fecha,'DD-MM-YYYY'),Lv_EmpresaCod)
+         LOOP
+         
+             Ld_HoraInicioEncontrada := TO_DATE((Ld_Fecha||''||Lr_ExisteEmpleado.HORA_INICIO),'DD-MM-YYYY HH24:MI');
+             Ld_HoraFinEncontrada := TO_DATE((Ld_Fecha||''||Lr_ExisteEmpleado.HORA_FIN),'DD-MM-YYYY HH24:MI');
+             
+             
+             IF Ld_HoraFinEncontrada > Ld_HoraFinDia1 AND Ld_HoraFinEncontrada<Ld_HoraInicioEncontrada THEN
+                Ld_HoraFinEncontrada := Ld_HoraFinEncontrada+1;
+             END IF;
+             
+             
+             IF Ld_HoraFinEncontrada = Ld_HoraFinDia1  THEN
+                Ld_HoraFinEncontrada := Ld_HoraFinEncontrada+1;
+             END IF;
+             
+             IF Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<Ld_HoraInicio1 THEN
+                Ld_HoraFin1 := Ld_HoraFin1+1;
+             END IF;
+             
+             IF Ld_HoraFin1 = Ld_HoraFinDia1  THEN
+                Ld_HoraFin1 := Ld_HoraFin1+1;
+             END IF;
+             
+             IF((Ld_HoraInicio1>=Ld_HoraInicioEncontrada AND Ld_HoraInicio1<=Ld_HoraFinEncontrada AND Ld_HoraFin1>=Ld_HoraInicioEncontrada  AND Ld_HoraFin1<=Ld_HoraFinEncontrada) OR 
+             (Ld_HoraInicio1>Ld_HoraInicioEncontrada AND Ld_HoraInicio1<Ld_HoraFinEncontrada AND 
+             Ld_HoraFin1>Ld_HoraFinEncontrada))THEN
+            
+                Pv_Mensaje := 'ERROR 01: El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia '||Ld_Fecha||' ';
+                RAISE Le_Errors;
+              
+             END IF;
+             
+             IF(Ld_HoraInicio1<Ld_HoraInicioEncontrada AND Ld_HoraFin1>Ld_HoraInicioEncontrada AND Ld_HoraFin1<Ld_HoraFinEncontrada) THEN
+                Pv_Mensaje := 'ERROR 02: El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia '||Ld_Fecha||' ';
+                RAISE Le_Errors;
+             END IF;
+             
+            IF(Ld_HoraInicio1<=Ld_HoraInicioEncontrada AND Ld_HoraFin1>=Ld_HoraFinEncontrada) THEN
+                Pv_Mensaje := 'ERROR 03: El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia '||Ld_Fecha||' ';
+                RAISE Le_Errors;
+             END IF;
+             
+             Ld_HoraFinEncontrada := Ld_HoraFinEncontrada-1;
+             IF Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<Ld_HoraInicio1 THEN
+                Ld_HoraFin1 := Ld_HoraFin1-1;
+             END IF;
+             IF TO_CHAR(Ld_HoraFin1,'HH24:Mi') = TO_CHAR(Ld_HoraFinDia1,'HH24:Mi')  THEN
+                Ld_HoraFin1 := Ld_HoraFin1-1;
+             END IF;
+             
+             Ln_Contador3:=Ln_Contador3+1;
+         
+         END LOOP;
+        
+         Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
+         
     
+      END LOOP;
+      
   
   IF Lv_EsFinDeSemana = 'N' THEN
   
@@ -603,19 +680,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           --JORNADA MATUTINA
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 01: La hora inicio y hora fin ingresados no entran en el rango de horas extras ';
+             Pv_Mensaje := 'Error 04: La hora inicio y hora fin ingresados no entran en el rango de horas extras ';
              RAISE Le_Errors;
           END IF;
       
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 OR Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 <= Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1)THEN
-             Pv_Mensaje := 'Error 02:La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 05:La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
   
           IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraInicio1< Ld_HoraFinDia1+1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 < Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 03: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 06: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
@@ -715,8 +792,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            
           END IF;
           
-          
-      
           IF(Ld_HoraInicio1 >= Ld_HoraInicioDobles1 AND Ld_HoraInicio1< Ld_HoraFinDobles1)
           AND(Ld_HoraFin1 > Ld_HoraInicioDobles1 AND Ld_HoraFin1 <= Ld_HoraFinDobles1)THEN
         
@@ -758,40 +833,39 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       ELSE
           -- JORNADA NOCTURNA
           
-          
           IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 04: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
               Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
               (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
               (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
           
-              Pv_Mensaje := 'Error 06: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
               RAISE Le_Errors;
           END IF;
           
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
               RAISE Le_Errors;
           END IF;
           
           
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
           
-           IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND Ld_HoraInicio1>= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<= Ld_HoraFinDia1+1
+          IF((Lv_HoraFin = Lv_HoraFinDia) OR (Lv_HoraFin > Lv_HoraFinDia AND Ld_HoraInicio1>= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<= Ld_HoraFinDia1+1
           AND (Lv_HoraFin <= Lv_HorasFinNocturnas OR Lv_HoraFin<= Lv_HoraInicioNoEstimadasNt))) THEN
             Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
@@ -905,33 +979,33 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          -- JORNADA NOCTURNA
          
           IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
               Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
               (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
               (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
           
-              Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
               RAISE Le_Errors;
           END IF;
           
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+              Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
               RAISE Le_Errors;
           END IF;
           
           
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
+             Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados no entran en el rango de horas extras';
              RAISE Le_Errors;
           END IF;
           
@@ -1197,7 +1271,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   END IF;
     
   IF(Ln_Contador = 0)THEN
-     Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresadas no entran en el rango de horas extra ';
+     Pv_Mensaje := 'Error 17: La hora inicio y hora fin ingresadas no entran en el rango de horas extra ';
      RAISE Le_Errors;
   END IF;
     
@@ -1446,6 +1520,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Lv_Observacion                 VARCHAR2(210);
       Lv_usrCreacion                 VARCHAR2(30);
       Lv_Estado                      VARCHAR2(20):='Anulada';
+      Lv_EmpresaCod                  VARCHAR2(2);
+      Lv_Proceso                     VARCHAR2(30):='Anulacion';
       Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
       Le_Errors                      EXCEPTION;
       
@@ -1456,6 +1532,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Ln_IdHorasSolicitud        :=  APEX_JSON.get_number(p_path => 'idHorasSolicitud');
     Lv_Observacion             :=  APEX_JSON.get_varchar2(p_path => 'observacion');
     Lv_usrCreacion             :=  APEX_JSON.get_varchar2(p_path => 'usrCreacion');
+    Lv_empresaCod              :=  APEX_JSON.get_varchar2(p_path => 'empresaCod');
     
     -- VALIDACIONES
          IF Ln_IdHorasSolicitud IS NULL THEN
@@ -1473,23 +1550,23 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
           SET IHS.ESTADO='Anulada', IHS.OBSERVACION=''||Lv_Observacion||'',
-          IHS.FE_CREACION=SYSDATE
+          IHS.FE_MODIFICACION=SYSDATE,IHS.USR_MODIFICACION=Lv_usrCreacion
          WHERE IHS.ID_HORAS_SOLICITUD=''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
          
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
-          SET IHSD.ESTADO='Anulada',IHSD.FE_CREACION=SYSDATE
+          SET IHSD.ESTADO='Anulada',IHSD.FE_MODIFICACION=SYSDATE, IHSD.USR_MODIFICACION=Lv_usrCreacion
          WHERE IHSD.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
          
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
-          SET IHSE.ESTADO='Anulada',IHSE.FE_CREACION=SYSDATE
+          SET IHSE.ESTADO='Anulada',IHSE.FE_MODIFICACION=SYSDATE, IHSE.USR_MODIFICACION=Lv_usrCreacion
          WHERE IHSE.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
          
          UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH
-          SET ITH.ESTADO='Anulada',ITH.FE_CREACION=SYSDATE
+          SET ITH.ESTADO='Anulada',ITH.FE_MODIFICACION=SYSDATE, ITH.USR_MODIFICACION=Lv_usrCreacion
          WHERE ITH.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
          
          UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE
-          SET IDHE.ESTADO='Anulada', IDHE.FE_CREACION=SYSDATE
+          SET IDHE.ESTADO='Anulada', IDHE.FE_CREACION=SYSDATE, IDHE.USR_MODIFICACION=Lv_usrCreacion
          WHERE IDHE.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
          
          
@@ -1515,7 +1592,14 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          END LOOP;
          
          
-         COMMIT;
+         P_ENVIAR_MAIL_GENERAL(Lv_Proceso,
+                               Lv_EmpresaCod,
+                               Ln_IdHorasSolicitud,
+                               Lv_Observacion);
+         
+        
+        COMMIT;
+         
               
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
@@ -1539,6 +1623,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Ln_IdHorasSolicitud       apex_t_varchar2;
       Lv_Estado                 VARCHAR2(15);
       Lv_nombrePantalla         VARCHAR2(25);
+      Lv_EmpresaCod             VARCHAR2(2);
       Lv_Usuario                VARCHAR2(25);
       Le_Errors                 EXCEPTION;
       
@@ -1550,6 +1635,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_Estado           := APEX_JSON.get_varchar2(p_path => 'estado');
     Lv_nombrePantalla   := APEX_JSON.get_varchar2(p_path => 'nombrePantalla');
     Lv_Usuario          := APEX_JSON.get_varchar2(p_path => 'usuario');
+    Lv_EmpresaCod       := APEX_JSON.get_varchar2(p_path => 'empresaCod');
     
     -- VALIDACIONES
         IF Lv_Estado IS NULL THEN
@@ -1565,6 +1651,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                 Lv_Estado,
                                 Lv_nombrePantalla,
                                 Lv_Usuario,
+                                Lv_EmpresaCod,
                                 Pv_Status,
                                 Pv_Mensaje);
                                 
@@ -2884,6 +2971,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                     Pv_Estado           IN VARCHAR2,
                                     Pv_NomPantalla      IN VARCHAR2,
                                     Pv_Usuario          IN VARCHAR2,
+                                    Pv_EmpresaCod       IN VARCHAR2,
                                     Pv_Status           OUT VARCHAR2,
                                     Pv_Mensaje          OUT VARCHAR2)
                                     
@@ -2900,6 +2988,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   
       
       Lv_Estado                      VARCHAR2(20);
+      Lv_Proceso                     VARCHAR2(30);
+      Lv_Observacion                 VARCHAR2(205);
       Le_Errors                      EXCEPTION;
       
     BEGIN
@@ -2937,6 +3027,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                               Pv_Status,
                                               Pv_Mensaje);
                                               
+                Lv_Observacion:=Lr_ObservacionSolicitud.OBSERVACION;
+                                              
                 IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                 END IF;
@@ -2950,6 +3042,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE
             SET IDHE.ESTADO=''||Pv_Estado||'', IDHE.USR_MODIFICACION=Pv_Usuario, IDHE.FE_MODIFICACION = SYSDATE
            WHERE IDHE.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND IDHE.ESTADO='Pendiente';
+           
+           
+           P_ENVIAR_MAIL_GENERAL(Pv_NomPantalla,
+                                 Pv_EmpresaCod,
+                                 Pn_IdHorasSolicitud,
+                                 Lv_Observacion);
            
         ELSE
         
@@ -3107,6 +3205,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                    Lv_Estado,
                                    Lv_nombrePantalla,
                                    Lv_Usuario,
+                                   Lv_EmpresaCod,
                                    Pv_Status,
                                    Pv_Mensaje);
                                 
@@ -3130,23 +3229,21 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     END P_AUTORIZACION_POR_DEPTO;  
     
     PROCEDURE P_ENVIO_MAIL_HE(Pv_EmpresaCod IN VARCHAR2,
-                          Pv_Remitente  IN VARCHAR2,
-                          Pv_Asunto     IN VARCHAR2)
-                              
-   
-   
+                              Pv_Remitente  IN VARCHAR2,
+                              Pv_Asunto     IN VARCHAR2)
+
    
     AS
     
-                CURSOR C_SOLICITUDES_AUTORIZADAS(Cv_empresaCod VARCHAR2) IS
-                  SELECT VEE.NOMBRE,IHS.FECHA FECHA_SOLICITUD,
-                      IHS.HORA_INICIO,IHS.HORA_FIN,
-                      IHS.OBSERVACION,IHS.ESTADO,IHS.USR_CREACION,VEE.MAIL_CIA 
-                    FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
-                     JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                     JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
-                    WHERE IHS.ESTADO='Autorizada' AND TO_CHAR(IHS.FE_MODIFICACION,'DD-MM-YYYY')= TO_CHAR(SYSDATE,'DD-MM-YYYY') AND IHS.EMPRESA_COD=Cv_empresaCod
-                     AND VEE.NO_CIA=Cv_empresaCod;
+            CURSOR C_SOLICITUDES_AUTORIZADAS(Cv_empresaCod VARCHAR2) IS
+                SELECT VEE.NOMBRE,IHS.FECHA FECHA_SOLICITUD,
+                     IHS.HORA_INICIO,IHS.HORA_FIN,
+                     IHS.OBSERVACION,IHS.ESTADO,IHS.USR_CREACION,VEE.MAIL_CIA 
+                  FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
+                    JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                    JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
+                  WHERE IHS.ESTADO='Autorizada' AND TO_CHAR(IHS.FE_MODIFICACION,'DD-MM-YYYY')= TO_CHAR(SYSDATE,'DD-MM-YYYY') AND IHS.EMPRESA_COD=Cv_empresaCod
+                    AND VEE.NO_CIA=Cv_empresaCod;
     
          Lv_Cuerpo           VARCHAR2(9999);
          Pv_Status           VARCHAR2(1000);
@@ -3482,7 +3579,151 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
             
     
-    END P_REPORTE_AUTORIZACIONES; 
+    END P_REPORTE_AUTORIZACIONES;
+    
+    PROCEDURE P_ENVIAR_MAIL_GENERAL(Pv_Proceso          IN VARCHAR2,
+                                    Pv_EmpresaCod       IN VARCHAR2,
+                                    Pn_IdHorasSolicitud IN NUMBER,
+                                    Pv_Observacion      IN VARCHAR2)
+    
+    AS
+    
+        CURSOR C_INFORMACION_SOLICITUD(Cv_EmpresaCod VARCHAR2,Pn_IdHorasSolicitud NUMBER, Cv_Estado1 VARCHAR2,Cv_Estado2 VARCHAR2) IS
+            SELECT VEE.NOMBRE,IHS.FECHA FECHA_SOLICITUD,
+                IHS.HORA_INICIO,IHS.HORA_FIN,
+                IHS.OBSERVACION,IHS.ESTADO,IHS.USR_CREACION,VEE.MAIL_CIA 
+             FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
+              JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
+             WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
+              AND VEE.NO_CIA=Cv_EmpresaCod AND IHS.ID_HORAS_SOLICITUD=Pn_IdHorasSolicitud AND IHS.ESTADO IN(Cv_Estado1,Cv_Estado2);
+              
+              
+       CURSOR C_CORREO_REMITENTE(Cv_EmpresaCod VARCHAR2)IS
+           SELECT APD.VALOR1 
+            FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+           WHERE APD.PARAMETRO_ID=(SELECT A.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB A WHERE A.NOMBRE_PARAMETRO = 'CORREO_GERENCIAL_HE')
+            AND APD.EMPRESA_COD=Cv_EmpresaCod AND APD.ESTADO='Activo';
+         
+    
+       
+        Lv_Cuerpo             VARCHAR2(9999);
+        Pv_Status             VARCHAR2(1000);
+        Lv_Estado1            VARCHAR2(20):='';
+        Lv_Estado2            VARCHAR2(20):='';
+        Lv_EstadoSolicitud    VARCHAR2(20);
+        Lr_Valor1             C_CORREO_REMITENTE%ROWTYPE;
+        Lv_Asunto             VARCHAR2(50):='Reporte de Solicitud de horas extras	';
+        Pv_Mensaje            VARCHAR2(1000);
+        Le_Errors             EXCEPTION;
+    
+    BEGIN
+    
+        IF C_INFORMACION_SOLICITUD%ISOPEN THEN
+               CLOSE C_INFORMACION_SOLICITUD;
+        END IF;
+        
+        IF C_CORREO_REMITENTE%ISOPEN THEN
+               CLOSE C_CORREO_REMITENTE;
+        END IF;
+        
+        
+        OPEN C_CORREO_REMITENTE(Pv_EmpresaCod);
+        FETCH C_CORREO_REMITENTE INTO Lr_valor1;
+        CLOSE C_CORREO_REMITENTE;
+        
+        IF(Pv_Proceso='Anulacion')THEN
+          Lv_Estado1:='Pendiente';
+          Lv_Estado2:='Pre-Autorizada';
+          Lv_EstadoSolicitud:='Anulada';
+          
+        ELSIF(Pv_Proceso='PreAutorizacion') THEN
+          Lv_Estado1:='Pendiente';
+          Lv_Estado2:='';
+          Lv_EstadoSolicitud:='Pre-Autorizada';
+        
+        END IF;
+    
+        FOR Lr_InfoSolicitud IN C_INFORMACION_SOLICITUD(Pv_EmpresaCod,Pn_IdHorasSolicitud,Lv_Estado1,Lv_Estado2) LOOP
+         
+               Lv_Cuerpo := '<html>
+                                 <head>
+                                     <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+                                 </head>
+                                 <body>
+                                         <table align="center" width="100%" cellspacing="0" cellpadding="5">
+                                             <tr>
+                                                <td align="center" style="border:1px solid #6699CC;background-color:#E5F2FF;">
+                                                   <img alt=""  src="http://images.telconet.net/others/sit/notificaciones/logo-tn.png"/>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td style="border:1px solid #6699CC;">
+                                                   <table width="100%" cellspacing="0" cellpadding="5">
+                                                       <tr>
+                                                          <td colspan="2">
+                                                              <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"></span></span></p>
+                                                              <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">
+                                                               Estimado colaborador(a), el presente es para informarle que su solicitud de horas extra ha sido '||Lv_EstadoSolicitud||'</span></span></p>
+                                                                   
+                                                                <table border="1px">
+                                                                     <thead>
+                                                                         <tr>
+		                                                                       <th>Nombres</th>
+		                                                                       <th>Fecha Solicitud</th> 
+                                                                           <th>Hora Inicio</th>
+                                                                           <th>Hora Fin</th>
+		                                                                       <th>Observacion</th>
+                                                                           <th>Estado</th>
+                                                                           <th>Usuario Creacion</th> 
+		                                                                     </tr>
+		                                                                  </thead>
+                                                                      <tbody>
+                                                                          <tr>
+                                                                              <td>'||Lr_InfoSolicitud.NOMBRE||'</td>
+                                                                              <td>'||TO_CHAR(Lr_InfoSolicitud.FECHA_SOLICITUD,'DD-MM-YY')||'</td>
+                                                                              <td>'||Lr_InfoSolicitud.HORA_INICIO||'</td>
+                                                                              <td>'||Lr_InfoSolicitud.HORA_FIN||'</td>
+                                                                              <td>'||Pv_Observacion||'</td>
+                                                                              <td>'||Lv_EstadoSolicitud||'</td>
+                                                                              <td>'||Lr_InfoSolicitud.USR_CREACION||'</td>
+                                                                          </tr>
+                                                                       </tbody>
+                                                                </table>
+                                                                    <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">
+                                                                   <strong>Nota:</strong> Este correo es un seguimiento informativo de la solicitud registrada.</span></span></p>
+                                                          </td>
+                                                       </tr>
+                                                   </table>
+                                                </td>
+                                             </tr>
+                                         </table>
+                                 </body>
+                             </html>';
+                             
+                             
+                             UTL_MAIL.SEND(
+                                  SENDER       => Lr_valor1.VALOR1,
+                                  RECIPIENTS   => Lr_InfoSolicitud.MAIL_CIA,
+                                  SUBJECT      => Lv_Asunto,
+                                  MESSAGE      => Lv_Cuerpo,
+                                  MIME_TYPE    => 'text/html; charset=UTF-8'
+                                  );
+                             
+                             
+          END LOOP;
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+            Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ENVIAR_MAIL_GENERAL: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ENVIAR_MAIL_GENERAL: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+    
+    END P_ENVIAR_MAIL_GENERAL;
      
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
