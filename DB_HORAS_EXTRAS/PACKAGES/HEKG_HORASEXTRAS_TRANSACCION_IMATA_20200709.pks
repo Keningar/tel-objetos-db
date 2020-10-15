@@ -412,6 +412,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ld_HoraFinDia1                 DATE;
      Ld_HoraInicioEncontrada        DATE;
      Ld_HoraFinEncontrada           DATE;
+     Ld_FechaIngresada              DATE;
 
      Lv_TotalHorasSimples           NUMBER;
      Lv_TotalMinutosSimples         NUMBER;
@@ -707,7 +708,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              IF(Lv_TotalMinutosSimples='29')THEN
                 Lv_TotalMinutosSimples:='30';
              END IF;
-        
+             
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
         
              Ln_Contador :=1;
@@ -909,14 +910,27 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            
            END IF;
            
+           
+           
            IF (((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
            AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
+           
+              IF Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<Ld_HoraFinDia1+1 THEN
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                    Ld_HorasFinNocturnas1:=Ld_HorasFinNocturnas1+1;
+                    
+              ELSE
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+                 
+              END IF;
               
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
+              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
+              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
               
@@ -934,6 +948,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               Ln_Contador :=2;
               
               
+              
               FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
               LOOP
                   Ln_Contador1 := Ln_Contador1+1;
@@ -945,21 +960,23 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                   C_FechaDet.extend;
                   
                   
+                  
+                  
                   CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
-                  WHEN  'SIMPLE' THEN
+                    WHEN  'SIMPLE' THEN
                      C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
                      C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
                      C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                  WHEN 'NOCTURNO' THEN
+                     C_FechaDet(Ln_Contador1) := Ld_FechaIngresada;
+                    WHEN 'NOCTURNO' THEN
                      C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
                      C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
                      C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                      C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
                      
-                 END CASE;
+                  END CASE;
              
               END LOOP;
           
@@ -1059,9 +1076,21 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
            AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
+           
+           
+              IF Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<Ld_HoraFinDia1+1 THEN
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                    Ld_HorasFinNocturnas1:=Ld_HorasFinNocturnas1+1;
+                    
+              ELSE
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+                 
+              END IF;
               
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
+              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
+              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
               
@@ -1095,7 +1124,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
                      C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
                      C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                     C_FechaDet(Ln_Contador1) := Ld_FechaIngresada;
                   WHEN 'NOCTURNO' THEN
                      C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
@@ -1709,6 +1738,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ld_HoraInicioNoEstimadasNt1    DATE;	
      Ld_HoraFinNoEstimadasNt1       DATE;
      Ld_HoraFinDia1                 DATE;
+     Ld_FechaIngresada              DATE;
      
      Lv_TotalHorasSimples           NUMBER;
      Lv_TotalMinutosSimples         NUMBER;
@@ -2136,9 +2166,20 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
            AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
+           
+              IF Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<Ld_HoraFinDia1+1 THEN
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                    Ld_HorasFinNocturnas1:=Ld_HorasFinNocturnas1+1;
+                    
+              ELSE
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+                 
+              END IF;
               
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
+              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
+              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
               
@@ -2167,13 +2208,14 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                   C_FechaDet.extend;
                   
                   
+                  
                   CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
                   WHEN  'SIMPLE' THEN
                      C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
                      C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
                      C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                     C_FechaDet(Ln_Contador1) := Ld_FechaIngresada;
                   WHEN 'NOCTURNO' THEN
                      C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
@@ -2281,9 +2323,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1))OR(Ld_HoraInicio1<Ld_HoraFin1
            AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)) THEN
            
+              IF Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1<Ld_HoraFinDia1+1 THEN
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                    Ld_HorasFinNocturnas1:=Ld_HorasFinNocturnas1+1;
+                    
+              ELSE
+                  
+                    Ld_FechaIngresada:=  TO_DATE(Ld_Fecha,'DD-MM-YYYY');
+                 
+              END IF;
               
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1+1 - Ld_HoraInicio1)*24*60,60));
+              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
+              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
               Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
               Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
               
@@ -2317,7 +2369,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
                      C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
                      C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
+                     C_FechaDet(Ln_Contador1) := Ld_FechaIngresada;
                   WHEN 'NOCTURNO' THEN
                      C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
                      C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
@@ -3173,7 +3225,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                        
     AS
         Lv_EmpresaCod          VARCHAR2(2);
-        Lv_NombreDpto          VARCHAR2(20);
+        Lv_NombreDpto          VARCHAR2(60);
         Lv_nombrePantalla      VARCHAR2(20):='Autorizacion';
         Lv_Estado              VARCHAR2(10):='Autorizada';
         Lv_Usuario             VARCHAR2(25);
