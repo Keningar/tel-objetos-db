@@ -1,6 +1,6 @@
 create or replace package DB_GENERAL.GNKG_EMPRESA_CONSULTA is
 
-   /**
+  /**
   * Documentación para el procedimiento P_EMPRESA_POR
   *
   * Método encargado de retornar la lista de empresas base telcos con filtros.
@@ -95,6 +95,46 @@ create or replace package DB_GENERAL.GNKG_EMPRESA_CONSULTA is
                             Pv_Status    OUT VARCHAR2,
                             Pv_Mensaje   OUT VARCHAR2,
                             Pcl_Response OUT SYS_REFCURSOR);
+                            
+                            
+  /**
+  * Documentación para el procedimiento P_PROVINCIAS
+  *
+  * Método encargado de retornar la lista de Provincias del naf
+  *
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Ivan Mata <imata@telconet.ec>
+  * @version 1.0 17-06-2020
+  */
+  PROCEDURE P_PROVINCIAS_NAF_POR(Pcl_Request  IN  CLOB,
+                                 Pv_Status    OUT VARCHAR2,
+                                 Pv_Mensaje   OUT VARCHAR2,
+                                 Pcl_Response OUT SYS_REFCURSOR);
+                         
+                         
+  /**
+  * Documentación para el procedimiento P_CANTONES_NAF
+  *
+  * Método encargado de retornar la lista de cantones del naft por provincia
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   nombreProvincia              := nombre de provincia
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Ivan Mata <imata@telconet.ec>
+  * @version 1.0 17-06-2020
+  */                      
+  PROCEDURE P_CANTONES_NAF_POR(Pcl_Request  IN  CLOB,
+                               Pv_Status    OUT VARCHAR2,
+                               Pv_Mensaje   OUT VARCHAR2,
+                               Pcl_Response OUT SYS_REFCURSOR);
 end GNKG_EMPRESA_CONSULTA;
 /
 create or replace package body DB_GENERAL.GNKG_EMPRESA_CONSULTA is
@@ -293,9 +333,9 @@ PROCEDURE P_EMPRESA_POR(Pcl_Request  IN  CLOB,
   END P_DEPARTAMENTOS_NAF_POR;
   
   PROCEDURE P_AREAS_NAF_POR(Pcl_Request  IN  CLOB,
-                             Pv_Status    OUT VARCHAR2,
-                             Pv_Mensaje   OUT VARCHAR2,
-                             Pcl_Response OUT SYS_REFCURSOR)
+                            Pv_Status    OUT VARCHAR2,
+                            Pv_Mensaje   OUT VARCHAR2,
+                            Pcl_Response OUT SYS_REFCURSOR)
                              
                              
   AS
@@ -343,6 +383,103 @@ PROCEDURE P_EMPRESA_POR(Pcl_Request  IN  CLOB,
       Pv_Mensaje := SQLERRM;
   
   END P_AREAS_NAF_POR;
+  
+  PROCEDURE P_PROVINCIAS_NAF_POR(Pcl_Request  IN  CLOB,
+                                 Pv_Status    OUT VARCHAR2,
+                                 Pv_Mensaje   OUT VARCHAR2,
+                                 Pcl_Response OUT SYS_REFCURSOR)
+    
+  AS
+  
+    Lcl_Query         CLOB;
+    Lcl_Select        CLOB;
+    Lcl_From          CLOB;
+    Lcl_WhereAndJoin  CLOB;
+    Lcl_OrderAnGroup  CLOB;
+    Lv_IdPais         VARCHAR2(6);
+    Le_Errors         EXCEPTION;
+  
+  BEGIN
+  
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_IdPais  := APEX_JSON.get_varchar2(p_path => 'idPais');
+  
+    Lcl_Select       := '
+              SELECT PROVINCIA ID_PROVINCIA, DESCRIPCION NOMBRE_PROVINCIA ';
+          
+    Lcl_From         := '
+              FROM NAF47_TNET.ARGEPRO ';
+              
+    Lcl_WhereAndJoin := '
+              WHERE PAIS='''||Lv_IdPais||''' ';
+              
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin;
+    
+    OPEN Pcl_Response FOR Lcl_Query;
+
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  
+  END P_PROVINCIAS_NAF_POR;
+  
+  PROCEDURE P_CANTONES_NAF_POR(Pcl_Request  IN  CLOB,
+                               Pv_Status    OUT VARCHAR2,
+                               Pv_Mensaje   OUT VARCHAR2,
+                               Pcl_Response OUT SYS_REFCURSOR)
+                       
+                       
+  AS
+    Lcl_Query              CLOB;
+    Lcl_Select             CLOB;
+    Lcl_From               CLOB;
+    Lcl_WhereAndJoin       CLOB;
+    Lcl_OrderAnGroup       CLOB;
+    Lv_NombreProvincia     VARCHAR2(25);
+    Le_Errors              EXCEPTION;                     
+                       
+  BEGIN
+  
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_NombreProvincia  := APEX_JSON.get_varchar2(p_path => 'nombreProvincia');
+    
+  
+    Lcl_Select       := '
+              SELECT DISTINCT ARCAN.CANTON ID_CANTON, ARCAN.DESCRIPCION NOMBRE_CANTON  ';
+          
+    Lcl_From         := '
+              FROM NAF47_TNET.ARGECAN ARCAN  ';
+              
+    Lcl_WhereAndJoin := '
+              JOIN NAF47_TNET.ARGEPRO ARPRO ON ARPRO.PROVINCIA = ARCAN.PROVINCIA
+              WHERE ARCAN.PAIS=''313'' AND ARPRO.DESCRIPCION='''||Lv_NombreProvincia||''' ';
+              
+    
+    Lcl_OrderAnGroup := ' ORDER BY ARCAN.CANTON ASC  ';
+              
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin;
+    
+    OPEN Pcl_Response FOR Lcl_Query;
+
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;                     
+                       
+  END P_CANTONES_NAF_POR;
   
 end GNKG_EMPRESA_CONSULTA;
 /

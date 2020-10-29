@@ -1,0 +1,32 @@
+
+--- Inserts para parametrizar el correo de nomina
+
+INSERT 
+INTO DB_GENERAL.ADMI_PARAMETRO_CAB VALUES
+  (DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,'CORREO_DESTINATARIO_HE','Parametro que contiene el correo destinario de HE para los reportes','HORAS_EXTRA','','Activo','imata',SYSDATE,
+    '127.0.0.1', null, null, null);
+    
+   
+ INSERT
+INTO DB_GENERAL.ADMI_PARAMETRO_DET VALUES
+  (DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,(SELECT A.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB A WHERE A.NOMBRE_PARAMETRO = 'CORREO_DESTINATARIO_HE'),
+    'CORREO_ELECTRONICO_DESTINATARIO','nomina@telconet.ec,',NULL,NULL,NULL,'Activo','imata',SYSDATE,
+    '127.0.0.1',NULL,NULL,NULL,NULL,'10',NULL,NULL,NULL);    
+
+
+--- Inserts para parametrizar la ruta de nfs de los archivos del sistema de HE
+INSERT 
+INTO DB_GENERAL.ADMI_PARAMETRO_CAB VALUES
+  (DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,'RUTA_NFS_HE','Parametro para la ruta de nfs del sistema de Horas Extra','HORAS_EXTRA','','Activo','imata',SYSDATE,
+    '127.0.0.1', null, null, null);
+    
+INSERT
+INTO DB_GENERAL.ADMI_PARAMETRO_DET VALUES
+  (DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,(SELECT A.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB A WHERE A.NOMBRE_PARAMETRO = 'RUTA_NFS_HE'),
+    'RUTA_ARCHIVOS_NFS_HE','http://test-archivos.telconet.ec/horas-extras',NULL,NULL,NULL,'Activo','imata',SYSDATE,
+    '127.0.0.1',NULL,NULL,NULL,NULL,'10',NULL,NULL,NULL);
+
+
+commit;
+
+/

@@ -1,7 +1,7 @@
 SET DEFINE OFF;
 create or replace package                                                   DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
 
-  /**
+   /**
   * Documentación para el procedimiento P_GUARDAR_HORASEXTRA
   *
   * Método encargado de guardar la solicitud de horas extra
@@ -214,6 +214,7 @@ create or replace package                                                   DB_H
     PROCEDURE P_INSERTAR_TAREAS(Pn_IdHorasSolicitud IN NUMBER,
                                 Pn_TareaId          IN NUMBER,
                                 Pv_usrCreacion      IN VARCHAR2,
+                                Pn_IdCUadrilla      IN NUMBER,
                                 Pv_Status           OUT VARCHAR2,
                                 Pv_Mensaje          OUT VARCHAR2);
                                 
@@ -431,6 +432,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_ContadorEmpleado            NUMBER:=0;
      Ln_ContadoreEmp                NUMBER:=1;
      Ln_Contador3                   NUMBER:=0;
+     Ln_ContadorCuadrilla           NUMBER:=0;
+     Ln_ContadorCua                 NUMBER:=1;
      
      Ld_Fecha                       VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
@@ -446,6 +449,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_JornadaEmpleado             VARCHAR2(2); 
      Lv_EsFinDeSemana               VARCHAR2(2);
      Lv_EsDiaLibre                  VARCHAR2(2);
+     Lv_bandera                     VARCHAR2(6):='false';
      
      
      TYPE C_ListTotalHoras          IS VARRAY(4) OF VARCHAR2(20);
@@ -468,16 +472,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        ORDER BY ID_TIPO_HORAS_EXTRA ASC;
        
      CURSOR C_EXISTE_EMPLEADO(Cv_No_Emple VARCHAR2, Cv_Fecha Varchar2, Cv_Empresa VARCHAR2) IS
-      SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.NOMBRE,IHS.HORA_INICIO,IHS.HORA_FIN FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
+       SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.NOMBRE,IHS.HORA_INICIO,IHS.HORA_FIN FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
         JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
-       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHSE.ESTADO='Pendiente' AND VEE.NO_CIA=Cv_Empresa
+       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada') AND VEE.NO_CIA=Cv_Empresa
        ORDER BY IHS.ID_HORAS_SOLICITUD ASC;
      
      Ln_NoEmpleado                  apex_t_varchar2;
      Lv_TareaId                     apex_t_varchar2;
      Lv_NombreDocumento             apex_t_varchar2;
      Lv_UbicacionDocumento          apex_t_varchar2;
+     Ln_IdCuadrilla                 apex_t_varchar2;
      Ln_IdHorasSolicitud            DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.ID_HORAS_SOLICITUD%TYPE;
      Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
      Ln_IdHorasSolicitudDetalle     DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE.ID_HORAS_SOLICITUD_DETALLE%TYPE;
@@ -505,7 +510,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_EsFinDeSemana       := APEX_JSON.get_varchar2(p_path => 'esFinDeSemana');
     Lv_EsDiaLibre          := APEX_JSON.get_varchar2(p_path => 'esDiaLibre');
     Lv_Descripcion         := APEX_JSON.get_varchar2(p_path => 'descripcion');
-   
+    Ln_IdCuadrilla         := APEX_JSON.find_paths_like(p_return_path => 'idCuadrilla[%]' );
     
     
     IF Ld_Fecha IS NULL THEN
@@ -626,10 +631,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              END IF;
              
              IF Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<Ld_HoraInicio1 THEN
+                Lv_bandera  :='true';
                 Ld_HoraFin1 := Ld_HoraFin1+1;
              END IF;
              
              IF Ld_HoraFin1 = Ld_HoraFinDia1  THEN
+                Lv_bandera  :='true';
                 Ld_HoraFin1 := Ld_HoraFin1+1;
              END IF;
              
@@ -653,11 +660,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              END IF;
              
              Ld_HoraFinEncontrada := Ld_HoraFinEncontrada-1;
-             IF Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<Ld_HoraInicio1 THEN
-                Ld_HoraFin1 := Ld_HoraFin1-1;
-             END IF;
-             IF TO_CHAR(Ld_HoraFin1,'HH24:Mi') = TO_CHAR(Ld_HoraFinDia1,'HH24:Mi')  THEN
-                Ld_HoraFin1 := Ld_HoraFin1-1;
+             
+             IF Lv_bandera = 'true' THEN
+               Ld_HoraFin1 := Ld_HoraFin1-1;
              END IF;
              
              Ln_Contador3:=Ln_Contador3+1;
@@ -1391,6 +1396,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                             apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorTarea)),
                             Lv_UsrCreacion,
+                            null,
                             Pv_Status,
                             Pv_Mensaje);
                           
@@ -1399,6 +1405,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           END IF;
            
     END LOOP;
+    
+    Ln_ContadorCuadrilla:=Ln_IdCuadrilla.COUNT;
+    WHILE Ln_ContadorCua <=  Ln_ContadorCuadrilla LOOP
+     
+          P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
+                            null,
+                            Lv_UsrCreacion,
+                            apex_json.get_number(p_path => Ln_IdCuadrilla(Ln_ContadorCua)),
+                            Pv_Status,
+                            Pv_Mensaje);
+                          
+          IF Pv_Status = 'ERROR' THEN
+              RAISE Le_Errors;
+          END IF;
+          
+          Ln_ContadorCua :=Ln_ContadorCua+1;
+           
+    END LOOP;
+    
     
     FOR Ln_ContadorDocumentos in 1 .. Lv_NombreDocumento.COUNT LOOP
     
@@ -1429,9 +1454,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        Pv_Status  := 'ERROR';
      WHEN OTHERS THEN
        Pv_Status  := 'ERROR';
-       Pv_Mensaje := SQLERRM;
+       Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
 
   END P_GUARDAR_HORASEXTRA;
+  
   
   PROCEDURE P_ELIMINAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                         Pv_Status    OUT VARCHAR2,
@@ -1524,7 +1556,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;           
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ELIMINAR_SOLICITUD_HEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ELIMINAR_SOLICITUD_HEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));        
   
   END P_ELIMINAR_SOLICITUD_HEXTRA;
   
@@ -1638,7 +1676,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;           
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ANULAR_SOLICITUD_HEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ANULAR_SOLICITUD_HEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));          
   
   END P_ANULAR_SOLICITUD_HEXTRA;
   
@@ -1701,10 +1745,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;  
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_AUTORIZAR_SOLICITUD_HEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_AUTORIZAR_SOLICITUD_HEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
   
   END P_AUTORIZAR_SOLICITUD_HEXTRA;
-  
+   
   PROCEDURE P_ACTUALIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                           Pv_Status    OUT VARCHAR2,
                                           Pv_Mensaje   OUT VARCHAR2)
@@ -1754,6 +1804,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_Contador1                   NUMBER:=0;
      Ln_Contador2                   NUMBER:=0;
      Ln_ContadorDocumentos          NUMBER:=0;
+     Ln_ContadorCuadrilla           NUMBER:=0;
+     Ln_ContadorCua                 NUMBER:=1;
      
      
      Ld_Fecha                       VARCHAR2(25);
@@ -1771,15 +1823,15 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_EsFinDeSemana               VARCHAR2(2);
      Lv_EsDiaLibre                  VARCHAR2(2);
      
-     TYPE C_ListTotalHoras          IS VARRAY(3) OF VARCHAR2(7);
+     TYPE C_ListTotalHoras          IS VARRAY(4) OF VARCHAR2(20);
      C_ListaHoras                   C_ListTotalHoras :=C_ListTotalHoras();
-     TYPE C_ListTipoHorasExtra      IS VARRAY(3) OF VARCHAR2(7);
+     TYPE C_ListTipoHorasExtra      IS VARRAY(4) OF VARCHAR2(20);
      C_TipoHorasExtra               C_ListTipoHorasExtra :=C_ListTipoHorasExtra();
-     TYPE C_HoraInicio_Det          IS VARRAY(3) OF VARCHAR2(15);
+     TYPE C_HoraInicio_Det          IS VARRAY(4) OF VARCHAR2(20);
      C_HoraInicioDet                C_HoraInicio_Det := C_HoraInicio_Det();
-     TYPE C_HoraFin_Det             IS VARRAY(3) OF VARCHAR2(15);
+     TYPE C_HoraFin_Det             IS VARRAY(4) OF VARCHAR2(20);
      C_HoraFinDet                   C_HoraFin_Det := C_HoraFin_Det();
-     TYPE C_Fecha_Det               IS VARRAY(3) OF DATE;
+     TYPE C_Fecha_Det               IS VARRAY(4) OF DATE;
      C_FechaDet                     C_Fecha_Det := C_Fecha_Det();
      
      
@@ -1794,6 +1846,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_TareaId                     apex_t_varchar2;
      Lv_NombreDocumento             apex_t_varchar2;
      Lv_UbicacionDocumento          apex_t_varchar2;
+     Ln_IdCuadrilla                 apex_t_varchar2;
      Ln_IdHorasSolicitud            DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.ID_HORAS_SOLICITUD%TYPE;
      Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
      Ln_IdHorasSolicitudDetalle     DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE.ID_HORAS_SOLICITUD_DETALLE%TYPE;
@@ -1824,6 +1877,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_EsFinDeSemana       := APEX_JSON.get_varchar2(p_path => 'esFinDeSemana');
     Lv_EsDiaLibre          := APEX_JSON.get_varchar2(p_path => 'esDiaLibre');
     Lv_Descripcion         := APEX_JSON.get_varchar2(p_path => 'descripcion');
+    Ln_IdCuadrilla         := APEX_JSON.find_paths_like(p_return_path => 'idCuadrilla[%]' );
     
     -- VALIDACIONES
     IF Ln_IdHorasSolicitud IS NULL THEN
@@ -1890,6 +1944,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA = 'NOCTURNO';
        
+       --HORA INICIO Y FIN INGRESADOS
       Ld_HoraInicio1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraInicio),'DD-MM-YYYY HH24:MI');   
       Ld_HoraFin1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFin),'DD-MM-YYYY HH24:MI'); 
       
@@ -2557,12 +2612,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          OBSERVACION= Lv_observacion, USR_MODIFICACION=Lv_UsrCreacion, FE_MODIFICACION =SYSDATE,
          ESTADO=Lv_Estado
     WHERE ID_HORAS_SOLICITUD=Ln_IdHorasSolicitud;
-    
-    UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO
-     SET ESTADO='Inactivo'
-    WHERE HORAS_SOLICITUD_ID= Ln_IdHorasSolicitud;
-    
+       
     FOR Ln_ContadorEmpleado in 1 .. Ln_NoEmpleado.COUNT LOOP
+
+        UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO
+         SET ESTADO='Inactivo'
+        WHERE HORAS_SOLICITUD_ID= Ln_IdHorasSolicitud AND NO_EMPLE=apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadorEmpleado));
+
         P_INSERTAR_EMPLEADOS(Ln_IdHorasSolicitud,
                              apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadorEmpleado)),
                              Lv_Estado,
@@ -2614,6 +2670,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                          apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorTarea)),
                          Lv_UsrCreacion,
+                         null,
                          Pv_Status,
                          Pv_Mensaje);
                           
@@ -2621,6 +2678,24 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               RAISE Le_Errors;
         END IF;
     
+    END LOOP;
+    
+    Ln_ContadorCuadrilla:=Ln_IdCuadrilla.COUNT;
+    WHILE Ln_ContadorCua <=  Ln_ContadorCuadrilla LOOP
+     
+          P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
+                            null,
+                            Lv_UsrCreacion,
+                            apex_json.get_number(p_path => Ln_IdCuadrilla(Ln_ContadorCua)),
+                            Pv_Status,
+                            Pv_Mensaje);
+                          
+          IF Pv_Status = 'ERROR' THEN
+              RAISE Le_Errors;
+          END IF;
+          
+          Ln_ContadorCua :=Ln_ContadorCua+1;
+           
     END LOOP;
     
    
@@ -2657,11 +2732,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;  
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ACTUALIZAR_SOLICITUD_HEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ACTUALIZAR_SOLICITUD_HEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
                                            
                                            
   END P_ACTUALIZAR_SOLICITUD_HEXTRA;
-  
+ 
   PROCEDURE P_INSERT_DETA_SOLICITUD_HEXTRA(Pn_IdHorasSolicitud    IN NUMBER,
                                            Pn_TareasExtraId       IN NUMBER,
                                            Pv_HoraInicioDet       IN VARCHAR2,
@@ -2762,7 +2843,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;                                         
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERT_DETA_SOLICITUD_HEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_INSERT_DETA_SOLICITUD_HEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));                                      
                                             
   END P_INSERT_DETA_SOLICITUD_HEXTRA;
   
@@ -2830,7 +2917,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERT_HISTORIAL_SOLICITUD: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_INSERT_HISTORIAL_SOLICITUD: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
   
   END P_INSERT_HISTORIAL_SOLICITUD;
   
@@ -2838,6 +2931,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   PROCEDURE P_INSERTAR_TAREAS(Pn_IdHorasSolicitud IN NUMBER,
                               Pn_TareaId          IN NUMBER,
                               Pv_usrCreacion      IN VARCHAR2,
+                              Pn_IdCuadrilla      IN NUMBER,
                               Pv_Status           OUT VARCHAR2,
                               Pv_Mensaje          OUT VARCHAR2)
                                 
@@ -2860,7 +2954,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            FE_CREACION,
            USR_MODIFICACION,
            FE_MODIFICACION,
-           IP_CREACION
+           IP_CREACION,
+           CUADRILLA_ID
            )
            VALUES
            (
@@ -2872,7 +2967,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            SYSDATE,
            NULL,
            NULL,
-           NULL
+           NULL,
+           Pn_IdCuadrilla
            );
            
            COMMIT;
@@ -2883,7 +2979,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
    EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;                            
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_TAREAS: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_TAREAS: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));                          
                                 
    END P_INSERTAR_TAREAS;
    
@@ -2937,7 +3039,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_DOCUMENTOS: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_DOCUMENTOS: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1')); 
                                     
                                     
     END P_INSERTAR_DOCUMENTOS;
@@ -3012,9 +3120,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
     
     EXCEPTION
+    WHEN Le_Errors THEN
+       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;   
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ACTUALIZACION_GENERAL_SOLI: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ACTUALIZACION_GENERAL_SOLI: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1')); 
                       
                       
     END P_ACTUALIZACION_GENERAL_SOLI;   
@@ -3156,9 +3272,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         Pv_Mensaje    := 'Transacción exitosa';
     
     EXCEPTION
+    WHEN Le_Errors THEN
+       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_AUTORIZACION_MASIVA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_AUTORIZACION_MASIVA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
       
     END P_AUTORIZACION_MASIVA;
     
@@ -3212,7 +3336,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM; 
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_EMPLEADOS: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_EMPLEADOS: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
       
     
     END P_INSERTAR_EMPLEADOS;
@@ -3276,7 +3406,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_AUTORIZACION_POR_DEPTO: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_AUTORIZACION_POR_DEPTO: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
     
     END P_AUTORIZACION_POR_DEPTO;  
     
@@ -3372,7 +3508,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                   SUBJECT      => Pv_Asunto,
                                   MESSAGE      => Lv_Cuerpo,
                                   MIME_TYPE    => 'text/html; charset=UTF-8'
-                                  );
+                             );
             
                              
                              
@@ -3399,47 +3535,18 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     
     AS
     
-           Lv_Directorio            VARCHAR2(50)    := 'DIR_REPHEXTRAS';
-           Lv_Delimitador           VARCHAR2(1)     := ';';
-           Lv_Remitente             VARCHAR2(100)   := Pv_Remitente; 
-           Lv_Asunto                VARCHAR2(300)   := Pv_Asunto;
-           Lv_Cuerpo                VARCHAR2(9999); 
-           Lv_FechaReporte          VARCHAR2(50)    := TO_CHAR(sysdate, 'YYYYMMDDHH24MISS');
-           Lv_NombreArchivo         VARCHAR2(150);
-           Lv_NombreArchivoZip      VARCHAR2(250);
-           Lv_NombreArchivoZipRs    VARCHAR2(250);
-           Lv_NombreArchivoRs       VARCHAR2(250);
-           Lv_Gzip                  VARCHAR2(100);
-           Lv_GzipRs                VARCHAR2(100);
-           Lv_Destinatario          VARCHAR2(500);
-           Lv_MsjResultado          VARCHAR2(2000);
-           Lv_Estado                VARCHAR2(50);
-           Lv_Mensaje               VARCHAR2(1000);
-           Ln_Contador              NUMBER:=1;
-           Lv_Nombres               VARCHAR2(40);
-           Ln_Segundos              NUMBER:=0;
-           Ln_SegundosB             NUMBER:=0;
-           Lv_TotalHoras            VARCHAR2(10);
-           Lfile_ArchivoRs          UTL_FILE.FILE_TYPE;
-           Lfile_Archivo            UTL_FILE.FILE_TYPE;
-           Pv_Status                VARCHAR2(1000);
-           Pv_Mensaje               VARCHAR2(1000);
-           Le_Errors                EXCEPTION;
-                              
-
                 CURSOR C_REPORTE_SOLICITUDES_DET(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
                          IHS.FECHA, IHS.OBSERVACION, 
                          IHS.ID_HORAS_SOLICITUD, IHSD.HORA_INICIO_DET HORA_INICIO, 
-                         IHSD.HORA_FIN_DET HORA_FIN,IHSD.HORAS, ATHE.TIPO_HORAS_EXTRA,VEE.NOMBRE_DEPTO
+                         IHSD.HORA_FIN_DET HORA_FIN,IHSD.HORAS, ATHE.TIPO_HORAS_EXTRA,VEE.NOMBRE_DEPTO,VEE.NOMBRE_PROVINCIA,VEE.NOMBRE_CANTON
                        FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
                          JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
                          JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON IHSE.NO_EMPLE = VEE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
                          JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
                          JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
                        WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
-                          AND TO_CHAR(IHS.FE_MODIFICACION,'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
-                          AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND TO_CHAR(IHS.FECHA,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
                           AND IHS.ESTADO='Autorizada' AND IHSE.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
                        ORDER BY VEE.NOMBRE_DEPTO,VEE.NOMBRE, IHS.ID_HORAS_SOLICITUD;
                        
@@ -3447,23 +3554,57 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                   SELECT VEE.CEDULA, VEE.NOMBRE,
                          IHS.FECHA, IHS.OBSERVACION, 
                          IHS.ID_HORAS_SOLICITUD, IHSD.HORA_INICIO_DET HORA_INICIO, 
-                         IHSD.HORA_FIN_DET HORA_FIN,IHSD.HORAS, ATHE.TIPO_HORAS_EXTRA,VEE.NOMBRE_DEPTO
+                         IHSD.HORA_FIN_DET HORA_FIN,IHSD.HORAS, ATHE.TIPO_HORAS_EXTRA,VEE.NOMBRE_DEPTO,VEE.NOMBRE_PROVINCIA,VEE.NOMBRE_CANTON
                        FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
                          JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
                          JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON IHSE.NO_EMPLE = VEE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
                          JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
                          JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
                        WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
-                          AND TO_CHAR(IHS.FE_MODIFICACION,'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
-                          AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY') = TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND TO_CHAR(IHS.FECHA,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
                           AND IHS.ESTADO='Autorizada' AND IHSE.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
                        ORDER BY VEE.NOMBRE_DEPTO,VEE.NOMBRE, IHS.ID_HORAS_SOLICITUD;
       
               CURSOR C_SOLICITUDES_PENDIENTES IS
                   SELECT IHS.ID_HORAS_SOLICITUD
                      FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS
-                    WHERE TO_CHAR(IHS.FE_CREACION,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                    WHERE TO_CHAR(IHS.FECHA,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
                      AND ESTADO ='Pendiente';
+                     
+               CURSOR C_CORREO_DESTINATARIO(Cv_EmpresaCod VARCHAR2)IS
+                 SELECT APD.VALOR1 
+                   FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+                  WHERE APD.PARAMETRO_ID=(SELECT A.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB A WHERE A.NOMBRE_PARAMETRO = 'CORREO_DESTINATARIO_HE')
+                   AND APD.EMPRESA_COD=Cv_EmpresaCod AND APD.ESTADO='Activo';
+                   
+                   
+                   Lv_Directorio            VARCHAR2(50):= 'DIR_REPHEXTRAS';
+                   Lv_Delimitador           VARCHAR2(1):= ';';
+                   Lv_Remitente             VARCHAR2(100):= Pv_Remitente; 
+                   Lv_Asunto                VARCHAR2(300):= Pv_Asunto;
+                   Lv_Cuerpo                VARCHAR2(9999); 
+                   Lv_CuerpoB               VARCHAR2(9999); 
+                   Lv_FechaReporte          VARCHAR2(50):=TO_CHAR(sysdate, 'YYYYMMDDHH24MISS');
+                   Lr_Valor1                DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
+                   Lv_NombreArchivo         VARCHAR2(150);
+                   Lv_NombreArchivoZip      VARCHAR2(250);
+                   Lv_NombreArchivoZipRs    VARCHAR2(250);
+                   Lv_NombreArchivoRs       VARCHAR2(250);
+                   Lv_Gzip                  VARCHAR2(100);
+                   Lv_GzipRs                VARCHAR2(100);
+                   Lv_MsjResultado          VARCHAR2(2000);
+                   Lv_Estado                VARCHAR2(50);
+                   Lv_Mensaje               VARCHAR2(1000);
+                   Ln_Contador              NUMBER:=1;
+                   Lv_Nombres               VARCHAR2(40);
+                   Ln_Segundos              NUMBER:=0;
+                   Ln_SegundosB             NUMBER:=0;
+                   Lv_TotalHoras            VARCHAR2(10);
+                   Lfile_ArchivoRs          UTL_FILE.FILE_TYPE;
+                   Lfile_Archivo            UTL_FILE.FILE_TYPE;
+                   Pv_Status                VARCHAR2(1000);
+                   Pv_Mensaje               VARCHAR2(1000);
+                   Le_Errors                EXCEPTION;
     
     
     BEGIN
@@ -3481,15 +3622,77 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                          CLOSE C_SOLICITUDES_PENDIENTES;
                   END IF;
                   
+                  IF C_CORREO_DESTINATARIO%ISOPEN THEN
+                         CLOSE C_CORREO_DESTINATARIO;
+                  END IF;
+                  
+                  
+                  OPEN C_CORREO_DESTINATARIO(Pv_EmpresaCod);
+                  FETCH C_CORREO_DESTINATARIO INTO Lr_valor1;
+                  
                   
                   -- REPORTE DETALLADO
-                  Lv_Cuerpo            := 'Estimados el presente correo Reporte Mensual de solicitudes de horas extras autorizadas';
-                  Lv_Destinatario      := 'notificaciones_sistemas@telconet.ec';
-    
+                  Lv_Cuerpo := '<html>
+                                 <head>
+                                     <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+                                 </head>
+                                 <body>
+                                         <table align="center" width="100%" cellspacing="0" cellpadding="5">
+                                             <tr>
+                                                <td align="center" style="border:1px solid #6699CC;background-color:#E5F2FF;">
+                                                   <img alt=""  src="http://images.telconet.net/others/sit/notificaciones/logo-tn.png"/>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td style="border:1px solid #6699CC;">
+                                                   <table width="100%" cellspacing="0" cellpadding="5">
+                                                       <tr>
+                                                          <td colspan="2">
+                                                              <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"></span></span></p>
+                                                              <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">
+                                                               Estimados(as), mediante este correo se adjunta el reporte detallado de las solicitudes autorizadas  </span></span></p>
+                                                                   
+                                                          </td>
+                                                       </tr>
+                                                   </table>
+                                                </td>
+                                             </tr>
+                                         </table>
+                                 </body>
+                             </html>';
+                    -- REPORTE DETALLADO
+                  
+                  Lv_CuerpoB := '<html>
+                                 <head>
+                                     <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+                                 </head>
+                                 <body>
+                                         <table align="center" width="100%" cellspacing="0" cellpadding="5">
+                                             <tr>
+                                                <td align="center" style="border:1px solid #6699CC;background-color:#E5F2FF;">
+                                                   <img alt=""  src="http://images.telconet.net/others/sit/notificaciones/logo-tn.png"/>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td style="border:1px solid #6699CC;">
+                                                   <table width="100%" cellspacing="0" cellpadding="5">
+                                                       <tr>
+                                                          <td colspan="2">
+                                                              <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"></span></span></p>
+                                                              <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">
+                                                               Estimados(as), mediante este correo se adjunta el reporte resumido de las solicitudes autorizadas  </span></span></p>
+                                                                   
+                                                          </td>
+                                                       </tr>
+                                                   </table>
+                                                </td>
+                                             </tr>
+                                         </table>
+                                 </body>
+                             </html>';
+                  
                   Lv_NombreArchivo     := 'ReporteSolicitudesDetalladoHE_'||Lv_FechaReporte||'.csv';
-                  Lv_Gzip              := 'gzip /base/'||Lv_NombreArchivo;
-                  Lv_NombreArchivoZip  := Lv_NombreArchivo||'.gz';
-                  Lfile_Archivo        := UTL_FILE.FOPEN(Lv_Directorio,Lv_NombreArchivo,'w',3000);
+                  Lfile_Archivo        := UTL_FILE.FOPEN(Lv_Directorio,Lv_NombreArchivo,'w',32767);
                   --
                      utl_file.put_line(Lfile_Archivo,'CEDULA'                    ||Lv_Delimitador
                                                    ||'NOMBRES'                   ||Lv_Delimitador
@@ -3500,7 +3703,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                    ||'HORA FIN'                  ||Lv_Delimitador
                                                    ||'HORAS'                     ||Lv_Delimitador
                                                    ||'TIPO HORAS EXTRA'          ||Lv_Delimitador
-                                                   ||'DEPARTAMENTO'              ||Lv_Delimitador);
+                                                   ||'DEPARTAMENTO'              ||Lv_Delimitador
+                                                   ||'PROVINCIA'                 ||Lv_Delimitador
+                                                   ||'CANTON'                    ||Lv_Delimitador);
                       
                       
                           FOR Lr_ReporteSolicitudes IN C_REPORTE_SOLICITUDES_DET(Pv_EmpresaCod) LOOP
@@ -3516,6 +3721,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                              ||NVL(Lr_ReporteSolicitudes.HORAS, '')                  ||Lv_Delimitador
                                              ||NVL(Lr_ReporteSolicitudes.TIPO_HORAS_EXTRA, '')       ||Lv_Delimitador
                                              ||NVL(Lr_ReporteSolicitudes.NOMBRE_DEPTO, '')           ||Lv_Delimitador
+                                             ||NVL(Lr_ReporteSolicitudes.NOMBRE_PROVINCIA, '')       ||Lv_Delimitador
+                                             ||NVL(Lr_ReporteSolicitudes.NOMBRE_CANTON, '')          ||Lv_Delimitador
                                         );
     
     
@@ -3527,13 +3734,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                            --REPORTE_SOLICITUDES_RESUMIDO
     
                      Lv_NombreArchivoRs     := 'ReporteSolicitudesResumidoHE_'||Lv_FechaReporte||'.csv';
-                     Lv_GzipRs              := 'gzip /base/'||Lv_NombreArchivoRs;
-                     Lv_NombreArchivoZipRs  := Lv_NombreArchivoRs||'.gz';
                      Lfile_ArchivoRs        := UTL_FILE.FOPEN(Lv_Directorio,Lv_NombreArchivoRs,'w',32767);
                      --
                      utl_file.put_line(Lfile_ArchivoRs,'NOMBRE'          ||Lv_Delimitador
                                              ||'TOTAL HORAS MES'         ||Lv_Delimitador
-                                             ||'DEPARTAMENTO'            ||Lv_Delimitador);
+                                             ||'DEPARTAMENTO'            ||Lv_Delimitador
+                                             ||'PROVINCIA'               ||Lv_Delimitador
+                                             ||'CANTON'                  ||Lv_Delimitador);
                           
                       
                       
@@ -3559,9 +3766,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                
                                         
                                        UTL_FILE.PUT_LINE(Lfile_ArchivoRs,
-                                                NVL(Lr_ReporteSolicitudes.NOMBRE, '')         ||Lv_Delimitador
-                                              ||NVL(Lv_totalHoras, '')                        ||Lv_Delimitador
-                                              ||NVL(Lr_ReporteSolicitudes.NOMBRE_DEPTO, '')   ||Lv_Delimitador
+                                                NVL(Lr_ReporteSolicitudes.NOMBRE, '')            ||Lv_Delimitador
+                                              ||NVL(Lv_totalHoras, '')                           ||Lv_Delimitador
+                                              ||NVL(Lr_ReporteSolicitudes.NOMBRE_DEPTO, '')      ||Lv_Delimitador
+                                              ||NVL(Lr_ReporteSolicitudes.NOMBRE_PROVINCIA, '')  ||Lv_Delimitador
+                                              ||NVL(Lr_ReporteSolicitudes.NOMBRE_CANTON, '')     ||Lv_Delimitador
                                        );
                                         
                                         
@@ -3574,24 +3783,34 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                      END LOOP;
                      
                      UTL_FILE.fclose(Lfile_ArchivoRs);
+                     
+                     IF C_CORREO_DESTINATARIO%FOUND THEN  
+                     
+                          DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
+                                                                    Lr_valor1,
+                                                                    Lv_Asunto, 
+                                                                    Lv_Cuerpo, 
+                                                                    Lv_Directorio,
+                                                                    Lv_NombreArchivo);
+
+                          UTL_FILE.FREMOVE (Lv_Directorio,Lv_NombreArchivo);
+                            
+                          DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
+                                                                    Lr_valor1,
+                                                                    Lv_Asunto, 
+                                                                    Lv_CuerpoB, 
+                                                                    Lv_Directorio,
+                                                                    Lv_NombreArchivoRs);
+
+                          UTL_FILE.FREMOVE(Lv_Directorio,Lv_NombreArchivoRs);
+                     
+                     
+                     END IF;
+                     
     
-                     DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
-                                                               Lv_Destinatario,
-                                                               Lv_Asunto, 
-                                                               Lv_Cuerpo, 
-                                                               Lv_Directorio,
-                                                               Lv_NombreArchivoZip);
-
-                    UTL_FILE.FREMOVE (Lv_Directorio,Lv_NombreArchivoZip);
-                           
-                    DB_GENERAL.GNRLPCK_UTIL.send_email_attach(Lv_Remitente, 
-                                                              Lv_Destinatario,
-                                                              Lv_Asunto, 
-                                                              Lv_Cuerpo, 
-                                                              Lv_Directorio,
-                                                              Lv_NombreArchivoZipRs);
-
-                    UTL_FILE.FREMOVE(Lv_Directorio,Lv_NombreArchivoZipRs);
+                    
+                    
+                  CLOSE C_CORREO_DESTINATARIO;
    
                   
                   FOR Ln_SolicitudesPendientes IN C_SOLICITUDES_PENDIENTES 
@@ -3664,7 +3883,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         Lv_Estado1            VARCHAR2(20):='';
         Lv_Estado2            VARCHAR2(20):='';
         Lv_EstadoSolicitud    VARCHAR2(20);
-        Lr_Valor1             C_CORREO_REMITENTE%ROWTYPE;
+        Lr_Valor1             DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
         Lv_Asunto             VARCHAR2(50):='Reporte de Solicitud de horas extras	';
         Pv_Mensaje            VARCHAR2(1000);
         Le_Errors             EXCEPTION;
@@ -3682,7 +3901,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         
         OPEN C_CORREO_REMITENTE(Pv_EmpresaCod);
         FETCH C_CORREO_REMITENTE INTO Lr_valor1;
-        CLOSE C_CORREO_REMITENTE;
+        
         
         IF(Pv_Proceso='Anulacion')THEN
           Lv_Estado1:='Pendiente';
@@ -3752,18 +3971,21 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                          </table>
                                  </body>
                              </html>';
-                             
+                           
+                           IF C_CORREO_REMITENTE%FOUND THEN  
                              
                              UTL_MAIL.SEND(
-                                  SENDER       => Lr_valor1.VALOR1,
+                                  SENDER       => Lr_valor1,
                                   RECIPIENTS   => Lr_InfoSolicitud.MAIL_CIA,
                                   SUBJECT      => Lv_Asunto,
                                   MESSAGE      => Lv_Cuerpo,
                                   MIME_TYPE    => 'text/html; charset=UTF-8'
                                   );
                              
-                             
+                           END IF;
           END LOOP;
+          
+      CLOSE C_CORREO_REMITENTE;
     
     EXCEPTION
     WHEN OTHERS THEN
@@ -3776,6 +3998,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
     
     END P_ENVIAR_MAIL_GENERAL;
-     
+    
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
