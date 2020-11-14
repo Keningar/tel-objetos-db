@@ -475,7 +475,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.NOMBRE,IHS.HORA_INICIO,IHS.HORA_FIN FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
         JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
-       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada') AND VEE.NO_CIA=Cv_Empresa
+       WHERE IHS.FECHA=Cv_Fecha AND IHSE.NO_EMPLE=Cv_No_Emple AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada') AND VEE.NO_CIA=Cv_Empresa
+       AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada') AND IHS.EMPRESA_COD=Cv_Empresa
        ORDER BY IHS.ID_HORAS_SOLICITUD ASC;
      
      Ln_NoEmpleado                  apex_t_varchar2;

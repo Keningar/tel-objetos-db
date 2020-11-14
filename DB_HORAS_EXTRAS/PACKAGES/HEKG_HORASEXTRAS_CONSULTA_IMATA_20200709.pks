@@ -771,12 +771,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              
       Lcl_WhereAndJoin := '
                     JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                    JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
-                    LEFT JOIN (SELECT DISTINCT HORAS_SOLICITUD_ID,CUADRILLA_ID FROM DB_HORAS_EXTRAS.INFO_TAREAS_HORAS WHERE CUADRILLA_ID IS NOT NULL)ITH ON ITH.HORAS_SOLICITUD_ID= IHS.ID_HORAS_SOLICITUD
-                    WHERE IHS.ESTADO='''||Lv_Estado||''' AND IHSE.ESTADO='''||Lv_Estado||''' AND IHS.EMPRESA_COD='''||Lv_EmpresaCod||'''
-                    AND VEE.NO_CIA='''||Lv_EmpresaCod||''' AND VEE.ESTADO=''A'' ';
+                    JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA ';
+      
+      
+      IF Ln_IdCuadrilla IS NOT NULL THEN        
+         Lcl_WhereAndJoin := Lcl_WhereAndJoin ||' 
+                        LEFT JOIN (SELECT DISTINCT HORAS_SOLICITUD_ID,CUADRILLA_ID FROM DB_HORAS_EXTRAS.INFO_TAREAS_HORAS WHERE CUADRILLA_ID IS NOT NULL)ITH ON ITH.HORAS_SOLICITUD_ID= IHS.ID_HORAS_SOLICITUD ';
                     
-     
+      END IF;
+      
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin ||' 
+                        WHERE IHS.ESTADO='''||Lv_Estado||''' AND IHSE.ESTADO='''||Lv_Estado||''' AND IHS.EMPRESA_COD='''||Lv_EmpresaCod||'''
+                        AND VEE.NO_CIA='''||Lv_EmpresaCod||''' AND VEE.ESTADO=''A'' ';
+      
       IF ((Lv_EsSuperUsuario='Jefatura') OR(Lv_NombrePantalla='Registro' AND (Lv_EsSuperUsuario='Jefatura' OR Lv_EsSuperUsuario='Gerencia' OR Lv_EsSuperUsuario='Coordinacion'))
                                          OR(Lv_NombrePantalla='DetalleAutorizacion' ))  THEN
       
