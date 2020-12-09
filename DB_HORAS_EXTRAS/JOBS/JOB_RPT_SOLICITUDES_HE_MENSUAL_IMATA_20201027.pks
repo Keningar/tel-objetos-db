@@ -39,7 +39,7 @@ BEGIN
             END;',
                            
     number_of_arguments => 0,            
-    repeat_interval     => 'FREQ=MONTHLY; INTERVAL=1; BYMONTHDAY=21;BYHOUR=0;BYMINUTE=1',
+    repeat_interval     => 'FREQ=MONTHLY; INTERVAL=1; BYMONTHDAY=16;BYHOUR=0;BYMINUTE=1',
     end_date            => NULL,
     enabled             => TRUE,
     auto_drop           => FALSE,
