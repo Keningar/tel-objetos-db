@@ -431,7 +431,7 @@ create or replace package                                                   DB_H
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
-   
+  
     PROCEDURE P_GUARDAR_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2)
@@ -483,7 +483,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_TotalMinutosNocturno        NUMBER;
      Ln_TotalMinutosNocturno_1      NUMBER;
      
-
      Lv_TotalHoraMinutoSimple       VARCHAR2(55);
      Lv_TotalHoraMinutoDoble        VARCHAR2(55);
      Lv_TotalHoraMinutoDoble_1      VARCHAR2(55);
@@ -493,7 +492,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_Contador1                   NUMBER:=0;
      Ln_Contador2                   NUMBER:=0;
      Ln_ContadorEmpleado            NUMBER:=0;
+     Ln_ContadorFecha               NUMBER:=0;
      Ln_ContadoreEmp                NUMBER:=1;
+     Ln_ContadorFecha_1             NUMBER:=1;
      Ln_Contador3                   NUMBER:=0;
      Ln_Contador4                   NUMBER:=0;
      Ln_ContadorCuadrilla           NUMBER:=0;
@@ -502,7 +503,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_ContadorDocu                NUMBER:=1;
      Ln_ContadorTarea               NUMBER:=0;
      Ln_ContadorTar                 NUMBER:=1;
-     
 
      Ld_Fecha                       VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
@@ -520,8 +520,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_EsFinDeSemana               VARCHAR2(2);
      Lv_EsDiaLibre                  VARCHAR2(2);
      Lv_nombreArea                  VARCHAR2(35);
-     Lv_feInicioTarea               VARCHAR2(25);
-     Lv_feFinTarea                  VARCHAR2(25);
      Lv_bandera                     VARCHAR2(6):='false';
      Lv_bandera2                    VARCHAR2(6):='false';
      Lv_bandera3                    VARCHAR2(6):='false';
@@ -619,13 +617,24 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='DEPARTAMENTO_TAREA_HE')
          AND VALOR1=Cv_Departamento AND APD.ESTADO='Activo';
+         
+       CURSOR C_EXISTE_CARGO_DEPARTAMENTO(Cv_Departamento VARCHAR2, Cv_CargoEmpleado VARCHAR2)IS
+         SELECT APD.VALOR2 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+           WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='ROLES_TAREA_HE')
+         AND VALOR1=Cv_Departamento AND VALOR2=Cv_CargoEmpleado AND APD.ESTADO='Activo';
+         
+        
+      CURSOR C_CARGO_EMPLEADO(Cv_NoEmple VARCHAR2, Cv_NoCia VARCHAR2)IS
+         SELECT DESCRIPCION_CARGO,NOMBRE FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS WHERE NO_CIA=Cv_NoCia AND NO_EMPLE=Cv_NoEmple;
+       
 
-     
      Ln_NoEmpleado                  apex_t_varchar2;
      Lv_TareaId                     apex_t_varchar2;
      Lv_NombreDocumento             apex_t_varchar2;
      Lv_UbicacionDocumento          apex_t_varchar2;
      Ln_IdCuadrilla                 apex_t_varchar2;
+     Lv_feInicioTarea               apex_t_varchar2;
+     Lv_feFinTarea                  apex_t_varchar2;
      Ln_IdHorasSolicitud            DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.ID_HORAS_SOLICITUD%TYPE;
      Ln_IdHorasSolicitud2           DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.ID_HORAS_SOLICITUD%TYPE;
      Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
@@ -635,6 +644,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lr_Valor1                      DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
      Lr_Valor_1                     DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
      Lr_Departamento                DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
+     Lr_CargoEmpleado               C_CARGO_EMPLEADO%ROWTYPE;
+     Lr_CargoDepartamento           DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE;
      Lr_idTipoHoraExtra             C_TIPO_HORAS_EXTRA%ROWTYPE;
      Le_Errors                      EXCEPTION;
 
@@ -662,6 +673,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_Descripcion         := APEX_JSON.get_varchar2(p_path => 'descripcion');
     Ln_IdCuadrilla         := APEX_JSON.find_paths_like(p_return_path => 'idCuadrilla[%]' );
     Lv_nombreArea          := APEX_JSON.get_varchar2(p_path => 'nombreArea');
+    Lv_feInicioTarea       := APEX_JSON.find_paths_like(p_return_path => 'feInicioTarea[%]' );
+    Lv_feFinTarea          := APEX_JSON.find_paths_like(p_return_path => 'feFinTarea[%]' );
     Lv_nombreDepartamento  := APEX_JSON.get_varchar2(p_path => 'nombreDepartamento');
     Lv_EsSuperUsuario      := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
     
@@ -690,6 +703,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Mensaje := 'El parámetro empresaCod está vacío';
       RAISE Le_Errors;
     END IF;
+    
 
     IF Lv_UsrCreacion IS NULL THEN
       Pv_Mensaje := 'El parámetro usrCreacion está vacío';
@@ -823,6 +837,121 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       ----//END VALIDAR REGISTRO SOLICITUD.
       
       
+      ----VALIDAR AREAS QUE PUEDAN REGISTRAR SOLICITUD
+      
+      IF C_EXISTE_AREA%ISOPEN THEN
+            CLOSE C_EXISTE_AREA;
+      END IF;
+        
+        
+      OPEN C_EXISTE_AREA(Lv_nombreArea);
+      FETCH C_EXISTE_AREA INTO Lr_valor1;
+      
+      IF C_EXISTE_AREA%NOTFOUND THEN  
+          Pv_Mensaje := 'ERROR 03: No se puede registrar solicitud para el area'||' '||Lv_nombreArea;
+          RAISE Le_Errors;
+      END IF;
+      
+      CLOSE C_EXISTE_AREA;
+      
+      ----//END VALIDAR AREAS.
+      
+      --VALIDAR SI EL DEPARTAMENTO DEBE INGRESAR TAREA EN LA SOLICITUD
+      
+         IF C_EXISTE_DEPARTAMENTO%ISOPEN THEN
+              CLOSE C_EXISTE_DEPARTAMENTO;
+         END IF;       
+        
+         OPEN C_EXISTE_DEPARTAMENTO(Lv_nombreDepartamento);
+         FETCH C_EXISTE_DEPARTAMENTO INTO Lr_Departamento;
+      
+         IF(C_EXISTE_DEPARTAMENTO%FOUND)THEN  
+          
+                 
+                     Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
+                     WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
+      
+                        IF C_CARGO_EMPLEADO%ISOPEN THEN CLOSE C_CARGO_EMPLEADO; END IF;
+                        OPEN C_CARGO_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),Lv_EmpresaCod);
+                        FETCH C_CARGO_EMPLEADO INTO Lr_CargoEmpleado;
+                        
+                        
+                        IF(C_CARGO_EMPLEADO%FOUND)THEN 
+                        
+                           IF C_EXISTE_CARGO_DEPARTAMENTO%ISOPEN THEN CLOSE C_EXISTE_CARGO_DEPARTAMENTO; END IF;
+                           OPEN C_EXISTE_CARGO_DEPARTAMENTO(Lv_nombreDepartamento,Lr_CargoEmpleado.DESCRIPCION_CARGO);
+                           FETCH C_EXISTE_CARGO_DEPARTAMENTO INTO Lr_CargoDepartamento;
+                       
+                          
+                           IF(C_EXISTE_CARGO_DEPARTAMENTO%NOTFOUND AND Lv_feInicioTarea.COUNT = 0)THEN
+                           
+                             Pv_Mensaje := 'Error 04: Se debe agregar una tarea para la solicitud de horas extras del empleado '||Lr_CargoEmpleado.NOMBRE||', 
+                                            cargo: '||Lr_CargoEmpleado.DESCRIPCION_CARGO||' ';
+                             RAISE Le_Errors;
+                             
+                           END IF;
+                        
+                           
+                           CLOSE C_EXISTE_CARGO_DEPARTAMENTO;
+                        
+                        END IF;
+                          
+          
+                        CLOSE C_CARGO_EMPLEADO;
+         
+                        Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
+                        
+       
+                     END LOOP;
+      
+                     Ln_ContadoreEmp:=1;
+                 
+              
+         END IF;
+      
+         CLOSE C_EXISTE_DEPARTAMENTO;
+     
+      ----//END VALIDAR DEPARTAMENTO.
+      
+      
+      --CONDICIONAL PARA VALIDAR TAREA
+      Ln_ContadorFecha:=Lv_feInicioTarea.COUNT;
+      IF Ln_ContadorFecha > 0 THEN
+      
+          WHILE Ln_ContadorFecha_1<= Ln_ContadorFecha LOOP
+      
+            Ld_FeInicioTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feInicioTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
+            Ld_FeFinTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feFinTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
+      
+            IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
+                 Lv_bandera2:='true';
+                 Ld_HoraFin1:=Ld_HoraFin1+1;
+            END IF;
+      
+            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1<=Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+       
+                Lv_Mensaje:='Exito';
+          
+            ELSE
+      
+                Pv_Mensaje:='Error 05: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
+                             en el rango de fecha hora inicio y fin de la solicitud ';
+                RAISE Le_Errors;
+         
+            END IF;
+      
+            IF(Lv_bandera2 = 'true')THEN
+  
+                Ld_HoraFin1 := Ld_HoraFin1-1;
+  
+            END IF;
+      
+            Ln_ContadorFecha_1:=Ln_ContadorFecha_1+1;
+          END LOOP;
+          Ln_ContadorFecha_1:=1;
+      END IF;
+      ----//END CONDICIONAL PARA VALIDAR TAREA.
+      
        ---- VALIDAR QUE NO SE REGISTREN SOLICITUDES EN EL MISMO RANGO DE HORAS.
        
       Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
@@ -862,7 +991,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
 
              IF Lr_Cantidad.CANTIDAD >0 THEN  
-                Pv_Mensaje := 'ERROR 03: El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia '||Ld_Fecha||' ';
+                Pv_Mensaje := 'ERROR 06: El Empleado '||Lr_ExisteEmpleado.NOMBRE||' ya tiene registrada una solicitud de horas extras ingresada el dia '||Ld_Fecha||' ';
                 RAISE Le_Errors;
 
              END IF;
@@ -886,24 +1015,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       END LOOP;
       ----//END VALIDAR QUE NO SE REGISTREN SOLICITUDES EN EL MISMO RANGO DE HORAS.
       
-      ----VALIDAR AREAS QUE PUEDAN REGISTRAR SOLICITUD
-      
-      IF C_EXISTE_AREA%ISOPEN THEN
-            CLOSE C_EXISTE_AREA;
-      END IF;
-        
-        
-      OPEN C_EXISTE_AREA(Lv_nombreArea);
-      FETCH C_EXISTE_AREA INTO Lr_valor1;
-      
-      IF C_EXISTE_AREA%NOTFOUND THEN  
-          Pv_Mensaje := 'ERROR 04: No se puede registrar solicitud para el area'||' '||Lv_nombreArea;
-          RAISE Le_Errors;
-      END IF;
-      
-      CLOSE C_EXISTE_AREA;
-      
-      ----//END VALIDAR AREAS.
       
       
       
@@ -918,19 +1029,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           --JORNADA MATUTINA
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
+             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
              RAISE Le_Errors;
           END IF;
       
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 OR Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 <= Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1)THEN
-             Pv_Mensaje := 'Error 06:La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 08:La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
   
           IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraInicio1< Ld_HoraFinDia1+1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 < Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
@@ -1069,33 +1180,33 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           -- JORNADA NOCTURNA
           
           IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
               Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
               (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
               (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
           
-              Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
@@ -1380,40 +1491,38 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   
   ELSIF(Lv_EsFinDeSemana = 'S') THEN
   
-     
-     
      IF(Lv_JornadaEmpleado = 'N') THEN
      
          -- JORNADA NOCTURNA
          
           IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
               Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
               (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
               (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
           
-              Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 17: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 18: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 17: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 19: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
@@ -1903,7 +2012,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   
     
   IF(Ln_Contador = 0)THEN
-     Pv_Mensaje := 'Error 18: La hora inicio y hora fin ingresadas para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||', no entran en el rango de horas extra permitido ';
+     Pv_Mensaje := 'Error 20: La hora inicio y hora fin ingresadas para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||', no entran en el rango de horas extra permitido ';
      RAISE Le_Errors;
   END IF;
   
@@ -2517,12 +2626,32 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   AS
       
       Ln_IdSolicitud            NUMBER;
-      Ln_IdHorasSolicitud       apex_t_varchar2;
+      Ln_IdSolicitud_1          NUMBER;
       Lv_Estado                 VARCHAR2(15);
       Lv_nombrePantalla         VARCHAR2(25);
       Lv_EmpresaCod             VARCHAR2(2);
       Lv_Usuario                VARCHAR2(25);
+      Lv_EsSuperUsuario         VARCHAR2(20);
+      Ld_FechaCorte             DATE;	
+      Ld_FechaActual            DATE;
+      Ln_ContadorSolicitudes    NUMBER:=0;
+      Ln_ContadorSoli           NUMBER:=1;
+      Lv_Mes_Solicitud          VARCHAR2(25);
+      Lv_Mensaje                VARCHAR2(25);
       Le_Errors                 EXCEPTION;
+      
+      CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
+       SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+         WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
+       WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_CONSULTA';
+       
+       
+       CURSOR C_FECHA_SOLICITUDES(Cv_IdHorasSolicitudes NUMBER)IS
+        SELECT FECHA FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD WHERE ID_HORAS_SOLICITUD = Cv_IdHorasSolicitudes;
+       
+       Ln_IdHorasSolicitud      apex_t_varchar2;
+       Lr_valor_1               DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
+       Lr_FechaSolicitud        DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.FECHA%TYPE;
       
   BEGIN
   
@@ -2533,6 +2662,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_nombrePantalla   := APEX_JSON.get_varchar2(p_path => 'nombrePantalla');
     Lv_Usuario          := APEX_JSON.get_varchar2(p_path => 'usuario');
     Lv_EmpresaCod       := APEX_JSON.get_varchar2(p_path => 'empresaCod');
+    Lv_EsSuperUsuario   := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
+    
     
     -- VALIDACIONES
         IF Lv_Estado IS NULL THEN
@@ -2544,8 +2675,97 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             Pv_Mensaje := 'El parámetro empresaCod está vacío';
             RAISE Le_Errors;
         END IF;
+        
+        IF C_DIA_CORTE%ISOPEN THEN
+          CLOSE C_DIA_CORTE;
+        END IF;
+        
+        OPEN C_DIA_CORTE(Lv_EsSuperUsuario);
+        FETCH C_DIA_CORTE INTO Lr_valor_1;
+        IF C_DIA_CORTE%FOUND THEN  
+           SELECT TO_DATE(Lr_valor_1||'-'||TO_CHAR(SYSDATE,'MM-YYYY'),'DD-MM-YY')FECHA_CORTE
+             INTO Ld_FechaCorte
+           FROM DUAL;          
+        END IF;
+
+        CLOSE C_DIA_CORTE;
+        
+        Ld_FechaActual:= SYSDATE;        
+        
+        Ln_ContadorSolicitudes:= Ln_IdHorasSolicitud.COUNT;
+        WHILE Ln_ContadorSoli <= Ln_ContadorSolicitudes LOOP
+        
+           Ln_IdSolicitud_1 := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSoli));
+           
+           IF C_FECHA_SOLICITUDES%ISOPEN THEN CLOSE C_FECHA_SOLICITUDES; END IF;
+           
+           OPEN C_FECHA_SOLICITUDES(Ln_IdSolicitud_1);
+           FETCH C_FECHA_SOLICITUDES INTO Lr_FechaSolicitud;
+           
+           Lv_Mes_Solicitud:= TO_CHAR(Lr_FechaSolicitud,'MM');
+
+           CASE Lv_Mes_Solicitud
+              WHEN  '01' THEN
+                Lv_Mes_Solicitud :='Enero';
+              WHEN  '02' THEN
+                Lv_Mes_Solicitud :='Febrero';
+              WHEN  '03' THEN
+                Lv_Mes_Solicitud :='Marzo';
+              WHEN  '04' THEN
+                Lv_Mes_Solicitud :='Abril';
+              WHEN  '05' THEN
+                Lv_Mes_Solicitud :='Mayo';
+              WHEN  '06' THEN
+                Lv_Mes_Solicitud :='Junio';
+              WHEN  '07' THEN
+                Lv_Mes_Solicitud :='Julio';
+              WHEN  '08' THEN
+                Lv_Mes_Solicitud :='Agosto';
+              WHEN  '09' THEN
+                Lv_Mes_Solicitud :='Septiembre';
+              WHEN  '10' THEN
+                Lv_Mes_Solicitud :='Octubre';
+              WHEN  '11' THEN
+                Lv_Mes_Solicitud :='Noviembre';
+              WHEN  '12' THEN
+                Lv_Mes_Solicitud :='Diciembre';
+            END CASE;
+           
+             ---- VALIDAR QUE SOLO SE PUEDAN Pre-Autorizar,Autorizar SOLICITUD PARA EL MES ACTUAL Y/O  MES VENCIDO
+             
+            IF Lv_EsSuperUsuario='Jefatura' THEN
+            
+              Lv_Mensaje:='Pre-Autorizar';
+                
+            ELSE
+            
+              Lv_Mensaje:='Autorizar';
+             
+            END IF;
+ 
+            IF( (TO_CHAR(Lr_FechaSolicitud,'MM') !=  TO_CHAR(Ld_FechaActual,'MM')) AND (TO_CHAR(Lr_FechaSolicitud,'MM') != TO_CHAR(ADD_MONTHS(Ld_FechaActual,-1),'MM')) ) THEN
+               Pv_Mensaje := 'ERROR 01: No se puede '||Lv_Mensaje||' solicitud para el mes de'||' '||Lv_Mes_Solicitud||' ,'||' mes inválido';
+               RAISE Le_Errors;
+            END IF;
+            
+            IF((TO_CHAR(Ld_FechaActual,'DD-MM-YYYY') > TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY')) AND(TO_CHAR(Lr_FechaSolicitud,'MM') != TO_CHAR(Ld_FechaActual,'MM')) )THEN
+               Pv_Mensaje := 'ERROR 02: No se puede '||Lv_Mensaje||' solicitud para el mes de'||' '||Lv_Mes_Solicitud||' el plazo máximo para '||Lv_Mensaje||' es hasta el'||' '||TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY');
+               RAISE Le_Errors;
+            END IF;
+
+            ----//END VALIDAR Pre-Autorizar,Autorizar SOLICITUD.
+            
+           
+           
+           CLOSE C_FECHA_SOLICITUDES;
+           
+        
+           Ln_ContadorSoli:= Ln_ContadorSoli+1;
+        
+        END LOOP;
+        
    
-       FOR Ln_ContadorSolicitud in 1 .. Ln_IdHorasSolicitud.COUNT LOOP
+        FOR Ln_ContadorSolicitud in 1 .. Ln_IdHorasSolicitud.COUNT LOOP
          
           Ln_IdSolicitud := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSolicitud));
           
@@ -2563,7 +2783,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           END IF;
           
           
-       END LOOP;
+        END LOOP;
   
               
         Pv_Status     := 'OK';
@@ -2623,7 +2843,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ld_FechaCorte                  DATE;
      Ld_FechaActual                 DATE;
      
-
      Lv_TotalHorasSimples           NUMBER;
      Lv_TotalMinutosSimples         NUMBER;
      Lv_TotalHorasDobles            NUMBER;
@@ -2635,13 +2854,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_TotalMinutosNocturno        NUMBER;
      Ln_TotalMinutosNocturno_1      NUMBER;
      
-
-     
      Lv_TotalHoraMinutoSimple       VARCHAR2(55);
      Lv_TotalHoraMinutoDoble        VARCHAR2(55);
      Lv_TotalHoraMinutoDoble_1      VARCHAR2(55);
      Lv_TotalHoraMinutoNocturno     VARCHAR2(55);
      Lv_TotalHoraMinutoNocturno_1   VARCHAR2(55);
+     Ln_ContadorFecha               NUMBER:=0;
+     Ln_ContadorEmpleado            NUMBER:=0;
      Ln_Contador                    NUMBER:=0;
      Ln_Contador1                   NUMBER:=0;
      Ln_Contador2                   NUMBER:=0;
@@ -2649,10 +2868,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_ContadorDocumentos          NUMBER:=0;
      Ln_ContadorCuadrilla           NUMBER:=0;
      Ln_ContadorCua                 NUMBER:=1;
+     Ln_ContadoreEmp                NUMBER:=1;
+     Ln_ContadorFecha_1             NUMBER:=1;
      Lv_bandera2                    VARCHAR2(6):='false';
      Lv_Mensaje                     VARCHAR2(30);
-
-     
 
      Ld_Fecha                       VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
@@ -2668,8 +2887,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_JornadaEmpleado             VARCHAR2(2); 
      Lv_EsFinDeSemana               VARCHAR2(2);
      Lv_EsDiaLibre                  VARCHAR2(2);
-     Lv_feInicioTarea               VARCHAR2(25);
-     Lv_feFinTarea                  VARCHAR2(25);
      Lv_nombreDepartamento          VARCHAR2(35);
      Lv_EsSuperUsuario              VARCHAR2(20);
      Lv_Mes_Solicitud               VARCHAR2(25);
@@ -2686,23 +2903,33 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      C_FechaDet                     C_Fecha_Det := C_Fecha_Det();
 
 
-    CURSOR C_TIPO_HORAS_EXTRA(Cv_TipoHorasExtra1 VARCHAR2,
+     CURSOR C_TIPO_HORAS_EXTRA(Cv_TipoHorasExtra1 VARCHAR2,
                                Cv_TipoHorasExtra2 VARCHAR2) IS 
        SELECT ID_TIPO_HORAS_EXTRA,TIPO_HORAS_EXTRA
         FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA IN(Cv_TipoHorasExtra1,Cv_TipoHorasExtra2)
        ORDER BY ID_TIPO_HORAS_EXTRA ASC;
        
-    CURSOR C_EXISTE_DEPARTAMENTO(Cv_Departamento VARCHAR2)IS
-       SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
-         WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='DEPARTAMENTO_TAREA_HE')
-       AND VALOR1=Cv_Departamento AND APD.ESTADO='Activo';
+       
+     CURSOR C_EXISTE_DEPARTAMENTO(Cv_Departamento VARCHAR2)IS
+        SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+          WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='DEPARTAMENTO_TAREA_HE')
+        AND VALOR1=Cv_Departamento AND APD.ESTADO='Activo';
+         
+     CURSOR C_EXISTE_CARGO_DEPARTAMENTO(Cv_Departamento VARCHAR2, Cv_CargoEmpleado VARCHAR2)IS
+         SELECT APD.VALOR2 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+           WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='ROLES_TAREA_HE')
+         AND VALOR1=Cv_Departamento AND VALOR2=Cv_CargoEmpleado AND APD.ESTADO='Activo';
+         
         
-    CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
-       SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
-         WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
-       WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_REGISTRO'
-       AND APD.ESTADO='Activo';
+     CURSOR C_CARGO_EMPLEADO(Cv_NoEmple VARCHAR2, Cv_NoCia VARCHAR2)IS
+        SELECT DESCRIPCION_CARGO,NOMBRE FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS WHERE NO_CIA=Cv_NoCia AND NO_EMPLE=Cv_NoEmple;
+        
+     CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
+        SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+          WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
+        WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_REGISTRO'
+        AND APD.ESTADO='Activo';
 
      
 
@@ -2711,12 +2938,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_NombreDocumento             apex_t_varchar2;
      Lv_UbicacionDocumento          apex_t_varchar2;
      Ln_IdCuadrilla                 apex_t_varchar2;
+     Lv_feInicioTarea               apex_t_varchar2;
+     Lv_feFinTarea                  apex_t_varchar2;
      Ln_IdHorasSolicitud            DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.ID_HORAS_SOLICITUD%TYPE;
      Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
      Ln_IdHorasSolicitudDetalle     DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE.ID_HORAS_SOLICITUD_DETALLE%TYPE;
      Ln_idTipoHoraExtra             DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA.ID_TIPO_HORAS_EXTRA%TYPE;
      Lr_Valor_1                     DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
      Lr_Departamento                DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
+     Lr_CargoEmpleado               C_CARGO_EMPLEADO%ROWTYPE;
+     Lr_CargoDepartamento           DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE;
      Lr_idTipoHoraExtra             C_TIPO_HORAS_EXTRA%ROWTYPE;
      Le_Errors                      EXCEPTION;
 
@@ -2745,6 +2976,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Ln_IdCuadrilla         := APEX_JSON.find_paths_like(p_return_path => 'idCuadrilla[%]' );
     Lv_nombreDepartamento  := APEX_JSON.get_varchar2(p_path => 'nombreDepartamento');
     Lv_EsSuperUsuario      := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
+    Lv_feInicioTarea       := APEX_JSON.find_paths_like(p_return_path => 'feInicioTarea[%]' );
+    Lv_feFinTarea          := APEX_JSON.find_paths_like(p_return_path => 'feFinTarea[%]' );
 
     
 
@@ -2895,6 +3128,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       END CASE;
 
 
+
       ---- VALIDAR QUE SOLO SE PUEDAN REGISTRAR SOLICITUD PARA EL MES ACTUAL Y/O  MES VENCIDO
 
       IF( (TO_CHAR(Ld_FechaSolicitud,'MM') !=  TO_CHAR(Ld_FechaActual,'MM')) AND (TO_CHAR(Ld_FechaSolicitud,'MM') != TO_CHAR(ADD_MONTHS(Ld_FechaActual,-1),'MM')) ) THEN
@@ -2911,9 +3145,103 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
       END IF;
       
-
-      ----//END VALIDAR REGISTRO SOLICITUD.
+      
+      
+      --VALIDAR SI EL DEPARTAMENTO DEBE INGRESAR TAREA EN LA SOLICITUD
+      
+         IF C_EXISTE_DEPARTAMENTO%ISOPEN THEN
+              CLOSE C_EXISTE_DEPARTAMENTO;
+         END IF;       
+        
+         OPEN C_EXISTE_DEPARTAMENTO(Lv_nombreDepartamento);
+         FETCH C_EXISTE_DEPARTAMENTO INTO Lr_Departamento;
+      
+         IF(C_EXISTE_DEPARTAMENTO%FOUND)THEN  
+          
+                 
+                     Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
+                     WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
+      
+                        IF C_CARGO_EMPLEADO%ISOPEN THEN CLOSE C_CARGO_EMPLEADO; END IF;
+                        OPEN C_CARGO_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),Lv_EmpresaCod);
+                        FETCH C_CARGO_EMPLEADO INTO Lr_CargoEmpleado;
+                        
+                        
+                        IF(C_CARGO_EMPLEADO%FOUND)THEN 
+                        
+                           IF C_EXISTE_CARGO_DEPARTAMENTO%ISOPEN THEN CLOSE C_EXISTE_CARGO_DEPARTAMENTO; END IF;
+                           OPEN C_EXISTE_CARGO_DEPARTAMENTO(Lv_nombreDepartamento,Lr_CargoEmpleado.DESCRIPCION_CARGO);
+                           FETCH C_EXISTE_CARGO_DEPARTAMENTO INTO Lr_CargoDepartamento;
+                       
+                          
+                           IF(C_EXISTE_CARGO_DEPARTAMENTO%NOTFOUND AND Lv_feInicioTarea.COUNT = 0)THEN
+                           
+                             Pv_Mensaje := 'Error 03: Se debe agregar una tarea para la solicitud de horas extras del empleado '||Lr_CargoEmpleado.NOMBRE||', 
+                                            cargo: '||Lr_CargoEmpleado.DESCRIPCION_CARGO||' ';
+                             RAISE Le_Errors;
+                             
+                           END IF;
+                        
+                           
+                           CLOSE C_EXISTE_CARGO_DEPARTAMENTO;
+                        
+                        END IF;
+                          
+          
+                        CLOSE C_CARGO_EMPLEADO;
+         
+                        Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
+                        
+       
+                     END LOOP;
+      
+                     Ln_ContadoreEmp:=1;
+                 
+              
+         END IF;
+      
+         CLOSE C_EXISTE_DEPARTAMENTO;
      
+      ----//END VALIDAR DEPARTAMENTO.
+      
+      --CONDICIONAL PARA VALIDAR TAREA
+      Ln_ContadorFecha:=Lv_feInicioTarea.COUNT;
+      IF Ln_ContadorFecha > 0 THEN
+      
+          WHILE Ln_ContadorFecha_1<= Ln_ContadorFecha LOOP
+      
+            Ld_FeInicioTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feInicioTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
+            Ld_FeFinTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feFinTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
+      
+            IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
+                 Lv_bandera2:='true';
+                 Ld_HoraFin1:=Ld_HoraFin1+1;
+            END IF;
+      
+     
+            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1<=Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+                Lv_Mensaje:='Exito';
+          
+            ELSE
+      
+                Pv_Mensaje:='Error 04: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
+                             en el rango de fecha hora inicio y fin de la solicitud ';
+                RAISE Le_Errors;
+         
+            END IF;
+      
+            IF(Lv_bandera2 = 'true')THEN
+  
+                Ld_HoraFin1 := Ld_HoraFin1-1;
+  
+            END IF;
+      
+            Ln_ContadorFecha_1:=Ln_ContadorFecha_1+1;
+          END LOOP;
+          Ln_ContadorFecha_1:=1;
+      END IF;
+      ----//END CONDICIONAL PARA VALIDAR TAREA.
+      
 
   IF Lv_EsFinDeSemana = 'N' THEN
   
@@ -2926,19 +3254,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           --JORNADA MATUTINA
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 03: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
+             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
              RAISE Le_Errors;
           END IF;
       
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 OR Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 <= Ld_HoraFinNoEstimadas1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1)THEN
-             Pv_Mensaje := 'Error 04:La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 06:La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
   
           IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraInicio1< Ld_HoraFinDia1+1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 < Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
@@ -3080,33 +3408,33 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           -- JORNADA NOCTURNA
           
           IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 06: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
               Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
               (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
               (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
           
-              Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
@@ -3396,33 +3724,33 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          -- JORNADA NOCTURNA
          
           IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
               Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
               (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
           IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
               (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
           
-              Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
           
           
           IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
           AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+             Pv_Mensaje := 'Error 17: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
              RAISE Le_Errors;
           END IF;
           
@@ -3911,7 +4239,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   END IF;
   
    IF(Ln_Contador = 0)THEN
-     Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
+     Pv_Mensaje := 'Error 18: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
      RAISE Le_Errors;
    END IF;
     
