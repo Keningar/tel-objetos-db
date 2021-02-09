@@ -1291,6 +1291,12 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
     Lv_detalleValor   := APEX_JSON.get_varchar2(p_path => 'valorDetalle');   
 
     -- VALIDACIONES
+    IF Ln_IdElemento IS NULL AND Lv_detalleNombre IS NULL
+    THEN
+      Pv_Mensaje := 'Debe agregar al menos un parámetro para su busqueda';    
+      RAISE Le_Errors;
+    END IF;
+   
     IF Lv_detalleNombre IS NOT NULL AND Lv_detalleValor IS NULL THEN
       Pv_Mensaje := 'Debe agregar el valor para el detalle ingresado';     
       RAISE Le_Errors;
@@ -1392,14 +1398,11 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                    DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO T';
     Lcl_WhereAndJoin := '
               WHERE E.MODELO_ELEMENTO_ID = M.ID_MODELO_ELEMENTO
-                AND M.TIPO_ELEMENTO_ID = T.ID_TIPO_ELEMENTO
-                AND T.NOMBRE_TIPO_ELEMENTO = ''VEHICULO''
-                AND E.ESTADO = '''||Lv_Estado||'''';
-
+                AND M.TIPO_ELEMENTO_ID = T.ID_TIPO_ELEMENTO';
+               
     IF Ln_IdElemento IS NOT NULL THEN   
-        Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND E.ID_ELEMENTO = '||Ln_IdElemento||'';
-    END IF;
-    IF Lv_detalleNombre IS NOT NULL AND Lv_detalleValor IS NOT NULL THEN
+        Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND E.ID_ELEMENTO = '||Ln_IdElemento||' AND E.ESTADO = '''||Lv_Estado||'''';
+    ELSE --VALIDA DETALLE IMEI/CHIP
         IF Lv_detalleNombre = 'IMEI' OR Lv_detalleNombre = 'CHIP' THEN
             Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND E.ID_ELEMENTO = (SELECT 
                                         DGPS.ELEMENTO_ID
@@ -1414,7 +1417,8 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                         AND e.id_elemento    =  dgps.detalle_valor
                                         AND dgps.detalle_nombre = ''GPS''
                                         AND dgps.estado         = ''Activo''
-                                        AND d.estado            = ''Activo'')';
+                                        AND d.estado            = ''Activo'')
+                                  AND E.ESTADO = '''||Lv_Estado||'''';
         ELSE IF Lv_detalleNombre = 'GPS' THEN
             Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND E.ID_ELEMENTO = (SELECT
                                         dgps.elemento_id
@@ -1430,7 +1434,8 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                                 nombre_elemento = '''||Lv_detalleValor||'''
                                         )
                                         AND dgps.detalle_nombre = '''||Lv_detalleNombre||'''
-                                        AND dgps.estado = ''Activo'')';             
+                                        AND dgps.estado = ''Activo'')
+                                 AND E.ESTADO = '''||Lv_Estado||'''';             
              END IF;           
         END IF;
     END IF;                    
@@ -1675,7 +1680,6 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                      E.DESCRIPCION_ELEMENTO,
                      M.NOMBRE_MODELO_ELEMENTO AS MODELO,
                      T.NOMBRE_TIPO_ELEMENTO   AS TIPO,
-                     E.SERIE_LOGICA           AS PUBLISH_ID,
                      (SELECT DETALLE_VALOR
                       FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
                       WHERE ELEMENTO_ID = E.ID_ELEMENTO
