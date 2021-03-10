@@ -1,0 +1,20 @@
+/*
+  =========================================================
+  SCRIPT DE REVERSO - MODIFICACION DE TABLA GPS_DISPOSITIVO
+  =========================================================
+*/
+
+ALTER TABLE DB_MONITOREO.GPS_DISPOSITIVO drop column IP_CREACION
+/
+
+ALTER TABLE DB_MONITOREO.GPS_DISPOSITIVO drop column IP_ULT_MOD
+/
+
+ALTER TABLE DB_MONITOREO.GPS_DISPOSITIVO drop column ESTADO
+/
+
+ALTER TABLE DB_MONITOREO.GPS_DISPOSITIVO drop column USR_ULT_MOD
+/
+
+ALTER TABLE DB_MONITOREO.GPS_DISPOSITIVO drop column USR_CREACION
+/
