@@ -928,16 +928,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                  Ld_HoraFin1:=Ld_HoraFin1+1;
             END IF;
       
-            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1<=Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
        
                 Lv_Mensaje:='Exito';
           
-            ELSE
+            ELSIF Ld_FeInicioTarea1 >= Ld_HoraInicio1 AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND (Ld_FeFinTarea1<=Ld_HoraFin1 OR Ld_FeFinTarea1>=Ld_HoraFin1)  THEN
       
+                Lv_Mensaje:='Exito';
+                
+            ELSIF (Ld_FeInicioTarea1 < Ld_HoraInicio1 AND Ld_FeInicioTarea1 < Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1 > Ld_HoraFin1) AND
+                  (Ld_HoraFin1 > Ld_FeInicioTarea1 AND Ld_HoraFin1 <= Ld_FeFinTarea1) THEN
+               
+               Lv_Mensaje:='Exito';
+               
+            ELSE 
+            
                 Pv_Mensaje:='Error 05: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
-                             en el rango de fecha hora inicio y fin de la solicitud ';
+                             en el intervalo de tiempo de la fecha hora inicio y fin de la solicitud ';
                 RAISE Le_Errors;
-         
+            
             END IF;
       
             IF(Lv_bandera2 = 'true')THEN
@@ -3219,15 +3228,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             END IF;
       
      
-            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1<=Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+       
                 Lv_Mensaje:='Exito';
           
-            ELSE
+            ELSIF Ld_FeInicioTarea1 >= Ld_HoraInicio1 AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND (Ld_FeFinTarea1<=Ld_HoraFin1 OR Ld_FeFinTarea1>=Ld_HoraFin1)  THEN
       
+                Lv_Mensaje:='Exito';
+                
+            ELSIF (Ld_FeInicioTarea1 < Ld_HoraInicio1 AND Ld_FeInicioTarea1 < Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1 > Ld_HoraFin1) AND
+                  (Ld_HoraFin1 > Ld_FeInicioTarea1 AND Ld_HoraFin1 <= Ld_FeFinTarea1) THEN
+               
+               Lv_Mensaje:='Exito';
+               
+            ELSE 
+            
                 Pv_Mensaje:='Error 04: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
-                             en el rango de fecha hora inicio y fin de la solicitud ';
+                             en el intervalo de tiempo de la fecha hora inicio y fin de la solicitud ';
                 RAISE Le_Errors;
-         
+            
             END IF;
       
             IF(Lv_bandera2 = 'true')THEN
@@ -5377,7 +5396,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     
                 CURSOR C_REPORTE_SOLICITUDES_DET(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
-                         IHS.FECHA, 
+                         IHSD.FECHA_SOLICITUD_DET FECHA, 
                          (CASE WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NULL THEN '-'
                           WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NOT NULL THEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),' '),';','.')
                           ELSE '--' END)OBSERVACION,
@@ -5396,7 +5415,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                        
                 CURSOR C_REPORTE_SOLICITUDES_DET_B(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
-                         IHS.FECHA, 
+                         IHSD.FECHA_SOLICITUD_DET FECHA, 
                          (CASE WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NULL THEN '-'
                           WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NOT NULL THEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),' '),';','.')
                           ELSE '--' END)OBSERVACION,

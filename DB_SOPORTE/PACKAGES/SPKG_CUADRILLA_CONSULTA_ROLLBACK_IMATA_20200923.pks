@@ -185,7 +185,7 @@ create or replace package body                        DB_SOPORTE.SPKG_CUADRILLA_
               
     Lcl_WhereAndJoin := '
               JOIN DB_GENERAL.ADMI_DEPARTAMENTO AD ON AC.DEPARTAMENTO_ID = AD.ID_DEPARTAMENTO
-              WHERE AC.ESTADO=''Activo'' AND UPPER(AD.NOMBRE_DEPARTAMENTO)='''||Lv_NombreDepartamento||''' AND AD.EMPRESA_COD='''||Lv_EmpresaCod||''' ';
+              WHERE AC.ESTADO IN(''Activo'',''Prestado'') AND UPPER(AD.NOMBRE_DEPARTAMENTO)='''||Lv_NombreDepartamento||''' AND AD.EMPRESA_COD='''||Lv_EmpresaCod||''' ';
     
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin;
     

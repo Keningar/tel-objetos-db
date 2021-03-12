@@ -431,7 +431,7 @@ create or replace package                                                   DB_H
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
-   
+  
     PROCEDURE P_GUARDAR_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2)
@@ -703,6 +703,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Mensaje := 'El parámetro empresaCod está vacío';
       RAISE Le_Errors;
     END IF;
+    
 
     IF Lv_UsrCreacion IS NULL THEN
       Pv_Mensaje := 'El parámetro usrCreacion está vacío';
@@ -927,16 +928,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                  Ld_HoraFin1:=Ld_HoraFin1+1;
             END IF;
       
-            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1<=Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
        
                 Lv_Mensaje:='Exito';
           
-            ELSE
+            ELSIF Ld_FeInicioTarea1 >= Ld_HoraInicio1 AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND (Ld_FeFinTarea1<=Ld_HoraFin1 OR Ld_FeFinTarea1>=Ld_HoraFin1)  THEN
       
+                Lv_Mensaje:='Exito';
+                
+            ELSIF (Ld_FeInicioTarea1 < Ld_HoraInicio1 AND Ld_FeInicioTarea1 < Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1 > Ld_HoraFin1) AND
+                  (Ld_HoraFin1 > Ld_FeInicioTarea1 AND Ld_HoraFin1 <= Ld_FeFinTarea1) THEN
+               
+               Lv_Mensaje:='Exito';
+               
+            ELSE 
+            
                 Pv_Mensaje:='Error 05: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
-                             en el rango de fecha hora inicio y fin de la solicitud ';
+                             en el intervalo de tiempo de la fecha hora inicio y fin de la solicitud ';
                 RAISE Le_Errors;
-         
+            
             END IF;
       
             IF(Lv_bandera2 = 'true')THEN
@@ -2625,12 +2635,32 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   AS
       
       Ln_IdSolicitud            NUMBER;
-      Ln_IdHorasSolicitud       apex_t_varchar2;
+      Ln_IdSolicitud_1          NUMBER;
       Lv_Estado                 VARCHAR2(15);
       Lv_nombrePantalla         VARCHAR2(25);
       Lv_EmpresaCod             VARCHAR2(2);
       Lv_Usuario                VARCHAR2(25);
+      Lv_EsSuperUsuario         VARCHAR2(20);
+      Ld_FechaCorte             DATE;	
+      Ld_FechaActual            DATE;
+      Ln_ContadorSolicitudes    NUMBER:=0;
+      Ln_ContadorSoli           NUMBER:=1;
+      Lv_Mes_Solicitud          VARCHAR2(25);
+      Lv_Mensaje                VARCHAR2(25);
       Le_Errors                 EXCEPTION;
+      
+      CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
+       SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+         WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
+       WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_CONSULTA';
+       
+       
+       CURSOR C_FECHA_SOLICITUDES(Cv_IdHorasSolicitudes NUMBER)IS
+        SELECT FECHA FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD WHERE ID_HORAS_SOLICITUD = Cv_IdHorasSolicitudes;
+       
+       Ln_IdHorasSolicitud      apex_t_varchar2;
+       Lr_valor_1               DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
+       Lr_FechaSolicitud        DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.FECHA%TYPE;
       
   BEGIN
   
@@ -2641,6 +2671,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_nombrePantalla   := APEX_JSON.get_varchar2(p_path => 'nombrePantalla');
     Lv_Usuario          := APEX_JSON.get_varchar2(p_path => 'usuario');
     Lv_EmpresaCod       := APEX_JSON.get_varchar2(p_path => 'empresaCod');
+    Lv_EsSuperUsuario   := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
+    
     
     -- VALIDACIONES
         IF Lv_Estado IS NULL THEN
@@ -2652,8 +2684,97 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             Pv_Mensaje := 'El parámetro empresaCod está vacío';
             RAISE Le_Errors;
         END IF;
+        
+        IF C_DIA_CORTE%ISOPEN THEN
+          CLOSE C_DIA_CORTE;
+        END IF;
+        
+        OPEN C_DIA_CORTE(Lv_EsSuperUsuario);
+        FETCH C_DIA_CORTE INTO Lr_valor_1;
+        IF C_DIA_CORTE%FOUND THEN  
+           SELECT TO_DATE(Lr_valor_1||'-'||TO_CHAR(SYSDATE,'MM-YYYY'),'DD-MM-YY')FECHA_CORTE
+             INTO Ld_FechaCorte
+           FROM DUAL;          
+        END IF;
+
+        CLOSE C_DIA_CORTE;
+        
+        Ld_FechaActual:= SYSDATE;        
+        
+        Ln_ContadorSolicitudes:= Ln_IdHorasSolicitud.COUNT;
+        WHILE Ln_ContadorSoli <= Ln_ContadorSolicitudes LOOP
+        
+           Ln_IdSolicitud_1 := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSoli));
+           
+           IF C_FECHA_SOLICITUDES%ISOPEN THEN CLOSE C_FECHA_SOLICITUDES; END IF;
+           
+           OPEN C_FECHA_SOLICITUDES(Ln_IdSolicitud_1);
+           FETCH C_FECHA_SOLICITUDES INTO Lr_FechaSolicitud;
+           
+           Lv_Mes_Solicitud:= TO_CHAR(Lr_FechaSolicitud,'MM');
+
+           CASE Lv_Mes_Solicitud
+              WHEN  '01' THEN
+                Lv_Mes_Solicitud :='Enero';
+              WHEN  '02' THEN
+                Lv_Mes_Solicitud :='Febrero';
+              WHEN  '03' THEN
+                Lv_Mes_Solicitud :='Marzo';
+              WHEN  '04' THEN
+                Lv_Mes_Solicitud :='Abril';
+              WHEN  '05' THEN
+                Lv_Mes_Solicitud :='Mayo';
+              WHEN  '06' THEN
+                Lv_Mes_Solicitud :='Junio';
+              WHEN  '07' THEN
+                Lv_Mes_Solicitud :='Julio';
+              WHEN  '08' THEN
+                Lv_Mes_Solicitud :='Agosto';
+              WHEN  '09' THEN
+                Lv_Mes_Solicitud :='Septiembre';
+              WHEN  '10' THEN
+                Lv_Mes_Solicitud :='Octubre';
+              WHEN  '11' THEN
+                Lv_Mes_Solicitud :='Noviembre';
+              WHEN  '12' THEN
+                Lv_Mes_Solicitud :='Diciembre';
+            END CASE;
+           
+             ---- VALIDAR QUE SOLO SE PUEDAN Pre-Autorizar,Autorizar SOLICITUD PARA EL MES ACTUAL Y/O  MES VENCIDO
+             
+            IF Lv_EsSuperUsuario='Jefatura' THEN
+            
+              Lv_Mensaje:='Pre-Autorizar';
+                
+            ELSE
+            
+              Lv_Mensaje:='Autorizar';
+             
+            END IF;
+ 
+            IF( (TO_CHAR(Lr_FechaSolicitud,'MM') !=  TO_CHAR(Ld_FechaActual,'MM')) AND (TO_CHAR(Lr_FechaSolicitud,'MM') != TO_CHAR(ADD_MONTHS(Ld_FechaActual,-1),'MM')) ) THEN
+               Pv_Mensaje := 'ERROR 01: No se puede '||Lv_Mensaje||' solicitud para el mes de'||' '||Lv_Mes_Solicitud||' ,'||' mes inválido';
+               RAISE Le_Errors;
+            END IF;
+            
+            IF((TO_CHAR(Ld_FechaActual,'DD-MM-YYYY') > TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY')) AND(TO_CHAR(Lr_FechaSolicitud,'MM') != TO_CHAR(Ld_FechaActual,'MM')) )THEN
+               Pv_Mensaje := 'ERROR 02: No se puede '||Lv_Mensaje||' solicitud para el mes de'||' '||Lv_Mes_Solicitud||' el plazo máximo para '||Lv_Mensaje||' es hasta el'||' '||TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY');
+               RAISE Le_Errors;
+            END IF;
+
+            ----//END VALIDAR Pre-Autorizar,Autorizar SOLICITUD.
+            
+           
+           
+           CLOSE C_FECHA_SOLICITUDES;
+           
+        
+           Ln_ContadorSoli:= Ln_ContadorSoli+1;
+        
+        END LOOP;
+        
    
-       FOR Ln_ContadorSolicitud in 1 .. Ln_IdHorasSolicitud.COUNT LOOP
+        FOR Ln_ContadorSolicitud in 1 .. Ln_IdHorasSolicitud.COUNT LOOP
          
           Ln_IdSolicitud := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSolicitud));
           
@@ -2671,7 +2792,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           END IF;
           
           
-       END LOOP;
+        END LOOP;
   
               
         Pv_Status     := 'OK';
@@ -3107,15 +3228,25 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             END IF;
       
      
-            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1<=Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+            IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
+       
                 Lv_Mensaje:='Exito';
           
-            ELSE
+            ELSIF Ld_FeInicioTarea1 >= Ld_HoraInicio1 AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND (Ld_FeFinTarea1<=Ld_HoraFin1 OR Ld_FeFinTarea1>=Ld_HoraFin1)  THEN
       
+                Lv_Mensaje:='Exito';
+                
+            ELSIF (Ld_FeInicioTarea1 < Ld_HoraInicio1 AND Ld_FeInicioTarea1 < Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1 > Ld_HoraFin1) AND
+                  (Ld_HoraFin1 > Ld_FeInicioTarea1 AND Ld_HoraFin1 <= Ld_FeFinTarea1) THEN
+               
+               Lv_Mensaje:='Exito';
+               
+            ELSE 
+            
                 Pv_Mensaje:='Error 04: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
-                             en el rango de fecha hora inicio y fin de la solicitud ';
+                             en el intervalo de tiempo de la fecha hora inicio y fin de la solicitud ';
                 RAISE Le_Errors;
-         
+            
             END IF;
       
             IF(Lv_bandera2 = 'true')THEN
