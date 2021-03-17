@@ -339,10 +339,6 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     Lv_Estado              VARCHAR2(500);
     Lv_Identificacion      VARCHAR2(1000);
     Lv_Login               VARCHAR2(1000);
-    Lv_ListEstado          VARCHAR2(1000);
-    Lv_IdEstado            VARCHAR2(500);
-    Ln_CountListEstado     INTEGER :=0;
-    Lb_FiltroListEstado    BOOLEAN := FALSE;
     Ln_RolId           	   NUMBER;
     Ln_TipoRolId           NUMBER;
     Ln_IdPersona           NUMBER;
@@ -360,22 +356,13 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     Ln_EmpresaId          := APEX_JSON.get_number(p_path => 'empresaId');
     Lv_Identificacion     := APEX_JSON.get_varchar2(p_path => 'identificacion');
     Lv_Login              := APEX_JSON.get_varchar2(p_path => 'login');
-    Ln_CountListEstado    := APEX_JSON.GET_COUNT(p_path => 'listEstado');
-
+    
     -- VALIDACIONES
     IF Ln_RolId IS NULL AND Lv_DescripcionRol IS NULL AND Ln_TipoRolId IS NULL AND Lv_DescripcionTipoRol IS NULL THEN
       Pv_Mensaje := 'El parámetro rolId o descripcionRol para rol y tipoRolId o descripcionTipoRol para tipo de rol está vacío';
       RAISE Le_Errors;
     END IF;
-    IF Ln_CountListEstado IS NOT NULL THEN
-      FOR i IN 1 .. Ln_CountListEstado LOOP
-        APEX_JSON.PARSE(Pcl_Request);
-        Lv_IdEstado         := APEX_JSON.get_varchar2(p_path => 'listEstado[%d]',  p0 => i);
-        Lv_ListEstado       := CONCAT(Lv_ListEstado,CONCAT(''''||Lv_IdEstado||'''',','));
-        Lb_FiltroListEstado := TRUE;
-      END LOOP;
-    END IF;    
-    IF Lv_Estado IS NULL AND Lb_FiltroListEstado = FALSE THEN
+    IF Lv_Estado IS NULL THEN
       Lv_Estado := 'Activo';
     END IF;
     IF Ln_EmpresaId IS NULL THEN
@@ -395,14 +382,10 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                 AND IPER.EMPRESA_ROL_ID = IER.ID_EMPRESA_ROL
                 AND IER.ROL_ID = AR.ID_ROL
                 AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL
+                AND IP.ESTADO = '''||Lv_Estado||'''
                 AND IPER.ESTADO = ''Activo''
                 AND ATR.ESTADO = ''Activo''
                 AND IER.EMPRESA_COD = '||Ln_EmpresaId||'';
-    IF Lb_FiltroListEstado THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ESTADO IN ('||SUBSTR(Lv_ListEstado, 1, LENGTHB(Lv_ListEstado) - 1)||')';
-    ELSE
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ESTADO = '''||Lv_Estado||'''';
-    END IF;
     IF Ln_RolId IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AR.ID_ROL = '||Ln_RolId;
     END IF;
