@@ -1735,7 +1735,7 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                                AND ESTADO = ''Activo'')
                           AND ESTADO = ''Activo'')
                      WHEN T.NOMBRE_TIPO_ELEMENTO = ''TABLET'' THEN
-                      (SELECT MAX(IE.NOMBRE_ELEMENTO) FROM
+                      (SELECT IE.NOMBRE_ELEMENTO FROM
                         DB_INFRAESTRUCTURA.INFO_ELEMENTO IE,
                         DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO IDE
                         WHERE IDE.ELEMENTO_ID = IE.ID_ELEMENTO
