@@ -106,7 +106,7 @@ create or replace package body                        DB_SOPORTE.SPKG_CUADRILLA_
               JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.LOGIN_EMPLE = IP.LOGIN
               JOIN DB_COMERCIAL.ADMI_CUADRILLA AC ON AC.ID_CUADRILLA = IPER.CUADRILLA_ID
               WHERE IPER.ESTADO=''Activo'' AND IER.EMPRESA_COD='''||Lv_EmpresaCod||'''
-              AND VEE.NOMBRE_DEPTO='''||Lv_NombreDepartamento||''' AND AC.ESTADO=''Activo'' ';
+              AND VEE.NOMBRE_DEPTO='''||Lv_NombreDepartamento||''' AND AC.ESTADO IN(''Activo'',''Prestado'') ';
               
     IF Lv_NombreCuadrilla IS NOT NULL THEN
       
@@ -205,4 +205,3 @@ create or replace package body                        DB_SOPORTE.SPKG_CUADRILLA_
 
 END SPKG_CUADRILLA_CONSULTA;
 /
-

@@ -105,8 +105,8 @@ create or replace package body                        DB_SOPORTE.SPKG_CUADRILLA_
               JOIN DB_COMERCIAL.INFO_EMPRESA_ROL IER ON IER.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
               JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.LOGIN_EMPLE = IP.LOGIN
               JOIN DB_COMERCIAL.ADMI_CUADRILLA AC ON AC.ID_CUADRILLA = IPER.CUADRILLA_ID
-              WHERE IPER.ESTADO=''Activo'' AND IER.EMPRESA_COD='''||Lv_EmpresaCod||'''
-              AND VEE.NOMBRE_DEPTO='''||Lv_NombreDepartamento||''' AND AC.ESTADO IN(''Activo'',''Prestado'') ';
+              WHERE IPER.ESTADO=''Activo'' AND IP.ESTADO=''Activo'' AND IER.EMPRESA_COD='''||Lv_EmpresaCod||'''
+              AND VEE.NOMBRE_DEPTO='''||Lv_NombreDepartamento||''' AND VEE.ESTADO=''A'' AND AC.ESTADO IN(''Activo'',''Prestado'') ';
               
     IF Lv_NombreCuadrilla IS NOT NULL THEN
       

@@ -5396,7 +5396,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     
                 CURSOR C_REPORTE_SOLICITUDES_DET(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
-                         IHS.FECHA, 
+                         IHSD.FECHA_SOLICITUD_DET FECHA, 
                          (CASE WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NULL THEN '-'
                           WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NOT NULL THEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),' '),';','.')
                           ELSE '--' END)OBSERVACION,
@@ -5415,7 +5415,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                        
                 CURSOR C_REPORTE_SOLICITUDES_DET_B(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
-                         IHS.FECHA, 
+                         IHSD.FECHA_SOLICITUD_DET FECHA, 
                          (CASE WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NULL THEN '-'
                           WHEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),''),';','.') IS NOT NULL THEN REPLACE(REPLACE(IHS.OBSERVACION,CHR(10),' '),';','.')
                           ELSE '--' END)OBSERVACION,

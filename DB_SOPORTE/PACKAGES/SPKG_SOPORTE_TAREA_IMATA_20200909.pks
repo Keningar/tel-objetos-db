@@ -68,7 +68,7 @@ create or replace package body                                DB_SOPORTE.SPKG_SO
                      JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER ON IPER.ID_PERSONA_ROL= IDA.PERSONA_EMPRESA_ROL_ID
                      JOIN DB_COMERCIAL.INFO_PERSONA IP ON IP.ID_PERSONA = IPER.PERSONA_ID
                      JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.LOGIN_EMPLE = IP.LOGIN 
-                     WHERE ICO.ID_COMUNICACION='||Lv_NumeroTarea||'
+                     WHERE ICO.ID_COMUNICACION='||Lv_NumeroTarea||' AND VEE.ESTADO=''A'' AND IPER.ESTADO=''Activo''
                      AND VEE.NO_CIA='''||Lv_EmpresaCod||''' AND VEE.NOMBRE_DEPTO = '''||Lv_NombreDepartamento||''' ';
       
       

@@ -240,7 +240,7 @@ END HEKG_HORASEXTRAS_CONSULTA;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
 
-   PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
+    PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR)
@@ -455,13 +455,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
       IF Lv_Provincia IS NOT NULL THEN
 
-          Lcl_Where := Lcl_Where || ' AND VEE.NOMBRE_PROVINCIA ='''||Lv_Provincia||''' ';
+          Lcl_Where := Lcl_Where || ' AND VEE.OFICINA_PROVINCIA ='''||Lv_Provincia||''' ';
 
       END IF;
 
       IF Lv_Canton IS NOT NULL THEN
 
-          Lcl_Where := Lcl_Where || ' AND VEE.NOMBRE_CANTON ='''||Lv_Canton||''' ';
+          Lcl_Where := Lcl_Where || ' AND VEE.OFICINA_CANTON ='''||Lv_Canton||''' ';
 
       END IF;
 
@@ -987,13 +987,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
          IF Lv_Provincia IS NOT NULL THEN
 
-             Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE_PROVINCIA ='''||Lv_Provincia||''' ';
+             Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.OFICINA_PROVINCIA ='''||Lv_Provincia||''' ';
 
          END IF;
 
          IF Lv_Canton IS NOT NULL THEN
 
-             Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE_CANTON ='''||Lv_Canton||''' ';
+             Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.OFICINA_CANTON ='''||Lv_Canton||''' ';
 
          END IF;
 
@@ -1325,8 +1325,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                     JOIN DB_COMERCIAL.INFO_EMPRESA_ROL IER ON IER.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
                     JOIN DB_COMERCIAL.ADMI_CUADRILLA AC ON AC.ID_CUADRILLA = IPER.CUADRILLA_ID
                     WHERE IHS.EMPRESA_COD='''||Lv_EmpresaCod||''' AND VEE.NO_CIA='''||Lv_EmpresaCod||''' AND IHS.ID_HORAS_SOLICITUD='''||Ln_IdHorasSolicitud||'''
-                    AND IER.EMPRESA_COD='''||Lv_EmpresaCod||''' AND IHS.ESTADO IN(''Pendiente'',''Anulada'')
-                    AND VEE.NOMBRE_DEPTO='''||Lv_nombreDpto||''' ';
+                    AND IER.EMPRESA_COD='''||Lv_EmpresaCod||''' AND IHS.ESTADO IN(''Pendiente'',''Anulada'') AND VEE.ESTADO=''A''
+                    AND VEE.NOMBRE_DEPTO='''||Lv_nombreDpto||''' AND IP.ESTADO=''Activo'' ';
 
       Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin;
 
