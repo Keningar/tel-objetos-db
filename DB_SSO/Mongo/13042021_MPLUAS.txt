@@ -1,0 +1,42 @@
+// Ejecutar en la base mongo SSO
+
+// Indixe bitacoraSSO - event_date
+db.getCollection("bitacoraSSO").createIndex({ "event_date": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe bitacoraSSO - service
+db.getCollection("bitacoraSSO").createIndex({ "service": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe bitacoraSSO - action
+db.getCollection("bitacoraSSO").createIndex({ "action": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe bitacoraSSO - type
+db.getCollection("bitacoraSSO").createIndex({ "type": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe bitacoraSSO - login
+db.getCollection("bitacoraSSO").createIndex({ "login": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe session - tgt
+db.getCollection("session").createIndex({ "tgt": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe session - login
+db.getCollection("session").createIndex({ "login": -1 }, {
+    "sparse": true,
+    "background": true
+})
+// Indixe tgt - username
+db.getCollection("user").createIndex({ "username": -1 }, {
+    "sparse": true,
+    "background": true
+})

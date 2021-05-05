@@ -1,0 +1,11 @@
+// Ejecutar en la base mongo SSO
+
+// Update
+db.bitacoraSSO.updateMany({"action": "AUTENTICACIÓN"}, 
+    {$set:{"action": "AUTENTICACION"}}
+)
+
+// Update
+db.bitacoraSSO.updateMany({"action": "AUTORIZACIÓN"}, 
+    {$set:{"action": "AUTORIZACION"}}
+)
