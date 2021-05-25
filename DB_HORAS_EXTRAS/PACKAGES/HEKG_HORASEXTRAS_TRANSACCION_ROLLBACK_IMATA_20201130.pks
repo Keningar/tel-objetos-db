@@ -148,8 +148,8 @@ create or replace package                                                   DB_H
    * @author Ivan Mata <imata@telconet.ec>
    * @version 1.0 22-10-2020
    */   
-   PROCEDURE P_INSERT_SOLICITUD_HEXTRA(Pn_IdHorasSolicitud    IN NUMBER,
-                                      Pv_Fecha               IN VARCHAR2,
+   PROCEDURE P_INSERT_SOLICITUD_HEXTRA(Pn_IdHorasSolicitud   IN NUMBER,
+                                      Pd_Fecha               IN DATE,
                                       Pv_HoraInicio          IN VARCHAR2,
                                       Pv_HoraFin             IN VARCHAR2,
                                       Pv_observacion         IN VARCHAR2,
@@ -1145,6 +1145,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                
            
                 END LOOP;
+                
            
           END IF;
           
@@ -2031,10 +2032,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         
   END IF;
       
-
-    
       --Insercion en la tablas
-     
       
       IF (Lv_Descripcion = 'IND_TAR_HN_SM' OR Lv_Descripcion ='IND_TAR_SM' OR Lv_Descripcion='IND_CUAD_HN_SM' OR  Lv_Descripcion='IND_CUAD_SM' OR
           Lv_Descripcion='Unitaria') THEN
@@ -2173,7 +2171,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                       Ln_IdHorasSolicitud := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD.NEXTVAL;
            
                       P_INSERT_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud,
-                                                Ld_Fecha,
+                                                TO_DATE(Ld_Fecha,'DD-MM-YYYY'),
                                                 Lv_HoraInicio,
                                                 Lv_HoraFin,
                                                 Lv_observacion,
@@ -2306,7 +2304,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       
       
             P_INSERT_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud2,
-                                      Ld_Fecha,
+                                      TO_DATE(Ld_Fecha,'DD-MM-YYYY'),
                                       Lv_HoraInicio,
                                       Lv_HoraFin,
                                       Lv_observacion,
@@ -4401,7 +4399,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
   END P_ACTUALIZAR_SOLICITUD_HEXTRA;
   
   PROCEDURE P_INSERT_SOLICITUD_HEXTRA(Pn_IdHorasSolicitud    IN NUMBER,
-                                      Pv_Fecha               IN VARCHAR2,
+                                      Pd_Fecha               IN DATE,
                                       Pv_HoraInicio          IN VARCHAR2,
                                       Pv_HoraFin             IN VARCHAR2,
                                       Pv_observacion         IN VARCHAR2,
@@ -4439,7 +4437,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         VALUES
         (
         Pn_IdHorasSolicitud,
-        TO_DATE(Pv_Fecha,'DD-MM-YYYY'),
+        Pd_Fecha,
         Pv_HoraInicio,
         Pv_HoraFin,
         Pv_observacion,
@@ -5408,10 +5406,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                          JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
                          JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
                        WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
-                          AND TO_CHAR(IHS.FECHA,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY') =TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
                           AND IHS.ESTADO='Autorizada' AND IHSE.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
                           AND VEE.TIPO_EMP NOT IN('03')
                        ORDER BY VEE.NOMBRE_DEPTO,VEE.NOMBRE, IHS.ID_HORAS_SOLICITUD;
+                       
                        
                 CURSOR C_REPORTE_SOLICITUDES_DET_B(Cv_EmpresaCod VARCHAR2) IS
                   SELECT VEE.CEDULA, VEE.NOMBRE,
@@ -5427,7 +5426,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                          JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
                          JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
                        WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
-                          AND TO_CHAR(IHS.FECHA,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
+                          AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
                           AND IHS.ESTADO='Autorizada' AND IHSE.ESTADO='Autorizada' AND IHSD.ESTADO='Autorizada'
                           AND VEE.TIPO_EMP NOT IN('03')
                        ORDER BY VEE.NOMBRE_DEPTO,VEE.NOMBRE, IHS.ID_HORAS_SOLICITUD;
@@ -6010,3 +6009,4 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
+

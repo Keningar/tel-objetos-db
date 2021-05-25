@@ -1,7 +1,7 @@
 SET DEFINE OFF;
 create or replace package                                      DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
 
-        /**
+   /**
   * Documentación para el procedimiento P_CONSULTA_HORASEXTRA
   *
   * Método encargado de consultar la solicitud de horas extras
@@ -15,6 +15,11 @@ create or replace package                                      DB_HORAS_EXTRAS.H
   *   esSuperUsuario := variable parametrizada para usuarios admin
   *   fechaInicio    := fecha inicio de la hora de la solicitud
   *   fechaFin       := fecha fin de la hora de la solicitud
+  *   nombres        := nombres del empleado
+  *   provincia      := nombre de la provincia
+  *   canton         := nombre del cantón
+  *   idCuadrilla    := id de la cuadrilla
+  *   tipoHorasExtra := nombre del tipo de horas extras
   *
   * ]
   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
@@ -29,7 +34,27 @@ create or replace package                                      DB_HORAS_EXTRAS.H
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR);
                                    
-                                
+       
+   /**
+  * Documentación para la función F_CALCULAR_HORAS
+  *
+  * Función encargada de calcular el total de horas de una solicitud
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   Pn_IdHorasSolicitud   := id de la solicitud,
+  *   Pv_Estado             := estado de la solicitud,
+  *
+  * ]
+  * @return Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  *
+  * @author Ivan Mata <imata@telconet.ec>
+  * @version 1.0 05-05-2021
+  */
+   FUNCTION F_CALCULAR_HORAS(Pn_IdHorasSolicitud NUMBER,
+                             Pv_Estado           VARCHAR2) RETURN VARCHAR2;
+   
+   
    /**
   * Documentación para el procedimiento P_CONSULTA_DETALLE_HEXTRA
   *
@@ -234,13 +259,14 @@ create or replace package                                      DB_HORAS_EXTRAS.H
     PROCEDURE P_TIPOS_HORAS_EXTRAS(Pcl_Request   IN CLOB,
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2,
-                                  Pcl_Response OUT SYS_REFCURSOR);
+                                  Pcl_Response OUT SYS_REFCURSOR); 
+
 
 END HEKG_HORASEXTRAS_CONSULTA;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
 
-    PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
+     PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR)
@@ -294,6 +320,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
       -- VALIDACIONES
 
+
         IF Lv_EmpresaCod IS NULL THEN
             Pv_Mensaje := 'El parámetro empresaCod está vacío';
             RAISE Le_Errors;
@@ -325,15 +352,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         END IF;
 
         CLOSE C_DIA_CORTE;
+        
 
       Ld_FechaActual:= SYSDATE;
 
 
       Lcl_Select       := '
                  SELECT DISTINCT IHS.ID_HORAS_SOLICITUD,VEE.CEDULA,VEE.NOMBRE,TO_CHAR(TO_DATE(IHS.FECHA,''DD-MM-YY''),''DD-MM-YYYY'') FECHA_SOLICITUD,
-                 IHS.ESTADO ESTADO_SOLICITUD,A.HORAS, VEE.NOMBRE_DEPTO, IHS.DESCRIPCION,A_ITH.CANTIDAD_TAREA,IHS.HORA_INICIO,IHS.HORA_FIN, IHS.OBSERVACION,
-                 TIPO_HE.TIPO_HORAS_EXTRA ';
+                 IHS.ESTADO ESTADO_SOLICITUD,A.HORAS,VEE.NOMBRE_DEPTO, IHS.DESCRIPCION,A_ITH.CANTIDAD_TAREA,IHS.HORA_INICIO,IHS.HORA_FIN, IHS.OBSERVACION,
+                 TIPO_HE.TIPO_HORAS_EXTRA, '
+                 ||' DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA.F_CALCULAR_HORAS(IHS.ID_HORAS_SOLICITUD,IHS.ESTADO) TOTAL_HORAS ';
 
+                                
+                                
       Lcl_From         := '
                  FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS ';
 
@@ -492,7 +523,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                          ORDER BY IHS.ID_HORAS_SOLICITUD DESC ';
 
       Lcl_Query := Lcl_Select || Lcl_From || Lcl_Join|| Lcl_Where || Lcl_OrderAnGroup; 
-
+      
       OPEN Pcl_Response FOR Lcl_Query;
 
       Pv_Status     := 'OK';
@@ -503,9 +534,65 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_CONSULTA.P_CONSULTA_HORASEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_CONSULTA.P_CONSULTA_HORASEXTRA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
 
   END P_CONSULTA_HORASEXTRA;
+  
+  
+  FUNCTION F_CALCULAR_HORAS(Pn_IdHorasSolicitud NUMBER,
+                            Pv_Estado           VARCHAR2) RETURN VARCHAR2 
+  IS
+  
+    Lv_camp_retorna      VARCHAR2(20);
+    Ln_Segundos          NUMBER:=0;
+    Ln_SegundosB         NUMBER:=0;
+    Lv_TotalHoras        VARCHAR2(10);
+    Lv_MensajeError      VARCHAR2(4000);
+    Le_Exception         EXCEPTION;
+    
+    
+    CURSOR C_HORAS_SOLICITUD(Cn_IdHorasSolicitud NUMBER, Cv_Estado VARCHAR2) IS
+      SELECT IHSD.HORAS FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD 
+        WHERE HORAS_SOLICITUD_ID=Cn_IdHorasSolicitud AND ESTADO=Cv_Estado;
+    
+  BEGIN
+  
+     
+       FOR Lr_Solicitud IN C_HORAS_SOLICITUD(Pn_IdHorasSolicitud,Pv_Estado) LOOP
+       
+         SELECT REGEXP_SUBSTR(Lr_Solicitud.HORAS,'[^:]+',1,1)*60*60 + REGEXP_SUBSTR(Lr_Solicitud.HORAS,'[^:]+',1,2)*60 
+            INTO Ln_Segundos from dual;
+                                                   
+            Ln_SegundosB:=Ln_SegundosB+Ln_Segundos;
+       
+       END LOOP;
+       
+       SELECT TO_CHAR(TRUNC((Ln_SegundosB)/3600),'FM9900') || ':' ||TO_CHAR(TRUNC(MOD((Ln_SegundosB),3600)/60),'FM00') INTO Lv_totalHoras
+          FROM DUAL;
+     
+     
+     
+     RETURN Lv_totalHoras;
+     
+  EXCEPTION
+  WHEN OTHERS THEN
+  Lv_MensajeError:= 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_CONSULTA.F_CALCULAR_HORAS: - '||SQLCODE||' -ERROR- '||SQLERRM;
+       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                            'HEKG_HORASEXTRAS_CONSULTA.F_CALCULAR_HORAS: ',
+                                            Lv_MensajeError,
+                                            NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                            SYSDATE,
+                                            NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+  
+  RETURN Lv_totalHoras;
+  
+  END F_CALCULAR_HORAS;
 
   PROCEDURE P_CONSULTA_DETALLE_HEXTRA(Pcl_Request  IN  CLOB,
                                       Pv_Status    OUT VARCHAR2,
