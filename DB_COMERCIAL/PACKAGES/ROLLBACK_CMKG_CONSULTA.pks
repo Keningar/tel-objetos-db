@@ -1,0 +1,3 @@
+DROP PACKAGE db_comercial.CMKG_CONSULTA;
+
+/
