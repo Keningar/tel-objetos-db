@@ -66,6 +66,10 @@ AS
     *         Pv_Respuesta      -  Data Respuesta
     * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019
+    *
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 22-06-2021 - Se le realiza el update a la secuencia en este proceso
+    * @since 1.0
     */
 
     PROCEDURE P_GENERAR_SECUENCIA(
@@ -538,6 +542,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                NULL,
                Lv_Origen)
         RETURNING ID_CONTRATO INTO Ln_IdContrato;
+        COMMIT;
 
         --Clausulas
         IF Ln_CountClausulas IS NOT NULL
@@ -633,6 +638,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                          Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
 
         P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
+        COMMIT;
         IF Pv_Status IS NULL OR Pv_Status = 'ERROR'
         THEN
             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
@@ -739,6 +745,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
               END IF;
             END LOOP;
         END IF;
+        COMMIT;
 
         -- PROMO MENS
         IF Ln_CountPromoMens IS NOT NULL
@@ -840,6 +847,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
               END IF;
             END LOOP;
         END IF;
+        COMMIT;
 
         -- PROMO INS
         IF Ln_CountPromoIns IS NOT NULL
@@ -941,6 +949,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
               END IF;
             END LOOP;
         END IF;
+        COMMIT;
 
         -- PROMO BW
         IF Ln_CountPromoBw IS NOT NULL
@@ -1043,10 +1052,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
             END LOOP;
         END IF;
 
-        COMMIT;
-        --Actualización de la númeracion
-        Ln_SigSecuencia := Ln_Secuencia + 1;
-        UPDATE DB_COMERCIAL.ADMI_NUMERACION SET SECUENCIA = Ln_SigSecuencia WHERE ID_NUMERACION = Ln_IdNumeracion;
         COMMIT;
 
         OPEN Pcl_Response FOR
@@ -1453,7 +1458,12 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
         IF Pn_Secuencia IS NOT NULL AND Lv_NumeracionUno IS NOT NULL AND Lv_NumeracionDos IS NOT NULL
         THEN
+            --Actualización de la númeracion
             Lv_SecuenciaAsig  := LPAD(Pn_Secuencia,7,'0');
+            Pn_Secuencia      := Pn_Secuencia + 1;
+            UPDATE DB_COMERCIAL.ADMI_NUMERACION SET SECUENCIA = Pn_Secuencia WHERE ID_NUMERACION = Pn_IdNumeracion;
+            COMMIT;
+            
             Lv_NumeroContrato := CONCAT(CONCAT(CONCAT(Lv_NumeracionUno,CONCAT('-',Lv_NumeracionDos)),'-'),Lv_SecuenciaAsig);
         END IF;
         Pv_NumeroCA:= Lv_NumeroContrato;
@@ -1621,7 +1631,8 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                                 );
             END IF;
         END IF;
-        
+        COMMIT;
+
         IF Pv_DatosFormaPago.Pv_cambioRazonSocial = 'N' THEN
           --Update de la forma de pago del Ademdum
           FOR i IN C_GET_ADENDUM(Pv_DatosFormaPago.Pn_PuntoId)
@@ -1867,10 +1878,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
         THEN
             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
         END IF;
-        COMMIT;
-        --Actualización de la númeracion
-        Ln_SigSecuencia := Ln_Secuencia + 1;
-        UPDATE DB_COMERCIAL.ADMI_NUMERACION SET SECUENCIA = Ln_SigSecuencia WHERE ID_NUMERACION = Ln_IdNumeracion;
         COMMIT;
 
         OPEN Pcl_Response FOR
@@ -2158,6 +2165,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                     SET AN.SECUENCIA = Ln_SecuenciaSig
                 WHERE 
                     AN.ID_NUMERACION = Lv_IdNumeracion;
+                COMMIT;
             END IF;
 
             IF Ln_IdServicio IS NOT NULL
@@ -2386,6 +2394,8 @@ PROCEDURE P_GUARDAR_CONTRATO(
                     UPDATE DB_COMERCIAL.INFO_ADENDUM
                     SET ESTADO = Lv_EstadoActivo
                     WHERE ID_ADENDUM = Ln_IdAdendum;
+
+                    COMMIT;
 
                 ELSE
                     RAISE_APPLICATION_ERROR(-20101, 'No se encuentra adendum para activar');
@@ -4253,7 +4263,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                         SERVICIO_ID = Ln_IdServicioNuevo
                     WHERE ID_DETALLE_SOLICITUD = Ln_IdSolicitud;
                 END IF;
-
+              COMMIT;
             END IF;
 
         END IF;
