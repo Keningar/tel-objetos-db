@@ -1,0 +1,13 @@
+/*
+ * DROP DEL JOB 'JOB_ACTIVAR_NETLIFECLOUD'
+ */
+SET SERVEROUTPUT ON;
+BEGIN
+  DBMS_SCHEDULER.DROP_JOB(JOB_NAME => '"DB_COMERCIAL"."JOB_ACTIVAR_NETLIFECLOUD"',
+                          DEFER    => FALSE,
+                          FORCE    => TRUE);
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('El job aún no ha sido creado...');
+END;
+/
