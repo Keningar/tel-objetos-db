@@ -205,6 +205,7 @@ END CMKG_CONTRATO_TRANSACCION;
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION
 AS
 
+
 PROCEDURE P_GUARDAR_CONTRATO(
                                   Pcl_Request       IN  VARCHAR2,
                                   Pv_Mensaje        OUT VARCHAR2,
@@ -3597,6 +3598,24 @@ PROCEDURE P_GUARDAR_CONTRATO(
     WHERE IAD.TIPO    = Cv_Tipo AND
 		  IAD.NUMERO  = Cv_Numero;
 
+    CURSOR C_GET_CARACTERISTICA (Cv_Descripcion VARCHAR2, Cv_Tipo VARCHAR2, Cv_Estado VARCHAR2)
+    IS 
+    SELECT ID_CARACTERISTICA
+    FROM DB_COMERCIAL.ADMI_CARACTERISTICA
+    WHERE DESCRIPCION_CARACTERISTICA = Cv_Descripcion
+      AND TIPO = Cv_Tipo
+      AND ESTADO = Cv_Estado;
+
+    
+
+    CURSOR C_EXISTE_CARACT_SERV(Ln_ServicioId NUMBER, Ln_CaracteristicaId NUMBER, Lv_Estado VARCHAR2)
+    IS
+      SELECT NVL(count(ID_SERVICIO_CARACTERISTICA), 0)
+      FROM DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA
+      WHERE SERVICIO_ID = Ln_ServicioId
+        AND CARACTERISTICA_ID = Ln_CaracteristicaId
+        and ESTADO = Lv_Estado;
+
      -- Types	  
     TYPE Pcl_AdendumsNum IS TABLE OF C_GET_ADENDUM_NUMERO%ROWTYPE;
     Pcl_ArrayAdendumsNum Pcl_AdendumsNum;
@@ -3656,6 +3675,9 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Ln_IteradorI               INTEGER;
     Ln_IteradorK               INTEGER;
     Ln_IteradorJ               INTEGER;
+    Ln_ServicioPlan            NUMBER := 0;  
+    Ln_Existe                  NUMBER := 0;
+    Ln_CaracteristicaId        NUMBER := 0;
   BEGIN
     -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
@@ -3670,7 +3692,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Ln_ContratoId           := APEX_JSON.get_number(p_path => 'contratoId');
     Ln_PuntoId              := APEX_JSON.get_number(p_path => 'puntoId');
     Lv_NumeroAdendum        := APEX_JSON.get_varchar2(p_path => 'numeroAdendum');
-
+    
     Ln_Descuento            :=0;
     -- VALIDACIONES
     IF Lv_IpCreacion IS NULL THEN
@@ -3758,6 +3780,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         WHILE (Ln_IteradorI IS NOT NULL)
         LOOP
           IF Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID IS NOT NULL THEN
+                Ln_ServicioPlan := Pcl_ArrayServicio(Ln_IteradorI).ID_SERVICIO;
                 --Obtener planes permitidos
                 OPEN C_GET_PLANES_CONTRATO(Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID,Lv_EstadoActivo,Lv_NombreParamContrato);
                 FETCH C_GET_PLANES_CONTRATO BULK COLLECT INTO Pcl_ArrayPLanes LIMIT 5000;
@@ -3925,8 +3948,47 @@ PROCEDURE P_GUARDAR_CONTRATO(
                 ELSE
                     Lv_EstadoAdendum := Lv_EstadoActivo;
                 END IF;
+            ELSE
+                Ln_CaracteristicaId := 0;
+                OPEN C_GET_CARACTERISTICA('PROM_INSTALACION', 'COMERCIAL', 'Activo');
+                FETCH C_GET_CARACTERISTICA INTO Ln_CaracteristicaId;
+                CLOSE C_GET_CARACTERISTICA;
 
-              END IF; 
+                OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
+                FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
+                CLOSE C_GET_ADENDUM_NUMERO;
+                OPEN C_EXISTE_CARACT_SERV(Ln_ServicioPlan, Ln_CaracteristicaId, 'Activo');
+                FETCH C_EXISTE_CARACT_SERV INTO Ln_Existe;
+                CLOSE C_EXISTE_CARACT_SERV;
+                IF Ln_Existe = 0
+                THEN
+                  INSERT INTO DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA
+                    (
+                      ID_SERVICIO_CARACTERISTICA,
+                      SERVICIO_ID              ,
+                      CARACTERISTICA_ID        ,
+                      VALOR                    ,
+                      ESTADO                   ,
+                      OBSERVACION              ,
+                      USR_CREACION             ,
+                      IP_CREACION              ,
+                      FE_CREACION
+                    )
+                    VALUES
+                    (
+                      SEQ_INFO_SERVICIO_CARAC.NEXTVAL,
+                      Ln_ServicioPlan,
+                      Ln_CaracteristicaId,
+                      '',
+                      'Activo',
+                      'Se crea característica para facturación por punto adicional',
+                      Lv_UsrCreacion,
+                      Lv_IpCreacion,
+                      SYSDATE
+                    );                
+                END IF;
+                  
+            END IF; 
 
             OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
             FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
