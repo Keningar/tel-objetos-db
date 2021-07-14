@@ -2101,9 +2101,11 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Ln_DetalleSolNuevo      INTEGER;
     Ln_IdAdendum            INTEGER;
     Ln_IteradorI            INTEGER;
+    Ln_ObservacionHist      VARCHAR2(4000);
 
     BEGIN
 
+    Ln_ObservacionHist := Pcl_Request.Pv_ObservacionHistorial;
     IF Pcl_Request.Pv_Servicios.EXISTS(1)
     THEN
         Ln_IteradorI := Pcl_Request.Pv_Servicios.FIRST;
@@ -2190,7 +2192,8 @@ PROCEDURE P_GUARDAR_CONTRATO(
                         IF Ln_PlanId IS NOT NULL THEN
                             Ln_RequierePlanifi := 1;
                             Ln_HayServicio     := 1;
-
+                            Lv_EstadoServicio  := Lv_EstadoPreplanificada;
+                            Ln_ObservacionHist := 'Se solicito planificacion';
                             UPDATE
                             DB_COMERCIAL.INFO_SERVICIO ISE
                                 SET ISE.ESTADO = Lv_EstadoPreplanificada
@@ -2334,7 +2337,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                             SYSDATE,
                             Pcl_Request.Pv_IpCreacion,
                             Lv_EstadoServicio,
-                            Pcl_Request.Pv_ObservacionHistorial
+                            Ln_ObservacionHist
                         );
 
                         OPEN C_GET_TIPO_SOLICITUD (Lv_DescripSolicitud);
