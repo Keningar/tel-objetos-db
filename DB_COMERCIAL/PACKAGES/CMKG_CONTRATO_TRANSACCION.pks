@@ -635,15 +635,16 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                          Lv_AnioVencimiento,Lv_TitularCuenta,
                                                          Ln_IdContrato,Lv_MesVencimiento,
                                                          Lv_UsrCreacion,Lv_ClienteIp,
-                                                         Ln_PuntoId,Lv_Servicio,'N',0,'C',NULL,NULL,
+                                                         Ln_PuntoId,Lv_Servicio,'N',0,'C',Lv_ValorEstado,NULL,
                                                          Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
 
         P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
-        COMMIT;
+        
         IF Pv_Status IS NULL OR Pv_Status = 'ERROR'
         THEN
             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
         END IF;
+        COMMIT;
 
         -- Agregar promociones
         -- PROMO MIX
@@ -1065,6 +1066,16 @@ PROCEDURE P_GUARDAR_CONTRATO(
         EXCEPTION
             WHEN OTHERS THEN
             ROLLBACK;
+            IF Ln_IdContrato IS NOT NULL
+            THEN
+                UPDATE DB_COMERCIAL.INFO_CONTRATO 
+                SET ESTADO = 'Rechazado',
+                    MOTIVO_RECHAZO_ID = 1414,
+                    FE_RECHAZO = SYSDATE,
+                    USR_RECHAZO = USR_CREACION
+                WHERE ID_CONTRATO = Ln_IdContrato;
+                COMMIT;
+            END IF;
             Pv_Status     := 'ERROR';
             Pcl_Response  :=  NULL;
             Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
@@ -1651,7 +1662,8 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       MES_VENCIMIENTO      = Pv_DatosFormaPago.Pv_MesVencimiento,
                       ANIO_VENCIMIENTO     = Pv_DatosFormaPago.Pv_AnioVencimiento,
                       CODIGO_VERIFICACION  = Pv_DatosFormaPago.Pv_CodigoVerificacion,
-                      TIPO                 = Pv_DatosFormaPago.Pv_Tipo
+                      TIPO                 = Pv_DatosFormaPago.Pv_Tipo,
+                      ESTADO               = 'PorAutorizar'
                       -- Para Adendum Pv_EstadoAdendum Pv_NumeroAdendum
                   WHERE ID_ADENDUM = i.ID_ADENDUM;
 
@@ -1870,7 +1882,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                          Ln_IdContrato,Lv_MesVencimiento,
                                                          Lv_UsrCreacion,Lv_ClienteIp,
                                                          Ln_PuntoId,Lv_Servicio,Lv_CambioTarjeta,
-                                                         1,Lv_Tipo,Lv_EstadoAdendum,Lv_NumeroAdendum,
+                                                         1,Lv_Tipo,'PorAutorizar',Lv_NumeroAdendum,
                                                          Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
 
         P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);

@@ -1,4 +1,4 @@
-CREATE OR REPLACE package DB_COMERCIAL.CMKG_CONSULTA is
+create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
   -- Author  : Marlon Plùas <mpluas@telconet.ec>
   -- Created : 15/10/2020
   -- Purpose : Paquete general de consultas del db-repositorio-comercial
@@ -333,11 +333,9 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_CONSULTA is
                                     Pcl_Response OUT SYS_REFCURSOR);
 
 
-end CMKG_CONSULTA;
-
-/
-
-CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
+end CMKG_CONSULTA; 
+/ 
+create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
   PROCEDURE P_INFORMACION_CLIENTE(Pcl_Request  IN  CLOB,
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2,
@@ -382,6 +380,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                       ATI.DESCRIPCION_TITULO    titulo                ,
                       IP.NACIONALIDAD           nacionalidad          ,
                       IPU.ID_PUNTO              punto_id              ,
+                      AC.Jurisdiccion           ciudad_pagare         ,
                       IPER.ID_PERSONA_ROL       persona_empresa_rol_id';
     Lcl_From         := '
               FROM  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
@@ -679,9 +678,9 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
     IF Lv_DescripCaracteristica IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AC.DESCRIPCION_CARACTERISTICA = '''||Lv_DescripCaracteristica||'''';
     END IF;
-    
-    IF Ln_PersonaEmpresaRolId IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IPERC.PERSONA_EMPRESA_ROL_ID = '||Ln_PersonaEmpresaRolId;
+
+    IF Lv_ValorCaractPersona IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IPERC.VALOR = '''||Lv_ValorCaractPersona||'''';
     END IF;
     Lcl_OrderAnGroup := '';
 
@@ -754,7 +753,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
       IF Ln_ExisteDescTipoRol > 0 THEN
         Lb_DatoEncontrado := 1;
       END IF;
-      Ln_IteradorI := Ln_IteradorI +1;
+      Ln_IteradorI := Ln_IteradorI +1;      
     END LOOP;
 
     Pv_Status     := 'OK';
@@ -1082,8 +1081,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         CURSOR C_GET_SERV_ADENDUM(Cv_numeroAdendum VARCHAR2, Cv_Tipo VARCHAR2)
         IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
-            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION
+            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1098,8 +1097,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         CURSOR C_GET_SERV_ADENDUM_RS(Cv_numeroAdendum VARCHAR2, Cv_Tipo VARCHAR2, Cn_PuntoId NUMBER)
         IS
             SELECT  DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
-            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION
+            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1115,8 +1114,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         CURSOR C_GET_SERV_CONTRATO(Cn_ContratoId INTEGER, Cv_Tipo VARCHAR2)            
         IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
-            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION
+            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1124,15 +1123,15 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
             WHERE
             IAD.CONTRATO_ID = Cn_ContratoId AND
             --IAD.FE_CREACION = (select  MAX(A.FE_CREACION) FROM DB_COMERCIAL.INFO_ADENDUM A where A.CONTRATO_ID=IAD.CONTRATO_ID GROUP BY A.CONTRATO_ID) AND
-            ISE.ESTADO IN ('Factible','Activo') AND
+            ISE.ESTADO IN ('Factible','Activo', 'Pendiente', 'PrePlanificada') AND
             IAD.TIPO = Cv_Tipo
             ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;
 
         CURSOR C_GET_SERV_CONTRATO_RS(Cn_ContratoId INTEGER, Cv_Tipo VARCHAR2)            
         IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
-            to_char(APRO.FUNCION_PRECIO)AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION
+            to_char(APRO.FUNCION_PRECIO)AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1140,7 +1139,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
             WHERE
             IAD.CONTRATO_ID = Cn_ContratoId AND
             --IAD.FE_CREACION = (select  MAX(A.FE_CREACION) FROM DB_COMERCIAL.INFO_ADENDUM A where A.CONTRATO_ID=IAD.CONTRATO_ID GROUP BY A.CONTRATO_ID) AND
-            ISE.ESTADO IN ('Factible','Activo') AND
+            ISE.ESTADO IN ('Factible','Activo', 'Pendiente', 'PrePlanificada') AND
             IAD.TIPO = Cv_Tipo
             ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;               
 
@@ -1230,7 +1229,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
 
         CURSOR C_GET_PRODUCTO(Cn_IdProducto INTEGER)
         IS
-            SELECT APO.NOMBRE_TECNICO
+            SELECT APO.NOMBRE_TECNICO, APO.FRECUENCIA, APO.CODIGO_PRODUCTO
             FROM DB_COMERCIAL.ADMI_PRODUCTO APO
             WHERE
             APO.ID_PRODUCTO = Cn_IdProducto;
@@ -1336,6 +1335,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         Lv_ParametroEquipaValor2   VARCHAR2(400);
         Lv_ParametroEquipaValor3   VARCHAR2(400);
         Lv_NombreTecnico           VARCHAR2(400);
+        Lv_Frecuencia              VARCHAR2(400);
+        Lv_CodigoProducto          VARCHAR2(400);
         Lv_PromoIns                VARCHAR2(400) := 'PROM_INS';
         Lv_PromoMens               VARCHAR2(400) := 'PROM_MENS';
         Lv_ObservacionIns          VARCHAR2(400);
@@ -1343,11 +1344,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         Lv_ValorProducCaractNa     VARCHAR2(400);
         Lv_ValorProducCaractInt    VARCHAR2(400);
         Lv_ObservacionContrato     VARCHAR2(4000);
-        Lv_FuncionPrecio           VARCHAR2(400);
+        Lv_FuncionPrecio           VARCHAR2(4000);
         Lv_DigitoVerificacion      VARCHAR2(400);
         Lv_NombreTecnicoServ       VARCHAR2(400);
         Lv_CodigoUltimaMilla       VARCHAR2(400);
         Lv_CambioRazonSocial       VARCHAR2(400);
+        Lv_NombreProdAnterior      VARCHAR2(400);
         Lv_NombreProdPosterior     VARCHAR2(400);
         Lv_internet                VARCHAR2(2) := 'N';
         Lv_VariableIf              VARCHAR2(400) := '%IF%';
@@ -1357,12 +1359,16 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         Ln_idCaracteristicaNa       INTEGER;
         Ln_ContratoId               INTEGER;
         Ln_IteradorI                INTEGER;
-        Ln_IteradorJ                INTEGER;
+        Ln_IteradorJ                INTEGER;        
 
         Ln_CobroItems               FLOAT := 0;
         Ln_Impuesto                 FLOAT := 0;
+        Ln_ImpuestoUnico            FLOAT := 0;
+        Ln_ImpuestoMensual          FLOAT := 0;
         Ln_PorcentajeImps           FLOAT := 0;
         Ln_SubTotal                 FLOAT := 0;
+        Ln_SubtotalUnico            FLOAT := 0;
+        Ln_SubtotalMensual          FLOAT := 0;
         Lv_PrecioProducto           FLOAT := 0;
         Ln_total_servicio           FLOAT := 0;
         Ln_SubTotalProd             FLOAT := 0;
@@ -1378,8 +1384,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
         TYPE Pcl_servicio IS TABLE OF C_GET_SERV_CONTRATO%ROWTYPE;
         Pcl_arrayServicio Pcl_servicio;
 
-        TYPE Pcl_parametroEmpr IS TABLE OF C_GET_PARAMETROS_EMPR%ROWTYPE;
-        Pcl_arrayParametrosEmpr Pcl_parametroEmpr;
+        --TYPE Pcl_parametroEmpr IS TABLE OF C_GET_PARAMETROS_EMPR%ROWTYPE;
+        --Pcl_arrayParametrosEmpr Pcl_parametroEmpr;
 
         TYPE Pcl_planDet IS TABLE OF C_GET_DET_PLAN%ROWTYPE;
         Pcl_arrayPlanDet Pcl_planDet;
@@ -1389,7 +1395,9 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
 
         TYPE Lcl_TypeServiContrDet IS RECORD(
             PRECIO            NUMBER,
-            CANTIDAD          NUMBER
+            CANTIDAD          NUMBER,
+            INSTALACION       NUMBER,
+            SUBTOTAL          NUMBER
         );
 
         TYPE Lcl_TypeServiContr IS RECORD(
@@ -1410,8 +1418,10 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
             VALOR_PLAN_LETRAS  VARCHAR2(400),
             VALOR_PLAN_NUM     VARCHAR2(400),
             DETALLE            Lcl_TypeServiContr,
-            DETALLEEXTRA       Pcl_parametroEmpr,
+            DETALLEEXTRA       VARCHAR2(400),
             SUBTOTAL           VARCHAR2(400),
+            SUBTOTAL_UNICO     VARCHAR2(400),
+            SUBTOTAL_MENSUAL   VARCHAR2(400),
             VEL_NAC_MAX        VARCHAR2(400),
             VEL_NAC_MIN        VARCHAR2(400),
             VEL_INT_MAX        VARCHAR2(400),
@@ -1419,7 +1429,11 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
             DESC_PLAN          NUMBER,
             MESES_DESC         NUMBER,
             IMPUESTOS          VARCHAR2(400),
+            IMPUESTOS_UNICO    VARCHAR2(400),
+            IMPUESTOS_MENSUAL  VARCHAR2(400),
             TOTAL              VARCHAR2(400),
+            TOTAL_UNICO        VARCHAR2(400),
+            TOTAL_MENSUAL      VARCHAR2(400),
             VALOR_PLAN_DESC    VARCHAR2(400),
             IS_PRECIO_PROMO    VARCHAR2(400),
             NOMBRE_PLAN        VARCHAR2(400)
@@ -1440,9 +1454,9 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
     Ln_ContratoId         := APEX_JSON.get_number(p_path => 'contratoId');
     Lv_CambioRazonSocial  := APEX_JSON.get_varchar2(p_path => 'cambioRazonSocial');
 
-    OPEN C_GET_PARAMETROS_EMPR(Lv_NombreParametroProd,Lv_ModuloParametroProd,Ln_CodEmpresa);
-    FETCH C_GET_PARAMETROS_EMPR BULK COLLECT INTO Pcl_arrayParametrosEmpr LIMIT 5000; 
-    CLOSE C_GET_PARAMETROS_EMPR;    
+    --OPEN C_GET_PARAMETROS_EMPR(Lv_NombreParametroProd,Lv_ModuloParametroProd,Ln_CodEmpresa);
+    --FETCH C_GET_PARAMETROS_EMPR BULK COLLECT INTO Pcl_arrayParametrosEmpr;
+    --CLOSE C_GET_PARAMETROS_EMPR;    
 
     Pcl_ResponseList.IS_HOME            := '';--
     Pcl_ResponseList.OBSERVACION_SERV   := '';--
@@ -1455,8 +1469,11 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
     Pcl_ResponseList.VALOR_PLAN_LETRAS  := '';--
     Pcl_ResponseList.VALOR_PLAN_NUM     := '';--
     Pcl_ResponseList.DETALLE.INTENET.PRECIO    := '';--
-    Pcl_ResponseList.DETALLEEXTRA       := Pcl_arrayParametrosEmpr;
+    --Pcl_ResponseList.DETALLEEXTRA       := Pcl_arrayParametrosEmpr;
+    Pcl_ResponseList.DETALLEEXTRA       := '';
     Pcl_ResponseList.SUBTOTAL           := 0.0;--
+    Pcl_ResponseList.SUBTOTAL_UNICO     := 0.0;
+    Pcl_ResponseList.SUBTOTAL_MENSUAL   := 0.0;
     Pcl_ResponseList.VEL_NAC_MAX        := '';--
     Pcl_ResponseList.VEL_NAC_MIN        := '';--
     Pcl_ResponseList.VEL_INT_MAX        := '';--
@@ -1464,7 +1481,11 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
     Pcl_ResponseList.DESC_PLAN          := 0;--
     Pcl_ResponseList.MESES_DESC         := 0;--
     Pcl_ResponseList.IMPUESTOS          := 0.0;--
-    Pcl_ResponseList.TOTAL              := 0.0;--
+    Pcl_ResponseList.IMPUESTOS_UNICO    := 0.0;
+    Pcl_ResponseList.IMPUESTOS_MENSUAL  := 0.0;
+    Pcl_ResponseList.TOTAL              := 0.0;
+    Pcl_ResponseList.TOTAL_UNICO        := 0.0;
+    Pcl_ResponseList.TOTAL_MENSUAL      := 0.0;
     Pcl_ResponseList.VALOR_PLAN_DESC    := 0.0;--
     Pcl_ResponseList.IS_PRECIO_PROMO    := '';--
     Pcl_ResponseList.NOMBRE_PLAN        := '';--
@@ -1559,8 +1580,9 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                 WHILE (Ln_IteradorJ IS NOT NULL) 
                 LOOP
                     Lv_NombreTecnico := null;
+                    Lv_Frecuencia    := null;
                     OPEN C_GET_PRODUCTO(Pcl_arrayPlanDet(Ln_IteradorJ).PRODUCTO_ID);
-                    FETCH C_GET_PRODUCTO INTO Lv_NombreTecnico;
+                    FETCH C_GET_PRODUCTO INTO Lv_NombreTecnico, Lv_Frecuencia, Lv_CodigoProducto;
                     CLOSE C_GET_PRODUCTO;
                     IF Lv_NombreTecnico = 'INTERNET'
                     THEN
@@ -1589,7 +1611,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                                 Lv_ObservacionMens
                             );
 
-                            OPEN C_GET_PARAM_EMPR_EMPL_DESC(Lv_NombreParametroEmpleado,Lv_ModuloParametroProd,Lv_ObservacionIns,'%100%',Ln_CodEmpresa);
+                             OPEN C_GET_PARAM_EMPR_EMPL_DESC(Lv_NombreParametroEmpleado,Lv_ModuloParametroProd,Lv_ObservacionIns,'%100%',Ln_CodEmpresa);
                             FETCH C_GET_PARAM_EMPR_EMPL_DESC INTO Lv_ParametroDescripEmpl;
                             CLOSE C_GET_PARAM_EMPR_EMPL_DESC; 
 
@@ -1672,15 +1694,15 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                     CLOSE C_OBTENER_IMPUESTO;
 
                     IF ( Pcl_arrayServicio(Ln_IteradorI).ID_PLAN != 1430 ) THEN
-                    Ln_SubTotal    := Ln_SubTotal  + Pcl_arrayPlanDet(Ln_IteradorJ).PRECIO_ITEM;         
+                    Ln_SubTotal    := Ln_SubTotal  + Pcl_arrayPlanDet(Ln_IteradorJ).PRECIO_ITEM;          
                     Ln_total_servicio := Ln_SubTotal;
                     END IF;
                     IF Ln_PorcentajeImps IS NOT NULL
                     THEN
                         Ln_Impuesto   := Ln_Impuesto + ((Pcl_arrayPlanDet(Ln_IteradorJ).PRECIO_ITEM)* (Ln_PorcentajeImps/100));
-                    END IF; 
+                    END IF;  
 
-                  Ln_IteradorJ := Pcl_arrayPlanDet.NEXT(Ln_IteradorJ);                                   
+                    Ln_IteradorJ := Pcl_arrayPlanDet.NEXT(Ln_IteradorJ);
                 END LOOP;
                 ELSE
                   Pv_Mensaje := 'No existe el plan definido por el parámetro ' || Lv_NombreParametroEstado;
@@ -1694,12 +1716,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"INTERNET":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'"},';
                    Ln_total_servicio := 0;
                    Lv_internet := 'N';
-                --ELSE
-                 --  Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"OTROS":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'"},';
-                  -- Lv_internet := 'N';
-                  -- Ln_SubTotal := 0;
                 END IF;
-
+ 
             ELSIF Pcl_arrayServicio(Ln_IteradorI).PRODUCTO_ID IS NOT NULL
             THEN             
                 OPEN C_GET_SERV_PRODUCTO (Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO);
@@ -1714,6 +1732,11 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                     Ln_IteradorJ := Pcl_arrayServCaract.FIRST;
                     WHILE (Ln_IteradorJ IS NOT NULL) 
                     LOOP
+                      IF Pcl_arrayServCaract(Ln_IteradorJ).VALOR IS NULL AND Lv_FuncionPrecio LIKE Lv_VariableIf 
+                         AND Lv_FuncionPrecio LIKE '%' || UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA) || '%' THEN
+                        Pv_Mensaje := 'Falta valores en la característica del producto para autorizarlo';
+                        RAISE Le_Errors; 
+                      END IF;
                       Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'[" '||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||' "]',' '||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||' ', '"',''));                      
                       Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'['||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||']',' '''||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||''' ', '"',''));
                       Ln_IteradorJ := Pcl_arrayServCaract.NEXT(Ln_IteradorJ);
@@ -1722,12 +1745,15 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
 
 
                 IF Lv_FuncionPrecio NOT LIKE Lv_VariableIf THEN
+                  Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, 'PRECIO =','');
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, 'PRECIO=','');
 
                   Lv_FuncionPrecio      := ' SELECT ' || Lv_FuncionPrecio || ' from dual ';
                 ELSE
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, 'ELSE IF','WHEN'); 
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, 'IF','WHEN');  
+                  Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, '"[','['); 
+                  Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, ']"',']');
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, '"','''');   
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, ' }','');
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, '}','');  
@@ -1739,6 +1765,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, '==','=');
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, '&&','AND');
                   Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, ';','');
+                  Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, '''''','''');
+                  Lv_FuncionPrecio      := REPLACE(  Lv_FuncionPrecio, ''' ''','''');                
 
                    IF Lv_FuncionPrecio LIKE Lv_VariableBusqueda THEN
                        Pv_Mensaje := 'La función precio del servicio no tiene la caracteristica del producto.';
@@ -1749,75 +1777,89 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                   Lv_FuncionPrecio      := ' SELECT CASE ' || Lv_FuncionPrecio || ' END from dual '; 
                 END IF;
 
+               Lv_NombreTecnico := null;
+               Lv_Frecuencia    := null;
+               OPEN C_GET_PRODUCTO(Pcl_arrayServicio(Ln_IteradorI).PRODUCTO_ID);
+               FETCH C_GET_PRODUCTO INTO Lv_NombreTecnico, Lv_Frecuencia, Lv_CodigoProducto;
+               CLOSE C_GET_PRODUCTO;                
+
+
+               
                 EXECUTE IMMEDIATE Lv_FuncionPrecio INTO Lv_PrecioProducto;
 
                 Lv_DigitoVerificacion := SUBSTR(Lv_PrecioProducto||'',-1,1);                
-
+                IF LOWER(Lv_Frecuencia) = 'unica'
+                THEN
+                  Ln_SubtotalUnico := Ln_SubtotalUnico + Lv_PrecioProducto;
+                ELSE
+                  Ln_SubtotalMensual := Ln_SubtotalMensual + Lv_PrecioProducto;
+                END IF;
                 Ln_SubTotal := Ln_SubTotal + Lv_PrecioProducto;                            
                 Ln_SubTotalProd := Ln_SubTotalProd + Lv_PrecioProducto;
 
-                Ln_IteradorJ := Pcl_arrayParametrosEmpr.FIRST;
-                WHILE (Ln_IteradorJ IS NOT NULL)
-                LOOP                                    
-                   IF Pcl_arrayParametrosEmpr(Ln_IteradorJ).VALOR1 = Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO
-                   THEN
-                     IF Lv_Tipo = 'AS'
-                     THEN
-                        Lv_NombreTecnicoServ := Pcl_arrayParametrosEmpr(Ln_IteradorJ).VALOR2;
-                     ELSE
-                        Lv_NombreTecnicoServ := Pcl_arrayParametrosEmpr(Ln_IteradorJ).VALOR5;
-                     END IF;
-                   END IF;
-                   Ln_IteradorJ := Pcl_arrayServCaract.NEXT(Ln_IteradorJ);
-                END LOOP;
+
+                Lv_NombreTecnicoServ := Pcl_arrayServicio(Ln_IteradorI).NOMBRE_TECNICO;
 
                IF Lv_NombreTecnicoServ IS NULL
                 THEN
                     Lv_NombreTecnicoServ := Pcl_arrayServicio(Ln_IteradorI).NOMBRE_TECNICO;
                END IF;  
 
-               IF (Pcl_arrayServicio.COUNT > Ln_IteradorI )THEN
-                    Ln_IteradorJ := Pcl_arrayParametrosEmpr.FIRST;
-                    WHILE (Ln_IteradorJ IS NOT NULL)
-                    LOOP                                       
-                       IF Pcl_arrayParametrosEmpr(Ln_IteradorJ).VALOR1 = Pcl_arrayServicio(Ln_IteradorI+1).CODIGO_PRODUCTO
-                       THEN
-                         IF Lv_Tipo = 'AS'
-                         THEN
-                            Lv_NombreProdPosterior := Pcl_arrayParametrosEmpr(Ln_IteradorJ).VALOR2;
-                         ELSE
-                            Lv_NombreProdPosterior := Pcl_arrayParametrosEmpr(Ln_IteradorJ).VALOR5;
-                         END IF;
-                       END IF;
-                       Ln_IteradorJ := Pcl_arrayServCaract.NEXT(Ln_IteradorJ);
-                    END LOOP;
-                    IF Lv_NombreProdPosterior IS NULL
-                    THEN
-                        Lv_NombreProdPosterior := Pcl_arrayServicio(Ln_IteradorI+1).NOMBRE_TECNICO;
-                    END IF; 
-                END IF;
-
+                IF  Ln_IteradorI + 1 > Pcl_arrayServicio.LAST THEN
+                    Lv_NombreProdPosterior := Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO;
+                ELSE
+                    Lv_NombreProdPosterior := Pcl_arrayServicio(Ln_IteradorI + 1).CODIGO_PRODUCTO;
+                END IF;   
                 OPEN C_OBTENER_IMPUESTO (Pcl_arrayServicio(Ln_IteradorI).PRODUCTO_ID);
                 FETCH C_OBTENER_IMPUESTO INTO Ln_PorcentajeImps;
                 CLOSE C_OBTENER_IMPUESTO;
-
+                dbms_output.put_Line(Lv_NombreProdPosterior); 
                 IF Ln_PorcentajeImps IS NOT NULL
                 THEN
-                    Ln_Impuesto   := Ln_Impuesto + ((Lv_PrecioProducto)* (Ln_PorcentajeImps/100));
+                  IF LOWER(Lv_Frecuencia) = 'unica'
+                  THEN 
+                    Ln_ImpuestoUnico := Ln_ImpuestoUnico + ((Lv_PrecioProducto)* (Ln_PorcentajeImps/100));
+                  ELSE
+                    Ln_ImpuestoMensual := Ln_ImpuestoMensual + ((Lv_PrecioProducto)* (Ln_PorcentajeImps/100));
+                  END IF;
+                  Ln_Impuesto   := Ln_Impuesto + ((Lv_PrecioProducto)* (Ln_PorcentajeImps/100));
                 END IF;
 
                 Pcl_ResponseList.NOMBRE_PLAN := Lv_NombrePlan;
 
-                Ln_CantidadProducto    := Ln_CantidadProducto + 1;
                 Ln_CantidadProductoTec := Ln_CantidadProductoTec + 1;
-
-                IF (Lv_NombreTecnicoServ != Lv_NombreProdPosterior OR Pcl_arrayServicio.COUNT = Ln_IteradorI) THEN
-                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"'||Lv_NombreTecnicoServ||'": {"CANTIDAD":"'||Ln_CantidadProductoTec||'","PRECIO":"'||trim(to_char(Ln_SubTotalProd,'99,999,999,990.99'))||'"},';
+                
+                IF (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) != trim(Lv_NombreProdPosterior) OR Pcl_arrayServicio.COUNT = Ln_IteradorI) THEN
+                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"'||trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO)||'": {"CANTIDAD":"'||Ln_CantidadProductoTec||'","PRECIO":"'||trim(to_char(Ln_SubTotalProd,'99,999,999,990.99'))||'","FRECUENCIA":"' || trim(Pcl_arrayServicio(Ln_IteradorI).FRECUENCIA) ||'"},';
                     Ln_SubTotalProd        := 0; 
                     Ln_CantidadProductoTec := 0;
                 END IF;
 
+                   Pcl_ResponseList.IMPUESTOS_UNICO   := trim(to_char(Ln_ImpuestoUnico,'99,999,999,990.99'));
+                   Pcl_ResponseList.SUBTOTAL_UNICO    := trim(to_char(Ln_SubTotalUnico,'99,999,999,990.99'));
+                   Pcl_ResponseList.TOTAL_UNICO       := trim(to_char(Ln_SubTotalUnico + Ln_ImpuestoUnico,'99,999,999,990.99'));
+
+                   Pcl_ResponseList.IMPUESTOS_MENSUAL := trim(to_char(Ln_ImpuestoMensual,'99,999,999,990.99'));
+                   Pcl_ResponseList.SUBTOTAL_MENSUAL  := trim(to_char(Ln_SubTotalMensual,'99,999,999,990.99'));
+                   Pcl_ResponseList.TOTAL_MENSUAL     := trim(to_char(Ln_SubTotalMensual + Ln_ImpuestoMensual,'99,999,999,990.99')); 
             END IF;
+
+                Lv_DescipValorEquipa  := 'VALOR_EQUIPAMIENTO_CONTRATO_DIGITAL_HOME_MD';
+
+                OPEN C_GET_PARAMETROS_EMPR_DESC(Lv_NombreParametroEquipa,Lv_ModuloParametroProd,Lv_DescipValorEquipa,Ln_CodEmpresa);
+                FETCH C_GET_PARAMETROS_EMPR_DESC INTO Lv_ParametroEquipaValor2,Lv_ParametroEquipaValor3;
+                CLOSE C_GET_PARAMETROS_EMPR_DESC;
+
+                IF Lv_ParametroEquipaValor2 IS NOT NULL
+                THEN
+                    Pcl_ResponseList.VALOR_PLAN_NUM := Lv_ParametroEquipaValor2;
+                END IF;
+
+                IF Lv_ParametroEquipaValor3 IS NOT NULL
+                THEN
+                    Pcl_ResponseList.VALOR_PLAN_LETRAS := Lv_ParametroEquipaValor3;
+                END IF;
+
 
             OPEN C_OBTENER_ULTIMA_MILLA(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO);
             FETCH C_OBTENER_ULTIMA_MILLA INTO Lv_CodigoUltimaMilla;
@@ -1840,6 +1882,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
              Pcl_ResponseList.IMPUESTOS    := trim(to_char(Ln_Impuesto,'99,999,999,990.99'));
              Pcl_ResponseList.SUBTOTAL     := trim(to_char(Ln_SubTotal,'99,999,999,990.99'));
              Pcl_ResponseList.TOTAL        := trim(to_char(Ln_SubTotal + Ln_Impuesto,'99,999,999,990.99'));
+             
 
              IF Pcl_ResponseList.DESC_PLAN  IS NOT NULL AND Pcl_ResponseList.DESC_PLAN != 0
              THEN
@@ -1849,7 +1892,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
 
              Ln_CobroItems := 0;
              --Ln_Impuesto   := 0;
-          Ln_IteradorI := Pcl_arrayServicio.NEXT(Ln_IteradorI);
+             Ln_IteradorI := Pcl_arrayServicio.NEXT(Ln_IteradorI);
         END LOOP;
     ELSE
       Pv_Mensaje := 'No se encuentran servicios asociados a Contrato/Adendum';
@@ -1861,24 +1904,10 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
     Lv_JsonProdParametros := '[';
 
     --json 
-    Ln_IteradorI := Pcl_arrayParametrosEmpr.FIRST;
 
-    WHILE (Ln_IteradorI IS NOT NULL)
-    LOOP
-        Lv_JsonProdParametros := Lv_JsonProdParametros || '{' ||
-                                 '"VALOR1" : "' || Pcl_arrayParametrosEmpr(Ln_IteradorI).VALOR1 || '",'||
-                                 '"VALOR2" : "' || Pcl_arrayParametrosEmpr(Ln_IteradorI).VALOR2 || '",'||
-                                 '"VALOR3" : "' || Pcl_arrayParametrosEmpr(Ln_IteradorI).VALOR3 || '",'||
-                                 '"VALOR4" : "' || Pcl_arrayParametrosEmpr(Ln_IteradorI).VALOR4 || '",'||
-                                 '"VALOR5" : "' || Pcl_arrayParametrosEmpr(Ln_IteradorI).VALOR5 || '"},';                                        
 
-      Ln_IteradorI := Pcl_arrayParametrosEmpr.NEXT(Ln_IteradorI);
-    END LOOP;
-
-    Lv_JsonProdParametros := substr(Lv_JsonProdParametros, 0, length(Lv_JsonProdParametros)-1) || '';
-
-    Lv_JsonProdParametros := Lv_JsonProdParametros || ']';            
-
+           
+    Lv_JsonProdParametros := '';
     Lv_Query := Lv_Query ||' '''||
                 Pcl_ResponseList.IS_HOME||''' IS_HOME, '''||
                 Pcl_ResponseList.OBSERVACION_SERV||''' OBSERVACION_SERV, '''||
@@ -1892,6 +1921,8 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                 Pcl_ResponseList.VALOR_PLAN_NUM||''' VALOR_PLAN_NUM, '''||
                 Pcl_ResponseList.DETALLE.INTENET.PRECIO||''' PRECIO, '''||
                 Pcl_ResponseList.SUBTOTAL||''' SUBTOTAL, '''||
+                Pcl_ResponseList.SUBTOTAL_UNICO||''' SUBTOTAL_UNICO, '''||
+                Pcl_ResponseList.SUBTOTAL_MENSUAL||''' SUBTOTAL_MENSUAL, '''||
                 Pcl_ResponseList.VEL_NAC_MAX||''' VEL_NAC_MAX, '''||
                 Pcl_ResponseList.VEL_NAC_MIN||''' VEL_NAC_MIN, '''||
                 Pcl_ResponseList.VEL_INT_MAX||''' VEL_INT_MAX, '''||
@@ -1899,7 +1930,11 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                 Pcl_ResponseList.DESC_PLAN||''' DESC_PLAN, '''||
                 Pcl_ResponseList.MESES_DESC||''' MESES_DESC, '''||
                 Pcl_ResponseList.IMPUESTOS||''' IMPUESTOS, '''||
+                Pcl_ResponseList.IMPUESTOS_UNICO||''' IMPUESTOS_UNICO, '''||
+                Pcl_ResponseList.IMPUESTOS_MENSUAL||''' IMPUESTOS_MENSUAL, '''||
                 Pcl_ResponseList.TOTAL||''' TOTAL, '''||
+                Pcl_ResponseList.TOTAL_UNICO||''' TOTAL_UNICO, '''||
+                Pcl_ResponseList.TOTAL_MENSUAL||''' TOTAL_MENSUAL, '''||
                 Pcl_ResponseList.VALOR_PLAN_DESC||''' VALOR_PLAN_DESC, '''||
                 Pcl_ResponseList.IS_PRECIO_PROMO||''' IS_PRECIO_PROMO, '''||
                 Lv_JsonProdParametros||''' ARRAY_PROD_PARAMETROS, '''||
@@ -1996,7 +2031,6 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_CONSULTA is
                                           '127.0.0.1');
 
     END P_OBTENER_DESCUENTO_RS; 
-
+ 
 end CMKG_CONSULTA;
-
 /
