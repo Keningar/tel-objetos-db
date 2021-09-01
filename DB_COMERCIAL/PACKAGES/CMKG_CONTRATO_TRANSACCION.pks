@@ -90,6 +90,10 @@ AS
     *         Pv_Respuesta      -  Data Respuesta
     * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019
+    *
+    * @author Nestor Naula <nnaulal@telconet.ec>
+    * @version 1.1 31-08-2021 - Se cambia posicion del COMMIT al hacer update a la info adendum
+    * @since 1.0
     */
 
     PROCEDURE P_GUARDAR_FORMA_PAGO(
@@ -1666,6 +1670,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       ESTADO               = 'PorAutorizar'
                       -- Para Adendum Pv_EstadoAdendum Pv_NumeroAdendum
                   WHERE ID_ADENDUM = i.ID_ADENDUM;
+                  COMMIT;
 
                   IF Pv_DatosFormaPago.Pv_NumeroAdendum IS NOT NULL
                   THEN
@@ -1675,7 +1680,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       WHERE ID_ADENDUM = i.ID_ADENDUM;
                       COMMIT;
                   END IF;
-                  COMMIT;
               END IF;
           END LOOP;
 
@@ -1701,6 +1705,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       CODIGO_VERIFICACION  = Pv_DatosFormaPago.Pv_CodigoVerificacion,
                       ESTADO               = Lv_EstadoPendiente
                 WHERE ID_ADENDUM = Pv_DatosFormaPago.Pn_Adendums(Ln_IteradorI);
+                COMMIT;
                 
                 IF Pv_DatosFormaPago.Pv_NumeroAdendum IS NOT NULL
                   THEN
@@ -1708,8 +1713,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       SET NUMERO               = Pv_DatosFormaPago.Pv_NumeroAdendum
                       WHERE ID_ADENDUM = Pv_DatosFormaPago.Pn_Adendums(Ln_IteradorI);
                       COMMIT;
-                  END IF;
-                 COMMIT;   
+                  END IF;   
                 Ln_IteradorI := Pv_DatosFormaPago.Pn_Adendums.NEXT(Ln_IteradorI);             
               END LOOP;
           END IF;
@@ -1956,6 +1960,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         SET IC.ORIGEN = Pcl_Request.Pv_Origen
         WHERE
           IC.ID_CONTRATO = Pcl_Request.Pn_IdContrato;
+        COMMIT;
       END IF;
 
       IF Pn_PersonaEmpresaRolId IS NOT NULL
@@ -1979,6 +1984,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
             Pcl_Request.pv_usrCreacion                         ,
             Pcl_Request.Pv_ObservacionHistorial
           );
+          COMMIT;
       ELSE
         Pv_Mensaje := 'No se pudo setear los datos del contrato, error al obtener personaEmpresaRol o Origen';
         RAISE Le_Errors;

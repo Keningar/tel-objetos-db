@@ -127,6 +127,10 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
   *
   * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
+  *
+  * @author Nestor Naula <nnaulal@telconet.ec>
+  * @version 1.1 31-08-2021 - Se valida la persona empresa rol id la validar PIN
+  * @since 1.0
   */
   PROCEDURE P_OBTENER_CARACT_PERSONA(Pcl_Request  IN  CLOB,
                                      Pv_Status    OUT VARCHAR2,
@@ -682,6 +686,11 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     IF Lv_ValorCaractPersona IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IPERC.VALOR = '''||Lv_ValorCaractPersona||'''';
     END IF;
+
+    IF Lv_ValorCaractPersona IS NULL AND Ln_PersonaEmpresaRolId IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IPERC.PERSONA_EMPRESA_ROL_ID = '||Ln_PersonaEmpresaRolId||'';
+    END IF;
+
     Lcl_OrderAnGroup := '';
 
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
@@ -1737,7 +1746,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                         Pv_Mensaje := 'Falta valores en la característica del producto para autorizarlo';
                         RAISE Le_Errors; 
                       END IF;
-                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'[" '||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||' "]',' '||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||' ', '"',''));                      
+                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'[" '||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||' "]',' '||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||' ', '"',''));
+                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'"['||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||']"',' '||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||' ', '"',''));                      
                       Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'['||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||']',' '''||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||''' ', '"',''));
                       Ln_IteradorJ := Pcl_arrayServCaract.NEXT(Ln_IteradorJ);
                     END LOOP;
