@@ -134,14 +134,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 	    CLOSE C_Pais;
 	   
 	   
-        IF Ln_IdPais IS NOT NULL THEN
+        IF  Lv_NombreProvincia IS NOT NULL AND Ln_IdPais IS NOT NULL THEN
 	   	OPEN C_Provincia(Lv_NombreProvincia); 
 	    FETCH C_Provincia INTO Ln_IdProvincia , Lv_NombreProvincia; 
 	    dbms_output.put_line('Provincia '||Lv_NombreProvincia||'->'||Ln_IdProvincia);    
 	    CLOSE C_Provincia;
 	    END IF; 
 	   
-	    IF (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) THEN
+	    IF Lv_NombreCanton IS NOT NULL AND  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) THEN
 	    OPEN C_Canton(Lv_NombreCanton, Ln_IdProvincia ); 
 	    FETCH C_Canton INTO Ln_IdCanton , Lv_NombreCanton; 
 	    dbms_output.put_line('Canton '||Lv_NombreCanton||'->'||Ln_IdCanton);    
@@ -161,14 +161,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 		END IF;  
 	
      	   
-	    IF  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) THEN
+	    IF Lv_NombreParroquia IS NOT NULL AND  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) THEN
        	OPEN C_Parroquia(Lv_NombreParroquia, Ln_IdCanton); 
 	    FETCH C_Parroquia INTO Ln_IdParroquia , Lv_NombreParroquia; 
 	    dbms_output.put_line('Parroquia '||Lv_NombreParroquia||'->'||Ln_IdParroquia);    
 	    CLOSE C_Parroquia;
 	    END IF; 
 	   
-	    IF (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) AND (Ln_IdParroquia IS NOT NULL) THEN
+	    IF Lv_NombreSector IS NOT NULL AND  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) AND (Ln_IdParroquia IS NOT NULL) THEN
     	OPEN C_Sector(Lv_NombreSector, Ln_IdParroquia ); 
 	    FETCH C_Sector INTO Ln_IdSector , Lv_NombreSector; 
 	    dbms_output.put_line('Sector '||Lv_NombreSector||'->'||Ln_IdSector);    

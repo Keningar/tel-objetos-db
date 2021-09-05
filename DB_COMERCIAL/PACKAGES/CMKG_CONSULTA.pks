@@ -1746,8 +1746,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                         Pv_Mensaje := 'Falta valores en la característica del producto para autorizarlo';
                         RAISE Le_Errors; 
                       END IF;
-                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'[" '||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||' "]',' '||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||' ', '"',''));
-                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'"['||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||']"',' '||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||' ', '"',''));                      
+                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'["'||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||'"]',' '''||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||''' ', '"',''));
+                      Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'"['||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||']"',' '''||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||''' ', '"',''));                      
                       Lv_FuncionPrecio := REPLACE(UPPER(Lv_FuncionPrecio),'['||UPPER(Pcl_arrayServCaract(Ln_IteradorJ).DESCRIPCION_CARACTERISTICA)||']',' '''||REPLACE(UPPER(Pcl_arrayServCaract(Ln_IteradorJ).VALOR)||''' ', '"',''));
                       Ln_IteradorJ := Pcl_arrayServCaract.NEXT(Ln_IteradorJ);
                     END LOOP;
