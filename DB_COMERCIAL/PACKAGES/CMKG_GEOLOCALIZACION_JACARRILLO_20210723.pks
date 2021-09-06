@@ -59,31 +59,38 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 	    Lv_CodigoPostal VARCHAR2(1000); 
 	    Lv_CallePrincipal VARCHAR2(1000); 
 	    Lv_PuntoInteres VARCHAR2(1000); 
+	    Lv_Latitud  VARCHAR2(1000); 
+	    Lv_Longitud   VARCHAR2(1000); 
 	   
  	    CURSOR C_Canton (Cv_NombreCanton VARCHAR2 , Cv_IdProvincia NUMBER ) IS 
         SELECT id_canton , nombre_canton FROM DB_GENERAL.ADMI_CANTON 
-        WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND F_ESTANDARIZAR(nombre_canton)  LIKE '%'||F_ESTANDARIZAR(Cv_NombreCanton)||'%'  
-        OR F_ESTANDARIZAR(nombre_canton)   IN 
-		 (
-		select regexp_substr(F_ESTANDARIZAR(Cv_NombreCanton),'[^ ]+', 1, level)
-		from dual 
-		connect BY regexp_substr(F_ESTANDARIZAR(Cv_NombreCanton), '[^ ]+', 1, level)
-		is not null
-		 ) 
-		AND PROVINCIA_ID  = Cv_IdProvincia 
+        WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+		AND  PROVINCIA_ID  = Cv_IdProvincia
+		AND(
+			F_ESTANDARIZAR(nombre_canton)  LIKE ''||F_ESTANDARIZAR(Cv_NombreCanton)||'%'  
+            OR F_ESTANDARIZAR(nombre_canton)   IN 
+			(
+			select regexp_substr(F_ESTANDARIZAR(Cv_NombreCanton),'[^ ]+', 1, level)
+			from dual 
+			connect BY regexp_substr(F_ESTANDARIZAR(Cv_NombreCanton), '[^ ]+', 1, level)
+			is not null
+			) 
+		 )
+	 
         ORDER BY id_canton ASC; 
        
         CURSOR C_Pais (Cv_NombrePais VARCHAR2) IS 
-        SELECT id_pais , nombre_pais FROM DB_GENERAL.ADMI_PAIS WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND F_ESTANDARIZAR(nombre_pais)  LIKE '%'||F_ESTANDARIZAR(Cv_NombrePais)||'%'  ORDER BY id_pais ASC; 
+        SELECT id_pais , nombre_pais FROM DB_GENERAL.ADMI_PAIS WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND  F_ESTANDARIZAR(nombre_pais)  LIKE F_ESTANDARIZAR(Cv_NombrePais)||'%'  ORDER BY id_pais ASC; 
 	   
         CURSOR C_Provincia (Cv_NombreProvincia VARCHAR2) IS 
-        SELECT id_provincia , nombre_provincia FROM DB_GENERAL.ADMI_PROVINCIA WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND F_ESTANDARIZAR(nombre_provincia)  LIKE '%'||F_ESTANDARIZAR(Cv_NombreProvincia)||'%'  ORDER BY id_provincia ASC; 
+        SELECT id_provincia , nombre_provincia FROM DB_GENERAL.ADMI_PROVINCIA WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND F_ESTANDARIZAR(nombre_provincia)  LIKE F_ESTANDARIZAR(Cv_NombreProvincia)||'%'  ORDER BY id_provincia ASC; 
 	   
         CURSOR C_Parroquia (Cv_NombreParroquia VARCHAR2, Cv_IdCanton NUMBER) IS 
-        SELECT id_parroquia , nombre_parroquia FROM DB_GENERAL.ADMI_PARROQUIA WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO')  AND F_ESTANDARIZAR(nombre_parroquia)  LIKE '%'||F_ESTANDARIZAR(Cv_NombreParroquia)||'%'  AND CANTON_ID = Cv_IdCanton ORDER BY id_parroquia ASC; 
+        SELECT id_parroquia , nombre_parroquia FROM DB_GENERAL.ADMI_PARROQUIA WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO')  AND F_ESTANDARIZAR(nombre_parroquia)  LIKE F_ESTANDARIZAR(Cv_NombreParroquia)||'%'  AND CANTON_ID = Cv_IdCanton ORDER BY id_parroquia ASC; 
        
         CURSOR C_Sector (Cv_NombreSector VARCHAR2, Cv_IdParroquia NUMBER ) IS 
-        SELECT id_sector , nombre_sector FROM DB_GENERAL.ADMI_SECTOR WHERE  F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+        SELECT id_sector , nombre_sector FROM DB_GENERAL.ADMI_SECTOR
+		WHERE  F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
         AND F_ESTANDARIZAR(nombre_sector) IN (       
         select F_ESTANDARIZAR( regexp_substr( Cv_NombreSector,'[^,]+', 1, level)) from dual
         connect by regexp_substr( Cv_NombreSector, '[^,]+', 1, level) is not null
@@ -95,7 +102,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 		ON  J.OFICINA_ID  = O.ID_OFICINA
 		INNER JOIN DB_GENERAL.ADMI_CANTON_JURISDICCION JC
 		ON J.ID_JURISDICCION =JC.JURISDICCION_ID	  
-		WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    AND  F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
+		WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  
+		AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    
+		AND  F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
 		AND O.EMPRESA_ID = Cn_IdEmpresa	
 		AND JC.CANTON_ID = Cn_IdCanton
 		GROUP  BY J.ID_JURISDICCION , J.NOMBRE_JURISDICCION
@@ -107,7 +116,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 		ON  J.OFICINA_ID  = O.ID_OFICINA
 		INNER JOIN DB_GENERAL.ADMI_CANTON_JURISDICCION JC
 		ON J.ID_JURISDICCION =JC.JURISDICCION_ID	  
-			WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    AND  F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
+		WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  
+		AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    
+		AND  F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
 		AND O.EMPRESA_ID = Cn_IdEmpresa	
 		AND JC.CANTON_ID = Cn_IdCanton 
 		ORDER BY NOMBRE_JURISDICCION ASC; 
@@ -126,6 +137,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 	    Lv_CodigoPostal := APEX_JSON.GET_VARCHAR2(p_path => 'codigoPostal');
 	    Lv_CallePrincipal := APEX_JSON.GET_VARCHAR2(p_path => 'callePrincipal');
 	    Lv_PuntoInteres := APEX_JSON.GET_VARCHAR2(p_path => 'puntoInteres');
+	    Lv_Latitud := APEX_JSON.GET_VARCHAR2(p_path => 'latitud');
+	    Lv_Longitud := APEX_JSON.GET_VARCHAR2(p_path => 'longitud');
         Ln_ContDataPuntoCobertura:= 0;
  
   		OPEN C_Pais(Lv_NombrePais); 
@@ -177,11 +190,45 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 	   
 	    --NUEVA VALIDACION SI NO HAY PUNTO DE COBERTURA QUITAR ID EN DATA DE GEO
 	    IF ( Ln_ContDataPuntoCobertura <> 1 ) THEN
+	    Pv_Mensaje :='Punto de Cobertura del Canton: '||Lv_NombreCanton ||'=>'||Ln_IdCanton || ' regularizar con soporte de dato.'; 
+	    INSERT INTO DB_GENERAL.INFO_LOG (
+		ID_LOG,
+		EMPRESA_COD,
+		TIPO_LOG,
+		ORIGEN_LOG,
+		APLICACION,
+		CLASE,  
+		METODO,
+		ACCION,
+		MENSAJE,
+		ESTADO,
+		DESCRIPCION,
+		PARAMETRO_ENTRADA,
+		USR_CREACION,
+		FE_CREACION
+		)VALUES(
+		 DB_GENERAL.SEQ_INFO_LOG.NEXTVAL, 
+		 Ln_IdEmpresa , 
+		'1', 
+		'ms-core-gen-geografia',
+		'GeolocationService.java',
+		'GeolocationService',
+		'searchGeolocation',
+		'searchGeolocation',
+	    'Inconsitencia de data de geolocalizacion',
+		'Alert', 
+		 Pv_Mensaje,
+		 Pcl_Request,
+	     Lv_UsrCreacion,
+		 SYSDATE 
+		);
+	    COMMIT;
+		     
 	    Ln_IdPuntoCobertura:= NULL; 
 	    Ln_IdCanton:= NULL; 
 	    Ln_IdParroquia:= NULL; 	   
 	    Ln_IdSector:= NULL; 
-	    dbms_output.put_line('***Se encontraron mas de '|| Ln_ContDataPuntoCObertura||' puntos de cobertura***'); 
+	    dbms_output.put_line('***Se encontraron mas de '|| Ln_ContDataPuntoCobertura||' puntos de cobertura***'); 	   
 	    END IF; 
 	    --END VALIDACION
 	   
