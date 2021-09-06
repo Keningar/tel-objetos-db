@@ -309,6 +309,10 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
   *
   * @author Allan Suarez <amsuarez@telconet.ec>
   * @version 1.0 02-03-2020
+  *
+  * @author Carlos Caguana <ccaguana@telconet.ec>
+  * Se modifica el envio de las variables observaciones y descuento mensual
+  * @version 1.1 09-09-2021
   */
   PROCEDURE P_OBTENER_SERVICIOS_ADENDUM(Pcl_Request  IN  VARCHAR2,
                                  Pv_Status    OUT VARCHAR2,
@@ -1082,7 +1086,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
       Pv_Mensaje := SQLERRM;
   END P_ULTIMA_MILLA_POR_PUNTO;
 
-  PROCEDURE P_OBTENER_SERVICIOS_ADENDUM(Pcl_Request  IN  VARCHAR2,
+ PROCEDURE P_OBTENER_SERVICIOS_ADENDUM(Pcl_Request  IN  VARCHAR2,
                                  Pv_Status    OUT VARCHAR2,
                                  Pv_Mensaje   OUT VARCHAR2,
                                  Pcl_Response OUT SYS_REFCURSOR)
@@ -1619,8 +1623,12 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                 Ln_CantPeriodoMens,
                                 Lv_ObservacionMens
                             );
+                           
+                         
+                            Lv_ObservacionIns := REPLACE(Lv_ObservacionIns, ', revisar en info_error','');
+                            Lv_ObservacionMens := REPLACE(Lv_ObservacionMens, ', revisar en info_error','');
 
-                             OPEN C_GET_PARAM_EMPR_EMPL_DESC(Lv_NombreParametroEmpleado,Lv_ModuloParametroProd,Lv_ObservacionIns,'%100%',Ln_CodEmpresa);
+                            OPEN C_GET_PARAM_EMPR_EMPL_DESC(Lv_NombreParametroEmpleado,Lv_ModuloParametroProd,Lv_ObservacionIns,'%100%',Ln_CodEmpresa);
                             FETCH C_GET_PARAM_EMPR_EMPL_DESC INTO Lv_ParametroDescripEmpl;
                             CLOSE C_GET_PARAM_EMPR_EMPL_DESC; 
 
@@ -1638,15 +1646,38 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
 
                                Lv_ObservacionContrato := Lv_ObservacionContrato ||
                                               Lv_ParametroMensajeEmpl ||  ' ' ||
-                                              Lv_LoginEmpleado || '<br>' || 
-                                              Lv_ObservacionMens || '<br>' ||
-                                              'Aplica Condiciones';
+                                              Lv_LoginEmpleado;
                             ELSE
                                Lv_ObservacionContrato := Lv_ObservacionContrato ||
-                                              Lv_ObservacionIns || '<br>' || 
-                                              Lv_ObservacionMens || '<br>' ||
-                                              'Aplica Condiciones';
+                                              Lv_ObservacionIns;
                             END IF;
+                                                       
+                            IF Ln_DescuentoIns <>  0 AND  Ln_DescuentoMens = 0 AND Lv_ParametroDescripEmpl IS NULL
+                            THEN                                                        
+                            Lv_ObservacionContrato:=  Lv_ObservacionContrato|| ' Desct. Aplica Condiciones';
+                            END IF;
+                                               
+                            Lv_ObservacionContrato:=  Lv_ObservacionContrato||'<br>'||Lv_ObservacionMens;
+                                                    
+                            IF Ln_DescuentoMens = 0 
+                            THEN
+                            Lv_ObservacionContrato:= Lv_ObservacionContrato || 
+                                                            '<br> Desct. Serv. Internet.'|| 
+                                                              Ln_DescuentoMens|| '%; #Meses Desc 0';                          
+                            END IF;
+                           
+                           
+                            IF Lv_ParametroDescripEmpl IS NOT NULL
+                            THEN                            
+                              Lv_ObservacionContrato := Lv_ObservacionContrato || '; Desct. Aplica Condiciones.';
+                            END IF;
+                           
+                            IF   Ln_DescuentoMens  <>  0 AND Lv_ParametroDescripEmpl IS NULL 
+                            THEN                            
+                              Lv_ObservacionContrato := Lv_ObservacionContrato || '<br> Desct. Aplica Condiciones.';
+                            END IF;
+
+
                         ELSE
                            -- Cursor para obtener la promociones de instalacion del anterior cliente
                           OPEN C_OBTENER_PROMO_INSTALACION_RS(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).OBSERVACION));
@@ -1664,7 +1695,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                           Lv_ObservacionContrato := Lv_ParametroMensajeCRS || 
                                                     ' ' || Lv_LoginCRS ||
                                                     ' CLIENTE ORIGEN: ' || Lv_NombresCliente ||
-                                                    ' <br>' || 'Aplica Condiciones';
+                                                    ' <br>' || 'Aplica Condiciones ;Dec. Inst.'||Ln_DescuentoIns ||'% ;Desc. Fact. Mensual 0 % ; #Meses Desc. 0 ;Aplica Condiciones <br>' ;
 
                           Ln_CantPeriodoIns  := 0;
                           Ln_DescuentoMens   := NULL;
@@ -1722,7 +1753,10 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                 Pcl_ResponseList.DETALLE.INTENET.PRECIO := Ln_CobroItems;
 
                 If (Lv_internet = 'S') THEN
-                   Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"INTERNET":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'"},';
+
+                
+                   Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"INTERNET":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'","DESCUENTO":"'||Ln_DescuentoMens||'"},';
+                  
                    Ln_total_servicio := 0;
                    Lv_internet := 'N';
                 END IF;
@@ -1823,7 +1857,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                 OPEN C_OBTENER_IMPUESTO (Pcl_arrayServicio(Ln_IteradorI).PRODUCTO_ID);
                 FETCH C_OBTENER_IMPUESTO INTO Ln_PorcentajeImps;
                 CLOSE C_OBTENER_IMPUESTO;
-                dbms_output.put_Line(Lv_NombreProdPosterior); 
+
                 IF Ln_PorcentajeImps IS NOT NULL
                 THEN
                   IF LOWER(Lv_Frecuencia) = 'unica'
@@ -1840,7 +1874,22 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                 Ln_CantidadProductoTec := Ln_CantidadProductoTec + 1;
                 
                 IF (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) != trim(Lv_NombreProdPosterior) OR Pcl_arrayServicio.COUNT = Ln_IteradorI) THEN
-                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"'||trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO)||'": {"CANTIDAD":"'||Ln_CantidadProductoTec||'","PRECIO":"'||trim(to_char(Ln_SubTotalProd,'99,999,999,990.99'))||'","FRECUENCIA":"' || trim(Pcl_arrayServicio(Ln_IteradorI).FRECUENCIA) ||'"},';
+                     
+                    Ln_DescuentoMens   := NULL;
+                    Ln_CantPeriodoMens := NULL;
+
+                         DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA
+                            (
+                                Ln_idPunto,
+                                Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO,
+                                Lv_PromoMens,
+                                Ln_CodEmpresa,
+                                Ln_DescuentoMens,
+                                Ln_CantPeriodoMens,
+                                Lv_ObservacionMens
+                            );
+
+                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"'||trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO)||'": {"CANTIDAD":"'||Ln_CantidadProductoTec||'","PRECIO":"'||trim(to_char(Ln_SubTotalProd,'99,999,999,990.99'))||'","FRECUENCIA":"' || trim(Pcl_arrayServicio(Ln_IteradorI).FRECUENCIA) ||'","DESCUENTO":"'||Ln_DescuentoMens||'"},';
                     Ln_SubTotalProd        := 0; 
                     Ln_CantidadProductoTec := 0;
                 END IF;
@@ -1910,6 +1959,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     END IF;    
 
     Lv_JsonServiciosContratados := substr(Lv_JsonServiciosContratados, 0, length(Lv_JsonServiciosContratados)-1) || '}';
+
 
     Lv_JsonProdParametros := '[';
 
