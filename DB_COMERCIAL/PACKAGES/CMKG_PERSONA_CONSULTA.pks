@@ -152,8 +152,103 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR);
+                                  
+  /**
+  * Documentación para el procedimiento P_PERSONA_EMPRESA_ROL_POR_EMPRESA_ACTIVO
+  *
+  * Método encargado de retornar la información de la persona empresaRol.
+  * por empresa Activo
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   identificacion       := Id de persona,
+  *   empresaCod           := Id de empresa,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Carlos Caguana <ccaguana@telconet.ec>
+  * @version 1.0 12-08-2021
+  */
+  PROCEDURE P_PERSONA_EMPROL_EMPRACT(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR);
+                                  
+  
+  /**
+  * Documentación para el procedimiento P_INFO_PERSONA_REFERIDO
+  *
+  * Método encargado de retornar la información de la INFO_PERSONA_REFERIDO
+  * por medio de su identificación
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   identificacion       := Id de persona,
+  *   empresaCod           := codigo de empresa,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Carlos Caguana <ccaguana@telconet.ec>
+  * @version 1.0 12-08-2021
+  */                                
+  PROCEDURE P_INFO_PERSONA_REFERIDO(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR);                                  
+  
+                                  
+   /**
+  * Documentación para el procedimiento P_FORMA_PAGO_PERSONA_EMPROL
+  *
+  * Método encargado de retornar la información de la INFO_PERSONA_EMP_FORMA_PAGO
+  * por medio de su identificación
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   identificacion       := Id de persona,
+  *   empresaCod           := codigo de empresa,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Carlos Caguana <ccaguana@telconet.ec>
+  * @version 1.0 12-08-2021
+  */                                 
+  PROCEDURE P_FORMA_PAGO_PERSONA_EMPROL(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR);  
+                                  
+  
+  /**
+  * Documentación para el procedimiento P_IDENTIFICACION_EMPRESTADOS
+  *
+  * Busca un persona empresa rol por identificacion, descripcionTipoRol, codEmpresa y estados de persona empresa rol 
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   identificacion       := identificacion,
+  *   empresaCod           := codigo de empresa,
+  *   listEstado           := lista de estados,
+  *   listDescripcionRol   := lista de descripcion de Role,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Carlos Caguana <ccaguana@telconet.ec>
+  * @version 1.0 12-08-2021
+  */                                       
+  PROCEDURE P_IDENTIFICACION_EMPRESTADOS(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR);   
+                                                                                              
 end CMKG_PERSONA_CONSULTA;
+
 /
+
 create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   PROCEDURE P_PERSONA_POR_REGION(Pcl_Request  IN  CLOB,
                                 Pv_Status    OUT VARCHAR2,
@@ -660,6 +755,351 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_INFO_USUARIO_PERSONA;
+ 
+  
+  PROCEDURE P_PERSONA_EMPROL_EMPRACT(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR)  
+
+ AS
+    Lcl_Query          CLOB;
+    Lcl_Select         CLOB;
+    Lcl_From           CLOB;
+    Lcl_WhereAndJoin   CLOB;
+   
+    Lcl_OrderAnGroup    CLOB;
+    Lv_Identificacion   VARCHAR2(30);
+    Ln_EmpresaCod       VARCHAR2(30);
+    Le_Errors          EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_Identificacion     := APEX_JSON.get_varchar2(p_path => 'identificacion');
+    Ln_EmpresaCod         := APEX_JSON.get_varchar2(p_path => 'empresaCod');
+    
+    -- VALIDACIONES
+    IF Lv_Identificacion IS NULL THEN
+      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+    IF Ln_EmpresaCod IS NULL THEN
+     Pv_Mensaje := 'El parámetro empresaCod esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+    Lcl_Select       := '
+              SELECT PER.ID_PERSONA_ROL,
+                        PER.PERSONA_ID ,
+                        PER.EMPRESA_ROL_ID ,
+                        PER.OFICINA_ID ,
+                        PER.DEPARTAMENTO_ID ,
+                        PER.ESTADO ,
+                        PER.USR_CREACION ,
+                        PER.FE_CREACION ,
+                        PER.IP_CREACION ,
+                        PER.CUADRILLA_ID ,
+                        PER.PERSONA_EMPRESA_ROL_ID as personaEmpresaRolId,
+                        PER.PERSONA_EMPRESA_ROL_ID_TTCO as personaEmpresaRolIdTTCO ,
+                        PER.REPORTA_PERSONA_EMPRESA_ROL_ID as reportaPersonaEmpresaRolId ,
+                        PER.ES_PREPAGO ,
+                        PER.USR_ULT_MOD ';
+    Lcl_From         := '
+              FROM 
+                        DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL PER,
+                        DB_COMERCIAL.INFO_EMPRESA_ROL ER';
+    Lcl_WhereAndJoin := '
+               WHERE    PER.EMPRESA_ROL_ID= ER.ID_EMPRESA_ROL AND
+                        PER.PERSONA_ID IN 
+                        (SELECT ID_PERSONA FROM DB_COMERCIAL.INFO_PERSONA
+                         WHERE IDENTIFICACION_CLIENTE='''||Lv_Identificacion||'''
+                         )
+                        AND
+                        PER.ESTADO in (''Activo'',''Pendiente'',''Pend-convertir'') 
+                        AND ER.EMPRESA_COD = '''||Ln_EmpresaCod||'''';
+    Lcl_OrderAnGroup := '';
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+   
+    OPEN Pcl_Response FOR Lcl_Query;
+    
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_PERSONA_EMPROL_EMPRACT;
+
+ 
+ 
+ PROCEDURE P_INFO_PERSONA_REFERIDO(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR)  
+
+ AS
+    Lcl_Query          CLOB;
+    Lcl_Select         CLOB;
+    Lcl_From           CLOB;
+    Lcl_WhereAndJoin   CLOB;
+   
+    Lcl_OrderAnGroup    CLOB;
+    Lv_Identificacion   VARCHAR2(30);
+    Le_Errors          EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_Identificacion     := APEX_JSON.get_varchar2(p_path => 'identificacion');
+    
+    -- VALIDACIONES
+    IF Lv_Identificacion IS NULL THEN
+      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      RAISE Le_Errors;
+    END IF;
+      
+  Lcl_Select       := '
+		          SELECT 
+		             B.ID_PERSONA_REFERIDO ,
+                     B.REFERIDO_ID ';
+    Lcl_From         := '
+              FROM 
+		              DB_COMERCIAL.INFO_PERSONA A, 
+		              DB_COMERCIAL.INFO_PERSONA_REFERIDO B,
+		              DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL C';
+    Lcl_WhereAndJoin := '
+               WHERE   A.ID_PERSONA IN
+                        (SELECT ID_PERSONA FROM DB_COMERCIAL.INFO_PERSONA
+                         WHERE IDENTIFICACION_CLIENTE='''||Lv_Identificacion||'''
+                         ) AND C.PERSONA_ID =A.ID_PERSONA AND
+                          C.ID_PERSONA_ROL =B.PERSONA_EMPRESA_ROL_ID 
+                           AND B.ESTADO =''Activo''';              
+    Lcl_OrderAnGroup := '';
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+   
+    OPEN Pcl_Response FOR Lcl_Query;
+    
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_INFO_PERSONA_REFERIDO;
+
+ 
+ 
+ PROCEDURE P_FORMA_PAGO_PERSONA_EMPROL(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR)  
+
+ AS
+    Lcl_Query          CLOB;
+    Lcl_Select         CLOB;
+    Lcl_From           CLOB;
+    Lcl_WhereAndJoin   CLOB;
+   
+    Lcl_OrderAnGroup    CLOB;
+    Lv_Identificacion   VARCHAR2(30);
+    Ln_EmpresaCod       VARCHAR2(30);
+    Le_Errors          EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_Identificacion     := APEX_JSON.get_varchar2(p_path => 'identificacion');
+    Ln_EmpresaCod         := APEX_JSON.get_varchar2(p_path => 'empresaCod');
+    
+    -- VALIDACIONES
+    IF Lv_Identificacion IS NULL THEN
+      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+    IF Ln_EmpresaCod IS NULL THEN
+     Pv_Mensaje := 'El parámetro empresaCod esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+      
+  Lcl_Select       := '
+		            SELECT 
+		              	e.ID_DATOS_PAGO ,
+	                    e.PERSONA_EMPRESA_ROL_ID ,
+	                    e.BANCO_TIPO_CUENTA_ID ,
+                    	e.ESTADO,
+	                    e.TIPO_CUENTA_ID , 
+  						e.FORMA_PAGO_ID ,
+                        e.PERSONA_EMPRESA_ROL_ID AS personEmpresaRolId';
+    Lcl_From         := '
+              FROM 
+                        DB_COMERCIAL.INFO_PERSONA a, 
+                        DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL b,
+                        DB_COMERCIAL.INFO_EMPRESA_ROL c, 
+                        DB_COMERCIAL.ADMI_ROL  d, 
+                        DB_COMERCIAL.INFO_PERSONA_EMP_FORMA_PAGO  e';
+    Lcl_WhereAndJoin := '
+               WHERE  a.ID_PERSONA =
+                        (SELECT ID_PERSONA FROM DB_COMERCIAL.INFO_PERSONA
+                         WHERE IDENTIFICACION_CLIENTE='''||Lv_Identificacion||'''
+                         ) and  a.ID_PERSONA =b.PERSONA_ID               
+                      AND  b.EMPRESA_ROL_ID =c.ID_EMPRESA_ROL                
+                      AND  c.ROL_ID =d.ID_ROL             
+                      AND  d.DESCRIPCION_ROL=''Pre-cliente''
+                      AND  c.EMPRESA_COD ='''||Ln_EmpresaCod||'''
+                      AND  e.PERSONA_EMPRESA_ROL_ID =b.ID_PERSONA_ROL 
+                      AND  e.ESTADO =''Activo''
+                      AND  b.ESTADO in (''Pendiente'',''Activo'')';  
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+   
+    OPEN Pcl_Response FOR Lcl_Query;
+    
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_FORMA_PAGO_PERSONA_EMPROL;
+ 
+ 
+ 
+ PROCEDURE P_IDENTIFICACION_EMPRESTADOS(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR)  
+
+ AS
+    Lcl_Query          CLOB;
+    Lcl_Select         CLOB;
+    Lcl_From           CLOB;
+    Lcl_WhereAndJoin   CLOB;
+   
+    Lcl_OrderAnGroup               CLOB;
+    Lv_Identificacion              VARCHAR2(30);
+    Ln_EmpresaCod                  VARCHAR2(30);
+   
+    Lv_ListEstado                  VARCHAR2(1000);
+    Lv_IdEstado                    VARCHAR2(500);
+    Ln_CountListEstado             INTEGER :=0;
+
+    Lv_ListDescripcionRol          VARCHAR2(1000);
+    Lv_IdDescripcion               VARCHAR2(500);
+    Ln_CountListDescripcionRol     INTEGER :=0;
+    Le_Errors          EXCEPTION;
+  BEGIN
+	  
+	 -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+   
+    Lv_Identificacion         := APEX_JSON.get_varchar2(p_path => 'identificacion');
+    Ln_EmpresaCod             := APEX_JSON.get_varchar2(p_path => 'empresaCod');
+    Ln_CountListEstado        := APEX_JSON.GET_COUNT(p_path => 'listEstado');
+    Ln_CountListEstado        := APEX_JSON.GET_COUNT(p_path => 'listDescripcionRol');
+
+  
+     -- VALIDACIONES
+    IF Lv_Identificacion IS NULL THEN
+      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+    IF Ln_EmpresaCod IS NULL THEN
+     Pv_Mensaje := 'El parámetro empresaCod esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+    IF Ln_CountListEstado IS NULL THEN
+     Pv_Mensaje := 'El parámetro listEstado esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+   
+    IF Ln_CountListDescripcionRol IS NULL THEN
+     Pv_Mensaje := 'El parámetro listDescripcionRol esta vacío';
+      RAISE Le_Errors;
+    END IF;
+     
+    IF Ln_CountListEstado IS NOT NULL THEN
+      FOR i IN 1 .. Ln_CountListEstado LOOP
+        Lv_IdEstado         := APEX_JSON.get_varchar2(p_path => 'listEstado[%d]',  p0 => i);
+        Lv_ListEstado       := CONCAT(Lv_ListEstado,CONCAT(''''||Lv_IdEstado||'''',','));
+      END LOOP;
+    END IF; 
+   
+   
+    IF Ln_CountListDescripcionRol IS NOT NULL THEN
+      FOR i IN 1 .. Ln_CountListEstado LOOP
+        Lv_IdDescripcion         := APEX_JSON.get_varchar2(p_path => 'listDescripcionRol[%d]',  p0 => i);
+        Lv_ListDescripcionRol       := CONCAT(Lv_ListDescripcionRol,CONCAT(''''||Lv_IdDescripcion||'''',','));
+      END LOOP;
+    END IF; 
+      
+   
+   
+   
+   Lcl_Select       := '
+                  SELECT  
+			                per.ID_PERSONA_ROL,
+			                per.PERSONA_ID,
+			                per.EMPRESA_ROL_ID,
+			                per.OFICINA_ID,
+			                per.DEPARTAMENTO_ID,
+			                per.USR_CREACION,
+			                per.FE_CREACION,
+			                per.IP_CREACION,
+			                per.CUADRILLA_ID,
+			                per.PERSONA_EMPRESA_ROL_ID,
+			                per.PERSONA_EMPRESA_ROL_ID_TTCO,
+			                per.REPORTA_PERSONA_EMPRESA_ROL_ID,
+			                per.ESTADO ';
+    Lcl_From         := '
+                    FROM 
+                            DB_COMERCIAL.INFO_PERSONA ip,
+                            DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL per,
+                            DB_COMERCIAL.INFO_EMPRESA_ROL er,
+                            DB_COMERCIAL.ADMI_ROL rol,
+                            DB_COMERCIAL.ADMI_TIPO_ROL trol';
+    Lcl_WhereAndJoin := 
+                   ' WHERE 
+                            per.EMPRESA_ROL_ID =er.ID_EMPRESA_ROL AND
+                            er.ROL_ID =rol.ID_ROL AND                           
+                            rol.TIPO_ROL_ID= trol.ID_TIPO_ROL AND                            
+                            per.PERSONA_ID = ip.ID_PERSONA AND                            
+                            ip.IDENTIFICACION_CLIENTE = '''||Lv_Identificacion||'''';
+                           
+     
+                            
+   Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND trol.DESCRIPCION_TIPO_ROL IN ('||SUBSTR(Lv_ListDescripcionRol, 1, LENGTHB(Lv_ListDescripcionRol) - 1)||')';
+
+   Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND er.EMPRESA_COD= '''||Ln_EmpresaCod||'''';
+                                                                               
+   Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND per.ESTADO IN ('||SUBSTR(Lv_ListEstado, 1, LENGTHB(Lv_ListEstado) - 1)||')';
+                                                                             
+   Lcl_OrderAnGroup := '
+               ORDER BY per.ESTADO DESC';                        
+                           
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+           
+    OPEN Pcl_Response FOR Lcl_Query;  
+   
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+   
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_IDENTIFICACION_EMPRESTADOS;
+ 
+ 	  
 end CMKG_PERSONA_CONSULTA;
 /
-

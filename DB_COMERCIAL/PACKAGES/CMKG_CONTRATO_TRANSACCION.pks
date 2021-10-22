@@ -286,6 +286,16 @@ PROCEDURE P_GUARDAR_CONTRATO(
         AND AC.TIPO = 'COMERCIAL'
         AND AC.ESTADO = 'Activo';
 
+    CURSOR C_PER_EMP_ROL_CARACT(  Cn_PersonaEmpresaRolId  INTEGER,
+                                  Cn_CaracteristicaId     INTEGER,
+                                  Cv_Estado               VARCHAR2)
+      IS
+      SELECT IPERC.*
+      FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC IPERC
+      WHERE IPERC.PERSONA_EMPRESA_ROL_ID = Cn_PersonaEmpresaRolId
+          AND IPERC.CARACTERISTICA_ID = Cn_CaracteristicaId
+          AND IPERC.ESTADO = Cv_Estado;
+          
     -- Estados
     Lv_EstadoActivo            VARCHAR2(400) := 'Activo';
     Lv_EstadoPendiente         VARCHAR2(400) := 'Pendiente';
@@ -389,6 +399,9 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Lv_CodigoPromoPBw          VARCHAR2(500);
     Lv_TipoPromocionPBw        VARCHAR2(500);
     Lv_ObservacionPBw          VARCHAR2(1000);
+    Lc_CaractRecomBw    C_GET_CARACTERISTICA%rowtype;
+    Lc_PerEmpRolCarContrRecom C_PER_EMP_ROL_CARACT%rowtype;
+    Pcl_InfoContratoCaracteristica DB_COMERCIAL.INFO_CONTRATO_CARACTERISTICA%rowtype;
 
     BEGIN
 
@@ -548,7 +561,40 @@ PROCEDURE P_GUARDAR_CONTRATO(
                Lv_Origen)
         RETURNING ID_CONTRATO INTO Ln_IdContrato;
         COMMIT;
+ 
+       --MOVER CARACTERISTICA RECOMENDACION DE EQUIFAX
+        IF  Lv_PrefijoEmpresa = 'MD'  THEN
+          OPEN C_GET_CARACTERISTICA('EQUIFAX_RECOMENDACION');
+          FETCH C_GET_CARACTERISTICA INTO  Lc_CaractRecomBw;
+          CLOSE C_GET_CARACTERISTICA; 
 
+          IF Lc_CaractRecomBw.Id_Caracteristica IS  NULL THEN
+          RAISE_APPLICATION_ERROR(-20101, 'No existe la caracteristica  EQUIFAX_RECOMENDACION .');
+          ELSE  
+
+          OPEN C_PER_EMP_ROL_CARACT(Ln_IdPersonaEmpRol, Lc_CaractRecomBw.Id_Caracteristica,  Lv_EstadoActivo );
+          FETCH C_PER_EMP_ROL_CARACT INTO Lc_PerEmpRolCarContrRecom;
+          CLOSE C_PER_EMP_ROL_CARACT;
+          
+          IF  Lc_PerEmpRolCarContrRecom.ID_PERSONA_EMPRESA_ROL_CARACT IS NOT NULL THEN
+
+                Pcl_InfoContratoCaracteristica.ID_CONTRATO_CARACTERISTICA:= DB_COMERCIAL.SEQ_INFO_CONTRATO_CARAC.NEXTVAL;
+                Pcl_InfoContratoCaracteristica.CONTRATO_ID               := Ln_IdContrato;
+                Pcl_InfoContratoCaracteristica.CARACTERISTICA_ID         := Lc_CaractRecomBw.Id_Caracteristica;
+                Pcl_InfoContratoCaracteristica.VALOR1                    := Lc_CaractRecomBw.DESCRIPCION_CARACTERISTICA;
+                Pcl_InfoContratoCaracteristica.VALOR2                    := Lc_PerEmpRolCarContrRecom.VALOR ; 
+                Pcl_InfoContratoCaracteristica.ESTADO                    := Lv_EstadoActivo ; 
+                Pcl_InfoContratoCaracteristica.USR_CREACION              := Lv_UsrCreacion;
+                Pcl_InfoContratoCaracteristica.FE_CREACION               := SYSDATE; 
+                Pcl_InfoContratoCaracteristica.IP_CREACION               := Lv_ClienteIp;
+
+                INSERT  INTO  DB_COMERCIAL.INFO_CONTRATO_CARACTERISTICA VALUES Pcl_InfoContratoCaracteristica; 
+                COMMIT;
+            END IF;
+          END IF;
+        END IF;
+
+          
         --Clausulas
         IF Ln_CountClausulas IS NOT NULL
         THEN
