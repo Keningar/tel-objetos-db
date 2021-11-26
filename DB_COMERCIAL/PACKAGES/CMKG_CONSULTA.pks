@@ -1282,6 +1282,25 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             WHERE
             IST.SERVICIO_ID = Cn_IdServicio ;
 
+        CURSOR C_CARAT_CICLO_FACTURACION(Cn_IdPunto     VARCHAR2)
+        IS
+        SELECT CI.NOMBRE_CICLO
+            FROM
+            DB_COMERCIAL.INFO_PUNTO IPU,
+            DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+            DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC IPERC,
+            DB_COMERCIAL.ADMI_CARACTERISTICA CA,
+            DB_COMERCIAL.ADMI_CICLO CI
+            WHERE 
+            IPU.ID_PUNTO                                                 = Cn_IdPunto
+            AND IPER.ID_PERSONA_ROL                                      = IPU.PERSONA_EMPRESA_ROL_ID
+            AND IPERC.PERSONA_EMPRESA_ROL_ID                             = IPER.ID_PERSONA_ROL
+            AND IPERC.CARACTERISTICA_ID                                  = CA.ID_CARACTERISTICA
+            AND CA.DESCRIPCION_CARACTERISTICA                            = 'CICLO_FACTURACION'
+            AND COALESCE(TO_NUMBER(REGEXP_SUBSTR(IPERC.VALOR,'^\d+')),0) = CI.ID_CICLO
+            AND IPERC.ESTADO                                             = 'Activo'
+            AND ROWNUM                                                   = 1;
+
         CURSOR C_OBTENER_PROMO_INSTALACION_RS(Cn_IdServicio INTEGER)
         IS
             SELECT 
@@ -1306,7 +1325,70 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                         AND MONTHS_BETWEEN(SYSDATE,IDMS.FE_CREACION) <= 36) T1
                 WHERE ROWNUM = 1
                 CONNECT BY REGEXP_SUBSTR(T1.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL) T2;
-
+               
+               
+               
+       CURSOR C_OBT_PRO_INST_PERIODO(Cn_IdServicio INTEGER)
+        IS
+	     SELECT 
+	      (SELECT COUNT(T1.VALOR) AS  CANTIDAD_PERIODOS
+	              FROM
+	                (SELECT REGEXP_SUBSTR(T.VALOR,'[^,]+', 1, LEVEL) AS VALOR
+	                FROM
+	                  (SELECT ATPR.VALOR
+	                  FROM DB_COMERCIAL.ADMI_TIPO_PROMOCION ATP,
+	                    DB_COMERCIAL.ADMI_TIPO_PROMOCION_REGLA ATPR,
+	                    DB_COMERCIAL.ADMI_CARACTERISTICA AC,
+	                    DB_COMERCIAL.INFO_DETALLE_MAPEO_SOLICITUD IDMS,
+	                        DB_COMERCIAL.INFO_DETALLE_MAPEO_PROMO IDMP
+	                  WHERE 
+	                  AC.DESCRIPCION_CARACTERISTICA = 'PROM_PERIODO'
+	                  AND IDMS.SERVICIO_ID = Cn_IdServicio
+	                  AND AC.ID_CARACTERISTICA            = ATPR.CARACTERISTICA_ID
+	                  AND ATPR.ESTADO                    != 'Eliminado'
+	                  AND ATPR.TIPO_PROMOCION_ID          = ATP.ID_TIPO_PROMOCION
+	                  AND ATP.ID_TIPO_PROMOCION           = IDMP.TIPO_PROMOCION_ID 
+	                  AND IDMP.ID_DETALLE_MAPEO = IDMS.DETALLE_MAPEO_ID
+	                  AND IDMP.TIPO_PROMOCION = 'PROM_INS'
+	                  AND ATPR.TIPO_PROMOCION_id = IDMP.TIPO_PROMOCION_ID
+	                  
+	                  )T
+	                  CONNECT BY REGEXP_SUBSTR(T.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL) T1) AS PERIODOS,
+	      (SELECT ESTADO 
+	       FROM DB_COMERCIAL.INFO_SERVICIO 
+	     WHERE ID_SERVICIO = Cn_IdServicio) AS ESTADO FROM DUAL;       
+               
+               
+               
+	   CURSOR C_OBT_PRO_MENS_REGENERAR(Cn_IdServicio INTEGER)
+        IS
+	      SELECT 
+            DISTINCT ATPR.VALOR,IDMP.TIPO_PROMOCION_ID 
+            FROM DB_COMERCIAL.INFO_DETALLE_MAPEO_SOLICITUD IDMS,
+                 DB_COMERCIAL.INFO_DETALLE_MAPEO_PROMO IDMP,
+                 DB_COMERCIAL.ADMI_CARACTERISTICA AC,
+                 DB_COMERCIAL.ADMI_TIPO_PROMOCION_REGLA ATPR
+            WHERE 
+                 IDMS.SERVICIO_ID = Cn_IdServicio AND
+                 IDMP.ID_DETALLE_MAPEO = IDMS.DETALLE_MAPEO_ID AND IDMP.TIPO_PROMOCION = 'PROM_MPLA'
+                 AND ATPR.TIPO_PROMOCION_id = IDMP.TIPO_PROMOCION_ID
+                 AND AC.DESCRIPCION_CARACTERISTICA = 'PROM_PERIODO'
+                 AND AC.ID_CARACTERISTICA          = ATPR.CARACTERISTICA_ID;
+	    
+	    
+	     --Costo: 3
+	   CURSOR C_PeriodoDesc(Cv_Trama  DB_COMERCIAL.ADMI_TIPO_PROMOCION_REGLA.VALOR%TYPE,
+                         Cv_Orden  NUMBER) IS       
+      SELECT COUNT(T2.PERIODO) AS PERIODO, 
+        T2.DESCUENTO 
+      FROM ( SELECT SUBSTR(T.VALOR,1,INSTR(T.VALOR,'|',1)-1) AS PERIODO, 
+               SUBSTR(T.VALOR,INSTR(T.VALOR,'|',1)+1) AS DESCUENTO 
+             FROM (SELECT REGEXP_SUBSTR(Cv_Trama,'[^,]+', 1, LEVEL) AS VALOR
+                   FROM DUAL
+                   CONNECT BY REGEXP_SUBSTR(Cv_Trama, '[^,]+', 1, LEVEL) IS NOT NULL) T) T2
+      GROUP BY T2.DESCUENTO
+      ORDER BY Cv_Orden DESC;
+	    
         CURSOR C_OBTENER_LOGIN(Cn_IdServicio INTEGER)
         IS
             SELECT IPU.LOGIN, 
@@ -1320,10 +1402,18 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         Ln_CodEmpresa              INTEGER;
         Ln_idPunto                 INTEGER;
         Ln_DescuentoIns            INTEGER;
+        Ln_PeridosIns              INTEGER;
         Ln_DescuentoMens           INTEGER;
         Ln_CantPeriodoIns          INTEGER;
         Ln_CantPeriodoMens         INTEGER;
 
+        Lr_TipoPromoRegla          DB_COMERCIAL.CMKG_PROMOCIONES.Lr_TipoPromoReglaProcesar;
+        Lc_PeriodoDesc             C_PeriodoDesc%ROWTYPE;
+        Lc_Datos                   C_OBT_PRO_INST_PERIODO%ROWTYPE;
+
+        Lv_PromoMensual            VARCHAR2(600);
+        Lv_DescuentMensualReco     VARCHAR2(400);
+        Ln_PromoId                 INTEGER;
         Lv_NombrePlan              VARCHAR2(400);
         Lv_Tipo                    VARCHAR2(400);
         Lv_NumeroAdendum           VARCHAR2(400);
@@ -1367,7 +1457,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         Lv_internet                VARCHAR2(2) := 'N';
         Lv_VariableIf              VARCHAR2(400) := '%IF%';
         Lv_VariableBusqueda        VARCHAR2(400) :=  '%[%';
-
+        Lv_RecuperacionDocumentos  VARCHAR2(2) := 'N';       
         Ln_idCaracteristicaIn       INTEGER;
         Ln_idCaracteristicaNa       INTEGER;
         Ln_ContratoId               INTEGER;
@@ -1393,6 +1483,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
 
         Ln_CantidadProducto         INTEGER := 0;
         Ln_CantidadProductoTec      INTEGER := 0;
+        Ln_NombreCicloFact          VARCHAR2(400);
 
         TYPE Pcl_servicio IS TABLE OF C_GET_SERV_CONTRATO%ROWTYPE;
         Pcl_arrayServicio Pcl_servicio;
@@ -1449,7 +1540,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             TOTAL_MENSUAL      VARCHAR2(400),
             VALOR_PLAN_DESC    VARCHAR2(400),
             IS_PRECIO_PROMO    VARCHAR2(400),
-            NOMBRE_PLAN        VARCHAR2(400)
+            NOMBRE_PLAN        VARCHAR2(400),
+            NOMBRE_CICLO       VARCHAR2(400)
         );
 
         Pcl_ResponseList         Lcl_TypeServ;                           
@@ -1466,7 +1558,10 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     Lv_NumeroAdendum      := APEX_JSON.get_varchar2(p_path => 'numeroAdendum');
     Ln_ContratoId         := APEX_JSON.get_number(p_path => 'contratoId');
     Lv_CambioRazonSocial  := APEX_JSON.get_varchar2(p_path => 'cambioRazonSocial');
-
+    Lv_RecuperacionDocumentos:= APEX_JSON.get_varchar2(p_path => 'recuperarDocumentosDigitales');
+   
+   
+   
     --OPEN C_GET_PARAMETROS_EMPR(Lv_NombreParametroProd,Lv_ModuloParametroProd,Ln_CodEmpresa);
     --FETCH C_GET_PARAMETROS_EMPR BULK COLLECT INTO Pcl_arrayParametrosEmpr;
     --CLOSE C_GET_PARAMETROS_EMPR;    
@@ -1502,6 +1597,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     Pcl_ResponseList.VALOR_PLAN_DESC    := 0.0;--
     Pcl_ResponseList.IS_PRECIO_PROMO    := '';--
     Pcl_ResponseList.NOMBRE_PLAN        := '';--
+    Pcl_ResponseList.NOMBRE_CICLO       := '';--
 
     IF Lv_CambioRazonSocial = 'N' THEN
       IF Lv_Tipo = 'C'
@@ -1526,6 +1622,12 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
           CLOSE C_GET_SERV_ADENDUM_RS;
       END IF;
     END IF;
+
+    OPEN C_CARAT_CICLO_FACTURACION(Ln_idPunto);
+    FETCH C_CARAT_CICLO_FACTURACION INTO Ln_NombreCicloFact;
+    CLOSE C_CARAT_CICLO_FACTURACION;
+    
+    Pcl_ResponseList.NOMBRE_CICLO := Ln_NombreCicloFact;
 
     IF Pcl_arrayServicio IS NOT NULL AND Pcl_arrayServicio.EXISTS(1)
     THEN
@@ -1602,6 +1704,9 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                         Lv_internet := 'S';
                         IF Lv_CambioRazonSocial = 'N' 
                         THEN
+                        
+                         IF Lv_RecuperacionDocumentos= 'N'  
+                         THEN
                             DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA
                             (
                                 Ln_idPunto,
@@ -1623,6 +1728,70 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                 Ln_CantPeriodoMens,
                                 Lv_ObservacionMens
                             );
+                         ELSE   
+                        
+	                          OPEN C_OBTENER_PROMO_INSTALACION_RS(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
+	                          FETCH C_OBTENER_PROMO_INSTALACION_RS INTO Ln_DescuentoIns;
+	                          CLOSE C_OBTENER_PROMO_INSTALACION_RS;
+	                         
+	                         
+	                          OPEN C_OBT_PRO_INST_PERIODO(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
+	                          FETCH C_OBT_PRO_INST_PERIODO INTO Lc_Datos;
+	                          CLOSE C_OBT_PRO_INST_PERIODO;
+	                         
+	                         
+	                          IF Ln_DescuentoIns IS NOT NULL AND  Ln_DescuentoIns <>  0
+	                          THEN
+	                             Lv_ObservacionIns := 'Desct. Inst. Porcentaje: ' || Ln_DescuentoIns ||'%, #Numero de Periodos: '||Lc_Datos.PERIODOS;
+	                          ELSE
+	                             Lv_ObservacionIns := 'No aplica Promoción por descuento de Instalación.';
+	                          END IF;
+	                                          
+	                         
+	                         
+	                         
+	                          OPEN C_OBT_PRO_MENS_REGENERAR(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
+	                          FETCH C_OBT_PRO_MENS_REGENERAR INTO Lv_PromoMensual,Ln_PromoId;
+	                          CLOSE C_OBT_PRO_MENS_REGENERAR;
+	                         
+	                          IF Lv_PromoMensual IS NOT NULL
+	                          THEN                          
+		                            Lr_TipoPromoRegla := DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_PROMO_TIPO_REGLA(Ln_PromoId);
+  
+		                            IF Lr_TipoPromoRegla.PROM_DESCUENTO IS NOT NULL THEN
+							        --
+							          Lv_DescuentMensualReco := Lr_TipoPromoRegla.PROM_DESCUENTO;
+							        --
+							        ELSE
+							        --
+							          OPEN C_PeriodoDesc(Lr_TipoPromoRegla.PROM_PERIODO,2);
+								      FETCH C_PeriodoDesc INTO Lc_PeriodoDesc;
+								      CLOSE C_PeriodoDesc;
+								      Lv_DescuentMensualReco := Lc_PeriodoDesc.DESCUENTO;
+							        --
+							        END IF;
+							       
+							       							       
+							        Ln_DescuentoMens:=TO_NUMBER(Lv_DescuentMensualReco,'9999');
+
+									                           	                           		                           
+		                            IF UPPER(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA) = 'SI' THEN
+							        Ln_DescuentoMens := ' Descuento: ' || Lv_DescuentMensualReco ||'%';
+							        ELSE
+							        FOR Lc_Valores IN C_PeriodoDesc(Lv_PromoMensual,1) LOOP
+							          Lv_ObservacionMens := Lv_ObservacionMens || ' #Numero de Periodos: '|| Lc_Valores.PERIODO 
+							                                || ' - Descuento: ' || Lc_Valores.DESCUENTO || '%,';
+							        END LOOP;
+						            Lv_ObservacionMens := SUBSTR (Lv_ObservacionMens, 1, Length(Lv_ObservacionMens) - 1 );
+						            END IF;                                  
+                                    Lv_ObservacionMens := 'Desct. Serv. Internet: Promoción Indefinida: ' || NVL(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA,'NO')
+                                    || ',' || Lv_ObservacionMens;  
+	                          ELSE
+	                             Ln_DescuentoMens:=0;
+	                             Lv_ObservacionMens := 'No aplica Promoción por descuento Mensual.';
+	                          END IF;
+                                               
+                          END IF;  
                            
                          
                             Lv_ObservacionIns := REPLACE(Lv_ObservacionIns, ', revisar en info_error','');
@@ -1651,7 +1820,9 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                Lv_ObservacionContrato := Lv_ObservacionContrato ||
                                               Lv_ObservacionIns;
                             END IF;
-                                                       
+                           
+                           
+                                            
                             IF Ln_DescuentoIns <>  0 AND  Ln_DescuentoMens = 0 AND Lv_ParametroDescripEmpl IS NULL
                             THEN                                                        
                             Lv_ObservacionContrato:=  Lv_ObservacionContrato|| ' Desct. Aplica Condiciones';
@@ -1676,8 +1847,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                             THEN                            
                               Lv_ObservacionContrato := Lv_ObservacionContrato || '<br> Desct. Aplica Condiciones.';
                             END IF;
-
-
+                           
+                           
                         ELSE
                            -- Cursor para obtener la promociones de instalacion del anterior cliente
                           OPEN C_OBTENER_PROMO_INSTALACION_RS(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).OBSERVACION));
@@ -1963,10 +2134,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
 
     Lv_JsonProdParametros := '[';
 
-    --json 
-
-
-           
+    --json   
     Lv_JsonProdParametros := '';
     Lv_Query := Lv_Query ||' '''||
                 Pcl_ResponseList.IS_HOME||''' IS_HOME, '''||
@@ -1999,7 +2167,9 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                 Pcl_ResponseList.IS_PRECIO_PROMO||''' IS_PRECIO_PROMO, '''||
                 Lv_JsonProdParametros||''' ARRAY_PROD_PARAMETROS, '''||
                 Lv_JsonServiciosContratados||''' ARRAY_SERV_CONTRATADOS, '''||
-                Pcl_ResponseList.NOMBRE_PLAN||''' NOMBRE_PLAN FROM DUAL';                            
+                Pcl_ResponseList.NOMBRE_PLAN||''' NOMBRE_PLAN, '''||
+                Pcl_ResponseList.NOMBRE_CICLO ||''' NOMBRE_CICLO '||
+                'FROM DUAL';                            
 
                 OPEN Pcl_Response FOR Lv_Query;
 
