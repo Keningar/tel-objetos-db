@@ -1,10 +1,15 @@
 variables:
-  DOCKER_DRIVER: overlay2
   GIT_SSL_NO_VERIFY: "true"
   CI_REGISTRY_USER: "sonar-runner"
+  MAVEN_OPTS: "-Dmaven.repo.local=/dependencias-m2/.m2/repository"
+  MAVEN_CLI_OPTS: "-s /dependencias-m2/.m2/dev-settings.xml --batch-mode"
 
 stages:
- - SONAR
- 
+  - VALIDATION
+  - MERGE
+
 include:
-  - template: sonar-scanner.gitlab-ci.yml
+  - template: objeto-dev-validation.gitlab-ci.yml
+  - template: dev-sonar.gitlab-ci.yml
+  - template: objeto-prod-merge.gitlab-ci.yml
+
