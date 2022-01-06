@@ -150,7 +150,7 @@ CREATE OR REPLACE PACKAGE BODY "NAF47_TNET"."NAKG_GESTIONPERSONA_TRANSACC" AS
         Lv_Departamento,
         Lv_TareaId,
         Lv_Observacion,
-        to_Date(Lv_FechaHallazgo),
+        to_Date(Lv_FechaHallazgo,'dd/mm/yyyy'),
         'Activo',
         Lv_EmpresaCod,
         Lv_UsrCreacion,
