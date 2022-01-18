@@ -362,27 +362,6 @@ create or replace package DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                         Pv_Mensaje   OUT VARCHAR2,
                                         Pcl_Response OUT SYS_REFCURSOR);
 
-  /**
-  * Documentación para el procedimiento P_MODELOS_ELEM_MONITORIZADOS
-  *
-  * Método encargado de retornar la lista de modelos de elementos monitorizados.
-  *
-  * @param Pcl_Request    IN   CLOB Recibe json request
-  * [
-  *   estado              := Estado,
-  * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
-  *
-  * @author Marlon Plúas <mpluas@telconet.ec>
-  * @version 1.0 10-05-2021
-  */
-  PROCEDURE P_MODELOS_ELEM_MONITORIZADOS(Pcl_Request  IN  CLOB,
-                                         Pv_Status    OUT VARCHAR2,
-                                         Pv_Mensaje   OUT VARCHAR2,
-                                         Pcl_Response OUT SYS_REFCURSOR);
-
 end INKG_ELEMENTO_CONSULTA;
 /
 create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
@@ -1951,64 +1930,6 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_ELEM_POR_CUADRILLA_PARAMS;
-
-  PROCEDURE P_MODELOS_ELEM_MONITORIZADOS(Pcl_Request  IN  CLOB,
-                                         Pv_Status    OUT VARCHAR2,
-                                         Pv_Mensaje   OUT VARCHAR2,
-                                         Pcl_Response OUT SYS_REFCURSOR)
-  AS
-    Lcl_Query         CLOB;
-    Lcl_Select        CLOB;
-    Lcl_From          CLOB;
-    Lcl_WhereAndJoin  CLOB;
-    Lcl_OrderAnGroup  CLOB;
-    Lv_Estado         VARCHAR2(1000);
-    Le_Errors         EXCEPTION;
-  BEGIN
-    -- RETORNO LAS VARIABLES DEL REQUEST
-    APEX_JSON.PARSE(Pcl_Request);
-    Lv_Estado         := APEX_JSON.get_varchar2(p_path => 'estado');
-
-    -- VALIDACIONES
-
-    Lcl_Select       := '
-              SELECT AME.ID_MODELO_ELEMENTO,
-                     AME.NOMBRE_MODELO_ELEMENTO,
-                     AME.DESCRIPCION_MODELO_ELEMENTO,
-                     AME.MARCA_ELEMENTO_ID,
-                     AME2.NOMBRE_MARCA_ELEMENTO,
-                     AME.TIPO_ELEMENTO_ID,
-                     ATE.NOMBRE_TIPO_ELEMENTO,
-                     AME.ESTADO';
-    Lcl_From         := '
-              FROM DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO AME,
-                   DB_INFRAESTRUCTURA.ADMI_MARCA_ELEMENTO AME2,
-                   DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO ATE';
-    Lcl_WhereAndJoin := '
-              WHERE AME.MARCA_ELEMENTO_ID = AME2.ID_MARCA_ELEMENTO
-                AND AME.TIPO_ELEMENTO_ID = ATE.ID_TIPO_ELEMENTO
-                AND ATE.NOMBRE_TIPO_ELEMENTO IN (''VEHICULO'', ''TABLET'')';
-    IF Lv_Estado IS NOT NULL THEN
-      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AME.ESTADO = '''||Lv_Estado||'''';
-    END IF;
-    Lcl_OrderAnGroup := '
-              ORDER BY
-                AME.ID_MODELO_ELEMENTO DESC';
-
-    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-
-    OPEN Pcl_Response FOR Lcl_Query;
-
-    Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
-  EXCEPTION
-    WHEN Le_Errors THEN
-      Pv_Status  := 'ERROR';
-    WHEN OTHERS THEN
-      Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
-  END P_MODELOS_ELEM_MONITORIZADOS;
-
 end INKG_ELEMENTO_CONSULTA;
 /
 

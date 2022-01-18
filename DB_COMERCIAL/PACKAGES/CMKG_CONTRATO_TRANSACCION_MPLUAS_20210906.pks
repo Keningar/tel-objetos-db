@@ -269,12 +269,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
         SELECT ISE.*
         FROM DB_COMERCIAL.INFO_SERVICIO ISE
         WHERE ISE.ID_SERVICIO = Cn_IdServicio;
-       
-    CURSOR C_GET_TIPO_CONTRATO(Cn_IdTipoContrato INTEGER)
-    IS
-      SELECT ATC.*
-      FROM DB_COMERCIAL.ADMI_TIPO_CONTRATO ATC
-      WHERE ATC.ID_TIPO_CONTRATO = Cn_IdTipoContrato;
 
     CURSOR C_GET_SERVICIO_CARACT(Cn_IdServicio INTEGER, Cn_IdCaracteristica INTEGER)
     IS
@@ -405,8 +399,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Lv_CodigoPromoPBw          VARCHAR2(500);
     Lv_TipoPromocionPBw        VARCHAR2(500);
     Lv_ObservacionPBw          VARCHAR2(1000);
-    Lb_RequiereFormaPago       BOOLEAN := TRUE;
-    Lc_TipoContrato            C_GET_TIPO_CONTRATO%rowtype;
     Lc_CaractRecomBw    C_GET_CARACTERISTICA%rowtype;
     Lc_PerEmpRolCarContrRecom C_PER_EMP_ROL_CARACT%rowtype;
     Pcl_InfoContratoCaracteristica DB_COMERCIAL.INFO_CONTRATO_CARACTERISTICA%rowtype;
@@ -468,10 +460,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
           FETCH C_GET_PUNTO INTO Ln_PuntoId;
           CLOSE C_GET_PUNTO;
         END IF;
-       
-        OPEN C_GET_TIPO_CONTRATO(Ln_TipoContratoId);
-        FETCH C_GET_TIPO_CONTRATO INTO Lc_TipoContrato;
-        CLOSE C_GET_TIPO_CONTRATO;
 
         OPEN C_GET_CONTRATO_PERSONA(Ln_IdPersonaEmpRol);
         FETCH C_GET_CONTRATO_PERSONA INTO Ln_IdContrato,Lv_EstadoContrato;
@@ -690,29 +678,21 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                                 Lv_ClienteIp,
                                                                 DB_COMERCIAL.SEQ_INFO_CONTRA_DATO_ADI.NEXTVAL
                                                         );
-        
-        IF Lc_TipoContrato.Id_Tipo_Contrato IS NOT NULL AND Lc_TipoContrato.Descripcion_Tipo_Contrato = 'VEHICULO' THEN
-          Lb_RequiereFormaPago := FALSE;
-        END IF;
-       
-        IF Lb_RequiereFormaPago THEN
-          --Forma de Pago
-          Lv_DatosFormPago := DB_COMERCIAL.FORMA_PAGO_TYPE(Ln_FormaPagoId,Ln_TipoCuentaID,
-                                                           Ln_BancoTipoCuentaId,Lv_NumeroCtaTarjeta,
-                                                           Lv_CodigoVerificacion,Ln_CodEmpresa,
-                                                           Lv_AnioVencimiento,Lv_TitularCuenta,
-                                                           Ln_IdContrato,Lv_MesVencimiento,
-                                                           Lv_UsrCreacion,Lv_ClienteIp,
-                                                           Ln_PuntoId,Lv_Servicio,'N',0,'C',Lv_ValorEstado,NULL,
-                                                           Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
+        --Forma de Pago
+        Lv_DatosFormPago := DB_COMERCIAL.FORMA_PAGO_TYPE(Ln_FormaPagoId,Ln_TipoCuentaID,
+                                                         Ln_BancoTipoCuentaId,Lv_NumeroCtaTarjeta,
+                                                         Lv_CodigoVerificacion,Ln_CodEmpresa,
+                                                         Lv_AnioVencimiento,Lv_TitularCuenta,
+                                                         Ln_IdContrato,Lv_MesVencimiento,
+                                                         Lv_UsrCreacion,Lv_ClienteIp,
+                                                         Ln_PuntoId,Lv_Servicio,'N',0,'C',Lv_ValorEstado,NULL,
+                                                         Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
 
-          P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
+        P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
         
-          IF Pv_Status IS NULL OR Pv_Status = 'ERROR'
-          THEN
+        IF Pv_Status IS NULL OR Pv_Status = 'ERROR'
+        THEN
             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
-          END IF;
-          COMMIT;
         END IF;
         COMMIT;
 
