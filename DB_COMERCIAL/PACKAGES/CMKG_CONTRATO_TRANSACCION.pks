@@ -164,6 +164,10 @@ AS
     *         Pv_SeAutorizo     -  Se autoriza
     * @author Ariel Bailón <abailon@telconet.ec>
     * @version 1.0 27-10-2020
+    *
+    * @author Walther Joao Gaibor C. <wgaibor@telconet.ec>
+    * @version 1.1 25-01-2022 - Se solicita que no se duplique la información 
+    *                           de la info_persona_empresa_rol.
     */
     PROCEDURE P_APROBAR_CONTRATO(Pcl_Request       IN  DB_COMERCIAL.DATOS_APROBAR_CONTRATO_TYPE,
                                  Pv_Mensaje        OUT VARCHAR2,
@@ -2799,6 +2803,19 @@ PROCEDURE P_GUARDAR_CONTRATO(
       FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO IPERH
       WHERE IPERH.PERSONA_EMPRESA_ROL_ID = Cn_PersonaEmpresaRolId;
 
+      CURSOR C_GET_PERSONA_EMPRESA_ROL (Cn_PersonaId INTEGER, Cn_EmpresaRolId INTEGER, Cv_DescripcionRol VARCHAR2, Cv_Estado VARCHAR2)
+      IS
+      SELECT
+          IPER.ID_PERSONA_ROL
+      FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER, DB_COMERCIAL.INFO_EMPRESA_ROL IERO, DB_COMERCIAL.ADMI_ROL ADRO
+      WHERE IPER.EMPRESA_ROL_ID = IERO.ID_EMPRESA_ROL
+      AND IERO.ROL_ID           = ADRO.ID_ROL
+      AND IPER.PERSONA_ID       = Cn_PersonaId
+      AND IPER.EMPRESA_ROL_ID   = Cn_EmpresaRolId
+      AND ADRO.DESCRIPCION_ROL  = Cv_DescripcionRol
+      AND IPER.ESTADO           = Cv_Estado
+      AND ROWNUM = 1;
+
       Lv_AplicaCicloFac               VARCHAR2(4000);
       Lc_Contrato                     C_CONTRATO_PARAMS%rowtype;
       Lc_PersonaEmpresaRol            C_PERSONA_EMPRESA_ROL_PARAMS%rowtype;
@@ -2860,6 +2877,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
       Ln_IteradorK                    INTEGER;
       Pcl_GenerarOtAdicional          DB_COMERCIAL.DATOS_GENERAR_OT_TYPE;
       Le_Errors                       EXCEPTION;
+      Ln_PersonaEmpresaRolId          INTEGER;
     BEGIN
       -- VALIDACIONES
       IF Pcl_Request.Pn_FormaPagoId IS NULL THEN
@@ -2905,6 +2923,15 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
       IF Lc_Cliente.Id_Persona IS NULL THEN
         Pv_Mensaje := 'No se encontro la información del cliente, Favor Revisar!';
+        RAISE Le_Errors;
+      END IF;
+
+      OPEN C_GET_PERSONA_EMPRESA_ROL(Lc_Persona.Id_Persona, Lc_EmpresaRolCliente.Id_Empresa_Rol, 'Cliente','Activo');
+      FETCH C_GET_PERSONA_EMPRESA_ROL INTO Ln_PersonaEmpresaRolId;
+      CLOSE C_GET_PERSONA_EMPRESA_ROL;
+
+      IF Ln_PersonaEmpresaRolId IS NOT NULL AND Ln_PersonaEmpresaRolId <> 0 THEN
+        Pv_Mensaje := 'El cliente ya existe... no se puede aprobar, Favor Revisar!';
         RAISE Le_Errors;
       END IF;
 
