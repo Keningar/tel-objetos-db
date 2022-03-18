@@ -313,10 +313,6 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
   * @author Carlos Caguana <ccaguana@telconet.ec>
   * Se modifica el envio de las variables observaciones y descuento mensual
   * @version 1.1 09-09-2021
-  *
-  * @author Néstor Naula <nnaulal@telconet.ec>
-  * Se agrega estados parametrizados al obtener los servicios de contrato/adendum
-  * @version 1.1 09-09-2021
   */
   PROCEDURE P_OBTENER_SERVICIOS_ADENDUM(Pcl_Request  IN  VARCHAR2,
                                  Pv_Status    OUT VARCHAR2,
@@ -1203,24 +1199,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             WHERE
             IAD.NUMERO = Cv_numeroAdendum AND
             IAD.PUNTO_ID = Cn_PuntoId AND
-            ISE.ESTADO IN ( SELECT 
-                            SUBSTR(T2.VALOR,INSTR(T2.VALOR,'|')+1) AS ESTADOS
-                              FROM 
-                              (
-                                SELECT REGEXP_SUBSTR(
-                                      T1.VALOR
-                                ,'[^,]+', 1, LEVEL) AS VALOR 
-                                FROM (
-                                SELECT APD.VALOR1 AS VALOR
-                                        FROM DB_GENERAL.ADMI_PARAMETRO_DET APD
-                                        WHERE PARAMETRO_ID = (
-                                            SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB 
-                                            WHERE NOMBRE_PARAMETRO='ESTADOS_PRODUCTOS_ADICIONALES_CONTRATOS_WEB'
-                                          ) 
-                                        AND APD.DESCRIPCION = 'ESTADOS REQUERIDO PARA PRODUCTOS ADICIONALES DE CONTRATO WEB' 
-                                        AND APD.ESTADO='Activo') T1
-                                CONNECT BY REGEXP_SUBSTR(T1.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL
-                              )T2) AND
+            --IAD.FE_CREACION = (select  MAX(A.FE_CREACION) FROM DB_COMERCIAL.INFO_ADENDUM A where A.NUMERO=IAD.NUMERO GROUP BY A.NUMERO) AND
+            ISE.ESTADO IN ('Factible','Activo') AND
             IAD.TIPO = Cv_Tipo
             ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;
 
@@ -1235,24 +1215,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             LEFT JOIN DB_COMERCIAL.ADMI_PRODUCTO APRO ON APRO.ID_PRODUCTO = ISE.PRODUCTO_ID
             WHERE
             IAD.CONTRATO_ID = Cn_ContratoId AND
-            ISE.ESTADO IN ( SELECT 
-                            SUBSTR(T2.VALOR,INSTR(T2.VALOR,'|')+1) AS ESTADOS
-                              FROM 
-                              (
-                                SELECT REGEXP_SUBSTR(
-                                      T1.VALOR
-                                ,'[^,]+', 1, LEVEL) AS VALOR 
-                                FROM (
-                                SELECT APD.VALOR1 AS VALOR
-                                        FROM DB_GENERAL.ADMI_PARAMETRO_DET APD
-                                        WHERE PARAMETRO_ID = (
-                                            SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB 
-                                            WHERE NOMBRE_PARAMETRO='ESTADOS_PRODUCTOS_ADICIONALES_CONTRATOS_WEB'
-                                          ) 
-                                        AND APD.DESCRIPCION = 'ESTADOS REQUERIDO PARA PRODUCTOS ADICIONALES DE CONTRATO WEB' 
-                                        AND APD.ESTADO='Activo') T1
-                                CONNECT BY REGEXP_SUBSTR(T1.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL
-                              )T2) AND
+            --IAD.FE_CREACION = (select  MAX(A.FE_CREACION) FROM DB_COMERCIAL.INFO_ADENDUM A where A.CONTRATO_ID=IAD.CONTRATO_ID GROUP BY A.CONTRATO_ID) AND
+            ISE.ESTADO IN ('Factible','Activo', 'Pendiente', 'PrePlanificada') AND
             IAD.TIPO = Cv_Tipo
             ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;
 
@@ -1267,24 +1231,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             LEFT JOIN DB_COMERCIAL.ADMI_PRODUCTO APRO ON APRO.ID_PRODUCTO = ISE.PRODUCTO_ID
             WHERE
             IAD.CONTRATO_ID = Cn_ContratoId AND
-            ISE.ESTADO IN ( SELECT 
-                            SUBSTR(T2.VALOR,INSTR(T2.VALOR,'|')+1) AS ESTADOS
-                              FROM 
-                              (
-                                SELECT REGEXP_SUBSTR(
-                                      T1.VALOR
-                                ,'[^,]+', 1, LEVEL) AS VALOR 
-                                FROM (
-                                SELECT APD.VALOR1 AS VALOR
-                                        FROM DB_GENERAL.ADMI_PARAMETRO_DET APD
-                                        WHERE PARAMETRO_ID = (
-                                            SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB 
-                                            WHERE NOMBRE_PARAMETRO='ESTADOS_PRODUCTOS_ADICIONALES_CONTRATOS_WEB'
-                                          ) 
-                                        AND APD.DESCRIPCION = 'ESTADOS REQUERIDO PARA PRODUCTOS ADICIONALES DE CONTRATO WEB' 
-                                        AND APD.ESTADO='Activo') T1
-                                CONNECT BY REGEXP_SUBSTR(T1.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL
-                              )T2) AND
+            --IAD.FE_CREACION = (select  MAX(A.FE_CREACION) FROM DB_COMERCIAL.INFO_ADENDUM A where A.CONTRATO_ID=IAD.CONTRATO_ID GROUP BY A.CONTRATO_ID) AND
+            ISE.ESTADO IN ('Factible','Activo', 'Pendiente', 'PrePlanificada') AND
             IAD.TIPO = Cv_Tipo
             ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;               
 
@@ -1534,7 +1482,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         Ln_CodEmpresa              INTEGER;
         Ln_idPunto                 INTEGER;
         Ln_DescuentoIns            INTEGER;
- --     Ln_PeridosIns              INTEGER;
+  --    Ln_PeridosIns              INTEGER;
         Ln_DescuentoMens           INTEGER;
         Ln_CantPeriodoIns          INTEGER;
         Ln_CantPeriodoMens         INTEGER;
@@ -1550,7 +1498,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         Lv_Tipo                    VARCHAR2(400);
         Lv_NumeroAdendum           VARCHAR2(400);
         Lv_NombreParametroEstado   VARCHAR2(400) := 'ESTADO_PLAN_CONTRATO';
---      Lv_NombreParametroProd     VARCHAR2(400) := 'PRODUCTOS_TM_COMERCIAL';
+    --  Lv_NombreParametroProd     VARCHAR2(400) := 'PRODUCTOS_TM_COMERCIAL';
         Lv_ModuloParametroProd     VARCHAR2(400) := 'COMERCIAL';
         Lv_ModuloParametroMens     VARCHAR2(400) := 'CONTRATO-DIGITAL';
         Lv_DescripCaracteristicaNa VARCHAR2(400) := 'CAPACIDAD1';
