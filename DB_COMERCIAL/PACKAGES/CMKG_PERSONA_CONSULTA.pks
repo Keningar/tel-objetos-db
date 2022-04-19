@@ -244,6 +244,33 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR);   
+                                   
+  /**
+  * Documentación para el procedimiento P_PERSONA_POR_CARACT
+  *
+  * Método encargado de retornar lista de persona por caracteristica.
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   descripcionCaracteristica := Descripcion de tipo de caracteristica,
+  *   caracteristicaId    		:= Id de tipo de caracteristica,
+  *   estado              		:= Estado Default 'Activo',
+  *   idPersona           		:= Id de persona,
+  *   empresaId           		:= Id de empresa Defaul '10',
+  *   identificacion      		:= Identificación,
+  *   login               		:= Login,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Wilson Quinto <wquinto@telconet.ec>
+  * @version 1.0 19-11-2021
+  */
+  PROCEDURE P_PERSONA_POR_CARACT(Pcl_Request  IN  CLOB,
+                             Pv_Status    OUT VARCHAR2,
+                             Pv_Mensaje   OUT VARCHAR2,
+                             Pcl_Response OUT SYS_REFCURSOR);                                 
                                                                                               
 end CMKG_PERSONA_CONSULTA;
 
@@ -1100,6 +1127,115 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
       Pv_Mensaje := SQLERRM;
   END P_IDENTIFICACION_EMPRESTADOS;
  
+ 
+ PROCEDURE P_PERSONA_POR_CARACT(Pcl_Request  IN  CLOB,
+                             Pv_Status    OUT VARCHAR2,
+                             Pv_Mensaje   OUT VARCHAR2,
+                             Pcl_Response OUT SYS_REFCURSOR)
+  AS
+    Lcl_Query              CLOB;
+    Lcl_Select         	   CLOB;
+    Lcl_From           	   CLOB;
+    Lcl_WhereAndJoin       CLOB;
+    Lcl_OrderAnGroup   	   CLOB;
+    Lv_DescripcionCaracteristica      VARCHAR2(100);
+    Lv_Estado              VARCHAR2(500);
+    Lv_Identificacion      VARCHAR2(1000);
+    Lv_Login               VARCHAR2(1000);
+    Lv_ListEstado          VARCHAR2(1000);
+    Lv_IdEstado            VARCHAR2(500);
+    Ln_CountListEstado     INTEGER :=0;
+    Lb_FiltroListEstado    BOOLEAN := FALSE;
+    Ln_CaracteristicaId    NUMBER;
+    Ln_IdPersona           NUMBER;
+    Ln_EmpresaId           NUMBER;
+    Le_Errors              EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_DescripcionCaracteristica     := APEX_JSON.get_varchar2(p_path => 'descripcionCaracteristica');
+    Ln_CaracteristicaId              := APEX_JSON.get_number(p_path => 'caracteristicaId');
+    Lv_Estado             := APEX_JSON.get_varchar2(p_path => 'estado');
+    Ln_IdPersona          := APEX_JSON.get_number(p_path => 'idPersona');
+    Ln_EmpresaId          := APEX_JSON.get_number(p_path => 'empresaId');
+    Lv_Identificacion     := APEX_JSON.get_varchar2(p_path => 'identificacion');
+    Lv_Login              := APEX_JSON.get_varchar2(p_path => 'login');
+    Ln_CountListEstado    := APEX_JSON.GET_COUNT(p_path => 'listEstado');
+
+    -- VALIDACIONES
+    IF Ln_CaracteristicaId IS NULL AND Lv_DescripcionCaracteristica IS NULL THEN
+      Pv_Mensaje := 'El parámetro caracteristicaId o descripcionCaracteristica está vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Ln_CountListEstado IS NOT NULL THEN
+      FOR i IN 1 .. Ln_CountListEstado LOOP
+        APEX_JSON.PARSE(Pcl_Request);
+        Lv_IdEstado         := APEX_JSON.get_varchar2(p_path => 'listEstado[%d]',  p0 => i);
+        Lv_ListEstado       := CONCAT(Lv_ListEstado,CONCAT(''''||Lv_IdEstado||'''',','));
+        Lb_FiltroListEstado := TRUE;
+      END LOOP;
+    END IF;    
+    IF Lv_Estado IS NULL AND Lb_FiltroListEstado = FALSE THEN
+      Lv_Estado := 'Activo';
+    END IF;
+    IF Ln_EmpresaId IS NULL THEN
+      Ln_EmpresaId := 10;
+    END IF;
+    
+    Lcl_Select       := '
+              SELECT IP.*';
+    Lcl_From         := '
+              FROM DB_COMERCIAL.INFO_PERSONA IP,
+                   DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+                   DB_COMERCIAL.INFO_EMPRESA_ROL IER,
+				   DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC IPERC,
+                   DB_COMERCIAL.ADMI_CARACTERISTICA AC';
+    Lcl_WhereAndJoin := '
+              WHERE IP.ID_PERSONA = IPER.PERSONA_ID
+                AND IPER.EMPRESA_ROL_ID = IER.ID_EMPRESA_ROL
+				AND IPER.ID_PERSONA_ROL = IPERC.PERSONA_EMPRESA_ROL_ID
+                AND IPERC.CARACTERISTICA_ID = AC.ID_CARACTERISTICA
+                AND IPERC.ESTADO = ''Activo''
+                AND IPER.ESTADO = ''Activo''
+                AND AC.ESTADO= ''Activo''
+                AND IER.EMPRESA_COD = '||Ln_EmpresaId||'';
+    IF Lb_FiltroListEstado THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ESTADO IN ('||SUBSTR(Lv_ListEstado, 1, LENGTHB(Lv_ListEstado) - 1)||')';
+    ELSE
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ESTADO = '''||Lv_Estado||'''';
+    END IF;
+    IF Ln_CaracteristicaId IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AC.ID_CARACTERISTICA = '||Ln_CaracteristicaId;
+    END IF;
+    IF Lv_DescripcionCaracteristica IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AC.DESCRIPCION_CARACTERISTICA = '''||Lv_DescripcionCaracteristica||'''';
+    END IF;
+    IF Ln_IdPersona IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ID_PERSONA = '||Ln_IdPersona;
+    END IF;
+    IF Lv_Identificacion IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.IDENTIFICACION_CLIENTE = '''||Lv_Identificacion||'''';
+    END IF;
+    IF Lv_Login IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.LOGIN = '''||Lv_Login||'''';
+    END IF;
+    Lcl_OrderAnGroup := '
+              ORDER BY
+                IP.ID_PERSONA DESC';
+    
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+    
+    OPEN Pcl_Response FOR Lcl_Query;
+    
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_PERSONA_POR_CARACT;
  	  
 end CMKG_PERSONA_CONSULTA;
 /

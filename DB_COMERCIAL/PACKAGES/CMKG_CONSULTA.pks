@@ -341,6 +341,86 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                                     Pcl_Response OUT SYS_REFCURSOR);
 
 
+ /**
+  * Documentación para el procedimiento P_VERIFICA_DOCUMENTOS_REQ
+  * Método encargado de retornar el descuento del empleado CRS
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  * codEmpresa: codigo empresa
+	* prefijoEmpresa: prefijo empresa
+	* usrCreacion: login usuario
+	* clientIp: ip cliente
+	* idFormaPago: id forma de pago
+	* idTipoCuenta: id tipo cliente
+	* tipoTributario: tipo tributrario
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+  * @version 1.0 11-15-2021
+  */
+  PROCEDURE P_VERIFICA_DOCUMENTOS_REQ(Pcl_Request  IN  VARCHAR2,
+                                      Pv_Status    OUT VARCHAR2,
+                                      Pv_Mensaje   OUT VARCHAR2,
+                                      Pcl_Response OUT SYS_REFCURSOR);
+
+
+
+/**
+  * Documentación para el procedimiento P_SERVICIO_PERSONA
+  *
+  * Método encargado de retornar lista servicios por persona
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   estado              := Estado Default 'Activo',
+  *   personaId           := Id de persona,
+  *   personaEmpresaRolId           := Id de rol persona empresa,
+  *   productoId           := Id de producto,
+  *   productoNombreTecnico      := Nombre tecnico de producto,
+  *   esVentaExterna               := Verificador de venta extena Default 'FALSE',
+  *   puntoId               := Id de punto,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Wilson Quinto <wquinto@telconet.ec>
+  * @version 1.0 02-03-2020
+  */
+  PROCEDURE P_SERVICIO_PERSONA(Pcl_Request  IN  VARCHAR2,
+                                       Pv_Status    OUT VARCHAR2,
+                                       Pv_Mensaje   OUT VARCHAR2,
+                                       Pcl_Response OUT SYS_REFCURSOR);
+                                       
+/**
+  * Documentación para el procedimiento P_CONT_FORMA_PAGO_HISTORIAL
+  *
+  * Método encargado de retornar lista servicios por persona
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   estado              := Estado Default 'Activo',
+  *   contratoId           := Id de contrato,
+  *   formaPagoId           := Id de forma de pago,
+  *   feDesde      := rango de fecha desde de historial,
+  *   feHasta               := rango de fecha hasta de historial
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Wilson Quinto <wquinto@telconet.ec>
+  * @version 1.0 04-03-2022
+  */
+  PROCEDURE P_CONT_FORMA_PAGO_HISTORIAL(Pcl_Request  IN  VARCHAR2,
+                                       Pv_Status    OUT VARCHAR2,
+                                       Pv_Mensaje   OUT VARCHAR2,
+                                       Pcl_Response OUT SYS_REFCURSOR);
+
 end CMKG_CONSULTA; 
 / 
 create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
@@ -2261,6 +2341,322 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                           '127.0.0.1');
 
     END P_OBTENER_DESCUENTO_RS; 
+
+
+
+   PROCEDURE P_VERIFICA_DOCUMENTOS_REQ(Pcl_Request  IN  VARCHAR2,
+                                 Pv_Status    OUT VARCHAR2,
+                                 Pv_Mensaje   OUT VARCHAR2,
+                                 Pcl_Response OUT SYS_REFCURSOR)
+    IS
+      Lv_CodEmpresa VARCHAR2(200);     
+      Lv_PrefijoEmpresa VARCHAR2(200);
+      Lv_UsrCreacion VARCHAR2(200);
+      Lv_ClientIp VARCHAR2(200);
+      Ln_IdFormaPago NUMBER ;
+      Ln_IdTipoCuenta NUMBER ;
+      Lv_CodFormaPago VARCHAR2(200);
+      Lv_TipoTributario VARCHAR2(200);
+      Lv_CodigoTipoDocumento  VARCHAR2(200);
+      Lv_Default  VARCHAR2(200);
+      Lv_NombreParametro VARCHAR2(200);
+     
+       CURSOR C_FormaPago(Cn_IdFormaPago NUMBER) IS 
+       SELECT CODIGO_FORMA_PAGO FROM DB_GENERAL.ADMI_FORMA_PAGO
+       WHERE ID_FORMA_PAGO = Cn_IdFormaPago
+       AND ESTADO  = 'Activo'; 
+
+       CURSOR C_TipoCuenta(Cn_IdTipoCuenta NUMBER) IS 
+       SELECT DESCRIPCION_CUENTA FROM DB_GENERAL.ADMI_TIPO_CUENTA
+       WHERE ID_TIPO_CUENTA = Cn_IdTipoCuenta
+       AND ESTADO  = 'Activo'; 
+ 
+ 	   
+       BEGIN  
+        APEX_JSON.PARSE(Pcl_Request);   
+        Lv_CodEmpresa  := APEX_JSON.GET_VARCHAR2(p_path => 'codEmpresa');
+        Lv_PrefijoEmpresa  := APEX_JSON.GET_VARCHAR2(p_path => 'prefijoEmpresa');     
+        Lv_UsrCreacion := APEX_JSON.GET_VARCHAR2(p_path => 'usrCreacion');
+        Lv_ClientIp := APEX_JSON.GET_VARCHAR2(p_path => 'clientIp');
+        Ln_IdFormaPago := APEX_JSON.GET_VARCHAR2(p_path => 'idFormaPago');
+        Ln_IdTipoCuenta  := APEX_JSON.GET_VARCHAR2(p_path => 'idTipoCuenta');
+        Lv_TipoTributario := APEX_JSON.GET_VARCHAR2(p_path => 'tipoTributario');
+        Lv_Default :='DEFAULT';
+        Lv_NombreParametro := 'PARAM_FLUJO_VALIDACIONES_FORMAS_PAGOS'; 
+       
+      
+        --DOCUMENTOS POR FORMA DE PAGO
+        FOR i IN  C_FormaPago(Ln_IdFormaPago)   LOOP    
+             Lv_CodFormaPago:=  i.CODIGO_FORMA_PAGO;  
+             dbms_output.put_line('Lv_CodFormaPago'||Lv_CodFormaPago);  
+             
+            IF (Ln_IdTipoCuenta IS NOT NULL) THEN 
+              dbms_output.put_line('Ln_IdTipoCuentaDD'||Ln_IdTipoCuenta);  
+              FOR j IN  C_TipoCuenta(Ln_IdTipoCuenta)   LOOP   
+                  Lv_CodFormaPago := j.DESCRIPCION_CUENTA;    
+                   dbms_output.put_line('Lv_CodFormaPago '||Lv_CodFormaPago);  
+                  --CUANDO HAY TARJETAS DE CREDITO EN DEBITO BANCARIO
+                  IF (REGEXP_LIKE(j.DESCRIPCION_CUENTA, 'TARJETA') ) THEN                 
+                     Lv_CodFormaPago := 'TARC';  
+                  END IF;
+              END LOOP;
+            END IF;
+      	END LOOP;         
+       
+               
+       
+       Pv_Status := 'OK';  
+       Pv_Mensaje := 'Transacción exitosa';  
+       
+        
+       OPEN  Pcl_Response FOR
+       SELECT  
+       atdg.ID_TIPO_DOCUMENTO ,  
+       atdg.CODIGO_TIPO_DOCUMENTO , 
+       atdg.DESCRIPCION_TIPO_DOCUMENTO , 
+       apd.VALOR3  AS grupo ,
+       apd.VALOR6  AS grupo_descripcion , 
+       apd.VALOR5  AS requerido 
+       FROM  DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL atdg 
+       INNER JOIN DB_GENERAL.ADMI_PARAMETRO_DET apd  ON apd.VALOR2  = atdg.CODIGO_TIPO_DOCUMENTO 
+       INNER JOIN DB_GENERAL.ADMI_PARAMETRO_CAB apc  ON apc.ID_PARAMETRO  = apd.PARAMETRO_ID  
+       WHERE apd.ESTADO  = 'Activo'
+       AND   apc.ESTADO  = 'Activo'
+       AND   atdg.ESTADO = 'Activo' 
+       AND   apd.VALOR4  = 'S' 
+       AND   apc.NOMBRE_PARAMETRO =  Lv_NombreParametro
+       AND   apd.VALOR3  IN (       
+       select regexp_substr( Lv_Default || ','|| Lv_CodFormaPago || ','||      Lv_TipoTributario,'[^,]+', 1, level) from dual
+       connect by regexp_substr( Lv_Default || ','|| Lv_CodFormaPago || ','||      Lv_TipoTributario, '[^,]+', 1, level) is not null
+       );  
+            
+     
+     EXCEPTION
+       WHEN OTHERS THEN
+       Pv_Status := 'ERROR';  
+       Pv_Mensaje := 'Transacción fallida'; 
+       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('ERROR VALIDACION CONTRATO',
+                                              'DB_COMERCIAL.CMKG_VALIDACIONES_CONTRATO.P_VERIFICAR_CATALOGO',
+                                              'Error: '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                              'telcos',
+                                              SYSDATE,
+                                              '127.0.0.1');
+   
+  END P_VERIFICA_DOCUMENTOS_REQ;   
+ 
+ PROCEDURE P_SERVICIO_PERSONA(Pcl_Request  IN  VARCHAR2,
+                                       Pv_Status    OUT VARCHAR2,
+                                       Pv_Mensaje   OUT VARCHAR2,
+                                       Pcl_Response OUT SYS_REFCURSOR)
+  AS
+    Lcl_Query                   CLOB;
+    Lcl_Select                  CLOB;
+    Lcl_From                    CLOB;
+    Lcl_WhereAndJoin            CLOB;
+    Lcl_OrderAnGroup            CLOB;
+    Lv_Estado                   VARCHAR2(100);
+    Ln_PersonaId NUMBER;
+    Ln_PersonaEmpresaRolId      NUMBER;
+    Ln_puntoId                  NUMBER;
+    Ln_productoId NUMBER;
+    Lv_ProductoNombreTecnico VARCHAR2(100);
+    Ld_FechaDesde DATE;
+    Ld_FechaHasta DATE;
+    Lb_EsVentaExterna           BOOLEAN;
+    Le_Errors                   EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_Estado                := APEX_JSON.get_varchar2(p_path => 'estado');
+    Ln_PersonaId:= APEX_JSON.get_number(p_path => 'personaId');
+    Ln_PersonaEmpresaRolId   := APEX_JSON.get_number(p_path => 'personaEmpresaRolId');
+    Ln_productoId:= APEX_JSON.get_number(p_path => 'productoId');
+    Lv_ProductoNombreTecnico:= APEX_JSON.get_varchar2(p_path => 'productoNombreTecnico');
+    Lb_EsVentaExterna        := APEX_JSON.get_boolean(p_path => 'esVentaExterna');
+    Ln_puntoId               := APEX_JSON.get_number(p_path => 'puntoId');
+    Ld_FechaDesde:=APEX_JSON.get_date(p_path => 'feDesde');
+    Ld_FechaHasta:=APEX_JSON.get_date(p_path => 'feHasta');
+    -- VALIDACIONES
+    IF Ln_PersonaId IS NULL THEN
+      Pv_Mensaje := 'El parámetro Ln_PersonaId esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_Estado IS NULL THEN
+      Lv_Estado := 'Activo';
+    END IF;
+    IF Lb_EsVentaExterna IS NULL THEN
+      Lb_EsVentaExterna := FALSE;
+    END IF;
+
+    Lcl_Select       := '
+              SELECT  ISE.ID_SERVICIO         ,
+                      ISE.PUNTO_ID            ,
+                      IP.LOGIN                ,
+                      ISE.PRODUCTO_ID         ,
+                      ISE.PLAN_ID             ,
+                      ISE.ORDEN_TRABAJO_ID    ,
+                      ISE.ES_VENTA            ,
+                      ISE.CANTIDAD            ,
+                      ISE.PRECIO_VENTA        ,
+                      ISE.PUNTO_FACTURACION_ID,
+                      ISE.ELEMENTO_ID         ,
+                      ISE.ULTIMA_MILLA_ID     ,
+                      ISE.TIPO_ORDEN          ,
+                      ISE.OBSERVACION         ,
+                      ISE.USR_VENDEDOR,
+                      ISE.FE_CREACION,
+                      NVL(AP.NOMBRE_TECNICO,APP.NOMBRE_TECNICO) AS PRODUCTO_NOMBRE_TECNICO';
+   Lcl_From         := ' FROM  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+                    DB_COMERCIAL.INFO_PUNTO               IP  ,
+                    DB_COMERCIAL.INFO_SERVICIO            ISE
+                    LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB IPC on IPC.ID_PLAN=ISE.PLAN_ID
+                    LEFT JOIN DB_COMERCIAL.INFO_PLAN_DET IPD on IPD.PLAN_ID=IPC.ID_PLAN
+                    LEFT JOIN DB_COMERCIAL.ADMI_PRODUCTO AP ON AP.ID_PRODUCTO=IPD.PRODUCTO_ID
+                    LEFT JOIN DB_COMERCIAL.ADMI_PRODUCTO APP ON APP.ID_PRODUCTO=ISE.PRODUCTO_ID,
+                    DB_COMERCIAL.INFO_SERVICIO_HISTORIAL ISEH';
+   Lcl_WhereAndJoin := ' WHERE IPER.ID_PERSONA_ROL     = IP.PERSONA_EMPRESA_ROL_ID
+                    AND IP.ID_PUNTO         = ISE.PUNTO_ID
+                    AND ISE.ID_SERVICIO= ISEH.SERVICIO_ID
+                    AND ISE.ESTADO          in(''Activo'',''In-Corte'')
+                    AND ISEH.ESTADO          = '''||Lv_Estado||'''
+                    AND ISEH.ACCION =''confirmarServicio''
+                    AND to_char(ISEH.OBSERVACION) = ''Se confirmo el servicio''
+                    AND IPER.PERSONA_ID= '''||Ln_PersonaId||'''';
+	IF Ln_puntoId IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IP.ID_PUNTO         = '''||Ln_puntoId||'''';
+    END IF;
+	IF Ln_PersonaEmpresaRolId IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IPER.ID_PERSONA_ROL = '''||Ln_PersonaEmpresaRolId||'''';
+    END IF;	
+	IF Ln_productoId IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AP.PRODUCTO_ID='''||Ln_productoId||'''';
+    END IF;
+	IF Lv_ProductoNombreTecnico IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND (AP.NOMBRE_TECNICO='''||Lv_ProductoNombreTecnico||''' OR APP.NOMBRE_TECNICO='''||Lv_ProductoNombreTecnico||''')';
+    END IF;	
+    
+   IF Ld_FechaDesde IS NOT NULL AND Ld_FechaHasta IS NOT NULL AND Ld_FechaDesde > Ld_FechaHasta THEN
+        Pv_Mensaje := 'La fecha Deste es mayor a la fecha Hasta';
+        RAISE Le_Errors;
+    END IF;
+    
+    IF Ld_FechaDesde IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ISE.FE_CREACION)>='''||Ld_FechaDesde||'''';
+    END IF;	
+    
+     IF Ld_FechaHasta IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ISE.FE_CREACION)<='''||Ld_FechaHasta||'''';
+    END IF;	
+	
+	IF NOT Lb_EsVentaExterna THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND (ISE.ES_VENTA <> ''E'' OR ISE.ES_VENTA IS NULL)';
+    END IF;
+	
+    Lcl_OrderAnGroup := '
+              ORDER BY ISE.FE_CREACION ASC';
+
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+
+    OPEN Pcl_Response FOR Lcl_Query;
+
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_SERVICIO_PERSONA;
+  
+  PROCEDURE P_CONT_FORMA_PAGO_HISTORIAL(Pcl_Request  IN  VARCHAR2,
+                                       Pv_Status    OUT VARCHAR2,
+                                       Pv_Mensaje   OUT VARCHAR2,
+                                       Pcl_Response OUT SYS_REFCURSOR)
+  AS
+    Lcl_Query                   CLOB;
+    Lcl_Select                  CLOB;
+    Lcl_From                    CLOB;
+    Lcl_WhereAndJoin            CLOB;
+    Lcl_OrderAnGroup            CLOB;
+    Ln_ContratoId NUMBER;
+    Ln_FormaPagoId      NUMBER;
+    Ld_FechaDesde DATE;
+    Ld_FechaHasta DATE;
+    Le_Errors                   EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Ln_ContratoId := APEX_JSON.get_number(p_path => 'contratoId');
+    Ln_FormaPagoId := APEX_JSON.get_number(p_path => 'formaPagoId');
+    Ld_FechaDesde :=APEX_JSON.get_date(p_path => 'feDesde');
+    Ld_FechaHasta :=APEX_JSON.get_date(p_path => 'feHasta');
+    -- VALIDACIONES
+    IF Ln_ContratoId IS NULL THEN
+      Pv_Mensaje := 'El parámetro Ln_ContratoId esta vacío';
+      RAISE Le_Errors;
+    END IF;
+
+    Lcl_Select       := 'SELECT  ICFPH.ID_DATOS_PAGO,
+							ICFPH.CONTRATO_ID,
+							ICFPH.BANCO_TIPO_CUENTA_ID,
+							ICFPH.NUMERO_CTA_TARJETA,
+							ICFPH.NUMERO_DEBITO_BANCO,
+							ICFPH.CODIGO_VERIFICACION,
+							ICFPH.TITULAR_CUENTA,
+							ICFPH.FE_CREACION,
+							ICFPH.FE_ULT_MOD,
+							ICFPH.USR_CREACION,
+							ICFPH.USR_ULT_MOD,
+							ICFPH.ESTADO,
+							ICFPH.TIPO_CUENTA_ID,
+							ICFPH.IP_CREACION,
+							ICFPH.ANIO_VENCIMIENTO,
+							ICFPH.MES_VENCIMIENTO,
+							ICFPH.CEDULA_TITULAR,
+							ICFPH.FORMA_PAGO,
+							ICFPH.MOTIVO_ID,
+							ICFPH.NUMERO_ACTA,
+							ICFPH.FORMA_PAGO_ACTUAL_ID,
+							ICFPH.FACTURA,
+							ICFPH.OBSERVACION,
+							ICFPH.DCTO_APLICADO';
+	Lcl_From         := ' FROM  DB_COMERCIAL.INFO_CONTRATO_FORMA_PAGO_HIST ICFPH';
+	Lcl_WhereAndJoin := ' WHERE ICFPH.CONTRATO_ID= '''||Ln_ContratoId||'''';
+					
+	IF Ln_FormaPagoId IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ICFPH.FORMA_PAGO = '''||Ln_FormaPagoId||'''';
+    END IF;	
+	
+	IF Ld_FechaDesde IS NOT NULL AND Ld_FechaHasta IS NOT NULL AND Ld_FechaDesde > Ld_FechaHasta THEN
+        Pv_Mensaje := 'La fecha Deste es mayor a la fecha Hasta';
+        RAISE Le_Errors;
+    END IF;
+    
+    IF Ld_FechaDesde IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ICFPH.FE_CREACION)>='''||Ld_FechaDesde||'''';
+    END IF;	
+    
+     IF Ld_FechaHasta IS NOT NULL THEN
+      Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ICFPH.FE_CREACION)<='''||Ld_FechaHasta||'''';
+    END IF;	
+	
+    Lcl_OrderAnGroup := ' ORDER BY ICFPH.FE_CREACION ASC';
+
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+
+    OPEN Pcl_Response FOR Lcl_Query;
+
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_CONT_FORMA_PAGO_HISTORIAL;
+  
  
 end CMKG_CONSULTA;
 /
