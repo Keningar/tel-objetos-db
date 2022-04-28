@@ -2,6 +2,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION
 AS
 
    /**
+    * Documentación para la función P_AUTORIZAR_CONTRATO
+    * Procedimiento para autorizar un contrato o adendum
+    *
+    * @param  Pcl_Request       -  Datos para autorizar contrato/adendum,
+    *         Pv_Mensaje        -  Mensaje,
+    *         Pv_Status         -  Estado,
+    *         Pv_SeAutorizo     -  Se autoriza 0/1
+    * @author 
+    * @version 1.0 22-03-2022
+    */
+    PROCEDURE P_AUTORIZAR_CONTRATO(Pcl_Request     IN  VARCHAR2,
+                                   Pv_Mensaje      OUT VARCHAR2,
+                                   Pv_Status       OUT VARCHAR2,
+                                   Pn_SeAutorizo   OUT NUMBER);
+
+   /**
     * Documentación para la función P_GUARDAR_CONTRATO
     * Procedimiento que guarda el contrato
     *
@@ -125,6 +141,598 @@ END CMKG_CONTRATO_TRANSACCION;
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION
 AS
 
+ PROCEDURE P_AUTORIZAR_CONTRATO(Pcl_Request     IN  VARCHAR2,
+                                   Pv_Mensaje      OUT VARCHAR2,
+                                   Pv_Status       OUT VARCHAR2,
+                                   Pn_SeAutorizo   OUT NUMBER)
+    IS
+    CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
+    IS
+      SELECT IC.*
+      FROM DB_COMERCIAL.INFO_CONTRATO IC
+      WHERE IC.ID_CONTRATO = Cn_ContratoId;
+
+    CURSOR C_PERSONA_EMP_ROL_PARAMS(Cn_PersonaEmpresaRolId NUMBER)
+    IS
+      SELECT IC.*
+      FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IC
+      WHERE IC.ID_PERSONA_ROL = Cn_PersonaEmpresaRolId;
+
+    CURSOR C_PUNTO_PARAMS(Cn_PuntoId NUMBER)
+    IS
+      SELECT IC.*
+      FROM DB_COMERCIAL.INFO_PUNTO IC
+      WHERE IC.ID_PUNTO = Cn_PuntoId;
+
+    CURSOR C_GET_SERVICIOS(Cn_PersonaEmpresaRolId  INTEGER,
+                           Cv_Estado               VARCHAR2,
+                           Cv_NombreParametro      VARCHAR2,
+                           Cn_EmpresaId            INTEGER,
+                           Cv_NumeroAdendum        VARCHAR2)
+    IS
+      SELECT
+        ISE.ID_SERVICIO,ISE.PLAN_ID
+      FROM
+          DB_COMERCIAL.INFO_SERVICIO ISE
+          INNER JOIN DB_COMERCIAL.INFO_PUNTO IPO ON IPO.ID_PUNTO=ISE.PUNTO_ID
+          INNER JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER ON IPER.ID_PERSONA_ROL = IPO.PERSONA_EMPRESA_ROL_ID
+          WHERE IPO.PERSONA_EMPRESA_ROL_ID = Cn_PersonaEmpresaRolId 
+          AND EXISTS (
+            SELECT 1
+            FROM DB_COMERCIAL.INFO_ADENDUM IAD
+            WHERE IAD.SERVICIO_ID = ISE.ID_SERVICIO AND
+            (CASE WHEN Cv_NumeroAdendum IS NOT NULL THEN IAD.NUMERO ELSE '1' END) = (CASE WHEN Cv_NumeroAdendum IS NOT NULL THEN Cv_NumeroAdendum ELSE '1' END)
+          )
+          AND ISE.ESTADO     IN (
+                           SELECT
+                                    APD.VALOR1
+                                FROM
+                                    DB_GENERAL.ADMI_PARAMETRO_CAB APC
+                                    INNER JOIN DB_GENERAL.ADMI_PARAMETRO_DET APD ON APD.PARAMETRO_ID=APC.ID_PARAMETRO
+                                    WHERE APC.NOMBRE_PARAMETRO  = Cv_NombreParametro 
+                                    AND APD.ESTADO              = Cv_Estado
+                                    AND APD.EMPRESA_COD         = Cn_EmpresaId
+                                    AND APC.ESTADO              = Cv_Estado)
+      AND (ISE.ES_VENTA   <> 'E' OR ISE.ES_VENTA IS NULL);
+
+    CURSOR C_DET_PARAMETRO_PARAMS(Cv_NombreParametro VARCHAR2,
+                                  Cv_Descripcion VARCHAR2,
+                                  Cv_CodEmpresa VARCHAR2)
+    IS
+    SELECT APD.*
+    FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC, DB_GENERAL.ADMI_PARAMETRO_DET APD
+    WHERE APC.ID_PARAMETRO = APD.PARAMETRO_ID
+    AND APC.NOMBRE_PARAMETRO = Cv_NombreParametro
+    AND APD.DESCRIPCION = Cv_Descripcion
+    AND APD.EMPRESA_COD = Cv_CodEmpresa
+    AND APC.ESTADO = 'Activo'
+    AND APD.ESTADO = 'Activo';
+
+    CURSOR C_LIST_DET_PARAMETRO(Cv_NombreParametro VARCHAR2)
+    IS
+    SELECT APD.*
+    FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC, DB_GENERAL.ADMI_PARAMETRO_DET APD
+    WHERE APC.ID_PARAMETRO = APD.PARAMETRO_ID
+    AND APC.NOMBRE_PARAMETRO = Cv_NombreParametro
+    AND APC.ESTADO = 'Activo'
+    AND APD.ESTADO = 'Activo';
+
+    CURSOR C_GET_PLANES_CONTRATO(Cn_IdPlan             INTEGER,
+                                 Cv_Estado             VARCHAR2,
+                                 Cv_NombreParametro    VARCHAR2)
+    IS   
+    SELECT  
+        DET.PRODUCTO_ID,NOMBRE_TECNICO
+    FROM DB_COMERCIAL.INFO_PLAN_DET DET
+    LEFT JOIN DB_COMERCIAL.ADMI_PRODUCTO APRO ON APRO.ID_PRODUCTO = DET.PRODUCTO_ID
+        WHERE DET.PLAN_ID = Cn_IdPlan
+        AND DET.ESTADO IN (
+            SELECT
+                APD.VALOR1
+            FROM
+                DB_GENERAL.ADMI_PARAMETRO_CAB APC
+                INNER JOIN DB_GENERAL.ADMI_PARAMETRO_DET APD ON APD.PARAMETRO_ID=APC.ID_PARAMETRO
+                WHERE APC.NOMBRE_PARAMETRO  = Cv_NombreParametro 
+                AND APD.ESTADO              = Cv_Estado
+                AND APC.ESTADO              = Cv_Estado
+        );
+
+    CURSOR C_GET_SERVICIO_ADENDUM (Cn_IdServicio INTEGER,
+                                   Cv_Tipo       VARCHAR2,
+                                   Cv_Numero     VARCHAR2)
+    IS
+    SELECT
+        SERVICIO_ID
+    FROM
+        DB_COMERCIAL.INFO_ADENDUM
+    WHERE 
+        SERVICIO_ID = Cn_IdServicio AND
+        CASE WHEN Cv_Tipo <> 'C' THEN TIPO ELSE '1' END  = CASE WHEN Cv_Tipo <> 'C' THEN Cv_Tipo ELSE '1' END   AND
+        (NUMERO = CASE WHEN Cv_Tipo <> 'C' THEN Cv_Numero ELSE NULL END
+        OR CONTRATO_ID = CASE WHEN Cv_Tipo = 'C' THEN Cv_Numero ELSE NULL END)
+        GROUP BY SERVICIO_ID;
+
+    CURSOR C_ADENDUM_PARAMS(Cn_ContratoId NUMBER, Cv_Tipo VARCHAR2)
+    IS
+      SELECT IC.*
+      FROM DB_COMERCIAL.INFO_ADENDUM IC
+      WHERE IC.CONTRATO_ID = Cn_ContratoId
+      AND IC.TIPO = Cv_Tipo;
+
+    CURSOR C_GET_ADENDUM_NUMERO (Cv_Tipo      VARCHAR2,
+					         Cv_Numero    VARCHAR2)
+    IS
+    SELECT 
+        IAD.ID_ADENDUM
+    FROM DB_COMERCIAL.INFO_ADENDUM IAD
+    WHERE IAD.TIPO    = Cv_Tipo AND
+		  IAD.NUMERO  = Cv_Numero;
+
+    CURSOR C_GET_CARACTERISTICA (Cv_Descripcion VARCHAR2, Cv_Tipo VARCHAR2, Cv_Estado VARCHAR2)
+    IS 
+    SELECT ID_CARACTERISTICA
+    FROM DB_COMERCIAL.ADMI_CARACTERISTICA
+    WHERE DESCRIPCION_CARACTERISTICA = Cv_Descripcion
+      AND TIPO = Cv_Tipo
+      AND ESTADO = Cv_Estado;
+
+    
+
+    CURSOR C_EXISTE_CARACT_SERV(Ln_ServicioId NUMBER, Ln_CaracteristicaId NUMBER, Lv_Estado VARCHAR2)
+    IS
+      SELECT NVL(count(ID_SERVICIO_CARACTERISTICA), 0)
+      FROM DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA
+      WHERE SERVICIO_ID = Ln_ServicioId
+        AND CARACTERISTICA_ID = Ln_CaracteristicaId
+        and ESTADO = Lv_Estado;
+
+     -- Types	  
+    TYPE Pcl_AdendumsNum IS TABLE OF C_GET_ADENDUM_NUMERO%ROWTYPE;
+    Pcl_ArrayAdendumsNum Pcl_AdendumsNum;
+
+    TYPE Lcl_TypeUltimMillaPorServ IS RECORD(ID_TIPO_MEDIO     NUMBER,
+                                             CODIGO_TIPO_MEDIO VARCHAR2(1000));
+
+    TYPE Pcl_Planes IS TABLE OF C_GET_PLANES_CONTRATO%ROWTYPE;
+    Pcl_ArrayPLanes Pcl_Planes;
+
+    TYPE Pcl_ServicioAdendum IS TABLE OF C_GET_SERVICIO_ADENDUM%ROWTYPE;
+    Pcl_ArrayAdendum Pcl_ServicioAdendum;
+
+    Pcl_ArrayServEncontrado Pcl_ServEncontrado_Type := Pcl_ServEncontrado_Type();
+
+    Lv_IpCreacion              VARCHAR2(1000);
+    Lv_CodEmpresa              VARCHAR2(1000);
+    Lv_PrefijoEmpresa          VARCHAR2(1000);
+    Lv_UsrCreacion             VARCHAR2(1000);
+    Lv_Origen                  VARCHAR2(1000);
+    Lv_Tipo                    VARCHAR2(1000);
+    Lv_ObservacionHistorial    VARCHAR2(1000);
+    Ln_PersonaEmpresaRolId     NUMBER;
+    Ln_ContratoId              NUMBER;
+    Ln_PuntoId                 NUMBER;
+    Lv_NumeroAdendum           VARCHAR2(1000);
+    Lc_Contrato                C_CONTRATO_PARAMS%rowtype;
+    Lc_PersonaEmpRol           C_PERSONA_EMP_ROL_PARAMS%rowtype;
+    Lc_Punto                   C_PUNTO_PARAMS%rowtype;
+    TYPE Pcl_ServicioEstado    IS TABLE OF C_GET_SERVICIOS%ROWTYPE;
+    Pcl_ArrayServicio          Pcl_ServicioEstado;
+    Pcl_ArrayServicioPromo     Pcl_ServicioEstado;
+    Pcl_UltimaMillaServ        SYS_REFCURSOR;
+    Pv_ReqUltimaMillaServ      CLOB;
+    Ln_ServicioFactible        NUMBER;  
+    Lv_EstadoActivo            VARCHAR2(400) := 'Activo'; 
+    Lv_NombreParamContrato     VARCHAR2(400) := 'ESTADO_PLAN_CONTRATO';
+    Lv_PromoInst               VARCHAR2(400) := 'PROM_INS';
+    Lv_NombreParamEstaC        VARCHAR2(400) := 'ESTADO_SERVICIOS_CONTRATO_ADENDUM';
+    Lv_NumContratoAdendum      VARCHAR2(400);
+    Lv_EstadoAdendum           VARCHAR2(400) := 'Pendiente';
+    Ln_Descuento               INTEGER;
+    Ln_CantPeriodo             INTEGER;
+    Lv_Observacion             VARCHAR2(400);
+    Pcl_RechazarContrato       CLOB;
+    Lv_NombreMotivoRechazo     VARCHAR2(4000);
+    Pcl_RechazarError          SYS_REFCURSOR;
+    Ln_Id_Tipo_Medio           NUMBER;
+    Lv_Codigo_Tipo_Medio       VARCHAR2(1000);
+    Pcl_AprobarAdendum         DB_COMERCIAL.DATOS_APROBAR_ADENDUM_TYPE;
+    Pcl_AprobarContrato        DB_COMERCIAL.DATOS_APROBAR_CONTRATO_TYPE;
+    Pcl_SetearDatosContrato    DB_COMERCIAL.DATOS_CONTRATO_TYPE;
+    Lv_EstadoContrato          VARCHAR2(400);
+    Lv_MensajeRechazo          VARCHAR2(4000);
+    Le_Errors                  EXCEPTION;
+    Le_ErrorRechazarContrato   EXCEPTION;
+    Ln_IteradorI               INTEGER;
+    Ln_IteradorK               INTEGER;
+    Ln_IteradorJ               INTEGER;
+    Ln_ServicioPlan            NUMBER := 0;  
+    Ln_Existe                  NUMBER := 0;
+    Ln_CaracteristicaId        NUMBER := 0;
+    Ln_IteradorM INTEGER;
+      TYPE recordUltimaMillaServ  IS RECORD
+       ( ID_TIPO_MEDIO NUMBER, 
+       CODIGO_TIPO_MEDIO VARCHAR2(5));
+   TYPE tablaUltimaMillaServ IS TABLE OF recordUltimaMillaServ;
+   Pv_arrayMillaServ tablaUltimaMillaServ;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_IpCreacion           := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
+    Lv_CodEmpresa           := APEX_JSON.get_varchar2(p_path => 'codEmpresa');
+    Lv_PrefijoEmpresa       := APEX_JSON.get_varchar2(p_path => 'prefijoEmpresa');
+    Lv_UsrCreacion          := APEX_JSON.get_varchar2(p_path => 'usrCreacion');
+    Lv_Origen               := APEX_JSON.get_varchar2(p_path => 'origen');
+    Lv_Tipo                 := APEX_JSON.get_varchar2(p_path => 'tipo');
+    Lv_ObservacionHistorial := APEX_JSON.get_varchar2(p_path => 'observacionHistorial');
+    Ln_PersonaEmpresaRolId  := APEX_JSON.get_number(p_path => 'personaEmpresaRolId');
+    Ln_ContratoId           := APEX_JSON.get_number(p_path => 'contratoId');
+    Ln_PuntoId              := APEX_JSON.get_number(p_path => 'puntoId');
+    Lv_NumeroAdendum        := APEX_JSON.get_varchar2(p_path => 'numeroAdendum');
+    
+    Ln_Descuento            :=0;
+    -- VALIDACIONES
+    IF Lv_IpCreacion IS NULL THEN
+      Pv_Mensaje := 'El parámetro ipCreacion esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_CodEmpresa IS NULL THEN
+      Pv_Mensaje := 'El parámetro codEmpresa esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_PrefijoEmpresa IS NULL THEN
+      Pv_Mensaje := 'El parámetro prefijoEmpresa esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_UsrCreacion IS NULL THEN
+      Pv_Mensaje := 'El parámetro usrCreacion esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_Origen IS NULL THEN
+      Pv_Mensaje := 'El parámetro origen esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_Tipo IS NULL THEN
+      Pv_Mensaje := 'El parámetro tipo esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Lv_Tipo != 'C' AND Lv_NumeroAdendum  IS NULL THEN
+      Pv_Mensaje := 'El parámetro numeroAdendum esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Ln_PersonaEmpresaRolId IS NULL THEN
+      Pv_Mensaje := 'El parámetro personaEmpresaRolId esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Ln_ContratoId IS NULL THEN
+      Pv_Mensaje := 'El parámetro contratoId esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    IF Ln_PuntoId IS NULL THEN
+      Pv_Mensaje := 'El parámetro puntoId esta vacío';
+      RAISE Le_Errors;
+    END IF;
+
+    OPEN C_CONTRATO_PARAMS(Ln_ContratoId);
+    FETCH C_CONTRATO_PARAMS INTO Lc_Contrato;
+    CLOSE C_CONTRATO_PARAMS;
+    IF Lc_Contrato.Estado = 'Activo' AND Lv_Tipo = 'C' 
+    THEN
+      Pv_Mensaje := 'El contrato ya se encuentra Activo';
+      RAISE Le_Errors;
+    END IF;
+    IF Lc_Contrato.Estado != 'PorAutorizar' AND Lv_Tipo = 'C' 
+    THEN
+      Pv_Mensaje := 'El contrato no se encuentra en estado PorAutorizar';
+      RAISE Le_Errors;
+    END IF;
+
+    OPEN C_PERSONA_EMP_ROL_PARAMS(Ln_PersonaEmpresaRolId);
+    FETCH C_PERSONA_EMP_ROL_PARAMS INTO Lc_PersonaEmpRol;
+    CLOSE C_PERSONA_EMP_ROL_PARAMS;
+    IF Lc_PersonaEmpRol.Id_Persona_Rol IS NULL THEN
+      Pv_Mensaje := 'El personaEmpresaRolId no existe';
+      RAISE Le_Errors;
+    END IF;
+
+    OPEN C_PUNTO_PARAMS(Ln_PuntoId);
+    FETCH C_PUNTO_PARAMS INTO Lc_Punto;
+    CLOSE C_PUNTO_PARAMS;
+    IF Lc_Punto.Id_Punto IS NULL THEN
+      Pv_Mensaje := 'El puntoId no existe';
+      RAISE Le_Errors;
+    END IF;
+
+    IF Lv_ObservacionHistorial IS NULL THEN
+      Lv_ObservacionHistorial := '';
+    END IF;
+
+    OPEN C_GET_SERVICIOS(Ln_PersonaEmpresaRolId, Lv_EstadoActivo,Lv_NombreParamEstaC,0,Lv_NumeroAdendum);
+    FETCH C_GET_SERVICIOS BULK COLLECT INTO Pcl_ArrayServicio LIMIT 5000;
+    CLOSE C_GET_SERVICIOS;
+
+    IF Pcl_ArrayServicio.EXISTS(1)
+    THEN
+        Ln_IteradorI := Pcl_ArrayServicio.FIRST;
+        WHILE (Ln_IteradorI IS NOT NULL)
+        LOOP
+          IF Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID IS NOT NULL THEN
+                Ln_ServicioPlan := Pcl_ArrayServicio(Ln_IteradorI).ID_SERVICIO;
+                --Obtener planes permitidos
+                OPEN C_GET_PLANES_CONTRATO(Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID,Lv_EstadoActivo,Lv_NombreParamContrato);
+                FETCH C_GET_PLANES_CONTRATO BULK COLLECT INTO Pcl_ArrayPLanes LIMIT 5000;
+                CLOSE C_GET_PLANES_CONTRATO;
+    
+                Ln_IteradorJ := Pcl_ArrayPLanes.FIRST;
+                WHILE (Ln_IteradorJ IS NOT NULL)
+                LOOP
+                    IF Pcl_ArrayPLanes(Ln_IteradorJ).NOMBRE_TECNICO IS NOT NULL AND Pcl_ArrayPLanes(Ln_IteradorJ).NOMBRE_TECNICO = 'INTERNET'
+                    THEN
+                        DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA(Ln_PuntoId,
+                                                                                  Pcl_ArrayServicio(Ln_IteradorI).ID_SERVICIO,
+                                                                                  Lv_PromoInst,
+                                                                                  Lv_CodEmpresa,
+                                                                                  Ln_Descuento, 
+                                                                                  Ln_CantPeriodo,
+                                                                                  Lv_Observacion);
+                    END IF;
+                    Ln_IteradorJ := Pcl_ArrayPLanes.NEXT(Ln_IteradorJ);  
+                END LOOP;            
+            END IF;
+            Ln_IteradorI := Pcl_ArrayServicio.NEXT(Ln_IteradorI);
+        END LOOP;
+  --  ELSE    
+   --     Pv_Mensaje := 'No cuenta con servicios Factibles.';
+   --     RAISE Le_Errors;
+    END IF;
+    IF Ln_Descuento IS NULL
+    THEN
+        Lv_NombreMotivoRechazo := 'Contrato en Estado Rechazado';
+        Lv_MensajeRechazo := 'Se rechazo contrato por error al obtener descuento';
+        RAISE Le_ErrorRechazarContrato;
+    ELSIF Ln_Descuento = 100 OR Lv_Tipo = 'AS'
+    THEN
+        OPEN C_GET_SERVICIOS(Ln_PersonaEmpresaRolId, Lv_EstadoActivo,Lv_NombreParamEstaC,Lv_CodEmpresa,Lv_NumeroAdendum);
+        FETCH C_GET_SERVICIOS BULK COLLECT INTO Pcl_ArrayServicioPromo LIMIT 5000;
+        CLOSE C_GET_SERVICIOS;
+
+        IF Pcl_ArrayServicioPromo.EXISTS(1)
+        THEN
+            Ln_IteradorI := Pcl_ArrayServicioPromo.FIRST;
+            WHILE (Ln_IteradorI IS NOT NULL)
+            LOOP
+                IF Lv_Tipo = 'C' 
+                THEN
+                    Lv_NumContratoAdendum := Ln_ContratoId;
+                ELSE  
+                    Lv_NumContratoAdendum := Lv_NumeroAdendum;
+                END IF;
+
+                OPEN C_GET_SERVICIO_ADENDUM(Pcl_ArrayServicioPromo(Ln_IteradorI).ID_SERVICIO, Lv_Tipo, Lv_NumContratoAdendum);
+                FETCH C_GET_SERVICIO_ADENDUM BULK COLLECT INTO Pcl_ArrayAdendum LIMIT 5000;
+                CLOSE C_GET_SERVICIO_ADENDUM;
+
+                IF Pcl_ArrayAdendum.EXISTS(1)
+                THEN
+                    Ln_IteradorK := Pcl_ArrayAdendum.FIRST;
+                    WHILE (Ln_IteradorK IS NOT NULL)
+                    LOOP
+                        Pcl_ArrayServEncontrado.extend;
+                        Pcl_ArrayServEncontrado(Ln_IteradorK) := Pcl_ArrayAdendum(Ln_IteradorK).SERVICIO_ID;
+                        Ln_IteradorK := Pcl_ArrayAdendum.NEXT(Ln_IteradorK);
+                    END LOOP;
+                END IF;
+              Ln_IteradorI := Pcl_ArrayServicio.NEXT(Ln_IteradorI);
+            END LOOP;
+        END IF;
+    END IF;
+
+    IF Lv_Tipo = 'C' THEN
+      -- Autorizar contrato
+          Lv_ObservacionHistorial := 'El contrato: ' || Lc_Contrato.Numero_Contrato || ' ' || Lv_ObservacionHistorial;
+          IF Pcl_ArrayServicio.EXISTS(1) THEN
+            Ln_ServicioFactible := Pcl_ArrayServicio(1).ID_SERVICIO;
+          END IF;
+          IF Ln_ServicioFactible IS NULL THEN
+            Pv_Mensaje := 'Cliente no cuenta con un servicio en estado Factible';
+            RAISE Le_Errors;
+          END IF;
+          -- Obtengo la ultima milla Lcl_TypeUltimMillaPorServ
+          Pv_ReqUltimaMillaServ :='{
+                                   "puntoId": '||Ln_PuntoId||',
+                                   "estado": "Factible"
+                                  }';
+          DB_COMERCIAL.CMKG_CONSULTA.P_ULTIMA_MILLA_POR_PUNTO(Pv_ReqUltimaMillaServ, Pv_Status, Pv_Mensaje, Pcl_UltimaMillaServ);
+          IF Pv_Status != 'OK' THEN
+            RAISE Le_Errors;
+          END IF;
+
+          FETCH Pcl_UltimaMillaServ BULK COLLECT INTO Pv_arrayMillaServ;
+            IF Pv_arrayMillaServ.count() > 0 THEN
+              Ln_IteradorM := Pv_arrayMillaServ.FIRST;
+              Ln_Id_Tipo_Medio     := Pv_arrayMillaServ(Ln_IteradorM).ID_TIPO_MEDIO;
+              Lv_Codigo_Tipo_Medio :=Pv_arrayMillaServ(Ln_IteradorM).CODIGO_TIPO_MEDIO;
+          END IF;
+
+
+          IF Ln_Id_Tipo_Medio IS NULL AND Lv_Codigo_Tipo_Medio IS NULL THEN
+            Pv_Mensaje := 'Cliente no cuenta con ultima milla';
+            RAISE Le_Errors;
+          END IF;
+
+          IF Ln_Descuento = 100 THEN
+            Pcl_AprobarContrato := DB_COMERCIAL.DATOS_APROBAR_CONTRATO_TYPE(
+                                          Pcl_ArrayServEncontrado,
+                                          Lv_UsrCreacion,
+                                          Lv_IpCreacion,
+                                          Lv_PrefijoEmpresa,
+                                          Lv_Origen,
+                                          Lv_ObservacionHistorial,
+                                          Lv_CodEmpresa,
+                                          Ln_PersonaEmpresaRolId,
+                                          Ln_ContratoId,
+                                          Lc_Contrato.Forma_Pago_Id);
+            DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION.P_APROBAR_CONTRATO(Pcl_AprobarContrato, Pv_Mensaje, Pv_Status);
+            IF Pv_Status != 'OK' THEN
+              RAISE Le_Errors;
+            END IF;
+            Lv_EstadoContrato := 'Activo';
+          ELSE
+            Pcl_SetearDatosContrato := DB_COMERCIAL.DATOS_CONTRATO_TYPE(Ln_ContratoId, Lv_ObservacionHistorial, Lv_IpCreacion, Lv_Origen, Lv_UsrCreacion);
+            DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION.P_SETEAR_DATOS_CONTRATO(Pcl_SetearDatosContrato, Pv_Mensaje, Pv_Status);
+            IF Pv_Status != 'OK' THEN
+              RAISE Le_Errors;
+            END IF;
+            Lv_EstadoContrato := 'Pendiente';
+          END IF;
+
+      -- Actualizar adendum y contrato
+          FOR i IN C_ADENDUM_PARAMS(Ln_ContratoId, Lv_Tipo)
+          LOOP 
+              UPDATE
+                DB_COMERCIAL.INFO_ADENDUM IC
+              SET IC.ESTADO = Lv_EstadoContrato
+              WHERE
+                IC.ID_ADENDUM = i.Id_Adendum;
+              COMMIT;
+          END LOOP;
+
+          UPDATE
+            DB_COMERCIAL.INFO_CONTRATO IC
+          SET IC.ESTADO = Lv_EstadoContrato
+          WHERE
+            IC.ID_CONTRATO = Ln_ContratoId;
+          COMMIT;
+          Pv_Mensaje := 'El contrato fue autorizado con exito';
+    ELSE 
+      -- Autorizar adendum
+          Lv_ObservacionHistorial := 'El contrato: ' || Lc_Contrato.Numero_Contrato || ' ' || Lv_ObservacionHistorial;
+    
+            IF Ln_Descuento = 100 OR Lv_Tipo = 'AS'
+            THEN
+                Pcl_AprobarAdendum := DB_COMERCIAL.DATOS_APROBAR_ADENDUM_TYPE(
+                                            Pcl_ArrayServEncontrado,
+                                            Lv_UsrCreacion,
+                                            Lv_IpCreacion,
+                                            Lv_PrefijoEmpresa,
+                                            Lv_Origen,
+                                            Lv_ObservacionHistorial,
+                                            Lv_CodEmpresa,
+                                            Ln_PersonaEmpresaRolId);                
+    
+                DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION.P_APROBAR_ADENDUM(Pcl_AprobarAdendum, Pv_Mensaje, Pv_Status);
+
+                IF Pv_Status != 'OK' 
+                THEN
+                    RAISE Le_Errors;
+                ELSE
+                    Lv_EstadoAdendum := Lv_EstadoActivo;
+                END IF;
+            ELSE
+                Ln_CaracteristicaId := 0;
+                OPEN C_GET_CARACTERISTICA('PROM_INSTALACION', 'COMERCIAL', 'Activo');
+                FETCH C_GET_CARACTERISTICA INTO Ln_CaracteristicaId;
+                CLOSE C_GET_CARACTERISTICA;
+
+                OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
+                FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
+                CLOSE C_GET_ADENDUM_NUMERO;
+                OPEN C_EXISTE_CARACT_SERV(Ln_ServicioPlan, Ln_CaracteristicaId, 'Activo');
+                FETCH C_EXISTE_CARACT_SERV INTO Ln_Existe;
+                CLOSE C_EXISTE_CARACT_SERV;
+                IF Ln_Existe = 0
+                THEN
+                  INSERT INTO DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA
+                    (
+                      ID_SERVICIO_CARACTERISTICA,
+                      SERVICIO_ID              ,
+                      CARACTERISTICA_ID        ,
+                      VALOR                    ,
+                      ESTADO                   ,
+                      OBSERVACION              ,
+                      USR_CREACION             ,
+                      IP_CREACION              ,
+                      FE_CREACION
+                    )
+                    VALUES
+                    (
+                      SEQ_INFO_SERVICIO_CARAC.NEXTVAL,
+                      Ln_ServicioPlan,
+                      Ln_CaracteristicaId,
+                      '',
+                      'Activo',
+                      'Se crea característica para facturación por punto adicional',
+                      Lv_UsrCreacion,
+                      Lv_IpCreacion,
+                      SYSDATE
+                    );   
+                   COMMIT;             
+                END IF;
+                  
+            END IF; 
+
+            OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
+            FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
+            CLOSE C_GET_ADENDUM_NUMERO;
+
+            IF Pcl_ArrayAdendumsNum.EXISTS(1)
+            THEN
+                Ln_IteradorJ := Pcl_ArrayAdendumsNum.FIRST;
+                WHILE (Ln_IteradorJ IS NOT NULL)
+                LOOP
+                    UPDATE DB_COMERCIAL.INFO_ADENDUM IA
+                        SET IA.ESTADO      = Lv_EstadoAdendum
+                    WHERE IA.ID_ADENDUM = Pcl_ArrayAdendumsNum(Ln_IteradorJ).ID_ADENDUM;
+                  Ln_IteradorJ := Pcl_ArrayAdendumsNum.NEXT(Ln_IteradorJ); 
+                  COMMIT;
+                END LOOP;
+            ELSE
+                Pv_Mensaje := 'No Existe Adendum para Autorizar';
+                RAISE Le_Errors;
+            END IF;
+
+            Pv_Mensaje := 'El adendum fue autorizado con exito';
+    END IF;
+
+    Pv_Status     := 'OK';
+    Pn_SeAutorizo := 1;
+    COMMIT;
+    EXCEPTION
+    WHEN Le_Errors THEN
+        ROLLBACK;
+        Pv_Status     := 'ERROR';
+        Pn_SeAutorizo := 0;
+    WHEN Le_ErrorRechazarContrato THEN
+        ROLLBACK;
+        Pcl_RechazarContrato   :='{
+                                    "usrCreacion": "'||Lv_UsrCreacion||'",
+                                    "ipCreacion": "'||Lv_IpCreacion||'",
+                                        "contrato": {
+                                        "idContrato": "'||Ln_ContratoId||'",
+                                        "motivo": "'||Lv_NombreMotivoRechazo||'"
+                                        }
+                                  }';
+
+        DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION.P_RECHAZAR_CONTRATO_ERROR(Pcl_RechazarContrato,
+                                  Pv_Mensaje,
+                                  Pv_Status,
+                                  Pcl_RechazarError);
+        IF Pv_Status = 'OK' THEN
+          Pv_Mensaje := Lv_MensajeRechazo;
+        END IF;
+        Pv_Status     := 'ERROR';
+        Pn_SeAutorizo := 0;
+    WHEN OTHERS THEN
+        ROLLBACK;
+        Pv_Status     := 'ERROR';
+        Pn_SeAutorizo := 0;
+        Pv_Mensaje    := 'ERROR al procesar COD_ERROR: '||SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK;
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
+                                           'DB_COMERCIAL.P_AUTORIZAR_CONTRATO',
+                                            Pv_Mensaje,
+                                            'telcos',
+                                            SYSDATE,
+                                            '127.0.0.1');
+  END P_AUTORIZAR_CONTRATO;
 
 PROCEDURE P_GUARDAR_CONTRATO(
                                   Pcl_Request       IN  VARCHAR2,
