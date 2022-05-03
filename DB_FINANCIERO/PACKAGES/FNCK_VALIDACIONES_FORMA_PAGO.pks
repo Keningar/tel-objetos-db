@@ -32,6 +32,10 @@
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 12/11/2021
+  *
+  * @author Alex Arreaga <atarreaga@telconet.ec>
+  * @version 1.1 20/04/2022 - Se modifica validación para que la cantidad de facturas del cliente sea ">=" 
+  *                           al valor de cantidad de facturas parametrizada. 
   */
   PROCEDURE  P_VALIDA_FACTURAS(Pcl_Request IN CLOB, Pv_Mensaje OUT VARCHAR2, Pv_Status OUT VARCHAR2);
 
@@ -391,13 +395,13 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
           FETCH C_GetParametroDet INTO Lc_ValidacionFactura;  
           CLOSE C_GetParametroDet;   
   
-          --Obtiene la cantidad de facturas recurrentes de la persona
+          --Obtiene la cantidad de facturas recurrentes del cliente
           OPEN  C_GetCantFactRecurrentes(Lv_CodEmpresa, Ln_IdPersonaRol, Lc_ValidacionFactura.VALOR2, 
                                         Lv_NombreParamCabFp, Lv_DesDetParamTipoDoc, Lv_EstadoActivo); 
           FETCH C_GetCantFactRecurrentes INTO Ln_CantidadFacturas;  
           CLOSE C_GetCantFactRecurrentes;   
   
-          IF Ln_CantidadFacturas <= Lc_ValidacionFactura.VALOR2 AND Ln_CantidadFacturas != 0 THEN
+          IF Ln_CantidadFacturas >= Lc_ValidacionFactura.VALOR2 AND Ln_CantidadFacturas != 0 THEN
             --Se recorre las facturas a revisar
             FOR Facturas IN C_GetFacturasRecurrentes(Lv_CodEmpresa, Ln_IdPersonaRol, Lc_ValidacionFactura.VALOR2, 
                                                     Lv_NombreParamCabFp, Lv_DesDetParamTipoDoc, Lv_EstadoActivo) LOOP
@@ -413,16 +417,16 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
                     END IF;
     
                 END LOOP;
-    
-                IF Pv_Status = 'OK' THEN 
-                    EXIT;
-                ELSIF Pv_Status IS NULL AND Ln_contador = Ln_CantidadFacturas THEN
-                    Pv_Status  := 'ERROR';
-                    Pv_Mensaje := REPLACE(Lc_MensajeValidaFact.valor3, 'Ln_CantidadFacturas', Ln_CantidadFacturas);
-                    EXIT;   
-                END IF; 
+
+                EXIT WHEN Pv_Status = 'OK';
     
             END LOOP;
+
+            IF Pv_Status IS NULL THEN
+                Pv_Mensaje := REPLACE(Lc_MensajeValidaFact.valor3, 'Ln_CantidadFacturas', Ln_CantidadFacturas);
+                RAISE Le_Errors;
+            END IF;
+
           ELSE
               Pv_Status    := 'OK';
               Pv_Mensaje   := 'Transacción exitosa';      
