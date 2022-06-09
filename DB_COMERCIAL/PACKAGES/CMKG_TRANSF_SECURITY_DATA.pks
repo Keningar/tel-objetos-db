@@ -12,7 +12,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA  AS
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.0 04/14/2022
     */
-    FUNCTION  F_DATA_PARAMETRO(Fv_NombreParametro IN VARCHAR2,Fv_Descripcion IN VARCHAR2) RETURN   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;
+    FUNCTION  F_DATA_PARAMETRO(FV_NOMBREPARAMETRO IN VARCHAR2,FV_DESCRIPCION IN VARCHAR2) RETURN   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;
    
   /**
     * Documentación para P_DOCUMENTOS_PENDIENTES
@@ -25,7 +25,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA  AS
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.0 04/04/2022
     */
-    PROCEDURE P_DOCUMENTOS_PENDIENTES(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response  OUT SYS_REFCURSOR);
+    PROCEDURE P_DOCUMENTOS_PENDIENTES(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT VARCHAR2,PCL_RESPONSE  OUT SYS_REFCURSOR);
  
    /**
     * Documentación para P_DOCUMENTOS_PROCESADOS
@@ -38,7 +38,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA  AS
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.0 04/04/2022
     */
-    PROCEDURE P_DOCUMENTOS_PROCESADOS(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response  OUT SYS_REFCURSOR);
+    PROCEDURE P_DOCUMENTOS_PROCESADOS(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT VARCHAR2,PCL_RESPONSE  OUT SYS_REFCURSOR);
 
     /**
     * Documentación para P_DOCUMENTOS_PENDIENTES_ACT
@@ -51,7 +51,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA  AS
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.0 04/04/2022
     */
-    PROCEDURE P_DOCUMENTOS_PENDIENTES_ACT(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response  OUT SYS_REFCURSOR);
+    PROCEDURE P_DOCUMENTOS_PENDIENTES_ACT(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT VARCHAR2,PCL_RESPONSE  OUT SYS_REFCURSOR);
 
 
 END CMKG_TRANSF_SECURITY_DATA;
@@ -59,174 +59,196 @@ END CMKG_TRANSF_SECURITY_DATA;
 /
 
 
-create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA AS
+CREATE OR REPLACE PACKAGE BODY  DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA AS
 
-    FUNCTION  F_DATA_PARAMETRO(Fv_NombreParametro IN VARCHAR2,Fv_Descripcion IN VARCHAR2) 
+    FUNCTION  F_DATA_PARAMETRO(FV_NOMBREPARAMETRO IN VARCHAR2,FV_DESCRIPCION IN VARCHAR2) 
         RETURN   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  AS
-        Pcl_Detalle  DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
-        Pv_Mensaje  VARCHAR2(500); 
+        PCL_DETALLE  DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
+        PV_MENSAJE  VARCHAR2(500); 
                  
-        CURSOR C_GetDataParametro( Fv_NombreParametro VARCHAR2,Fv_Descripcion VARCHAR2) IS
-        SELECT apd.* FROM DB_GENERAL.ADMI_PARAMETRO_DET apd 
-        INNER JOIN DB_GENERAL.ADMI_PARAMETRO_CAB apc ON apd.PARAMETRO_ID =  apc.ID_PARAMETRO 
-        WHERE apc.ESTADO  = 'Activo' 
-        AND  apd.ESTADO  = 'Activo'
-        AND  apc.NOMBRE_PARAMETRO =  Fv_NombreParametro 
-        AND  apd.DESCRIPCION =  Fv_Descripcion; 
+        CURSOR C_GETDATAPARAMETRO( FV_NOMBREPARAMETRO VARCHAR2,FV_DESCRIPCION VARCHAR2) IS
+        SELECT APD.* FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+        INNER JOIN DB_GENERAL.ADMI_PARAMETRO_CAB APC ON APD.PARAMETRO_ID =  APC.ID_PARAMETRO 
+        WHERE APC.ESTADO  = 'Activo' 
+        AND  APD.ESTADO  = 'Activo'
+        AND  APC.NOMBRE_PARAMETRO =  FV_NOMBREPARAMETRO 
+        AND  APD.DESCRIPCION =  FV_DESCRIPCION; 
        
         BEGIN 	       
-          	OPEN C_GetDataParametro(Fv_NombreParametro,Fv_Descripcion); 
-		    FETCH C_GetDataParametro INTO  Pcl_Detalle;     
-		    CLOSE C_GetDataParametro;	
-	      IF ( Pcl_Detalle.VALOR1 IS   NULL)  THEN 
-	             Pv_Mensaje := 'No existe el valor de '||Fv_Descripcion||' en el parametro '||Fv_NombreParametro||'.';
-	             dbms_output.put_line( Pv_Mensaje );  
-	             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
+          	OPEN C_GETDATAPARAMETRO(FV_NOMBREPARAMETRO,FV_DESCRIPCION); 
+		    FETCH C_GETDATAPARAMETRO INTO  PCL_DETALLE;     
+		    CLOSE C_GETDATAPARAMETRO;	
+	      IF ( PCL_DETALLE.VALOR1 IS   NULL)  THEN 
+	             PV_MENSAJE := 'No existe el valor de '||FV_DESCRIPCION||' en el parametro '||FV_NOMBREPARAMETRO||'.';
+	             DBMS_OUTPUT.PUT_LINE( PV_MENSAJE );  
+	             RAISE_APPLICATION_ERROR(-20101,PV_MENSAJE);
 	      END IF; 
-	    RETURN   Pcl_Detalle;
+	    RETURN   PCL_DETALLE;
     END F_DATA_PARAMETRO;  
 
-    PROCEDURE P_DOCUMENTOS_PENDIENTES(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response OUT SYS_REFCURSOR)AS 
+    PROCEDURE P_DOCUMENTOS_PENDIENTES(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT VARCHAR2,PCL_RESPONSE OUT SYS_REFCURSOR)AS 
       
-       Lv_CodEmpresa   VARCHAR2(100);     
-       Lv_UsrCreacion  VARCHAR2(100);
-       Lv_ClientIp     VARCHAR2(100);  
-       Lv_ParametroCab VARCHAR2(100);   
-       Ln_CantidadProcesar NUMBER; 
+       LV_CODEMPRESA   VARCHAR2(100);     
+       LV_USRCREACION  VARCHAR2(100);
+       LV_CLIENTIP     VARCHAR2(100);  
+       LV_PARAMETROCAB VARCHAR2(100);   
        
-       Pcl_UsuarioSd       DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
-       Pcl_TipoPersona     DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       Pcl_Estados         DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;   
-       Pcl_DocumentosSd    DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
-       Pcl_EstadoContrato  DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_USUARIOSD        DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
+       PCL_TIPOPERSONA      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_ESTADOS          DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;   
+       PCL_DOCUMENTOSSD     DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
+       PCL_ESTADOCONTRATO   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;       
+       PCL_CANTIDADPROCESAR DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_ESTADOFIRMA      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_CANTIDADDIAS     DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       
        BEGIN  
 
-       Lv_ParametroCab 	         := 'PARAM_FLUJO_TRANSFERENCIA_SECURITY_DATA' ;  
+       LV_PARAMETROCAB 	         := 'PARAM_FLUJO_TRANSFERENCIA_SECURITY_DATA' ;  
       
-       APEX_JSON.PARSE(Pcl_Request); 
-       Lv_CodEmpresa             := APEX_JSON.get_varchar2(p_path => 'strCodEmpresa');    
-       Lv_UsrCreacion            := APEX_JSON.get_varchar2(p_path => 'strUsrCreacion'); 
-       Lv_ClientIp               := APEX_JSON.get_varchar2(p_path => 'strClientIp'); 
+       APEX_JSON.PARSE(PCL_REQUEST); 
+       LV_CODEMPRESA             := APEX_JSON.GET_VARCHAR2(P_PATH => 'strCodEmpresa');    
+       LV_USRCREACION            := APEX_JSON.GET_VARCHAR2(P_PATH => 'strUsrCreacion'); 
+       LV_CLIENTIP               := APEX_JSON.GET_VARCHAR2(P_PATH => 'strClientIp'); 
                   
-       Pcl_UsuarioSd             := F_DATA_PARAMETRO(Lv_ParametroCab , 'WS_NOMBRE_USUARIO');
-       Pcl_TipoPersona           := F_DATA_PARAMETRO(Lv_ParametroCab , 'TIPO_PERSONA');
-	   Pcl_Estados               := F_DATA_PARAMETRO(Lv_ParametroCab , 'ESTADOS_PROCESO');
-       Pcl_DocumentosSd          := F_DATA_PARAMETRO(Lv_ParametroCab , 'DOCUMENTOS_SD');  
-       Pcl_EstadoContrato        := F_DATA_PARAMETRO(Lv_ParametroCab , 'ESTADOS_CONTRATO'); 
-         
-       Ln_CantidadProcesar       := 10000; 
+       PCL_USUARIOSD             := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'WS_NOMBRE_USUARIO');
+       PCL_TIPOPERSONA           := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'TIPO_PERSONA');
+	   PCL_ESTADOS               := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_PROCESO');
+       PCL_DOCUMENTOSSD          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'DOCUMENTOS_SD');  
+       PCL_ESTADOCONTRATO        := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_CONTRATO'); 
+       PCL_CANTIDADPROCESAR      := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'CANTIDAD_PROCESAR'); 
+       PCL_ESTADOFIRMA           := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADO_FIRMA'); 
+       PCL_CANTIDADDIAS          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'CANTIDAD_DIAS');  
        
-        OPEN Pcl_Response FOR 
-        SELECT  doc.*  FROM ( 
+        OPEN PCL_RESPONSE FOR 
+        SELECT  
+DOCU.ID_CERTIFICADO_DOCUMENTO,
+DOCU.NOMBRECOMPLETO, 
+DOCU.CEDULA,    
+DOCU.SERIAL,              
+DOCU.USUARIO,               
+DOCU.RUTAARCHIVO, 
+DOCU.TIPOARCHIVO,  
+DOCU.NOMBREARCHIVO, 
+DOCU.NOMBREDOCUMENTO,   
+DOCU.TIPOPERSONA,  
+DOCU.TIPOTRIBUTARIO,    
+DOCU.ESTADO,
+DOCU.INTENTOS
+
+FROM (         
+        SELECT
+        INCD.ID_CERTIFICADO_DOCUMENTO,   
+        (INCE.NOMBRES ||' '||INCE.PRIMER_APELLIDO||' '||INCE.SEGUNDO_APELLIDO) AS NOMBRECOMPLETO, 
+        INCE.NUM_CEDULA                                                        AS CEDULA,          
+        REPLACE(INCE.SERIAL_NUMBER,'-'||INCE.NUM_CEDULA,'')                    AS SERIAL,       
+        PCL_USUARIOSD.VALOR1        AS USUARIO,               
+        INCD.SRC                    AS RUTAARCHIVO, 
+        ATDG.CODIGO_TIPO_DOCUMENTO  AS TIPOARCHIVO,          
+        INCE.NUM_CEDULA||'-'|| ( CASE 
+        WHEN ATDG.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND ATDG.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
+        THEN  REGEXP_REPLACE(ATDG.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
+        ELSE  REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )   END 
+        )||'.' ||ATDO.EXTENSION_TIPO_DOCUMENTO AS NOMBREARCHIVO,         
+        REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )  AS NOMBREDOCUMENTO,   
+        (CASE  INCE.PERSONA_NATURAL  
+        WHEN  PCL_TIPOPERSONA.VALOR1   THEN  PCL_TIPOPERSONA.VALOR2
+        WHEN  PCL_TIPOPERSONA.VALOR3   THEN  PCL_TIPOPERSONA.VALOR4
+        ELSE NULL END)                AS TIPOPERSONA,  
+        INCE.PERSONA_NATURAL          AS TIPOTRIBUTARIO,    
+        INCD.DOCUMENTADO              AS ESTADO,
+        COALESCE(INCD.INTENTOS,0)     AS INTENTOS,
+        INCD.OBSERVACION              AS OBSERVACION  
         
-                    SELECT  
-                    icd.ID_CERTIFICADO_DOCUMENTO,            
-                    (ic.NOMBRES ||' '||ic.PRIMER_APELLIDO||' '||ic.SEGUNDO_APELLIDO) AS nombreCompleto, 
-                    ic.NUM_CEDULA               AS cedula,    
-                    ic.SERIAL_NUMBER            AS serial,              
-                    Pcl_UsuarioSd.VALOR1        AS usuario,               
-                    icd.SRC                     AS rutaArchivo, 
-                    atdg.CODIGO_TIPO_DOCUMENTO  As tipoArchivo,  
-                    
-                    ic.NUM_CEDULA||'-'||
-                    (
-                    CASE 
-                    WHEN atdg.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND atdg.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
-                    THEN  regexp_replace(atdg.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
-                    ELSE doc.NOMBRE_DOCUMENTO  END 
-                    ) 
-                    ||'.' ||atd.EXTENSION_TIPO_DOCUMENTO AS nombreArchivo, 
-                    doc.NOMBRE_DOCUMENTO AS nombreDocumento,   
-                    (CASE  ic.PERSONA_NATURAL  
-                    WHEN  Pcl_TipoPersona.VALOR1   THEN  Pcl_TipoPersona.VALOR2
-                    WHEN  Pcl_TipoPersona.VALOR3   THEN  Pcl_TipoPersona.VALOR4
-                    ELSE NULL END ) AS tipoPersona,  
-                    ic.PERSONA_NATURAL AS tipoTributario,    
-                    icd.DOCUMENTADO              AS estado,
-                    COALESCE(icd.INTENTOS,0)     AS intentos,
-                    icd.OBSERVACION              AS observacion  
-                    
-                    FROM DB_FIRMAELECT.INFO_CERTIFICADO ic  
-                    INNER JOIN DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO icd ON icd.CERTIFICADO_ID = ic.ID_CERTIFICADO
-                    INNER JOIN (
-                    SELECT 
-                    doc.ID_DOCUMENTO,
-                    doc.TIPO_DOCUMENTO_ID,
-                    doc.TIPO_DOCUMENTO_GENERAL_ID,
-                    doc.UBICACION_FISICA_DOCUMENTO,
-                    regexp_replace(regexp_substr( doc.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' ) AS NOMBRE_DOCUMENTO 
-                    FROM DB_COMUNICACION.INFO_DOCUMENTO doc
-                    ) doc  ON doc.UBICACION_FISICA_DOCUMENTO = icd.SRC    
-                    INNER JOIN DB_COMUNICACION.INFO_DOCUMENTO_RELACION idr ON idr.DOCUMENTO_ID = doc.ID_DOCUMENTO
-                    INNER JOIN DB_COMUNICACION.ADMI_TIPO_DOCUMENTO atd ON   atd.ID_TIPO_DOCUMENTO = doc.TIPO_DOCUMENTO_ID
-                    INNER JOIN DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL atdg ON atdg.ID_TIPO_DOCUMENTO = doc.TIPO_DOCUMENTO_GENERAL_ID
-                    INNER JOIN DB_COMERCIAL.INFO_ADENDUM id ON  id.CONTRATO_ID = idr.CONTRATO_ID
-                    INNER JOIN DB_COMERCIAL.INFO_CONTRATO ic2 ON ic2.ID_CONTRATO = id.CONTRATO_ID 
-                    AND ( id.NUMERO = idr.NUMERO_ADENDUM  OR ( id.NUMERO IS NULL AND idr.NUMERO_ADENDUM  IS NULL)) 
-                   
-            WHERE icd.DOCUMENTADO != Pcl_Estados.VALOR2 
-            AND   rownum <= Ln_CantidadProcesar
-            AND   icd.SRC LIKE 'http%'     
-            AND   ic2.ESTADO   IN   
-                    (       
-                    select regexp_substr(   Pcl_EstadoContrato.VALOR1 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr(   Pcl_EstadoContrato.VALOR1 , '[^,]+', 1, level) is not null
-                    ) 
-            AND  id.ESTADO   IN   
-                    (       
-                    select regexp_substr(   Pcl_EstadoContrato.VALOR1 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr(   Pcl_EstadoContrato.VALOR1 , '[^,]+', 1, level) is not null
-                    )  
-                    
-            ORDER BY  icd.fe_creacion ASC, icd.intentos DESC     
-            ) doc            
-           WHERE        
-           ( 
+        
+    FROM 
+    DB_COMUNICACION.INFO_DOCUMENTO_RELACION IDRE,
+    DB_COMUNICACION.INFO_DOCUMENTO INDO,
+    DB_COMUNICACION.ADMI_TIPO_DOCUMENTO ATDO,
+    DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL ATDG,    
+    DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO INCD,
+    DB_FIRMAELECT.INFO_CERTIFICADO INCE,     
+    DB_COMERCIAL.INFO_PERSONA INPE ,
+    DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER , 
+    DB_COMERCIAL.INFO_CONTRATO ICON     
+    WHERE IDRE.DOCUMENTO_ID = INDO.ID_DOCUMENTO
+    AND INDO.TIPO_DOCUMENTO_ID = ATDO.ID_TIPO_DOCUMENTO
+    AND INDO.TIPO_DOCUMENTO_GENERAL_ID = ATDG.ID_TIPO_DOCUMENTO    
+    AND INDO.UBICACION_FISICA_DOCUMENTO = INCD.SRC
+    AND INCD.CERTIFICADO_ID = INCE.ID_CERTIFICADO 
+    AND INCD.DOCUMENTADO !=PCL_ESTADOS.VALOR2   
+    AND INCD.SRC LIKE 'http%' 
+    AND INCE.NUM_CEDULA =  INPE.IDENTIFICACION_CLIENTE
+    AND INCE.ESTADO IN   
+        (       
+        SELECT REGEXP_SUBSTR(   PCL_ESTADOFIRMA.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+        CONNECT BY REGEXP_SUBSTR( PCL_ESTADOFIRMA.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
+        ) 
+    AND INCE.FE_CREACION >= SYSDATE -TO_NUMBER( PCL_CANTIDADDIAS.VALOR1)
+    AND INPE.ID_PERSONA  = IPER.PERSONA_ID
+    AND IPER.ID_PERSONA_ROL =  ICON.PERSONA_EMPRESA_ROL_ID 
+    AND IPER.ESTADO ='Activo'  
+    AND IPER.EMPRESA_ROL_ID = 813   
+    AND ICON.ID_CONTRATO = IDRE.CONTRATO_ID
+    AND ICON.ESTADO   IN   
+        (       
+        SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+        CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
+        )              
+    AND ROWNUM <= PCL_CANTIDADPROCESAR.VALOR1 
+) DOCU  WHERE        
+( 
                (
-                   doc.tipoArchivo IN   
+                   DOCU.TIPOARCHIVO IN   
                     (       
-                    select regexp_substr(   Pcl_DocumentosSd.VALOR1 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr(   Pcl_DocumentosSd .VALOR1 , '[^,]+', 1, level) is not null
+                    SELECT REGEXP_SUBSTR(   PCL_DOCUMENTOSSD.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                    CONNECT BY REGEXP_SUBSTR(   PCL_DOCUMENTOSSD .VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
                     )                  
                     OR                
-                   doc.nombreDocumento  IN
+                   DOCU.NOMBREDOCUMENTO  IN
                     (       
-                    select regexp_substr(  Pcl_DocumentosSd .VALOR3 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr( Pcl_DocumentosSd.VALOR3 , '[^,]+', 1, level) is not null
+                    SELECT REGEXP_SUBSTR(  PCL_DOCUMENTOSSD .VALOR3 ,'[^,]+', 1, LEVEL)FROM DUAL
+                    CONNECT BY REGEXP_SUBSTR( PCL_DOCUMENTOSSD.VALOR3 , '[^,]+', 1, LEVEL) IS NOT NULL
                     )              
                 )             
-                AND    doc.tipoTributario =  Pcl_TipoPersona.VALOR1
+                AND    DOCU.TIPOTRIBUTARIO =  PCL_TIPOPERSONA.VALOR1
             )
             OR
             ( 
                (
-                   doc.tipoArchivo IN   
+                   DOCU.TIPOARCHIVO IN   
                     (       
-                    select regexp_substr(   Pcl_DocumentosSd.VALOR2 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr(   Pcl_DocumentosSd .VALOR2 , '[^,]+', 1, level) is not null
+                    SELECT REGEXP_SUBSTR(   PCL_DOCUMENTOSSD.VALOR2 ,'[^,]+', 1, LEVEL)FROM DUAL
+                    CONNECT BY REGEXP_SUBSTR(   PCL_DOCUMENTOSSD .VALOR2 , '[^,]+', 1, LEVEL) IS NOT NULL
                     )                  
                     OR                
-                   doc.nombreDocumento  IN
+                   DOCU.NOMBREDOCUMENTO  IN
                     (       
-                    select regexp_substr(  Pcl_DocumentosSd .VALOR4 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr( Pcl_DocumentosSd.VALOR4 , '[^,]+', 1, level) is not null
+                    SELECT REGEXP_SUBSTR(  PCL_DOCUMENTOSSD .VALOR4 ,'[^,]+', 1, LEVEL)FROM DUAL
+                    CONNECT BY REGEXP_SUBSTR( PCL_DOCUMENTOSSD.VALOR4 , '[^,]+', 1, LEVEL) IS NOT NULL
                     )              
                 )             
-                AND    doc.tipoTributario =  Pcl_TipoPersona.VALOR3
-            )
-            
-            ;    
-             
+                AND    DOCU.TIPOTRIBUTARIO =  PCL_TIPOPERSONA.VALOR3
+            )      
+            ORDER BY  DOCU.INTENTOS DESC  ;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
              
      
-       Pv_Mensaje   := 'Tansaccion realizada correctamente';
-       Pv_Status    := 'OK';
-       dbms_output.put_line(Pv_Mensaje );  
+       PV_MENSAJE   := 'Tansaccion realizada correctamente';
+       PV_STATUS    := 'OK';
+       DBMS_OUTPUT.PUT_LINE(PV_MENSAJE );  
        EXCEPTION
            WHEN OTHERS THEN
            ROLLBACK;
-           Pv_Status     := 'ERROR'; 
-           Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+           PV_STATUS     := 'ERROR'; 
+           PV_MENSAJE    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(
            'DOCUMENTOS A TRANFERIR A SECURITY DATA',
            'DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA.P_DOCUMENTOS_PENDIENTES',
@@ -237,120 +259,120 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA AS
 
     END P_DOCUMENTOS_PENDIENTES;   
    
-    PROCEDURE P_DOCUMENTOS_PROCESADOS(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response OUT SYS_REFCURSOR)AS 
+    PROCEDURE P_DOCUMENTOS_PROCESADOS(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT VARCHAR2,PCL_RESPONSE OUT SYS_REFCURSOR)AS 
       
-       Lv_CodEmpresa   VARCHAR2(100);     
-       Lv_UsrCreacion  VARCHAR2(100);
-       Lv_ClientIp     VARCHAR2(100);     
-       Lv_ParametroCab VARCHAR2(100);   
+       LV_CODEMPRESA   VARCHAR2(100);     
+       LV_USRCREACION  VARCHAR2(100);
+       LV_CLIENTIP     VARCHAR2(100);     
+       LV_PARAMETROCAB VARCHAR2(100);   
        
-       Pcl_UsuarioSd      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
-       Pcl_TipoPersona    DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
-       Pcl_Estados        DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       Pcl_DiaProcesado   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       Pcl_DocumentosSd   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       Pcl_EstadoContrato DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_USUARIOSD      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
+       PCL_TIPOPERSONA    DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
+       PCL_ESTADOS        DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_DIAPROCESADO   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_DOCUMENTOSSD   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_ESTADOCONTRATO DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
        
        BEGIN  
 
-       Lv_ParametroCab 	         := 'PARAM_FLUJO_TRANSFERENCIA_SECURITY_DATA' ;  
+       LV_PARAMETROCAB 	         := 'PARAM_FLUJO_TRANSFERENCIA_SECURITY_DATA' ;  
       
-       APEX_JSON.PARSE(Pcl_Request); 
-       Lv_CodEmpresa             := APEX_JSON.get_varchar2(p_path => 'strCodEmpresa');    
-       Lv_UsrCreacion            := APEX_JSON.get_varchar2(p_path => 'strUsrCreacion'); 
-       Lv_ClientIp               := APEX_JSON.get_varchar2(p_path => 'strClientIp'); 
+       APEX_JSON.PARSE(PCL_REQUEST); 
+       LV_CODEMPRESA             := APEX_JSON.GET_VARCHAR2(P_PATH => 'strCodEmpresa');    
+       LV_USRCREACION            := APEX_JSON.GET_VARCHAR2(P_PATH => 'strUsrCreacion'); 
+       LV_CLIENTIP               := APEX_JSON.GET_VARCHAR2(P_PATH => 'strClientIp'); 
         
-       Pcl_UsuarioSd             := F_DATA_PARAMETRO(Lv_ParametroCab , 'WS_NOMBRE_USUARIO');	 
-       Pcl_TipoPersona           := F_DATA_PARAMETRO(Lv_ParametroCab , 'TIPO_PERSONA');
-	   Pcl_Estados               := F_DATA_PARAMETRO(Lv_ParametroCab , 'ESTADOS_PROCESO'); 
-       Pcl_DiaProcesado          := F_DATA_PARAMETRO(Lv_ParametroCab , 'DIA_PROCESADO');
-       Pcl_DocumentosSd          := F_DATA_PARAMETRO(Lv_ParametroCab , 'DOCUMENTOS_SD');
-       Pcl_EstadoContrato        := F_DATA_PARAMETRO(Lv_ParametroCab , 'ESTADOS_CONTRATO'); 
+       PCL_USUARIOSD             := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'WS_NOMBRE_USUARIO');	 
+       PCL_TIPOPERSONA           := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'TIPO_PERSONA');
+	   PCL_ESTADOS               := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_PROCESO'); 
+       PCL_DIAPROCESADO          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'DIA_PROCESADO');
+       PCL_DOCUMENTOSSD          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'DOCUMENTOS_SD');
+       PCL_ESTADOCONTRATO        := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_CONTRATO'); 
        
-        OPEN Pcl_Response FOR  
-        SELECT  doc.*  FROM ( 
+        OPEN PCL_RESPONSE FOR  
+        SELECT  DOC.*  FROM ( 
         
                     SELECT  
-                    icd.ID_CERTIFICADO_DOCUMENTO,            
-                    (ic.NOMBRES ||' '||ic.PRIMER_APELLIDO||' '||ic.SEGUNDO_APELLIDO) AS nombreCompleto, 
-                    ic.NUM_CEDULA               AS cedula,    
-                    ic.SERIAL_NUMBER            AS serial,              
-                    Pcl_UsuarioSd.VALOR1        AS usuario,               
-                    icd.SRC                     AS rutaArchivo, 
-                    atdg.CODIGO_TIPO_DOCUMENTO  As tipoArchivo,  
+                    ICD.ID_CERTIFICADO_DOCUMENTO,            
+                    (IC.NOMBRES ||' '||IC.PRIMER_APELLIDO||' '||IC.SEGUNDO_APELLIDO) AS NOMBRECOMPLETO, 
+                    IC.NUM_CEDULA               AS CEDULA,    
+                    REPLACE(IC.SERIAL_NUMBER,'-'||IC.NUM_CEDULA,'')            AS SERIAL,              
+                    PCL_USUARIOSD.VALOR1        AS USUARIO,               
+                    ICD.SRC                     AS RUTAARCHIVO, 
+                    ATDG.CODIGO_TIPO_DOCUMENTO  AS TIPOARCHIVO,  
                     
-                    ic.NUM_CEDULA||'-'||
+                    IC.NUM_CEDULA||'-'||
                     (
                     CASE 
-                    WHEN atdg.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND atdg.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
-                    THEN  regexp_replace(atdg.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
-                    ELSE doc.NOMBRE_DOCUMENTO  END 
+                    WHEN ATDG.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND ATDG.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
+                    THEN  REGEXP_REPLACE(ATDG.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
+                    ELSE DOC.NOMBRE_DOCUMENTO  END 
                     ) 
-                    ||'.' ||atd.EXTENSION_TIPO_DOCUMENTO AS nombreArchivo, 
-                    doc.NOMBRE_DOCUMENTO AS nombreDocumento,   
-                    (CASE  ic.PERSONA_NATURAL  
-                    WHEN  Pcl_TipoPersona.VALOR1   THEN  Pcl_TipoPersona.VALOR2
-                    WHEN  Pcl_TipoPersona.VALOR3   THEN  Pcl_TipoPersona.VALOR4
-                    ELSE NULL END ) AS tipoPersona,  
-                    ic.PERSONA_NATURAL AS tipoTributario,   
+                    ||'.' ||ATD.EXTENSION_TIPO_DOCUMENTO AS NOMBREARCHIVO, 
+                    DOC.NOMBRE_DOCUMENTO AS NOMBREDOCUMENTO,   
+                    (CASE  IC.PERSONA_NATURAL  
+                    WHEN  PCL_TIPOPERSONA.VALOR1   THEN  PCL_TIPOPERSONA.VALOR2
+                    WHEN  PCL_TIPOPERSONA.VALOR3   THEN  PCL_TIPOPERSONA.VALOR4
+                    ELSE NULL END ) AS TIPOPERSONA,  
+                    IC.PERSONA_NATURAL AS TIPOTRIBUTARIO,   
                     
-                    ip.login                          AS login, 
-                    (CASE  icd.DOCUMENTADO 
-                    WHEN  Pcl_Estados.VALOR2
-                    THEN  Pcl_Estados.VALOR1
-                    ELSE Pcl_Estados.VALOR3  END )    AS estado,              
-                    COALESCE(icd.INTENTOS,0)          AS intentos,
-                    icd.OBSERVACION                   AS observacion,      
-                    icd.FE_ULT_MOD                    AS fechaEjecucion,
-                    icd.FE_CREACION                   AS fechaRecepcion
+                    IP.LOGIN                          AS LOGIN, 
+                    (CASE  ICD.DOCUMENTADO 
+                    WHEN  PCL_ESTADOS.VALOR2
+                    THEN  PCL_ESTADOS.VALOR1
+                    ELSE PCL_ESTADOS.VALOR3  END )    AS ESTADO,              
+                    COALESCE(ICD.INTENTOS,0)          AS INTENTOS,
+                    ICD.OBSERVACION                   AS OBSERVACION,      
+                    ICD.FE_ULT_MOD                    AS FECHAEJECUCION,
+                    ICD.FE_CREACION                   AS FECHARECEPCION
 
                     
-                    FROM DB_FIRMAELECT.INFO_CERTIFICADO ic  
-                    INNER JOIN DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO icd ON icd.CERTIFICADO_ID = ic.ID_CERTIFICADO
+                    FROM DB_FIRMAELECT.INFO_CERTIFICADO IC  
+                    INNER JOIN DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO ICD ON ICD.CERTIFICADO_ID = IC.ID_CERTIFICADO
                     INNER JOIN (
                     SELECT 
-                    doc.ID_DOCUMENTO,
-                    doc.TIPO_DOCUMENTO_ID,
-                    doc.TIPO_DOCUMENTO_GENERAL_ID,
-                    doc.UBICACION_FISICA_DOCUMENTO,
-                    regexp_replace(regexp_substr( doc.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' ) AS NOMBRE_DOCUMENTO 
-                    FROM DB_COMUNICACION.INFO_DOCUMENTO doc
-                    ) doc  ON doc.UBICACION_FISICA_DOCUMENTO = icd.SRC    
-                    INNER JOIN DB_COMUNICACION.INFO_DOCUMENTO_RELACION idr ON idr.DOCUMENTO_ID = doc.ID_DOCUMENTO
-                    INNER JOIN DB_COMUNICACION.ADMI_TIPO_DOCUMENTO atd ON   atd.ID_TIPO_DOCUMENTO = doc.TIPO_DOCUMENTO_ID
-                    INNER JOIN DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL atdg ON atdg.ID_TIPO_DOCUMENTO = doc.TIPO_DOCUMENTO_GENERAL_ID
-                    INNER JOIN DB_COMERCIAL.INFO_ADENDUM id ON  id.CONTRATO_ID = idr.CONTRATO_ID
-                    INNER JOIN DB_COMERCIAL.INFO_CONTRATO ic2 ON ic2.ID_CONTRATO = id.CONTRATO_ID 
-                    INNER JOIN DB_COMERCIAL.INFO_PUNTO ip ON ip.id_punto = id.punto_id
-                    AND ( id.NUMERO = idr.NUMERO_ADENDUM  OR ( id.NUMERO IS NULL AND idr.NUMERO_ADENDUM  IS NULL)) 
+                    DOC.ID_DOCUMENTO,
+                    DOC.TIPO_DOCUMENTO_ID,
+                    DOC.TIPO_DOCUMENTO_GENERAL_ID,
+                    DOC.UBICACION_FISICA_DOCUMENTO,
+                    REGEXP_REPLACE(REGEXP_SUBSTR( DOC.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' ) AS NOMBRE_DOCUMENTO 
+                    FROM DB_COMUNICACION.INFO_DOCUMENTO DOC
+                    ) DOC  ON DOC.UBICACION_FISICA_DOCUMENTO = ICD.SRC    
+                    INNER JOIN DB_COMUNICACION.INFO_DOCUMENTO_RELACION IDR ON IDR.DOCUMENTO_ID = DOC.ID_DOCUMENTO
+                    INNER JOIN DB_COMUNICACION.ADMI_TIPO_DOCUMENTO ATD ON   ATD.ID_TIPO_DOCUMENTO = DOC.TIPO_DOCUMENTO_ID
+                    INNER JOIN DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL ATDG ON ATDG.ID_TIPO_DOCUMENTO = DOC.TIPO_DOCUMENTO_GENERAL_ID
+                    INNER JOIN DB_COMERCIAL.INFO_ADENDUM ID ON  ID.CONTRATO_ID = IDR.CONTRATO_ID
+                    INNER JOIN DB_COMERCIAL.INFO_CONTRATO IC2 ON IC2.ID_CONTRATO = ID.CONTRATO_ID 
+                    INNER JOIN DB_COMERCIAL.INFO_PUNTO IP ON IP.ID_PUNTO = ID.PUNTO_ID
+                    AND ( ID.NUMERO = IDR.NUMERO_ADENDUM  OR ( ID.NUMERO IS NULL AND IDR.NUMERO_ADENDUM  IS NULL)) 
                    
-            WHERE COALESCE(icd.INTENTOS,0) > 0  
-            AND  (trunc(sysdate)-cast(trunc(icd.fe_ult_mod) AS date )) <=  Pcl_DiaProcesado.VALOR1 
-            AND  ic2.ESTADO   IN   
+            WHERE COALESCE(ICD.INTENTOS,0) > 0  
+            AND  (TRUNC(SYSDATE)-CAST(TRUNC(ICD.FE_ULT_MOD) AS DATE )) <=  PCL_DIAPROCESADO.VALOR1 
+            AND  IC2.ESTADO   IN   
                     (       
-                    select regexp_substr(   Pcl_EstadoContrato.VALOR1 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr(   Pcl_EstadoContrato.VALOR1 , '[^,]+', 1, level) is not null
+                    SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                    CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
                     ) 
-            AND  id.ESTADO   IN   
+            AND  ID.ESTADO   IN   
                     (       
-                    select regexp_substr(   Pcl_EstadoContrato.VALOR1 ,'[^,]+', 1, level)from dual
-                    connect by regexp_substr(   Pcl_EstadoContrato.VALOR1 , '[^,]+', 1, level) is not null
+                    SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                    CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
                     )                      
            
-            ) doc      
-            ORDER BY  doc.fechaEjecucion  ASC, doc.intentos DESC ;   
+            ) DOC      
+            ORDER BY  DOC.FECHAEJECUCION  ASC, DOC.INTENTOS DESC ;   
            
             
               
      
-       Pv_Mensaje   := 'Tansaccion realizada correctamente';
-       Pv_Status    := 'OK';
-       dbms_output.put_line(Pv_Mensaje );  
+       PV_MENSAJE   := 'Tansaccion realizada correctamente';
+       PV_STATUS    := 'OK';
+       DBMS_OUTPUT.PUT_LINE(PV_MENSAJE );  
        EXCEPTION
            WHEN OTHERS THEN
            ROLLBACK;
-           Pv_Status     := 'ERROR'; 
-           Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+           PV_STATUS     := 'ERROR'; 
+           PV_MENSAJE    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(
            'DOCUMENTOS A TRANFERIR A SECURITY DATA',
            'DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA.P_DOCUMENTOS_PROCESADOS',
@@ -362,66 +384,66 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA AS
     END P_DOCUMENTOS_PROCESADOS;   
         
     
-    PROCEDURE P_DOCUMENTOS_PENDIENTES_ACT(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response OUT SYS_REFCURSOR)AS 
+    PROCEDURE P_DOCUMENTOS_PENDIENTES_ACT(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT VARCHAR2,PCL_RESPONSE OUT SYS_REFCURSOR)AS 
       
-       Lv_CodEmpresa VARCHAR2(100);     
-       Lv_UsrCreacion VARCHAR2(100);
-       Lv_ClientIp VARCHAR2(100);     
-       Lv_ParametroCab VARCHAR2(100);  
-       Ln_CountDocumentos  NUMBER;
+       LV_CODEMPRESA VARCHAR2(100);     
+       LV_USRCREACION VARCHAR2(100);
+       LV_CLIENTIP VARCHAR2(100);     
+       LV_PARAMETROCAB VARCHAR2(100);  
+       LN_COUNTDOCUMENTOS  NUMBER;
        
-       Pcl_UsuarioSd                 DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
-       Pcl_TipoPersona               DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
-       Pcl_Estados                   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       Pcl_InfoCertificado           DB_FIRMAELECT.INFO_CERTIFICADO%ROWTYPE;
-       Pcl_InfoCertificadoDocumento  DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO%ROWTYPE;
+       PCL_USUARIOSD                 DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
+       PCL_TIPOPERSONA               DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
+       PCL_ESTADOS                   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_INFOCERTIFICADO           DB_FIRMAELECT.INFO_CERTIFICADO%ROWTYPE;
+       PCL_INFOCERTIFICADODOCUMENTO  DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO%ROWTYPE;
       
        
        BEGIN  
 
-       Lv_ParametroCab 	         := 'PARAM_FLUJO_TRANSFERENCIA_SECURITY_DATA' ;  
+       LV_PARAMETROCAB 	         := 'PARAM_FLUJO_TRANSFERENCIA_SECURITY_DATA' ;  
       
-       APEX_JSON.PARSE(Pcl_Request); 
-       Lv_CodEmpresa             := APEX_JSON.get_varchar2(p_path => 'strCodEmpresa');    
-       Lv_UsrCreacion            := APEX_JSON.get_varchar2(p_path => 'strUsrCreacion'); 
-       Lv_ClientIp               := APEX_JSON.get_varchar2(p_path => 'strClientIp'); 
-       Ln_CountDocumentos        := APEX_JSON.get_count(p_path => 'objDocumentos');       
- 	   Pcl_Estados               := F_DATA_PARAMETRO(Lv_ParametroCab , 'ESTADOS_PROCESO');
+       APEX_JSON.PARSE(PCL_REQUEST); 
+       LV_CODEMPRESA             := APEX_JSON.GET_VARCHAR2(P_PATH => 'strCodEmpresa');    
+       LV_USRCREACION            := APEX_JSON.GET_VARCHAR2(P_PATH => 'strUsrCreacion'); 
+       LV_CLIENTIP               := APEX_JSON.GET_VARCHAR2(P_PATH => 'strClientIp'); 
+       LN_COUNTDOCUMENTOS        := APEX_JSON.GET_COUNT(P_PATH => 'objDocumentos');       
+ 	   PCL_ESTADOS               := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_PROCESO');
        
-          FOR i IN 1 ..  Ln_CountDocumentos
+          FOR I IN 1 ..  LN_COUNTDOCUMENTOS
                 LOOP       
-                Pcl_InfoCertificadoDocumento :=null; 
-                Pcl_InfoCertificadoDocumento.id_certificado_documento := apex_json.get_varchar2 ('objDocumentos[%d].idCertificadoDocumento', i); 
-                Pcl_InfoCertificadoDocumento.observacion := apex_json.get_clob('objDocumentos[%d].observacion', i);         
-                Pcl_InfoCertificadoDocumento.intentos    := apex_json.get_varchar2 ('objDocumentos[%d].intentos', i); 
-                Pcl_InfoCertificadoDocumento.fe_ult_mod  := sysdate;                 
+                PCL_INFOCERTIFICADODOCUMENTO :=NULL; 
+                PCL_INFOCERTIFICADODOCUMENTO.ID_CERTIFICADO_DOCUMENTO := APEX_JSON.GET_VARCHAR2 ('objDocumentos[%d].idCertificadoDocumento', I); 
+                PCL_INFOCERTIFICADODOCUMENTO.OBSERVACION := APEX_JSON.GET_CLOB('objDocumentos[%d].observacion', I);         
+                PCL_INFOCERTIFICADODOCUMENTO.INTENTOS    := APEX_JSON.GET_VARCHAR2 ('objDocumentos[%d].intentos', I); 
+                PCL_INFOCERTIFICADODOCUMENTO.FE_ULT_MOD  := SYSDATE;                 
  	    
-               IF  apex_json.get_varchar2 ('objDocumentos[%d].estado', i) =   Pcl_Estados.VALOR1   THEN
-                Pcl_InfoCertificadoDocumento.documentado :=Pcl_Estados.VALOR2;
+               IF  APEX_JSON.GET_VARCHAR2 ('objDocumentos[%d].estado', I) =   PCL_ESTADOS.VALOR1   THEN
+                PCL_INFOCERTIFICADODOCUMENTO.DOCUMENTADO :=PCL_ESTADOS.VALOR2;
                ELSE 
-                Pcl_InfoCertificadoDocumento.documentado :=Pcl_Estados.VALOR4;
+                PCL_INFOCERTIFICADODOCUMENTO.DOCUMENTADO :=PCL_ESTADOS.VALOR4;
                END IF ;
                
                UPDATE DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO  ICD
                SET  
-               icd.observacion = Pcl_InfoCertificadoDocumento.observacion, 
-               icd.documentado = Pcl_InfoCertificadoDocumento.documentado , 
-               icd.intentos    = Pcl_InfoCertificadoDocumento.intentos,
-               icd.fe_ult_mod  = Pcl_InfoCertificadoDocumento.fe_ult_mod
-               WHERE  ICD.id_certificado_documento = Pcl_InfoCertificadoDocumento.id_certificado_documento ; 
+               ICD.OBSERVACION = PCL_INFOCERTIFICADODOCUMENTO.OBSERVACION, 
+               ICD.DOCUMENTADO = PCL_INFOCERTIFICADODOCUMENTO.DOCUMENTADO , 
+               ICD.INTENTOS    = PCL_INFOCERTIFICADODOCUMENTO.INTENTOS,
+               ICD.FE_ULT_MOD  = PCL_INFOCERTIFICADODOCUMENTO.FE_ULT_MOD
+               WHERE  ICD.ID_CERTIFICADO_DOCUMENTO = PCL_INFOCERTIFICADODOCUMENTO.ID_CERTIFICADO_DOCUMENTO ; 
                COMMIT;
             END LOOP;
                 
                 
         
-       Pv_Mensaje   := 'Tansaccion realizada correctamente';
-       Pv_Status    := 'OK';
-       dbms_output.put_line(Pv_Mensaje );  
+       PV_MENSAJE   := 'Tansaccion realizada correctamente';
+       PV_STATUS    := 'OK';
+       DBMS_OUTPUT.PUT_LINE(PV_MENSAJE );  
        EXCEPTION
            WHEN OTHERS THEN
            ROLLBACK;
-           Pv_Status     := 'ERROR'; 
-           Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+           PV_STATUS     := 'ERROR'; 
+           PV_MENSAJE    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(
            'DOCUMENTOS A TRANFERIR A SECURITY DATA',
            'DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA.P_DOCUMENTOS_PENDIENTES_ACT',
