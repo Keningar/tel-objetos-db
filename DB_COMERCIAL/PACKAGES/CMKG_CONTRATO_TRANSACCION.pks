@@ -268,6 +268,13 @@ AS
     WHERE IAD.TIPO    = Cv_Tipo AND
 		  IAD.NUMERO  = Cv_Numero;
 
+    CURSOR C_GET_ADENDUM_SERVICIO (Ln_IdAdendum NUMBER)
+    IS
+    SELECT 
+        IAD.SERVICIO_ID
+    FROM DB_COMERCIAL.INFO_ADENDUM IAD
+    WHERE IAD.ID_ADENDUM = Ln_IdAdendum;
+    
     CURSOR C_GET_CARACTERISTICA (Cv_Descripcion VARCHAR2, Cv_Tipo VARCHAR2, Cv_Estado VARCHAR2)
     IS 
     SELECT ID_CARACTERISTICA
@@ -285,6 +292,42 @@ AS
       WHERE SERVICIO_ID = Ln_ServicioId
         AND CARACTERISTICA_ID = Ln_CaracteristicaId
         and ESTADO = Lv_Estado;
+
+      CURSOR C_GET_PARAMETRO(Lv_NombreParametro VARCHAR2, Lv_Estado VARCHAR2, Lv_Descripcion VARCHAR2)
+      IS
+      SELECT DET.VALOR1, DET.VALOR2, DET.VALOR3, DET.VALOR4
+      FROM DB_GENERAL.ADMI_PARAMETRO_CAB CAB
+      LEFT JOIN DB_GENERAL.ADMI_PARAMETRO_DET DET
+      ON CAB.ID_PARAMETRO = DET.PARAMETRO_ID
+      WHERE CAB.NOMBRE_PARAMETRO = Lv_NombreParametro
+        AND CAB.ESTADO = Lv_Estado
+        AND DET.DESCRIPCION = Lv_Descripcion
+        AND DET.ESTADO = Lv_Estado;
+
+      CURSOR C_GET_PRODUCTO_SERVICIO (Ln_ServicioId NUMBER)
+      IS
+      SELECT  PRODUCTO_ID
+      FROM DB_COMERCIAL.INFO_SERVICIO
+      WHERE ID_SERVICIO = Ln_ServicioId
+        AND ESTADO = 'PrePlanificada';
+
+      CURSOR C_GET_PLAN_SERVICIO (Ln_ServicioId NUMBER)
+      IS
+      SELECT  PLAN_ID
+      FROM DB_COMERCIAL.INFO_SERVICIO
+      WHERE ID_SERVICIO = Ln_ServicioId
+        AND ESTADO = 'PrePlanificada';
+      
+      CURSOR C_GET_PRODUCTO_PLANIFICA (Lv_Nombre VARCHAR2)
+      IS
+      SELECT DISTINCT(valor5) as VALOR
+      FROM DB_GENERAL.ADMI_PARAMETRO_DET 
+      WHERE PARAMETRO_ID = (SELECT id_parametro 
+                            FROM db_general.admi_parametro_cab 
+                            WHERE nombre_parametro = Lv_Nombre) --'PARAMETROS_ASOCIADOS_A_SERVICIOS_MD'
+     AND valor1 = 'GESTION_PYL_SIMULTANEA' 
+     AND VALOR3 = 'PLANIFICAR';
+
 
      -- Types	  
     TYPE Pcl_AdendumsNum IS TABLE OF C_GET_ADENDUM_NUMERO%ROWTYPE;
@@ -349,6 +392,27 @@ AS
     Ln_Existe                  NUMBER := 0;
     Ln_CaracteristicaId        NUMBER := 0;
     Ln_IteradorM INTEGER;
+   Ln_NumeroRolCliente         NUMBER := 0;
+   Ln_ProductoId               NUMBER := 0;
+   Ln_PlanId                   NUMBER := 0;
+   Lv_ParamValor1              VARCHAR2(4000);
+   Lv_ParamValor2              VARCHAR2(300);
+   Lv_ParamValor3              VARCHAR2(300);
+   Lv_ParamValor4              VARCHAR2(300);
+   Lv_ParamValor5              VARCHAR2(300);
+   Lv_ParamV1              VARCHAR2(4000);
+   Lv_ParamV2              VARCHAR2(300);
+   Lv_ParamV3              VARCHAR2(300);
+   Lv_ParamV4              VARCHAR2(300);
+   Lv_ParamV5              VARCHAR2(300);
+   Lv_ProductosPlanif          VARCHAR2(4000) := '';
+   
+   Lv_MensajeHistPlanif        VARCHAR2(400);
+   Lb_TieneProductoRestringido BOOLEAN := FALSE;
+   Ln_IdServicio               NUMBER := 0;
+
+
+
       TYPE recordUltimaMillaServ  IS RECORD
        ( ID_TIPO_MEDIO NUMBER, 
        CODIGO_TIPO_MEDIO VARCHAR2(5));
@@ -576,13 +640,47 @@ AS
               RAISE Le_Errors;
             END IF;
             Lv_EstadoContrato := 'Activo';
+            OPEN C_GET_PARAMETRO('PRODUCTOS QUE NO SE PLANIFICAN', 'Activo', 'PRODUCTOS QUE NO SE PLANIFICAN');
+            FETCH C_GET_PARAMETRO INTO Lv_ParamValor1, Lv_ParamValor2, Lv_ParamValor3, Lv_ParamValor4;
+            CLOSE C_GET_PARAMETRO;
+            Lv_MensajeHistPlanif := Lv_ParamValor4;
+            
+      	    --C_GET_PRODUCTO_PLANIFICA
+            FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD')
+            LOOP
+                Lv_ProductosPlanif := Lv_ProductosPlanif || i.valor || ',';               
+            END LOOP;
+
+            OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
+            FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
+            CLOSE C_GET_PARAMETRO;
+            Lv_ProductosPlanif := Lv_ProductosPlanif || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
+
+            
+            Lb_TieneProductoRestringido := FALSE;
+            FOR i IN C_ADENDUM_PARAMS(Ln_ContratoId, Lv_Tipo)        
+            LOOP
+              --C_GET_PRODUCTO_SERVICIO
+              OPEN C_GET_PRODUCTO_SERVICIO(i.SERVICIO_ID);
+              FETCH C_GET_PRODUCTO_SERVICIO INTO Ln_ProductoId;
+              IF C_GET_PRODUCTO_SERVICIO%NOTFOUND THEN
+                Ln_ProductoId := 0;
+              END IF;  
+              CLOSE C_GET_PRODUCTO_SERVICIO;
+              IF ((Ln_ProductoId > 0 AND INSTR(Lv_ProductosPlanif, Ln_ProductoId) = 0) OR Lv_Tipo = 'AS') THEN
+                 Lb_TieneProductoRestringido := true;
+                IF Lb_TieneProductoRestringido THEN
+                   Lv_MensajeHistPlanif := Lv_ParamValor3;
+                END IF;  
+              END IF;
+            END LOOP;
           ELSE
             Pcl_SetearDatosContrato := DB_COMERCIAL.DATOS_CONTRATO_TYPE(Ln_ContratoId, Lv_ObservacionHistorial, Lv_IpCreacion, Lv_Origen, Lv_UsrCreacion);
             DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION.P_SETEAR_DATOS_CONTRATO(Pcl_SetearDatosContrato, Pv_Mensaje, Pv_Status);
             IF Pv_Status != 'OK' THEN
               RAISE Le_Errors;
             END IF;
-            Lv_EstadoContrato := 'Pendiente';
+             Lv_EstadoContrato := 'Pendiente';
           END IF;
 
       -- Actualizar adendum y contrato
@@ -593,9 +691,49 @@ AS
               SET IC.ESTADO = Lv_EstadoContrato
               WHERE
                 IC.ID_ADENDUM = i.Id_Adendum;
-              COMMIT;
+              IF Ln_Descuento = 100 THEN  
+                  OPEN C_GET_PRODUCTO_SERVICIO(i.SERVICIO_ID);
+                  FETCH C_GET_PRODUCTO_SERVICIO INTO Ln_ProductoId;
+                  IF C_GET_PRODUCTO_SERVICIO%NOTFOUND THEN
+                    Ln_ProductoId := 0;
+                  END IF;       
+                  CLOSE C_GET_PRODUCTO_SERVICIO;
+                  
+                  OPEN C_GET_PLAN_SERVICIO(i.SERVICIO_ID);
+                  FETCH C_GET_PLAN_SERVICIO INTO Ln_PlanId;
+                  IF C_GET_PLAN_SERVICIO%NOTFOUND THEN
+                    Ln_PlanId := 0;
+                  END IF;
+                  
+                  CLOSE C_GET_PLAN_SERVICIO;
+                  
+                  IF (Ln_PlanId > 0 OR (Ln_ProductoId > 0 AND INSTR(Lv_ProductosPlanif, Ln_ProductoId) != 0)) THEN
+              
+                    INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
+                    (
+                        ID_SERVICIO_HISTORIAL, 
+                        SERVICIO_ID, 
+                        USR_CREACION, 
+                        FE_CREACION, 
+                        IP_CREACION, 
+                        ESTADO, 
+                        OBSERVACION, 
+                        ACCION
+                    )
+                    VALUES
+                    (
+                        SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL,
+                        i.SERVICIO_ID,
+                        Lv_UsrCreacion,
+                        SYSDATE,
+                        Lv_IpCreacion,
+                        'PrePlanificada',
+                        Lv_MensajeHistPlanif,
+                        'Planificacion Comercial'
+                    );
+                 END IF;   
+              END IF;                
           END LOOP;
-
           UPDATE
             DB_COMERCIAL.INFO_CONTRATO IC
           SET IC.ESTADO = Lv_EstadoContrato
@@ -636,6 +774,9 @@ AS
                 OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
                 FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
                 CLOSE C_GET_ADENDUM_NUMERO;
+
+
+
                 OPEN C_EXISTE_CARACT_SERV(Ln_ServicioPlan, Ln_CaracteristicaId, 'Activo');
                 FETCH C_EXISTE_CARACT_SERV INTO Ln_Existe;
                 CLOSE C_EXISTE_CARACT_SERV;
@@ -673,6 +814,54 @@ AS
             OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
             FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
             CLOSE C_GET_ADENDUM_NUMERO;
+            OPEN C_GET_PARAMETRO('PRODUCTOS QUE NO SE PLANIFICAN', 'Activo', 'PRODUCTOS QUE NO SE PLANIFICAN');
+            FETCH C_GET_PARAMETRO INTO Lv_ParamValor1,Lv_ParamValor3,Lv_ParamValor3,Lv_ParamValor4;
+            CLOSE C_GET_PARAMETRO;
+
+            Lv_MensajeHistPlanif := Lv_ParamValor4;
+            Lv_ProductosPlanif := '';
+            FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD')
+            LOOP
+                Lv_ProductosPlanif := Lv_ProductosPlanif || i.valor || ',';               
+            END LOOP;
+            
+
+            OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
+            FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
+            CLOSE C_GET_PARAMETRO;
+            Lv_ProductosPlanif := Lv_ProductosPlanif || ',' || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
+            
+            Lb_TieneProductoRestringido := FALSE;            
+            IF Pcl_ArrayAdendumsNum.EXISTS(1)
+            THEN
+                Ln_IteradorJ := Pcl_ArrayAdendumsNum.FIRST;
+                WHILE (Ln_IteradorJ IS NOT NULL)
+                LOOP
+                    --C_GET_ADENDUM_SERVICIO
+                  OPEN C_GET_ADENDUM_SERVICIO (Pcl_ArrayAdendumsNum(Ln_IteradorJ).ID_ADENDUM);
+                  FETCH C_GET_ADENDUM_SERVICIO INTO Ln_IdServicio;
+                  CLOSE C_GET_ADENDUM_SERVICIO;  
+
+                  OPEN C_GET_PRODUCTO_SERVICIO(Ln_IdServicio);
+                  FETCH C_GET_PRODUCTO_SERVICIO INTO Ln_ProductoId;
+                  IF C_GET_PRODUCTO_SERVICIO%NOTFOUND THEN
+                    Ln_ProductoId := 0;
+                  END IF;  
+                  CLOSE C_GET_PRODUCTO_SERVICIO;
+
+                   IF ((Ln_ProductoId > 0 AND INSTR(Lv_ProductosPlanif, Ln_ProductoId) = 0) OR Lv_Tipo = 'AS')THEN
+                     Lb_TieneProductoRestringido := true;
+                    IF Lb_TieneProductoRestringido THEN
+                       Lv_MensajeHistPlanif := Lv_ParamValor3;
+                    END IF;  
+                  END IF; 
+
+                  Ln_IteradorJ := Pcl_ArrayAdendumsNum.NEXT(Ln_IteradorJ); 
+                END LOOP;
+            ELSE
+                Pv_Mensaje := 'No Existe Adendum para Autorizar';
+                RAISE Le_Errors;
+            END IF;
 
             IF Pcl_ArrayAdendumsNum.EXISTS(1)
             THEN
@@ -682,6 +871,53 @@ AS
                     UPDATE DB_COMERCIAL.INFO_ADENDUM IA
                         SET IA.ESTADO      = Lv_EstadoAdendum
                     WHERE IA.ID_ADENDUM = Pcl_ArrayAdendumsNum(Ln_IteradorJ).ID_ADENDUM;
+
+                    IF Ln_Descuento = 100  OR Lv_Tipo = 'AS' THEN
+                      OPEN C_GET_ADENDUM_SERVICIO (Pcl_ArrayAdendumsNum(Ln_IteradorJ).ID_ADENDUM);
+                      FETCH C_GET_ADENDUM_SERVICIO INTO Ln_IdServicio;
+                      CLOSE C_GET_ADENDUM_SERVICIO;  
+
+                      OPEN C_GET_PRODUCTO_SERVICIO(Ln_IdServicio);
+                      FETCH C_GET_PRODUCTO_SERVICIO INTO Ln_ProductoId;
+                      IF C_GET_PRODUCTO_SERVICIO%NOTFOUND THEN
+                        Ln_ProductoId := 0;
+                      END IF;  
+                      CLOSE C_GET_PRODUCTO_SERVICIO;  
+                      
+                      OPEN C_GET_PLAN_SERVICIO(Ln_IdServicio);
+                      FETCH C_GET_PLAN_SERVICIO INTO Ln_PlanId;
+                      IF C_GET_PLAN_SERVICIO%NOTFOUND THEN
+                        Ln_PlanId := 0;
+                      END IF;
+                      
+                      CLOSE C_GET_PLAN_SERVICIO;
+                     
+                      IF ((Ln_PlanId > 0 OR (Ln_ProductoId > 0 AND INSTR(Lv_ProductosPlanif, Ln_ProductoId) != 0)) OR Lv_Tipo = 'AS') THEN
+                          INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
+                          (
+                              ID_SERVICIO_HISTORIAL, 
+                              SERVICIO_ID, 
+                              USR_CREACION, 
+                              FE_CREACION, 
+                              IP_CREACION, 
+                              ESTADO, 
+                              OBSERVACION, 
+                              ACCION
+                          )
+                          VALUES
+                          (
+                              SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL,
+                              Ln_IdServicio,
+                              Lv_UsrCreacion,
+                              SYSDATE,
+                              Lv_IpCreacion,
+                              'PrePlanificada',
+                              Lv_MensajeHistPlanif,
+                              'Planificacion Comercial'
+                          ); 
+                        END IF;
+                    END IF;
+
                   Ln_IteradorJ := Pcl_ArrayAdendumsNum.NEXT(Ln_IteradorJ); 
                   COMMIT;
                 END LOOP;
