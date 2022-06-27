@@ -249,7 +249,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     END IF;
     CLOSE C_GET_DETALLE_SOLICITUD;
 
-    IF (Ln_IdMotivo> 0) THEN
+    IF (Ln_IdMotivo > 0) THEN
       UPDATE DB_COMERCIAL.INFO_DETALLE_SOLICITUD SET MOTIVO_ID = Ln_IdMotivo WHERE ID_DETALLE_SOLICITUD = Ln_IdFactibilidad;
 
       OPEN C_GET_MOTIVO(Ln_IdMotivo);
@@ -260,45 +260,6 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
 
       INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, USR_CREACION, FE_CREACION, IP_CREACION, ESTADO, MOTIVO_ID, OBSERVACION)
       VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_UsrCreacion, sysdate, Lv_IpCreacion, Lv_EstadoServicio, Ln_IdMotivo, Lv_ObservacionServicio);
-
-      DB_COMERCIAL.TECNK_SERVICIOS.P_GET_INFO_GESTION_SIMULTANEA(Ln_IdFactibilidad,
-                                                                 NULL,
-                                                                 'PLANIFICAR',
-                                                                 Pv_Status,
-                                                                 Pv_Mensaje,
-                                                                 Lc_Consulta);   
-
-      LOOP
-        FETCH Lc_Consulta  BULK COLLECT INTO V_IdSolGestionada, V_DescripcionTipoSolGesionada, V_IdPlanServicioGestionado, V_IdServicioSimultaneo, V_IdPlanServicioSimultaneo, V_IdProdServicioSimultaneo, V_DescripServicioSimultaneo, V_EstadoServicioSimultaneo, V_IdSolSimultanea, 
-                                             V_DescripcionTipoSolSim, V_EstadoSolSimultanea, V_IdDetSolCaract, V_IdPuntoGestionado, V_IdJurisdiccionPunto, V_CupoJurisdiccionPunto, V_Opcion LIMIT 100;
-        EXIT WHEN V_IdSolGestionada.count=0;
-        i := V_IdSolGestionada.FIRST;
-        WHILE (i IS NOT NULL) 
-        LOOP
-          INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, USR_CREACION, FE_CREACION, IP_CREACION, ESTADO, MOTIVO_ID, OBSERVACION)
-          VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, V_IdServicioSimultaneo(i), Lv_UsrCreacion, sysdate, Lv_IpCreacion, Lv_EstadoServicio, Ln_IdMotivo, Lv_ObservacionServicio);
-
-          i := V_IdSolGestionada.NEXT(i);
-        END LOOP;  
-      END LOOP;
-      
-        OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
-        FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
-        CLOSE C_GET_PARAMETRO;
-        Lv_ProductosPlanif := Lv_ProductosPlanif || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
-        dbms_output.put_line('entr3 ' || Lv_ProductosPlanif);                                       
-        dbms_output.put_line('fact ' || Ln_IdFactibilidad);
-      FOR REG IN C_GET_SERVICIOS_SIMULTANEOS(Ln_IdFactibilidad) LOOP
-          APEX_JSON.PARSE(Pcl_Request);      
-            dbms_output.put_line('fact ' || Ln_IdPunto);
-            dbms_output.put_line('solicitud => ' || REG.SOLICITUD_ID);
-            IF (REG.SOLICITUD_ID > 0 AND INSTR(Lv_ProductosPlanif, REG.PRODUCTO_ID) > 0) THEN
-                UPDATE DB_COMERCIAL.INFO_DETALLE_SOLICITUD SET MOTIVO_ID = Ln_IdMotivo WHERE ID_DETALLE_SOLICITUD = REG.SOLICITUD_ID;
-                  INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, USR_CREACION, FE_CREACION, IP_CREACION, ESTADO, MOTIVO_ID, OBSERVACION)
-                  VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, REG.ID_SERVICIO, Lv_UsrCreacion, sysdate, Lv_IpCreacion, Lv_EstadoServicio, Ln_IdMotivo, Lv_ObservacionServicio);
-            
-            END IF;
-      END LOOP;      
 
     ELSE
       IF (Ln_Cupo > 0 and Lv_EsHal = 'S') THEN
@@ -420,7 +381,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     PE1.DIRECCION_TRIBUTARIA, PUN.DIRECCION, PUN.DESCRIPCION_PUNTO, PUN.LATITUD, PUN.LONGITUD, PE1.ID_PERSONA, SER.PLAN_ID, JUR.NOMBRE_JURISDICCION, 
     CASE WHEN SER.PLAN_ID IS NULL 
     THEN (SELECT DESCRIPCION_PRODUCTO FROM DB_COMERCIAL.ADMI_PRODUCTO WHERE ID_PRODUCTO = SER.PRODUCTO_ID) 
-    ELSE (SELECT NOMBRE_PLAN FROM DB_COMERCIAL.INFO_PLAN_CAB WHERE ID_PLAN = SER.PLAN_ID) END 
+    ELSE (SELECT NOMBRE_PLAN FROM DB_COMERCIAL.INFO_PLAN_CAB WHERE ID_PLAN = SER.PLAN_ID) END, SER.PRODUCTO_ID
     FROM DB_COMERCIAL.INFO_PUNTO PUN
     LEFT JOIN DB_COMERCIAL.INFO_SERVICIO SER
       ON PUN.ID_PUNTO = SER.PUNTO_ID
@@ -531,10 +492,13 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
   Ld_FeFinPlan        DATE;
   Lv_NombreLider      VARCHAR2(400);
   Ln_IdPerLider       NUMBER;
+  Ln_IdPerEmpLider    NUMBER;
   Lv_ObservacionSeg   VARCHAR2(400);
   Lv_GestionSimultanea VARCHAR2(1) := 'N';
   Lv_NombreTarea       VARCHAR2(150); 
   Lv_NombreJurisdiccion VARCHAR2(300);
+  Ln_IdDetalleAsignacion NUMBER;
+  Ln_IdProducto          NUMBER;
   BEGIN
 
     APEX_JSON.PARSE(Pcl_Request);
@@ -564,25 +528,36 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
 
     FOR REG IN C_GET_INTEGRANTES_CUADRILLA('Empleado', Ln_IdAsignado) LOOP
       Ln_IdPersonaEmpresaRol := REG.ID_PERSONA_ROL;
+      dbms_output.put_line('' || Ln_IdPersonaEmpresaRol || ' ' || Lv_NombreLider);
       Ln_IdPersona           := REG.ID_PERSONA; 
       Lv_NombreRef           := REG.NOMBRES || ' ' || REG.APELLIDOS;
       INSERT INTO DB_SOPORTE.INFO_CUADRILLA_TAREA (ID_CUADRILLA_TAREA, DETALLE_ID, CUADRILLA_ID, PERSONA_ID, USR_CREACION, FE_CREACION, IP_CREACION)
       VALUES(DB_SOPORTE.SEQ_INFO_CUADRILLA_TAREA.NEXTVAL,Ln_IdDetalle, Ln_IdAsignado, REG.ID_PERSONA, Lv_UsrCreacion, to_date(to_char(sysdate, 'DD-MM-YYYY'), 'DD/MM/YYYY')  , Lv_IpCreacion );
           --C_GET_LIDER_CUADRILLA
       IF (Lv_NombreLider IS NULL) THEN    
+      dbms_output.put_line('entro al if');
         OPEN C_GET_LIDER_CUADRILLA(Ln_IdPersona);
         FETCH C_GET_LIDER_CUADRILLA INTO Ln_IdPerLider, Lv_NombreLider;
         IF C_GET_LIDER_CUADRILLA%NOTFOUND THEN
+          dbms_output.put_line('not found');
           Ln_IdPerLider := 0;
           Lv_NombreLider := NULL;
+          Ln_IdPerEmpLider := 0;
         END IF;
-        CLOSE C_GET_LIDER_CUADRILLA;     
+        CLOSE C_GET_LIDER_CUADRILLA;  
+        Ln_IdPerEmpLider := Ln_IdPerLider;  
+        Ln_IdPerLider := Ln_IdPersona;
       END IF;
     END LOOP;
-    IF (Lv_NombreLider IS NULL) THEN  
+    --CLOSE C_GET_INTEGRANTES_CUADRILLA; 
+
+    IF (Lv_NombreLider IS NULL) THEN
+      Ln_IdPerEmpLider := Ln_IdPersonaEmpresaRol;
       Ln_IdPerLider := Ln_IdPersona;
       Lv_NombreLider := Lv_NombreRef;   
     END IF;
+    dbms_output.put_line('lider emp rol' || Ln_IdPerEmpLider);  
+    dbms_output.put_line('lider ' || Ln_IdPerLider);
     Lb_Primera := TRUE;
     FOR REG IN C_GET_DPTO_PERSONA(Ln_IdPersona, Lv_CodEmpresa) LOOP
       IF (Lb_Primera = TRUE) THEN
@@ -595,7 +570,18 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     --VALUES (DB_SOPORTE.SEQ_INFO_DETALLE_HISTORIAL.NEXTVAL, Ln_IdDetalle, 'Tarea Asignada', Lv_UsrCreacion, Ln_IdAsignado, 'Asignada', Ln_IdDepartamento, 'Asignada', SYSDATE, Lv_IpCreacion);
 
     INSERT INTO DB_SOPORTE.INFO_DETALLE_ASIGNACION (ID_DETALLE_ASIGNACION, DETALLE_ID, ASIGNADO_ID, ASIGNADO_NOMBRE, REF_ASIGNADO_ID, REF_ASIGNADO_NOMBRE, PERSONA_EMPRESA_ROL_ID, TIPO_ASIGNADO, IP_CREACION, FE_CREACION, USR_CREACION)
-    VALUES (DB_SOPORTE.SEQ_INFO_DETALLE_ASIGNACION.NEXTVAL, Ln_IdDetalle, Ln_IdAsignado, Lv_NombreCuadrilla, Ln_IdPersona, Lv_NombreRef, Ln_IdPersonaEmpresaRol, 'CUADRILLA', Lv_IpCreacion, SYSDATE, Lv_UsrCreacion); 
+    VALUES (DB_SOPORTE.SEQ_INFO_DETALLE_ASIGNACION.NEXTVAL, Ln_IdDetalle, Ln_IdAsignado, Lv_NombreCuadrilla, Ln_IdPerLider, Lv_NombreLider, Ln_IdPerEmpLider, 'CUADRILLA', Lv_IpCreacion, SYSDATE, Lv_UsrCreacion)
+    RETURNING ID_DETALLE_ASIGNACION INTO Ln_IdDetalleAsignacion;
+
+    FOR REG IN C_GET_INTEGRANTES_CUADRILLA('Empleado', Ln_IdAsignado) LOOP
+      Ln_IdPersonaEmpresaRol := REG.ID_PERSONA_ROL;
+      dbms_output.put_line('' || Ln_IdPersonaEmpresaRol || ' ' || Lv_NombreLider);
+      Ln_IdPersona           := REG.ID_PERSONA; 
+      Lv_NombreRef           := REG.NOMBRES || ' ' || REG.APELLIDOS;
+      
+      INSERT INTO DB_SOPORTE.INFO_DETALLE_COLABORADOR(ID_COLABORADOR, DETALLE_ASIGNACION_ID, ASIGNADO_ID, ASIGNADO_NOMBRE, REF_ASIGNADO_ID,  REF_ASIGNADO_NOMBRE, USR_CREACION, FE_CREACION, IP_CREACION)
+      VALUES (DB_SOPORTE.SEQ_INFO_DETALLE_COLABORADOR.NEXTVAL, Ln_IdDetalleAsignacion, 128, 'Operaciones Urbanas', Ln_IdPersona, Lv_NombreRef, Lv_UsrCreacion, SYSDATE, Lv_IpCreacion);
+    END LOOP;
 
     OPEN C_GET_DETALLE_SOL_HIST_ESTADO(Ln_IdFactibilidad, 'AsignadoTarea');
     FETCH C_GET_DETALLE_SOL_HIST_ESTADO INTO Ln_DetalleSolHist, Lv_ObservacionSol, Ld_FeIniPlan, Ld_FeFinPlan;
@@ -640,7 +626,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     --C_GET_NOMBRE_PUNTO
     OPEN C_GET_DATOS_PUNTO(Ln_IdServicioHistorial);
     FETCH C_GET_DATOS_PUNTO INTO Ln_IdPunto, Lv_LoginPunto, Lv_NombrePunto, Ln_IdServicio, Lv_NombreCliente, Lv_DireccionTributa,
-                                 Lv_DireccionPunto, Lv_DescripcionPunto, Lv_Latitud, Lv_Longitud, Ln_IdPersona, Ln_IdPlan, Lv_NombreJurisdiccion, Lv_NombrePlan;
+                                 Lv_DireccionPunto, Lv_DescripcionPunto, Lv_Latitud, Lv_Longitud, Ln_IdPersona, Ln_IdPlan, Lv_NombreJurisdiccion, Lv_NombrePlan, Ln_IdProducto;
     IF C_GET_DATOS_PUNTO%NOTFOUND THEN
        Lv_NombrePunto := NULL;
     END IF;
@@ -660,6 +646,8 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     UPDATE DB_COMERCIAL.INFO_SERVICIO SET ESTADO = 'AsignadoTarea' WHERE ID_SERVICIO =  Ln_IdServicio;
     INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
     VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', Lv_Observacion);
+    
+    --aqui los cambios de productos adicionales
     Lv_ObservacionData := '<b>Informaci&oacute;n del Cliente</b><br/>';
     Lv_ObservacionData := Lv_ObservacionData || 'Nombre: ' || Lv_NombreCliente || '<br/>';
     Lv_ObservacionData := Lv_ObservacionData || 'Direcci&oacute;n: ' || Lv_DireccionTributa || '<br/>';
@@ -705,20 +693,21 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
        Lv_ValorCaract := NULL;
        Ln_IdPlanCaract := 0;
     END IF;
-    IF ((Lv_ValorCaract IS NOT NULL AND Lv_ValorCaract = 'SI') AND Ln_IdPlan > 0) THEN
+    IF (Ln_IdProducto IS NOT NULL) THEN
       UPDATE DB_COMERCIAL.INFO_DETALLE_SOLICITUD SET ESTADO = 'Asignada' WHERE ID_DETALLE_SOLICITUD = Ln_IdFactibilidad;
 
       INSERT INTO DB_COMERCIAL.INFO_DETALLE_SOL_HIST(ID_SOLICITUD_HISTORIAL, DETALLE_SOLICITUD_ID, FE_INI_PLAN, FE_FIN_PLAN, OBSERVACION,
                                                      IP_CREACION, FE_CREACION, USR_CREACION, ESTADO)
-      VALUES (DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL, Ln_DetalleSolHist, Ld_FeIniPlan, Ld_FeFinPlan, Lv_ObservacionSol, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'Asignada');
+      VALUES (DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL, Ln_IdFactibilidad, Ld_FeIniPlan, Ld_FeFinPlan, Lv_ObservacionSol, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'Asignada');
 
       UPDATE DB_COMERCIAL.INFO_SERVICIO SET ESTADO = 'Asignada' WHERE ID_SERVICIO = Ln_IdServicio;
-    INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
-    VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'Asignada', 'Por ser ' || Lv_NombrePlan || ' Pasa a: Asignada'  );      
+      INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
+      VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'Asignada', 'Por ser ' || Lv_NombrePlan || ' Pasa a: Asignada'  );      
+    ELSE
+        
+        INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
+        VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificación comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
     END IF;
-    INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
-    VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificación comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
-    
     DB_SOPORTE.SPKG_INFO_TAREA.P_CREA_INFO_TAREA(Ln_IdDetalle,
                                                  Lv_UsrCreacion,
                                                  Pv_Status,
@@ -732,8 +721,6 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     Pv_Observacion := '<br>Asignada a: Empleado';
     Pv_Observacion := Pv_Observacion || '<br> Nombre: ' || Lv_NombreCuadrilla;
     Pv_Observacion := Pv_Observacion || '<br> Departamento: ' || Lv_NombreCuadrilla;
-    --gestion simultanea
- 
     COMMIT;
     OPEN C_GET_NOMBRE_TAREA(Ln_IdDetalle);
     FETCH C_GET_NOMBRE_TAREA INTO Lv_NombreTarea;
@@ -763,12 +750,12 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
       dbms_output.put_line('error confirmar  => ' || Pv_Mensaje);
-      ROLLBACK;
+      --ROLLBACK;
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM; 
       dbms_output.put_line('error confirmar => ' || Pv_Mensaje);
-      ROLLBACK;  
+      --ROLLBACK;  
   END P_CONFIRMAR_PLANIFICACION;   
 
 
@@ -1040,8 +1027,8 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
                 LOOP
                   Lv_PclRequest := '{"idDetalle": ' ;
                   Lv_PclRequest := Lv_PclRequest || V_IdDetalle(j);
-                  Lv_PclRequest := Lv_PclRequest || ',"idComunicacion": ' || V_IdComunicacion(j); 
                   Lv_PclRequest := Lv_PclRequest || ',"idAsignado": ' || APEX_JSON.get_number(p_path => 'idAsignado'); 
+                  Lv_PclRequest := Lv_PclRequest || ',"idComunicacion": ' || V_IdComunicacion(j); 
                   Lv_PclRequest := Lv_PclRequest || ',"idServicioHistorial": ' || V_IdSevicioHistorial(j); 
                   Lv_PclRequest := Lv_PclRequest || ',"idFactibilidad": ' || REG.SOLICITUD_ID; 
                   Lv_PclRequest := Lv_PclRequest || ',"codEmpresa": "'  || APEX_JSON.get_varchar2(p_path => 'codEmpresa') || '"'; 
@@ -1055,6 +1042,7 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
                   j := V_IdDetalleSolicitud.NEXT(j);
                 END LOOP;  
              END LOOP;  
+          --dbms_output.put_line('P_CONFIRMAR_PLANIFICACION => ' || Lv_PclRequest);
     
               DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL.P_CONFIRMAR_PLANIFICACION (Lv_PclRequest, Pv_Status, Pv_Mensaje, Pv_Observacion, Pcl_Response);
               IF (Pv_Status = 'ERROR') THEN
@@ -1066,7 +1054,7 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
       dbms_output.put_line('asignar mensaje => ' || Pv_Mensaje);
-      ROLLBACK;
+      --ROLLBACK;
     WHEN OTHERS THEN
 
       Pv_Status  := 'ERROR';
