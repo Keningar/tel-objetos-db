@@ -1,0 +1,25 @@
+/**
+ * DEBE EJECUTARSE EN DB_HORAS_EXTRAS.
+ * @author Katherine Portugal  <kportugal@telconet.ec>
+ * @version 1.0 13-07-2021 - Versión Inicial.
+ */ 
+
+/*
+ * Drop para eliminar la secuencia de las tablas del esquema db_horas_extra;
+ */
+
+DROP SEQUENCE DB_HORAS_EXTRAS.SEQ_INFO_HORARIO_HISTORIAL;
+
+DROP SEQUENCE DB_HORAS_EXTRAS.SEQ_INFO_HORARIO_EMPLEADOS;
+
+DROP SEQUENCE DB_HORAS_EXTRAS.SEQ_ADMI_TIPO_HORARIOS;
+
+/*
+ * Drop para eliminar las tablas del esquema DB_HORAS_EXTRA
+ *
+ */
+DROP TABLE DB_HORAS_EXTRAS.INFO_HORARIO_HISTORIAL;
+
+DROP TABLE DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS;
+
+DROP TABLE DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS;

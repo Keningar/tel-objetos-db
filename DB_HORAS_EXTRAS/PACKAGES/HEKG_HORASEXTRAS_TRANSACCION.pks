@@ -1,5 +1,4 @@
-SET DEFINE OFF;
-create or replace package                                                   DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
+CREATE OR REPLACE package                                                                   DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
 
    /**
   * Documentación para el procedimiento P_GUARDAR_HORASEXTRA
@@ -33,9 +32,9 @@ create or replace package                                                   DB_H
    PROCEDURE P_GUARDAR_HORASEXTRA(Pcl_Request  IN  CLOB,
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2);
-                                  
-   
-   
+
+
+
     /**
   * Documentación para el procedimiento P_ELIMINAR_SOLICITUD_HEXTRA
   *
@@ -54,8 +53,8 @@ create or replace package                                                   DB_H
    PROCEDURE P_ELIMINAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                          Pv_Status    OUT VARCHAR2,
                                          Pv_Mensaje   OUT VARCHAR2);
-                                  
-                                                
+
+
    /**
   * Documentación para el procedimiento P_ANULAR_SOLICITUD_HEXTRA
   *
@@ -74,9 +73,9 @@ create or replace package                                                   DB_H
    PROCEDURE P_ANULAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2);
-                                       
-             
-                                       
+
+
+
    /**
   * Documentación para el procedimiento P_AUTORIZAR_SOLICITUD_HEXTRA
   *
@@ -95,7 +94,7 @@ create or replace package                                                   DB_H
    PROCEDURE P_AUTORIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                           Pv_Status    OUT VARCHAR2,
                                           Pv_Mensaje   OUT VARCHAR2);
-                                          
+
     /**
   * Documentación para el procedimiento P_ACTUALIZAR_SOLICITUD_HEXTRA
   *
@@ -127,8 +126,8 @@ create or replace package                                                   DB_H
    PROCEDURE P_ACTUALIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                            Pv_Status    OUT VARCHAR2,
                                            Pv_Mensaje   OUT VARCHAR2);
-                            
-   
+
+
    /**
    * Documentación para el procedimiento P_INSERT_SOLICITUD_HEXTRA
    *
@@ -158,9 +157,9 @@ create or replace package                                                   DB_H
                                       Pv_UsrCreacion         IN VARCHAR2,
                                       Pv_Status              OUT VARCHAR2,
                                       Pv_Mensaje             OUT VARCHAR2);
-   
-                                           
-                                           
+
+
+
    /**
   * Documentación para el procedimiento P_INSERT_DETA_SOLICITUD_HEXTRA
   *
@@ -193,7 +192,7 @@ create or replace package                                                   DB_H
                                             Pv_usrCreacion      IN VARCHAR2,
                                             Pv_Status           OUT VARCHAR2,
                                             Pv_Mensaje          OUT VARCHAR2);
-                                            
+
    /**
     * Documentación para el procedimiento P_INSERT_HISTORIAL_SOLICITUD
     *
@@ -226,8 +225,8 @@ create or replace package                                                   DB_H
                                            Pv_usrCreacion      IN VARCHAR2,
                                            Pv_Status           OUT VARCHAR2,
                                            Pv_Mensaje          OUT VARCHAR2);
-                                            
-            
+
+
     /**
   * Documentación para el procedimiento P_INSERTAR_TAREAS
   *
@@ -246,12 +245,13 @@ create or replace package                                                   DB_H
                                 Pn_TareaId          IN NUMBER,
                                 Pv_usrCreacion      IN VARCHAR2,
                                 Pn_IdCUadrilla      IN NUMBER,
+                                Pv_observacion      IN VARCHAR2,
                                 Pv_Status           OUT VARCHAR2,
                                 Pv_Mensaje          OUT VARCHAR2);
-                                
-                                
-    
-    
+
+
+
+
     /**
     * Documentación para el procedimiento P_INSERTAR_DOCUMENTOS
     *
@@ -273,8 +273,8 @@ create or replace package                                                   DB_H
                                     Pv_usrCreacion        IN VARCHAR2,
                                     Pv_Status             OUT VARCHAR2,
                                     Pv_Mensaje            OUT VARCHAR2);
-                                    
-                                    
+
+
     /**
     * Documentación para el procedimiento P_ACTUALIZACION_GENERAL_SOLI
     *
@@ -291,8 +291,8 @@ create or replace package                                                   DB_H
                                            Pv_Proceso          IN VARCHAR2,
                                            Pv_Status           OUT VARCHAR2,
                                            Pv_Mensaje          OUT VARCHAR2);
-                                           
-                       
+
+
     /**
     * Documentación para el procedimiento P_AUTORIZACION_MASIVA
     *
@@ -312,8 +312,8 @@ create or replace package                                                   DB_H
                                     Pv_EmpresaCod       IN VARCHAR2,
                                     Pv_Status           OUT VARCHAR2,
                                     Pv_Mensaje          OUT VARCHAR2);
-                                    
-                                    
+
+
     /**
     * Documentación para el procedimiento P_INSERTAR_EMPLEADOS
     *
@@ -335,8 +335,8 @@ create or replace package                                                   DB_H
                                    Pv_UsrCreacion      IN VARCHAR2,
                                    Pv_Status           OUT VARCHAR2,
                                    Pv_Mensaje          OUT VARCHAR2);
-                                   
-      
+
+
    /**
     * Documentación para el procedimiento P_AUTORIZACION_POR_DEPTO
     *
@@ -355,7 +355,7 @@ create or replace package                                                   DB_H
     PROCEDURE P_AUTORIZACION_POR_DEPTO(Pcl_Request  IN  CLOB,
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2);
-                                       
+
     /**
     * Documentación para el procedimiento P_ENVIO_MAIL_HE
     *
@@ -371,9 +371,9 @@ create or replace package                                                   DB_H
     PROCEDURE P_ENVIO_MAIL_HE(Pv_EmpresaCod IN VARCHAR2,
                               Pv_Remitente  IN VARCHAR2,
                               Pv_Asunto     IN VARCHAR2);
-   
-   
-    
+
+
+
     /**
     * Documentación para el procedimiento P_REPORTE_AUTORIZACIONES
     *
@@ -388,9 +388,9 @@ create or replace package                                                   DB_H
     PROCEDURE P_REPORTE_AUTORIZACIONES(Pv_EmpresaCod IN VARCHAR2,
                                        Pv_Remitente  IN VARCHAR2,
                                        Pv_Asunto     IN VARCHAR2);
-                                       
-    
-    
+
+
+
     /**
     * Documentación para el procedimiento P_ENVIAR_MAIL_GENERAL
     *
@@ -407,8 +407,8 @@ create or replace package                                                   DB_H
                                     Pv_EmpresaCod       IN VARCHAR2,
                                     Pn_IdHorasSolicitud IN NUMBER,
                                     Pv_Observacion      IN VARCHAR2);
-                                                                        
-                                    
+
+
     /**
     * Documentación para el procedimiento P_ELIMINAR_MASIVA
     *
@@ -427,15 +427,179 @@ create or replace package                                                   DB_H
                                 Pv_EmpresaCod       IN VARCHAR2,
                                 Pv_Status           OUT VARCHAR2,
                                 Pv_Mensaje          OUT VARCHAR2);
-      
+
+
+    /**
+    * Documentación para el procedimiento P_PLANIFICAR_HORARIO
+    *
+    * Método encargado de la planificacion.
+    *
+    * @param Pcl_Request    IN   CLOB Recibe json request
+    * [
+    *   empresaCod         := número de compañía.
+    *   fechaInicio        := fecha inicio.
+    *   fechaFin           := fecha fin.
+    *   horaInicio         := hora inicio.
+    *   horaFin            := hora fin.
+    *   tipoHorario        := id tipo horario.
+    *   usrCreacion        := usuario creacion.
+    *   diasEscogidos      := dias escogidos.
+    *   idSecuencia        := Id secuencia.
+    *   planificacionAnual := Si es planificacion anual
+    * ]
+    * @param Pv_Status            OUT VARCHAR2
+    * @param Pv_Mensaje           OUT VARCHAR2
+    * @author Ivan Mata <imata@telconet.ec>
+    * @version 1.0 
+    */                            
+     PROCEDURE P_PLANIFICAR_HORARIO(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2);
+     /**
+    * Documentación para el procedimiento P_GUARDAR_PLANIFICACION
+    *
+    * Método encargado de guardar la planificacion.
+    *
+    * @param Pv_NoEmpleado         := Numero empleado
+    * @param Pv_EmpresaCod         := número de compañía.
+    * @param Pv_FechaInicio        := fecha inicio.
+    * @param Pv_FechaFin           := fecha fin.
+    * @param Pv_HoraInicio         := hora inicio.
+    * @param Pv_HoraFin            := hora fin.
+    * @param Pv_TipoHorario        := id tipo horario.
+    * @param Pv_UsrCreacion        := usuario creacion.
+    * @param Pv_Status             := estado de la transaccion
+    * @param Pv_Mensaje            := mensaje de transaccion
+    * @author Ivan Mata <imata@telconet.ec>
+    * @version 1.0 
+    */                                        
+     PROCEDURE P_GUARDAR_PLANIFICACION(Pv_NoEmpleado  VARCHAR2,
+                                      Pv_FechaInicio DATE,
+                                      Pv_FechaFin    DATE,
+                                      Pv_HoraInicio  VARCHAR2,
+                                      Pv_HoraFin     VARCHAR2,
+                                      Pv_TipoHorario VARCHAR2,
+                                      Pv_EmpresaCod  VARCHAR2,
+                                      Pv_UsrCreacion VARCHAR2,
+                                      Pv_Status   OUT VARCHAR2,
+                                      Pv_Mensaje  OUT VARCHAR2);
+
+   /**
+    * Documentación para el procedimiento P_EDITAR_PLANIFICACION
+    *
+    * Método encargado de editar la planificacion.
+    *
+    * @param Pcl_Request    IN   CLOB Recibe json request
+    * [
+    *   empresaCod         := número de compañía.
+    *   fechaInicio        := fecha inicio.
+    *   fechaFin           := fecha fin.
+    *   horaInicio         := hora inicio.
+    *   horaFin            := hora fin.
+    *   tipoHorario        := id tipo horario.
+    *   usrCreacion        := usuario creacion.
+    *   diasEscogidos      := dias escogidos.
+    *   idSecuencia        := Id secuencia.
+    *   planificacionAnual := Si es planificacion anual
+    * ]
+    * @param Pv_Status            OUT VARCHAR2
+    * @param Pv_Mensaje           OUT VARCHAR2
+    * @author Ivan Mata <imata@telconet.ec>
+    * @version 1.0 
+    */                                     
+      PROCEDURE P_EDITAR_PLANIFICACION(Pcl_Request  IN  CLOB,
+                                     Pv_Status    OUT VARCHAR2,
+                                     Pv_Mensaje   OUT VARCHAR2);
+
+   /**
+    * Documentación para el procedimiento P_ELIMINAR_PLANIFICACION
+    *
+    * Método encargado de eliminar la planificacion.
+    *
+    * @param Pcl_Request    IN   CLOB Recibe json request
+    * [
+    *   empresaCod         := número de compañía.
+    *   fechaInicio        := fecha inicio.
+    *   fechaFin           := fecha fin.
+    *   horaInicio         := hora inicio.
+    *   horaFin            := hora fin.
+    *   tipoHorario        := id tipo horario.
+    *   usrCreacion        := usuario creacion.
+    *   diasEscogidos      := dias escogidos.
+    *   idSecuencia        := Id secuencia.
+    *   planificacionAnual := Si es planificacion anual
+    * ]
+    * @param Pv_Status            OUT VARCHAR2
+    * @param Pv_Mensaje           OUT VARCHAR2
+    * @author Ivan Mata <imata@telconet.ec>
+    * @version 1.0 
+    */                                   
+       PROCEDURE P_ELIMINAR_PLANIFICACION(Pcl_Request  IN  CLOB,
+                                       Pv_Status    OUT VARCHAR2,
+                                       Pv_Mensaje   OUT VARCHAR2);
+      /**
+    * Documentación para el procedimiento P_ELIMINAR_PLA_MASIVA
+    *
+    * Método encargado de eliminar la planificacion masivamente.
+    *
+    * @param Pn_IdHorarioEmple    NUMBER
+    * @param Pv_UsrCreacion       VARCHAR2
+    * @param Pv_Observacion       VARCHAR2
+    * @param Pv_Status            OUT VARCHAR2
+    * @param Pv_Mensaje           OUT VARCHAR2
+    * @author Ivan Mata <imata@telconet.ec>
+    * @version 1.0 
+    */    
+       PROCEDURE P_ELIMINAR_PLA_MASIVA(Pn_IdHorarioEmple NUMBER,
+                                    Pv_UsrCreacion    VARCHAR2,
+                                    Pv_Observacion    VARCHAR2,
+                                    Pv_Status    OUT VARCHAR2,
+                                    Pv_Mensaje   OUT VARCHAR2);
+        /**
+    * Documentación para el procedimiento P_GENERA_HE_VERIFICACION
+    *
+    * Método encargado de generar las solicitudes barriendo las tareas.
+    *
+    * @param Pv_Error           OUT VARCHAR2
+    * @author Katherine Portugal <kportugal@telconet.ec>
+    * @version 1.0 
+    */                                 
+       PROCEDURE P_GENERA_HE_VERIFICACION(Pv_Error      OUT VARCHAR2);   
+
+
+        /**
+    * Documentación para el procedimiento P_GENERA_HE_VERI_TAREAS_ADMI
+    *
+    * Método encargado de generar las solicitudes de horas extras barriendo todas las tareas.
+    *
+    * @param Pv_Error           OUT VARCHAR2
+    * @author Katherine Portugal <kportugal@telconet.ec>
+    * @version 1.0 
+    */                                                                                             
+      PROCEDURE P_GENERA_HE_VERI_TAREAS_ADMI ;
+
+
+    /**
+    * Documentación para el procedimiento P_GEN_HE_AUTO_TAREAS_TECNICA
+    *
+    * Método encargado de generar las solicitudes de horas extras en estado autorizado barriendo todas las tareas para los departamentos tecnico.
+    *
+    * @param Pv_Error           OUT VARCHAR2
+    * @author Katherine Portugal <kportugal@telconet.ec>
+    * @version 1.0 
+    */              
+    PROCEDURE P_GEN_HE_AUTO_TAREAS_TECNICA;                            
+
+
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
-create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
+
+
+CREATE OR REPLACE package body                                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
   
-    PROCEDURE P_GUARDAR_HORASEXTRA(Pcl_Request  IN  CLOB,
+  PROCEDURE P_GUARDAR_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
-                                   Pv_Mensaje   OUT VARCHAR2)
-    AS
+                                   Pv_Mensaje   OUT VARCHAR2) AS
     
      Lv_HoraInicioSimples           VARCHAR2(7);
      Lv_HoraFinSimples              VARCHAR2(7);
@@ -443,10 +607,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_HoraFinDobles               VARCHAR2(7);
      Lv_HorasInicioNocturnas        VARCHAR2(7);
      Lv_HorasFinNocturnas           VARCHAR2(7);
-     Lv_HoraInicioNoEstimadas       VARCHAR2(7);
-     Lv_HoraFinNoEstimadas          VARCHAR2(7);
-     Lv_HoraInicioNoEstimadasNt     VARCHAR2(7);
-     Lv_HoraFinNoEstimadasNt        VARCHAR2(7);
      Lv_HoraFinDia                  VARCHAR2(7);     
 
      Ld_HoraInicio1                 DATE;
@@ -458,10 +618,6 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ld_HorasInicioNocturnas1       DATE;
      Ld_HorasFinNocturnas1          DATE;
      Ld_HoraFinGeneral              DATE;
-     Ld_HoraInicioNoEstimadas1      DATE;
-     Ld_HoraFinNoEstimadas1         DATE;
-     Ld_HoraInicioNoEstimadasNt1    DATE;
-     Ld_HoraFinNoEstimadasNt1       DATE;
      Ld_HoraFinDia1                 DATE;
      Ld_HoraInicioEncontrada        DATE;
      Ld_HoraFinEncontrada           DATE;
@@ -483,7 +639,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_TotalHorasNocturno_1        NUMBER;
      Lv_TotalMinutosNocturno        NUMBER;
      Ln_TotalMinutosNocturno_1      NUMBER;
-     
+
      Lv_TotalHoraMinutoSimple       VARCHAR2(55);
      Lv_TotalHoraMinutoDoble        VARCHAR2(55);
      Lv_TotalHoraMinutoDoble_1      VARCHAR2(55);
@@ -506,6 +662,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_ContadorTar                 NUMBER:=1;
 
      Ld_Fecha                       VARCHAR2(25);
+     Ld_FechaHasta                  VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
      Lv_HoraFin                     VARCHAR2(7);
      Lv_observacion                 VARCHAR2(200);
@@ -523,7 +680,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_nombreArea                  VARCHAR2(35);
      Lv_bandera                     VARCHAR2(6):='false';
      Lv_bandera2                    VARCHAR2(6):='false';
-     Lv_bandera3                    VARCHAR2(6):='false';
+     Lv_bandera3                    VARCHAR2(6):='false'; 
+     Lv_EntraLineaBase              VARCHAR2(6):='false'; 
      Lv_Mensaje                     VARCHAR2(30);
      Lv_nombreDepartamento          VARCHAR2(35);
      Lv_EsSuperUsuario              VARCHAR2(20);
@@ -540,6 +698,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      C_HoraFinDet                   C_HoraFin_Det := C_HoraFin_Det();
      TYPE C_Fecha_Det               IS VARRAY(8) OF DATE;
      C_FechaDet                     C_Fecha_Det := C_Fecha_Det();
+     
 
 
      CURSOR C_TIPO_HORAS_EXTRA(Cv_TipoHorasExtra1 VARCHAR2,
@@ -557,9 +716,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
         JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
-       WHERE IHSD.FECHA_SOLICITUD_DET IN(Cv_Fecha,Cv_Fecha2) AND IHSE.NO_EMPLE=Cv_No_Emple AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada') AND VEE.NO_CIA=Cv_Empresa
-       AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada') 
-       AND IHSD.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada')
+       WHERE IHSD.FECHA_SOLICITUD_DET IN(TO_DATE(Cv_Fecha, 'yyyy-mm-dd HH24:MI:SS'),TO_DATE(Cv_Fecha, 'yyyy-mm-dd HH24:MI:SS')) AND IHSE.NO_EMPLE=Cv_No_Emple AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion') AND VEE.NO_CIA=Cv_Empresa
+       AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion') 
+       AND IHSD.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion')
        AND IHS.EMPRESA_COD=Cv_Empresa
        ORDER BY IHS.ID_HORAS_SOLICITUD ASC;
 
@@ -593,41 +752,100 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            (to_timestamp(Cv_Fecha_Inicio,'DD-MM-YYYY HH24:MI') <= to_timestamp(Cd_FechaInicioEncontrada,'DD-MM-YYYY HH24:MI')
            AND to_timestamp(Cv_Fecha_Fin,'DD-MM-YYYY HH24:MI') >= to_timestamp(Cd_FechaFinEncontrada,'DD-MM-YYYY HH24:MI'))
           )
-         AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada')
+         AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion')
          AND VEE.NO_CIA = Cv_Empresa
-         AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada')
-         AND IHSD.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada')
+         AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion')
+         AND IHSD.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion')
          AND IHS.EMPRESA_COD = Cv_Empresa
-  
+
         ORDER BY IHS.ID_HORAS_SOLICITUD ASC;
-      
+
 
         CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
           SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD	
             WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC
           WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_REGISTRO'
           AND APD.ESTADO='Activo';
-          
-          
+
+
        CURSOR C_EXISTE_AREA(Cv_Area VARCHAR2) IS
          SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='LISTADO_AREAS_HE')
          AND VALOR1=Cv_Area AND APD.ESTADO='Activo';
-       
+
        CURSOR C_EXISTE_DEPARTAMENTO(Cv_Departamento VARCHAR2)IS
          SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='DEPARTAMENTO_TAREA_HE')
          AND VALOR1=Cv_Departamento AND APD.ESTADO='Activo';
-         
+
        CURSOR C_EXISTE_CARGO_DEPARTAMENTO(Cv_Departamento VARCHAR2, Cv_CargoEmpleado VARCHAR2)IS
          SELECT APD.VALOR2 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='ROLES_TAREA_HE')
          AND VALOR1=Cv_Departamento AND VALOR2=Cv_CargoEmpleado AND APD.ESTADO='Activo';
-         
-        
+      
+      --DEPARTAMENTOS CONFIGURADOS   
+      CURSOR C_DEPARTAMENTOS_CONFIGURADOS IS
+          SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo';
+
+
       CURSOR C_CARGO_EMPLEADO(Cv_NoEmple VARCHAR2, Cv_NoCia VARCHAR2)IS
          SELECT DESCRIPCION_CARGO,NOMBRE FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS WHERE NO_CIA=Cv_NoCia AND NO_EMPLE=Cv_NoEmple;
-       
+
+
+     CURSOR C_OBTENER_LINEA_BASE(Cv_EmpresaCod VARCHAR2,
+                                    Cv_Estado     VARCHAR2,
+                                    Cv_NoEMple    VARCHAR2,
+                                    Cv_FechaDesde VARCHAR2,
+                                    Cv_FechaHasta VARCHAR2) IS
+          SELECT AHE.NO_EMPLE,
+                 TO_CHAR(AHE.FECHA_INICIO,'DD-MM-YYYY') FECHA_INICIO,
+                 TO_CHAR(AHE.FECHA_FIN,'DD-MM-YYYY') FECHA_FIN,
+                 AHE.HORA_INICIO,
+                 AHE.HORA_FIN
+            FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE
+            JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS ATH
+              ON ATH.ID_TIPO_HORARIO = AHE.TIPO_HORARIO_ID
+             AND ATH.NOMBRE_TIPO_HORARIO = 'LINEA BASE'
+           WHERE AHE.EMPRESA_COD = Cv_EmpresaCod
+             AND AHE.ESTADO = Cv_Estado
+             AND AHE.NO_EMPLE = Cv_NoEMple
+             AND ((AHE.FECHA_INICIO >=
+                 TO_DATE(Cv_FechaDesde, 'DD-MM-YYYY') AND
+                 AHE.FECHA_INICIO <=
+                 TO_DATE(Cv_FechaHasta, 'DD-MM-YYYY')) OR
+                 (AHE.FECHA_FIN >=
+                 TO_DATE(Cv_FechaDesde, 'DD-MM-YYYY') AND
+                 AHE.FECHA_FIN <=
+                 TO_DATE(Cv_FechaHasta, 'DD-MM-YYYY')));
+             
+        --OBTINE LA LINEA BASE MENSUAL DEL EMPLEADO 
+        CURSOR C_OBTENER_LINEA_BASE_MES(Cv_EmpresaCod VARCHAR2,
+                                    Cv_Estado     VARCHAR2,
+                                    Cv_NoEMple    VARCHAR2,
+                                    Cv_FechaDesde VARCHAR2,
+                                    Cv_FechaHasta VARCHAR2) IS
+                 SELECT AHE.NO_EMPLE,
+                 TO_CHAR(AHE.FECHA_INICIO,'DD-MM-YYYY') FECHA_INICIO,
+                 TO_CHAR(AHE.FECHA_FIN,'DD-MM-YYYY') FECHA_FIN,
+                 AHE.HORA_INICIO,
+                 AHE.HORA_FIN
+            FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE
+            JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS ATH
+              ON ATH.ID_TIPO_HORARIO = AHE.TIPO_HORARIO_ID
+             AND ATH.NOMBRE_TIPO_HORARIO = 'LINEA BASE'
+           WHERE AHE.EMPRESA_COD = Cv_EmpresaCod
+             AND AHE.ESTADO = Cv_Estado
+             AND AHE.NO_EMPLE = Cv_NoEMple
+             AND (TO_CHAR(AHE.FECHA_INICIO,'MM') = Cv_FechaDesde 
+             AND TO_CHAR(AHE.FECHA_INICIO,'YYYY') = Cv_FechaHasta);
+             
 
      Ln_NoEmpleado                  apex_t_varchar2;
      Lv_TareaId                     apex_t_varchar2;
@@ -649,8 +867,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lr_CargoDepartamento           DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE;
      Lr_idTipoHoraExtra             C_TIPO_HORAS_EXTRA%ROWTYPE;
      Le_Errors                      EXCEPTION;
-
+     Lr_DepartamentosConfigurados   C_DEPARTAMENTOS_CONFIGURADOS%ROWTYPE;
+     TYPE lv_linea_base IS TABLE OF C_OBTENER_LINEA_BASE_MES%ROWTYPE;
+        T_LineaBase lv_linea_base;
      
+
 
   BEGIN
 
@@ -678,7 +899,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_feFinTarea          := APEX_JSON.find_paths_like(p_return_path => 'feFinTarea[%]' );
     Lv_nombreDepartamento  := APEX_JSON.get_varchar2(p_path => 'nombreDepartamento');
     Lv_EsSuperUsuario      := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
-    
+
 
     IF Ld_Fecha IS NULL THEN
       Pv_Mensaje := 'El parámetro fecha está vacío';
@@ -704,7 +925,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Mensaje := 'El parámetro empresaCod está vacío';
       RAISE Le_Errors;
     END IF;
-    
+
 
     IF Lv_UsrCreacion IS NULL THEN
       Pv_Mensaje := 'El parámetro usrCreacion está vacío';
@@ -715,12 +936,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Pv_Mensaje := 'El parámetro jornadaEmpleado está vacío';
       RAISE Le_Errors;
     END IF;
-    
+
 
     IF C_DIA_CORTE%ISOPEN THEN
         CLOSE C_DIA_CORTE;
     END IF;
-        
+
     OPEN C_DIA_CORTE(Lv_EsSuperUsuario);
     FETCH C_DIA_CORTE INTO Lr_valor_1;
       IF C_DIA_CORTE%FOUND THEN  
@@ -730,23 +951,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       END IF;
 
     CLOSE C_DIA_CORTE;
-  
+
       --Consulta de parametros de horarios de horas extras
 
       SELECT HORA_FIN
        INTO Lv_HoraFinDia
       FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA = 'HORA_FIN_DIA';
-      
-      SELECT HORA_INICIO,HORA_FIN
-       INTO Lv_HoraInicioNoEstimadas,Lv_HoraFinNoEstimadas
-      FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
-       WHERE TIPO_HORAS_EXTRA = 'HORAS_NO_ESTIMADAS_MATUTINA';
-
-       SELECT HORA_INICIO,HORA_FIN
-       INTO Lv_HoraInicioNoEstimadasNt,Lv_HoraFinNoEstimadasNt
-      FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
-       WHERE TIPO_HORAS_EXTRA = 'HORAS_NO_ESTIMADAS_NOCTURNA';
 
       SELECT HORA_INICIO,HORA_FIN
        INTO Lv_HoraInicioSimples,Lv_HoraFinSimples
@@ -764,37 +975,28 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        WHERE TIPO_HORAS_EXTRA = 'NOCTURNO';
 
       --HORA INICIO Y FIN INGRESADOS
-      Ld_HoraInicio1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraInicio),'DD-MM-YYYY HH24:MI');   
-      Ld_HoraFin1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFin),'DD-MM-YYYY HH24:MI'); 
+      Ld_HoraInicio1 :=  to_timestamp((Ld_Fecha||' '||Lv_HoraInicio),'DD-MM-YYYY HH24:MI');   
+      Ld_HoraFin1 :=  to_timestamp((Ld_Fecha||' '||Lv_HoraFin),'DD-MM-YYYY HH24:MI'); 
 
       -- HORAS SIMPLES
-      Ld_HoraInicioSimples1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioSimples),'DD-MM-YYYY HH24:MI');
-      Ld_HoraFinSimples1:= TO_DATE((Ld_Fecha||''||Lv_HoraFinSimples),'DD-MM-YYYY HH24:MI');
-      
+      Ld_HoraInicioSimples1 := to_timestamp((Ld_Fecha||' '||Lv_HoraInicioSimples),'DD-MM-YYYY HH24:MI');
+      Ld_HoraFinSimples1:= to_timestamp((Ld_Fecha||' '||Lv_HoraFinSimples),'DD-MM-YYYY HH24:MI');
+
       -- HORAS DOBLES
-      Ld_HoraInicioDobles1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioDobles),'DD-MM-YYYY HH24:MI');
-      Ld_HoraFinDobles1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFinDobles),'DD-MM-YYYY HH24:MI');
-      
+      Ld_HoraInicioDobles1 := to_timestamp((Ld_Fecha||' '||Lv_HoraInicioDobles),'DD-MM-YYYY HH24:MI');
+      Ld_HoraFinDobles1 :=  to_timestamp((Ld_Fecha||' '||Lv_HoraFinDobles),'DD-MM-YYYY HH24:MI');
+
       -- HORAS NOCTURNAS
-      Ld_HorasInicioNocturnas1 := TO_DATE((Ld_Fecha||''||Lv_HorasInicioNocturnas),'DD-MM-YYYY HH24:MI');
-      Ld_HorasFinNocturnas1 :=  TO_DATE((Ld_Fecha||''||Lv_HorasFinNocturnas),'DD-MM-YYYY HH24:MI');
-
-      -- HORAS NO ESTIMADAS_MATUTINAS
-      Ld_HoraInicioNoEstimadas1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioNoEstimadas),'DD-MM-YYYY HH24:MI');
-      Ld_HoraFinNoEstimadas1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFinNoEstimadas),'DD-MM-YYYY HH24:MI');
-
-      -- HORAS NO ESTIMADAS_NOCTURNAS
-      Ld_HoraInicioNoEstimadasNt1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioNoEstimadasNt),'DD-MM-YYYY HH24:MI');
-      Ld_HoraFinNoEstimadasNt1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFinNoEstimadasNt),'DD-MM-YYYY HH24:MI');
+      Ld_HorasInicioNocturnas1 := to_timestamp((Ld_Fecha||' '||Lv_HorasInicioNocturnas),'DD-MM-YYYY HH24:MI');
+      Ld_HorasFinNocturnas1 :=  to_timestamp((Ld_Fecha||' '||Lv_HorasFinNocturnas),'DD-MM-YYYY HH24:MI');
 
       -- HORA FIN DIA
-      Ld_HoraFinDia1 := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
-      
+      Ld_HoraFinDia1 := to_timestamp((Ld_Fecha||' '||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
 
       Ld_FechaSolicitud:= TO_DATE(Ld_Fecha,'DD-MM-YYYY');
       Ld_FechaActual:= SYSDATE;
       Lv_Mes_Solicitud:= TO_CHAR(Ld_FechaSolicitud,'MM');
-
+      
       CASE Lv_Mes_Solicitud
         WHEN  '01' THEN
            Lv_Mes_Solicitud :='Enero';
@@ -836,162 +1038,159 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       END IF;
 
       ----//END VALIDAR REGISTRO SOLICITUD.
+
       
-      
+
       ----VALIDAR AREAS QUE PUEDAN REGISTRAR SOLICITUD
-      
+
       IF C_EXISTE_AREA%ISOPEN THEN
             CLOSE C_EXISTE_AREA;
       END IF;
-        
-        
+
+
       OPEN C_EXISTE_AREA(Lv_nombreArea);
       FETCH C_EXISTE_AREA INTO Lr_valor1;
-      
+
       IF C_EXISTE_AREA%NOTFOUND THEN  
           Pv_Mensaje := 'ERROR 03: No se puede registrar solicitud para el area'||' '||Lv_nombreArea;
           RAISE Le_Errors;
       END IF;
-      
+
       CLOSE C_EXISTE_AREA;
-      
+
       ----//END VALIDAR AREAS.
-      
+
       --VALIDAR SI EL DEPARTAMENTO DEBE INGRESAR TAREA EN LA SOLICITUD
-      
+
          IF C_EXISTE_DEPARTAMENTO%ISOPEN THEN
               CLOSE C_EXISTE_DEPARTAMENTO;
          END IF;       
-        
+
          OPEN C_EXISTE_DEPARTAMENTO(Lv_nombreDepartamento);
          FETCH C_EXISTE_DEPARTAMENTO INTO Lr_Departamento;
-      
+
          IF(C_EXISTE_DEPARTAMENTO%FOUND)THEN  
-          
-                 
+
                      Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
                      WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
-      
+
                         IF C_CARGO_EMPLEADO%ISOPEN THEN CLOSE C_CARGO_EMPLEADO; END IF;
                         OPEN C_CARGO_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),Lv_EmpresaCod);
                         FETCH C_CARGO_EMPLEADO INTO Lr_CargoEmpleado;
-                        
-                        
+
+
                         IF(C_CARGO_EMPLEADO%FOUND)THEN 
-                        
+
                            IF C_EXISTE_CARGO_DEPARTAMENTO%ISOPEN THEN CLOSE C_EXISTE_CARGO_DEPARTAMENTO; END IF;
                            OPEN C_EXISTE_CARGO_DEPARTAMENTO(Lv_nombreDepartamento,Lr_CargoEmpleado.DESCRIPCION_CARGO);
                            FETCH C_EXISTE_CARGO_DEPARTAMENTO INTO Lr_CargoDepartamento;
-                       
-                          
+
+
                            IF(C_EXISTE_CARGO_DEPARTAMENTO%NOTFOUND AND Lv_feInicioTarea.COUNT = 0)THEN
-                           
+
                              Pv_Mensaje := 'Error 04: Se debe agregar una tarea para la solicitud de horas extras del empleado '||Lr_CargoEmpleado.NOMBRE||', 
                                             cargo: '||Lr_CargoEmpleado.DESCRIPCION_CARGO||' ';
                              RAISE Le_Errors;
-                             
+
                            END IF;
-                        
-                           
+
+
                            CLOSE C_EXISTE_CARGO_DEPARTAMENTO;
-                        
+
                         END IF;
-                          
-          
+
+
                         CLOSE C_CARGO_EMPLEADO;
-         
+
                         Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
-                        
-       
+
+
                      END LOOP;
-      
+
                      Ln_ContadoreEmp:=1;
-                 
-              
+
+
          END IF;
-      
+
          CLOSE C_EXISTE_DEPARTAMENTO;
-     
+
       ----//END VALIDAR DEPARTAMENTO.
-      
-      
+
+
       --CONDICIONAL PARA VALIDAR TAREA
       Ln_ContadorFecha:=Lv_feInicioTarea.COUNT;
       IF Ln_ContadorFecha > 0 THEN
-      
+
           WHILE Ln_ContadorFecha_1<= Ln_ContadorFecha LOOP
-      
-            Ld_FeInicioTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feInicioTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
-            Ld_FeFinTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feFinTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
-      
+
+            Ld_FeInicioTarea1 := to_timestamp(apex_json.get_varchar2(p_path => Lv_feInicioTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
+            Ld_FeFinTarea1 := to_timestamp(apex_json.get_varchar2(p_path => Lv_feFinTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
+
             IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
                  Lv_bandera2:='true';
                  Ld_HoraFin1:=Ld_HoraFin1+1;
             END IF;
-      
+
             IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
-       
+
                 Lv_Mensaje:='Exito';
-          
+
             ELSIF Ld_FeInicioTarea1 >= Ld_HoraInicio1 AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND (Ld_FeFinTarea1<=Ld_HoraFin1 OR Ld_FeFinTarea1>=Ld_HoraFin1)  THEN
-      
+
                 Lv_Mensaje:='Exito';
-                
+
             ELSIF (Ld_FeInicioTarea1 < Ld_HoraInicio1 AND Ld_FeInicioTarea1 < Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1 > Ld_HoraFin1) AND
                   (Ld_HoraFin1 > Ld_FeInicioTarea1 AND Ld_HoraFin1 <= Ld_FeFinTarea1) THEN
-               
+
                Lv_Mensaje:='Exito';
-               
+
             ELSE 
-            
+
                 Pv_Mensaje:='Error 05: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
                              en el intervalo de tiempo de la fecha hora inicio y fin de la solicitud ';
                 RAISE Le_Errors;
-            
+
             END IF;
-      
+
             IF(Lv_bandera2 = 'true')THEN
-  
+
                 Ld_HoraFin1 := Ld_HoraFin1-1;
-  
+
             END IF;
-      
+
             Ln_ContadorFecha_1:=Ln_ContadorFecha_1+1;
           END LOOP;
           Ln_ContadorFecha_1:=1;
       END IF;
       ----//END CONDICIONAL PARA VALIDAR TAREA.
-      
-      
-       
-       
-      
-      
+
+
+
+
+
+
        ---- VALIDAR QUE NO SE REGISTREN SOLICITUDES EN EL MISMO RANGO DE HORAS.
-       
+
        ---- OBTENER LOS DIAS A REGISTRAR DE LA SOLICITUD
-       
+
        IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
             Ld_FechaSolicitud2 := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
             Ld_FechaSolicitud2:=Ld_FechaSolicitud2+1;
-            
-            
        END IF;
-       
+
        ----
-       
+      
       Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
       WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
          IF C_EXISTE_EMPLEADO%ISOPEN THEN CLOSE C_EXISTE_EMPLEADO; END IF;
-
         
          FOR Lr_ExisteEmpleado IN C_EXISTE_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),Ld_FechaSolicitud,Ld_FechaSolicitud2,Lv_EmpresaCod)
          LOOP
-         
-             Ld_HoraInicioEncontrada := TO_DATE(Lr_ExisteEmpleado.FECHA_INICIO,'DD-MM-YYYY HH24:MI');
-             Ld_HoraFinEncontrada := TO_DATE(Lr_ExisteEmpleado.FECHA_FIN,'DD-MM-YYYY HH24:MI');
+                                                 
+             Ld_HoraInicioEncontrada := to_timestamp(Lr_ExisteEmpleado.FECHA_INICIO,'DD-MM-YYYY HH24:MI');
+             Ld_HoraFinEncontrada := to_timestamp(Lr_ExisteEmpleado.FECHA_FIN,'DD-MM-YYYY HH24:MI');
 
-             
+
              IF Ld_HoraFinEncontrada > Ld_HoraFinDia1 AND Ld_HoraFinEncontrada<Ld_HoraInicioEncontrada THEN
                 Ld_HoraFinEncontrada := Ld_HoraFinEncontrada+1;
              END IF;
@@ -1009,8 +1208,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                 Lv_bandera  :='true';
                 Ld_HoraFin1 := Ld_HoraFin1+1;
              END IF;
-             
-            
+
+
              OPEN C_VALIDAR_INFORMACION(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),Lv_EmpresaCod,TO_CHAR(Ld_HoraInicio1,'DD-MM-YYYY HH24:MI'),TO_CHAR(Ld_HoraFin1,'DD-MM-YYYY HH24:MI'),
              Ld_FechaSolicitud,Ld_FechaSolicitud2,TO_CHAR(Ld_HoraInicioEncontrada,'DD-MM-YYYY HH24:MI'),TO_CHAR(Ld_HoraFinEncontrada,'DD-MM-YYYY HH24:MI'));
              FETCH C_VALIDAR_INFORMACION INTO Lr_Cantidad;
@@ -1028,69 +1227,138 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              IF Ld_HoraFinEncontrada > Ld_HoraFinDia1 AND Ld_HoraFinEncontrada<Ld_HoraInicioEncontrada THEN
                 Ld_HoraFinEncontrada := Ld_HoraFinEncontrada-1;
              END IF;
-             
+
              IF Lv_bandera = 'true' THEN
                Ld_HoraFin1 := Ld_HoraFin1-1;
              END IF;
 
 
          END LOOP;
-         
+
          Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
 
       END LOOP;
       ----//END VALIDAR QUE NO SE REGISTREN SOLICITUDES EN EL MISMO RANGO DE HORAS.
-      
-      
-      
-  IF Lv_EsFinDeSemana = 'N' THEN
+
   
-      IF(Lv_JornadaEmpleado = 'M')THEN
+--VERIFICACION DE LINEA BASE PARA LOS DEPARTAMENTOS CONFIGURADOS
+    IF C_DEPARTAMENTOS_CONFIGURADOS%ISOPEN THEN
+      CLOSE C_DEPARTAMENTOS_CONFIGURADOS;
+    END IF;
+    
+    
+    FOR Lr_DepartamentosConfigurados IN C_DEPARTAMENTOS_CONFIGURADOS loop
+      
+    
+     IF (Lv_nombreDepartamento = Lr_DepartamentosConfigurados.NOMBRE_DEPTO) THEN
+             
+          Ln_ContadoreEmp := 1;   
+          Ln_ContadorEmpleado := Ln_NoEmpleado.COUNT;
+          WHILE Ln_ContadoreEmp <= Ln_ContadorEmpleado LOOP
+          
+          --Se verifica si el empleado tiene registrada una linea base 
+               IF C_OBTENER_LINEA_BASE_MES%ISOPEN THEN
+                    CLOSE C_OBTENER_LINEA_BASE_MES;
+               END IF;
+              
+                OPEN C_OBTENER_LINEA_BASE_MES(Lv_EmpresaCod,
+                                              'Activo',
+                                              apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),
+                                              to_char(to_date(Ld_Fecha,'DD/MM/YYYY'),'MM'),
+                                              to_char(to_date(Ld_Fecha,'DD/MM/YYYY'),'YYYY'));
+                    FETCH C_OBTENER_LINEA_BASE_MES BULK COLLECT INTO T_LineaBase;
+                CLOSE C_OBTENER_LINEA_BASE_MES;
+          
+              --condicion que determina si el empleado tiene linea base 
+              IF(T_LineaBase.count > 0)THEN
+              
+                    Lv_EsDiaLibre := 'S';
+                    
+                    --CONSULTAR EL HORARIO DE TRABAJO DEL EMPLEADO Y DETERMINA SI ES SU DIA LIBRE
+                    FOR Lr_lineaBaseEmpleado IN C_OBTENER_LINEA_BASE(Lv_EmpresaCod,
+                                                                     'Activo',
+                                                                     apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),
+                                                                     to_char(to_date(Ld_Fecha,'DD/MM/YYYY'),'DD/MM/YYYY') ,
+                                                                     to_char(to_date(nvl(Ld_FechaHasta,Ld_Fecha),'DD/MM/YYYY'),'DD/MM/YYYY')) LOOP
+              
+              
+                      Lv_EsDiaLibre := 'N';  
+              
+                       SELECT
+                        CASE
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') >= TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') OR
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') <= TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI')AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') <= TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') >= TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'   
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') <= TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'
+                          ELSE 'false'
+                        END EXISTE
+                        into Lv_EntraLineaBase
+                      FROM DUAL;
+              
+                      IF(Lv_EntraLineaBase = 'true')THEN
+              
+                          Pv_Mensaje := 'Error 07:  No se permite realizar el registro. El intervalo hora inicio y hora fin para la fecha ' ||
+                                      TO_CHAR(Ld_FechaSolicitud, 'DD-MM-YYYY') ||
+                                      ' , se encuentra dentro de la linea base. ';
+                          RAISE Le_Errors;
+              
+                       END IF;
+              
+                    END LOOP;
+              
+                    ELSE 
+                      Pv_Mensaje := 'Error 08:  No se permite realizar el registro. El empleado no tine linea base. ';
+                      RAISE Le_Errors;
+                  END IF;
+                    Ln_ContadoreEmp := Ln_ContadoreEmp + 1;
+              
+          END LOOP;
+      
+      END IF;  
+    END LOOP; 
+--//FIN DE VALIDACION QUE OBLIGA A DEPARTAMENTOS CONFIGURADOS A TENER LINEA BASE
+
+--SE IDENTIFICA SI ES DIA LIBRE DEL EMPLEADO. 
+  IF Lv_EsDiaLibre = 'N' THEN
+    --SE IDENTIFICA QUE TIPO DE JORNADA TIENE EL EMPLEADO.
+        IF(Lv_JornadaEmpleado = 'M')THEN
 
           IF(Lv_HoraFin = Lv_HoraFinDia AND  Ld_HoraInicio1>= Ld_HoraInicioSimples1 AND Ld_HoraInicio1<=Ld_HoraFin1+1) THEN
              Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
 
-          --JORNADA MATUTINA
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadas1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
-             RAISE Le_Errors;
-          END IF;
-      
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 OR Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 <= Ld_HoraFinNoEstimadas1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1)THEN
-             Pv_Mensaje := 'Error 08:La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-  
-          IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraInicio1< Ld_HoraFinDia1+1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 < Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          
-          
           IF(Ld_HoraInicio1 >= Ld_HoraInicioSimples1  AND Ld_HoraInicio1 < Ld_HoraFinSimples1+1)
           AND (Ld_HoraFin1 > Ld_HoraInicioSimples1  AND Ld_HoraFin1 <= Ld_HoraFinSimples1+1) THEN
-      
+
              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-             
+
              IF(Lv_TotalMinutosSimples='29')THEN
                 Lv_TotalMinutosSimples:='30';
              END IF;
-             
+
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-        
+
              Ln_Contador :=1;
-        
+
              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
              OPEN C_TIPO_HORAS_EXTRA('SIMPLE','');
              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
              CLOSE C_TIPO_HORAS_EXTRA;
-        
+
              C_HoraInicioDet.extend;
              C_HoraFinDet.extend;
              C_ListaHoras.extend;
@@ -1101,49 +1369,44 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              C_ListaHoras(Ln_Contador):= TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
              C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
              C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-      
+
           END IF;
-      
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadas1) THEN
-             Ld_HoraFin1 := Ld_HoraFin1+1;
-             Ld_HoraFinSimples1 := Ld_HoraFinSimples1+1;
-          END IF;
-       
+
+
           IF(Ld_HoraInicio1 >= Ld_HoraInicioSimples1  AND Ld_HoraInicio1 < Ld_HoraFinSimples1+1)
           AND(Ld_HoraFin1 > (Ld_HoraInicioDobles1 +1)) THEN
-             
+
                 Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFinSimples1 - Ld_HoraInicio1)*24,24));
                 Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFinSimples1 - Ld_HoraInicio1)*24*60,60));
                 Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24,24));
                 Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24*60,60));
-             
+
                 IF(Lv_TotalMinutosSimples='29')THEN
                    Lv_TotalMinutosSimples:='30';
                 END IF;
-             
+
                 IF(Lv_TotalMinutosDobles='29')THEN
                    Lv_TotalMinutosDobles:='30';
                 END IF;
-           
-           
+
+
                 Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
                 Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-             
+
                 Ln_Contador := 2 ;
-           
+
                 FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','DOBLES')
                 LOOP
-             
-                 
+
+
                      Ln_Contador1 := Ln_Contador1+1;
-              
+
                      C_HoraInicioDet.extend;
                      C_HoraFinDet.extend;
                      C_ListaHoras.extend;
                      C_TipoHorasExtra.extend;
                      C_FechaDet.extend;
-                 
+
                      CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
                         WHEN  'SIMPLE' THEN
                            C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -1158,110 +1421,79 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                            C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                            C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                      END CASE;
-               
-           
+
+
                 END LOOP;
-                
-           
+
           END IF;
-          
-          
+
+
           IF(Ld_HoraInicio1 >= Ld_HoraInicioDobles1 AND Ld_HoraInicio1< Ld_HoraFinDobles1)
           AND(Ld_HoraFin1 > Ld_HoraInicioDobles1 AND Ld_HoraFin1 <= Ld_HoraFinDobles1)THEN
-        
+
               Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
+
               IF(Lv_TotalMinutosDobles='29')THEN
                 Lv_TotalMinutosDobles:='30';
              END IF;
-              
+
               Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-              
+
               Ln_Contador :=1;
-        
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-        
+
               C_HoraInicioDet.extend;
               C_HoraFinDet.extend;
               C_ListaHoras.extend;
               C_TipoHorasExtra.extend;
               C_FechaDet.extend;
-              
+
               C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
               C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-              
+
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-           
-           
           END IF;
-      
-      
+
+
       ELSE
           -- JORNADA NOCTURNA
-          
-          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
-              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
-              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
-              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
-          
-              Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-              RAISE Le_Errors;
-          END IF;
-          
+
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
               Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
-          
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          
+
           IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
               Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
-        
-        
+          
+
           IF(Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1 +1)
           AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1) THEN
-          
-          
+              
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-         
+
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
+
               Ln_Contador :=1;
-      
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-         
+
               C_HoraInicioDet.extend;
               C_HoraFinDet.extend;
               C_ListaHoras.extend;
@@ -1272,30 +1504,30 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
-          
+
+
           END IF;
-          
-          
+
+
           IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
           AND(Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
-          
+
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-         
+
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
+
               Ln_Contador :=1;
-      
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-         
+
               C_HoraInicioDet.extend;
               C_HoraFinDet.extend;
               C_ListaHoras.extend;
@@ -1306,50 +1538,50 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
+
           END IF;
-          
-          
+
+
           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1+1)
           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1 > Ld_HoraFinDia1+1  AND Ld_HoraFin1<= Ld_HorasFinNocturnas1 +1)THEN
-                    
-     
+
+
               Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
               Ln_TotalHorasNocturno_1   := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24,24));
               Ln_TotalMinutosNocturno_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24*60,60));
-              
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-              
+
               IF(Ln_TotalMinutosNocturno_1='29')THEN
                 Ln_TotalMinutosNocturno_1:='30';
               END IF;
-              
+
               Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
-              
+
               Ln_Contador  :=2;
               Ln_Contador1 :=0;
-              
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-              
+
               WHILE Ln_Contador1 < Ln_Contador LOOP
-        
+
                   Ln_Contador1:=Ln_Contador1+1;
-        
-                  
+
+
                   C_HoraInicioDet.extend;
                   C_HoraFinDet.extend;
                   C_ListaHoras.extend;
                   C_TipoHorasExtra.extend;
                   C_FechaDet.extend;
-               
-               
+
+
                   CASE Ln_Contador1
                   WHEN '1' THEN
                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -1364,74 +1596,73 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                     C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                   END CASE;
-               
+
                END LOOP;
-              
+
            END IF;
-           
-            
+
+
            IF ((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1)) THEN
-              
-              
+           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)) THEN
+
+
               Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
               Ln_TotalHorasNocturno_1   := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24,24));
               Ln_TotalMinutosNocturno_1 := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24*60,60));
               Lv_TotalHorasSimples      := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24,24));
               Lv_TotalMinutosSimples    := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24*60,60));
-              
-              
+
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-              
+
               IF(Ln_TotalMinutosNocturno_1='29')THEN
                 Ln_TotalMinutosNocturno_1:='30';
               END IF;
-              
+
               IF(Lv_TotalMinutosSimples='29')THEN
                 Lv_TotalMinutosSimples:='30';
               END IF;
-         
+
               Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
               Lv_TotalHoraMinutoSimple     := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
               Ln_Contador :=3;
               Ln_Contador4:=2;
               Ln_Contador1:=0;
-              
+
               FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
               LOOP
-              
-                 
+
+
                    IF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='SIMPLE')THEN
                        C_HoraInicioDet.extend;
                        C_HoraFinDet.extend;
                        C_ListaHoras.extend;
                        C_TipoHorasExtra.extend;
                        C_FechaDet.extend;
-                  
+
                        Ln_Contador1:=Ln_Contador1+1;
                        C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
                        C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
                        C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
                        C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                        C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                   
+
                    ELSIF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='NOCTURNO')THEN
-                       
+
                        WHILE Ln_Contador1 < Ln_Contador4 LOOP
-        
+
                             Ln_Contador1:=Ln_Contador1+1;
-        
+
                             C_HoraInicioDet.extend;
                             C_HoraFinDet.extend;
                             C_ListaHoras.extend;
                             C_TipoHorasExtra.extend;
                             C_FechaDet.extend;
-               
+
                             CASE Ln_Contador1
                              WHEN '1' THEN
                                 C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -1446,521 +1677,51 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                 C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                                 C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                             END CASE;
-               
+
                        END LOOP;
-                       
-                       
+
+
                    END IF;
-                   
-                   
+
+
               END LOOP;
-              
-          
-           END IF;
-           
-           IF(Ld_HoraInicio1<Ld_HoraFin1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)THEN
-             
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
-              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
-              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Lv_TotalMinutosSimples='29')THEN
-                Lv_TotalMinutosSimples:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-              Ln_Contador :=2;
-              
-              
-              FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
-              LOOP
-                  Ln_Contador1 := Ln_Contador1+1;
-              
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-                  
-                  
-                  CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
-                  WHEN  'SIMPLE' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN 'NOCTURNO' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                     
-                 END CASE;
-             
-              END LOOP;
-             
-           
-           END IF;
-                  
-            
-  
+
+
+           END IF;                           
+
       END IF;
-  
-  
-  ELSIF(Lv_EsFinDeSemana = 'S') THEN
-  
-     IF(Lv_JornadaEmpleado = 'N') THEN
-     
-         -- JORNADA NOCTURNA
-         
-          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
-              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
-              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
-              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
-          
-              Pv_Mensaje := 'Error 17: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-              RAISE Le_Errors;
-          END IF;
-          
-          IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 18: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-              RAISE Le_Errors;
-          END IF;
-          
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 19: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          
-          IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
-              Ld_HoraFin1 := Ld_HoraFin1+1;
-          END IF;
-          
-          IF(Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1 +1)
-          AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1) THEN
-          
-          
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
-              Ln_Contador :=1;
-      
-              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-              OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
-              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-              CLOSE C_TIPO_HORAS_EXTRA;
-         
-              C_HoraInicioDet.extend;
-              C_HoraFinDet.extend;
-              C_ListaHoras.extend;
-              C_TipoHorasExtra.extend;
-              C_FechaDet.extend;
-              C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-              C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-              C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-              C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-              C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
-          
-          END IF;
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
-          AND(Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
-          
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
-              Ln_Contador :=1;
-      
-              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-              OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
-              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-              CLOSE C_TIPO_HORAS_EXTRA;
-         
-              C_HoraInicioDet.extend;
-              C_HoraFinDet.extend;
-              C_ListaHoras.extend;
-              C_TipoHorasExtra.extend;
-              C_FechaDet.extend;
-              C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-              C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-              C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-              C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-              C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
-          END IF;
-          
-          
-          IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1+1)
-          AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1 > Ld_HoraFinDia1+1  AND Ld_HoraFin1<= Ld_HorasFinNocturnas1 +1)THEN
-                    
-     
-              Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
-              Ln_TotalHorasNocturno_1   := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24,24));
-              Ln_TotalMinutosNocturno_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Ln_TotalMinutosNocturno_1='29')THEN
-                Ln_TotalMinutosNocturno_1:='30';
-              END IF;
-              
-              Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
-              
-              Ln_Contador  :=2;
-              Ln_Contador1 :=0;
-              
-              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-              OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
-              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-              CLOSE C_TIPO_HORAS_EXTRA;
-              
-              WHILE Ln_Contador1 < Ln_Contador LOOP
-        
-                  Ln_Contador1:=Ln_Contador1+1;
-        
-                  
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-               
-               
-                  CASE Ln_Contador1
-                  WHEN '1' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN '2' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno_1,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                  END CASE;
-               
-               END LOOP;
-              
-           END IF;
-           
-            
-           IF ((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1)) THEN
-              
-              
-              Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
-              Ln_TotalHorasNocturno_1   := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24,24));
-              Ln_TotalMinutosNocturno_1 := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24*60,60));
-              Lv_TotalHorasSimples      := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24,24));
-              Lv_TotalMinutosSimples    := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24*60,60));
-              
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Ln_TotalMinutosNocturno_1='29')THEN
-                Ln_TotalMinutosNocturno_1:='30';
-              END IF;
-              
-              IF(Lv_TotalMinutosSimples='29')THEN
-                Lv_TotalMinutosSimples:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
-              Lv_TotalHoraMinutoSimple     := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-              Ln_Contador :=3;
-              Ln_Contador4:=2;
-              Ln_Contador1:=0;
-              
-              FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
-              LOOP
-              
-                 
-                   IF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='SIMPLE')THEN
-                       C_HoraInicioDet.extend;
-                       C_HoraFinDet.extend;
-                       C_ListaHoras.extend;
-                       C_TipoHorasExtra.extend;
-                       C_FechaDet.extend;
-                  
-                       Ln_Contador1:=Ln_Contador1+1;
-                       C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                       C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                       C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
-                       C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                       C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                   
-                   ELSIF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='NOCTURNO')THEN
-                       
-                       WHILE Ln_Contador1 < Ln_Contador4 LOOP
-        
-                            Ln_Contador1:=Ln_Contador1+1;
-        
-                            C_HoraInicioDet.extend;
-                            C_HoraFinDet.extend;
-                            C_ListaHoras.extend;
-                            C_TipoHorasExtra.extend;
-                            C_FechaDet.extend;
-               
-                            CASE Ln_Contador1
-                             WHEN '1' THEN
-                                C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                                C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                                C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                                C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                                C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                             WHEN '2' THEN
-                                C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                                C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                                C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno_1,'HH24:MI'),'HH24:MI');
-                                C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                                C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                            END CASE;
-               
-                       END LOOP;
-                       
-                       
-                   END IF;
-                   
-                   
-              END LOOP;
-              
-          
-           END IF;
-           
-           IF(Ld_HoraInicio1<Ld_HoraFin1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)THEN
-             
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
-              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
-              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Lv_TotalMinutosSimples='29')THEN
-                Lv_TotalMinutosSimples:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-              Ln_Contador :=2;
-              
-              
-              FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
-              LOOP
-                  Ln_Contador1 := Ln_Contador1+1;
-              
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-                  
-                  
-                  CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
-                  WHEN  'SIMPLE' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN 'NOCTURNO' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                     
-                 END CASE;
-             
-              END LOOP;
-             
-           
-           END IF;
-     
-     ELSE
-        --ASIGNACION HORAS DOBLES PARA FERIADOS Y FIN DE SEMANA
-      
-        Ld_HoraFinGeneral := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
-      
-        IF(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1 < Ld_HoraInicio1)THEN
-           Ld_HoraFin1:= Ld_HoraFin1 +1;
-        END IF;
-        
-        
-        IF(Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1) 
-        AND(Ld_HoraFin1>Ld_HoraFinGeneral AND Ld_HoraFin1<= Ld_HoraFinGeneral + 1) THEN 
-         
-     
-           Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-           Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-           
-           IF(Lv_TotalMinutosDobles='29')THEN
-              Lv_TotalMinutosDobles:='30';
-           END IF;
-          
-           Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-           
-           Ln_Contador :=1;
-        
-           IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-           OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
-           FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-           CLOSE C_TIPO_HORAS_EXTRA;
-        
-           C_HoraInicioDet.extend;
-           C_HoraFinDet.extend;
-           C_ListaHoras.extend;
-           C_TipoHorasExtra.extend;
-           C_FechaDet.extend;
-           C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-           C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-           C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-           C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-           C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-           
-         END IF;
-     
-     
-         IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1)
-         AND(Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
-            
-            
-               Lv_TotalHorasDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24,24));
-               Lv_TotalMinutosDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24*60,60));
-               Ln_TotalHorasDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24,24));
-               Ln_TotalMinutosDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24*60,60));
-            
-               IF(Lv_TotalMinutosDobles='29')THEN
-                  Lv_TotalMinutosDobles:='30';
-               END IF;
-               
-               IF(Ln_TotalMinutosDobles_1='29')THEN
-                  Ln_TotalMinutosDobles_1:='30';
-               END IF;
-          
-               Lv_TotalHoraMinutoDoble   := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-               Lv_TotalHoraMinutoDoble_1 := Ln_TotalHorasDobles_1||':'||Ln_TotalMinutosDobles_1;               
-           
-               Ln_Contador  :=2;
-               Ln_Contador1 :=0;
-               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-               OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
-               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-               CLOSE C_TIPO_HORAS_EXTRA;
-        
-              
-               WHILE Ln_Contador1 < Ln_Contador LOOP
-        
-                  Ln_Contador1:=Ln_Contador1+1;
-        
-                  
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-               
-               
-                  CASE Ln_Contador1
-                  WHEN '1' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinGeneral,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN '2' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinGeneral,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble_1,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                  END CASE;
-               
-               END LOOP;
-           
-         END IF;
-         
-     
-     END IF;
-  
-  END IF;
-  
+
+END IF;
+
   IF Lv_EsDiaLibre = 'S' THEN
-    
+
     --ASIGNACION HORAS DOBLES PARA DIAS LIBRES
-      
+
      Ld_HoraFinGeneral := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
-      
+
      IF(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1 < Ld_HoraInicio1)THEN
        Ld_HoraFin1:= Ld_HoraFin1 +1;
      END IF;
-      
-  
-     IF(Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1) AND(Ld_HoraFin1>Ld_HoraFinGeneral AND Ld_HoraFin1<= Ld_HoraFinGeneral + 1) THEN 
-     
+
+     IF(Ld_HoraInicio1>Ld_HoraFinGeneral-1 AND Ld_HoraInicio1 < Ld_HoraFinGeneral) 
+     AND(Ld_HoraFin1>Ld_HoraFinGeneral-1 AND Ld_HoraFin1<= Ld_HoraFinGeneral) THEN 
+
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-           
+
            IF(Lv_TotalMinutosDobles='29')THEN
               Lv_TotalMinutosDobles:='30';
            END IF;
-          
+
            Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-           
+
            Ln_Contador :=1;
-        
+
            IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
            OPEN C_TIPO_HORAS_EXTRA('DIALIBRE_DOBLE','');
            FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
            CLOSE C_TIPO_HORAS_EXTRA;
-        
+
            C_HoraInicioDet.extend;
            C_HoraFinDet.extend;
            C_ListaHoras.extend;
@@ -1971,50 +1732,48 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
            C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
            C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-           
+
      END IF;
-     
-     
-     
+
      IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1)AND 
       (Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
-          
+
            Lv_TotalHorasDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24,24));
                Lv_TotalMinutosDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24*60,60));
                Ln_TotalHorasDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24,24));
                Ln_TotalMinutosDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24*60,60));
-            
+
                IF(Lv_TotalMinutosDobles='29')THEN
                   Lv_TotalMinutosDobles:='30';
                END IF;
-               
+
                IF(Ln_TotalMinutosDobles_1='29')THEN
                   Ln_TotalMinutosDobles_1:='30';
                END IF;
-          
+
                Lv_TotalHoraMinutoDoble   := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
                Lv_TotalHoraMinutoDoble_1 := Ln_TotalHorasDobles_1||':'||Ln_TotalMinutosDobles_1;               
-           
+
                Ln_Contador  :=2;
                Ln_Contador1 :=0;
                IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
                OPEN C_TIPO_HORAS_EXTRA('DIALIBRE_DOBLE','');
                FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
                CLOSE C_TIPO_HORAS_EXTRA;
-        
-              
+
+
                WHILE Ln_Contador1 < Ln_Contador LOOP
-        
+
                   Ln_Contador1:=Ln_Contador1+1;
-        
-                  
+
+
                   C_HoraInicioDet.extend;
                   C_HoraFinDet.extend;
                   C_ListaHoras.extend;
                   C_TipoHorasExtra.extend;
                   C_FechaDet.extend;
-               
-               
+
+
                   CASE Ln_Contador1
                   WHEN '1' THEN
                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -2029,41 +1788,43 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                     C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                   END CASE;
-               
+
                END LOOP;
-      
+
      END IF;
+                                         
   
   END IF;
   
-    
+  
+  
   IF(Ln_Contador = 0)THEN
      Pv_Mensaje := 'Error 20: La hora inicio y hora fin ingresadas para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||', no entran en el rango de horas extra permitido ';
      RAISE Le_Errors;
   END IF;
-  
+
   -- Validar cuando una solicitud es de meses diferentes
   IF(Ld_HoraFin1>Ld_HoraFinDia1 + 1 AND (TO_CHAR(Ld_HoraInicio1,'MM')!= TO_CHAR(Ld_HoraFin1,'MM')) ) THEN
       Lv_bandera3:='true';
-        
+
   END IF;
-      
+
       --Insercion en la tablas
-      
+
       IF (Lv_Descripcion = 'IND_TAR_HN_SM' OR Lv_Descripcion ='IND_TAR_SM' OR Lv_Descripcion='IND_CUAD_HN_SM' OR  Lv_Descripcion='IND_CUAD_SM' OR
           Lv_Descripcion='Unitaria') THEN
-      
+
          IF Lv_bandera3 ='true' THEN
             Ln_ContadoreEmp:=1;
             Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
             WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
-      
+
                  WHILE Ln_Contador2 < Ln_Contador LOOP
-                 
+
                      Ln_Contador2 := Ln_Contador2 + 1;
-                     
+
                       Ln_IdHorasSolicitud := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD.NEXTVAL;
-           
+
                       P_INSERT_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud,
                                                 C_FechaDet(Ln_Contador2),
                                                 C_HoraInicioDet(Ln_Contador2),
@@ -2074,11 +1835,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                 Lv_UsrCreacion,
                                                 Pv_Status,
                                                 Pv_Mensaje);
-            
+
                        IF Pv_Status = 'ERROR' THEN
                             RAISE Le_Errors;
                        END IF;
-                       
+
                        P_INSERT_DETA_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud,
                                              C_TipoHorasExtra(Ln_Contador2),
                                              C_HoraInicioDet(Ln_Contador2),
@@ -2090,66 +1851,68 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                              Lv_UsrCreacion,
                                              Pv_Status,
                                              Pv_Mensaje);
-                                          
+
                        IF Pv_Status = 'ERROR' THEN
                             RAISE Le_Errors;
                        END IF;
-                       
+
                        P_INSERTAR_EMPLEADOS(Ln_IdHorasSolicitud,
                                             apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),
                                             Lv_Estado,
                                             Lv_UsrCreacion,
                                             Pv_Status,
                                             Pv_Mensaje);
-                          
+
                        IF Pv_Status = 'ERROR' THEN
                            RAISE Le_Errors;
                        END IF;
-            
+
                        Ln_ContadorTarea := Lv_TareaId.COUNT;
                        WHILE Ln_ContadorTar <=  Ln_ContadorTarea LOOP
-     
+
                              P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                                               apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorTar)),
                                               Lv_UsrCreacion,
                                               null,
+                                              Lv_observacion,
                                               Pv_Status,
                                               Pv_Mensaje);
-                          
+
                              IF Pv_Status = 'ERROR' THEN
                                  RAISE Le_Errors;
                              END IF;
-                             
+
                              Ln_ContadorTar:=Ln_ContadorTar+1;
-           
+
                        END LOOP;
                        Ln_ContadorTar:=1;
                        Ln_ContadorTarea:=0;
-                       
+
                        Ln_ContadorCuadrilla:=Ln_IdCuadrilla.COUNT;
                        WHILE Ln_ContadorCua <=  Ln_ContadorCuadrilla LOOP
-     
+
                               P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                                                 null,
                                                 Lv_UsrCreacion,
                                                 apex_json.get_number(p_path => Ln_IdCuadrilla(Ln_ContadorCua)),
+                                                Lv_observacion,
                                                 Pv_Status,
                                                 Pv_Mensaje);
-                           
+
                               IF Pv_Status = 'ERROR' THEN
                                     RAISE Le_Errors;
                               END IF;
-          
+
                               Ln_ContadorCua :=Ln_ContadorCua+1;
-           
+
                        END LOOP;
                        Ln_ContadorCua:=1;
                        Ln_ContadorCuadrilla:=0;
-            
+
                        Ln_ContadorDocumentos :=  Lv_NombreDocumento.COUNT;
                        WHILE Ln_ContadorDocu <=  Ln_ContadorDocumentos LOOP
-    
-       
+
+
                               P_INSERTAR_DOCUMENTOS(Ln_IdHorasSolicitud,
                                                     apex_json.get_varchar2(p_path => Lv_NombreDocumento(Ln_ContadorDocu)),
                                                     apex_json.get_varchar2(p_path => Lv_UbicacionDocumento(Ln_ContadorDocu)),
@@ -2157,35 +1920,35 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                     Lv_UsrCreacion,
                                                     Pv_Status,
                                                     Pv_Mensaje);
-      
+
                                IF Pv_Status = 'ERROR' THEN
                                     RAISE Le_Errors;
                                END IF;
-                               
+
                                Ln_ContadorDocu:=Ln_ContadorDocu+1;
-       
+
                        END LOOP;
                        Ln_ContadorDocu:=1;
                        Ln_ContadorDocumentos:=0;
-                 
+
                  END LOOP;
                  Ln_Contador2:=0;
-                   
-      
+
+
                Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
             END LOOP;
-            
-         
+
+
          ELSE
-         
-         
+
+
             Ln_ContadoreEmp:=1;
             Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
             WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
-         
-         
+
+
                       Ln_IdHorasSolicitud := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD.NEXTVAL;
-           
+
                       P_INSERT_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud,
                                                 TO_DATE(Ld_Fecha,'DD-MM-YYYY'),
                                                 Lv_HoraInicio,
@@ -2196,16 +1959,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                 Lv_UsrCreacion,
                                                 Pv_Status,
                                                 Pv_Mensaje);
-            
+
                        IF Pv_Status = 'ERROR' THEN
                             RAISE Le_Errors;
                        END IF;
-            
+
                        WHILE Ln_Contador2 < Ln_Contador LOOP
-           
+
                              Ln_Contador2 := Ln_Contador2 + 1;
-        
-            
+
+
                           P_INSERT_DETA_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud,
                                              C_TipoHorasExtra(Ln_Contador2),
                                              C_HoraInicioDet(Ln_Contador2),
@@ -2217,73 +1980,75 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                              Lv_UsrCreacion,
                                              Pv_Status,
                                              Pv_Mensaje);
-                                          
+
                           IF Pv_Status = 'ERROR' THEN
                              RAISE Le_Errors;
                           END IF;
-        
-      
+
+
                        END LOOP;
-            
+
                        Ln_Contador2:=0;
-            
-            
+
+
                        P_INSERTAR_EMPLEADOS(Ln_IdHorasSolicitud,
                                             apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),
                                             Lv_Estado,
                                             Lv_UsrCreacion,
                                             Pv_Status,
                                             Pv_Mensaje);
-                          
+
                        IF Pv_Status = 'ERROR' THEN
                            RAISE Le_Errors;
                        END IF;
-            
+
                        Ln_ContadorTarea := Lv_TareaId.COUNT;
                        WHILE Ln_ContadorTar <=  Ln_ContadorTarea LOOP
-     
+
                              P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                                               apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorTar)),
                                               Lv_UsrCreacion,
                                               null,
+                                              Lv_observacion,
                                               Pv_Status,
                                               Pv_Mensaje);
-                          
+
                              IF Pv_Status = 'ERROR' THEN
                                  RAISE Le_Errors;
                              END IF;
-                             
+
                              Ln_ContadorTar:=Ln_ContadorTar+1;
-           
+
                        END LOOP;
                        Ln_ContadorTar:=1;
                        Ln_ContadorTarea:=0;
-            
+
                        Ln_ContadorCuadrilla:=Ln_IdCuadrilla.COUNT;
                        WHILE Ln_ContadorCua <=  Ln_ContadorCuadrilla LOOP
-     
+
                               P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                                                 null,
                                                 Lv_UsrCreacion,
                                                 apex_json.get_number(p_path => Ln_IdCuadrilla(Ln_ContadorCua)),
+                                                Lv_observacion,
                                                 Pv_Status,
                                                 Pv_Mensaje);
-                           
+
                               IF Pv_Status = 'ERROR' THEN
                                     RAISE Le_Errors;
                               END IF;
-          
+
                               Ln_ContadorCua :=Ln_ContadorCua+1;
-           
+
                        END LOOP;
                        Ln_ContadorCua:=1;
                        Ln_ContadorCuadrilla:=0;
-            
-            
+
+
                        Ln_ContadorDocumentos :=  Lv_NombreDocumento.COUNT;
                        WHILE Ln_ContadorDocu <=  Ln_ContadorDocumentos LOOP
-    
-       
+
+
                               P_INSERTAR_DOCUMENTOS(Ln_IdHorasSolicitud,
                                                     apex_json.get_varchar2(p_path => Lv_NombreDocumento(Ln_ContadorDocu)),
                                                     apex_json.get_varchar2(p_path => Lv_UbicacionDocumento(Ln_ContadorDocu)),
@@ -2291,34 +2056,34 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                     Lv_UsrCreacion,
                                                     Pv_Status,
                                                     Pv_Mensaje);
-      
+
                                IF Pv_Status = 'ERROR' THEN
                                     RAISE Le_Errors;
                                END IF;
-                               
+
                                Ln_ContadorDocu:=Ln_ContadorDocu+1;
-       
+
                        END LOOP;
                        Ln_ContadorDocu:=1;
                        Ln_ContadorDocumentos:=0;
-                       
-            
+
+
                 Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
              END LOOP;
-         
-         
+
+
          END IF;
-      
-         
-      
-         
-      
+
+
+
+
+
       ELSE
-      
-      
+
+
             Ln_IdHorasSolicitud2 := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD.NEXTVAL;
-      
-      
+
+
             P_INSERT_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud2,
                                       TO_DATE(Ld_Fecha,'DD-MM-YYYY'),
                                       Lv_HoraInicio,
@@ -2329,13 +2094,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                       Lv_UsrCreacion,
                                       Pv_Status,
                                       Pv_Mensaje);
-     
-      
+
+
             WHILE Ln_Contador2 < Ln_Contador LOOP
-      
+
               Ln_Contador2 := Ln_Contador2 + 1;
-       
-           
+
+
               P_INSERT_DETA_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud2,
                                              C_TipoHorasExtra(Ln_Contador2),
                                              C_HoraInicioDet(Ln_Contador2),
@@ -2347,15 +2112,15 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                              Lv_UsrCreacion,
                                              Pv_Status,
                                              Pv_Mensaje);
-                                          
+
                IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                END IF;
-        
-      
+
+
             END LOOP;
-      
-      
+
+
             FOR Ln_ContadorEmpleado in 1 .. Ln_NoEmpleado.COUNT LOOP
                P_INSERTAR_EMPLEADOS(Ln_IdHorasSolicitud2,
                                     apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadorEmpleado)),
@@ -2363,52 +2128,54 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                     Lv_UsrCreacion,
                                     Pv_Status,
                                     Pv_Mensaje);
-                          
+
                IF Pv_Status = 'ERROR' THEN
                    RAISE Le_Errors;
                END IF;
-        
+
             END LOOP;
-        
+
             Ln_ContadorTarea := Lv_TareaId.COUNT;
             WHILE Ln_ContadorTar <=  Ln_ContadorTarea LOOP
-      
+
                P_INSERTAR_TAREAS(Ln_IdHorasSolicitud2,
                                  apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorTar)),
                                  Lv_UsrCreacion,
                                  null,
+                                 Lv_observacion,
                                  Pv_Status,
                                  Pv_Mensaje);
-                          
+
                 IF Pv_Status = 'ERROR' THEN
                     RAISE Le_Errors;
                 END IF;
-                
+
                 Ln_ContadorTar:=Ln_ContadorTar+1;
-           
+
             END LOOP;
-    
+
             Ln_ContadorCuadrilla:=Ln_IdCuadrilla.COUNT;
             WHILE Ln_ContadorCua <=  Ln_ContadorCuadrilla LOOP
-     
+
                P_INSERTAR_TAREAS(Ln_IdHorasSolicitud2,
                                  null,
                                  Lv_UsrCreacion,
                                  apex_json.get_number(p_path => Ln_IdCuadrilla(Ln_ContadorCua)),
+                                 Lv_observacion,
                                  Pv_Status,
                                  Pv_Mensaje);
-                          
+
                IF Pv_Status = 'ERROR' THEN
                    RAISE Le_Errors;
                END IF;
-          
+
                Ln_ContadorCua :=Ln_ContadorCua+1;
-            
+
              END LOOP;
-    
+
              Ln_ContadorDocumentos :=  Lv_NombreDocumento.COUNT;
              WHILE Ln_ContadorDocu <=  Ln_ContadorDocumentos LOOP
-    
+
                    P_INSERTAR_DOCUMENTOS(Ln_IdHorasSolicitud2,
                                        apex_json.get_varchar2(p_path => Lv_NombreDocumento(Ln_ContadorDocu)),
                                        apex_json.get_varchar2(p_path => Lv_UbicacionDocumento(Ln_ContadorDocu)),
@@ -2416,24 +2183,24 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                        Lv_UsrCreacion,
                                        Pv_Status,
                                        Pv_Mensaje);
-      
+
                  IF Pv_Status = 'ERROR' THEN
                        RAISE Le_Errors;
                  END IF;
-       
+
                  Ln_ContadorDocu:=Ln_ContadorDocu+1;
              END LOOP;
              Ln_ContadorDocu:=1;
              Ln_ContadorDocumentos:=0;
-      
-      
+
+
       END IF;
-    
+
      COMMIT;
-      
+
      Pv_Status     := 'OK';
      Pv_Mensaje    := 'Transacción exitosa';
-     
+
   EXCEPTION
      WHEN Le_Errors THEN
        Pv_Status  := 'ERROR';
@@ -2442,18 +2209,20 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA: - '||SQLCODE||' -ERROR- '||SQLERRM;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
                                                  'HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA: ',
-                                                 Pv_Mensaje,
+                                                 Pv_Mensaje || ' Linea error: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ,
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-  END P_GUARDAR_HORASEXTRA;
 
+
+  END P_GUARDAR_HORASEXTRA;
+  
   PROCEDURE P_ELIMINAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                         Pv_Status    OUT VARCHAR2,
                                         Pv_Mensaje   OUT VARCHAR2)
-                                  
+
   AS
-  
+
       CURSOR C_OBSERVACION_SOLICITUD(Cn_IdHorasSolicitud NUMBER) IS
         SELECT IHSD.HORAS_SOLICITUD_ID,IHSD.TIPO_HORAS_EXTRA_ID,IHSD.HORA_INICIO_DET,IHSD.HORA_FIN_DET,
           IHSD.HORAS,IHSD.FECHA_SOLICITUD_DET,IHSD.OBSERVACION  
@@ -2462,7 +2231,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           WHERE IHS.ID_HORAS_SOLICITUD=Cn_IdHorasSolicitud 
           AND IHSD.FE_CREACION=(SELECT MAX(IHSDE.FE_CREACION) FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSDE
           WHERE IHSDE.HORAS_SOLICITUD_ID=Cn_IdHorasSolicitud);
-  
+
       Ln_ContadorSolicitudes         NUMBER:=0;
       Ln_ContadorSoli                NUMBER:=1;
       Ln_IdSolicitud                 NUMBER;
@@ -2471,42 +2240,42 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Lv_usrCreacion                 VARCHAR2(25);
       Lv_EmpresaCod                  VARCHAR2(2);
       Le_Errors                      EXCEPTION;
-      
+
   BEGIN
-  
+
       -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
     Ln_IdHorasSolicitud          :=  APEX_JSON.find_paths_like(p_return_path => 'idHorasSolicitud[%]' );
     Lv_usrCreacion               :=  APEX_JSON.get_varchar2(p_path => 'usrCreacion');
     Lv_EmpresaCod                :=  APEX_JSON.get_varchar2(p_path => 'empresaCod');
-    
-    
+
+
        Ln_ContadorSolicitudes :=  Ln_IdHorasSolicitud.COUNT;
        WHILE Ln_ContadorSoli <=  Ln_ContadorSolicitudes LOOP
-         
+
           Ln_IdSolicitud := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSoli));
-                      
+
           P_ELIMINAR_MASIVA(Ln_IdSolicitud,
                             Lv_usrCreacion,
                             Lv_EmpresaCod,
                             Pv_Status,
                             Pv_Mensaje);
-                                
-                                
+
+
           IF Pv_Status = 'ERROR' THEN
               RAISE Le_Errors;
           END IF;
-          
+
           Ln_ContadorSoli:=Ln_ContadorSoli+1;
-          
+
        END LOOP;
-  
-              
+
+
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
-        
-        
-  
+
+
+
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -2519,17 +2288,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));        
-  
+
   END P_ELIMINAR_SOLICITUD_HEXTRA;
-  
-  
+
+
   PROCEDURE P_ANULAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                       Pv_Status    OUT VARCHAR2,
                                       Pv_Mensaje   OUT VARCHAR2)
-                                  
+
   AS
-  
-  
+
+
       CURSOR C_OBSERVACION_SOLICITUD(Cn_IdHorasSolicitud NUMBER) IS
         SELECT IHSD.HORAS_SOLICITUD_ID,IHSD.TIPO_HORAS_EXTRA_ID,IHSD.HORA_INICIO_DET,IHSD.HORA_FIN_DET,
           IHSD.HORAS,IHSD.FECHA_SOLICITUD_DET,IHSD.OBSERVACION  
@@ -2538,7 +2307,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           WHERE IHS.ID_HORAS_SOLICITUD=Cn_IdHorasSolicitud 
           AND IHSD.FE_CREACION=(SELECT MAX(IHSDE.FE_CREACION) FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSDE
           WHERE IHSDE.HORAS_SOLICITUD_ID=Cn_IdHorasSolicitud);
-  
+
       Ln_IdHorasSolicitud            NUMBER;
       Lv_Observacion                 VARCHAR2(210);
       Lv_usrCreacion                 VARCHAR2(30);
@@ -2547,55 +2316,55 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Lv_Proceso                     VARCHAR2(30):='Anulacion';
       Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
       Le_Errors                      EXCEPTION;
-      
+
   BEGIN
-  
+
       -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
     Ln_IdHorasSolicitud        :=  APEX_JSON.get_number(p_path => 'idHorasSolicitud');
     Lv_Observacion             :=  APEX_JSON.get_varchar2(p_path => 'observacion');
     Lv_usrCreacion             :=  APEX_JSON.get_varchar2(p_path => 'usrCreacion');
     Lv_empresaCod              :=  APEX_JSON.get_varchar2(p_path => 'empresaCod');
-    
+
     -- VALIDACIONES
          IF Ln_IdHorasSolicitud IS NULL THEN
             Pv_Mensaje := 'El parámetro idHorasSolicitud está vacío';
             RAISE Le_Errors;
         END IF;
-        
+
         IF Lv_Observacion IS NULL THEN
             Pv_Mensaje := 'Debe ingresar una observación para anular la solicitud N° '||Ln_IdHorasSolicitud||' ';
             RAISE Le_Errors;
         END IF;
-        
+
         IF C_OBSERVACION_SOLICITUD%ISOPEN THEN CLOSE C_OBSERVACION_SOLICITUD; END IF;
-        
-        
+
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
           SET IHS.ESTADO='Anulada', IHS.OBSERVACION=''||Lv_Observacion||'',
           IHS.FE_MODIFICACION=SYSDATE,IHS.USR_MODIFICACION=Lv_usrCreacion
          WHERE IHS.ID_HORAS_SOLICITUD=''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
           SET IHSD.ESTADO='Anulada',IHSD.FE_MODIFICACION=SYSDATE, IHSD.USR_MODIFICACION=Lv_usrCreacion
          WHERE IHSD.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
           SET IHSE.ESTADO='Anulada',IHSE.FE_MODIFICACION=SYSDATE, IHSE.USR_MODIFICACION=Lv_usrCreacion
          WHERE IHSE.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH
           SET ITH.ESTADO='Anulada',ITH.FE_MODIFICACION=SYSDATE, ITH.USR_MODIFICACION=Lv_usrCreacion
          WHERE ITH.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE
           SET IDHE.ESTADO='Anulada', IDHE.FE_CREACION=SYSDATE, IDHE.USR_MODIFICACION=Lv_usrCreacion
          WHERE IDHE.HORAS_SOLICITUD_ID = ''||Ln_IdHorasSolicitud||'' AND ESTADO IN('Pendiente','Pre-Autorizada');
-         
-         
+
+
          FOR Lr_ObservacionSolicitud IN C_OBSERVACION_SOLICITUD(Ln_IdHorasSolicitud) 
          LOOP
-         
+
             P_INSERT_HISTORIAL_SOLICITUD(Ln_IdHorasSolicitud,
                                               Lr_ObservacionSolicitud.TIPO_HORAS_EXTRA_ID,
                                               Lr_ObservacionSolicitud.HORA_INICIO_DET,
@@ -2607,26 +2376,26 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                               Lv_usrCreacion,
                                               Pv_Status,
                                               Pv_Mensaje);
-                                              
+
                 IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                 END IF;
-         
+
          END LOOP;
-         
-         
+
+
          P_ENVIAR_MAIL_GENERAL(Lv_Proceso,
                                Lv_EmpresaCod,
                                Ln_IdHorasSolicitud,
                                Lv_Observacion);
-         
-        
+
+
         COMMIT;
-         
-              
+
+
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
-  
+
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -2639,15 +2408,15 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));          
-  
+
   END P_ANULAR_SOLICITUD_HEXTRA;
-  
+
   PROCEDURE P_AUTORIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                          Pv_Status    OUT VARCHAR2,
                                          Pv_Mensaje   OUT VARCHAR2)
-                                                                                  
+
   AS
-      
+
       Ln_IdSolicitud            NUMBER;
       Ln_IdSolicitud_1          NUMBER;
       Lv_Estado                 VARCHAR2(15);
@@ -2662,22 +2431,22 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Lv_Mes_Solicitud          VARCHAR2(25);
       Lv_Mensaje                VARCHAR2(25);
       Le_Errors                 EXCEPTION;
-      
+
       CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
        SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
          WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
        WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_CONSULTA';
-       
-       
+
+
        CURSOR C_FECHA_SOLICITUDES(Cv_IdHorasSolicitudes NUMBER)IS
         SELECT FECHA FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD WHERE ID_HORAS_SOLICITUD = Cv_IdHorasSolicitudes;
-       
+
        Ln_IdHorasSolicitud      apex_t_varchar2;
        Lr_valor_1               DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
        Lr_FechaSolicitud        DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD.FECHA%TYPE;
-      
+
   BEGIN
-  
+
       -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
     Ln_IdHorasSolicitud := APEX_JSON.find_paths_like(p_return_path => 'idHorasSolicitud[%]' );
@@ -2686,23 +2455,23 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_Usuario          := APEX_JSON.get_varchar2(p_path => 'usuario');
     Lv_EmpresaCod       := APEX_JSON.get_varchar2(p_path => 'empresaCod');
     Lv_EsSuperUsuario   := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
-    
-    
+
+
     -- VALIDACIONES
         IF Lv_Estado IS NULL THEN
             Pv_Mensaje := 'El parámetro estado está vacío';
             RAISE Le_Errors;
         END IF;
-        
+
         IF Lv_EmpresaCod IS NULL THEN
             Pv_Mensaje := 'El parámetro empresaCod está vacío';
             RAISE Le_Errors;
         END IF;
-        
+
         IF C_DIA_CORTE%ISOPEN THEN
           CLOSE C_DIA_CORTE;
         END IF;
-        
+
         OPEN C_DIA_CORTE(Lv_EsSuperUsuario);
         FETCH C_DIA_CORTE INTO Lr_valor_1;
         IF C_DIA_CORTE%FOUND THEN  
@@ -2712,19 +2481,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         END IF;
 
         CLOSE C_DIA_CORTE;
-        
+
         Ld_FechaActual:= SYSDATE;        
-        
+
         Ln_ContadorSolicitudes:= Ln_IdHorasSolicitud.COUNT;
         WHILE Ln_ContadorSoli <= Ln_ContadorSolicitudes LOOP
-        
+
            Ln_IdSolicitud_1 := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSoli));
-           
+
            IF C_FECHA_SOLICITUDES%ISOPEN THEN CLOSE C_FECHA_SOLICITUDES; END IF;
-           
+
            OPEN C_FECHA_SOLICITUDES(Ln_IdSolicitud_1);
            FETCH C_FECHA_SOLICITUDES INTO Lr_FechaSolicitud;
-           
+
            Lv_Mes_Solicitud:= TO_CHAR(Lr_FechaSolicitud,'MM');
 
            CASE Lv_Mes_Solicitud
@@ -2753,45 +2522,45 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               WHEN  '12' THEN
                 Lv_Mes_Solicitud :='Diciembre';
             END CASE;
-           
+
              ---- VALIDAR QUE SOLO SE PUEDAN Pre-Autorizar,Autorizar SOLICITUD PARA EL MES ACTUAL Y/O  MES VENCIDO
-             
+
             IF Lv_EsSuperUsuario='Jefatura' THEN
-            
+
               Lv_Mensaje:='Pre-Autorizar';
-                
+
             ELSE
-            
+
               Lv_Mensaje:='Autorizar';
-             
+
             END IF;
- 
+
             IF( (TO_CHAR(Lr_FechaSolicitud,'MM') !=  TO_CHAR(Ld_FechaActual,'MM')) AND (TO_CHAR(Lr_FechaSolicitud,'MM') != TO_CHAR(ADD_MONTHS(Ld_FechaActual,-1),'MM')) ) THEN
                Pv_Mensaje := 'ERROR 01: No se puede '||Lv_Mensaje||' solicitud para el mes de'||' '||Lv_Mes_Solicitud||' ,'||' mes inválido';
                RAISE Le_Errors;
             END IF;
-            
+
             IF((TO_CHAR(Ld_FechaActual,'DD-MM-YYYY') > TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY')) AND(TO_CHAR(Lr_FechaSolicitud,'MM') != TO_CHAR(Ld_FechaActual,'MM')) )THEN
                Pv_Mensaje := 'ERROR 02: No se puede '||Lv_Mensaje||' solicitud para el mes de'||' '||Lv_Mes_Solicitud||' el plazo máximo para '||Lv_Mensaje||' es hasta el'||' '||TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY');
                RAISE Le_Errors;
             END IF;
 
             ----//END VALIDAR Pre-Autorizar,Autorizar SOLICITUD.
-            
-           
-           
+
+
+
            CLOSE C_FECHA_SOLICITUDES;
-           
-        
+
+
            Ln_ContadorSoli:= Ln_ContadorSoli+1;
-        
+
         END LOOP;
-        
-   
+
+
         FOR Ln_ContadorSolicitud in 1 .. Ln_IdHorasSolicitud.COUNT LOOP
-         
+
           Ln_IdSolicitud := apex_json.get_number(p_path => Ln_IdHorasSolicitud(Ln_ContadorSolicitud));
-          
+
           P_AUTORIZACION_MASIVA(Ln_IdSolicitud,
                                 Lv_Estado,
                                 Lv_nombrePantalla,
@@ -2799,19 +2568,19 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                 Lv_EmpresaCod,
                                 Pv_Status,
                                 Pv_Mensaje);
-                                
-                                
+
+
           IF Pv_Status = 'ERROR' THEN
               RAISE Le_Errors;
           END IF;
-          
-          
+
+
         END LOOP;
-  
-              
+
+
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
-  
+
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -2824,10 +2593,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-  
+
   END P_AUTORIZAR_SOLICITUD_HEXTRA;
-  
-  PROCEDURE P_ACTUALIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
+
+PROCEDURE P_ACTUALIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
                                           Pv_Status    OUT VARCHAR2,
                                           Pv_Mensaje   OUT VARCHAR2)      
 
@@ -2865,7 +2634,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ld_FechaSolicitud              DATE;
      Ld_FechaCorte                  DATE;
      Ld_FechaActual                 DATE;
-     
+
      Lv_TotalHorasSimples           NUMBER;
      Lv_TotalMinutosSimples         NUMBER;
      Lv_TotalHorasDobles            NUMBER;
@@ -2876,7 +2645,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Ln_TotalHorasNocturno_1        NUMBER;
      Lv_TotalMinutosNocturno        NUMBER;
      Ln_TotalMinutosNocturno_1      NUMBER;
-     
+
      Lv_TotalHoraMinutoSimple       VARCHAR2(55);
      Lv_TotalHoraMinutoDoble        VARCHAR2(55);
      Lv_TotalHoraMinutoDoble_1      VARCHAR2(55);
@@ -2900,6 +2669,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_Mensaje                     VARCHAR2(30);
 
      Ld_Fecha                       VARCHAR2(25);
+     Ld_FechaHasta                  VARCHAR2(25);
      Lv_HoraInicio                  VARCHAR2(7);
      Lv_HoraFin                     VARCHAR2(7);
      Lv_observacion                 VARCHAR2(200);
@@ -2916,6 +2686,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lv_nombreDepartamento          VARCHAR2(35);
      Lv_EsSuperUsuario              VARCHAR2(20);
      Lv_Mes_Solicitud               VARCHAR2(25);
+     Lv_EntraLineaBase              VARCHAR2(6):='false'; 
 
      TYPE C_ListTotalHoras          IS VARRAY(4) OF VARCHAR2(20);
      C_ListaHoras                   C_ListTotalHoras :=C_ListTotalHoras();
@@ -2935,29 +2706,88 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA IN(Cv_TipoHorasExtra1,Cv_TipoHorasExtra2)
        ORDER BY ID_TIPO_HORAS_EXTRA ASC;
-       
-       
+
+
      CURSOR C_EXISTE_DEPARTAMENTO(Cv_Departamento VARCHAR2)IS
         SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
           WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='DEPARTAMENTO_TAREA_HE')
         AND VALOR1=Cv_Departamento AND APD.ESTADO='Activo';
-         
+
      CURSOR C_EXISTE_CARGO_DEPARTAMENTO(Cv_Departamento VARCHAR2, Cv_CargoEmpleado VARCHAR2)IS
          SELECT APD.VALOR2 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='ROLES_TAREA_HE')
          AND VALOR1=Cv_Departamento AND VALOR2=Cv_CargoEmpleado AND APD.ESTADO='Activo';
-         
-        
+
+
      CURSOR C_CARGO_EMPLEADO(Cv_NoEmple VARCHAR2, Cv_NoCia VARCHAR2)IS
         SELECT DESCRIPCION_CARGO,NOMBRE FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS WHERE NO_CIA=Cv_NoCia AND NO_EMPLE=Cv_NoEmple;
-        
+
      CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
         SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
           WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
         WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_REGISTRO'
         AND APD.ESTADO='Activo';
+        
+     --DEPARTAMENTOS CONFIGURADOS   
+      CURSOR C_DEPARTAMENTOS_CONFIGURADOS IS
+          SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo';
 
-     
+        CURSOR C_OBTENER_LINEA_BASE(Cv_EmpresaCod VARCHAR2,
+                                    Cv_Estado     VARCHAR2,
+                                    Cv_NoEMple    VARCHAR2,
+                                    Cv_FechaDesde VARCHAR2,
+                                    Cv_FechaHasta VARCHAR2) IS
+          SELECT AHE.NO_EMPLE,
+                 TO_CHAR(AHE.FECHA_INICIO,'DD-MM-YYYY') FECHA_INICIO,
+                 TO_CHAR(AHE.FECHA_FIN,'DD-MM-YYYY') FECHA_FIN,
+                 AHE.HORA_INICIO,
+                 AHE.HORA_FIN
+            FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE
+            JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS ATH
+              ON ATH.ID_TIPO_HORARIO = AHE.TIPO_HORARIO_ID
+             AND ATH.NOMBRE_TIPO_HORARIO = 'LINEA BASE'
+           WHERE AHE.EMPRESA_COD = Cv_EmpresaCod
+             AND AHE.ESTADO = Cv_Estado
+             AND AHE.NO_EMPLE = Cv_NoEMple
+             AND ((AHE.FECHA_INICIO >=
+                 TO_DATE(Cv_FechaDesde, 'DD-MM-YYYY') AND
+                 AHE.FECHA_INICIO <=
+                 TO_DATE(Cv_FechaHasta, 'DD-MM-YYYY')) OR
+                 (AHE.FECHA_FIN >=
+                 TO_DATE(Cv_FechaDesde, 'DD-MM-YYYY') AND
+                 AHE.FECHA_FIN <=
+                 TO_DATE(Cv_FechaHasta, 'DD-MM-YYYY')));
+             
+        --OBTINE LA LINEA BASE MENSUAL DEL EMPLEADO 
+        CURSOR C_OBTENER_LINEA_BASE_MES(Cv_EmpresaCod VARCHAR2,
+                                    Cv_Estado     VARCHAR2,
+                                    Cv_NoEMple    VARCHAR2,
+                                    Cv_FechaDesde VARCHAR2,
+                                    Cv_FechaHasta VARCHAR2) IS
+                 SELECT AHE.NO_EMPLE,
+                 TO_CHAR(AHE.FECHA_INICIO,'DD-MM-YYYY') FECHA_INICIO,
+                 TO_CHAR(AHE.FECHA_FIN,'DD-MM-YYYY') FECHA_FIN,
+                 AHE.HORA_INICIO,
+                 AHE.HORA_FIN
+            FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE
+            JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS ATH
+              ON ATH.ID_TIPO_HORARIO = AHE.TIPO_HORARIO_ID
+             AND ATH.NOMBRE_TIPO_HORARIO = 'LINEA BASE'
+           WHERE AHE.EMPRESA_COD = Cv_EmpresaCod
+             AND AHE.ESTADO = Cv_Estado
+             AND AHE.NO_EMPLE = Cv_NoEMple
+             AND (TO_CHAR(AHE.FECHA_INICIO,'MM') = Cv_FechaDesde 
+             AND TO_CHAR(AHE.FECHA_INICIO,'YYYY') = Cv_FechaHasta);
+
+
+
 
      Ln_NoEmpleado                  apex_t_varchar2;
      Lv_TareaId                     apex_t_varchar2;
@@ -2977,6 +2807,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
      Lr_CargoDepartamento           DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE;
      Lr_idTipoHoraExtra             C_TIPO_HORAS_EXTRA%ROWTYPE;
      Le_Errors                      EXCEPTION;
+     Lr_DepartamentosConfigurados   C_DEPARTAMENTOS_CONFIGURADOS%ROWTYPE;
+    TYPE lv_linea_base IS TABLE OF C_OBTENER_LINEA_BASE_MES%ROWTYPE;
+        T_LineaBase lv_linea_base;
 
 
   BEGIN
@@ -3006,6 +2839,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
     Lv_feInicioTarea       := APEX_JSON.find_paths_like(p_return_path => 'feInicioTarea[%]' );
     Lv_feFinTarea          := APEX_JSON.find_paths_like(p_return_path => 'feFinTarea[%]' );
     Lv_nombreImgEliminados := APEX_JSON.find_paths_like(p_return_path => 'nombreImgEliminados[%]' );
+     
 
     -- VALIDACIONES
 
@@ -3019,7 +2853,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       RAISE Le_Errors;
 
     END IF;
-    
+
     IF Lv_HoraInicio IS NULL THEN
       Pv_Mensaje := 'El parámetro horaInicio está vacío';
       RAISE Le_Errors;
@@ -3045,6 +2879,47 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       RAISE Le_Errors;
     END IF;
 
+      SELECT
+            CASE
+              WHEN Lv_observacion LIKE ('Origen Solicitud Job barrido de tareas por departamentos tecnica%')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS TECNICA'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS TECNICA'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )              
+              WHEN Lv_observacion LIKE ('Origen Tarea HE Job barrido de tareas por departamentos administrativos%')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS_ADMINISTRATIVA'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS ADMINISTRATIVA'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+                WHEN Lv_observacion LIKE ('Origen Tarea HE %')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO TAREA PROCESO HE'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LAS TAREAS PROCESO HE'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+              WHEN Lv_observacion LIKE ('Origen Portal Planificacion HE%')
+              THEN 'Verificacion'
+              ELSE 'Pendiente'
+            END AS ESTADO INTO Lv_Estado
+          FROM DUAL;
+
       --Consulta de parametros de horarios de horas extras
 
       SELECT HORA_FIN
@@ -3061,7 +2936,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         INTO Lv_HoraInicioNoEstimadasNt,Lv_HoraFinNoEstimadasNt	
         FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA	
        WHERE TIPO_HORAS_EXTRA = 'HORAS_NO_ESTIMADAS_NOCTURNA';
-      
+
       SELECT HORA_INICIO,HORA_FIN
        INTO Lv_HoraInicioSimples,Lv_HoraFinSimples
       FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
@@ -3071,17 +2946,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        INTO Lv_HoraInicioDobles,Lv_HoraFinDobles
       FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA = 'DOBLES';
-      
+
       SELECT HORA_INICIO,HORA_FIN
        INTO Lv_HorasInicioNocturnas,Lv_HorasFinNocturnas
       FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
        WHERE TIPO_HORAS_EXTRA = 'NOCTURNO';
-       
-        
+
+
         IF C_DIA_CORTE%ISOPEN THEN
             CLOSE C_DIA_CORTE;
         END IF;
-        
+
         OPEN C_DIA_CORTE(Lv_EsSuperUsuario);
         FETCH C_DIA_CORTE INTO Lr_valor_1;
 
@@ -3094,20 +2969,20 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         CLOSE C_DIA_CORTE;
 
        --HORA INICIO Y FIN INGRESADOS
-      Ld_HoraInicio1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraInicio),'DD-MM-YYYY HH24:MI');   
-      Ld_HoraFin1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFin),'DD-MM-YYYY HH24:MI'); 
+      Ld_HoraInicio1 :=  to_timestamp((Ld_Fecha||' '||Lv_HoraInicio),'DD-MM-YYYY HH24:MI');   
+      Ld_HoraFin1 :=  to_timestamp((Ld_Fecha||' '||Lv_HoraFin),'DD-MM-YYYY HH24:MI'); 
 
-      --PARAMETROS HORAS SIMPLES
-      Ld_HoraInicioSimples1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioSimples),'DD-MM-YYYY HH24:MI');
-      Ld_HoraFinSimples1:= TO_DATE((Ld_Fecha||''||Lv_HoraFinSimples),'DD-MM-YYYY HH24:MI');
+      -- HORAS SIMPLES
+      Ld_HoraInicioSimples1 := to_timestamp((Ld_Fecha||' '||Lv_HoraInicioSimples),'DD-MM-YYYY HH24:MI');
+      Ld_HoraFinSimples1:= to_timestamp((Ld_Fecha||' '||Lv_HoraFinSimples),'DD-MM-YYYY HH24:MI');
 
-      --PARAMETROS HORAS DOBLES
-      Ld_HoraInicioDobles1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioDobles),'DD-MM-YYYY HH24:MI');
-      Ld_HoraFinDobles1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFinDobles),'DD-MM-YYYY HH24:MI');
+      -- HORAS DOBLES
+      Ld_HoraInicioDobles1 := to_timestamp((Ld_Fecha||' '||Lv_HoraInicioDobles),'DD-MM-YYYY HH24:MI');
+      Ld_HoraFinDobles1 :=  to_timestamp((Ld_Fecha||' '||Lv_HoraFinDobles),'DD-MM-YYYY HH24:MI');
 
-      --PARAMETROS HORAS NOCTURNAS      
-      Ld_HorasInicioNocturnas1 := TO_DATE((Ld_Fecha||''||Lv_HorasInicioNocturnas),'DD-MM-YYYY HH24:MI');
-      Ld_HorasFinNocturnas1 :=  TO_DATE((Ld_Fecha||''||Lv_HorasFinNocturnas),'DD-MM-YYYY HH24:MI');
+      -- HORAS NOCTURNAS
+      Ld_HorasInicioNocturnas1 := to_timestamp((Ld_Fecha||' '||Lv_HorasInicioNocturnas),'DD-MM-YYYY HH24:MI');
+      Ld_HorasFinNocturnas1 :=  to_timestamp((Ld_Fecha||' '||Lv_HorasFinNocturnas),'DD-MM-YYYY HH24:MI');
 
       -- HORAS NO ESTIMADAS_MATUTINAS
       Ld_HoraInicioNoEstimadas1 := TO_DATE((Ld_Fecha||''||Lv_HoraInicioNoEstimadas),'DD-MM-YYYY HH24:MI');
@@ -3118,7 +2993,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
       Ld_HoraFinNoEstimadasNt1 :=  TO_DATE((Ld_Fecha||''||Lv_HoraFinNoEstimadasNt),'DD-MM-YYYY HH24:MI');
 
       -- HORA FIN DIA
-      Ld_HoraFinDia1 := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
+      Ld_HoraFinDia1 := to_timestamp((Ld_Fecha||' '||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
 
 
       Ld_FechaSolicitud:= TO_DATE(Ld_Fecha,'DD-MM-YYYY');
@@ -3169,163 +3044,233 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             RAISE Le_Errors;
 
       END IF;
-      
-      
-      
+
+
+
       --VALIDAR SI EL DEPARTAMENTO DEBE INGRESAR TAREA EN LA SOLICITUD
-      
+
          IF C_EXISTE_DEPARTAMENTO%ISOPEN THEN
               CLOSE C_EXISTE_DEPARTAMENTO;
          END IF;       
-        
+
          OPEN C_EXISTE_DEPARTAMENTO(Lv_nombreDepartamento);
          FETCH C_EXISTE_DEPARTAMENTO INTO Lr_Departamento;
-      
+
          IF(C_EXISTE_DEPARTAMENTO%FOUND)THEN  
-          
-                 
+
+
                      Ln_ContadorEmpleado:=Ln_NoEmpleado.COUNT;
                      WHILE Ln_ContadoreEmp<= Ln_ContadorEmpleado LOOP
-      
+
                         IF C_CARGO_EMPLEADO%ISOPEN THEN CLOSE C_CARGO_EMPLEADO; END IF;
                         OPEN C_CARGO_EMPLEADO(apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),Lv_EmpresaCod);
                         FETCH C_CARGO_EMPLEADO INTO Lr_CargoEmpleado;
-                        
-                        
+
+
                         IF(C_CARGO_EMPLEADO%FOUND)THEN 
-                        
+
                            IF C_EXISTE_CARGO_DEPARTAMENTO%ISOPEN THEN CLOSE C_EXISTE_CARGO_DEPARTAMENTO; END IF;
                            OPEN C_EXISTE_CARGO_DEPARTAMENTO(Lv_nombreDepartamento,Lr_CargoEmpleado.DESCRIPCION_CARGO);
                            FETCH C_EXISTE_CARGO_DEPARTAMENTO INTO Lr_CargoDepartamento;
-                       
-                          
+
+
                            IF(C_EXISTE_CARGO_DEPARTAMENTO%NOTFOUND AND Lv_feInicioTarea.COUNT = 0)THEN
-                           
+
                              Pv_Mensaje := 'Error 03: Se debe agregar una tarea para la solicitud de horas extras del empleado '||Lr_CargoEmpleado.NOMBRE||', 
                                             cargo: '||Lr_CargoEmpleado.DESCRIPCION_CARGO||' ';
                              RAISE Le_Errors;
-                             
+
                            END IF;
-                        
-                           
+
+
                            CLOSE C_EXISTE_CARGO_DEPARTAMENTO;
-                        
+
                         END IF;
-                          
-          
+
+
                         CLOSE C_CARGO_EMPLEADO;
-         
+
                         Ln_ContadoreEmp :=Ln_ContadoreEmp+1;
-                        
-       
+
+
                      END LOOP;
-      
+
                      Ln_ContadoreEmp:=1;
-                 
-              
+
+
          END IF;
-      
+
          CLOSE C_EXISTE_DEPARTAMENTO;
-     
+
       ----//END VALIDAR DEPARTAMENTO.
-      
+
       --CONDICIONAL PARA VALIDAR TAREA
       Ln_ContadorFecha:=Lv_feInicioTarea.COUNT;
       IF Ln_ContadorFecha > 0 THEN
-      
+
           WHILE Ln_ContadorFecha_1<= Ln_ContadorFecha LOOP
-      
+
             Ld_FeInicioTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feInicioTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
             Ld_FeFinTarea1 := TO_DATE(apex_json.get_varchar2(p_path => Lv_feFinTarea(Ln_ContadorFecha_1)),'DD-MM-YYYY HH24:MI');
-      
+
             IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
                  Lv_bandera2:='true';
                  Ld_HoraFin1:=Ld_HoraFin1+1;
             END IF;
-      
-     
+
+
             IF (Ld_FeInicioTarea1 <= Ld_HoraInicio1 OR Ld_FeInicioTarea1 >= Ld_HoraInicio1) AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1<=Ld_HoraFin1 THEN
-       
+
                 Lv_Mensaje:='Exito';
-          
+
             ELSIF Ld_FeInicioTarea1 >= Ld_HoraInicio1 AND Ld_FeInicioTarea1< Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND (Ld_FeFinTarea1<=Ld_HoraFin1 OR Ld_FeFinTarea1>=Ld_HoraFin1)  THEN
-      
+
                 Lv_Mensaje:='Exito';
-                
+
             ELSIF (Ld_FeInicioTarea1 < Ld_HoraInicio1 AND Ld_FeInicioTarea1 < Ld_HoraFin1 AND Ld_FeFinTarea1>Ld_HoraInicio1 AND Ld_FeFinTarea1 > Ld_HoraFin1) AND
                   (Ld_HoraFin1 > Ld_FeInicioTarea1 AND Ld_HoraFin1 <= Ld_FeFinTarea1) THEN
-               
+
                Lv_Mensaje:='Exito';
-               
+
             ELSE 
-            
+
                 Pv_Mensaje:='Error 04: El rango de fecha hora inicio y hora fin de la tarea '||apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorFecha_1))||' no entra
                              en el intervalo de tiempo de la fecha hora inicio y fin de la solicitud ';
                 RAISE Le_Errors;
-            
+
             END IF;
-      
+
             IF(Lv_bandera2 = 'true')THEN
-  
+
                 Ld_HoraFin1 := Ld_HoraFin1-1;
-  
+
             END IF;
-      
+
             Ln_ContadorFecha_1:=Ln_ContadorFecha_1+1;
           END LOOP;
           Ln_ContadorFecha_1:=1;
       END IF;
       ----//END CONDICIONAL PARA VALIDAR TAREA.
-      
 
-  IF Lv_EsFinDeSemana = 'N' THEN
+--VERIFICACION DE LINEA BASE PARA LOS DEPARTAMENTOS CONFIGURADOS
+    IF C_DEPARTAMENTOS_CONFIGURADOS%ISOPEN THEN
+      CLOSE C_DEPARTAMENTOS_CONFIGURADOS;
+    END IF;
+    
+    
+    FOR Lr_DepartamentosConfigurados IN C_DEPARTAMENTOS_CONFIGURADOS loop
+      
+    
+     IF (Lv_nombreDepartamento = Lr_DepartamentosConfigurados.NOMBRE_DEPTO) THEN
+             
+          Ln_ContadoreEmp := 1;   
+          Ln_ContadorEmpleado := Ln_NoEmpleado.COUNT;
+          WHILE Ln_ContadoreEmp <= Ln_ContadorEmpleado LOOP
+          
+          --Se verifica si el empleado tiene registrada una linea base 
+               IF C_OBTENER_LINEA_BASE_MES%ISOPEN THEN
+                    CLOSE C_OBTENER_LINEA_BASE_MES;
+               END IF;
+              
+                OPEN C_OBTENER_LINEA_BASE_MES(Lv_EmpresaCod,
+                                              'Activo',
+                                              apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),
+                                              to_char(to_date(Ld_Fecha,'DD/MM/YYYY'),'MM'),
+                                              to_char(to_date(Ld_Fecha,'DD/MM/YYYY'),'YYYY'));
+                    FETCH C_OBTENER_LINEA_BASE_MES BULK COLLECT INTO T_LineaBase;
+                CLOSE C_OBTENER_LINEA_BASE_MES;
+          
+              --condicion que determina si el empleado tiene linea base 
+              IF(T_LineaBase.count > 0)THEN
+              
+                    Lv_EsDiaLibre := 'S';
+                    
+                    --CONSULTAR EL HORARIO DE TRABAJO DEL EMPLEADO Y DETERMINA SI ES SU DIA LIBRE
+                    FOR Lr_lineaBaseEmpleado IN C_OBTENER_LINEA_BASE(Lv_EmpresaCod,
+                                                                     'Activo',
+                                                                     apex_json.get_number(p_path => Ln_NoEmpleado(Ln_ContadoreEmp)),
+                                                                     to_char(to_date(Ld_Fecha,'DD/MM/YYYY'),'DD/MM/YYYY') ,
+                                                                     to_char(to_date(nvl(Ld_FechaHasta,Ld_Fecha),'DD/MM/YYYY'),'DD/MM/YYYY')) LOOP
+              
+              
+                      Lv_EsDiaLibre := 'N';  
+              
+                       SELECT
+                        CASE
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') >= TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') OR
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') <= TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI')AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') <= TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') >= TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'   
+                          WHEN ((TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraInicio,'DD-MM-YYYY HH24:MI') < TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI')) AND
+                                 (TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') > TO_DATE(Lr_lineaBaseEmpleado.FECHA_INICIO||' '||Lr_lineaBaseEmpleado.HORA_INICIO,'DD-MM-YYYY HH24:MI') AND
+                                 TO_DATE(Ld_Fecha||' '||Lv_HoraFin,'DD-MM-YYYY HH24:MI') <= TO_DATE(Lr_lineaBaseEmpleado.FECHA_FIN||' '||Lr_lineaBaseEmpleado.HORA_FIN,'DD-MM-YYYY HH24:MI'))) THEN 'true'
+                          ELSE 'false'
+                        END EXISTE
+                        into Lv_EntraLineaBase
+                      FROM DUAL;
+              
+                      IF(Lv_EntraLineaBase = 'true')THEN
+              
+                          Pv_Mensaje := 'Error 07:  No se permite realizar el registro. El intervalo hora inicio y hora fin para la fecha ' ||
+                                      TO_CHAR(Ld_FechaSolicitud, 'DD-MM-YYYY') ||
+                                      ' , se encuentra dentro de la linea base. ';
+                          RAISE Le_Errors;
+              
+                       END IF;
+              
+                    END LOOP;
+              
+                    ELSE 
+                      Pv_Mensaje := 'Error 08:  No se permite realizar el registro. El empleado no tine linea base. ';
+                      RAISE Le_Errors;
+                  END IF;
+                    Ln_ContadoreEmp := Ln_ContadoreEmp + 1;
+              
+          END LOOP;
+      
+      END IF;  
+    END LOOP; 
+--//FIN DE VALIDACION QUE OBLIGA A DEPARTAMENTOS CONFIGURADOS A TENER LINEA BASE
+
+--SE IDENTIFICA SI ES DIA LIBRE DEL EMPLEADO 
+  IF Lv_EsDiaLibre = 'N' THEN
   
-      IF(Lv_JornadaEmpleado = 'M')THEN
+    --SE IDENTIFICA QUE TIPO DE JORNADA TIENE EL EMPLEADO
+        IF(Lv_JornadaEmpleado = 'M')THEN
 
           IF(Lv_HoraFin = Lv_HoraFinDia AND  Ld_HoraInicio1>= Ld_HoraInicioSimples1 AND Ld_HoraInicio1<=Ld_HoraFin1+1) THEN
              Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
 
-          --JORNADA MATUTINA
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadas1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 05: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
-             RAISE Le_Errors;
-          END IF;
-      
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadas1 OR Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadas1 AND Ld_HoraInicio1 <= Ld_HoraFinNoEstimadas1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadas1)THEN
-             Pv_Mensaje := 'Error 06:La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-  
-          IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraInicio1< Ld_HoraFinDia1+1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadas1 AND Ld_HoraFin1 < Ld_HoraFinNoEstimadas1) THEN
-             Pv_Mensaje := 'Error 07: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          
-          
           IF(Ld_HoraInicio1 >= Ld_HoraInicioSimples1  AND Ld_HoraInicio1 < Ld_HoraFinSimples1+1)
           AND (Ld_HoraFin1 > Ld_HoraInicioSimples1  AND Ld_HoraFin1 <= Ld_HoraFinSimples1+1) THEN
-      
+
              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-             
+
              IF(Lv_TotalMinutosSimples='29')THEN
                 Lv_TotalMinutosSimples:='30';
              END IF;
-             
+
              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-        
+
              Ln_Contador :=1;
-        
+
              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
              OPEN C_TIPO_HORAS_EXTRA('SIMPLE','');
              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
              CLOSE C_TIPO_HORAS_EXTRA;
-        
+
              C_HoraInicioDet.extend;
              C_HoraFinDet.extend;
              C_ListaHoras.extend;
@@ -3336,51 +3281,44 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
              C_ListaHoras(Ln_Contador):= TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
              C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
              C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-      
+
           END IF;
-      
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraFinNoEstimadas1 AND Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadas1) THEN
-             Ld_HoraFin1 := Ld_HoraFin1+1;
-             Ld_HoraFinSimples1 := Ld_HoraFinSimples1+1;
-          END IF;
-       
+
+
           IF(Ld_HoraInicio1 >= Ld_HoraInicioSimples1  AND Ld_HoraInicio1 < Ld_HoraFinSimples1+1)
           AND(Ld_HoraFin1 > (Ld_HoraInicioDobles1 +1)) THEN
-          
-          
-             
+
                 Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFinSimples1 - Ld_HoraInicio1)*24,24));
                 Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFinSimples1 - Ld_HoraInicio1)*24*60,60));
                 Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24,24));
                 Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraFinSimples1)*24*60,60));
-             
+
                 IF(Lv_TotalMinutosSimples='29')THEN
                    Lv_TotalMinutosSimples:='30';
                 END IF;
-             
+
                 IF(Lv_TotalMinutosDobles='29')THEN
                    Lv_TotalMinutosDobles:='30';
                 END IF;
-           
-           
+
+
                 Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
                 Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-             
+
                 Ln_Contador := 2 ;
-           
+
                 FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','DOBLES')
                 LOOP
-             
-                 
+
+
                      Ln_Contador1 := Ln_Contador1+1;
-              
+
                      C_HoraInicioDet.extend;
                      C_HoraFinDet.extend;
                      C_ListaHoras.extend;
                      C_TipoHorasExtra.extend;
                      C_FechaDet.extend;
-                 
+
                      CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
                         WHEN  'SIMPLE' THEN
                            C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -3395,110 +3333,79 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                            C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                            C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                      END CASE;
-               
-           
+
+
                 END LOOP;
-           
-           
+
           END IF;
-          
-          
+
+
           IF(Ld_HoraInicio1 >= Ld_HoraInicioDobles1 AND Ld_HoraInicio1< Ld_HoraFinDobles1)
           AND(Ld_HoraFin1 > Ld_HoraInicioDobles1 AND Ld_HoraFin1 <= Ld_HoraFinDobles1)THEN
-        
+
               Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
+
               IF(Lv_TotalMinutosDobles='29')THEN
                 Lv_TotalMinutosDobles:='30';
              END IF;
-              
+
               Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-              
+
               Ln_Contador :=1;
-        
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-        
+
               C_HoraInicioDet.extend;
               C_HoraFinDet.extend;
               C_ListaHoras.extend;
               C_TipoHorasExtra.extend;
               C_FechaDet.extend;
-              
+
               C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
               C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-              
+
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-           
-           
           END IF;
-      
-      
+
+
       ELSE
           -- JORNADA NOCTURNA
-          
-          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 08: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
-              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
-              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 09: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
-              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
-          
-              Pv_Mensaje := 'Error 10: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-              RAISE Le_Errors;
-          END IF;
-          
+
           IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 11: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
+              Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
               RAISE Le_Errors;
           END IF;
-          
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 12: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          
+
           IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
               Ld_HoraFin1 := Ld_HoraFin1+1;
           END IF;
-        
-        
+          
+
           IF(Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1 +1)
           AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1) THEN
-          
-          
+              
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-         
+
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
+
               Ln_Contador :=1;
-      
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-         
+
               C_HoraInicioDet.extend;
               C_HoraFinDet.extend;
               C_ListaHoras.extend;
@@ -3509,30 +3416,30 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
-          
+
+
           END IF;
-          
-          
+
+
           IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
           AND(Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
-          
+
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-         
+
               Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
+
               Ln_Contador :=1;
-      
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-         
+
               C_HoraInicioDet.extend;
               C_HoraFinDet.extend;
               C_ListaHoras.extend;
@@ -3543,50 +3450,50 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
               C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
               C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
+
           END IF;
-          
-          
+
+
           IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1+1)
           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1 > Ld_HoraFinDia1+1  AND Ld_HoraFin1<= Ld_HorasFinNocturnas1 +1)THEN
-                    
-     
+
+
               Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
               Ln_TotalHorasNocturno_1   := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24,24));
               Ln_TotalMinutosNocturno_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24*60,60));
-              
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-              
+
               IF(Ln_TotalMinutosNocturno_1='29')THEN
                 Ln_TotalMinutosNocturno_1:='30';
               END IF;
-              
+
               Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
-              
+
               Ln_Contador  :=2;
               Ln_Contador1 :=0;
-              
+
               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
               OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
               CLOSE C_TIPO_HORAS_EXTRA;
-              
+
               WHILE Ln_Contador1 < Ln_Contador LOOP
-        
+
                   Ln_Contador1:=Ln_Contador1+1;
-        
-                  
+
+
                   C_HoraInicioDet.extend;
                   C_HoraFinDet.extend;
                   C_ListaHoras.extend;
                   C_TipoHorasExtra.extend;
                   C_FechaDet.extend;
-               
-               
+
+
                   CASE Ln_Contador1
                   WHEN '1' THEN
                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -3601,74 +3508,73 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                     C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                   END CASE;
-               
+
                END LOOP;
-              
+
            END IF;
-           
-            
+
+
            IF ((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1)) THEN
-              
-              
+           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)) THEN
+
+
               Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
               Ln_TotalHorasNocturno_1   := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24,24));
               Ln_TotalMinutosNocturno_1 := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24*60,60));
               Lv_TotalHorasSimples      := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24,24));
               Lv_TotalMinutosSimples    := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24*60,60));
-              
-              
+
+
               IF(Lv_TotalMinutosNocturno='29')THEN
                 Lv_TotalMinutosNocturno:='30';
               END IF;
-              
+
               IF(Ln_TotalMinutosNocturno_1='29')THEN
                 Ln_TotalMinutosNocturno_1:='30';
               END IF;
-              
+
               IF(Lv_TotalMinutosSimples='29')THEN
                 Lv_TotalMinutosSimples:='30';
               END IF;
-         
+
               Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
               Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
               Lv_TotalHoraMinutoSimple     := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
               Ln_Contador :=3;
               Ln_Contador4:=2;
               Ln_Contador1:=0;
-              
+
               FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
               LOOP
-              
-                 
+
+
                    IF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='SIMPLE')THEN
                        C_HoraInicioDet.extend;
                        C_HoraFinDet.extend;
                        C_ListaHoras.extend;
                        C_TipoHorasExtra.extend;
                        C_FechaDet.extend;
-                  
+
                        Ln_Contador1:=Ln_Contador1+1;
                        C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
                        C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
                        C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
                        C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                        C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                   
+
                    ELSIF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='NOCTURNO')THEN
-                       
+
                        WHILE Ln_Contador1 < Ln_Contador4 LOOP
-        
+
                             Ln_Contador1:=Ln_Contador1+1;
-        
+
                             C_HoraInicioDet.extend;
                             C_HoraFinDet.extend;
                             C_ListaHoras.extend;
                             C_TipoHorasExtra.extend;
                             C_FechaDet.extend;
-               
+
                             CASE Ln_Contador1
                              WHEN '1' THEN
                                 C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -3683,521 +3589,55 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                 C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                                 C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                             END CASE;
-               
+
                        END LOOP;
-                       
-                       
+
+
                    END IF;
-                   
-                   
+
+
               END LOOP;
-              
-          
-           END IF;
-           
-           IF(Ld_HoraInicio1<Ld_HoraFin1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)THEN
-             
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
-              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
-              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Lv_TotalMinutosSimples='29')THEN
-                Lv_TotalMinutosSimples:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-              Ln_Contador :=2;
-              
-              
-              FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
-              LOOP
-                  Ln_Contador1 := Ln_Contador1+1;
-              
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-                  
-                  
-                  CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
-                  WHEN  'SIMPLE' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN 'NOCTURNO' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                     
-                 END CASE;
-             
-              END LOOP;
-             
-           
-           END IF;
-                  
-            
-  
+
+
+           END IF;                           
+
       END IF;
-  
-  
-  ELSIF(Lv_EsFinDeSemana = 'S') THEN
-     
-     IF(Lv_JornadaEmpleado = 'N') THEN
-     
-         -- JORNADA NOCTURNA
-         
-          IF(Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1)THEN
-             Pv_Mensaje := 'Error 13: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HorasInicioNocturnas1 AND 
-              Ld_HoraFin1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HorasInicioNocturnas1)OR
-              (Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 >= Ld_HorasInicioNocturnas1))THEN
-             Pv_Mensaje := 'Error 14: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          IF((Ld_HoraInicio1 >= Ld_HorasFinNocturnas1 AND Ld_HoraInicio1 <= Ld_HoraInicioNoEstimadasNt1)AND
-              (Ld_HoraFin1 >= Ld_HorasFinNocturnas1 AND Ld_HoraFin1 <= Ld_HoraInicioNoEstimadasNt1)) THEN
-          
-              Pv_Mensaje := 'Error 15: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-              RAISE Le_Errors;
-          END IF;
-          
-          IF(Ld_HoraInicio1>Ld_HoraFin1 AND Ld_HoraInicio1<Ld_HorasInicioNocturnas1)THEN
-              Pv_Mensaje := 'Error 16: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-              RAISE Le_Errors;
-          END IF;
-          
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraInicio1 < Ld_HoraFinNoEstimadasNt1)
-          AND(Ld_HoraFin1 > Ld_HoraInicioNoEstimadasNt1 AND Ld_HoraFin1 <= Ld_HoraFinNoEstimadasNt1 OR Ld_HoraFin1 > Ld_HoraFinNoEstimadasNt1) THEN
-             Pv_Mensaje := 'Error 17: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido';
-             RAISE Le_Errors;
-          END IF;
-          
-          
-          IF (Lv_HoraFin >'00:00' AND Lv_HoraFin < Lv_HoraInicio) OR Lv_HoraFin='00:00' THEN
-              Ld_HoraFin1 := Ld_HoraFin1+1;
-          END IF;
-          
-          IF(Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1 +1)
-          AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1) THEN
-          
-          
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
-              Ln_Contador :=1;
-      
-              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-              OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
-              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-              CLOSE C_TIPO_HORAS_EXTRA;
-         
-              C_HoraInicioDet.extend;
-              C_HoraFinDet.extend;
-              C_ListaHoras.extend;
-              C_TipoHorasExtra.extend;
-              C_FechaDet.extend;
-              C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-              C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-              C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-              C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-              C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
-          
-          END IF;
-          
-          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
-          AND(Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
-          
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-         
-              Ln_Contador :=1;
-      
-              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-              OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
-              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-              CLOSE C_TIPO_HORAS_EXTRA;
-         
-              C_HoraInicioDet.extend;
-              C_HoraFinDet.extend;
-              C_ListaHoras.extend;
-              C_TipoHorasExtra.extend;
-              C_FechaDet.extend;
-              C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-              C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-              C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-              C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-              C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-          
-          END IF;
-          
-          
-          IF (Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1+1)
-          AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1 > Ld_HoraFinDia1+1  AND Ld_HoraFin1<= Ld_HorasFinNocturnas1 +1)THEN
-                    
-     
-              Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
-              Ln_TotalHorasNocturno_1   := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24,24));
-              Ln_TotalMinutosNocturno_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinDia1+1))*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Ln_TotalMinutosNocturno_1='29')THEN
-                Ln_TotalMinutosNocturno_1:='30';
-              END IF;
-              
-              Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
-              
-              Ln_Contador  :=2;
-              Ln_Contador1 :=0;
-              
-              IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-              OPEN C_TIPO_HORAS_EXTRA('NOCTURNO','');
-              FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-              CLOSE C_TIPO_HORAS_EXTRA;
-              
-              WHILE Ln_Contador1 < Ln_Contador LOOP
-        
-                  Ln_Contador1:=Ln_Contador1+1;
-        
-                  
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-               
-               
-                  CASE Ln_Contador1
-                  WHEN '1' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN '2' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno_1,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                  END CASE;
-               
-               END LOOP;
-              
-           END IF;
-           
-            
-           IF ((Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 +1)
-           AND (Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1 +1)) THEN
-              
-              
-              Lv_TotalHorasNocturno     := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno   := TRUNC(MOD(((Ld_HoraFinDia1+1) - Ld_HoraInicio1)*24*60,60));
-              Ln_TotalHorasNocturno_1   := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24,24));
-              Ln_TotalMinutosNocturno_1 := TRUNC(MOD(((Ld_HorasFinNocturnas1+1) - (Ld_HoraFinDia1+1))*24*60,60));
-              Lv_TotalHorasSimples      := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24,24));
-              Lv_TotalMinutosSimples    := TRUNC(MOD((Ld_HoraFin1 - (Ld_HorasFinNocturnas1+1))*24*60,60));
-              
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Ln_TotalMinutosNocturno_1='29')THEN
-                Ln_TotalMinutosNocturno_1:='30';
-              END IF;
-              
-              IF(Lv_TotalMinutosSimples='29')THEN
-                Lv_TotalMinutosSimples:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno   := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoNocturno_1 := Ln_TotalHorasNocturno_1||':'||Ln_TotalMinutosNocturno_1;
-              Lv_TotalHoraMinutoSimple     := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-              Ln_Contador :=3;
-              Ln_Contador4:=2;
-              Ln_Contador1:=0;
-              
-              FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
-              LOOP
-              
-                 
-                   IF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='SIMPLE')THEN
-                       C_HoraInicioDet.extend;
-                       C_HoraFinDet.extend;
-                       C_ListaHoras.extend;
-                       C_TipoHorasExtra.extend;
-                       C_FechaDet.extend;
-                  
-                       Ln_Contador1:=Ln_Contador1+1;
-                       C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                       C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                       C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
-                       C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                       C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                   
-                   ELSIF(Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA='NOCTURNO')THEN
-                       
-                       WHILE Ln_Contador1 < Ln_Contador4 LOOP
-        
-                            Ln_Contador1:=Ln_Contador1+1;
-        
-                            C_HoraInicioDet.extend;
-                            C_HoraFinDet.extend;
-                            C_ListaHoras.extend;
-                            C_TipoHorasExtra.extend;
-                            C_FechaDet.extend;
-               
-                            CASE Ln_Contador1
-                             WHEN '1' THEN
-                                C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                                C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                                C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                                C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                                C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                             WHEN '2' THEN
-                                C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinDia1,'HH24:MI');
-                                C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                                C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno_1,'HH24:MI'),'HH24:MI');
-                                C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                                C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                            END CASE;
-               
-                       END LOOP;
-                       
-                       
-                   END IF;
-                   
-                   
-              END LOOP;
-              
-          
-           END IF;
-           
-           IF(Ld_HoraInicio1<Ld_HoraFin1 AND Ld_HoraFin1> Ld_HorasFinNocturnas1 AND Ld_HoraFin1<= Ld_HoraInicioNoEstimadasNt1)THEN
-             
-              Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24,24));
-              Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HorasFinNocturnas1 - Ld_HoraInicio1)*24*60,60));
-              Lv_TotalHorasSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24,24));
-              Lv_TotalMinutosSimples := TRUNC(MOD((Ld_HoraFin1 - Ld_HorasFinNocturnas1)*24*60,60));
-              
-              IF(Lv_TotalMinutosNocturno='29')THEN
-                Lv_TotalMinutosNocturno:='30';
-              END IF;
-              
-              IF(Lv_TotalMinutosSimples='29')THEN
-                Lv_TotalMinutosSimples:='30';
-              END IF;
-         
-              Lv_TotalHoraMinutoNocturno := Lv_TotalHorasNocturno||':'||Lv_TotalMinutosNocturno;
-              Lv_TotalHoraMinutoSimple := Lv_TotalHorasSimples||':'||Lv_TotalMinutosSimples;
-              Ln_Contador :=2;
-              
-              
-              FOR Ln_idTipoHoraExtra IN C_TIPO_HORAS_EXTRA('SIMPLE','NOCTURNO')
-              LOOP
-                  Ln_Contador1 := Ln_Contador1+1;
-              
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-                  
-                  
-                  CASE Ln_idTipoHoraExtra.TIPO_HORAS_EXTRA
-                  WHEN  'SIMPLE' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoSimple,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN 'NOCTURNO' THEN
-                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                     C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HorasFinNocturnas1,'HH24:MI');
-                     C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoNocturno,'HH24:MI'),'HH24:MI');
-                     C_TipoHorasExtra(Ln_Contador1):= Ln_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                     
-                 END CASE;
-             
-              END LOOP;
-             
-           
-           END IF;
-     
-     ELSE
-        --ASIGNACION HORAS DOBLES PARA FERIADOS Y FIN DE SEMANA
-      
-        Ld_HoraFinGeneral := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
-      
-        IF(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1 < Ld_HoraInicio1)THEN
-           Ld_HoraFin1:= Ld_HoraFin1 +1;
-        END IF;
-        
-        
-        IF(Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1) 
-        AND(Ld_HoraFin1>Ld_HoraFinGeneral AND Ld_HoraFin1<= Ld_HoraFinGeneral + 1) THEN 
-         
-     
-           Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
-           Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-           
-           IF(Lv_TotalMinutosDobles='29')THEN
-              Lv_TotalMinutosDobles:='30';
-           END IF;
-          
-           Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-           
-           Ln_Contador :=1;
-        
-           IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-           OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
-           FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-           CLOSE C_TIPO_HORAS_EXTRA;
-        
-           C_HoraInicioDet.extend;
-           C_HoraFinDet.extend;
-           C_ListaHoras.extend;
-           C_TipoHorasExtra.extend;
-           C_FechaDet.extend;
-           C_HoraInicioDet(Ln_Contador):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-           C_HoraFinDet(Ln_Contador):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-           C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-           C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-           C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-           
-         END IF;
-     
-     
-         IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1)
-         AND(Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
-            
-            
-               Lv_TotalHorasDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24,24));
-               Lv_TotalMinutosDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24*60,60));
-               Ln_TotalHorasDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24,24));
-               Ln_TotalMinutosDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24*60,60));
-            
-               IF(Lv_TotalMinutosDobles='29')THEN
-                  Lv_TotalMinutosDobles:='30';
-               END IF;
-               
-               IF(Ln_TotalMinutosDobles_1='29')THEN
-                  Ln_TotalMinutosDobles_1:='30';
-               END IF;
-          
-               Lv_TotalHoraMinutoDoble   := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
-               Lv_TotalHoraMinutoDoble_1 := Ln_TotalHorasDobles_1||':'||Ln_TotalMinutosDobles_1;               
-           
-               Ln_Contador  :=2;
-               Ln_Contador1 :=0;
-               IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
-               OPEN C_TIPO_HORAS_EXTRA('DOBLES','');
-               FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
-               CLOSE C_TIPO_HORAS_EXTRA;
-        
-              
-               WHILE Ln_Contador1 < Ln_Contador LOOP
-        
-                  Ln_Contador1:=Ln_Contador1+1;
-        
-                  
-                  C_HoraInicioDet.extend;
-                  C_HoraFinDet.extend;
-                  C_ListaHoras.extend;
-                  C_TipoHorasExtra.extend;
-                  C_FechaDet.extend;
-               
-               
-                  CASE Ln_Contador1
-                  WHEN '1' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinGeneral,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-                  WHEN '2' THEN
-                    C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraFinGeneral,'HH24:MI');
-                    C_HoraFinDet(Ln_Contador1):= TO_CHAR(Ld_HoraFin1,'HH24:MI');
-                    C_ListaHoras(Ln_Contador1):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble_1,'HH24:MI'),'HH24:MI');
-                    C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
-                    C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
-                  END CASE;
-               
-               END LOOP;
-           
-         END IF;
-         
-     
-     END IF;
-  
-  END IF;
-  
+
+END IF;
+
   IF Lv_EsDiaLibre = 'S' THEN
-    
+
     --ASIGNACION HORAS DOBLES PARA DIAS LIBRES
-      
+
      Ld_HoraFinGeneral := TO_DATE((Ld_Fecha||''||Lv_HoraFinDia),'DD-MM-YYYY HH24:MI');
-      
+
      IF(Ld_HoraFin1>=Ld_HoraFinGeneral AND Ld_HoraFin1 < Ld_HoraInicio1)THEN
        Ld_HoraFin1:= Ld_HoraFin1 +1;
      END IF;
-      
-  
-     IF(Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1) AND(Ld_HoraFin1>Ld_HoraFinGeneral AND Ld_HoraFin1<= Ld_HoraFinGeneral + 1) THEN 
-     
+
+     IF(Ld_HoraInicio1>Ld_HoraFinGeneral-1 AND Ld_HoraInicio1 < Ld_HoraFinGeneral) 
+     AND(Ld_HoraFin1>Ld_HoraFinGeneral-1 AND Ld_HoraFin1<= Ld_HoraFinGeneral) THEN 
+
            Lv_TotalHorasDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
            Lv_TotalMinutosDobles := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
-           
+
            IF(Lv_TotalMinutosDobles='29')THEN
               Lv_TotalMinutosDobles:='30';
            END IF;
-          
-           Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
            
+           IF(Lv_TotalHorasDobles < '0')THEN
+              Lv_TotalHorasDobles:=TRUNC((24 - ABS(Lv_TotalHorasDobles)));
+           END IF;
+             
+           Lv_TotalHoraMinutoDoble := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
+
            Ln_Contador :=1;
-        
+
            IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
            OPEN C_TIPO_HORAS_EXTRA('DIALIBRE_DOBLE','');
            FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
            CLOSE C_TIPO_HORAS_EXTRA;
-        
+
            C_HoraInicioDet.extend;
            C_HoraFinDet.extend;
            C_ListaHoras.extend;
@@ -4208,50 +3648,48 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            C_ListaHoras(Ln_Contador):=TO_CHAR(TO_DATE(Lv_TotalHoraMinutoDoble,'HH24:MI'),'HH24:MI');
            C_TipoHorasExtra(Ln_Contador):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
            C_FechaDet(Ln_Contador) := TO_DATE(Ld_Fecha,'DD-MM-YYYY');
-           
+
      END IF;
-     
-     
-     
+
      IF (Ld_HoraInicio1>=Ld_HoraFinGeneral AND Ld_HoraInicio1 < Ld_HoraFinGeneral + 1)AND 
       (Ld_HoraFin1 > Ld_HoraFinGeneral +1)THEN
-          
+
            Lv_TotalHorasDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24,24));
                Lv_TotalMinutosDobles := TRUNC(MOD(((Ld_HoraFinGeneral +1) - Ld_HoraInicio1)*24*60,60));
                Ln_TotalHorasDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24,24));
                Ln_TotalMinutosDobles_1 := TRUNC(MOD((Ld_HoraFin1 - (Ld_HoraFinGeneral +1))*24*60,60));
-            
+
                IF(Lv_TotalMinutosDobles='29')THEN
                   Lv_TotalMinutosDobles:='30';
                END IF;
-               
+
                IF(Ln_TotalMinutosDobles_1='29')THEN
                   Ln_TotalMinutosDobles_1:='30';
                END IF;
-          
+
                Lv_TotalHoraMinutoDoble   := Lv_TotalHorasDobles||':'||Lv_TotalMinutosDobles;
                Lv_TotalHoraMinutoDoble_1 := Ln_TotalHorasDobles_1||':'||Ln_TotalMinutosDobles_1;               
-           
+
                Ln_Contador  :=2;
                Ln_Contador1 :=0;
                IF C_TIPO_HORAS_EXTRA%ISOPEN THEN CLOSE C_TIPO_HORAS_EXTRA; END IF;
                OPEN C_TIPO_HORAS_EXTRA('DIALIBRE_DOBLE','');
                FETCH C_TIPO_HORAS_EXTRA INTO Lr_idTipoHoraExtra;
                CLOSE C_TIPO_HORAS_EXTRA;
-        
-              
+
+
                WHILE Ln_Contador1 < Ln_Contador LOOP
-        
+
                   Ln_Contador1:=Ln_Contador1+1;
-        
-                  
+
+
                   C_HoraInicioDet.extend;
                   C_HoraFinDet.extend;
                   C_ListaHoras.extend;
                   C_TipoHorasExtra.extend;
                   C_FechaDet.extend;
-               
-               
+
+
                   CASE Ln_Contador1
                   WHEN '1' THEN
                     C_HoraInicioDet(Ln_Contador1):= TO_CHAR(Ld_HoraInicio1,'HH24:MI');
@@ -4266,27 +3704,29 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                     C_TipoHorasExtra(Ln_Contador1):= Lr_idTipoHoraExtra.ID_TIPO_HORAS_EXTRA;
                     C_FechaDet(Ln_Contador1) := TO_DATE(Ld_Fecha,'DD-MM-YYYY')+1;
                   END CASE;
-               
+
                END LOOP;
-      
+
      END IF;
+                                         
   
   END IF;
   
+
    IF(Ln_Contador = 0)THEN
      Pv_Mensaje := 'Error 18: La hora inicio y hora fin ingresados para la fecha '||TO_CHAR(Ld_FechaSolicitud,'DD-MM-YYYY')||' , no entra en el rango de horas extras permitido ';
      RAISE Le_Errors;
    END IF;
-    
-    
+
+
     --Modificación de tablas
-    
+
     UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD
      SET HORA_INICIO =Lv_HoraInicio, HORA_FIN =Lv_HoraFin, FECHA=TO_DATE(Ld_Fecha,'DD-MM-YYYY'),
          OBSERVACION= Lv_observacion, USR_MODIFICACION=Lv_UsrCreacion, FE_MODIFICACION =SYSDATE,
          ESTADO=Lv_Estado
     WHERE ID_HORAS_SOLICITUD=Ln_IdHorasSolicitud;
-       
+
     FOR Ln_ContadorEmpleado in 1 .. Ln_NoEmpleado.COUNT LOOP
 
         UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO
@@ -4299,21 +3739,21 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                              Lv_UsrCreacion,
                              Pv_Status,
                              Pv_Mensaje);
-                          
+
         IF Pv_Status = 'ERROR' THEN
               RAISE Le_Errors;
         END IF;
-        
+
     END LOOP;
-    
+
     UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE
      SET ESTADO='Inactivo' 
     WHERE HORAS_SOLICITUD_ID= Ln_IdHorasSolicitud;
-    
+
     WHILE Ln_Contador2 < Ln_Contador LOOP
-    
+
        Ln_Contador2 := Ln_Contador2 + 1;
-       
+
        P_INSERT_DETA_SOLICITUD_HEXTRA(Ln_IdHorasSolicitud,
                                       C_TipoHorasExtra(Ln_Contador2),
                                       C_HoraInicioDet(Ln_Contador2),
@@ -4325,68 +3765,70 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                       Lv_UsrCreacion,
                                       Pv_Status,
                                       Pv_Mensaje);
-                                          
+
        IF Pv_Status = 'ERROR' THEN
            RAISE Le_Errors;
        END IF;
-       
-    
+
+
     END LOOP;
-    
-    
+
+
     UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS 
      SET ESTADO='Inactivo'
     WHERE HORAS_SOLICITUD_ID= Ln_IdHorasSolicitud;
-       
-    
+
+
     FOR Ln_ContadorTarea in 1 .. Lv_TareaId.COUNT LOOP
-    
+
        P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                          apex_json.get_number(p_path => Lv_TareaId(Ln_ContadorTarea)),
                          Lv_UsrCreacion,
                          null,
+                         Lv_observacion,
                          Pv_Status,
                          Pv_Mensaje);
-                          
+
         IF Pv_Status = 'ERROR' THEN
               RAISE Le_Errors;
         END IF;
-    
+
     END LOOP;
-    
+
     Ln_ContadorCuadrilla:=Ln_IdCuadrilla.COUNT;
     WHILE Ln_ContadorCua <=  Ln_ContadorCuadrilla LOOP
-     
+
           P_INSERTAR_TAREAS(Ln_IdHorasSolicitud,
                             null,
                             Lv_UsrCreacion,
                             apex_json.get_number(p_path => Ln_IdCuadrilla(Ln_ContadorCua)),
+                            Lv_observacion,
                             Pv_Status,
                             Pv_Mensaje);
-                          
+
           IF Pv_Status = 'ERROR' THEN
               RAISE Le_Errors;
           END IF;
-          
+
           Ln_ContadorCua :=Ln_ContadorCua+1;
-           
+
     END LOOP;
-    
+
     Ln_ContadorImagenes := Lv_nombreImgEliminados.COUNT;
     WHILE Ln_ContadorImg <= Ln_ContadorImagenes LOOP
-    
+
        UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS
          SET ESTADO='Inactivo'
         WHERE HORAS_SOLICITUD_ID=Ln_IdHorasSolicitud 
          AND NOMBRE_DOCUMENTO = (apex_json.get_varchar2(p_path => Lv_nombreImgEliminados(Ln_ContadorImg)));
-    
+
         Ln_ContadorImg := Ln_ContadorImg+1;
     END LOOP;
-    
-    
+
+
     Ln_ContadorDocumentos := Lv_UbicacionDocumento.COUNT;
     WHILE Ln_ContadorDocu <= Ln_ContadorDocumentos LOOP
-    
+
        P_INSERTAR_DOCUMENTOS(Ln_IdHorasSolicitud,
                             apex_json.get_varchar2(p_path => Lv_NombreDocumento(Ln_ContadorDocu)),
                             apex_json.get_varchar2(p_path => Lv_UbicacionDocumento(Ln_ContadorDocu)),
@@ -4394,20 +3836,20 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                             Lv_UsrCreacion,
                             Pv_Status,
                             Pv_Mensaje);
-      
+
        IF Pv_Status = 'ERROR' THEN
               RAISE Le_Errors;
        END IF;
-    
+
        Ln_ContadorDocu:=Ln_ContadorDocu+1;
     END LOOP;
-    
-    
+
+
     COMMIT;
-    
+
     Pv_Status     := 'OK';
     Pv_Mensaje    := 'Transacción exitosa';
-  
+
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -4422,7 +3864,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
 
   END P_ACTUALIZAR_SOLICITUD_HEXTRA;
-  
+
+
   PROCEDURE P_INSERT_SOLICITUD_HEXTRA(Pn_IdHorasSolicitud    IN NUMBER,
                                       Pd_Fecha               IN DATE,
                                       Pv_HoraInicio          IN VARCHAR2,
@@ -4433,16 +3876,57 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                       Pv_UsrCreacion         IN VARCHAR2,
                                       Pv_Status              OUT VARCHAR2,
                                       Pv_Mensaje             OUT VARCHAR2)
-  
-  
+
+
   AS
-  
+      Lv_EstadoSol                   VARCHAR2(15);     
       Le_Errors                      EXCEPTION;
-  
+
   BEGIN
-  
-        INSERT
-                
+
+      SELECT
+        CASE
+          WHEN Pv_observacion LIKE ('Origen Solicitud Job barrido de tareas por departamentos tecnica%')
+          THEN
+            (SELECT PARDET.VALOR1 AS ESTADO
+            FROM DB_GENERAL.admi_parametro_cab PARCAB,
+              DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS TECNICA'
+            AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+            AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS TECNICA'
+            AND PARDET.ESTADO             = 'Activo'
+            AND PARCAB.ESTADO             = 'Activo'
+            )
+          WHEN Pv_observacion LIKE ('Origen Tarea HE Job barrido de tareas por departamentos administrativos%')
+          THEN
+            (SELECT PARDET.VALOR1 AS ESTADO
+            FROM DB_GENERAL.admi_parametro_cab PARCAB,
+              DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS_ADMINISTRATIVA'
+            AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+            AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS ADMINISTRATIVA'
+            AND PARDET.ESTADO             = 'Activo'
+            AND PARCAB.ESTADO             = 'Activo'
+            )
+             WHEN Pv_observacion LIKE ('Origen Tarea HE %')
+          THEN
+            (SELECT PARDET.VALOR1 AS ESTADO
+            FROM DB_GENERAL.admi_parametro_cab PARCAB,
+              DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'ESTADO TAREA PROCESO HE'
+            AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+            AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LAS TAREAS PROCESO HE'
+            AND PARDET.ESTADO             = 'Activo'
+            AND PARCAB.ESTADO             = 'Activo'
+            )
+          WHEN Pv_observacion LIKE ('Origen Portal Planificacion HE%')
+          THEN 'Verificacion'
+          ELSE 'Pendiente'
+        END AS ESTADO INTO Lv_EstadoSol
+      FROM DUAL;
+
+        INSERT        
+
         INTO DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD 
         (
         ID_HORAS_SOLICITUD,
@@ -4467,7 +3951,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         Pv_HoraFin,
         Pv_observacion,
         Pv_Descripcion,
-        'Pendiente',
+        Lv_EstadoSol,
         Pv_EmpresaCod,
         Pv_UsrCreacion,
         SYSDATE,
@@ -4475,12 +3959,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         NULL,
         NULL
         );
-        
-        
+
+
     Pv_Status     := 'OK';
     Pv_Mensaje    := 'Transacción exitosa';
-  
-  
+
+
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
@@ -4491,8 +3975,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));  
-  
-  
+
+
   END P_INSERT_SOLICITUD_HEXTRA;
 
   PROCEDURE P_INSERT_DETA_SOLICITUD_HEXTRA(Pn_IdHorasSolicitud    IN NUMBER,
@@ -4506,15 +3990,58 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                            Pv_usrCreacion         IN VARCHAR2,
                                            Pv_Status              OUT VARCHAR2,
                                            Pv_Mensaje             OUT VARCHAR2)
-  
+
   AS
       Ln_IdHorasSolicitudDetalle     DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE.ID_HORAS_SOLICITUD_DETALLE%TYPE;
       Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
-      
-      
+
+      Lv_EstadoSol                   VARCHAR2(15); 
   BEGIN
-  
+
+       SELECT
+            CASE
+              WHEN Pv_observacion LIKE ('Origen Solicitud Job barrido de tareas por departamentos tecnica%')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS TECNICA'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS TECNICA'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+              WHEN Pv_observacion LIKE ('Origen Tarea HE Job barrido de tareas por departamentos administrativos%')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS_ADMINISTRATIVA'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS ADMINISTRATIVA'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+
+              WHEN Pv_observacion LIKE ('Origen Tarea HE %')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO TAREA PROCESO HE'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LAS TAREAS PROCESO HE'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+              WHEN Pv_observacion LIKE ('Origen Portal Planificacion HE%')
+              THEN 'Verificacion'
+              ELSE 'Pendiente'
+            END AS ESTADO INTO Lv_EstadoSol
+          FROM DUAL;     
+
        Ln_IdHorasSolicitudDetalle := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD_DETA.NEXTVAL;
+
        INSERT
         INTO DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE
         (
@@ -4543,14 +4070,14 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          Pv_Horas,
          Pd_FechaDet,
          Pv_Observacion,
-         Pv_Estado,
+         Lv_EstadoSol,
          Pv_usrCreacion,
          SYSDATE,
          NULL,
          NULL,
          NULL
         );
-        
+
       Ln_IdHorasSolicitudHistorial := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD_HISTO.NEXTVAL;
       INSERT 
        INTO DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL
@@ -4580,18 +4107,18 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        Pv_Horas,
        Pd_FechaDet,
        Pv_Observacion,
-       Pv_Estado,
+       Lv_EstadoSol,
        Pv_usrCreacion,
        SYSDATE,
        NULL,
        NULL,
        NULL
        );
-        
-        
+
+
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
-  
+
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
@@ -4602,10 +4129,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));                                      
-                                            
+
   END P_INSERT_DETA_SOLICITUD_HEXTRA;
-  
-  
+
+
   PROCEDURE P_INSERT_HISTORIAL_SOLICITUD(Pn_IdHorasSolicitud IN NUMBER,
                                          Pn_TareasExtraId    IN NUMBER,
                                          Pv_HoraInicioDet    IN VARCHAR2,
@@ -4617,13 +4144,13 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                          Pv_usrCreacion      IN VARCHAR2,
                                          Pv_Status           OUT VARCHAR2,
                                          Pv_Mensaje          OUT VARCHAR2)
-                                           
+
   As
-  
+
        Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
-       
+
   BEGIN
-  
+
                Ln_IdHorasSolicitudHistorial := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD_HISTO.NEXTVAL;
                INSERT 
                  INTO DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL
@@ -4660,12 +4187,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                  NULL,
                  NULL
                  );
-                 
+
            COMMIT;
-           
+
            Pv_Status     := 'OK';
            Pv_Mensaje    := 'Transacción exitosa';
-  
+
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
@@ -4676,71 +4203,115 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-  
+
   END P_INSERT_HISTORIAL_SOLICITUD;
-  
-  
+
+
   PROCEDURE P_INSERTAR_TAREAS(Pn_IdHorasSolicitud IN NUMBER,
                               Pn_TareaId          IN NUMBER,
                               Pv_usrCreacion      IN VARCHAR2,
                               Pn_IdCuadrilla      IN NUMBER,
+                              Pv_observacion      IN VARCHAR2,
                               Pv_Status           OUT VARCHAR2,
                               Pv_Mensaje          OUT VARCHAR2)
-                                
-   AS
-   
-        Ln_IdTareasHoras               DB_HORAS_EXTRAS.INFO_TAREAS_HORAS.ID_TAREAS_HORAS%TYPE;
-   
-   
-   BEGIN
-       
-        Ln_IdTareasHoras := DB_HORAS_EXTRAS.SEQ_INFO_TAREAS_HORAS.NEXTVAL;
-        INSERT
-          INTO DB_HORAS_EXTRAS.INFO_TAREAS_HORAS
-          (
-           ID_TAREAS_HORAS,
-           HORAS_SOLICITUD_ID,
-           TAREA_ID,
-           ESTADO,
-           USR_CREACION,
-           FE_CREACION,
-           USR_MODIFICACION,
-           FE_MODIFICACION,
-           IP_CREACION,
-           CUADRILLA_ID
-           )
-           VALUES
-           (
-           Ln_IdTareasHoras,
-           Pn_IdHorasSolicitud,
-           Pn_TareaId,
-           'Pendiente',
-           Pv_usrCreacion,
-           SYSDATE,
-           NULL,
-           NULL,
-           NULL,
-           Pn_IdCuadrilla
-           );
-           
-           COMMIT;
-           
-           Pv_Status     := 'OK';
-           Pv_Mensaje    := 'Transacción exitosa';
-   
-   EXCEPTION
+
+    AS
+
+    Ln_IdTareasHoras DB_HORAS_EXTRAS.INFO_TAREAS_HORAS.ID_TAREAS_HORAS%TYPE;
+
+    Lv_EstadoTarea VARCHAR2(15);
+
+  BEGIN
+
+  SELECT
+            CASE
+              WHEN Pv_observacion LIKE ('Origen Solicitud Job barrido de tareas por departamentos tecnica%')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS TECNICA'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS TECNICA'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+              WHEN Pv_observacion LIKE ('Origen Tarea HE Job barrido de tareas por departamentos administrativos%')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS_ADMINISTRATIVA'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS ADMINISTRATIVA'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+              WHEN Pv_observacion LIKE ('Origen Tarea HE %')
+              THEN
+                (SELECT PARDET.VALOR1 AS ESTADO
+                FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'ESTADO TAREA PROCESO HE'
+                AND PARDET.PARAMETRO_ID       =PARCAB.ID_PARAMETRO
+                AND PARDET.DESCRIPCION        = 'ESTADO A GENERARSE LAS SOLICITUDES DE LAS TAREAS PROCESO HE'
+                AND PARDET.ESTADO             = 'Activo'
+                AND PARCAB.ESTADO             = 'Activo'
+                )
+              WHEN Pv_observacion LIKE ('Origen Portal Planificacion HE%')
+              THEN 'Verificacion'
+              ELSE 'Pendiente'
+            END AS ESTADO INTO Lv_EstadoTarea
+          FROM DUAL;
+
+
+    Ln_IdTareasHoras := DB_HORAS_EXTRAS.SEQ_INFO_TAREAS_HORAS.NEXTVAL;
+    INSERT INTO DB_HORAS_EXTRAS.INFO_TAREAS_HORAS
+      (ID_TAREAS_HORAS,
+       HORAS_SOLICITUD_ID,
+       TAREA_ID,
+       ESTADO,
+       USR_CREACION,
+       FE_CREACION,
+       USR_MODIFICACION,
+       FE_MODIFICACION,
+       IP_CREACION,
+       CUADRILLA_ID)
+    VALUES
+      (Ln_IdTareasHoras,
+       Pn_IdHorasSolicitud,
+       Pn_TareaId,
+       Lv_EstadoTarea,
+       Pv_usrCreacion,
+       SYSDATE,
+       NULL,
+       NULL,
+       NULL,
+       Pn_IdCuadrilla);
+
+    COMMIT;
+
+    Pv_Status  := 'OK';
+    Pv_Mensaje := 'Transacción exitosa';
+
+  EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_TAREAS: - '||SQLCODE||' -ERROR- '||SQLERRM;
-            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
-                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_TAREAS: ',
-                                                 Pv_Mensaje,
-                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
-                                                 SYSDATE,
-                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));                          
-                                
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_TAREAS: - ' ||
+                    SQLCODE || ' -ERROR- ' || SQLERRM;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_INSERTAR_TAREAS: ',
+                                           Pv_Mensaje,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               USER),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));                      
+
    END P_INSERTAR_TAREAS;
-   
+
    PROCEDURE P_INSERTAR_DOCUMENTOS(Pn_IdHorasSolicitud    IN NUMBER,
                                    Pv_NombreDocumento    IN VARCHAR2,
                                    Pv_UbicacionDocumento IN VARCHAR2,
@@ -4748,12 +4319,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                    Pv_usrCreacion        IN VARCHAR2,
                                    Pv_Status             OUT VARCHAR2,
                                    Pv_Mensaje            OUT VARCHAR2)
-    
+
     AS 
-    
+
        Ln_IdDocumentoHorasExtra       DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS.ID_DOCUMENTO_HORAS_EXTRA%TYPE;
     BEGIN
-                                    
+
        Ln_IdDocumentoHorasExtra := DB_HORAS_EXTRAS.SEQ_INFO_DOCUMENTO_HORAS_EXT.NEXTVAL;
        INSERT
        INTO DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS
@@ -4782,12 +4353,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        NULL,
        NULL
        );
-       
+
        COMMIT;
-       
+
        Pv_Status     := 'OK';
        Pv_Mensaje    := 'Transacción exitosa';
-    
+
     EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
@@ -4798,18 +4369,18 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1')); 
-                                    
-                                    
+
+
     END P_INSERTAR_DOCUMENTOS;
-    
-    
+
+
     PROCEDURE P_ACTUALIZACION_GENERAL_SOLI(Pn_IdHorasSolicitud IN NUMBER,
                                            Pv_Proceso          IN VARCHAR2,
                                            Pv_Status           OUT VARCHAR2,
                                            Pv_Mensaje          OUT VARCHAR2)
-   
+
     AS
-    
+
       CURSOR C_OBSERVACION_SOLICITUD(Cn_IdHorasSolicitud NUMBER) IS
         SELECT IHSD.HORAS_SOLICITUD_ID,IHSD.TIPO_HORAS_EXTRA_ID,IHSD.HORA_INICIO_DET,IHSD.HORA_FIN_DET,
           IHSD.HORAS,IHSD.FECHA_SOLICITUD_DET,IHSD.OBSERVACION  
@@ -4818,29 +4389,29 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           WHERE IHS.ID_HORAS_SOLICITUD=Cn_IdHorasSolicitud 
           AND IHSD.FE_CREACION=(SELECT MAX(IHSDE.FE_CREACION) FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSDE
           WHERE IHSDE.HORAS_SOLICITUD_ID=Cn_IdHorasSolicitud);
-    
+
       Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
       Le_Errors                      EXCEPTION;
-                                           
+
     BEGIN
-    
-    
-    
+
+
+
       IF Pv_Proceso = 'Anulacion' THEN
-      
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS SET IHS.ESTADO='Anulada'
-         WHERE IHS.ID_HORAS_SOLICITUD = Pn_IdHorasSolicitud AND IHS.ESTADO='Pendiente';
-         
+         WHERE IHS.ID_HORAS_SOLICITUD = Pn_IdHorasSolicitud AND IHS.ESTADO IN ('Pendiente','Verificacion');
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD SET IHSD.ESTADO='Anulada'
-         WHERE IHSD.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IHSD.ESTADO='Pendiente';
-        
+         WHERE IHSD.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IHSD.ESTADO IN ('Pendiente','Verificacion');
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE SET IHSE.ESTADO='Anulada'
-         WHERE IHSE.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IHSE.ESTADO='Pendiente'; 
-        
-        
+         WHERE IHSE.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IHSE.ESTADO IN ('Pendiente','Verificacion');
+
+
          FOR Lr_ObservacionSolicitud IN C_OBSERVACION_SOLICITUD(Pn_IdHorasSolicitud) 
          LOOP
-         
+
             P_INSERT_HISTORIAL_SOLICITUD(Pn_IdHorasSolicitud,
                                          Lr_ObservacionSolicitud.TIPO_HORAS_EXTRA_ID,
                                          Lr_ObservacionSolicitud.HORA_INICIO_DET,
@@ -4852,36 +4423,36 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                          USER,
                                          Pv_Status,
                                          Pv_Mensaje);
-                                              
+
                 IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                 END IF;
-         
+
          END LOOP;
-        
-        
+
+
          UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH SET ITH.ESTADO='Anulada'
-         WHERE ITH.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND ITH.ESTADO='Pendiente';
-      
+         WHERE ITH.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND ITH.ESTADO IN ('Pendiente','Verificacion');
+
          UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE SET IDHE.ESTADO='Anulada'
-         WHERE IDHE.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IDHE.ESTADO='Pendiente';   
-      
+         WHERE IDHE.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IDHE.ESTADO IN ('Pendiente','Verificacion');   
+
       ELSIF Pv_Proceso = 'Procesamiento' THEN
-      
-      
+
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS SET IHS.ESTADO='Procesada'
          WHERE IHS.ID_HORAS_SOLICITUD = Pn_IdHorasSolicitud AND IHS.ESTADO='Autorizada';
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD SET IHSD.ESTADO='Procesada'
          WHERE IHSD.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IHSD.ESTADO='Autorizada';
-        
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE SET IHSE.ESTADO='Procesada'
          WHERE IHSE.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IHSE.ESTADO='Autorizada'; 
-        
-        
+
+
          FOR Lr_ObservacionSolicitud IN C_OBSERVACION_SOLICITUD(Pn_IdHorasSolicitud) 
          LOOP
-         
+
             P_INSERT_HISTORIAL_SOLICITUD(Pn_IdHorasSolicitud,
                                          Lr_ObservacionSolicitud.TIPO_HORAS_EXTRA_ID,
                                          Lr_ObservacionSolicitud.HORA_INICIO_DET,
@@ -4893,30 +4464,30 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                          USER,
                                          Pv_Status,
                                          Pv_Mensaje);
-                                              
+
                 IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                 END IF;
-         
+
          END LOOP;
-        
-        
+
+
          UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH SET ITH.ESTADO='Procesada'
          WHERE ITH.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND ITH.ESTADO='Autorizada';
-      
+
          UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE SET IDHE.ESTADO='Procesada'
          WHERE IDHE.HORAS_SOLICITUD_ID = Pn_IdHorasSolicitud AND IDHE.ESTADO='Autorizada';   
-      
+
       END IF;
-     
-     
+
+
       COMMIT;
-      
+
       Pv_Status     := 'OK';
       Pv_Mensaje    := 'Transacción exitosa';
-      
-      
-    
+
+
+
     EXCEPTION
     WHEN Le_Errors THEN
        Pv_Status  := 'ERROR';
@@ -4929,10 +4500,10 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1')); 
-                      
-                      
+
+
     END P_ACTUALIZACION_GENERAL_SOLI;   
-    
+
     PROCEDURE P_AUTORIZACION_MASIVA(Pn_IdHorasSolicitud IN NUMBER,
                                     Pv_Estado           IN VARCHAR2,
                                     Pv_NomPantalla      IN VARCHAR2,
@@ -4940,9 +4511,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                     Pv_EmpresaCod       IN VARCHAR2,
                                     Pv_Status           OUT VARCHAR2,
                                     Pv_Mensaje          OUT VARCHAR2)
-                                    
+
     AS
-  
+
       CURSOR C_OBSERVACION_SOLICITUD(Cn_IdHorasSolicitud NUMBER, Cv_estado VARCHAR2) IS
         SELECT IHSD.HORAS_SOLICITUD_ID,IHSD.TIPO_HORAS_EXTRA_ID,IHSD.HORA_INICIO_DET,IHSD.HORA_FIN_DET,
           IHSD.HORAS,IHSD.FECHA_SOLICITUD_DET,IHSD.OBSERVACION  
@@ -4951,36 +4522,36 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           WHERE IHS.ID_HORAS_SOLICITUD=Cn_IdHorasSolicitud 
           AND IHSD.FE_CREACION=(SELECT MAX(IHSDE.FE_CREACION) FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSDE
           WHERE IHSDE.HORAS_SOLICITUD_ID=Cn_IdHorasSolicitud) AND IHS.ESTADO=Cv_estado;
-  
-      
+
+
       Lv_Estado                      VARCHAR2(20);
       Lv_Proceso                     VARCHAR2(30);
       Lv_Observacion                 VARCHAR2(205);
       Le_Errors                      EXCEPTION;
-      
+
     BEGIN
-    
+
         IF C_OBSERVACION_SOLICITUD%ISOPEN THEN CLOSE C_OBSERVACION_SOLICITUD; END IF;
-    
+
         IF Pv_NomPantalla = 'PreAutorizacion' THEN
-        
+
            UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
             SET IHS.ESTADO= ''||Pv_Estado||'',IHS.USR_MODIFICACION=Pv_Usuario, IHS.FE_MODIFICACION =SYSDATE
-           WHERE IHS.ID_HORAS_SOLICITUD=''||Pn_IdHorasSolicitud AND IHS.ESTADO='Pendiente';
-           
+           WHERE IHS.ID_HORAS_SOLICITUD=''||Pn_IdHorasSolicitud AND IHS.ESTADO IN ('Pendiente','Verificacion');
+
            UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
             SET IHSE.ESTADO= ''||Pv_Estado||'', IHSE.USR_MODIFICACION=Pv_Usuario, IHSE.FE_MODIFICACION = SYSDATE
-           WHERE IHSE.HORAS_SOLICITUD_ID=''|| Pn_IdHorasSolicitud AND IHSE.ESTADO='Pendiente';
-           
+           WHERE IHSE.HORAS_SOLICITUD_ID=''|| Pn_IdHorasSolicitud AND IHSE.ESTADO IN ('Pendiente','Verificacion');
+
            UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
             SET IHSD.ESTADO=''||Pv_Estado||'', IHSD.USR_MODIFICACION=Pv_Usuario, IHSD.FE_MODIFICACION = SYSDATE
-           WHERE IHSD.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND IHSD.ESTADO='Pendiente';
-           
-           
+           WHERE IHSD.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND IHSD.ESTADO IN ('Pendiente','Verificacion');
+
+
            FOR Lr_ObservacionSolicitud IN C_OBSERVACION_SOLICITUD(Pn_IdHorasSolicitud,Pv_Estado) 
            LOOP
-           
-               
+
+
                  P_INSERT_HISTORIAL_SOLICITUD(Pn_IdHorasSolicitud,
                                               Lr_ObservacionSolicitud.TIPO_HORAS_EXTRA_ID,
                                               Lr_ObservacionSolicitud.HORA_INICIO_DET,
@@ -4992,46 +4563,46 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                               Pv_Usuario,
                                               Pv_Status,
                                               Pv_Mensaje);
-                                              
+
                 Lv_Observacion:=Lr_ObservacionSolicitud.OBSERVACION;
-                                              
+
                 IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                 END IF;
-           
+
            END LOOP;
-        
+
            UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH
             SET ITH.ESTADO=''||Pv_Estado||'', ITH.USR_MODIFICACION=Pv_Usuario, ITH.FE_MODIFICACION = SYSDATE
-           WHERE ITH.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND ITH.ESTADO='Pendiente';
-         
+           WHERE ITH.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND ITH.ESTADO IN ('Pendiente','Verificacion');
+
            UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE
             SET IDHE.ESTADO=''||Pv_Estado||'', IDHE.USR_MODIFICACION=Pv_Usuario, IDHE.FE_MODIFICACION = SYSDATE
-           WHERE IDHE.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND IDHE.ESTADO='Pendiente';
-           
-           
+           WHERE IDHE.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND IDHE.ESTADO IN ('Pendiente','Verificacion');
+
+
            P_ENVIAR_MAIL_GENERAL(Pv_NomPantalla,
                                  Pv_EmpresaCod,
                                  Pn_IdHorasSolicitud,
                                  Lv_Observacion);
-           
+
         ELSE
-        
+
            UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
             SET IHS.ESTADO= ''||Pv_Estado||'', IHS.USR_MODIFICACION=Pv_Usuario, IHS.FE_MODIFICACION = SYSDATE
            WHERE IHS.ID_HORAS_SOLICITUD=''||Pn_IdHorasSolicitud AND ESTADO='Pre-Autorizada';
-           
+
            UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
             SET IHSE.ESTADO= ''||Pv_Estado||'', IHSE.USR_MODIFICACION=Pv_Usuario, IHSE.FE_MODIFICACION = SYSDATE
            WHERE IHSE.HORAS_SOLICITUD_ID=''||Pn_IdHorasSolicitud AND ESTADO='Pre-Autorizada';
-           
+
            UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
             SET IHSD.ESTADO=''||Pv_Estado||'', IHSD.USR_MODIFICACION=Pv_Usuario, IHSD.FE_MODIFICACION = SYSDATE
            WHERE IHSD.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND ESTADO='Pre-Autorizada';
-           
+
            FOR Lr_ObservacionSolicitud IN C_OBSERVACION_SOLICITUD(Pn_IdHorasSolicitud,Pv_Estado) 
            LOOP
-           
+
                P_INSERT_HISTORIAL_SOLICITUD(Pn_IdHorasSolicitud,
                                               Lr_ObservacionSolicitud.TIPO_HORAS_EXTRA_ID,
                                               Lr_ObservacionSolicitud.HORA_INICIO_DET,
@@ -5043,32 +4614,32 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                               Pv_Usuario,
                                               Pv_Status,
                                               Pv_Mensaje);
-                                              
-                                              
+
+
                 IF Pv_Status = 'ERROR' THEN
                   RAISE Le_Errors;
                 END IF;
-           
-           
+
+
            END LOOP;
-         
-           
+
+
            UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH
             SET ITH.ESTADO=''||Pv_Estado||'', ITH.USR_MODIFICACION=Pv_Usuario, ITH.FE_MODIFICACION = SYSDATE
            WHERE ITH.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND ESTADO='Pre-Autorizada';
-         
+
            UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE
             SET IDHE.ESTADO=''||Pv_Estado||'', IDHE.USR_MODIFICACION=Pv_Usuario, IDHE.FE_MODIFICACION= SYSDATE
            WHERE IDHE.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud AND ESTADO='Pre-Autorizada';
-        
-        
+
+
         END IF;
-    
+
         COMMIT;
-        
+
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
-    
+
     EXCEPTION
     WHEN Le_Errors THEN
        Pv_Status  := 'ERROR';
@@ -5081,24 +4652,24 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-      
+
     END P_AUTORIZACION_MASIVA;
-    
-    
+
+
     PROCEDURE P_INSERTAR_EMPLEADOS(Pn_IdHorasSolicitud IN NUMBER,
                                    Pn_NoEmple          IN NUMBER,
                                    Pv_Estado           IN VARCHAR2,
                                    Pv_UsrCreacion      IN VARCHAR2,
                                    Pv_Status           OUT VARCHAR2,
                                    Pv_Mensaje          OUT VARCHAR2)
-         
+
     AS
-    
+
       Ln_IdHorasSolicitudEmpleado   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO.ID_HORAS_SOLICITUD_EMPLEADO%TYPE;
       Le_Errors                     EXCEPTION;
-      
+
     BEGIN                               
-    
+
        Ln_IdHorasSolicitudEmpleado := DB_HORAS_EXTRAS.SEQ_INFO_HORAS_SOLICITUD_EMPLE.NEXTVAL;
        INSERT
        INTO DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO
@@ -5125,12 +4696,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
        NULL,
        NULL
        );
-       
+
        Pv_Status     := 'OK';
        Pv_Mensaje    := 'Transacción exitosa';
-      
-      
-    
+
+
+
     EXCEPTION
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
@@ -5141,16 +4712,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-      
-    
+
+
     END P_INSERTAR_EMPLEADOS;
-    
-  
+
+
     PROCEDURE P_AUTORIZACION_POR_DEPTO(Pcl_Request  IN  CLOB,
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2)
-                                       
-                                       
+
+
     AS
         Lv_EmpresaCod          VARCHAR2(2);
         Lv_NombreDpto          VARCHAR2(60);
@@ -5164,8 +4735,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
         Ld_FechaCorte          DATE;
         Ld_FechaActual         DATE;
         Le_Errors              EXCEPTION;
-    
-    
+
+
         CURSOR C_SOLICITUDES_DEPARTAMENTO(Cv_Departamento VARCHAR2,
                                           Cv_EmpresaCod   VARCHAR2,
                                           Cn_Cantidad     NUMBER) IS
@@ -5177,23 +4748,23 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
            AND VEE.TIPO_EMP NOT IN('03')
            AND TO_CHAR(TO_DATE(IHS.FECHA,'DD-MM-YY'),'MM-YYYY') =TO_CHAR(ADD_MONTHS(SYSDATE,Cn_Cantidad),'MM-YYYY')
            AND VEE.NOMBRE_DEPTO=Cv_Departamento;
-           
+
         CURSOR C_EXISTE_AREA(Cv_Area VARCHAR2) IS
           SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='LISTADO_AREAS_HE')
           AND VALOR1=Cv_Area;
-          
+
         CURSOR C_DIA_CORTE(Cv_RolUsuario VARCHAR2) IS
           SELECT APD.VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID = (SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC 
           WHERE APC.NOMBRE_PARAMETRO='DIA_DE_CORTE_HE') AND APD.VALOR2=Cv_RolUsuario AND APD.DESCRIPCION='DIA_CORTE_CONSULTA';
-      
-         
+
+
           Lr_Valor1               DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
           Lr_Valor_1              DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE; 
-    
+
     BEGIN
-    
+
          -- RETORNO LAS VARIABLES DEL REQUEST
          APEX_JSON.PARSE(Pcl_Request);
          Lv_EmpresaCod          := APEX_JSON.get_varchar2(p_path => 'empresaCod');
@@ -5202,69 +4773,69 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
          Lv_NombreArea          := APEX_JSON.get_varchar2(p_path => 'nombreArea');
          Lv_Area                := APEX_JSON.get_varchar2(p_path => 'area');
          Lv_EsSuperUsuario      := APEX_JSON.get_varchar2(p_path => 'esSuperUsuario');
-         
+
          IF Lv_Area IS NOT NULL AND Lv_NombreArea IS NULL THEN
-           
+
             SELECT DESCRI
              INTO Lv_NombreArea
              FROM NAF47_TNET.ARPLAR 
             WHERE AREA=Lv_Area AND NO_CIA=Lv_EmpresaCod;
-         
+
          END IF;
-         
-         
+
+
          IF C_EXISTE_AREA%ISOPEN THEN
              CLOSE C_EXISTE_AREA;
          END IF;
-        
-        
+
+
          OPEN C_EXISTE_AREA(Lv_nombreArea);
          FETCH C_EXISTE_AREA INTO Lr_valor1;
-      
+
          IF C_EXISTE_AREA%NOTFOUND THEN  
              Pv_Mensaje := 'No se puede autorizar solicitudes para el area'||' '||Lv_nombreArea;
              RAISE Le_Errors;
          END IF;
-      
+
          CLOSE C_EXISTE_AREA;
-         
+
          --- DIA DE CORTE 
          IF C_DIA_CORTE%ISOPEN THEN
             CLOSE C_DIA_CORTE;
          END IF;
-        
+
          OPEN C_DIA_CORTE(Lv_EsSuperUsuario);
          FETCH C_DIA_CORTE INTO Lr_Valor_1;
-      
-      
+
+
          IF C_DIA_CORTE%FOUND THEN  
-           
+
             SELECT TO_DATE(Lr_Valor_1||'-'||TO_CHAR(SYSDATE,'MM-YYYY'),'DD-MM-YY')FECHA_CORTE
               INTO Ld_FechaCorte
             FROM DUAL;           
-           
+
          END IF;
-       
+
          CLOSE C_DIA_CORTE;
-         
+
          Ld_FechaActual:= SYSDATE;
-         
-         
+
+
          IF(TO_CHAR(Ld_FechaActual,'DD-MM-YYYY') > TO_CHAR(Ld_FechaCorte,'DD-MM-YYYY'))THEN
-         
+
            Ln_Cantidad:=0;
-         
+
          ELSE
-         
+
           Ln_Cantidad:=-1;
-         
+
          END IF;
-         
-         
+
+
          IF C_SOLICITUDES_DEPARTAMENTO%ISOPEN THEN CLOSE C_SOLICITUDES_DEPARTAMENTO; END IF;
-    
+
          FOR Lr_Solicitudes IN C_SOLICITUDES_DEPARTAMENTO(Lv_NombreDpto,Lv_EmpresaCod,Ln_Cantidad)LOOP
-         
+
              P_AUTORIZACION_MASIVA(Lr_Solicitudes.ID_HORAS_SOLICITUD,
                                    Lv_Estado,
                                    Lv_nombrePantalla,
@@ -5272,17 +4843,17 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                    Lv_EmpresaCod,
                                    Pv_Status,
                                    Pv_Mensaje);
-                                
-                                
+
+
              IF Pv_Status = 'ERROR' THEN
                 RAISE Le_Errors;
              END IF;
-           
+
          END LOOP;
-    
+
          Pv_Status     := 'OK';
          Pv_Mensaje    := 'Transacción exitosa';
-         
+
     EXCEPTION
     WHEN Le_Errors THEN
        Pv_Status  := 'ERROR';
@@ -5295,16 +4866,16 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-    
+
     END P_AUTORIZACION_POR_DEPTO;
-    
+
     PROCEDURE P_ENVIO_MAIL_HE(Pv_EmpresaCod IN VARCHAR2,
                               Pv_Remitente  IN VARCHAR2,
                               Pv_Asunto     IN VARCHAR2)
 
-   
+
     AS
-    
+
             CURSOR C_SOLICITUDES_AUTORIZADAS(Cv_empresaCod VARCHAR2) IS
                 SELECT VEE.NOMBRE,IHS.FECHA FECHA_SOLICITUD,
                      IHS.HORA_INICIO,IHS.HORA_FIN,
@@ -5314,20 +4885,20 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                     JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
                   WHERE IHS.ESTADO='Autorizada' AND TO_CHAR(IHS.FE_MODIFICACION,'DD-MM-YYYY')= TO_CHAR(SYSDATE,'DD-MM-YYYY') AND IHS.EMPRESA_COD=Cv_empresaCod
                     AND VEE.NO_CIA=Cv_empresaCod;
-    
+
          Lv_Cuerpo           VARCHAR2(9999);
          Pv_Status           VARCHAR2(1000);
          Pv_Mensaje          VARCHAR2(1000);
-   
-   
+
+
     BEGIN
-    
+
           IF C_SOLICITUDES_AUTORIZADAS%ISOPEN THEN
                CLOSE C_SOLICITUDES_AUTORIZADAS;
           END IF;
-               
+
           FOR Lr_Solicitudes IN C_SOLICITUDES_AUTORIZADAS(Pv_EmpresaCod) LOOP
-         
+
                Lv_Cuerpo := '<html>
                                  <head>
                                      <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
@@ -5347,7 +4918,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                               <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"></span></span></p>
                                                               <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">
                                                                Estimado colaborador(a), el presente es para informarle que su solicitud de horas extra ha sido autorizada</span></span></p>
-                                                                   
+
                                                                 <table border="1px">
                                                                      <thead>
                                                                          <tr>
@@ -5382,8 +4953,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                          </table>
                                  </body>
                              </html>';
-                             
-                            
+
+
                             UTL_MAIL.SEND(
                                   SENDER       => Pv_Remitente,
                                   RECIPIENTS   => Lr_Solicitudes.MAIL_CIA,
@@ -5391,11 +4962,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                   MESSAGE      => Lv_Cuerpo,
                                   MIME_TYPE    => 'text/html; charset=UTF-8'
                              );
-            
-                             
-                             
+
+
+
           END LOOP;                   
-    
+
     EXCEPTION
     WHEN OTHERS THEN
             Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ENVIO_MAIL_HE: - '||SQLCODE||' -ERROR- '||SQLERRM;
@@ -5405,11 +4976,11 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-            
-    
+
+
     END P_ENVIO_MAIL_HE;
-    
-    
+
+
     PROCEDURE P_REPORTE_AUTORIZACIONES(Pv_EmpresaCod IN VARCHAR2,
                                        Pv_Remitente  IN VARCHAR2,
                                        Pv_Asunto     IN VARCHAR2)
@@ -5478,7 +5049,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                   SELECT IHS.ID_HORAS_SOLICITUD
                      FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS
                     WHERE TO_CHAR(IHS.FECHA,'MM-YYYY')=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'MM-YYYY')
-                     AND ESTADO ='Pendiente';
+                     AND ESTADO IN ('Pendiente','Verificacion');
 
                CURSOR C_CORREO_DESTINATARIO(Cv_EmpresaCod VARCHAR2)IS
                  SELECT APD.VALOR1 
@@ -5808,15 +5379,15 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
 
     END P_REPORTE_AUTORIZACIONES;
-    
+
     PROCEDURE P_ENVIAR_MAIL_GENERAL(Pv_Proceso          IN VARCHAR2,
                                     Pv_EmpresaCod       IN VARCHAR2,
                                     Pn_IdHorasSolicitud IN NUMBER,
                                     Pv_Observacion      IN VARCHAR2)
-    
+
     AS
-    
-        CURSOR C_INFORMACION_SOLICITUD(Cv_EmpresaCod VARCHAR2,Pn_IdHorasSolicitud NUMBER, Cv_Estado1 VARCHAR2,Cv_Estado2 VARCHAR2) IS
+
+       CURSOR C_INFORMACION_SOLICITUD(Cv_EmpresaCod VARCHAR2,Pn_IdHorasSolicitud NUMBER, Cv_Estado1 VARCHAR2,Cv_Estado2 VARCHAR2,Cv_Estado3 VARCHAR2) IS
             SELECT VEE.NOMBRE,IHS.FECHA FECHA_SOLICITUD,
                 IHS.HORA_INICIO,IHS.HORA_FIN,
                 IHS.OBSERVACION,IHS.ESTADO,IHS.USR_CREACION,VEE.MAIL_CIA 
@@ -5824,55 +5395,58 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
               JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
               JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
              WHERE IHS.EMPRESA_COD=Cv_EmpresaCod
-              AND VEE.NO_CIA=Cv_EmpresaCod AND IHS.ID_HORAS_SOLICITUD=Pn_IdHorasSolicitud AND IHS.ESTADO IN(Cv_Estado1,Cv_Estado2);
-              
-              
+              AND VEE.NO_CIA=Cv_EmpresaCod AND IHS.ID_HORAS_SOLICITUD=Pn_IdHorasSolicitud AND IHS.ESTADO IN(Cv_Estado1,Cv_Estado2,Cv_Estado3);
+
+
        CURSOR C_CORREO_REMITENTE(Cv_EmpresaCod VARCHAR2)IS
            SELECT APD.VALOR1 
             FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
            WHERE APD.PARAMETRO_ID=(SELECT A.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB A WHERE A.NOMBRE_PARAMETRO = 'CORREO_GERENCIAL_HE')
             AND APD.EMPRESA_COD=Cv_EmpresaCod AND APD.ESTADO='Activo';
-         
-    
-       
+
+
+
         Lv_Cuerpo             VARCHAR2(9999);
         Pv_Status             VARCHAR2(1000);
         Lv_Estado1            VARCHAR2(20):='';
         Lv_Estado2            VARCHAR2(20):='';
+        Lv_Estado3            VARCHAR2(20):='';
         Lv_EstadoSolicitud    VARCHAR2(20);
         Lr_Valor1             DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE;
         Lv_Asunto             VARCHAR2(50):='Reporte de Solicitud de horas extras	';
         Pv_Mensaje            VARCHAR2(1000);
         Le_Errors             EXCEPTION;
-    
+
     BEGIN
-    
+
         IF C_INFORMACION_SOLICITUD%ISOPEN THEN
                CLOSE C_INFORMACION_SOLICITUD;
         END IF;
-        
+
         IF C_CORREO_REMITENTE%ISOPEN THEN
                CLOSE C_CORREO_REMITENTE;
         END IF;
-        
-        
+
+
         OPEN C_CORREO_REMITENTE(Pv_EmpresaCod);
         FETCH C_CORREO_REMITENTE INTO Lr_valor1;       
-        
+
         IF (Pv_Proceso='Anulacion')THEN
           Lv_Estado1:='Pendiente';
           Lv_Estado2:='Pre-Autorizada';
+          Lv_Estado3:='Verificacion';
           Lv_EstadoSolicitud:='Anulada';
-          
+
         ELSIF (Pv_Proceso='PreAutorizacion') THEN
           Lv_Estado1:='Pendiente';
           Lv_Estado2:='';
+          Lv_Estado3:='Verificacion';
           Lv_EstadoSolicitud:='Pre-Autorizada';
-        
+
         END IF;
-    
-        FOR Lr_InfoSolicitud IN C_INFORMACION_SOLICITUD(Pv_EmpresaCod,Pn_IdHorasSolicitud,Lv_Estado1,Lv_Estado2) LOOP
-         
+
+        FOR Lr_InfoSolicitud IN C_INFORMACION_SOLICITUD(Pv_EmpresaCod,Pn_IdHorasSolicitud,Lv_Estado1,Lv_Estado2,Lv_Estado3) LOOP
+
                Lv_Cuerpo := '<html>
                                  <head>
                                      <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
@@ -5892,7 +5466,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                               <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"></span></span></p>
                                                               <p><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">
                                                                Estimado colaborador(a), el presente es para informarle que su solicitud de horas extra ha sido '||Lv_EstadoSolicitud||'</span></span></p>
-                                                                   
+
                                                                 <table border="1px">
                                                                      <thead>
                                                                          <tr>
@@ -5927,9 +5501,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                          </table>
                                  </body>
                              </html>';
-                           
+
                            IF C_CORREO_REMITENTE%FOUND THEN  
-                             
+
                              UTL_MAIL.SEND(
                                   SENDER       => Lr_valor1,
                                   RECIPIENTS   => Lr_InfoSolicitud.MAIL_CIA,
@@ -5937,12 +5511,12 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                   MESSAGE      => Lv_Cuerpo,
                                   MIME_TYPE    => 'text/html; charset=UTF-8'
                                   );
-                             
+
                            END IF;
           END LOOP;
-          
+
       CLOSE C_CORREO_REMITENTE;
-    
+
     EXCEPTION
     WHEN OTHERS THEN
             Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ENVIAR_MAIL_GENERAL: - '||SQLCODE||' -ERROR- '||SQLERRM;
@@ -5952,18 +5526,18 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
-    
+
     END P_ENVIAR_MAIL_GENERAL;
-    
+
     PROCEDURE P_ELIMINAR_MASIVA(Pn_IdHorasSolicitud IN NUMBER,
                                 Pv_Usuario          IN VARCHAR2,
                                 Pv_EmpresaCod       IN VARCHAR2,
                                 Pv_Status           OUT VARCHAR2,
                                 Pv_Mensaje          OUT VARCHAR2)
-                                
-    
+
+
     AS
-    
+
       CURSOR C_OBSERVACION_SOLICITUD(Cn_IdHorasSolicitud NUMBER) IS
         SELECT IHSD.HORAS_SOLICITUD_ID,IHSD.TIPO_HORAS_EXTRA_ID,IHSD.HORA_INICIO_DET,IHSD.HORA_FIN_DET,
           IHSD.HORAS,IHSD.FECHA_SOLICITUD_DET,IHSD.OBSERVACION  
@@ -5972,37 +5546,37 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
           WHERE IHS.ID_HORAS_SOLICITUD=Cn_IdHorasSolicitud 
           AND IHSD.FE_CREACION=(SELECT MAX(IHSDE.FE_CREACION) FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSDE
           WHERE IHSDE.HORAS_SOLICITUD_ID=Cn_IdHorasSolicitud);
-  
+
        Ln_IdHorasSolicitudHistorial   DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL.ID_HORAS_SOLICITUD_HISTORIAL%TYPE;
        Le_Errors                      EXCEPTION;
-    
-    
-    
+
+
+
     BEGIN 
-    
-    
+
+
          IF C_OBSERVACION_SOLICITUD%ISOPEN THEN CLOSE C_OBSERVACION_SOLICITUD; END IF;
-        
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
           SET IHS.ESTADO='Eliminada',IHS.USR_MODIFICACION=Pv_Usuario,IHS.FE_MODIFICACION=SYSDATE
          WHERE IHS.ID_HORAS_SOLICITUD=''||Pn_IdHorasSolicitud||'';
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
           SET IHSD.ESTADO='Eliminada',IHSD.USR_MODIFICACION=Pv_Usuario, IHSD.FE_MODIFICACION=SYSDATE
          WHERE IHSD.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud||'';
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
           SET IHSE.ESTADO='Eliminada', IHSE.USR_MODIFICACION=Pv_Usuario, IHSE.FE_MODIFICACION=SYSDATE
          WHERE IHSE.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud||'';
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_HISTORIAL IHSH
           SET IHSH.ESTADO='Inactiva', IHSH.USR_MODIFICACION=Pv_Usuario, IHSH.FE_MODIFICACION= SYSDATE
          WHERE IHSH.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud||'';
-         
-         
+
+
          FOR Lr_ObservacionSolicitud IN C_OBSERVACION_SOLICITUD(Pn_IdHorasSolicitud) 
          LOOP
-         
+
              P_INSERT_HISTORIAL_SOLICITUD(Pn_IdHorasSolicitud,
                                           Lr_ObservacionSolicitud.TIPO_HORAS_EXTRA_ID,
                                           Lr_ObservacionSolicitud.HORA_INICIO_DET,
@@ -6014,26 +5588,26 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                           Pv_Usuario,
                                           Pv_Status,
                                           Pv_Mensaje);
-                                              
+
              IF Pv_Status = 'ERROR' THEN
                 RAISE Le_Errors;
              END IF;
-         
+
          END LOOP;
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH
           SET ITH.ESTADO='Eliminada', ITH.USR_MODIFICACION=Pv_Usuario, ITH.FE_MODIFICACION=SYSDATE
          WHERE ITH.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud||'';
-         
+
          UPDATE DB_HORAS_EXTRAS.INFO_DOCUMENTO_HORAS_EXTRAS IDHE
           SET IDHE.ESTADO='Eliminada', IDHE.USR_MODIFICACION=Pv_Usuario, IDHE.FE_MODIFICACION=SYSDATE
          WHERE IDHE.HORAS_SOLICITUD_ID = ''||Pn_IdHorasSolicitud||'';
-         
+
         COMMIT; 
-             
+
         Pv_Status     := 'OK';
         Pv_Mensaje    := 'Transacción exitosa';
-    
+
     EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -6046,9 +5620,2261 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));     
-    
-    
+
+
     END P_ELIMINAR_MASIVA;
+
+    PROCEDURE P_PLANIFICAR_HORARIO(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2)
+
+
+    AS
+
+       Lv_EmpresaCod                  VARCHAR2(2);
+       Lv_NombreArea                  VARCHAR2(30);
+       Lv_NombreDepto                 VARCHAR2(30);
+       Lv_UsrCreacion                 VARCHAR2(15);
+       Lv_jorEmple                    VARCHAR2(2);
+       Lv_Observacion     		        VARCHAR2(200);
+       Lv_descripcion                 VARCHAR2(20);
+       Lv_estadoSolicitud             VARCHAR2(25);
+       Lv_emplPlanificados            VARCHAR2(100);
+       Ln_Contador                    NUMBER:=0;
+       Ln_Contador1                   NUMBER:=1;
+       Ln_Contador2                   NUMBER:=0;
+       Ln_Cantidad                    NUMBER:=0;
+       Ln_ContadorDias                Number:=0;
+       Ln_ContadorD                   Number:=1;
+       Lv_NoEmpleado                  apex_t_varchar2;
+       Lv_FechaInicio                 apex_t_varchar2;
+       Lv_FechaFin                    apex_t_varchar2;
+       Lv_HoraInicio                  apex_t_varchar2;
+       Lv_HoraFin                     apex_t_varchar2;
+       Lv_TipoHorario                 apex_t_varchar2;
+       Lv_PlanificacionAnual          apex_t_varchar2;
+       Ln_DiasEscogidos               apex_t_varchar2;
+       Lv_EmpleDia                    apex_t_varchar2;
+       Ln_SecuencialDia               apex_t_varchar2;
+       Ln_IdSecuencial                apex_t_varchar2;
+       Lv_HoraI                       VARCHAR2(6);
+       Lv_HoraF                       VARCHAR2(6);
+       Ld_FechaI                      DATE;
+       Ld_FechaF                      DATE;
+       Ld_FechaHoraI                  DATE;
+       Ld_FechaHoraF                  DATE;
+       Ld_FechaEncontradaHI           DATE;
+       Ld_FechaEncontradaHF           DATE;
+       Ld_HorasInicioNocturnas1       DATE;
+       Ld_HorasFinNocturnas1          DATE;
+       Ln_Dia                         NUMBER;
+       Ln_Mes                         NUMBER;
+       Ln_NumeroHoras                 DATE;
+       Lv_Año                         VARCHAR2(5);
+       Lv_DiaFeriado                  VARCHAR2(2);
+       Lv_Bandera                     VARCHAR2(6);
+       Lv_MensajeError                CLOB;
+       Lc_arrejson       		          CLOB;
+       Le_Errors                      EXCEPTION;
+
+       Lv_HorasInicioNocturnas        VARCHAR2(7);
+       Lv_HorasFinNocturnas           VARCHAR2(7);
+       Lv_NumHorasNocturnas           VARCHAR2(7);  
+       Ln_emple NUMBER ;
+       Ln_codEmpresa  NUMBER ;
+
+
+       CURSOR C_DIAS_PLANIFICADOS(Cv_FechaInicio VARCHAR2, Cv_FechaFin VARCHAR2) IS
+         SELECT (TO_DATE(Cv_FechaFin,'DD/MM/YYYY') - TO_DATE(Cv_FechaInicio,'DD/MM/YYYY')) CANTIDAD FROM DUAL;
+
+
+       CURSOR C_EXISTE_PLANIFICACION(Cv_EmpresaCod VARCHAR2,Cv_NoEmple VARCHAR2,Cv_FechaInicio VARCHAR2,Cv_FechaFin VARCHAR2) IS
+         SELECT AHE.ID_HORARIO_EMPLEADO,TO_CHAR(TO_DATE(AHE.FECHA_INICIO||' '||AHE.HORA_INICIO,'DD-MM-YY HH24:MI'),'DD-MM-YYYY HH24:MI')FECHA_HORA_INICIO,
+            TO_CHAR(TO_DATE(AHE.FECHA_FIN||' '||AHE.HORA_FIN,'DD-MM-YY HH24:MI'),'DD-MM-YYYY HH24:MI')FECHA_HORA_FIN,VEE.NOMBRE
+          FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE 
+           JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = AHE.NO_EMPLE AND VEE.NO_CIA = AHE.EMPRESA_COD
+          WHERE AHE.EMPRESA_COD =Cv_EmpresaCod AND VEE.NO_EMPLE=Cv_NoEmple AND AHE.ESTADO='Activo'
+           AND (AHE.FECHA_INICIO >=TO_DATE(Cv_FechaInicio,'DD-MM-YY')  AND AHE.FECHA_FIN <=TO_DATE(Cv_FechaFin,'DD-MM-YY'))
+           ORDER BY AHE.FECHA_INICIO ASC,AHE.FECHA_FIN ASC;
+
+       CURSOR C_NUMERO_DIA(Cd_FechaInicio DATE,Cd_FechaFin DATE)IS
+          SELECT TO_CHAR(Cd_FechaInicio,'D') DIA_INICIO,TO_CHAR(Cd_FechaFin,'D') DIA_FIN FROM DUAL;
+
+
+       CURSOR C_DIAS_FERIADO(Cn_dia NUMBER,Cn_Mes NUMBER,Cv_Año VARCHAR2) IS
+        SELECT COUNT(APD.VALOR1)CANTIDAD FROM DB_GENERAL.ADMI_PARAMETRO_DET APD 
+           WHERE APD.PARAMETRO_ID=(SELECT APC.ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC WHERE APC.NOMBRE_PARAMETRO='DIAS_FERIADO_HORASEXTRA')
+          AND VALOR2=Cn_dia AND VALOR1=Cn_Mes AND VALOR3=Cv_Año AND APD.ESTADO='Activo';
+
+       CURSOR C_NUMERO_HORAS(Cv_FechaI VARCHAR2,Cv_HoraI VARCHAR2,Cv_FechaF VARCHAR2,Cv_HoraF VARCHAR2)IS
+        SELECT TRUNC((TO_DATE(Cv_FechaF
+          || ' '
+          ||Cv_HoraF, 'DD.MM.YYYY HH24:MI:SS') - TO_DATE(Cv_FechaI
+          || ' '
+          ||Cv_HoraI, 'DD.MM.YYYY HH24:MI:SS')) * (24)) DIFERENCIA_HORAS
+        FROM DUAL;
+
+       Lr_Cantidad                    C_DIAS_PLANIFICADOS%ROWTYPE;
+       Lr_Dia                         C_NUMERO_DIA%ROWTYPE;
+       Ln_NumHoras                    NUMBER;
+       Lr_CantidadDia                 C_DIAS_FERIADO%ROWTYPE;
+       Lv_HoraFinDia                  VARCHAR2(7);
+
+    BEGIN
+
+    -- RETORNO LAS VARIABLES DEL REQUEST
+
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_NoEmpleado          := APEX_JSON.find_paths_like(p_return_path => 'noEmpleado[%]' );
+    Lv_FechaInicio         := APEX_JSON.find_paths_like(p_return_path => 'fechaInicio[%]' );
+    Lv_FechaFin            := APEX_JSON.find_paths_like(p_return_path => 'fechaFin[%]' );
+    Lv_HoraInicio          := APEX_JSON.find_paths_like(p_return_path => 'horaInicio[%]' );
+    Lv_HoraFin             := APEX_JSON.find_paths_like(p_return_path => 'horaFin[%]' );
+    Lv_TipoHorario         := APEX_JSON.find_paths_like(p_return_path => 'tipoHorario[%]' );
+    Lv_EmpresaCod          := APEX_JSON.get_varchar2(p_path => 'empresaCod');
+    Lv_UsrCreacion         := APEX_JSON.get_varchar2(p_path => 'usrCreacion');
+    Lv_EmpleDia            := APEX_JSON.find_paths_like(p_return_path => 'diasEscogidos[%].noEmple' );
+    Ln_DiasEscogidos       := APEX_JSON.find_paths_like(p_return_path => 'diasEscogidos[%].dia' );
+    Ln_SecuencialDia       := APEX_JSON.find_paths_like(p_return_path => 'diasEscogidos[%].idDia' );
+    Ln_IdSecuencial        := APEX_JSON.find_paths_like(p_return_path => 'idSecuencia[%]' );
+    Lv_PlanificacionAnual  := APEX_JSON.find_paths_like(p_return_path => 'planificacionAnual[%]' );
+    Lv_observacion         := 'Origen Portal Planificacion HE:Creacion solicitud por planificacion temporal';
+    Lv_estadoSolicitud     := 'Verificacion';
+    Lv_descripcion         := 'Unitaria';
+       -- VALIDACIONES
+
+       IF Lv_EmpresaCod IS NULL THEN
+          Pv_Mensaje := 'El parámetro Lv_EmpresaCod está vacío';
+          RAISE Le_Errors;
+       END IF;
+
+       IF Lv_UsrCreacion IS NULL THEN
+          Pv_Mensaje := 'El parámetro Lv_UsrCreacion está vacío';
+          RAISE Le_Errors;
+       END IF;
+
+     SELECT HORA_INICIO,HORA_FIN,TOTAL_HORAS_DIA
+       INTO Lv_HorasInicioNocturnas,Lv_HorasFinNocturnas,Lv_NumHorasNocturnas
+      FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
+       WHERE TIPO_HORAS_EXTRA = 'NOCTURNO';
+
+     SELECT HORA_FIN
+       INTO Lv_HoraFinDia
+       FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
+      WHERE TIPO_HORAS_EXTRA = 'HORA_FIN_DIA';
+
+       Ln_Contador := Lv_NoEmpleado.COUNT;
+
+       WHILE Ln_Contador1 <=  Ln_Contador LOOP             
+
+             IF C_DIAS_PLANIFICADOS%ISOPEN THEN CLOSE C_DIAS_PLANIFICADOS; END IF;             
+             OPEN C_DIAS_PLANIFICADOS(apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1)),apex_json.get_varchar2(p_path => Lv_FechaFin(Ln_Contador1)));
+             FETCH C_DIAS_PLANIFICADOS INTO Lr_Cantidad;
+
+             CLOSE C_DIAS_PLANIFICADOS;
+
+             Ln_Cantidad := Lr_Cantidad.CANTIDAD;
+
+             Lv_HoraI  := apex_json.get_varchar2(p_path => Lv_HoraInicio(Ln_Contador1));
+             Lv_HoraF  := apex_json.get_varchar2(p_path => Lv_HoraFin(Ln_Contador1));
+             Ld_FechaI := TO_DATE(apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1)),'DD-MM-YYYY');
+             Ld_FechaF := TO_DATE(apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1)),'DD-MM-YYYY');
+
+             IF (Lv_HoraF >'00:00' AND Lv_HoraF < Lv_HoraI) THEN
+                 Ld_FechaF:=Ld_FechaF+1;
+             END IF;
+
+             -- OBTENER EL NÚMERO DE HORAS PLANIFICACION
+
+             IF C_NUMERO_HORAS%ISOPEN THEN CLOSE C_NUMERO_HORAS; END IF;
+                OPEN C_NUMERO_HORAS(Ld_FechaI,Lv_HoraI,Ld_FechaF,Lv_HoraF);
+                FETCH C_NUMERO_HORAS INTO Ln_NumHoras;
+                CLOSE C_NUMERO_HORAS;
+
+             IF (Lv_HoraI >= Lv_HorasInicioNocturnas OR Lv_HoraI <= Lv_HorasFinNocturnas OR Lv_HoraF <= Lv_HorasFinNocturnas OR Lv_HoraF >= Lv_HorasInicioNocturnas) AND Ln_NumHoras > Lv_NumHorasNocturnas THEN 
+                 Pv_Mensaje := 'ERROR 01: La jornada nocturna supera el máximo de horas permitido para la planificación';
+                 RAISE Le_Errors;
+             END IF;
+
+             WHILE Ln_Contador2 <= Ln_Cantidad LOOP
+
+                Ld_FechaHoraI := TO_DATE((TO_CHAR(Ld_FechaI,'DD-MM-YYYY')||''||Lv_HoraI),'DD-MM-YYYY HH24:MI');  
+                Ld_FechaHoraF := TO_DATE((TO_CHAR(Ld_FechaF,'DD-MM-YYYY')||''||Lv_HoraF),'DD-MM-YYYY HH24:MI'); 
+
+                Ld_FechaHoraI:= Ld_FechaHoraI + Ln_Contador2;
+                Ld_FechaHoraF:= Ld_FechaHoraF + Ln_Contador2;
+
+                -- OBTENER EL NÚMERO DE DIA DE LA SEMANA
+
+                IF C_NUMERO_DIA%ISOPEN THEN CLOSE C_NUMERO_DIA; END IF;
+
+                OPEN C_NUMERO_DIA(Ld_FechaHoraI,Ld_FechaHoraF);
+                FETCH C_NUMERO_DIA INTO Lr_Dia;
+                CLOSE C_NUMERO_DIA;
+                -----
+
+                --- VALIDAR QUE EL DIA A AGREGAR NO SEA FERIADO CUANDO SE REALIZA UNA PLANIFICACION ANUAL
+
+                IF(apex_json.get_varchar2(p_path => Lv_PlanificacionAnual(Ln_Contador1)) = 'S') THEN
+
+                  Ln_Dia := TO_NUMBER(TO_CHAR(Ld_FechaHoraI,'DD'));
+                  Ln_Mes := TO_NUMBER(TO_CHAR(Ld_FechaHoraI,'MM'));
+                  Lv_Año := TO_CHAR(Ld_FechaHoraI,'YYYY');
+
+                  IF C_DIAS_FERIADO%ISOPEN THEN CLOSE C_DIAS_FERIADO; END IF;
+
+                  OPEN C_DIAS_FERIADO(Ln_Dia,Ln_Mes,Lv_Año);
+                  FETCH C_DIAS_FERIADO INTO Lr_CantidadDia;
+                  CLOSE C_DIAS_FERIADO;
+
+                    IF(Lr_CantidadDia.CANTIDAD = 0) THEN
+
+                      Lv_DiaFeriado:='N';
+
+                    ELSE
+
+                      Lv_DiaFeriado:='S';
+
+                    END IF;                
+                END IF;
+
+                Ln_ContadorDias := Ln_DiasEscogidos.COUNT;
+                WHILE Ln_ContadorD <= Ln_ContadorDias LOOP                
+
+                     IF(apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1)) = apex_json.get_varchar2(p_path => Lv_EmpleDia(Ln_ContadorD)) 
+                      AND (apex_json.get_number(p_path => Ln_IdSecuencial(Ln_Contador1)) = apex_json.get_number(p_path => Ln_SecuencialDia(Ln_ContadorD)))) 
+                      AND (Lr_Dia.DIA_INICIO = apex_json.get_number(p_path => Ln_DiasEscogidos(Ln_ContadorD)))THEN                         
+                              Lv_Bandera := 'true';
+                     END IF;
+
+                    Ln_ContadorD:=Ln_ContadorD+1;
+
+                  EXIT WHEN Lv_Bandera = 'true';
+
+                END LOOP;
+                Ln_ContadorD:=1;
+
+                IF(Lv_Bandera = 'true') THEN
+
+                   --validar que el horario no exista para que se registre
+                         IF C_EXISTE_PLANIFICACION%ISOPEN THEN CLOSE C_EXISTE_PLANIFICACION; END IF;
+
+                                FOR Lr_ExistePlani IN C_EXISTE_PLANIFICACION(Lv_EmpresaCod,apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1)),
+                                     apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1)),apex_json.get_varchar2(p_path => Lv_FechaFin(Ln_Contador1)))
+                                LOOP 
+                                         Ld_FechaEncontradaHI:=TO_DATE(Lr_ExistePlani.FECHA_HORA_INICIO,'DD-MM-YYYY HH24:MI');
+                                         Ld_FechaEncontradaHF:=TO_DATE(Lr_ExistePlani.FECHA_HORA_FIN,'DD-MM-YYYY HH24:MI');
+
+                                         Lv_MensajeError:='<h5 align="left" style="margin-bottom:5px;"> No se pudo crear la Planificación escogida </h5>
+                                                           <h5 align="left" style="margin-top:0px;margin-bottom:20px;">Se generarón las siguientes observaciones:</h5>
+                                                           <h5 align="left" style="margin-top:0px;margin-bottom:5px">El Empleado <b>'||Lr_ExistePlani.NOMBRE||'</b> ya tiene
+                                                            planificado un horario dentro del mismo rango de fecha e intervalo. <b style="color:green">(Sobre Planificación Existente)</b> </h5>
+                                                           <h5 align="left" style="margin-top:0px;margin-bottom:5px"><b>Datos de Planificación Existente con la que existen cruces:</b></h5>
+                                                           <table  style="width:100%">
+                                                             <tbody>
+                                                                <tr>
+                                                                  <td align="left">Fechas de trabajo:</td>
+                                                                  <td align="left">'||Lr_ExistePlani.FECHA_HORA_INICIO||' - '||Lr_ExistePlani.FECHA_HORA_FIN||'</td>
+                                                                </tr>
+                                                             </tbody>
+                                                           </table>
+                                                           <br>
+                                                           <h5 align="left" style="margin-top:0px;margin-bottom:5px"> <b>Se realizó la planificación de los siguientes id:</b><b>'||Lv_emplPlanificados||'</b> . <b style="color:green">(Eliminar de lista para planificar)</b> </h5>';
+
+                                         IF(Ld_FechaHoraI >= Ld_FechaEncontradaHI AND Ld_FechaHoraI< Ld_FechaEncontradaHF 
+                                         AND Ld_FechaHoraF>Ld_FechaHoraI AND Ld_FechaHoraF <= Ld_FechaEncontradaHF) THEN
+                                             Pv_Mensaje:= Lv_MensajeError;
+                                             ROLLBACK;
+                                             RAISE Le_Errors;
+                                         END IF;
+
+
+                                         IF(Ld_FechaHoraI >= Ld_FechaEncontradaHI AND Ld_FechaHoraI < Ld_FechaEncontradaHF AND Ld_FechaHoraF > Ld_FechaEncontradaHF)THEN
+                                             Pv_Mensaje:= Lv_MensajeError;
+                                             ROLLBACK;
+                                             RAISE Le_Errors;
+                                         END IF;
+
+                                         IF(Ld_FechaHoraI < Ld_FechaEncontradaHI AND Ld_FechaHoraF > Ld_FechaEncontradaHI AND Ld_FechaHoraF <= Ld_FechaEncontradaHF)THEN
+                                             Pv_Mensaje:= Lv_MensajeError;
+                                             ROLLBACK;
+                                             RAISE Le_Errors;
+                                         END IF;
+
+                                         IF(Ld_FechaHoraI <= Ld_FechaEncontradaHI AND Ld_FechaHoraF >= Ld_FechaEncontradaHF)THEN
+                                            Pv_Mensaje:= Lv_MensajeError;
+                                            ROLLBACK;
+                                            RAISE Le_Errors;
+                                         END IF;
+                              END LOOP;
+                END IF;
+
+                Lv_Bandera:='';                
+                Ln_Contador2:=Ln_Contador2+1;
+             END LOOP;
+
+             Ln_Contador2:=0;
+
+             WHILE Ln_Contador2 <= Ln_Cantidad LOOP
+
+                -- OBTENER EL NÚMERO DE DIA DE LA SEMANA
+
+                IF C_NUMERO_DIA%ISOPEN THEN CLOSE C_NUMERO_DIA; END IF;
+
+                OPEN C_NUMERO_DIA(Ld_FechaI+Ln_Contador2,Ld_FechaF+Ln_Contador2);
+                FETCH C_NUMERO_DIA INTO Lr_Dia;
+                CLOSE C_NUMERO_DIA;
+
+                --- VALIDAR QUE EL DIA A AGREGAR NO SEA FERIADO CUANDO SE REALIZA UNA PLANIFICACION ANUAL
+
+                  Ln_Dia := TO_NUMBER(TO_CHAR(Ld_FechaI+Ln_Contador2,'DD'));
+                  Ln_Mes := TO_NUMBER(TO_CHAR(Ld_FechaI+Ln_Contador2,'MM'));
+                  Lv_Año := TO_CHAR(Ld_FechaI+Ln_Contador2,'YYYY');
+
+                  IF C_DIAS_FERIADO%ISOPEN THEN CLOSE C_DIAS_FERIADO; END IF;
+
+                  OPEN C_DIAS_FERIADO(Ln_Dia,Ln_Mes,Lv_Año);
+                  FETCH C_DIAS_FERIADO INTO Lr_CantidadDia;
+                  CLOSE C_DIAS_FERIADO;
+
+                    IF(Lr_CantidadDia.CANTIDAD = 0) THEN   
+                      Lv_DiaFeriado:='N';                  
+                    ELSE                   
+                      Lv_DiaFeriado:='S';                    
+                    END IF;
+
+                Ln_ContadorDias := Ln_DiasEscogidos.COUNT;
+
+                WHILE Ln_ContadorD <= Ln_ContadorDias LOOP
+
+                       IF(apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1)) = apex_json.get_varchar2(p_path => Lv_EmpleDia(Ln_ContadorD)) 
+                    AND (apex_json.get_number(p_path => Ln_IdSecuencial(Ln_Contador1)) = apex_json.get_number(p_path => Ln_SecuencialDia(Ln_ContadorD))))  
+                    AND (Lr_Dia.DIA_INICIO = apex_json.get_number(p_path => Ln_DiasEscogidos(Ln_ContadorD)))THEN
+
+                           P_GUARDAR_PLANIFICACION(apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1)),
+                                            Ld_FechaI+Ln_Contador2,
+                                            Ld_FechaF+Ln_Contador2,
+                                            Lv_HoraI,
+                                            Lv_HoraF,
+                                            apex_json.get_varchar2(p_path => Lv_TipoHorario(Ln_Contador1)),
+                                            Lv_EmpresaCod,
+                                            Lv_UsrCreacion,
+                                            Pv_Status,
+                                            Pv_Mensaje);
+
+                             IF Pv_Status = 'ERROR' THEN
+                                RAISE Le_Errors;
+                             END IF;
+
+                   END IF;                                
+                   Ln_ContadorD := Ln_ContadorD+1;
+                END LOOP;
+                Ln_ContadorD:=1;                 
+
+                Ln_Contador2:=Ln_Contador2+1;
+             END LOOP;
+
+             Ln_Contador2:=0;
+             Lv_emplPlanificados := Lv_emplPlanificados || ' - ' || apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1));
+
+             Ln_Contador1:=Ln_Contador1+1;
+
+       END LOOP;
+
+       Ln_Contador := Lv_NoEmpleado.COUNT;
+       Ln_Contador1:=1;
+        Ln_Contador2:=0;
+
+       WHILE Ln_Contador1 <=  Ln_Contador LOOP  
+
+           IF C_DIAS_PLANIFICADOS%ISOPEN THEN CLOSE C_DIAS_PLANIFICADOS; END IF;             
+            OPEN C_DIAS_PLANIFICADOS(apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1)),apex_json.get_varchar2(p_path => Lv_FechaFin(Ln_Contador1)));
+           FETCH C_DIAS_PLANIFICADOS INTO Lr_Cantidad;
+
+           CLOSE C_DIAS_PLANIFICADOS;
+
+           Ln_Cantidad := Lr_Cantidad.CANTIDAD;
+
+           IF apex_json.get_varchar2(p_path => Lv_TipoHorario(Ln_Contador1)) = 'TEMPORAL' THEN
+
+           SELECT HORA_INICIO,HORA_FIN
+             INTO Lv_HorasInicioNocturnas,Lv_HorasFinNocturnas
+            FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
+             WHERE TIPO_HORAS_EXTRA = 'NOCTURNO';
+
+             Ld_HorasInicioNocturnas1 := TO_DATE((apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1))||''||Lv_HorasInicioNocturnas),'DD-MM-YYYY HH24:MI');
+             Ld_HorasFinNocturnas1 :=  TO_DATE((apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1))||''||Lv_HorasFinNocturnas),'DD-MM-YYYY HH24:MI');
+
+
+                  Ln_emple := to_number(apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1)));
+                  Ln_codEmpresa:=to_number(APEX_JSON.get_varchar2(p_path => 'empresaCod'));   
+
+                SELECT vee.nombre_area, vee.nombre_depto
+                  into Lv_NombreArea, Lv_NombreDepto
+                  FROM naf47_tnet.v_empleados_empresas vee
+                 WHERE vee.no_emple = to_number(apex_json.get_varchar2(p_path => Lv_NoEmpleado(Ln_Contador1)))
+                   AND vee.no_cia = Ln_codEmpresa;
+
+                  Lv_HoraI  := apex_json.get_varchar2(p_path => Lv_HoraInicio(Ln_Contador1));
+                  Lv_HoraF  := apex_json.get_varchar2(p_path => Lv_HoraFin(Ln_Contador1));
+                  Ld_FechaI := TO_DATE(apex_json.get_varchar2(p_path => Lv_FechaInicio(Ln_Contador1)),'DD-MM-YYYY');
+                  Ld_FechaF := TO_DATE(apex_json.get_varchar2(p_path => Lv_FechaFin(Ln_Contador1)),'DD-MM-YYYY');
+
+                  Ln_Dia := TO_NUMBER(TO_CHAR(Ld_FechaI+Ln_Contador2,'DD'));
+                  Ln_Mes := TO_NUMBER(TO_CHAR(Ld_FechaI+Ln_Contador2,'MM'));
+                  Lv_Año := TO_CHAR(Ld_FechaI+Ln_Contador2,'YYYY');
+
+                  IF(Lv_HoraF > Lv_HorasFinNocturnas AND Lv_HoraI > Lv_HorasInicioNocturnas)THEN
+                       Lv_jorEmple:='N';
+                  ELSE
+                       Lv_jorEmple:='M';
+                  END IF;
+
+                   WHILE Ln_Contador2 <= Ln_Cantidad LOOP                                                                                         
+
+                  Lc_arrejson := chr(10) || lpad(' ', 6, ' ') || '{' || chr(10) ||
+                                 lpad(' ', 9, ' ') || '"noEmpleado":[' || Ln_emple  || '],' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"fecha":"' || (Ld_FechaI+Ln_Contador2) || '",' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"horaInicio":"' || Lv_HoraI || '",' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"horaFin":"' || Lv_HoraF || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"observacion":"' || Lv_Observacion || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"estado":"' || Lv_estadoSolicitud || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"empresaCod":"' || Ln_codEmpresa || '",' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"usrCreacion":"' || Lv_UsrCreacion || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"tareaId":[],' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"nombreDocumento":[],' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"ubicacionDocumento":[],' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"jornadaEmpleado":"' || Lv_jorEmple || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"esFinDeSemana":"' || 'N' || '",' || 
+                                                   chr(10) ||  lpad(' ', 9, ' ') 
+                                                   || '"esDiaLibre":"' || 'N' || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"descripcion":"' || Lv_descripcion || '",' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"idCuadrilla":"' || null || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"nombreArea":"' || Lv_NombreArea || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"feInicioTarea":[],' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"feFinTarea":[],' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"nombreDepartamento":"' || Lv_NombreDepto || '",' ||
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"esSuperUsuario":"' || 'N' || '",' || 
+                                                   chr(10) || lpad(' ', 9, ' ') 
+                                                   || '"fechaHasta":"' || Ld_FechaF || '"' || 
+                                                   chr(10) || lpad(' ', 6, ' ') || '}';                                  
+
+                        DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA(lc_arrejson,
+                                                                                    Pv_Status,
+                                                                                    Pv_Mensaje);
+                        IF Pv_Status = 'ERROR' THEN
+                          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                               ' DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION.P_PLANIFICAR_HORARIO',
+                                                               Pv_Mensaje || ' Linea: ' ||
+                                                             DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ,
+                                                               NVL(SYS_CONTEXT('USERENV',
+                                                                               'HOST'),
+                                                                   'DB_SOPORTE'),
+                                                               SYSDATE,
+                                                               NVL(SYS_CONTEXT('USERENV',
+                                                                               'IP_ADDRESS'),
+                                                                   '127.0.0.1'));
+                        END IF;
+
+                   Ln_Contador2:=Ln_Contador2+1;
+                   END LOOP;             
+
+                END IF;
+
+          Ln_Contador2:=0;                            
+          Ln_Contador1:=Ln_Contador1+1;
+       END LOOP;
+    COMMIT;
+
+     Pv_Status     := 'OK';
+     Pv_Mensaje    := 'Transacción exitosa';
+
+    EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_PLANIFICAR_HORARIO: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_PLANIFICAR_HORARIO: ',
+                                                 Pv_Mensaje || ' Linea: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE  ,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1')); 
+
+    END P_PLANIFICAR_HORARIO;
+
+    PROCEDURE P_GUARDAR_PLANIFICACION(Pv_NoEmpleado  VARCHAR2,
+                                      Pv_FechaInicio DATE,
+                                      Pv_FechaFin    DATE,
+                                      Pv_HoraInicio  VARCHAR2,
+                                      Pv_HoraFin     VARCHAR2,
+                                      Pv_TipoHorario VARCHAR2,
+                                      Pv_EmpresaCod  VARCHAR2,
+                                      Pv_UsrCreacion VARCHAR2,
+                                      Pv_Status   OUT VARCHAR2,
+                                      Pv_Mensaje  OUT VARCHAR2)
+
+    AS
+
+      CURSOR C_NOMBRE_TIPO_HORARIO(Cv_TipoHorario VARCHAR2) IS
+       SELECT ID_TIPO_HORARIO 
+        FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS 
+       WHERE ESTADO='Activo' 
+         AND NOMBRE_TIPO_HORARIO=Cv_TipoHorario
+          OR TO_CHAR(ID_TIPO_HORARIO)=Cv_TipoHorario;
+
+       Lr_IdTipoHorario      DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS.ID_TIPO_HORARIO%TYPE;
+       Ln_IdHorarioEmpleado  DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS.ID_HORARIO_EMPLEADO%TYPE;
+       Le_Errors             EXCEPTION;
+
+
+    BEGIN
+
+       IF C_NOMBRE_TIPO_HORARIO%ISOPEN THEN CLOSE C_NOMBRE_TIPO_HORARIO; END IF;
+       OPEN C_NOMBRE_TIPO_HORARIO(Pv_TipoHorario);
+       FETCH C_NOMBRE_TIPO_HORARIO INTO Lr_IdTipoHorario;
+
+       CLOSE C_NOMBRE_TIPO_HORARIO;
+
+       Ln_IdHorarioEmpleado := DB_HORAS_EXTRAS.SEQ_INFO_HORARIO_EMPLEADOS.NEXTVAL;
+
+       INSERT 
+         INTO DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS
+         (
+          ID_HORARIO_EMPLEADO,
+          FECHA_INICIO,
+          FECHA_FIN,
+          HORA_INICIO,
+          HORA_FIN,
+          CUADRILLA_ID,
+          NO_EMPLE,
+          EMPRESA_COD,
+          TIPO_HORARIO_ID,
+          ESTADO,
+          FE_CREACION,
+          USR_CREACION,
+          FE_MODIFICACION,
+          USR_MODIFICACION,
+          IP_CREACION
+         )
+         VALUES
+         (
+          Ln_IdHorarioEmpleado,
+          Pv_FechaInicio,
+          Pv_FechaFin,
+          Pv_HoraInicio,
+          Pv_HoraFin,
+          NULL,
+          Pv_NoEmpleado,
+          Pv_EmpresaCod,
+          Lr_IdTipoHorario,
+          'Activo',
+          SYSDATE,
+          Pv_UsrCreacion,
+          NULL,
+          NULL,
+          NULL
+         );
+
+
+         INSERT INTO
+            DB_HORAS_EXTRAS.INFO_HORARIO_HISTORIAL
+            (
+            ID_HORARIO_HISTORIAL,
+            HORARIO_EMPLEADO_ID,
+            FECHA_INICIO,
+            FECHA_FIN,
+            HORA_INICIO,
+            HORA_FIN,
+            CUADRILLA_ID,
+            NO_EMPLE,
+            TIPO_HORARIO_ID,
+            ESTADO,
+            OBSERVACION,
+            FE_CREACION,
+            USR_CREACION,
+            FE_MODIFICACION,
+            USR_MODIFICACION,
+            IP_CREACION
+            )
+            VALUES
+            (
+            DB_HORAS_EXTRAS.SEQ_INFO_HORARIO_HISTORIAL.NEXTVAL,
+            Ln_IdHorarioEmpleado,
+            Pv_FechaInicio,
+            Pv_FechaFin,
+            Pv_HoraInicio,
+            Pv_HoraFin,
+            NULL,
+            Pv_NoEmpleado,
+            Lr_IdTipoHorario,
+            'Activo',
+            'Se registró planificación de horario',
+            SYSDATE,
+            Pv_UsrCreacion,
+            NULL,
+            NULL,
+            NULL
+            );
+
+        COMMIT;
+
+        Pv_Status     := 'OK';
+        Pv_Mensaje    := 'Transacción exitosa';
+
+    EXCEPTION
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_PLANIFICACION: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_PLANIFICACION: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+    END P_GUARDAR_PLANIFICACION;
+
+
+    PROCEDURE P_EDITAR_PLANIFICACION(Pcl_Request  IN  CLOB,
+                                     Pv_Status    OUT VARCHAR2,
+                                     Pv_Mensaje   OUT VARCHAR2)
+
+
+    AS
+
+       Le_Errors             EXCEPTION;
+
+    BEGIN 
+
+
+      DBMS_OUTPUT.PUT_LINE('');
+
+
+    EXCEPTION
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_EDITAR_PLANIFICACION: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_EDITAR_PLANIFICACION: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+
+    END P_EDITAR_PLANIFICACION;
+
+
+    PROCEDURE P_ELIMINAR_PLANIFICACION(Pcl_Request  IN  CLOB,
+                                       Pv_Status    OUT VARCHAR2,
+                                       Pv_Mensaje   OUT VARCHAR2)
+
+    AS   
+
+       --Ln_IdHorarioEmpleado     DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS.ID_HORARIO_EMPLEADO%TYPE;
+
+       Ln_IdHorarioEmpleado     apex_t_varchar2;
+       Lv_UsrCreacion            VARCHAR2(15);
+       Lv_Observacion            VARCHAR2(205);
+       Ln_ContadorPlanificacion  NUMBER:=0;
+       Ln_ContadorPlani          NUMBER:=1;
+       Ln_IdHorarioEmple         NUMBER;
+       Le_Errors                 EXCEPTION;
+
+
+
+    BEGIN
+
+    APEX_JSON.PARSE(Pcl_Request);
+    Ln_IdHorarioEmpleado  := APEX_JSON.find_paths_like(p_return_path => 'idHorarioEmpleado[%]' );
+    Lv_UsrCreacion        := APEX_JSON.get_varchar2(p_path => 'usrCreacion');
+    Lv_Observacion        := APEX_JSON.get_varchar2(p_path => 'observacion');
+
+
+    -- VALIDACIONES
+
+        IF Ln_IdHorarioEmpleado IS NULL THEN
+           Pv_Mensaje := 'El parámetro Ln_IdHorarioEmpleado está vacío';
+           RAISE Le_Errors;
+        END IF;
+
+        IF Lv_UsrCreacion IS NULL THEN
+           Pv_Mensaje := 'El parámetro Lv_UsrCreacion está vacío';
+           RAISE Le_Errors;
+        END IF;
+
+        IF Lv_Observacion IS NULL THEN
+           Pv_Mensaje := 'El parámetro Lv_Observacion está vacío';
+           RAISE Le_Errors;
+        END IF;
+
+
+        Ln_ContadorPlanificacion :=  Ln_IdHorarioEmpleado.COUNT;
+        WHILE Ln_ContadorPlani <=  Ln_ContadorPlanificacion LOOP
+
+            Ln_IdHorarioEmple := apex_json.get_number(p_path => Ln_IdHorarioEmpleado(Ln_ContadorPlani));
+
+            P_ELIMINAR_PLA_MASIVA(Ln_IdHorarioEmple,
+                                  Lv_UsrCreacion,
+                                  Lv_Observacion,
+                                  Pv_Status,
+                                  Pv_Mensaje);
+
+
+
+            IF Pv_Status = 'ERROR' THEN
+              RAISE Le_Errors;
+            END IF;
+
+            Ln_ContadorPlani:=Ln_ContadorPlani+1;
+
+        END LOOP;
+
+
+
+
+        COMMIT;
+
+        Pv_Status     := 'OK';
+        Pv_Mensaje    := 'Transacción exitosa';
+
+
+    EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ELIMINAR_PLANIFICACION: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ELIMINAR_PLANIFICACION: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+
+    END P_ELIMINAR_PLANIFICACION;
+
+    PROCEDURE P_ELIMINAR_PLA_MASIVA(Pn_IdHorarioEmple NUMBER,
+                                    Pv_UsrCreacion    VARCHAR2,
+                                    Pv_Observacion    VARCHAR2,
+                                    Pv_Status    OUT VARCHAR2,
+                                    Pv_Mensaje   OUT VARCHAR2)
+
+   AS                          
+
+       Le_Errors                 EXCEPTION;
+
+       CURSOR C_INFO_HORARIO_EMPLEADO(Cn_IdHorarioEmpleado NUMBER)IS
+        SELECT AHE.FECHA_INICIO,AHE.FECHA_FIN,AHE.HORA_INICIO,AHE.HORA_FIN,AHE.CUADRILLA_ID,AHE.NO_EMPLE,AHE.TIPO_HORARIO_ID 
+          FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE 
+         WHERE AHE.ID_HORARIO_EMPLEADO=Cn_IdHorarioEmpleado;
+
+
+         Lr_Info                  C_INFO_HORARIO_EMPLEADO%ROWTYPE;
+
+   BEGIN
+
+
+      UPDATE DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS 
+        SET ESTADO='Inactivo' 
+       WHERE ID_HORARIO_EMPLEADO=Pn_IdHorarioEmple;
+
+      IF C_INFO_HORARIO_EMPLEADO%ISOPEN THEN CLOSE C_INFO_HORARIO_EMPLEADO; END IF;
+
+        OPEN C_INFO_HORARIO_EMPLEADO(Pn_IdHorarioEmple);
+        FETCH C_INFO_HORARIO_EMPLEADO INTO Lr_Info;
+
+        IF C_INFO_HORARIO_EMPLEADO%FOUND THEN  
+
+           INSERT INTO
+             DB_HORAS_EXTRAS.INFO_HORARIO_HISTORIAL
+             (
+              ID_HORARIO_HISTORIAL,
+              HORARIO_EMPLEADO_ID,
+              FECHA_INICIO,
+              FECHA_FIN,
+              HORA_INICIO,
+              HORA_FIN,
+              CUADRILLA_ID,
+              NO_EMPLE,
+              TIPO_HORARIO_ID,
+              ESTADO,
+              OBSERVACION,
+              FE_CREACION,
+              USR_CREACION,
+              FE_MODIFICACION,
+              USR_MODIFICACION,
+              IP_CREACION
+             )
+             VALUES
+             (
+              DB_HORAS_EXTRAS.SEQ_INFO_HORARIO_HISTORIAL.NEXTVAL,
+              Pn_IdHorarioEmple,
+              Lr_Info.FECHA_INICIO,
+              Lr_Info.FECHA_FIN,
+              Lr_Info.HORA_INICIO,
+              Lr_Info.HORA_FIN,
+              Lr_Info.CUADRILLA_ID,
+              Lr_Info.NO_EMPLE,
+              Lr_Info.TIPO_HORARIO_ID,
+              'Inactivo',
+              Pv_Observacion,
+              SYSDATE,
+              Pv_UsrCreacion,
+              NULL,
+              NULL,
+              NULL
+             );
+
+        END IF;
+
+        CLOSE C_INFO_HORARIO_EMPLEADO;
+
+   EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_TRANSACCION.P_ELIMINAR_PLA_MASIVA: - '||SQLCODE||' -ERROR- '||SQLERRM;
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                 'HEKG_HORASEXTRAS_TRANSACCION.P_ELIMINAR_PLA_MASIVA: ',
+                                                 Pv_Mensaje,
+                                                 NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
+                                                 SYSDATE,
+                                                 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+
+   END P_ELIMINAR_PLA_MASIVA;
+
+   --
+
+   PROCEDURE P_GENERA_HE_VERIFICACION(Pv_Error OUT VARCHAR2) AS
+
+      CURSOR C_GET_HISTORIAL_TAREA(Cn_EmpresaCod NUMBER,
+                                 CV_TAREA_ID   VARCHAR2,
+                                 Cn_IdDetalle  NUMBER) IS
+      SELECT Q1.NO_EMPLE,
+             Q1.USR_CREACION,
+             TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY') FECHA_INICIO,
+             TO_CHAR(Q2.FECHA, 'DD-MM-YYYY') FECHA_FIN,
+             TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY HH24:MI') FECHA_INICIO_HE,
+             TO_CHAR(Q2.FECHA, 'DD-MM-YYYY HH24:MI') FECHA_FIN_HE,
+             TO_CHAR(Q1.FE_CREACION, 'HH24:MI') HORA_INICIO,
+             TO_CHAR(Q2.FECHA, 'HH24:MI') HORA_FIN,
+             TRUNC(24 * (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY') || ' ' || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')- to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')|| ' ' || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI'))) TOTAL_HORAS
+        FROM (SELECT VE.NO_EMPLE, IDH1.USR_CREACION, IDH1.FE_CREACION
+                FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+                JOIN DB_SOPORTE.INFO_DETALLE IDE1
+                  ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+                JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+                  ON VE.LOGIN_EMPLE = IDH1.USR_CREACION
+                 AND VE.NO_CIA = Cn_EmpresaCod
+               WHERE IDE1.TAREA_ID = CV_TAREA_ID
+                 AND IDH1.DETALLE_ID = Cn_IdDetalle
+                 AND IDH1.ESTADO IN ('Aceptada')
+                 AND IDH1.ACCION IN ('Ejecutada')) Q1,
+             (SELECT IDH.USR_CREACION USER_CREACION, IDH.FE_CREACION fecha
+                FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+                JOIN DB_SOPORTE.INFO_DETALLE IDE
+                  ON IDE.ID_DETALLE = IDH.DETALLE_ID
+               WHERE IDE.TAREA_ID = CV_TAREA_ID
+                 AND IDH.DETALLE_ID = Cn_IdDetalle
+                 AND IDH.ESTADO IN ('Asignada', 'Finalizada')
+                 AND IDH.ACCION IN ('Reasignada', 'Finalizada')) Q2
+       WHERE Q1.USR_CREACION = Q2.USER_CREACION
+       GROUP BY Q1.NO_EMPLE, Q1.USR_CREACION, Q1.FE_CREACION, Q2.FECHA
+       ORDER BY Q1.FE_CREACION ASC;
+
+    CURSOR C_ADMI_HORA_EMPLE_LINEA_BASE(Cn_EmpresaCod NUMBER,
+                                        Cv_Estado     VARCHAR2,
+                                        Cv_NoEMple    NUMBER,
+                                        Cv_FechaDesde VARCHAR2,
+                                        Cv_FechaHasta VARCHAR2) IS
+      SELECT AHE.NO_EMPLE,
+             MIN(AHE.FECHA_INICIO) FECHA_INICIO,
+             MAX(AHE.FECHA_FIN) FECHA_FIN,
+             MIN(AHE.HORA_INICIO) HORA_INICIO,
+             MAX(AHE.HORA_FIN) HORA_FIN
+        FROM DB_HORAS_EXTRAS.INFO_HORARIO_EMPLEADOS AHE
+        JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORARIOS ATH
+          ON ATH.ID_TIPO_HORARIO = AHE.TIPO_HORARIO_ID
+         AND ATH.NOMBRE_TIPO_HORARIO = 'LINEA BASE'
+       WHERE AHE.EMPRESA_COD = Cn_EmpresaCod
+         AND AHE.ESTADO = Cv_Estado
+         AND AHE.NO_EMPLE = Cv_NoEMple
+         AND ((TO_CHAR(AHE.FECHA_INICIO, 'MM') = TO_CHAR(TO_DATE(Cv_FechaDesde,'DD-MM-YYYY'), 'MM') 
+         AND TO_CHAR(AHE.FECHA_INICIO, 'YYYY') = TO_CHAR(TO_DATE(Cv_FechaDesde,'DD-MM-YYYY'), 'YYYY'))
+         OR  (TO_CHAR(AHE.FECHA_FIN, 'MM') = TO_CHAR(TO_DATE(Cv_FechaHasta,'DD-MM-YYYY'), 'MM') 
+         AND TO_CHAR(AHE.FECHA_FIN, 'YYYY') = TO_CHAR(TO_DATE(Cv_FechaHasta,'DD-MM-YYYY'), 'YYYY')))
+       GROUP BY AHE.NO_EMPLE;
+
+    CURSOR C_DATOS_EMPLE(Cv_EmpresaCod VARCHAR2, Cv_NoEMple VARCHAR2) IS
+      SELECT VEE.AREA, VEE.NOMBRE_AREA, VEE.DEPTO, VEE.NOMBRE_DEPTO
+        FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE
+       WHERE VEE.NO_EMPLE = Cv_NoEMple
+         AND VEE.NO_CIA = Cv_EmpresaCod;
+
+    --CURSOR QUE OBTIENE TAREAS FINALIZADAS EN EL MES Y AÑO ACTUAL, (TAREA_ID)
+    CURSOR C_GET_TAREA(CV_ESTADO VARCHAR2) IS
+      SELECT IT.*
+        FROM DB_SOPORTE.INFO_TAREA IT
+         WHERE IT.ESTADO = 'Finalizada'
+         AND (IT.FE_ULT_MOD) >= TO_TIMESTAMP(TO_CHAR(SYSDATE,'YYYY-MM-DD'),'YYYY-MM-DD')
+         AND PROCESO_ID = (SELECT ID_PROCESO
+                             FROM DB_SOPORTE.ADMI_PROCESO
+                            WHERE NOMBRE_PROCESO = 'TAREAS DE HORAS EXTRA'
+                              AND ESTADO = 'Activo')
+         AND IT.NUMERO_TAREA NOT IN
+             (SELECT ITH.TAREA_ID
+                FROM DB_HORAS_EXTRAS.INFO_TAREAS_HORAS ITH
+               WHERE ITH.ESTADO IN
+                     ('Verificacion', 'Procesada', 'Autorizada', 'Pre-Autorizada','Pendiente')
+                 AND ITH.TAREA_ID IS NOT NULL)
+       ORDER BY it.NUMERO_TAREA DESC;
+
+
+    Lc_PlaniLineBase      C_ADMI_HORA_EMPLE_LINEA_BASE%ROWTYPE;
+    Lc_DatosEMple         C_DATOS_EMPLE%ROWTYPE;
+    Lv_EmpresaCod         NUMBER;
+    Ln_ContadorRegistros  NUMBER;
+    Ln_ContadorReg        NUMBER;    
+    Ln_NumeroHoras        NUMBER;
+    Lv_EstadoTarea        VARCHAR2(20);
+    Lv_estadoSolicitud    VARCHAR2(20);
+    Lv_Observacion        VARCHAR2(200);
+    Lv_userCreacion       VARCHAR2(15);
+    Lv_Status             VARCHAR2(10);
+    Lv_regjson            CLOB;
+    Le_Exception          EXCEPTION;
+    Lv_Error              VARCHAR2(500);
+
+
+    Type C_GET_HISTORIAL_TAREA_TYPE IS VARRAY(2) OF C_GET_HISTORIAL_TAREA%ROWTYPE;
+
+    Lc_horariosTareaEnviar    C_GET_HISTORIAL_TAREA_TYPE;   
+    Lc_horariosTarea_tmp      C_GET_HISTORIAL_TAREA%ROWTYPE;
+  BEGIN
+
+    Lv_EmpresaCod      := 10;
+    Lv_EstadoTarea     := 'Finalizada';
+
+    Lv_Observacion     := 'Origen Tarea HE Job barrido de tareas';
+    Lv_userCreacion    := 'Horas_Extras';
+    Ln_ContadorRegistros:=0;
+    Ln_ContadorReg:=1;
+
+    IF Lv_EmpresaCod IS NULL THEN
+      Pv_Error := 'El parámetro empresaCod está vacío';
+      RAISE Le_Exception;
+    END IF;
+
+     SELECT PARDET.VALOR1 AS TOTAL_HORAS
+     INTO Ln_NumeroHoras
+         FROM DB_GENERAL.admi_parametro_cab PARCAB,
+              DB_GENERAL.admi_parametro_det PARDET
+        WHERE PARCAB.Nombre_parametro = 'TOTAL DE HORAS EXTRAS'
+          AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+          AND PARDET.DESCRIPCION = 'NUMERO TOTAL DE HORAS EXTRAS PARA GENERAR SOLICITUD DESDE UNA TAREA TIPO PROCESO HORAS EXTRAS'
+          AND PARDET.ESTADO = 'Activo' 
+          AND PARCAB.ESTADO = 'Activo'; 
+
+      SELECT PARDET.VALOR1 AS ESTADO
+     INTO Lv_estadoSolicitud
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'ESTADO TAREA PROCESO HE'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'ESTADO A GENERARSE LAS SOLICITUDES DE LAS TAREAS PROCESO HE'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo';     
+
+    FOR tareasFinalizadas IN C_GET_TAREA(Lv_EstadoTarea) LOOP
+       Lv_Error :=null;
+      FOR histoTarea IN C_GET_HISTORIAL_TAREA(Lv_EmpresaCod,
+                                              tareasFinalizadas.TAREA_ID,
+                                              tareasFinalizadas.detalle_id) LOOP    
+
+        IF C_ADMI_HORA_EMPLE_LINEA_BASE%ISOPEN THEN
+          CLOSE C_ADMI_HORA_EMPLE_LINEA_BASE;
+        END IF;
+
+        OPEN C_ADMI_HORA_EMPLE_LINEA_BASE(Lv_EmpresaCod,
+                                          'Activo',
+                                          TO_NUMBER(histoTarea.no_emple),
+                                          histoTarea.FECHA_INICIO,
+                                          histoTarea.FECHA_FIN);
+        FETCH C_ADMI_HORA_EMPLE_LINEA_BASE
+          INTO Lc_PlaniLineBase;
+        CLOSE C_ADMI_HORA_EMPLE_LINEA_BASE;
+
+        IF C_DATOS_EMPLE%ISOPEN THEN
+          CLOSE C_DATOS_EMPLE;
+        END IF;
+
+        OPEN C_DATOS_EMPLE(Lv_EmpresaCod, histoTarea.NO_EMPLE);
+        FETCH C_DATOS_EMPLE
+          INTO Lc_DatosEMple;
+        CLOSE C_DATOS_EMPLE;   
+
+        IF Lc_PlaniLineBase.FECHA_INICIO IS NOT NULL then
+
+          IF histoTarea.TOTAL_HORAS<Ln_NumeroHoras THEN    															  
+
+              IF to_date(histoTarea.FECHA_FIN, 'DD-MM-YYYY') > to_date(histoTarea.FECHA_INICIO, 'DD-MM-YYYY') THEN
+                Lc_horariosTarea_tmp := histoTarea;
+                Lc_horariosTarea_tmp.HORA_FIN:='23:59';
+                Lc_horariosTarea_tmp.FECHA_FIN:=histoTarea.FECHA_INICIO;
+                Lc_horariosTareaEnviar := C_GET_HISTORIAL_TAREA_TYPE(Lc_horariosTarea_tmp);
+
+                Lc_horariosTareaEnviar.extend;
+                Lc_horariosTarea_tmp := histoTarea;
+                Lc_horariosTarea_tmp.HORA_INICIO:='00:00';
+                Lc_horariosTarea_tmp.FECHA_INICIO:=histoTarea.FECHA_FIN;
+                Lc_horariosTareaEnviar(2):=Lc_horariosTarea_tmp;
+
+               ELSE
+                  Lc_horariosTareaEnviar := C_GET_HISTORIAL_TAREA_TYPE(histoTarea);
+               END IF;
+
+
+               Ln_ContadorRegistros:=Lc_horariosTareaEnviar.count;
+               WHILE Ln_ContadorReg <=  Ln_ContadorRegistros LOOP
+                      lv_regjson := chr(10) || lpad(' ', 6, ' ') || '{' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"noEmpleado":[' ||
+                                    Lc_horariosTareaEnviar(Ln_ContadorReg).NO_EMPLE || '],' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"fecha":"' ||
+                                    Lc_horariosTareaEnviar(Ln_ContadorReg).FECHA_INICIO  || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"horaInicio":"' ||
+                                    Lc_horariosTareaEnviar(Ln_ContadorReg).HORA_INICIO  || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"horaFin":"' ||
+                                    Lc_horariosTareaEnviar(Ln_ContadorReg).HORA_FIN || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"observacion":"' ||
+                                    Lv_Observacion || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"estado":"' ||
+                                    Lv_estadoSolicitud || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"empresaCod":"' ||
+                                    Lv_EmpresaCod || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"usrCreacion":"' ||
+                                    Lv_userCreacion || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"tareaId":[' ||
+                                    tareasFinalizadas.numero_tarea ||  '],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"nombreDocumento":[],' ||
+                                    chr(10) || lpad(' ', 9, ' ') ||
+                                    '"ubicacionDocumento":[],' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"jornadaEmpleado":"' || 'M' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"esFinDeSemana":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"esDiaLibre":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"descripcion":"' || 'Unitaria' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"idCuadrilla":"' || null || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"nombreArea":"' ||
+                                    Lc_DatosEMple.NOMBRE_AREA || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"feInicioTarea":["' ||
+                                    Lc_horariosTareaEnviar(Ln_ContadorReg).FECHA_INICIO_HE || '"],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"feFinTarea":["' ||
+                                    Lc_horariosTareaEnviar(Ln_ContadorReg).FECHA_FIN_HE || '"],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"nombreDepartamento":"' ||
+                                    Lc_DatosEMple.NOMBRE_DEPTO || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"esSuperUsuario":"' || 'N' || '"' ||
+                                    chr(10) || lpad(' ', 6, ' ') || '}';
+                      DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA(lv_regjson,
+                                                                                        Lv_Status,
+                                                                                        Lv_Error);
+
+                      IF Lv_Status = 'ERROR' THEN
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                             'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERIFICACION',
+                                                             Lv_Error,
+                                                             NVL(SYS_CONTEXT('USERENV',
+                                                                             'HOST'),
+                                                                 'DB_HORAS_EXTRAS'),
+                                                             SYSDATE,
+                                                             NVL(SYS_CONTEXT('USERENV',
+                                                                             'IP_ADDRESS'),
+                                                                 '127.0.0.1'));                                       
+                      END IF;
+
+                      Ln_ContadorReg := Ln_ContadorReg + 1;
+
+                END LOOP;
+            ELSE
+                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                   'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERIFICACION',
+                                                   'No se puede generar solicitud de Horas Extras en estado VERIFICACION para la tarea: ' ||
+                          tareasFinalizadas.numero_tarea || ', número total de horas excedido',
+                                                   NVL(SYS_CONTEXT('USERENV',
+                                                                   'HOST'),
+                                                       'DB_HORAS_EXTRAS'),
+                                                   SYSDATE,
+                                                   NVL(SYS_CONTEXT('USERENV',
+                                                                   'IP_ADDRESS'),
+                                                       '127.0.0.1'));                                    
+             END IF;
+        ELSE				   
+
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                               'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERIFICACION',
+                                               'No se pudo generar solicitud de Horas Extras en estado VERIFICACION para la tarea: ' ||
+                      tareasFinalizadas.numero_tarea || ', el empleado numero ' || histoTarea.no_emple ||
+                      ', No posee linea base ',
+                                               NVL(SYS_CONTEXT('USERENV',
+                                                               'HOST'),
+                                                   'DB_HORAS_EXTRAS'),
+                                               SYSDATE,
+                                               NVL(SYS_CONTEXT('USERENV',
+                                                               'IP_ADDRESS'),
+                                                   '127.0.0.1'));                         
+        END IF;
+
+      END LOOP;
+
+    END LOOP;
+    COMMIT;
+  EXCEPTION
+    WHEN Le_Exception THEN 	
+
+
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERIFICACION',
+                                           Pv_Error || ' - ' || SQLCODE ||
+                                           ' -ERROR- ' || SQLERRM ||
+                                           DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||
+                                           DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               'DB_HORAS_EXTRAS'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));
+
+    WHEN OTHERS THEN 
+
+
+      Pv_Error := SQLCODE || ' -ERROR- ' || SQLERRM || ' ' ||
+                  DBMS_UTILITY.FORMAT_ERROR_BACKTRACE || ' ' ||
+                  DBMS_UTILITY.FORMAT_ERROR_STACK;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERIFICACION',
+                                           Pv_Error,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               'DB_HORAS_EXTRAS'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));
+  END P_GENERA_HE_VERIFICACION;
+
+  PROCEDURE P_GEN_HE_AUTO_TAREAS_TECNICA AS
+
+      CURSOR C_GET_HISTORIAL_TAREA(Cn_EmpresaCod NUMBER,
+                                   CV_ESTADO VARCHAR2,
+                                   CV_TIPO_ASIGNADO VARCHAR2,
+                                   CN_NumeroDias NUMBER) IS
+
+        SELECT Q3.USR_CREACION,
+          Q3.TOTAL_MINUTOS
+        FROM
+          (SELECT Q1.NO_EMPLE,
+            Q1.USR_CREACION,
+            SUM(TRUNC(24*60* (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY')
+            || ' '
+            || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI') - to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')
+            || ' '
+            || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')))) TOTAL_MINUTOS
+          FROM
+            (SELECT IDH1.DETALLE_ID,
+              VE.NO_EMPLE,
+              IDH1.USR_CREACION,
+              IDH1.FE_CREACION
+            FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+            JOIN DB_SOPORTE.INFO_DETALLE IDE1
+            ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+            JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+            ON VE.LOGIN_EMPLE      = IDH1.USR_CREACION
+            AND VE.NO_CIA          = Cn_EmpresaCod
+            AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_TECNICA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. TEC. (ATENCION AL USUARIO) PARA JOB BARRIDO DE TAREA Y GENERACION DE HE AUTORIZADAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo')
+            WHERE IDH1.DETALLE_ID IN
+              (SELECT IT.DETALLE_ID
+              FROM DB_SOPORTE.INFO_TAREA IT
+              WHERE IT.ESTADO                          = CV_ESTADO
+              AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+              AND PROCESO_ID <>1477
+              AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE-CN_NumeroDias, 'DD-MM-YYYY')
+              )
+            AND (IDH1.ESTADO IN ('Aceptada')
+            AND IDH1.ACCION  IN ('Ejecutada'))
+            ) Q1,
+            (SELECT IDH.DETALLE_ID,
+              IDH.USR_CREACION USER_CREACION,
+              IDH.FE_CREACION fecha
+            FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+            JOIN DB_SOPORTE.INFO_DETALLE IDE
+            ON IDE.ID_DETALLE     = IDH.DETALLE_ID
+            WHERE IDH.DETALLE_ID IN
+              (SELECT IT.DETALLE_ID
+              FROM DB_SOPORTE.INFO_TAREA IT
+              WHERE IT.ESTADO                          = CV_ESTADO
+              AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+              AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE-CN_NumeroDias, 'DD-MM-YYYY')
+              )
+            AND ((IDH.ESTADO = 'Asignada'
+            AND IDH.ACCION   = 'Reasignada')
+            OR (IDH.ESTADO   = 'Finalizada'
+            AND IDH.ACCION   = 'Finalizada'))
+            ) Q2
+          WHERE Q1.USR_CREACION = Q2.USER_CREACION
+          AND Q1.DETALLE_ID     = Q2.DETALLE_ID
+          GROUP BY Q1.NO_EMPLE,
+            Q1.USR_CREACION
+          ) Q3
+        WHERE Q3.TOTAL_MINUTOS/60>8
+        ORDER BY Q3.USR_CREACION ASC;
+
+       CURSOR C_GET_DETALLE_TAREA(Cn_EmpresaCod NUMBER,
+                                  CV_ESTADO VARCHAR2,
+                                  CV_TIPO_ASIGNADO VARCHAR2,
+                                  CV_USR_CREACION VARCHAR2,
+                                  CN_NumeroDias NUMBER) IS
+
+       SELECT Q3.*
+        FROM
+          (SELECT TO_CHAR(Q1.NUMERO_TAREA) NUMERO_TAREA,
+              TO_CHAR(Q1.DETALLE_ID) DETALLE_ID,  
+              Q1.ASIGNADO_ID,
+              Q1.USR_CREACION,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY') FECHA_INICIO,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY') FECHA_FIN,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY HH24:MI') FECHA_INICIO_HE,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY HH24:MI') FECHA_FIN_HE,
+              TO_CHAR(Q1.FE_CREACION, 'HH24:MI') HORA_INICIO,
+              TO_CHAR(Q2.FECHA, 'HH24:MI') HORA_FIN,
+              (TRUNC(24*60* (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')- to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')))) TOTAL_MINUTOS
+            FROM
+              (SELECT IT.NUMERO_TAREA,
+                      IDH1.DETALLE_ID,
+                      IT.ASIGNADO_ID,
+                      IDH1.USR_CREACION,
+                      IDH1.FE_CREACION
+              FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+              JOIN DB_SOPORTE.INFO_DETALLE IDE1
+              ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+              JOIN DB_SOPORTE.INFO_TAREA IT
+              ON IT.DETALLE_ID = IDH1.DETALLE_ID
+              AND IT.DETALLE_ID IN
+                (SELECT IT.DETALLE_ID
+                FROM DB_SOPORTE.INFO_TAREA IT
+                WHERE IT.ESTADO                          = CV_ESTADO
+                AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                AND PROCESO_ID <>1477
+                AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE-CN_NumeroDias, 'DD-MM-YYYY')
+                )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH1.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_TECNICA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. TEC. (ATENCION AL USUARIO) PARA JOB BARRIDO DE TAREA Y GENERACION DE HE AUTORIZADAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo')
+              WHERE (IDH1.ESTADO IN ('Aceptada')
+              AND IDH1.ACCION  IN ('Ejecutada'))
+              ) Q1,
+              (SELECT IT.NUMERO_TAREA,
+                      IDH.DETALLE_ID,
+                      IT.ASIGNADO_ID,
+                      IDH.USR_CREACION USER_CREACION,
+                      IDH.FE_CREACION fecha
+                 FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+                 JOIN DB_SOPORTE.INFO_DETALLE IDE
+                   ON IDE.ID_DETALLE     = IDH.DETALLE_ID
+                 JOIN DB_SOPORTE.INFO_TAREA IT
+                   ON IT.DETALLE_ID = IDH.DETALLE_ID  
+                  AND IT.DETALLE_ID IN
+                  (SELECT IT.DETALLE_ID
+                  FROM DB_SOPORTE.INFO_TAREA IT
+                  WHERE IT.ESTADO                          = CV_ESTADO
+                  AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                  AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE-CN_NumeroDias, 'DD-MM-YYYY')
+                  )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_TECNICA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. TEC. (ATENCION AL USUARIO) PARA JOB BARRIDO DE TAREA Y GENERACION DE HE AUTORIZADAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo')
+              WHERE ((IDH.ESTADO ='Asignada'
+              AND IDH.ACCION   ='Reasignada')
+              OR (IDH.ESTADO   = 'Finalizada'
+              AND IDH.ACCION   = 'Finalizada'))
+              ) Q2
+            WHERE Q1.USR_CREACION = Q2.USER_CREACION
+            AND Q1.DETALLE_ID     = Q2.DETALLE_ID
+            AND Q1.NUMERO_TAREA   = Q2.NUMERO_TAREA
+            AND Q1.ASIGNADO_ID    = Q2.ASIGNADO_ID
+            AND Q1.USR_CREACION   = CV_USR_CREACION) Q3
+        WHERE Q3.TOTAL_MINUTOS>0
+        ORDER BY Q3.NUMERO_TAREA,Q3.DETALLE_ID,Q3.FECHA_INICIO ASC;   
+
+        CURSOR C_GET_DET_TAREA_GENE_HE(Cn_EmpresaCod NUMBER,
+                                  CV_ESTADO VARCHAR2,
+                                  CV_TIPO_ASIGNADO VARCHAR2,
+                                  CV_USR_CREACION VARCHAR2,
+                                  CV_NUMEROS_TAREAS VARCHAR2,
+                                  CV_DETALLES_ID VARCHAR2,
+                                  CN_NumeroDias NUMBER) IS                                  
+
+        SELECT Q3.*
+          FROM
+          (SELECT TO_CHAR(Q1.NUMERO_TAREA) NUMERO_TAREA,
+              TO_CHAR(Q1.DETALLE_ID) DETALLE_ID,  
+              Q1.ASIGNADO_ID,
+              Q1.USR_CREACION,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY') FECHA_INICIO,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY') FECHA_FIN,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY HH24:MI') FECHA_INICIO_HE,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY HH24:MI') FECHA_FIN_HE,
+              TO_CHAR(Q1.FE_CREACION, 'HH24:MI') HORA_INICIO,
+              TO_CHAR(Q2.FECHA, 'HH24:MI') HORA_FIN,
+              (TRUNC(24*60* (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')- to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')))) TOTAL_MINUTOS
+            FROM
+              (SELECT IT.NUMERO_TAREA,
+                      IDH1.DETALLE_ID,
+                      IT.ASIGNADO_ID,
+                      IDH1.USR_CREACION,
+                      IDH1.FE_CREACION
+              FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+              JOIN DB_SOPORTE.INFO_DETALLE IDE1
+              ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+              JOIN DB_SOPORTE.INFO_TAREA IT
+              ON IT.DETALLE_ID = IDH1.DETALLE_ID
+              AND IT.DETALLE_ID IN
+                (SELECT IT.DETALLE_ID
+                FROM DB_SOPORTE.INFO_TAREA IT
+                WHERE IT.ESTADO                          = CV_ESTADO
+                AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE-CN_NumeroDias, 'DD-MM-YYYY')
+                )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH1.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_TECNICA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. TEC. (ATENCION AL USUARIO) PARA JOB BARRIDO DE TAREA Y GENERACION DE HE AUTORIZADAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo')
+              WHERE (IDH1.ESTADO IN ('Aceptada')
+              AND IDH1.ACCION  IN ('Ejecutada'))
+              ) Q1,
+              (SELECT IT.NUMERO_TAREA,
+                      IDH.DETALLE_ID,
+                      IT.ASIGNADO_ID,
+                      IDH.USR_CREACION USER_CREACION,
+                      IDH.FE_CREACION fecha
+                 FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+                 JOIN DB_SOPORTE.INFO_DETALLE IDE
+                   ON IDE.ID_DETALLE     = IDH.DETALLE_ID
+                 JOIN DB_SOPORTE.INFO_TAREA IT
+                   ON IT.DETALLE_ID = IDH.DETALLE_ID  
+                  AND IT.DETALLE_ID IN
+                  (SELECT IT.DETALLE_ID
+                  FROM DB_SOPORTE.INFO_TAREA IT
+                  WHERE IT.ESTADO                          = CV_ESTADO
+                  AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                  AND PROCESO_ID <>1477
+                  AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE-CN_NumeroDias, 'DD-MM-YYYY')
+                  )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_TECNICA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. TEC. (ATENCION AL USUARIO) PARA JOB BARRIDO DE TAREA Y GENERACION DE HE AUTORIZADAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo')
+              WHERE ((IDH.ESTADO ='Asignada'
+              AND IDH.ACCION   ='Reasignada')
+              OR (IDH.ESTADO   = 'Finalizada'
+              AND IDH.ACCION   = 'Finalizada'))
+              ) Q2
+            WHERE Q1.USR_CREACION = Q2.USER_CREACION
+            AND Q1.DETALLE_ID     = Q2.DETALLE_ID
+            AND Q1.NUMERO_TAREA   = Q2.NUMERO_TAREA
+            AND Q1.ASIGNADO_ID    = Q2.ASIGNADO_ID
+            AND Q1.USR_CREACION   = CV_USR_CREACION) Q3
+        WHERE Q3.TOTAL_MINUTOS>0
+         AND Q3.NUMERO_TAREA IN (CV_NUMEROS_TAREAS)
+         AND Q3.DETALLE_ID IN (CV_DETALLES_ID)
+        ORDER BY Q3.NUMERO_TAREA,Q3.DETALLE_ID,Q3.FECHA_INICIO ASC;   
+
+    CURSOR C_EMPLE_CUADRILLA(Cv_EmpresaCod VARCHAR2, Cv_IdCuadrilla NUMBER) IS
+         SELECT VEE.NO_EMPLE
+        FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE
+        WHERE VEE.LOGIN_EMPLE IN
+          (SELECT ip.login
+          FROM DB_COMERCIAL.info_persona ip
+          WHERE ip.id_persona IN
+            (SELECT IPER.persona_id
+            FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
+            WHERE IPER.cuadrilla_id =Cv_IdCuadrilla
+            AND IPER.ESTADO         ='Activo'
+            )
+          AND ip.ESTADO = 'Activo'
+          )
+        AND VEE.NO_CIA = Cv_EmpresaCod;
+
+
+     CURSOR C_DIAS_TAREA(Cv_FechaInicio VARCHAR2, Cv_FechaFin VARCHAR2) IS
+      SELECT (TO_DATE(Cv_FechaFin,'DD/MM/YYYY') - TO_DATE(Cv_FechaInicio,'DD/MM/YYYY')) CANTIDAD FROM DUAL;
+
+
+    Type C_GET_DETALLE_TAREA_TYPE IS VARRAY(5) OF C_GET_DETALLE_TAREA%ROWTYPE;
+
+    Lr_Cantidad           C_DIAS_TAREA%ROWTYPE;  
+    Lc_TareaEnviar        C_GET_DETALLE_TAREA_TYPE;        
+    Ln_NumHorasExtras     NUMBER;
+    Ln_NumHE              NUMBER;
+    Ln_EmpresaCod         NUMBER;
+    Ln_ContadorRegistros  NUMBER;
+    Ln_ContadorReg        NUMBER;    
+    Ln_NumeroHoras        NUMBER;    
+    Ln_NumeroDias         NUMBER; 
+    Lv_NomArea            VARCHAR2(25);
+    Lv_NomDep             VARCHAR2(25);
+    Lv_EstadoTarea        VARCHAR2(20);
+    Lv_estadoSolicitud    VARCHAR2(20);
+    Lv_Observacion        VARCHAR2(200);
+    Lv_userCreacion       VARCHAR2(15);
+    Lv_Status             VARCHAR2(10);
+    Lv_Error              VARCHAR2(1000);
+    Lv_regjson            CLOB;
+    Lv_TareaId            CLOB;
+    Lv_DetalleId          CLOB;
+    Lv_no_emples          CLOB;
+    Le_Exception          EXCEPTION;
+
+  BEGIN
+
+    Ln_EmpresaCod        := 10;
+    Lv_EstadoTarea       := 'Finalizada';
+    Lv_Observacion       := 'Origen Solicitud Job barrido de tareas por departamentos tecnica';
+    Lv_userCreacion      := 'Horas_Extras';
+    Ln_ContadorRegistros := 0;
+    Ln_ContadorReg       := 1;
+    Ln_NumHorasExtras    := 0;
+
+    IF Ln_EmpresaCod IS NULL THEN
+      Lv_Error := 'El parámetro empresaCod está vacío';
+      RAISE Le_Exception;
+    END IF;
+
+   SELECT PARDET.VALOR1 AS TOTAL_HORAS
+     INTO Ln_NumeroHoras
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'TOTAL DE HORAS EXTRAS'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'NUMERO TOTAL DE HORAS EXTRAS PARA GENERAR SOLICITUD DESDE UNA TAREA TIPO PROCESO HORAS EXTRAS'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo'; 
+
+   SELECT PARDET.VALOR1 AS ESTADO
+     INTO Lv_estadoSolicitud
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS TECNICA'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS TECNICA'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo'; 
+
+
+   SELECT PARDET.VALOR1 AS NUMERO
+     INTO Ln_NumeroDias
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'NUMERO DIAS PARA BARRIDO TAREAS'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'NUMERO DIAS PARA BARRIDO TAREAS'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo'; 
+
+
+      FOR histoTarea IN C_GET_HISTORIAL_TAREA(Ln_EmpresaCod,
+                                              Lv_EstadoTarea,
+                                              'CUADRILLA',
+                                              Ln_NumeroDias) LOOP                                       
+         FOR detaTarea IN C_GET_DETALLE_TAREA(Ln_EmpresaCod,
+                                              Lv_EstadoTarea,
+                                              'CUADRILLA',
+                                              histoTarea.USR_CREACION,
+                                              Ln_NumeroDias) LOOP    
+
+            IF Ln_NumHorasExtras!=0 THEN
+               IF ((Ln_NumHorasExtras + detaTarea.TOTAL_MINUTOS)/60)>8 THEN                  
+                    IF Lv_TareaId is null THEN 
+                        Lv_TareaId := detaTarea.NUMERO_TAREA;
+                        Lv_DetalleId := detaTarea.DETALLE_ID;
+                    ELSE    
+                        Lv_TareaId := Lv_TareaId || ',' || detaTarea.NUMERO_TAREA;
+                        Lv_DetalleId := Lv_DetalleId || ',' || detaTarea.DETALLE_ID;
+                    END IF;
+               END IF;
+               Ln_NumHorasExtras := Ln_NumHorasExtras + detaTarea.TOTAL_MINUTOS;
+            ELSE
+               Ln_NumHorasExtras := detaTarea.TOTAL_MINUTOS;
+            END IF;
+        END LOOP;
+
+        FOR TareHE IN C_GET_DET_TAREA_GENE_HE(Ln_EmpresaCod,
+                                               Lv_EstadoTarea,
+                                               'CUADRILLA',
+                                                  histoTarea.USR_CREACION,
+                                                  Lv_TareaId,
+                                                  Lv_DetalleId,
+                                                  Ln_NumeroDias) LOOP                                                    
+
+              SELECT VEE.NOMBRE_AREA,
+                   VEE.NOMBRE_DEPTO
+                    INTO Lv_NomArea,Lv_NomDep
+                  FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE
+                  WHERE VEE.LOGIN_EMPLE IN
+                    (SELECT ip.login
+                    FROM DB_COMERCIAL.info_persona ip
+                    WHERE ip.id_persona IN
+                      (SELECT IPER.persona_id
+                      FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
+                      WHERE IPER.cuadrilla_id =TareHE.ASIGNADO_ID
+                      AND IPER.ESTADO         ='Activo'
+                      )
+                    AND ip.ESTADO = 'Activo'
+                    )
+                  AND VEE.NO_CIA = Ln_EmpresaCod
+                  GROUP BY VEE.AREA,
+                    VEE.NOMBRE_AREA,
+                    VEE.DEPTO,
+                    VEE.NOMBRE_DEPTO;
+
+            FOR integrantesCuadrilla IN C_EMPLE_CUADRILLA(Ln_EmpresaCod, TareHE.ASIGNADO_ID) LOOP  
+                 IF Lv_no_emples is null THEN 
+                      Lv_no_emples := integrantesCuadrilla.NO_EMPLE;
+                  ELSE   
+                      Lv_no_emples := Lv_no_emples || ',' || integrantesCuadrilla.NO_EMPLE;
+                  END IF;                                    
+            END LOOP;    
+      
+
+              lv_regjson := chr(10) || lpad(' ', 6, ' ') || '{' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"noEmpleado":[' ||
+                                    Lv_no_emples || '],' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"fecha":"' ||
+                                    TareHE.FECHA_INICIO  || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"horaInicio":"' ||
+                                    TareHE.HORA_INICIO  || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"horaFin":"' ||
+                                    TareHE.HORA_FIN || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"observacion":"' ||
+                                    Lv_Observacion || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"estado":"' ||
+                                    Lv_estadoSolicitud || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"empresaCod":"' ||
+                                    Ln_EmpresaCod || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"usrCreacion":"' ||
+                                    Lv_userCreacion || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"tareaId":[' ||
+                                    TareHE.numero_tarea ||  '],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"nombreDocumento":[],' ||
+                                    chr(10) || lpad(' ', 9, ' ') ||
+                                    '"ubicacionDocumento":[],' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"jornadaEmpleado":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"esFinDeSemana":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"esDiaLibre":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"descripcion":"' || 'UNIF_CUAD_SM' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"idCuadrilla":"' || TareHE.ASIGNADO_ID || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"nombreArea":"' ||
+                                    Lv_NomArea || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"feInicioTarea":["' ||
+                                    TareHE.FECHA_INICIO_HE || '"],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"feFinTarea":["' ||
+                                    TareHE.FECHA_FIN_HE || '"],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"nombreDepartamento":"' ||
+                                    Lv_NomDep || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"esSuperUsuario":"' || 'N' || '"' ||
+                                    chr(10) || lpad(' ', 6, ' ') || '}';
+
+                      DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA(lv_regjson,
+                                                                                        Lv_Status,
+                                                                                        Lv_Error);
+
+                      IF Lv_Status = 'ERROR' THEN
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                             'HEKG_HORASEXTRAS_TRANSACCION.P_GEN_HE_AUTO_TAREAS_TECNICA',
+                                                             Lv_Error,
+                                                             NVL(SYS_CONTEXT('USERENV',
+                                                                             'HOST'),
+                                                                 'DB_HORAS_EXTRAS'),
+                                                             SYSDATE,
+                                                             NVL(SYS_CONTEXT('USERENV',
+                                                                             'IP_ADDRESS'),
+                                                                 '127.0.0.1'));                                       
+                      END IF;  
+        END LOOP;                       
+
+        Lv_TareaId        := '';
+        Lv_DetalleId      := '';
+        Lv_no_emples      := '';
+        Ln_NumHorasExtras := 0;                                    
+
+    END LOOP;
+    COMMIT;
+  EXCEPTION
+    WHEN Le_Exception THEN 			   
+
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_GEN_HE_AUTO_TAREAS_TECNICA',
+                                           Lv_Error || ' - ' || SQLCODE ||
+                                           ' -ERROR- ' || SQLERRM ||
+                                           DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||
+                                           DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               'DB_HORAS_EXTRAS'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));
+
+    WHEN OTHERS THEN 
+
+      Lv_Error := SQLCODE || ' -ERROR- ' || SQLERRM || ' ' ||
+                  DBMS_UTILITY.FORMAT_ERROR_BACKTRACE || ' ' ||
+                  DBMS_UTILITY.FORMAT_ERROR_STACK;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_GEN_HE_AUTO_TAREAS_TECNICA',
+                                           Lv_Error,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               'DB_HORAS_EXTRAS'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));
+  END P_GEN_HE_AUTO_TAREAS_TECNICA;
+
+PROCEDURE P_GENERA_HE_VERI_TAREAS_ADMI AS
+
+      CURSOR C_GET_HISTORIAL_TAREA(Cn_EmpresaCod NUMBER,
+                                   CV_ESTADO VARCHAR2,
+                                   CV_TIPO_ASIGNADO VARCHAR2,
+                                   CN_NumeroDias NUMBER) IS
+
+        SELECT Q3.USR_CREACION,
+          Q3.TOTAL_MINUTOS
+        FROM
+          (SELECT Q1.NO_EMPLE,
+            Q1.USR_CREACION,
+            SUM(TRUNC(24*60* (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY')
+            || ' '
+            || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI') - to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')
+            || ' '
+            || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')))) TOTAL_MINUTOS
+          FROM
+            (SELECT IDH1.DETALLE_ID,
+              VE.NO_EMPLE,
+              IDH1.USR_CREACION,
+              IDH1.FE_CREACION
+            FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+            JOIN DB_SOPORTE.INFO_DETALLE IDE1
+            ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+            JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+            ON VE.LOGIN_EMPLE      = IDH1.USR_CREACION
+            AND VE.NO_CIA          = Cn_EmpresaCod
+            AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+             FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                  DB_GENERAL.admi_parametro_det PARDET
+            WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+              AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+              AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+              AND PARDET.ESTADO = 'Activo' 
+              AND PARCAB.ESTADO = 'Activo')
+            WHERE IDH1.DETALLE_ID IN
+              (SELECT IT.DETALLE_ID
+              FROM DB_SOPORTE.INFO_TAREA IT
+              WHERE IT.ESTADO                          = CV_ESTADO
+              AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+              AND PROCESO_ID <>(SELECT ID_PROCESO FROM DB_SOPORTE.ADMI_PROCESO WHERE NOMBRE_PROCESO='TAREAS DE HORAS EXTRA' AND ESTADO='Activo')
+              AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE, 'DD-MM-YYYY')
+              )
+            AND (IDH1.ESTADO IN ('Aceptada')
+            AND IDH1.ACCION  IN ('Ejecutada'))
+            ) Q1,
+            (SELECT IDH.DETALLE_ID,
+              IDH.USR_CREACION USER_CREACION,
+              IDH.FE_CREACION fecha
+            FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+            JOIN DB_SOPORTE.INFO_DETALLE IDE
+            ON IDE.ID_DETALLE     = IDH.DETALLE_ID
+            WHERE IDH.DETALLE_ID IN
+              (SELECT IT.DETALLE_ID
+              FROM DB_SOPORTE.INFO_TAREA IT
+              WHERE IT.ESTADO                          = CV_ESTADO
+              AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+              AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE, 'DD-MM-YYYY')
+              )
+            AND ((IDH.ESTADO = 'Asignada'
+            AND IDH.ACCION   = 'Reasignada')
+            OR (IDH.ESTADO   = 'Finalizada'
+            AND IDH.ACCION   = 'Finalizada'))
+            ) Q2
+          WHERE Q1.USR_CREACION = Q2.USER_CREACION
+          AND Q1.DETALLE_ID     = Q2.DETALLE_ID
+          GROUP BY Q1.NO_EMPLE,
+            Q1.USR_CREACION
+          ) Q3
+        WHERE Q3.TOTAL_MINUTOS/60>8
+        ORDER BY Q3.USR_CREACION ASC;
+
+       CURSOR C_GET_DETALLE_TAREA(Cn_EmpresaCod NUMBER,
+                                  CV_ESTADO VARCHAR2,
+                                  CV_TIPO_ASIGNADO VARCHAR2,
+                                  CV_USR_CREACION VARCHAR2,
+                                  CN_NumeroDias NUMBER) IS
+
+
+        SELECT Q3.*
+          FROM
+          (SELECT TO_CHAR(Q1.NUMERO_TAREA) NUMERO_TAREA,
+              TO_CHAR(Q1.DETALLE_ID) DETALLE_ID,  
+              Q1.NO_EMPLE,
+              Q1.USR_CREACION,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY') FECHA_INICIO,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY') FECHA_FIN,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY HH24:MI') FECHA_INICIO_HE,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY HH24:MI') FECHA_FIN_HE,
+              TO_CHAR(Q1.FE_CREACION, 'HH24:MI') HORA_INICIO,
+              TO_CHAR(Q2.FECHA, 'HH24:MI') HORA_FIN,
+              (TRUNC(24*60* (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')- to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')))) TOTAL_MINUTOS
+            FROM
+              (SELECT IT.NUMERO_TAREA,
+                      IDH1.DETALLE_ID,
+                      VE.NO_EMPLE,
+                      IDH1.USR_CREACION,
+                      IDH1.FE_CREACION
+              FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+              JOIN DB_SOPORTE.INFO_DETALLE IDE1
+              ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+              JOIN DB_SOPORTE.INFO_TAREA IT
+              ON IT.DETALLE_ID = IDH1.DETALLE_ID
+              AND IT.DETALLE_ID IN
+                (SELECT IT.DETALLE_ID
+                FROM DB_SOPORTE.INFO_TAREA IT
+                WHERE IT.ESTADO                          = CV_ESTADO
+                AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                AND PROCESO_ID <>(SELECT ID_PROCESO FROM DB_SOPORTE.ADMI_PROCESO WHERE NOMBRE_PROCESO='TAREAS DE HORAS EXTRA' AND ESTADO='Activo')
+                AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE, 'DD-MM-YYYY')
+                )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH1.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+                 FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                      DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+                  AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+                  AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+                  AND PARDET.ESTADO = 'Activo' 
+                  AND PARCAB.ESTADO = 'Activo')
+              WHERE (IDH1.ESTADO IN ('Aceptada')
+              AND IDH1.ACCION  IN ('Ejecutada'))
+              ) Q1,
+              (SELECT IT.NUMERO_TAREA,
+                      IDH.DETALLE_ID,
+                      VE.NO_EMPLE,
+                      IDH.USR_CREACION USER_CREACION,
+                      IDH.FE_CREACION fecha
+                 FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+                 JOIN DB_SOPORTE.INFO_DETALLE IDE
+                   ON IDE.ID_DETALLE     = IDH.DETALLE_ID
+                 JOIN DB_SOPORTE.INFO_TAREA IT
+                   ON IT.DETALLE_ID = IDH.DETALLE_ID  
+                  AND IT.DETALLE_ID IN
+                  (SELECT IT.DETALLE_ID
+                  FROM DB_SOPORTE.INFO_TAREA IT
+                  WHERE IT.ESTADO                          = CV_ESTADO
+                  AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                  AND PROCESO_ID <>(SELECT ID_PROCESO FROM DB_SOPORTE.ADMI_PROCESO WHERE NOMBRE_PROCESO='TAREAS DE HORAS EXTRA' AND ESTADO='Activo')
+                  AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE, 'DD-MM-YYYY')
+                  )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+                 FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                      DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+                  AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+                  AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+                  AND PARDET.ESTADO = 'Activo' 
+                  AND PARCAB.ESTADO = 'Activo')
+              WHERE ((IDH.ESTADO ='Asignada'
+              AND IDH.ACCION   ='Reasignada')
+              OR (IDH.ESTADO   = 'Finalizada'
+              AND IDH.ACCION   = 'Finalizada'))
+              ) Q2
+            WHERE Q1.USR_CREACION = Q2.USER_CREACION
+            AND Q1.DETALLE_ID     = Q2.DETALLE_ID
+            AND Q1.NUMERO_TAREA   = Q2.NUMERO_TAREA
+            AND Q1.NO_EMPLE       = Q2.NO_EMPLE
+            AND Q1.USR_CREACION   = CV_USR_CREACION) Q3
+        WHERE Q3.TOTAL_MINUTOS>0
+        ORDER BY Q3.NUMERO_TAREA,Q3.DETALLE_ID,Q3.FECHA_INICIO ASC;                         
+
+    CURSOR C_GET_DET_TAREA_GENE_HE(Cn_EmpresaCod NUMBER,
+                                  CV_ESTADO VARCHAR2,
+                                  CV_TIPO_ASIGNADO VARCHAR2,
+                                  CV_USR_CREACION VARCHAR2,
+                                  CV_NUMEROS_TAREAS VARCHAR2,
+                                  CV_DETALLES_ID VARCHAR2,
+                                  CN_NumeroDias NUMBER) IS                                  
+
+        SELECT Q3.*
+          FROM
+          (SELECT TO_CHAR(Q1.NUMERO_TAREA) NUMERO_TAREA,
+              TO_CHAR(Q1.DETALLE_ID) DETALLE_ID,  
+              Q1.NO_EMPLE,
+              Q1.USR_CREACION,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY') FECHA_INICIO,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY') FECHA_FIN,
+              TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY HH24:MI') FECHA_INICIO_HE,
+              TO_CHAR(Q2.FECHA, 'DD-MM-YYYY HH24:MI') FECHA_FIN_HE,
+              TO_CHAR(Q1.FE_CREACION, 'HH24:MI') HORA_INICIO,
+              TO_CHAR(Q2.FECHA, 'HH24:MI') HORA_FIN,
+              (TRUNC(24*60* (to_date(TO_CHAR(Q2.FECHA, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q2.FECHA, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')- to_date(TO_CHAR(Q1.FE_CREACION, 'DD-MM-YYYY')
+              || ' '
+              || TO_CHAR(Q1.FE_CREACION, 'HH24:MI'), 'DD-MM-YYYY HH24:MI')))) TOTAL_MINUTOS
+            FROM
+              (SELECT IT.NUMERO_TAREA,
+                      IDH1.DETALLE_ID,
+                      VE.NO_EMPLE,
+                      IDH1.USR_CREACION,
+                      IDH1.FE_CREACION
+              FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH1
+              JOIN DB_SOPORTE.INFO_DETALLE IDE1
+              ON IDE1.ID_DETALLE = IDH1.DETALLE_ID
+              JOIN DB_SOPORTE.INFO_TAREA IT
+              ON IT.DETALLE_ID = IDH1.DETALLE_ID
+              AND IT.DETALLE_ID IN
+                (SELECT IT.DETALLE_ID
+                FROM DB_SOPORTE.INFO_TAREA IT
+                WHERE IT.ESTADO                          = CV_ESTADO
+                AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                AND PROCESO_ID <>(SELECT ID_PROCESO FROM DB_SOPORTE.ADMI_PROCESO WHERE NOMBRE_PROCESO='TAREAS DE HORAS EXTRA' AND ESTADO='Activo')
+                AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE, 'DD-MM-YYYY')
+                )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH1.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+                 FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                      DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+                  AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+                  AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+                  AND PARDET.ESTADO = 'Activo' 
+                  AND PARCAB.ESTADO = 'Activo')
+              WHERE (IDH1.ESTADO IN ('Aceptada')
+              AND IDH1.ACCION  IN ('Ejecutada'))
+              ) Q1,
+              (SELECT IT.NUMERO_TAREA,
+                      IDH.DETALLE_ID,
+                      VE.NO_EMPLE,
+                      IDH.USR_CREACION USER_CREACION,
+                      IDH.FE_CREACION fecha
+                 FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL IDH
+                 JOIN DB_SOPORTE.INFO_DETALLE IDE
+                   ON IDE.ID_DETALLE     = IDH.DETALLE_ID
+                 JOIN DB_SOPORTE.INFO_TAREA IT
+                   ON IT.DETALLE_ID = IDH.DETALLE_ID  
+                  AND IT.DETALLE_ID IN
+                  (SELECT IT.DETALLE_ID
+                  FROM DB_SOPORTE.INFO_TAREA IT
+                  WHERE IT.ESTADO                          = CV_ESTADO
+                  AND IT.TIPO_ASIGNADO                     = CV_TIPO_ASIGNADO
+                  AND PROCESO_ID <>(SELECT ID_PROCESO FROM DB_SOPORTE.ADMI_PROCESO WHERE NOMBRE_PROCESO='TAREAS DE HORAS EXTRA' AND ESTADO='Activo')
+                  AND TO_CHAR(IT.FE_ULT_MOD, 'DD-MM-YYYY') = TO_CHAR(SYSDATE, 'DD-MM-YYYY')
+                  )
+              JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VE
+              ON VE.LOGIN_EMPLE      = IDH.USR_CREACION
+              AND VE.NO_CIA          = Cn_EmpresaCod
+              AND VE.NOMBRE_DEPTO IN (SELECT PARDET.VALOR1 AS NOMBRE_DEPTO
+                 FROM DB_GENERAL.admi_parametro_cab PARCAB,
+                      DB_GENERAL.admi_parametro_det PARDET
+                WHERE PARCAB.Nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+                  AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+                  AND PARDET.DESCRIPCION = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+                  AND PARDET.ESTADO = 'Activo' 
+                  AND PARCAB.ESTADO = 'Activo')
+              WHERE ((IDH.ESTADO ='Asignada'
+              AND IDH.ACCION   ='Reasignada')
+              OR (IDH.ESTADO   = 'Finalizada'
+              AND IDH.ACCION   = 'Finalizada'))
+              ) Q2
+            WHERE Q1.USR_CREACION = Q2.USER_CREACION
+            AND Q1.DETALLE_ID     = Q2.DETALLE_ID
+            AND Q1.NUMERO_TAREA   = Q2.NUMERO_TAREA
+            AND Q1.NO_EMPLE       = Q2.NO_EMPLE
+            AND Q1.USR_CREACION   = CV_USR_CREACION) Q3
+         WHERE Q3.TOTAL_MINUTOS>0
+         AND Q3.NUMERO_TAREA IN (CV_NUMEROS_TAREAS)
+         AND Q3.DETALLE_ID IN (CV_DETALLES_ID)
+        ORDER BY Q3.NUMERO_TAREA,Q3.DETALLE_ID,Q3.FECHA_INICIO ASC;                         
+
+
+    CURSOR C_DATOS_EMPLE(Cv_EmpresaCod VARCHAR2, Cv_LoginEMple VARCHAR2) IS
+      SELECT VEE.AREA, VEE.NOMBRE_AREA, VEE.DEPTO, VEE.NOMBRE_DEPTO
+        FROM NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE
+       WHERE VEE.LOGIN_EMPLE = Cv_LoginEMple
+         AND VEE.NO_CIA      = Cv_EmpresaCod;
+
+     CURSOR C_DIAS_TAREA(Cv_FechaInicio VARCHAR2, Cv_FechaFin VARCHAR2) IS
+      SELECT (TO_DATE(Cv_FechaFin,'DD/MM/YYYY') - TO_DATE(Cv_FechaInicio,'DD/MM/YYYY')) CANTIDAD FROM DUAL;
+
+    CURSOR C_HORARIO_MATUTINO  IS
+    SELECT HORA_INICIO, HORA_FIN
+    FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
+    WHERE TIPO_HORAS_EXTRA='HORAS_NO_ESTIMADAS_MATUTINA';
+    
+    CURSOR C_HORARIO_NOCTURNO IS
+    SELECT HORA_INICIO, HORA_FIN
+    FROM DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA
+    WHERE TIPO_HORAS_EXTRA='HORAS_NO_ESTIMADAS_NOCTURNA';
+    
+    Type C_GET_DETALLE_TAREA_TYPE IS VARRAY(5) OF C_GET_DETALLE_TAREA%ROWTYPE;
+
+    Lc_DatosEMple         C_DATOS_EMPLE%ROWTYPE;
+    Lr_Cantidad           C_DIAS_TAREA%ROWTYPE;  
+    Lc_TareaEnviar        C_GET_DETALLE_TAREA_TYPE;        
+    Ln_NumHorasExtras     NUMBER;
+    Ln_NumHE              NUMBER;
+    Ln_EmpresaCod         NUMBER;
+    Ln_ContadorRegistros  NUMBER;
+    Ln_ContadorReg        NUMBER;    
+    Ln_NumeroHoras        NUMBER;  
+    Ln_NumeroDias         NUMBER;  
+    Lv_EstadoTarea        VARCHAR2(20);
+    Lv_estadoSolicitud    VARCHAR2(20);
+    Lv_Observacion        VARCHAR2(200);
+    Lv_userCreacion       VARCHAR2(15);
+    Lv_Status             VARCHAR2(10);
+    Lv_Error              VARCHAR2(1000);
+    Lv_regjson            CLOB;
+    Lv_TareaId            CLOB;
+    Lv_DetalleId          CLOB;
+    cant_tareas           number:=0;
+    Ln_acumula_horas      number:=0;
+    Le_Exception          EXCEPTION;
+    Ln_verificador       number:=0;
+    Ln_horas number:=0;
+    Lv_horas      VARCHAR2(10);  
+    lc_horarios_matutino C_HORARIO_MATUTINO%ROWTYPE;
+    lc_horarios_nocturno C_HORARIO_NOCTURNO%ROWTYPE;
+    lv_jornada    varchar2(2);
+
+  BEGIN
+
+    Ln_EmpresaCod        := 10;
+    Lv_EstadoTarea       := 'Finalizada';
+    Lv_Observacion       := 'Origen Tarea HE Job barrido de tareas por departamentos administrativos';
+    Lv_userCreacion      := 'Horas_Extras';
+    Ln_ContadorRegistros := 0;
+    Ln_ContadorReg       := 1;
+    Ln_NumHorasExtras    := 0;
+    
+
+    IF Ln_EmpresaCod IS NULL THEN
+      Lv_Error := 'El parámetro empresaCod está vacío';
+      RAISE Le_Exception;
+    END IF;
+
+   SELECT PARDET.VALOR1 AS TOTAL_HORAS
+     INTO Ln_NumeroHoras
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'TOTAL DE HORAS EXTRAS'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'NUMERO TOTAL DE HORAS EXTRAS PARA GENERAR SOLICITUD DESDE UNA TAREA TIPO PROCESO HORAS EXTRAS'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo'; 
+
+   SELECT PARDET.VALOR1 AS ESTADO
+     INTO Lv_estadoSolicitud
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'ESTADO DEPARTAMENTOS_ADMINISTRATIVA'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'ESTADO A GENERARSE LAS SOLICITUDES DE LOS DEPARTAMENTOS ADMINISTRATIVA'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo';  
+
+   SELECT PARDET.VALOR1 AS NUMERO
+     INTO Ln_NumeroDias
+     FROM DB_GENERAL.admi_parametro_cab PARCAB,
+          DB_GENERAL.admi_parametro_det PARDET
+    WHERE PARCAB.Nombre_parametro = 'NUMERO DIAS PARA BARRIDO TAREAS'
+      AND PARDET.PARAMETRO_ID=PARCAB.ID_PARAMETRO
+      AND PARDET.DESCRIPCION = 'NUMERO DIAS PARA BARRIDO TAREAS'
+      AND PARDET.ESTADO = 'Activo' 
+      AND PARCAB.ESTADO = 'Activo'; 
+
+--RECORRO TAREAS FINALIZADAS EN EL DIA 
+       FOR histoTarea IN C_GET_HISTORIAL_TAREA(Ln_EmpresaCod,
+                                              Lv_EstadoTarea,
+                                              'EMPLEADO',
+                                              Ln_NumeroDias) LOOP  
+            IF C_DATOS_EMPLE%ISOPEN THEN
+              CLOSE C_DATOS_EMPLE;
+            END IF;
+
+            OPEN C_DATOS_EMPLE(Ln_EmpresaCod, histoTarea.USR_CREACION);
+            FETCH C_DATOS_EMPLE
+              INTO Lc_DatosEMple;
+            CLOSE C_DATOS_EMPLE;  
+            
+--BUSCO POR EL EMPLEADO LAS TAREAS ASIGNADAS
+          FOR detaTarea IN C_GET_DETALLE_TAREA(Ln_EmpresaCod,
+                                              Lv_EstadoTarea,
+                                              'EMPLEADO',
+                                              histoTarea.USR_CREACION,
+                                              Ln_NumeroDias) LOOP
+                                              
+ --ASIGNO LOS VALORES A LAS VARIABLES QUE VOY A USAR PARA EL CURSOR.    
+            Ln_NumHorasExtras := detaTarea.TOTAL_MINUTOS;
+            Lv_TareaId := detaTarea.NUMERO_TAREA;
+            Lv_DetalleId := detaTarea.DETALLE_ID;
+ ---CUENTO LAS TAREAS Y ACUMULO EL TIEMPO DE LAS TAREAS DEL USUARIO                                             
+            cant_tareas:=cant_tareas+1;
+            Ln_acumula_horas:=Ln_acumula_horas+Ln_NumHorasExtras;       
+         
+     
+    END LOOP;
+    
+         IF cant_tareas =1 THEN                   
+               Ln_verificador:=1;
+         ELSE
+               Ln_verificador:=0;
+               IF (Ln_acumula_horas/60)>8 THEN   
+              --Tomas las fechas de la ultima tarea cerrada por el empleado.
+              
+               Ln_NumHorasExtras := Ln_acumula_horas-480;--resto los minutos que le corresponde a las 8 horas
+               Ln_horas:=Ln_NumHorasExtras/60; --saco las horas.
+              
+               END IF;
+          END IF;
+         cant_tareas:=0;
+         Ln_acumula_horas:=0;
+   
+        
+
+         FOR TareHE IN C_GET_DET_TAREA_GENE_HE(Ln_EmpresaCod,
+                                                  Lv_EstadoTarea,
+                                                  'EMPLEADO',
+                                                  histoTarea.USR_CREACION,
+                                                  Lv_TareaId,
+                                                  Lv_DetalleId,
+                                                  Ln_NumeroDias) LOOP     
+        if (Ln_verificador=1)then
+                
+          TareHE.HORA_INICIO:= TO_CHAR ((TO_DATE(TareHE.FECHA_INICIO_HE,'dd/mm/rrrr hh24:mi:ss')+8/24),'hh24:mi');
+          TareHE.FECHA_INICIO:=TO_CHAR ((TO_DATE(TareHE.FECHA_INICIO_HE,'dd/mm/rrrr hh24:mi:ss')+8/24),'dd-mm-rrrr');
+          TareHE.FECHA_INICIO_HE:=TO_CHAR ((TO_DATE(TareHE.FECHA_INICIO_HE,'dd/mm/rrrr hh24:mi:ss')+8/24),'dd-mm-rrrr hh24:mi');
+       
+       else
+          
+          TareHE.HORA_INICIO:= TO_CHAR ((TO_DATE(TareHE.FECHA_FIN_HE,'dd/mm/rrrr hh24:mi:ss')-Ln_horas/24),'hh24:mi');
+          TareHE.FECHA_INICIO:=TO_CHAR ((TO_DATE(TareHE.FECHA_FIN_HE,'dd/mm/rrrr hh24:mi:ss')-Ln_horas/24),'dd-mm-rrrr');
+          TareHE.FECHA_INICIO_HE:=TO_CHAR ((TO_DATE(TareHE.FECHA_FIN_HE,'dd/mm/rrrr hh24:mi:ss')-Ln_horas/24),'dd-mm-rrrr hh24:mi');
+        
+     end if;
+     
+     
+            IF C_HORARIO_MATUTINO%ISOPEN THEN
+              CLOSE C_HORARIO_MATUTINO;
+            END IF;
+
+            OPEN C_HORARIO_MATUTINO;
+            FETCH C_HORARIO_MATUTINO
+              INTO lc_horarios_matutino;
+            CLOSE C_HORARIO_MATUTINO;  
+            
+            
+            IF C_HORARIO_NOCTURNO%ISOPEN THEN
+              CLOSE C_HORARIO_NOCTURNO;
+            END IF;
+
+            OPEN C_HORARIO_NOCTURNO;
+            FETCH C_HORARIO_NOCTURNO
+              INTO lc_horarios_nocturno;
+            CLOSE C_HORARIO_NOCTURNO;  
+            
+            --validacion horario matutino
+            IF (TareHE.HORA_INICIO <= lc_horarios_matutino.hora_inicio  AND TareHE.HORA_FIN >= lc_horarios_matutino.hora_fin)then
+             lv_jornada:='M';
+            END IF;
+            
+            IF (TareHE.HORA_INICIO >= lc_horarios_nocturno.hora_fin)  AND (TareHE.HORA_FIN <='23:59' OR lc_horarios_nocturno.hora_inicio >= TareHE.HORA_FIN)then
+             lv_jornada:='N';
+             END IF;
+      
+              lv_regjson := chr(10) || lpad(' ', 6, ' ') || '{' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"noEmpleado":[' ||
+                                    TareHE.NO_EMPLE || '],' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"fecha":"' ||
+                                    TareHE.FECHA_INICIO  || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"horaInicio":"' ||
+                                    TareHE.HORA_INICIO  || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"horaFin":"' ||
+                                    TareHE.HORA_FIN || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"observacion":"' ||
+                                    Lv_Observacion || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"estado":"' ||
+                                    Lv_estadoSolicitud || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"empresaCod":"' ||
+                                    Ln_EmpresaCod || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"usrCreacion":"' ||
+                                    Lv_userCreacion || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"tareaId":[' ||
+                                    TareHE.numero_tarea ||  '],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"nombreDocumento":[],' ||
+                                    chr(10) || lpad(' ', 9, ' ') ||
+                                    '"ubicacionDocumento":[],' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"jornadaEmpleado":"' || 'M' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"esFinDeSemana":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"esDiaLibre":"' || 'N' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"descripcion":"' || 'Unitaria' || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"idCuadrilla":"' || null || '",' ||
+                                    chr(10) || lpad(' ', 9, ' ') || '"nombreArea":"' ||
+                                    Lc_DatosEMple.NOMBRE_AREA || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"feInicioTarea":["' ||
+                                    TareHE.FECHA_INICIO_HE || '"],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"feFinTarea":["' ||
+                                    TareHE.FECHA_FIN_HE || '"],'  || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"nombreDepartamento":"' ||
+                                    Lc_DatosEMple.NOMBRE_DEPTO || '",' || chr(10) ||
+                                    lpad(' ', 9, ' ') || '"esSuperUsuario":"' || 'N' || '"' ||
+                                    chr(10) || lpad(' ', 6, ' ') || '}';   
+
+                                                                 
+                      DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION.P_GUARDAR_HORASEXTRA(lv_regjson,
+                                                                                        Lv_Status,
+                                                                                        Lv_Error);
+
+                      IF Lv_Status = 'ERROR' THEN
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                                             'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERI_TAREAS_ADMI',
+                                                             Lv_Error,
+                                                             NVL(SYS_CONTEXT('USERENV',
+                                                                             'HOST'),
+                                                                 'DB_HORAS_EXTRAS'),
+                                                             SYSDATE,
+                                                             NVL(SYS_CONTEXT('USERENV',
+                                                                             'IP_ADDRESS'),
+                                                                 '127.0.0.1'));                                       
+                      END IF;  
+        END LOOP;
+
+        Lv_TareaId        := '';
+        Lv_DetalleId      := '';
+        Ln_NumHorasExtras := 0;                                    
+
+    END LOOP;
+    COMMIT;
+  EXCEPTION
+    WHEN Le_Exception THEN 			   
+
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERI_TAREAS_ADMI',
+                                           Lv_Error || ' - ' || SQLCODE ||
+                                           ' -ERROR- ' || SQLERRM ||
+                                           DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||
+                                           DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               'DB_HORAS_EXTRAS'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));
+
+    WHEN OTHERS THEN 
+
+      Lv_Error := SQLCODE || ' -ERROR- ' || SQLERRM || ' ' ||
+                  DBMS_UTILITY.FORMAT_ERROR_BACKTRACE || ' ' ||
+                  DBMS_UTILITY.FORMAT_ERROR_STACK;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
+                                           'HEKG_HORASEXTRAS_TRANSACCION.P_GENERA_HE_VERI_TAREAS_ADMI',
+                                           Lv_Error,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'HOST'),
+                                               'DB_HORAS_EXTRAS'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV',
+                                                           'IP_ADDRESS'),
+                                               '127.0.0.1'));
+  END P_GENERA_HE_VERI_TAREAS_ADMI;
+
 
 END HEKG_HORASEXTRAS_TRANSACCION;
 /
