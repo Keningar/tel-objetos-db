@@ -112,7 +112,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       Lv_CodEmpresa          VARCHAR2(30) := '18';
       j apex_json.t_values;    
       BEGIN
-      
+      dbms_output.put_line('mensaje 1000');
       Lcl_Where := 'WHERE S.ID_SERVICIO = IDS.SERVICIO_ID AND S.PUNTO_ID = P.ID_PUNTO AND IST.SERVICIO_ID = S.ID_SERVICIO  AND ATS.ID_TIPO_SOLICITUD = IDS.TIPO_SOLICITUD_ID AND P.PERSONA_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL AND IER.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
                       AND IER.ROL_ID = AR.ID_ROL AND IPER.PERSONA_ID = IP.ID_PERSONA AND P.SECTOR_ID = ASE.ID_SECTOR AND ASE.PARROQUIA_ID = AP.ID_PARROQUIA AND AP.CANTON_ID = AC.ID_CANTON AND AJ.ID_JURISDICCION = P.PUNTO_COBERTURA_ID AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL AND IST.ELEMENTO_CONTENEDOR_ID = ILEM.ID_ELEMENTO
                       AND IER.EMPRESA_COD = ''' ||Lv_CodEmpresa ||''' AND ROWNUM < 500
@@ -134,7 +134,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       Lv_Vendedor         := APEX_JSON.get_varchar2(p_path => 'vendedor');
       Lv_Ciudad           := '';
       apex_json.parse(j, Pcl_Request);
-      
+      dbms_output.put_line('mensaje 2000');
       IF (APEX_JSON.get_count(p_path => 'ciudad') > 0) THEN
         FOR i in 1..APEX_JSON.get_count(p_path => 'ciudad') LOOP
             Lv_Ciudad := Lv_Ciudad || apex_json.get_varchar2(p_path=>'ciudad[%d]',p0=> i,p_values=>j) || ',';            
@@ -219,7 +219,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       IF Lv_UltimaMilla IS NOT NULL THEN 
         Lcl_Where := CONCAT(Lcl_Where, 'AND IST.ULTIMA_MILLA_ID = ''' || Lv_UltimaMilla ||'''' );  
       END IF;       
-      
+      dbms_output.put_line('mensaje 3000');
       Lcl_Select := '
         SELECT IDS.ID_DETALLE_SOLICITUD AS idDetalleSolicitud, S.ID_SERVICIO AS idServicio, P.ID_PUNTO AS idPunto, P.ESTADO AS estadoPunto, IST.TERCERIZADORA_ID AS tercerizadoraId, IST.ID_SERVICIO_TECNICO AS idServicioTecnico,
                ASE.NOMBRE_SECTOR AS nombreSector, AP.NOMBRE_PARROQUIA AS nombreParroquia, AC.NOMBRE_CANTON AS nombreCanton, IP.ID_PERSONA AS idPersona, IP.RAZON_SOCIAL AS razonSocial, IP.NOMBRES AS nombres,
@@ -243,7 +243,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
                 DB_COMERCIAL.ADMI_SECTOR ASE, DB_COMERCIAL.ADMI_PARROQUIA AP, DB_COMERCIAL.ADMI_CANTON AC, DB_COMERCIAL.INFO_PUNTO P
                 LEFT JOIN DB_COMERCIAL.INFO_PERSONA PV ON PV.LOGIN = P.USR_VENDEDOR ';
       Lcl_Query := Lcl_Select || Lcl_From || Lcl_Where ;  
-      
+      dbms_output.put_line('mensaje 4000 ' || Lcl_Query);
       OPEN Pcl_Response FOR Lcl_Query; 
       
       Pv_Status     := 'OK';
@@ -724,6 +724,9 @@ create or replace PACKAGE BODY                                        DB_COMERCI
           AND LOWER(Lv_DescripcionSol) IN ('solicitud agregar equipo', 'solicitud agregar equipo masivo')) THEN
         Lb_SigueFlujoPlanif := TRUE;
       END IF;
+        DBMS_OUTPUT.PUT_LINE('origen ' || Lv_Origen);           
+      Lv_NombreProceso :=  'SOLICITAR NUEVO SERVICIO FIBRA';          
+        
       IF (Lv_Origen IN ('local', 'otro', 'otro2', 'MOVIL')) THEN
         Lb_GuardarGlobal := TRUE;
         IF (Ln_IdPlan IS NOT NULL) THEN
@@ -774,7 +777,8 @@ create or replace PACKAGE BODY                                        DB_COMERCI
             Lv_NombreProceso := 'SOLICITUD REUBICACION';
           END IF;         
         END IF;
-        Lv_NombreProceso :=  'SOLICITAR NUEVO SERVICIO FIBRA';
+
+        DBMS_OUTPUT.PUT_LINE('proceso ' || Lv_NombreProceso);     
         IF (Ln_IdPlan IS NOT NULL AND LOWER(Lv_DescripcionSol) = 'solicitud planificacion') THEN
           BEGIN
             SELECT NVL(CAB.ID_PLAN,0) 
@@ -810,7 +814,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
                       ON DET.PRODUCTO_ID = PRO.ID_PRODUCTO
                     WHERE CAB.ID_PLAN = Ln_IdPlan AND PRO.ESTADO = 'Activo' AND PRO.NOMBRE_TECNICO = 'EXTENDER_DUAL_BAND'; 
                   EXCEPTION
-                    WHEN NO_DATA_FOUND THEN
+                  WHEN NO_DATA_FOUND THEN
                       Ln_HayExtenderDualBand := 0;
                   END;
                   OPEN C_COUNT_SERVICIO_ADICIONAL(Ln_IdPunto, 'EXTENDER_DUAL_BAND', Lv_CodEmpresa);
@@ -871,7 +875,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
               END IF;
             END IF;
         END IF;
-      Lv_EmailVendedor:= 'notificaciones_telcos@telconet.ec,jacarrillo@telconet.ec';
+      Lv_EmailVendedor:= 'notificaciones_telcos@telconet.ec';
       FOR REG IN C_GET_FORMAS_CONTACTO_LOGIN(Lv_LoginVendedor, 'Correo Electronico') LOOP
         Lv_EmailVendedor := Lv_EmailVendedor || ',' ||REG.VALOR;
       END LOOP;
@@ -938,6 +942,8 @@ create or replace PACKAGE BODY                                        DB_COMERCI
     WHERE SER.PUNTO_ID = Ln_PuntoId
       AND SER.ESTADO NOT IN ('Activo', 'Rechazado', 'Rechazada', 'Anulado', 'Anulada')
       AND SER.PRODUCTO_ID IS NOT NULL;
+                             
+      
       
     CURSOR C_GET_PUNTO (Ln_SolicitudId NUMBER)
     IS 
@@ -1021,11 +1027,11 @@ create or replace PACKAGE BODY                                        DB_COMERCI
             i := V_IdSolGestionada.NEXT(i);
         END LOOP;
       END LOOP;
-      
+      dbms_output.put_line('SOLICITUD ' || Pn_IdSolicitud);
       OPEN C_GET_PUNTO(Pn_IdSolicitud);
       FETCH C_GET_PUNTO INTO Ln_IdPunto;
       CLOSE C_GET_PUNTO;  
-      
+      dbms_output.put_line('PUNTO ' || Ln_IdPunto);
       FOR REG IN C_GET_SERVICIOS_SIMULTANEOS(Ln_IdPunto) LOOP
             IF (instr(Lv_JsonRetorno, ''||REG.PRODUCTO_ID, 1) = 0) THEN
                 OPEN C_GET_SOLICITUD(REG.ID_SERVICIO);
@@ -1044,12 +1050,12 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       END LOOP;
       Lv_JsonRetorno := SUBSTR(Lv_JsonRetorno, 0, LENGTH(Lv_JsonRetorno) - 1);
       DBMS_LOB.APPEND(Lv_JsonRetorno, ']');
-         
+      dbms_output.put_line(Lv_JsonRetorno);      
       CLOSE Lc_Consulta;      
       Pv_Status := 'OK';
       Pv_Mensaje := 'Transaccion Exitosa';
       Pv_Response := Lv_JsonRetorno;    
     END P_JSON_SERVICIOS_GESTION;    
-    
+       
 END CMKG_PLANIFICACION_COMERCIAL;
 /
