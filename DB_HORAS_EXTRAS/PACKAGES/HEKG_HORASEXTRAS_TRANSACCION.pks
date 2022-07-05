@@ -716,7 +716,7 @@ CREATE OR REPLACE package body                                                DB
         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHS.ID_HORAS_SOLICITUD= IHSE.HORAS_SOLICITUD_ID
         JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
         JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.NO_EMPLE = IHSE.NO_EMPLE
-       WHERE IHSD.FECHA_SOLICITUD_DET IN(TO_DATE(Cv_Fecha, 'yyyy-mm-dd HH24:MI:SS'),TO_DATE(Cv_Fecha, 'yyyy-mm-dd HH24:MI:SS')) AND IHSE.NO_EMPLE=Cv_No_Emple AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion') AND VEE.NO_CIA=Cv_Empresa
+       WHERE IHSD.FECHA_SOLICITUD_DET IN(Cv_Fecha,Cv_Fecha) AND IHSE.NO_EMPLE=Cv_No_Emple AND IHS.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion') AND VEE.NO_CIA=Cv_Empresa
        AND IHSE.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion') 
        AND IHSD.ESTADO IN ('Pendiente','Pre-Autorizada','Autorizada','Verificacion')
        AND IHS.EMPRESA_COD=Cv_Empresa
@@ -1476,7 +1476,7 @@ CREATE OR REPLACE package body                                                DB
           
 
           IF(Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1 +1)
-          AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1) THEN
+          AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1 ) AND Ld_HoraFin1<= Ld_HorasFinNocturnas1+1 THEN
               
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
@@ -1509,8 +1509,8 @@ CREATE OR REPLACE package body                                                DB
           END IF;
 
 
-          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
-          AND(Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
+          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1-1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
+          AND(Ld_HoraFin1 < Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
 
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
@@ -3388,7 +3388,7 @@ PROCEDURE P_ACTUALIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
           
 
           IF(Ld_HoraInicio1 >= Ld_HorasInicioNocturnas1 AND Ld_HoraInicio1 < Ld_HoraFinDia1 +1)
-          AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1) THEN
+          AND(Ld_HoraFin1 > Ld_HorasInicioNocturnas1 AND Ld_HoraFin1<= Ld_HoraFinDia1 +1 ) AND Ld_HoraFin1<= Ld_HorasFinNocturnas1+1 THEN
               
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
@@ -3421,8 +3421,8 @@ PROCEDURE P_ACTUALIZAR_SOLICITUD_HEXTRA(Pcl_Request  IN  CLOB,
           END IF;
 
 
-          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
-          AND(Ld_HoraFin1 > Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
+          IF(Ld_HoraInicio1 >= Ld_HoraFinDia1-1 AND Ld_HoraInicio1 < Ld_HorasFinNocturnas1)
+          AND(Ld_HoraFin1 < Ld_HoraFinDia1 AND Ld_HoraFin1<= Ld_HorasFinNocturnas1) THEN
 
               Lv_TotalHorasNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24,24));
               Lv_TotalMinutosNocturno := TRUNC(MOD((Ld_HoraFin1 - Ld_HoraInicio1)*24*60,60));
