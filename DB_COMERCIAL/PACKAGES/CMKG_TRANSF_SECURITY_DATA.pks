@@ -122,124 +122,109 @@ CREATE OR REPLACE PACKAGE BODY  DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA AS
        
         OPEN PCL_RESPONSE FOR 
         SELECT  
-DOCU.ID_CERTIFICADO_DOCUMENTO,
-DOCU.NOMBRECOMPLETO, 
-DOCU.CEDULA,    
-DOCU.SERIAL,              
-DOCU.USUARIO,               
-DOCU.RUTAARCHIVO, 
-DOCU.TIPOARCHIVO,  
-DOCU.NOMBREARCHIVO, 
-DOCU.NOMBREDOCUMENTO,   
-DOCU.TIPOPERSONA,  
-DOCU.TIPOTRIBUTARIO,    
-DOCU.ESTADO,
-DOCU.INTENTOS
-
-FROM (         
-        SELECT
-        INCD.ID_CERTIFICADO_DOCUMENTO,   
-        (INCE.NOMBRES ||' '||INCE.PRIMER_APELLIDO||' '||INCE.SEGUNDO_APELLIDO) AS NOMBRECOMPLETO, 
-        INCE.NUM_CEDULA                                                        AS CEDULA,          
-        REPLACE(INCE.SERIAL_NUMBER,'-'||INCE.NUM_CEDULA,'')                    AS SERIAL,       
-        PCL_USUARIOSD.VALOR1        AS USUARIO,               
-        INCD.SRC                    AS RUTAARCHIVO, 
-        ATDG.CODIGO_TIPO_DOCUMENTO  AS TIPOARCHIVO,          
-        INCE.NUM_CEDULA||'-'|| ( CASE 
-        WHEN ATDG.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND ATDG.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
-        THEN  REGEXP_REPLACE(ATDG.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
-        ELSE  REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )   END 
-        )||'.' ||ATDO.EXTENSION_TIPO_DOCUMENTO AS NOMBREARCHIVO,         
-        REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )  AS NOMBREDOCUMENTO,   
-        (CASE  INCE.PERSONA_NATURAL  
-        WHEN  PCL_TIPOPERSONA.VALOR1   THEN  PCL_TIPOPERSONA.VALOR2
-        WHEN  PCL_TIPOPERSONA.VALOR3   THEN  PCL_TIPOPERSONA.VALOR4
-        ELSE NULL END)                AS TIPOPERSONA,  
-        INCE.PERSONA_NATURAL          AS TIPOTRIBUTARIO,    
-        INCD.DOCUMENTADO              AS ESTADO,
-        COALESCE(INCD.INTENTOS,0)     AS INTENTOS,
-        INCD.OBSERVACION              AS OBSERVACION  
-        
-        
-    FROM 
-    DB_COMUNICACION.INFO_DOCUMENTO_RELACION IDRE,
-    DB_COMUNICACION.INFO_DOCUMENTO INDO,
-    DB_COMUNICACION.ADMI_TIPO_DOCUMENTO ATDO,
-    DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL ATDG,    
-    DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO INCD,
-    DB_FIRMAELECT.INFO_CERTIFICADO INCE,     
-    DB_COMERCIAL.INFO_PERSONA INPE ,
-    DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER , 
-    DB_COMERCIAL.INFO_CONTRATO ICON     
-    WHERE IDRE.DOCUMENTO_ID = INDO.ID_DOCUMENTO
-    AND INDO.TIPO_DOCUMENTO_ID = ATDO.ID_TIPO_DOCUMENTO
-    AND INDO.TIPO_DOCUMENTO_GENERAL_ID = ATDG.ID_TIPO_DOCUMENTO    
-    AND INDO.UBICACION_FISICA_DOCUMENTO = INCD.SRC
-    AND INCD.CERTIFICADO_ID = INCE.ID_CERTIFICADO 
-    AND INCD.DOCUMENTADO !=PCL_ESTADOS.VALOR2   
-    AND INCD.SRC LIKE 'http%' 
-    AND INCE.NUM_CEDULA =  INPE.IDENTIFICACION_CLIENTE
-    AND INCE.ESTADO IN   
-        (       
-        SELECT REGEXP_SUBSTR(   PCL_ESTADOFIRMA.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
-        CONNECT BY REGEXP_SUBSTR( PCL_ESTADOFIRMA.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
-        ) 
-    AND INCE.FE_CREACION >= SYSDATE -TO_NUMBER( PCL_CANTIDADDIAS.VALOR1)
-    AND INPE.ID_PERSONA  = IPER.PERSONA_ID
-    AND IPER.ID_PERSONA_ROL =  ICON.PERSONA_EMPRESA_ROL_ID 
-    AND IPER.ESTADO ='Activo'  
-    AND IPER.EMPRESA_ROL_ID = 813   
-    AND ICON.ID_CONTRATO = IDRE.CONTRATO_ID
-    AND ICON.ESTADO   IN   
-        (       
-        SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
-        CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
-        )              
-    AND ROWNUM <= PCL_CANTIDADPROCESAR.VALOR1 
-) DOCU  WHERE        
-( 
-               (
-                   DOCU.TIPOARCHIVO IN   
-                    (       
-                    SELECT REGEXP_SUBSTR(   PCL_DOCUMENTOSSD.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
-                    CONNECT BY REGEXP_SUBSTR(   PCL_DOCUMENTOSSD .VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
-                    )                  
-                    OR                
-                   DOCU.NOMBREDOCUMENTO  IN
-                    (       
-                    SELECT REGEXP_SUBSTR(  PCL_DOCUMENTOSSD .VALOR3 ,'[^,]+', 1, LEVEL)FROM DUAL
-                    CONNECT BY REGEXP_SUBSTR( PCL_DOCUMENTOSSD.VALOR3 , '[^,]+', 1, LEVEL) IS NOT NULL
-                    )              
+        DOCU.ID_CERTIFICADO_DOCUMENTO,
+        DOCU.NOMBRECOMPLETO, 
+        DOCU.CEDULA,    
+        DOCU.SERIAL,              
+        DOCU.USUARIO,               
+        DOCU.RUTAARCHIVO, 
+        DOCU.TIPOARCHIVO,  
+        DOCU.NOMBREARCHIVO, 
+        DOCU.NOMBREDOCUMENTO,   
+        DOCU.TIPOPERSONA,  
+        DOCU.TIPOTRIBUTARIO,    
+        DOCU.ESTADO,
+        DOCU.INTENTOS        
+        FROM (         
+            SELECT
+            INCD.ID_CERTIFICADO_DOCUMENTO,   
+            (INCE.NOMBRES ||' '||INCE.PRIMER_APELLIDO||' '||INCE.SEGUNDO_APELLIDO) AS NOMBRECOMPLETO, 
+            INCE.NUM_CEDULA                                                        AS CEDULA,          
+            REPLACE(INCE.SERIAL_NUMBER,'-'||INCE.NUM_CEDULA,'')                    AS SERIAL,       
+            PCL_USUARIOSD.VALOR1        AS USUARIO,               
+            INCD.SRC                    AS RUTAARCHIVO, 
+            ATDG.CODIGO_TIPO_DOCUMENTO  AS TIPOARCHIVO,          
+            INCE.NUM_CEDULA||'-'|| ( CASE 
+            WHEN ATDG.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND ATDG.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
+            THEN  REGEXP_REPLACE(ATDG.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
+            ELSE  REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )   END 
+            )||'.' ||ATDO.EXTENSION_TIPO_DOCUMENTO AS NOMBREARCHIVO,         
+            REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )  AS NOMBREDOCUMENTO,   
+            (CASE  INCE.PERSONA_NATURAL  
+            WHEN  PCL_TIPOPERSONA.VALOR1   THEN  PCL_TIPOPERSONA.VALOR2
+            WHEN  PCL_TIPOPERSONA.VALOR3   THEN  PCL_TIPOPERSONA.VALOR4
+            ELSE NULL END)                AS TIPOPERSONA,  
+            INCE.PERSONA_NATURAL          AS TIPOTRIBUTARIO,    
+            INCD.DOCUMENTADO              AS ESTADO,
+            COALESCE(INCD.INTENTOS,0)     AS INTENTOS,
+            INCD.OBSERVACION              AS OBSERVACION  
+            FROM 
+            DB_COMUNICACION.INFO_DOCUMENTO INDO,
+            DB_COMUNICACION.ADMI_TIPO_DOCUMENTO ATDO,
+            DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL ATDG,    
+            DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO INCD,
+            DB_FIRMAELECT.INFO_CERTIFICADO INCE,     
+            DB_COMERCIAL.INFO_PERSONA INPE ,
+            DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER , 
+            DB_COMERCIAL.INFO_CONTRATO ICON     
+            WHERE  INDO.TIPO_DOCUMENTO_ID = ATDO.ID_TIPO_DOCUMENTO
+            AND INDO.TIPO_DOCUMENTO_GENERAL_ID = ATDG.ID_TIPO_DOCUMENTO    
+            AND INDO.UBICACION_FISICA_DOCUMENTO = INCD.SRC
+            AND INCD.CERTIFICADO_ID = INCE.ID_CERTIFICADO 
+            AND INCD.DOCUMENTADO != PCL_ESTADOS.VALOR2   
+            AND INCD.SRC LIKE 'http%' 
+            AND INCE.NUM_CEDULA =  INPE.IDENTIFICACION_CLIENTE
+            AND INCE.ESTADO IN   
+                (       
+                SELECT REGEXP_SUBSTR(   PCL_ESTADOFIRMA.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                CONNECT BY REGEXP_SUBSTR( PCL_ESTADOFIRMA.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
+                ) 
+            AND INCE.FE_CREACION >= SYSDATE -TO_NUMBER(PCL_CANTIDADDIAS.VALOR1)
+            AND INPE.ID_PERSONA  = IPER.PERSONA_ID
+            AND IPER.ID_PERSONA_ROL =  ICON.PERSONA_EMPRESA_ROL_ID 
+            AND IPER.ESTADO ='Activo'  
+            AND IPER.EMPRESA_ROL_ID = 813   
+            AND ICON.ID_CONTRATO = INDO.CONTRATO_ID
+            AND ICON.ESTADO   IN   
+                (       
+                SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
                 )             
-                AND    DOCU.TIPOTRIBUTARIO =  PCL_TIPOPERSONA.VALOR1
-            )
-            OR
-            ( 
-               (
-                   DOCU.TIPOARCHIVO IN   
-                    (       
-                    SELECT REGEXP_SUBSTR(   PCL_DOCUMENTOSSD.VALOR2 ,'[^,]+', 1, LEVEL)FROM DUAL
-                    CONNECT BY REGEXP_SUBSTR(   PCL_DOCUMENTOSSD .VALOR2 , '[^,]+', 1, LEVEL) IS NOT NULL
-                    )                  
-                    OR                
-                   DOCU.NOMBREDOCUMENTO  IN
-                    (       
-                    SELECT REGEXP_SUBSTR(  PCL_DOCUMENTOSSD .VALOR4 ,'[^,]+', 1, LEVEL)FROM DUAL
-                    CONNECT BY REGEXP_SUBSTR( PCL_DOCUMENTOSSD.VALOR4 , '[^,]+', 1, LEVEL) IS NOT NULL
-                    )              
-                )             
-                AND    DOCU.TIPOTRIBUTARIO =  PCL_TIPOPERSONA.VALOR3
-            )      
-            ORDER BY  DOCU.INTENTOS DESC  ;
+            ) DOCU  
+            WHERE (
+                     (
+                        DOCU.TIPOARCHIVO IN   
+                            (       
+                            SELECT REGEXP_SUBSTR(   PCL_DOCUMENTOSSD.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                            CONNECT BY REGEXP_SUBSTR(   PCL_DOCUMENTOSSD .VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
+                            )                  
+                            OR                
+                        DOCU.NOMBREDOCUMENTO  IN
+                            (       
+                            SELECT REGEXP_SUBSTR(  PCL_DOCUMENTOSSD .VALOR3 ,'[^,]+', 1, LEVEL)FROM DUAL
+                            CONNECT BY REGEXP_SUBSTR( PCL_DOCUMENTOSSD.VALOR3 , '[^,]+', 1, LEVEL) IS NOT NULL
+                            )              
+                        )             
+                        AND    DOCU.TIPOTRIBUTARIO =  PCL_TIPOPERSONA.VALOR1
+                    )
+                    OR
+                    ( 
+                     (
+                        DOCU.TIPOARCHIVO IN   
+                            (       
+                            SELECT REGEXP_SUBSTR(   PCL_DOCUMENTOSSD.VALOR2 ,'[^,]+', 1, LEVEL)FROM DUAL
+                            CONNECT BY REGEXP_SUBSTR(   PCL_DOCUMENTOSSD .VALOR2 , '[^,]+', 1, LEVEL) IS NOT NULL
+                            )                  
+                            OR                
+                        DOCU.NOMBREDOCUMENTO  IN
+                            (       
+                            SELECT REGEXP_SUBSTR(  PCL_DOCUMENTOSSD .VALOR4 ,'[^,]+', 1, LEVEL)FROM DUAL
+                            CONNECT BY REGEXP_SUBSTR( PCL_DOCUMENTOSSD.VALOR4 , '[^,]+', 1, LEVEL) IS NOT NULL
+                            )              
+                        )             
+                        AND    DOCU.TIPOTRIBUTARIO =  PCL_TIPOPERSONA.VALOR3
+            ) ;
  
- 
- 
- 
- 
- 
- 
- 
-             
      
        PV_MENSAJE   := 'Tansaccion realizada correctamente';
        PV_STATUS    := 'OK';
@@ -265,13 +250,12 @@ FROM (
        LV_USRCREACION  VARCHAR2(100);
        LV_CLIENTIP     VARCHAR2(100);     
        LV_PARAMETROCAB VARCHAR2(100);   
-       
-       PCL_USUARIOSD      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;        
+         
        PCL_TIPOPERSONA    DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
        PCL_ESTADOS        DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       PCL_DIAPROCESADO   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
-       PCL_DOCUMENTOSSD   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_DIAPROCESADO   DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
        PCL_ESTADOCONTRATO DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
+       PCL_ESTADOFIRMA DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE; 
        
        BEGIN  
 
@@ -281,86 +265,90 @@ FROM (
        LV_CODEMPRESA             := APEX_JSON.GET_VARCHAR2(P_PATH => 'strCodEmpresa');    
        LV_USRCREACION            := APEX_JSON.GET_VARCHAR2(P_PATH => 'strUsrCreacion'); 
        LV_CLIENTIP               := APEX_JSON.GET_VARCHAR2(P_PATH => 'strClientIp'); 
-        
-       PCL_USUARIOSD             := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'WS_NOMBRE_USUARIO');	 
+         
        PCL_TIPOPERSONA           := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'TIPO_PERSONA');
 	   PCL_ESTADOS               := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_PROCESO'); 
-       PCL_DIAPROCESADO          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'DIA_PROCESADO');
-       PCL_DOCUMENTOSSD          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'DOCUMENTOS_SD');
+       PCL_DIAPROCESADO          := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'DIA_PROCESADO'); 
        PCL_ESTADOCONTRATO        := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADOS_CONTRATO'); 
+       PCL_ESTADOFIRMA           := F_DATA_PARAMETRO(LV_PARAMETROCAB , 'ESTADO_FIRMA'); 
        
         OPEN PCL_RESPONSE FOR  
         SELECT  DOC.*  FROM ( 
         
                     SELECT  
-                    ICD.ID_CERTIFICADO_DOCUMENTO,            
-                    (IC.NOMBRES ||' '||IC.PRIMER_APELLIDO||' '||IC.SEGUNDO_APELLIDO) AS NOMBRECOMPLETO, 
-                    IC.NUM_CEDULA               AS CEDULA,    
-                    REPLACE(IC.SERIAL_NUMBER,'-'||IC.NUM_CEDULA,'')            AS SERIAL,              
-                    PCL_USUARIOSD.VALOR1        AS USUARIO,               
-                    ICD.SRC                     AS RUTAARCHIVO, 
-                    ATDG.CODIGO_TIPO_DOCUMENTO  AS TIPOARCHIVO,  
-                    
-                    IC.NUM_CEDULA||'-'||
-                    (
-                    CASE 
+                    INCD.ID_CERTIFICADO_DOCUMENTO,            
+                    (INCE.NOMBRES ||' '||INCE.PRIMER_APELLIDO||' '||INCE.SEGUNDO_APELLIDO) AS NOMBRECOMPLETO, 
+                    INCE.NUM_CEDULA                                                        AS CEDULA,          
+                    REPLACE(INCE.SERIAL_NUMBER,'-'||INCE.NUM_CEDULA,'')                    AS SERIAL,       
+                    INCD.SRC                    AS RUTAARCHIVO, 
+                    ATDG.CODIGO_TIPO_DOCUMENTO  AS TIPOARCHIVO,          
+                    INCE.NUM_CEDULA||'-'|| ( CASE 
                     WHEN ATDG.CODIGO_TIPO_DOCUMENTO !=  'OTR' AND ATDG.CODIGO_TIPO_DOCUMENTO !=  'CONT'    
                     THEN  REGEXP_REPLACE(ATDG.DESCRIPCION_TIPO_DOCUMENTO , '  *', '_' )
-                    ELSE DOC.NOMBRE_DOCUMENTO  END 
-                    ) 
-                    ||'.' ||ATD.EXTENSION_TIPO_DOCUMENTO AS NOMBREARCHIVO, 
-                    DOC.NOMBRE_DOCUMENTO AS NOMBREDOCUMENTO,   
-                    (CASE  IC.PERSONA_NATURAL  
-                    WHEN  PCL_TIPOPERSONA.VALOR1   THEN  PCL_TIPOPERSONA.VALOR2
-                    WHEN  PCL_TIPOPERSONA.VALOR3   THEN  PCL_TIPOPERSONA.VALOR4
-                    ELSE NULL END ) AS TIPOPERSONA,  
-                    IC.PERSONA_NATURAL AS TIPOTRIBUTARIO,   
-                    
-                    IP.LOGIN                          AS LOGIN, 
-                    (CASE  ICD.DOCUMENTADO 
-                    WHEN  PCL_ESTADOS.VALOR2
-                    THEN  PCL_ESTADOS.VALOR1
-                    ELSE PCL_ESTADOS.VALOR3  END )    AS ESTADO,              
-                    COALESCE(ICD.INTENTOS,0)          AS INTENTOS,
-                    ICD.OBSERVACION                   AS OBSERVACION,      
-                    ICD.FE_ULT_MOD                    AS FECHAEJECUCION,
-                    ICD.FE_CREACION                   AS FECHARECEPCION
-
-                    
-                    FROM DB_FIRMAELECT.INFO_CERTIFICADO IC  
-                    INNER JOIN DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO ICD ON ICD.CERTIFICADO_ID = IC.ID_CERTIFICADO
-                    INNER JOIN (
-                    SELECT 
-                    DOC.ID_DOCUMENTO,
-                    DOC.TIPO_DOCUMENTO_ID,
-                    DOC.TIPO_DOCUMENTO_GENERAL_ID,
-                    DOC.UBICACION_FISICA_DOCUMENTO,
-                    REGEXP_REPLACE(REGEXP_SUBSTR( DOC.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' ) AS NOMBRE_DOCUMENTO 
-                    FROM DB_COMUNICACION.INFO_DOCUMENTO DOC
-                    ) DOC  ON DOC.UBICACION_FISICA_DOCUMENTO = ICD.SRC    
-                    INNER JOIN DB_COMUNICACION.INFO_DOCUMENTO_RELACION IDR ON IDR.DOCUMENTO_ID = DOC.ID_DOCUMENTO
-                    INNER JOIN DB_COMUNICACION.ADMI_TIPO_DOCUMENTO ATD ON   ATD.ID_TIPO_DOCUMENTO = DOC.TIPO_DOCUMENTO_ID
-                    INNER JOIN DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL ATDG ON ATDG.ID_TIPO_DOCUMENTO = DOC.TIPO_DOCUMENTO_GENERAL_ID
-                    INNER JOIN DB_COMERCIAL.INFO_ADENDUM ID ON  ID.CONTRATO_ID = IDR.CONTRATO_ID
-                    INNER JOIN DB_COMERCIAL.INFO_CONTRATO IC2 ON IC2.ID_CONTRATO = ID.CONTRATO_ID 
-                    INNER JOIN DB_COMERCIAL.INFO_PUNTO IP ON IP.ID_PUNTO = ID.PUNTO_ID
-                    AND ( ID.NUMERO = IDR.NUMERO_ADENDUM  OR ( ID.NUMERO IS NULL AND IDR.NUMERO_ADENDUM  IS NULL)) 
+                    ELSE  REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )   END 
+                    )||'.' ||ATDO.EXTENSION_TIPO_DOCUMENTO AS NOMBREARCHIVO,   
+                    REGEXP_REPLACE(REGEXP_SUBSTR( INDO.NOMBRE_DOCUMENTO  , '[^/]+$', 1, 1) , '-[^/]+$', '' )  AS NOMBREDOCUMENTO,   
+                    (CASE  INCE.PERSONA_NATURAL  
+                     WHEN  PCL_TIPOPERSONA.VALOR1   THEN  PCL_TIPOPERSONA.VALOR2
+                     WHEN  PCL_TIPOPERSONA.VALOR3   THEN  PCL_TIPOPERSONA.VALOR4
+                     ELSE NULL END ) AS TIPOPERSONA,  
+                    INCE.PERSONA_NATURAL  AS TIPOTRIBUTARIO,   
+                     (CASE  INCD.DOCUMENTADO 
+                     WHEN  PCL_ESTADOS.VALOR2
+                     THEN  PCL_ESTADOS.VALOR1
+                     ELSE PCL_ESTADOS.VALOR3  END )    AS ESTADO,              
+                    INCD.INTENTOS                      AS INTENTOS,
+                    INCD.OBSERVACION                   AS OBSERVACION,      
+                    INCD.FE_ULT_MOD                    AS FECHAEJECUCION,
+                    INCD.FE_CREACION                   AS FECHARECEPCION,   
                    
-            WHERE COALESCE(ICD.INTENTOS,0) > 0  
-            AND  (TRUNC(SYSDATE)-CAST(TRUNC(ICD.FE_ULT_MOD) AS DATE )) <=  PCL_DIAPROCESADO.VALOR1 
-            AND  IC2.ESTADO   IN   
-                    (       
-                    SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
-                    CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
-                    ) 
-            AND  ID.ESTADO   IN   
-                    (       
-                    SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
-                    CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
-                    )                      
-           
+                  (
+                    SELECT INPU2.LOGIN FROM   
+                    DB_COMERCIAL.INFO_ADENDUM INAD2,
+                    DB_COMERCIAL.INFO_PUNTO INPU2,
+                    DB_COMUNICACION.INFO_DOCUMENTO_RELACION IDRE2
+                    WHERE INAD2.PUNTO_ID   = INPU2.ID_PUNTO  
+                    AND IDRE2.CONTRATO_ID  = INAD2.CONTRATO_ID  
+                    AND IDRE2.CONTRATO_ID  = INDO.CONTRATO_ID 
+                    AND IDRE2.DOCUMENTO_ID  = INDO.ID_DOCUMENTO                   
+                    AND (INAD2.NUMERO = IDRE2.NUMERO_ADENDUM OR (INAD2.NUMERO IS NULL AND IDRE2.NUMERO_ADENDUM IS NULL ))
+                    AND ROWNUM = 1 
+                    )AS LOGIN 
+                    
+                    FROM
+                    DB_COMUNICACION.INFO_DOCUMENTO INDO,
+                    DB_COMUNICACION.ADMI_TIPO_DOCUMENTO ATDO,
+                    DB_GENERAL.ADMI_TIPO_DOCUMENTO_GENERAL ATDG,    
+                    DB_FIRMAELECT.INFO_CERTIFICADO_DOCUMENTO INCD,
+                    DB_FIRMAELECT.INFO_CERTIFICADO INCE,     
+                    DB_COMERCIAL.INFO_PERSONA INPE ,
+                    DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER , 
+                    DB_COMERCIAL.INFO_CONTRATO ICON   
+                   
+            WHERE INDO.TIPO_DOCUMENTO_ID = ATDO.ID_TIPO_DOCUMENTO 
+            AND INDO.TIPO_DOCUMENTO_GENERAL_ID = ATDG.ID_TIPO_DOCUMENTO             
+            AND INDO.UBICACION_FISICA_DOCUMENTO = INCD.SRC  
+            AND INCD.CERTIFICADO_ID = INCE.ID_CERTIFICADO 
+            AND INCE.NUM_CEDULA =  INPE.IDENTIFICACION_CLIENTE
+            AND INCE.ESTADO IN   
+                (       
+                 SELECT REGEXP_SUBSTR(   PCL_ESTADOFIRMA.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                 CONNECT BY REGEXP_SUBSTR( PCL_ESTADOFIRMA.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
+                ) 
+            AND INPE.ID_PERSONA  = IPER.PERSONA_ID
+            AND IPER.ID_PERSONA_ROL =  ICON.PERSONA_EMPRESA_ROL_ID 
+            AND IPER.ESTADO ='Activo'  
+            AND IPER.EMPRESA_ROL_ID = 813   
+            AND ICON.ID_CONTRATO = INDO.CONTRATO_ID
+            AND ICON.ESTADO   IN   
+                (       
+                 SELECT REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 ,'[^,]+', 1, LEVEL)FROM DUAL
+                 CONNECT BY REGEXP_SUBSTR(   PCL_ESTADOCONTRATO.VALOR1 , '[^,]+', 1, LEVEL) IS NOT NULL
+                )           
+   
+            AND  INCD.FE_ULT_MOD >= SYSDATE -TO_NUMBER(PCL_DIAPROCESADO.VALOR1) 
             ) DOC      
-            ORDER BY  DOC.FECHAEJECUCION  ASC, DOC.INTENTOS DESC ;   
+            ORDER BY  DOC.FECHAEJECUCION  ASC, DOC.INTENTOS DESC ;    
            
             
               
