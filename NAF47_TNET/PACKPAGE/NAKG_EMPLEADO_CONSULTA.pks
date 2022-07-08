@@ -25,6 +25,34 @@ create or replace package                                          NAF47_TNET.NA
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2,
                                   Pcl_Response OUT SYS_REFCURSOR);
+   
+    /**
+  * Documentación para el procedimiento P_INFORMACION_EMPLEADO_LOGIN
+  *
+  * Método encargado de retornar la lista de elementos por tipo.
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   login              := Login empleado,
+  *     
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author William Sanchez  <wdsanchez@telconet.ec>
+  * @version 1.0 01-03-2022
+  *
+  *
+  */
+  PROCEDURE P_INFORMACION_EMPLEADO_LOGIN(Pcl_Request  IN  CLOB,
+                                  Pv_Status    OUT VARCHAR2,
+                                  Pv_Mensaje   OUT VARCHAR2,
+                                  Pcl_Response OUT SYS_REFCURSOR); 
+                                  
+                
+ 
+  
 
   /**
   * Documentación para el procedimiento P_INFORMACION_DEPARTAMENTOS
@@ -94,20 +122,318 @@ create or replace package body                        NAF47_TNET.NAKG_EMPLEADO_C
               
     Lcl_OrderAnGroup := ' ORDER BY VEE.NOMBRE ASC ';
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-    
+
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status     := 'OK';
     Pv_Mensaje    := 'Transacción exitosa';
-  
+
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
-              
+
   END P_INFORMACION_EMPLEADO;
+  
+   PROCEDURE P_INFORMACION_EMPLEADO_LOGIN(Pcl_Request  IN  CLOB,
+                                    Pv_Status    OUT VARCHAR2,
+                                    Pv_Mensaje   OUT VARCHAR2,
+                                    Pcl_Response OUT SYS_REFCURSOR)
+                                   
+    AS 
+    Lcl_Query              CLOB;
+    Lcl_Select             CLOB;
+    Lcl_From               CLOB;
+    Lcl_WhereAndJoin1       CLOB;
+    Lcl_WhereAndJoin2       CLOB;
+    Lcl_WhereAndJoin3       CLOB;
+    Lcl_WhereAndJoin4       CLOB;
+    Lcl_WhereAndJoin5       CLOB;
+    Lcl_WhereAndJoin6       CLOB;
+    Lcl_WhereAndJoin7       CLOB;
+    Lcl_WhereAndJoin8       CLOB;
+    Lcl_WhereAndJoin9       CLOB;
+    Lcl_WhereAndJoin10      CLOB;
+    Lcl_WhereAndJoin11      CLOB;
+    Lcl_WhereAndJoin12      CLOB;
+    Lcl_WhereAndJoin13      CLOB;
+    
+    
+    Lcl_OrderAnGroup       CLOB;
+    Lv_Cadena              VARCHAR2(200);
+    Lv_Cadena2             VARCHAR2(200);
+    Lv_LoginEmple          VARCHAR2(4000); 
+    Lv_RazonSocial         VARCHAR2(4000);
+    Lv_Departamento        VARCHAR2(4000);
+    Lv_Cargo               VARCHAR2(4000);
+    Lv_Region              VARCHAR2(4000);
+    Lv_Ciudad              VARCHAR2(4000);
+    Lv_Provincia           VARCHAR2(4000);
+    Lv_nombres             VARCHAR2(4000);
+    Lv_apellidos           VARCHAR2(4000);
+    Lv_celular             VARCHAR2(4000);
+    Lv_correo              VARCHAR2(4000);
+    Lv_EmpresaCod          VARCHAR2(4000);
+    Le_Errors              EXCEPTION;
+    
+  
+
+  BEGIN
+  
+  DBMS_OUTPUT.PUT_LINE('REQUEST ' ||Pcl_Request);
+      -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+  
+
+   -- APEX_JSON.
+   
+    Lv_LoginEmple  := APEX_JSON.get_varchar2(p_path => 'login'); 
+    Lv_RazonSocial  := APEX_JSON.get_varchar2(p_path => 'businessName');
+    Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'companyCode'); 
+    Lv_Departamento  := APEX_JSON.get_varchar2(p_path => 'department'); 
+    Lv_Cargo  := APEX_JSON.get_varchar2(p_path => 'position');
+    Lv_Region  := APEX_JSON.get_varchar2(p_path => 'region');
+    Lv_Ciudad  := APEX_JSON.get_varchar2(p_path => 'city');
+    Lv_Provincia  := APEX_JSON.get_varchar2(p_path => 'state');
+    Lv_Nombres := APEX_JSON.get_varchar2(p_path => 'name');
+    Lv_Apellidos := APEX_JSON.get_varchar2(p_path => 'lastName');
+    Lv_celular := APEX_JSON.get_varchar2(p_path => 'cellphone');
+    
+    Lv_Correo := APEX_JSON.get_varchar2(p_path => 'mail');
+    
+    
+
+
+    
+
+    Lcl_Select       := '
+               SELECT VEE.*, 
+               (VEE.NOMBRE_PILA||'' ''||VEE.NOMBRE_SEGUNDO) NOMBRES,
+               (VEE.APE_PAT||'' ''||VEE.APE_MAT) APELLIDOS,
+          nvl ((
+        SELECT
+            elem.nombre_elemento
+        FROM
+            db_comercial.info_persona                infp,
+            db_comercial.info_persona_empresa_rol    infprol,
+            db_comercial.info_empresa_rol            emprol,
+            db_general.admi_rol                      admrol,
+            db_general.admi_tipo_rol                 admrolt,
+            db_infraestructura.info_detalle_elemento detelem,
+            db_infraestructura.info_elemento         elem,
+            naf47_tnet.v_empleados_empresas          emple
+        WHERE
+             infp.id_persona = infprol.persona_id
+            AND infprol.estado = ''Activo''
+            AND emprol.id_empresa_rol = infprol.empresa_rol_id
+            AND emprol.estado IN ( ''Activo'', ''Modificado'' )
+            AND admrol.id_rol = emprol.rol_id
+            AND admrol.estado IN ( ''Activo'', ''Modificado'' )
+            AND admrolt.id_tipo_rol = admrol.tipo_rol_id
+            AND admrolt.estado = ''Activo''
+            AND detelem.detalle_valor = infprol.id_persona_rol
+            AND detelem.estado = ''Activo''
+            AND detelem.detalle_nombre = ''COLABORADOR''
+            AND elem.id_elemento = detelem.elemento_id
+            AND elem.estado = ''Activo''
+            AND emple.login_emple = infp.login
+            AND emple.estado = ''A''
+            AND emple.no_emple = vee.no_emple
+            AND ROWNUM < 2
+    ),'''')     CELULAR_CIA ,
+              EMP.RAZON_SOCIAL NOMBRE_EMPRESA, 
+                     (
+              SELECT MAIL 
+                FROM ARPLME 
+               WHERE NO_CIA = VEE.NO_CIA_JEFE
+                 AND NO_EMPLE =  VEE.ID_JEFE 
+                 AND ESTADO = ''A''
+              ) MAIL_JEFE,
+                (
+              SELECT MAIL_CIA
+                FROM ARPLME 
+               WHERE NO_CIA = VEE.NO_CIA_JEFE
+                 AND NO_EMPLE =  VEE.ID_JEFE 
+                 AND ESTADO = ''A''
+              ) MAIL_JEFE_CIA,
+              (
+                  SELECT CELULAR
+                    FROM ARPLME 
+                   WHERE NO_CIA = VEE.NO_CIA_JEFE
+                     AND NO_EMPLE =  VEE.ID_JEFE 
+                     AND ESTADO = ''A''
+              ) CELULAR_JEFE,
+               nvl ((
+        SELECT
+            elem.nombre_elemento
+        FROM
+            db_comercial.info_persona                infp,
+            db_comercial.info_persona_empresa_rol    infprol,
+            db_comercial.info_empresa_rol            emprol,
+            db_general.admi_rol                      admrol,
+            db_general.admi_tipo_rol                 admrolt,
+            db_infraestructura.info_detalle_elemento detelem,
+            db_infraestructura.info_elemento         elem,
+            naf47_tnet.v_empleados_empresas          emple
+        WHERE
+                infp.id_persona = infprol.persona_id
+            AND infprol.estado = ''Activo''
+            AND emprol.id_empresa_rol = infprol.empresa_rol_id
+            AND emprol.estado IN ( ''Activo'', ''Modificado'' )
+            AND admrol.id_rol = emprol.rol_id
+            AND admrol.estado IN ( ''Activo'', ''Modificado'' )
+            AND admrolt.id_tipo_rol = admrol.tipo_rol_id
+            AND admrolt.estado = ''Activo''
+            AND detelem.detalle_valor = infprol.id_persona_rol
+            AND detelem.estado = ''Activo''
+            AND detelem.detalle_nombre = ''COLABORADOR''
+            AND elem.id_elemento = detelem.elemento_id
+            AND elem.estado = ''Activo''
+            AND emple.login_emple = infp.login
+            AND emple.estado = ''A''
+            AND emple.no_emple = vee.id_jefe
+            AND ROWNUM < 2
+    ),'''')     CELULAR_JEFE_CIA
+             ';
+    
+    
+    Lcl_From         := '
+              FROM  NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE, 
+                    NAF47_TNET.ARCGMC EMP 
+                    WHERE VEE.ESTADO=''A''
+                    AND VEE.NO_CIA = EMP.NO_CIA
+                    AND VEE.LOGIN_EMPLE IS NOT NULL  ';
+
+    IF Lv_LoginEmple IS NOT NULL THEN  
+    Lcl_WhereAndJoin1 := 'AND (UPPER(VEE.LOGIN_EMPLE) in ('||Lv_LoginEmple||') OR  UPPER(VEE.CEDULA) in ('||Lv_LoginEmple||') )' ;
+    END IF;   
+    
+    IF Lv_Departamento IS NOT NULL THEN
+    Lcl_WhereAndJoin2 := ' AND REPLACE(UPPER(VEE.NOMBRE_DEPTO),'' '','''') IN ('||Lv_Departamento||')' ;
+    END IF;  
+    
+    IF Lv_EmpresaCod IS NOT NULL THEN
+    Lcl_WhereAndJoin3 := ' AND REPLACE(VEE.NO_CIA,'' '','''') IN ('||Lv_EmpresaCod||')' ;
+    END IF;  
+    
+    
+    IF Lv_RazonSocial IS NOT NULL THEN
+      Lcl_WhereAndJoin4 := ' AND instr(REPLACE(UPPER(EMP.RAZON_SOCIAL),'' '',''''),'||Lv_RazonSocial||')>0' ;
+    END IF;  
+    
+    IF Lv_Cargo IS NOT NULL THEN
+    Lcl_WhereAndJoin5 := ' AND UPPER(TRANSLATE(REPLACE(VEE.DESCRIPCION_CARGO,'' '',''''),''ÁáÉéÍíÓóÚú'',''AaEeIiOoUu'')) IN ('||Lv_Cargo||')' ;
+    END IF;  
+    
+    IF Lv_Region IS NOT NULL THEN
+    Lcl_WhereAndJoin6 := ' AND REPLACE(UPPER(VEE.IND_REGION),'' '','''') IN ('||Lv_Region||')' ;
+    END IF;  
+    
+    IF Lv_Ciudad IS NOT NULL THEN
+    Lcl_WhereAndJoin7 := ' AND REPLACE(UPPER(VEE.OFICINA_CANTON),'' '','''') IN ('||Lv_Ciudad||')' ;
+    END IF;  
+    
+    
+    IF Lv_Provincia IS NOT NULL THEN
+    Lcl_WhereAndJoin8 := ' AND REPLACE(UPPER(VEE.OFICINA_PROVINCIA),'' '','''') IN ('||Lv_Provincia||')' ;
+    END IF;  
+    
+    
+    IF Lv_Nombres IS NOT NULL THEN
+    Lcl_WhereAndJoin9 := ' AND TRANSLATE(REPLACE((UPPER(VEE.NOMBRE_PILA||'' ''||VEE.NOMBRE_SEGUNDO)),'' '',''''),''ÁáÉéÍíÓóÚú'',''AaEeIiOoUu'') IN ('||Lv_Nombres||')' ;
+    END IF;  
+    
+    IF Lv_Apellidos IS NOT NULL THEN
+    Lcl_WhereAndJoin10 := ' AND TRANSLATE(REPLACE(UPPER(VEE.APE_PAT||'' ''||VEE.APE_MAT),'' '',''''),''ÁáÉéÍíÓóÚú'',''AaEeIiOoUu'') IN ('||Lv_Apellidos||')' ;
+    END IF;  
+    
+    IF Lv_Correo IS NOT NULL THEN
+    Lcl_WhereAndJoin11 := ' AND REPLACE(UPPER(VEE.MAIL_CIA),'' '','''') IN ('||Lv_Correo||')' ;
+    END IF; 
+    
+     IF Lv_Cargo IS NOT NULL THEN
+    Lcl_WhereAndJoin12 := ' AND REPLACE(UPPER(VEE.DESCRIPCION_CARGO),'' '','''') IN ('||Lv_Cargo||')' ;
+    END IF; 
+    
+   IF Lv_Celular IS NOT NULL THEN   
+     Lcl_WhereAndJoin13  := 'AND VEE.no_emple in (
+                    SELECT
+           emple.no_emple
+        FROM
+            db_comercial.info_persona                infp,
+            db_comercial.info_persona_empresa_rol    infprol,
+            db_comercial.info_empresa_rol            emprol,
+            db_general.admi_rol                      admrol,
+            db_general.admi_tipo_rol                 admrolt,
+            db_infraestructura.info_detalle_elemento detelem,
+            db_infraestructura.info_elemento         elem,
+            naf47_tnet.v_empleados_empresas          emple
+        WHERE
+             infp.id_persona = infprol.persona_id
+            AND infprol.estado = ''Activo''
+            AND emprol.id_empresa_rol = infprol.empresa_rol_id
+            AND emprol.estado IN ( ''Activo'', ''Modificado'' )
+            AND admrol.id_rol = emprol.rol_id
+            AND admrol.estado IN ( ''Activo'', ''Modificado'' )
+            AND admrolt.id_tipo_rol = admrol.tipo_rol_id
+            AND admrolt.estado = ''Activo''
+            AND detelem.detalle_valor = infprol.id_persona_rol
+            AND detelem.estado = ''Activo''
+            AND detelem.detalle_nombre = ''COLABORADOR''
+            AND elem.id_elemento = detelem.elemento_id
+            AND elem.estado = ''Activo''
+            AND emple.login_emple = infp.login
+            AND emple.estado = ''A''
+            AND elem.nombre_elemento  IN ('||Lv_Celular||') 
+            AND ROWNUM < 2)'; 
+   END IF; 
+
+    Lcl_OrderAnGroup := ' ORDER BY VEE.NOMBRE ASC ';
+    Lcl_Query := Lcl_Select || Lcl_From 
+                            || Lcl_WhereAndJoin1 
+                            || Lcl_WhereAndJoin2 
+                            || Lcl_WhereAndJoin3 
+                            || Lcl_WhereAndJoin4 
+                            || Lcl_WhereAndJoin6 
+                            || Lcl_WhereAndJoin7 
+                            || Lcl_WhereAndJoin8 
+                            || Lcl_WhereAndJoin9
+                            || Lcl_WhereAndJoin10
+                            || Lcl_WhereAndJoin11
+                            || Lcl_WhereAndJoin12
+                            || Lcl_WhereAndJoin13
+                            || Lcl_OrderAnGroup;
+
+   DBMS_OUTPUT.PUT_LINE('Query ' ||Lcl_Query);
+
+    OPEN Pcl_Response FOR Lcl_Query;
+
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+    
+  EXCEPTION
+    WHEN Le_Errors THEN
+     Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+
+  END P_INFORMACION_EMPLEADO_LOGIN;
+  
+  
+  
+  
+  
+  
+  
+ 
+  
+  
+  
+
+
  
   PROCEDURE P_INFORMACION_DEPARTAMENTOS(Pcl_Request  IN  CLOB,
                                         Pv_Status    OUT VARCHAR2,
