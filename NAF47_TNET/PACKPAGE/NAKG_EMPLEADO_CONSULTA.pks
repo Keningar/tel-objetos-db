@@ -51,7 +51,36 @@ create or replace package                                          NAF47_TNET.NA
                                   Pcl_Response OUT SYS_REFCURSOR); 
                                   
                 
- 
+  
+   /**
+  * Documentación para el procedimiento P_UPDATE_INFO_MEDIOS
+  *
+  * Método actualizar  medios correo,celular personal empleado.
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   login              := Login empleado,
+  *   companyCode        := codigo empresa,
+  *   mail		 := mail personal,
+  *   cellphone  	 := celular personal	
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+
+  *
+  * @author William Sanchez  <wdsanchez@telconet.ec>
+  * @version 1.0 06-04-2022
+  *
+  *
+  */
+   PROCEDURE P_UPDATE_INFO_MEDIOS(Pcl_Request  IN  CLOB,
+                                    Pv_Status    OUT VARCHAR2,
+                                    Pv_Mensaje   OUT VARCHAR2); 
+  
+  
+  
+  
+  
   
 
   /**
@@ -182,7 +211,7 @@ create or replace package body                        NAF47_TNET.NAKG_EMPLEADO_C
 
   BEGIN
   
-  DBMS_OUTPUT.PUT_LINE('REQUEST ' ||Pcl_Request);
+    --DBMS_OUTPUT.PUT_LINE('REQUEST ' ||Pcl_Request);
       -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
   
@@ -406,7 +435,7 @@ create or replace package body                        NAF47_TNET.NAKG_EMPLEADO_C
                             || Lcl_WhereAndJoin13
                             || Lcl_OrderAnGroup;
 
-   DBMS_OUTPUT.PUT_LINE('Query ' ||Lcl_Query);
+   --DBMS_OUTPUT.PUT_LINE('Query ' ||Lcl_Query);
 
     OPEN Pcl_Response FOR Lcl_Query;
 
@@ -420,15 +449,80 @@ create or replace package body                        NAF47_TNET.NAKG_EMPLEADO_C
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
 
-  END P_INFORMACION_EMPLEADO_LOGIN;
+  END P_INFORMACION_EMPLEADO_LOGIN;  
   
   
   
   
   
   
-  
- 
+  PROCEDURE P_UPDATE_INFO_MEDIOS(Pcl_Request  IN  CLOB,
+                                 Pv_Status    OUT VARCHAR2,
+                                 Pv_Mensaje   OUT VARCHAR2)
+    AS 
+    Lv_LoginEmple          VARCHAR2(200);
+    Lv_EmpresaCod          VARCHAR2(200);
+    Lv_mail                VARCHAR2(200);
+    Lv_phone               VARCHAR2(200);
+    Le_Errors              EXCEPTION;
+    BEGIN
+    
+      APEX_JSON.PARSE(Pcl_Request);
+      
+      
+      --
+    Lv_LoginEmple  := APEX_JSON.get_varchar2(p_path => 'login'); 
+    Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'companyCode'); 
+    Lv_mail  := APEX_JSON.get_varchar2(p_path => 'mail'); 
+    Lv_phone  := APEX_JSON.get_varchar2(p_path => 'cellphone'); 
+    
+    IF Lv_LoginEmple IS NULL THEN
+       Pv_Mensaje := 'El parámetro login está vacío';
+       RAISE Le_Errors;
+    END IF;
+
+    IF Lv_EmpresaCod IS NULL THEN
+       Pv_Mensaje := 'El parámetro EmpresaCod está vacío';
+       RAISE Le_Errors;
+    END IF;
+    
+    
+    IF Lv_mail IS NULL THEN
+       Pv_Mensaje := 'El parámetro mail está vacío';
+       RAISE Le_Errors;
+    END IF;
+
+    IF Lv_phone IS NULL THEN
+       Pv_Mensaje := 'El parámetro phone está vacío';
+       RAISE Le_Errors;
+    END IF;
+    
+    
+      
+       update NAF47_TNET.arplme
+          set arplme.celular=Lv_phone, 
+              arplme.mail=Lv_mail
+         where NO_EMPLE in(
+        select arplme.no_emple
+          FROM NAF47_TNET.arplme, NAF47_TNET.LOGIN_EMPLEADO
+         WHERE arplme.No_Cia = LOGIN_EMPLEADO.NO_CIA(+)
+           AND ARPLME.NO_EMPLE = LOGIN_EMPLEADO.NO_EMPLE(+)
+           AND arplme.estado = 'A'
+           AND LOGIN_EMPLEADO.login = Lv_LoginEmple
+           AND arplme.NO_CIA = Lv_EmpresaCod); 
+      
+      
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+    
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+
+    END P_UPDATE_INFO_MEDIOS;
   
   
   
