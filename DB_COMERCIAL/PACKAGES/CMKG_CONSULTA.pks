@@ -317,6 +317,13 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
   * @author Néstor Naula <nnaulal@telconet.ec>
   * Se agrega estados parametrizados al obtener los servicios de contrato/adendum
   * @version 1.1 09-09-2021
+  *
+  * Se remplazo el procedimiento para  consumo de la tentativa de promociones
+  * se agrego observacion de la tentativa si aplica promocion en  observacion de comentarios
+  * Se agrego en Pcl_ResponseList.OBSERVACION_SERV la la observacion por producto adicionales
+  * se agrego la columna DESCRIPCION_PRODUCTO en los cursores  C_GET_SERV_ADENDUM ,  C_GET_SERV_ADENDUM_RS ,  C_GET_SERV_CONTRATO ,  C_GET_SERV_CONTRATO_RS
+  * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+  * @version 1.2 27-05-2022 
   */
   PROCEDURE P_OBTENER_SERVICIOS_ADENDUM(Pcl_Request  IN  VARCHAR2,
                                  Pv_Status    OUT VARCHAR2,
@@ -1179,7 +1186,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
             to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD ,APRO.DESCRIPCION_PRODUCTO
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1195,7 +1202,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         IS
             SELECT  DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
             to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD ,APRO.DESCRIPCION_PRODUCTO
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1228,7 +1235,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
             to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD ,APRO.DESCRIPCION_PRODUCTO
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1260,7 +1267,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
             to_char(APRO.FUNCION_PRECIO)AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
-            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD ,APRO.DESCRIPCION_PRODUCTO
             FROM DB_COMERCIAL.INFO_ADENDUM IAD
             INNER JOIN DB_COMERCIAL.INFO_SERVICIO ISE ON ISE.ID_SERVICIO = IAD.SERVICIO_ID
             LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
@@ -1633,7 +1640,9 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             PRECIO            NUMBER,
             CANTIDAD          NUMBER,
             INSTALACION       NUMBER,
-            SUBTOTAL          NUMBER
+            SUBTOTAL          NUMBER, 
+            OBSERVACION       VARCHAR2(1000),
+            DESCUENTO         NUMBER
         );
 
         TYPE Lcl_TypeServiContr IS RECORD(
@@ -1839,7 +1848,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                         
                          IF Lv_RecuperacionDocumentos= 'N'  
                          THEN
-                            DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA
+                              DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA
                             (
                                 Ln_idPunto,
                                 Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO,
@@ -1850,7 +1859,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                 Lv_ObservacionIns
                             );
 
-                            DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA
+                              DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA
                             (
                                 Ln_idPunto,
                                 Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO,
@@ -1860,6 +1869,18 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                 Ln_CantPeriodoMens,
                                 Lv_ObservacionMens
                             );
+
+
+                            IF  Ln_DescuentoIns IS  NULL OR Ln_DescuentoIns = 0  THEN
+                                Ln_DescuentoIns := 0;
+                                Lv_ObservacionIns := 'No aplica Promoción por descuento de Instalación.';                                         
+                            END IF;
+
+                            IF  Ln_DescuentoMens IS  NULL OR   Ln_DescuentoMens = 0  THEN
+                                Ln_DescuentoMens := 0;
+                                Lv_ObservacionMens := 'No aplica Promoción por descuento Mensual.';                                       
+                            END IF;
+
                          ELSE   
                         
 	                          OPEN C_OBTENER_PROMO_INSTALACION_RS(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
@@ -1933,8 +1954,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                             FETCH C_GET_PARAM_EMPR_EMPL_DESC INTO Lv_ParametroDescripEmpl;
                             CLOSE C_GET_PARAM_EMPR_EMPL_DESC; 
 
-                            Lv_ObservacionContrato := Pcl_arrayServicio(Ln_IteradorI).NOMBRE_PLAN || '<br>';
-
+                            Lv_ObservacionContrato := '<li>'|| Pcl_arrayServicio(Ln_IteradorI).NOMBRE_PLAN || '<br>'; 
+ 
                             IF Lv_ParametroDescripEmpl IS NOT NULL
                             THEN
                                OPEN C_GET_PARAMETROS_EMPR_DESC1(Lv_NombreParametroMensaje,Lv_ModuloParametroMens,Lv_DescipValorMensEmple,Ln_CodEmpresa);
@@ -2003,10 +2024,9 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                           Ln_CantPeriodoIns  := 0;
                           Ln_DescuentoMens   := NULL;
                           Ln_CantPeriodoMens := NULL;
-                        END IF;
+                        END IF;                         
 
-                        Pcl_ResponseList.OBSERVACION_SERV := Lv_ObservacionContrato;                          
-
+                        Lv_ObservacionContrato := Lv_ObservacionContrato ||'</li>'; 
                         Pcl_ResponseList.NOMBRE_PLAN := Pcl_arrayServicio(Ln_IteradorI).NOMBRE_PLAN;
 
                         OPEN C_GET_PRODUCTO_CARACT (Pcl_arrayPlanDet(Ln_IteradorJ).PRODUCTO_ID,Ln_idCaracteristicaNa,Pcl_arrayPlanDet(Ln_IteradorJ).ID_ITEM);
@@ -2058,7 +2078,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                 If (Lv_internet = 'S') THEN
 
                 
-                   Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"INTERNET":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'","DESCUENTO":"'||Ln_DescuentoMens||'"},';
+                   Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"INTERNET":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'","DESCUENTO":"'||Ln_DescuentoMens||'","OBSERVACION":"'||Lv_ObservacionMens||'"},'; 
                   
                    Ln_total_servicio := 0;
                    Lv_internet := 'N';
@@ -2176,26 +2196,36 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
 
                 Ln_CantidadProductoTec := Ln_CantidadProductoTec + 1;
                 
-                IF (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) != trim(Lv_NombreProdPosterior) OR Pcl_arrayServicio.COUNT = Ln_IteradorI) THEN
                      
-                    Ln_DescuentoMens   := NULL;
-                    Ln_CantPeriodoMens := NULL;
-
-                         DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA
-                            (
-                                Ln_idPunto,
-                                Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO,
-                                Lv_PromoMens,
-                                Ln_CodEmpresa,
-                                Ln_DescuentoMens,
-                                Ln_CantPeriodoMens,
-                                Lv_ObservacionMens
-                            );
-
-                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"'||trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO)||'": {"CANTIDAD":"'||Ln_CantidadProductoTec||'","PRECIO":"'||trim(to_char(Ln_SubTotalProd,'99,999,999,990.99'))||'","FRECUENCIA":"' || trim(Pcl_arrayServicio(Ln_IteradorI).FRECUENCIA) ||'","DESCUENTO":"'||Ln_DescuentoMens||'"},';
+                Ln_DescuentoMens   := 0;
+                Ln_CantPeriodoMens := 0 ; 
+                DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA
+                        (
+                            Ln_idPunto,
+                            Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO,
+                            Lv_PromoMens,
+                            Ln_CodEmpresa,
+                            Ln_DescuentoMens,
+                            Ln_CantPeriodoMens,
+                            Lv_ObservacionMens
+                        );   
+                        
+              IF  Ln_DescuentoMens IS NOT NULL AND   Ln_DescuentoMens <> 0  THEN                   
+                Lv_ObservacionContrato := Lv_ObservacionContrato|| '<li>' ||  Pcl_arrayServicio(Ln_IteradorI).DESCRIPCION_PRODUCTO || '<br>';
+                Lv_ObservacionContrato := Lv_ObservacionContrato|| Lv_ObservacionMens || '</li>';                    
+              ELSE 
+                Ln_DescuentoMens := 0;
+                Lv_ObservacionMens := 'No aplica Promoción por descuento Mensual.'; 
+              END IF;               
+                               
+              IF (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) != trim(Lv_NombreProdPosterior) OR 
+                 (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) = trim(Lv_NombreProdPosterior) AND Ln_DescuentoMens = 0)
+                 OR Pcl_arrayServicio.COUNT = Ln_IteradorI) THEN
+                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"'||trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO)||'-'||trim(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO)||'": {"CANTIDAD":"'||Ln_CantidadProductoTec||'","PRECIO":"'||trim(to_char(Ln_SubTotalProd,'99,999,999,990.99'))||'","FRECUENCIA":"' || trim(Pcl_arrayServicio(Ln_IteradorI).FRECUENCIA) ||'","DESCUENTO":"'||Ln_DescuentoMens||'","OBSERVACION":"'||Lv_ObservacionMens||'"},'; 
                     Ln_SubTotalProd        := 0; 
                     Ln_CantidadProductoTec := 0;
-                END IF;
+              END IF;
+                
 
                    Pcl_ResponseList.IMPUESTOS_UNICO   := trim(to_char(Ln_ImpuestoUnico,'99,999,999,990.99'));
                    Pcl_ResponseList.SUBTOTAL_UNICO    := trim(to_char(Ln_SubTotalUnico,'99,999,999,990.99'));
@@ -2256,14 +2286,17 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
              --Ln_Impuesto   := 0;
              Ln_IteradorI := Pcl_arrayServicio.NEXT(Ln_IteradorI);
         END LOOP;
+         
     ELSE
       Pv_Mensaje := 'No se encuentran servicios asociados a Contrato/Adendum';
       RAISE Le_Errors;
     END IF;    
 
+
+
     Lv_JsonServiciosContratados := substr(Lv_JsonServiciosContratados, 0, length(Lv_JsonServiciosContratados)-1) || '}';
-
-
+     DBMS_OUTPUT.PUT_LINE( Lv_JsonServiciosContratados );
+    Pcl_ResponseList.OBSERVACION_SERV := Lv_ObservacionContrato; 
     Lv_JsonProdParametros := '[';
 
     --json   

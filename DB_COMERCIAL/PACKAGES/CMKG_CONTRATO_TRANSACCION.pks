@@ -11,6 +11,10 @@ AS
     *         Pv_SeAutorizo     -  Se autoriza 0/1
     * @author 
     * @version 1.0 22-03-2022
+    *
+    * Se remplazo el procedimiento para  consumo de la tentativa de promociones
+    * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+    * @version 1.1 27-05-2022 
     */
     PROCEDURE P_AUTORIZAR_CONTRATO(Pcl_Request     IN  VARCHAR2,
                                    Pv_Mensaje      OUT VARCHAR2,
@@ -531,7 +535,7 @@ AS
                 LOOP
                     IF Pcl_ArrayPLanes(Ln_IteradorJ).NOMBRE_TECNICO IS NOT NULL AND Pcl_ArrayPLanes(Ln_IteradorJ).NOMBRE_TECNICO = 'INTERNET'
                     THEN
-                        DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_MAPEO_PROM_TENTATIVA(Ln_PuntoId,
+                     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA(Ln_PuntoId,
                                                                                   Pcl_ArrayServicio(Ln_IteradorI).ID_SERVICIO,
                                                                                   Lv_PromoInst,
                                                                                   Lv_CodEmpresa,
