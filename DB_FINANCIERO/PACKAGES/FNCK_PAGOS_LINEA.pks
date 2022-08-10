@@ -753,7 +753,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_CONSULTAR_SALDO_POR_IDENTIF',
-                                          SUBSTR('RESPONSE:'||Pcl_Request,1,4000),
+                                          SUBSTR('RESPONSE:'||Pcl_Response,1,4000),
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -1414,7 +1414,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_PROCESAR_PAGO_LINEA',
-                                          SUBSTR('RESPONSE:'||Pcl_Request,1,4000),
+                                          SUBSTR('RESPONSE:'||Pcl_Response,1,4000),
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -2221,7 +2221,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_LINEA',
-                                          SUBSTR('RESPONSE:'||Pcl_Request,1,4000),
+                                          SUBSTR('RESPONSE:'||Pcl_Response,1,4000),
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3422,6 +3422,9 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * @author Erick Melgar <emelgar@telconet.ec>
     * @version 1.0 14/07/2022
     *
+    * @author Javier Hidalgo <jihidalgo@telconet.ec>
+    * @version 1.1 10/08/2022 - Correccion de Tipo de Variable Fecha
+    *
     * @param Fc_request IN CLOB data
     * @param RETURN BOOLEAN Devuelve respuesta
     */  
@@ -3434,8 +3437,8 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         Lv_NumeroReferencia       VARCHAR2(50);
         Lv_IdBancoTipoCuenta      VARCHAR2(50);
         Lv_IdBancoCtaContable     VARCHAR2(50);
-        Lv_FechaDesde             DATE;
-        Lv_FechaHasta             DATE;
+        Lv_FechaDesde             VARCHAR2(50);
+        Lv_FechaHasta             VARCHAR2(50);
         Fc_PagoExistente   SYS_REFCURSOR;
 
     BEGIN
@@ -3485,7 +3488,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         END IF;   
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_VALIDAR_PAGO_EXISTENTE',
-                                          'No se encontró registros del canal. Parametros (Nombre_canal: '
+                                          'No se encontró registros del canal. Parametros (Secuencial: ' || Lv_NumeroReferencia || '-'
                                           || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -3536,7 +3539,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         BEGIN
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                         'FNCK_PAGOS_LINEA.F_OBTENER_INFORMACION_CLIENTE',
-                                        'No se encontró registros del cliente. Parametros (Fv_EmpresaCod: '|| SQLCODE || ' -ERROR- ' || SQLERRM,
+                                        'No se encontró registros del cliente. Parametros (Fv_PersonaId: '||Fv_persona_id||')-'|| SQLCODE || ' -ERROR- ' || SQLERRM,
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                         SYSDATE,
                                         NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3702,6 +3705,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       Lv_FechaDesde VARCHAR2(100);
       Lv_FechaHasta VARCHAR2(100);
       Ln_Tipo_Documento_Id NUMBER;
+      Lv_EstadoImprFact VARCHAR2(50);
 
     BEGIN
       APEX_JSON.PARSE(Fc_request);
@@ -3744,13 +3748,14 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       Lc_ValidaPagoExisteRequest := '{' ||
                                 '"strEmpresaCod":"' || Lv_EmpresaCod || '",' ||
                                 '"intIdFormaPago":"' || Lv_IdFormaPago || '",' ||
-                                '"numeroReferencia":"' || Lv_NumeroReferencia || '",' ||
+                                '"strNumeroReferencia":"' || Lv_NumeroReferencia || '",' ||
                                 '"intIdBancoCtaContable":"' || Ln_IdBancoCtaContable || '",' ||
                                 '"intIdBancoTipoCuenta":"' || Ln_IdBancoTipoCuenta || '",' ||
                                 '"strFechaDesde":"' || TO_CHAR(SYSDATE-NVL(Lv_Caracteristica, 0),'yyyy-MM-dd') || '",' ||
                                 '"strFechaHasta":"' || TO_CHAR(SYSDATE,'yyyy-MM-dd') || '"'
                             || '}';
 
+                                  --dbms_output.put_line('Req VALIDAR PAGO '||Lc_ValidaPagoExisteRequest);
 
       IF  F_VALIDAR_PAGO_EXISTENTE(Lc_ValidaPagoExisteRequest) THEN 
         Lv_Error := 'Ya se encuentra un pago realizado';
@@ -3873,18 +3878,28 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                         END IF;
 
                         Ln_BanderaPago := 0;
+                        Lv_EstadoImprFact := 'Cerrado';
                         -- SE VERIFICA SI EL PAGO YA CUBRE LA FACTURA
                         IF Ln_ValorPagado =  Ln_SaldoFactura THEN
                             --ACTUALIZACION DEL ESTADO DE LA FACTURA (agregar)
+                            UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB
+                            SET ESTADO_IMPRESION_FACT = Lv_EstadoImprFact
+                            WHERE ID_DOCUMENTO = Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
+                            COMMIT;
                             Ln_ValorPago := Ln_ValorPagado;
                             Ln_ValorPagado := Ln_ValorPagado - Ln_SaldoFactura;
                             Ln_BanderaPago := 1;
                         ELSIF Ln_SaldoFactura < Ln_ValorPagado THEN
                             --ACTUALIZACION DEL ESTADO DE LA FACTURA (agregar)
+                            UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB
+                            SET ESTADO_IMPRESION_FACT = Lv_EstadoImprFact
+                            WHERE ID_DOCUMENTO = Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
+                            COMMIT;
                             Ln_ValorPago := Ln_SaldoFactura;
                             Ln_ValorPagado := Ln_ValorPagado - Ln_SaldoFactura;
                             Ln_BanderaPago := 2;
                         ELSE
+                            Lv_EstadoImprFact := Le_DocFinanciero(Li_Cont_DocFinanciero).ESTADO_IMPRESION_FACT;
                             Ln_ValorPago := Ln_ValorPagado;
                             Ln_ValorPagado := 0;
                             Ln_BanderaPago := 3;
@@ -3892,7 +3907,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
                         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                                     'FNCK_PAGOS_LINEA.F_GENERAR_PAGO_ANTICIPO',
-                                                    'Se ingresa Historial por cierre de Documento ID_DOCUMENTO= '|| Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO || ' - ESTADO_IMPRESION_FACT= ' || Le_DocFinanciero(Li_Cont_DocFinanciero).ESTADO_IMPRESION_FACT
+                                                    'Se ingresa Historial por cierre de Documento ID_DOCUMENTO= '|| Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO || ' - ESTADO_IMPRESION_FACT= ' || Lv_EstadoImprFact
                                                     || ' - SALDO_FACTURA= ' || Ln_SaldoFactura || ' - VALOR_PAGO= ' || Ln_ValorPago || ' - SALDO_VALOR_PAGADO= ' || Ln_ValorPagado
                                                     || ' - BANDERA= ' || Ln_BanderaPago ,
                                                     NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
@@ -3906,7 +3921,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                         Lr_InfoDocumentoHistorial.MOTIVO_ID := NULL;
                         Lr_InfoDocumentoHistorial.FE_CREACION := SYSDATE;
                         Lr_InfoDocumentoHistorial.USR_CREACION := Lv_UsrCreacion;
-                        Lr_InfoDocumentoHistorial.ESTADO := Le_DocFinanciero(Li_Cont_DocFinanciero).ESTADO_IMPRESION_FACT;
+                        Lr_InfoDocumentoHistorial.ESTADO := Lv_EstadoImprFact;
                         Lr_InfoDocumentoHistorial.OBSERVACION := NULL;
 
                         DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_Mensaje);
@@ -4128,7 +4143,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                             'FNCK_PAGOS_LINEA.F_GENERAR_PAGO_ANTICIPO',
-                                            'Se presento un error en el pago anticipado. Parametros (Fv_EmpresaCod: '|| SQLCODE || ' -ERROR- ' || SQLERRM,
+                                            'Se presento un error en el pago anticipado. Parametros (Secuencial: '||Lv_NumeroReferencia||')-'|| SQLCODE || ' -ERROR- ' || SQLERRM,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -4166,7 +4181,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                             'FNCK_PAGOS_LINEA.F_GENERAR_PAGO_ANTICIPO',
-                                            'INFO: '|| SQLCODE || ' -ERROR- ' || SQLERRM,
+                                            'INFO: Parametros (Secuencial: '||Lv_NumeroReferencia||')-'|| SQLCODE || ' -ERROR- ' || SQLERRM,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
