@@ -707,7 +707,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
             ELSE
                 Ld_Date := SYSDATE;
-                Lv_PeriodoRec := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH:MM:SS');
+                Lv_PeriodoRec := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH24:MI:SS');
 
                 Pcl_Response := '{' ||
                                 '"retorno":"' || Lv_Retorno || '",' ||
@@ -1295,7 +1295,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                     Pv_Mensaje := 'Informacion del cliente no encontrada.';
                 ELSE
                     Ld_Date := SYSDATE;
-                    Lv_FechaCrea := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH:MI:SS');
+                    Lv_FechaCrea := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH24:MI:SS');
 
                     Lr_InfoPagoLinea.ID_PAGO_LINEA := DB_FINANCIERO.SEQ_INFO_PAGO_LINEA.NEXTVAL;
                     Lv_IdPagoLinea := Lr_InfoPagoLinea.ID_PAGO_LINEA;
@@ -1932,7 +1932,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     Lb_ValidaCred         BOOLEAN;
     Lv_Identificacion     VARCHAR2(50);
     Lv_EmpresaCod         VARCHAR2(50);
-    Ln_Pago               NUMBER;
+    Lv_Pago               VARCHAR2(100);
     Lv_FechaTransac       VARCHAR2(100);
     Lv_Canal              VARCHAR2(50);
     Lv_SecuencialRec      VARCHAR2(50);
@@ -1946,7 +1946,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     Lv_IdEmpresa          VARCHAR2(50);
     Lv_OficinaId          VARCHAR2(50);
     Lv_IdPersona          VARCHAR2(50);
-    Ln_ValorPago          NUMBER;
+    Lv_ValorPago          VARCHAR2(100);
     Lv_NumeroRef          VARCHAR2(50);
     Lv_EstadoPago         VARCHAR2(50);
     Lv_ComentarioPago     VARCHAR2(500);
@@ -2007,7 +2007,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
             APEX_JSON.PARSE(Pcl_Request);
             Lv_Identificacion  := APEX_JSON.get_varchar2(p_path => 'identificacionCliente'); 
             Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa');
-            Ln_Pago := APEX_JSON.get_number(p_path => 'valorPago');
+            Lv_Pago := APEX_JSON.get_varchar2(p_path => 'valorPago');
             Lv_Canal := APEX_JSON.get_varchar2(p_path => 'canal');
             Lv_SecuencialRec := APEX_JSON.get_varchar2(p_path => 'secuencialRecaudador');
             Lv_FechaTransac := APEX_JSON.get_varchar2(p_path => 'fechaTransaccion');
@@ -2018,7 +2018,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                     Lvr_DescCanal, Lvr_NombreCanal, Lvr_UsuarioCanal, Lvr_ClaveCanal;
 
             Lc_PagoLinea := FNCK_PAGOS_LINEA.F_OBTENER_PAGO_LINEA(Lv_Canal, Lv_SecuencialRec);
-            FETCH Lc_PagoLinea INTO Lv_IdPagoLinea, Lv_IdCanalPago, Lv_IdEmpresa, Lv_OficinaId, Lv_IdPersona, Ln_ValorPago, Lv_NumeroRef, Lv_EstadoPago, Lv_ComentarioPago, 
+            FETCH Lc_PagoLinea INTO Lv_IdPagoLinea, Lv_IdCanalPago, Lv_IdEmpresa, Lv_OficinaId, Lv_IdPersona, Lv_ValorPago, Lv_NumeroRef, Lv_EstadoPago, Lv_ComentarioPago, 
                                     Lv_UsrCreacion, Lv_FechaPago, Lv_UsrUltMod, Lv_FechaUltMod, Lv_UsrElimina, Lv_FechaElimina, Lv_ProMasivoId, Lv_FechaT, Lv_Reversado;
 
             IF C_GetFormaPago%ISOPEN THEN
@@ -2063,7 +2063,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                 Pv_Status := 'ERROR';
                 Pv_Mensaje := 'Pago no se encuentra Pendiente.';
 
-            ELSIF (Lv_IdEmpresa <> Lv_EmpresaCod) OR (ROUND(Ln_Pago, 2) <> ROUND(Ln_ValorPago, 2)) 
+            ELSIF (Lv_IdEmpresa <> Lv_EmpresaCod) OR (ROUND(TO_NUMBER(Lv_Pago), 2) <> ROUND(TO_NUMBER(Lv_ValorPago), 2)) 
                     OR (Lv_Identificacion <> Lv_IdentPersona)
                     OR (SUBSTR(Lv_FechaPago,1,9) <> SUBSTR(Lv_FechaTransac,1,9)) THEN
                 Lv_Retorno := '017';
@@ -2072,6 +2072,9 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                 Pv_Mensaje := 'Datos distintos al pago.';
 
             ELSE
+                IF TO_NUMBER(Lv_ValorPago, '999999.99') < 1 THEN
+                    Lv_ValorPago := REPLACE(REGEXP_REPLACE(Lv_ValorPago,'\.(\d)','0.\1'),'00.','0.');
+                END IF;
                 Lv_Cadena := '"bancoCtaContableId":"'|| Lvr_IdCtaCble ||'",';
 
                 IF Lvr_IdCtaCble IS NULL THEN
@@ -2081,7 +2084,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                 Lcl_Anticipo := '{' ||
                                     '"codigoFormaPago":"' || Lv_CodFormaPago || '",' ||
                                     '"oficinaId":' || Lv_OficinaId || ',' || Lv_Cadena ||
-                                    '"valorPagado":' || Ln_ValorPago || ',' ||
+                                    '"valorPagado":' || Lv_ValorPago || ',' ||
                                     '"bancoTipoCuentaId":' || Lvr_IdTipoCta || ',' ||
                                     '"numeroReferencia":"' || Lv_NumeroRef || '",' ||
                                     '"origenPago":"' || Lvr_DescCanal || '",' ||
@@ -2118,7 +2121,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                     Pv_Mensaje := 'Pago conciliado anteriormente.';
                 ELSE
                     Ld_Date := SYSDATE;
-                    Lv_FechaCrea := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH:MI:SS');
+                    Lv_FechaCrea := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH24:MI:SS');
 
                     UPDATE DB_FINANCIERO.INFO_PAGO_LINEA IPL
                     SET IPL.ESTADO_PAGO_LINEA = 'Conciliado',
@@ -2131,7 +2134,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                     Lr_InfoPagoLineaHist.CANAL_PAGO_LINEA_ID := Lv_IdCanalPago;
                     Lr_InfoPagoLineaHist.EMPRESA_ID := Lv_IdEmpresa;
                     Lr_InfoPagoLineaHist.PERSONA_ID := Lv_IdPersona;
-                    Lr_InfoPagoLineaHist.VALOR_PAGO_LINEA := Ln_ValorPago;
+                    Lr_InfoPagoLineaHist.VALOR_PAGO_LINEA := Lv_ValorPago;
                     Lr_InfoPagoLineaHist.NUMERO_REFERENCIA := Lv_NumeroRef;
                     Lr_InfoPagoLineaHist.ESTADO_PAGO_LINEA := 'Conciliado';
                     Lr_InfoPagoLineaHist.OBSERVACION := Pcl_Request;
@@ -2230,7 +2233,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_LINEA',
-                                          'No se realizó pago del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se realizó conciliacion del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3706,6 +3709,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       Lv_FechaHasta VARCHAR2(100);
       Ln_Tipo_Documento_Id NUMBER;
       Lv_EstadoImprFact VARCHAR2(50);
+      Lv_Cadena VARCHAR2(50);
 
     BEGIN
       APEX_JSON.PARSE(Fc_request);
@@ -3745,11 +3749,17 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       FETCH Fc_RecaudacionCaract INTO Lv_Caracteristica;
       CLOSE Fc_RecaudacionCaract;
 
+      Lv_Cadena := '"intIdBancoCtaContable":"'|| Ln_IdBancoCtaContable ||'",';
+                
+      IF Ln_IdBancoCtaContable IS NULL THEN
+        Lv_Cadena := '"intIdBancoCtaContable":null,';
+      END IF;
+
       Lc_ValidaPagoExisteRequest := '{' ||
                                 '"strEmpresaCod":"' || Lv_EmpresaCod || '",' ||
                                 '"intIdFormaPago":"' || Lv_IdFormaPago || '",' ||
                                 '"strNumeroReferencia":"' || Lv_NumeroReferencia || '",' ||
-                                '"intIdBancoCtaContable":"' || Ln_IdBancoCtaContable || '",' ||
+                                Lv_Cadena ||
                                 '"intIdBancoTipoCuenta":"' || Ln_IdBancoTipoCuenta || '",' ||
                                 '"strFechaDesde":"' || TO_CHAR(SYSDATE-NVL(Lv_Caracteristica, 0),'yyyy-MM-dd') || '",' ||
                                 '"strFechaHasta":"' || TO_CHAR(SYSDATE,'yyyy-MM-dd') || '"'
@@ -3773,228 +3783,233 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
             Li_Cont_InfoCliente := Le_InfoCliente.FIRST;
 
-            WHILE (Li_Cont_InfoCliente IS NOT NULL) LOOP
-              Ln_IdPersonaRol := Le_InfoCliente(Li_Cont_InfoCliente).ID_PERSONA_ROL;
-              Fc_FacturasAbiertas := FNCK_PAGOS_LINEA.F_OBTENER_FACTURAS_ABIERTAS(Lv_PersonaId, Lv_EmpresaCod);
+            IF Li_Cont_InfoCliente > 0 THEN
 
-                  FETCH Fc_FacturasAbiertas BULK COLLECT INTO Le_DocFinanciero LIMIT Li_Limit;
+                WHILE (Li_Cont_InfoCliente IS NOT NULL) LOOP
+                Ln_IdPersonaRol := Le_InfoCliente(Li_Cont_InfoCliente).ID_PERSONA_ROL;
+                Fc_FacturasAbiertas := FNCK_PAGOS_LINEA.F_OBTENER_FACTURAS_ABIERTAS(Lv_PersonaId, Lv_EmpresaCod);
 
-                  Li_Cont_DocFinanciero := Le_DocFinanciero.FIRST;
+                    FETCH Fc_FacturasAbiertas BULK COLLECT INTO Le_DocFinanciero LIMIT Li_Limit;
 
-                  WHILE (Li_Cont_DocFinanciero IS NOT NULL) LOOP
+                    Li_Cont_DocFinanciero := Le_DocFinanciero.FIRST;
 
-                    Ln_SaldoFactura := Le_DocFinanciero(Li_Cont_DocFinanciero).SALDO_FACTURA;
+                    IF Li_Cont_DocFinanciero > 0 THEN 
 
-                    IF Ln_ValorPagado > 0 AND Ln_SaldoFactura > 0 THEN
+                        WHILE (Li_Cont_DocFinanciero IS NOT NULL) LOOP
 
-                        Ln_ValorCabeceraPago := 0;
-                        Lv_TipoDoc := 'PAG';
-                        Lv_EstadoPago := 'Cerrado';
+                            Ln_SaldoFactura := Le_DocFinanciero(Li_Cont_DocFinanciero).SALDO_FACTURA;
 
-                        -- OBTENER EL TIPO_DOCUMENTO_ID
-                        OPEN C_Tipo_Documento(Lv_TipoDoc);
-                        FETCH C_Tipo_Documento INTO Ln_Tipo_Documento_Id;
-                        IF C_Tipo_Documento%NOTFOUND THEN
-                            CLOSE C_Tipo_Documento;
-                            Lv_Error := 'No se pudo obtener el tipo de documento';
-                            Lv_Retorno := '005';
-                            RAISE Le_Errors;
-                        END IF;
-                        CLOSE C_Tipo_Documento;
+                            IF Ln_ValorPagado > 0 AND Ln_SaldoFactura > 0 THEN
 
-                        Ln_PuntoId := Le_DocFinanciero(Li_Cont_DocFinanciero).PUNTO_ID;
+                                Ln_ValorCabeceraPago := 0;
+                                Lv_TipoDoc := 'PAG';
+                                Lv_EstadoPago := 'Cerrado';
 
-                        IF Lv_FormaPago = 'REC' THEN 
-                          Lv_Comentario := Lv_TipoTransaccion || ' de ' || Lv_OrigenPago || ', referencia: ' || Lv_NumeroReferencia; 
-                        ELSIF Lv_FormaPago = 'PAL' THEN 
-                          Lv_StrTrama := SUBSTR(Lv_ComentarioPagoLinea, INSTR(Lv_ComentarioPagoLinea, 'Terminal') + LENGTH('Terminal') + 1);
-                          Lv_StrTrama := SUBSTR(Lv_StrTrama, 0, INSTR(Lv_StrTrama, ' - '));
+                                -- OBTENER EL TIPO_DOCUMENTO_ID
+                                OPEN C_Tipo_Documento(Lv_TipoDoc);
+                                FETCH C_Tipo_Documento INTO Ln_Tipo_Documento_Id;
+                                IF C_Tipo_Documento%NOTFOUND THEN
+                                    CLOSE C_Tipo_Documento;
+                                    Lv_Error := 'No se pudo obtener el tipo de documento';
+                                    Lv_Retorno := '005';
+                                    RAISE Le_Errors;
+                                END IF;
+                                CLOSE C_Tipo_Documento;
 
-                          OPEN C_Parametro_Comentario(Lv_OrigenPago);
-                          FETCH C_Parametro_Comentario INTO Lv_Comentario, Lv_UsrCreacion;
+                                Ln_PuntoId := Le_DocFinanciero(Li_Cont_DocFinanciero).PUNTO_ID;
 
-                          IF Lv_Comentario IS NULL THEN
-                              Lv_Comentario := '{{tipoTransaccion}} de {{origenPago}}, referencia: {{numeroReferencia}}';
-                          END IF;
+                                IF Lv_FormaPago = 'REC' THEN 
+                                Lv_Comentario := Lv_TipoTransaccion || ' de ' || Lv_OrigenPago || ', referencia: ' || Lv_NumeroReferencia; 
+                                ELSIF Lv_FormaPago = 'PAL' THEN 
+                                Lv_StrTrama := SUBSTR(Lv_ComentarioPagoLinea, INSTR(Lv_ComentarioPagoLinea, 'Terminal') + LENGTH('Terminal') + 1);
+                                Lv_StrTrama := SUBSTR(Lv_StrTrama, 0, INSTR(Lv_StrTrama, ' - '));
 
-                          CLOSE C_Parametro_Comentario;
+                                OPEN C_Parametro_Comentario(Lv_OrigenPago);
+                                FETCH C_Parametro_Comentario INTO Lv_Comentario, Lv_UsrCreacion;
 
-                          Lv_Comentario := REPLACE(Lv_Comentario, '{{tipoTransaccion}}', Lv_TipoTransaccion);
-                          Lv_Comentario := REPLACE(Lv_Comentario, '{{origenPago}}', Lv_OrigenPago);
-                          Lv_Comentario := REPLACE(Lv_Comentario, '{{numeroReferencia}}', Lv_NumeroReferencia);
-                          Lv_Comentario := REPLACE(Lv_Comentario, '{{tipoTc}}', Lv_StrTrama);
-                          --dbms_output.put_line('Req ANTICIPO'||Lv_Comentario);
+                                IF Lv_Comentario IS NULL THEN
+                                    Lv_Comentario := '{{tipoTransaccion}} de {{origenPago}}, referencia: {{numeroReferencia}}';
+                                END IF;
 
-                        END IF;
+                                CLOSE C_Parametro_Comentario;
 
-                        --Obtener la numeracion de la tabla Admi_numeracion
-                        Lv_NumeroPago := '';
-                        OPEN C_Numero_Pago(Lv_EmpresaCod, Ln_OficinaId, Lv_CodigoNumeracionPago);
-                        FETCH C_Numero_Pago INTO Ln_SecuenciaAsig, Lv_NumeracionUno, Lv_NumeracionDos;
+                                Lv_Comentario := REPLACE(Lv_Comentario, '{{tipoTransaccion}}', Lv_TipoTransaccion);
+                                Lv_Comentario := REPLACE(Lv_Comentario, '{{origenPago}}', Lv_OrigenPago);
+                                Lv_Comentario := REPLACE(Lv_Comentario, '{{numeroReferencia}}', Lv_NumeroReferencia);
+                                Lv_Comentario := REPLACE(Lv_Comentario, '{{tipoTc}}', Lv_StrTrama);
+                                --dbms_output.put_line('Req ANTICIPO'||Lv_Comentario);
 
-                        IF C_Numero_Pago%NOTFOUND THEN
-                            CLOSE C_Numero_Pago;
-                            Lv_Error := 'No se pudo generar el numero de pago';
-                            Lv_Retorno := '005';
-                            RAISE Le_Errors;
-                        END IF;
+                                END IF;
 
-                        CLOSE C_Numero_Pago; 
+                                --Obtener la numeracion de la tabla Admi_numeracion
+                                Lv_NumeroPago := '';
+                                OPEN C_Numero_Pago(Lv_EmpresaCod, Ln_OficinaId, Lv_CodigoNumeracionPago);
+                                FETCH C_Numero_Pago INTO Ln_SecuenciaAsig, Lv_NumeracionUno, Lv_NumeracionDos;
 
-                        Lv_NumeroPago := Lv_NumeracionUno || '-' || Lv_NumeracionDos || '-' || TRIM(TO_CHAR(Ln_SecuenciaAsig, '0000009'));
+                                IF C_Numero_Pago%NOTFOUND THEN
+                                    CLOSE C_Numero_Pago;
+                                    Lv_Error := 'No se pudo generar el numero de pago';
+                                    Lv_Retorno := '005';
+                                    RAISE Le_Errors;
+                                END IF;
 
-                        -- Actualizo la numeracion en la tabla
-                        UPDATE DB_COMERCIAL.ADMI_NUMERACION
-                        SET SECUENCIA = Ln_SecuenciaAsig + 1
-                        WHERE EMPRESA_ID = Lv_EmpresaCod
-                        AND   OFICINA_ID = Ln_OficinaId
-                        AND   CODIGO     = Lv_CodigoNumeracionPago;
-                        COMMIT;
+                                CLOSE C_Numero_Pago; 
 
-                        --INGRESO DE LA CABECERA
-                        Ln_CabPagoId := DB_FINANCIERO.SEQ_INFO_PAGO_CAB.NEXTVAL;
+                                Lv_NumeroPago := Lv_NumeracionUno || '-' || Lv_NumeracionDos || '-' || TRIM(TO_CHAR(Ln_SecuenciaAsig, '0000009'));
 
-                        Lr_InfoPagoCab.ID_PAGO := Ln_CabPagoId;
-                        Lr_InfoPagoCab.PUNTO_ID := Le_DocFinanciero(Li_Cont_DocFinanciero).PUNTO_ID;
-                        Lr_InfoPagoCab.OFICINA_ID := Ln_OficinaId;
-                        Lr_InfoPagoCab.EMPRESA_ID := Lv_EmpresaCod;
-                        Lr_InfoPagoCab.NUMERO_PAGO := Lv_NumeroPago;
-                        Lr_InfoPagoCab.VALOR_TOTAL := Ln_ValorPagado;
-                        Lr_InfoPagoCab.ESTADO_PAGO := Lv_EstadoPago;
-                        Lr_InfoPagoCab.COMENTARIO_PAGO := Lv_Comentario;
-                        Lr_InfoPagoCab.FE_CREACION := SYSDATE;
-                        Lr_InfoPagoCab.USR_CREACION := Lv_UsrCreacion;
-                        Lr_InfoPagoCab.TIPO_DOCUMENTO_ID := Ln_Tipo_Documento_Id;--Le_DocFinanciero(Li_Cont_DocFinanciero).TIPO_DOCUMENTO_ID;
-                        Lr_InfoPagoCab.RECAUDACION_ID := Ln_EntityRecacudacion;
-                        Lr_InfoPagoCab.RECAUDACION_DET_ID := Ln_EntityRecDet;
-                        Lr_InfoPagoCab.PAGO_LINEA_ID := Ln_EntityPagoLinea;
+                                -- Actualizo la numeracion en la tabla
+                                UPDATE DB_COMERCIAL.ADMI_NUMERACION
+                                SET SECUENCIA = Ln_SecuenciaAsig + 1
+                                WHERE EMPRESA_ID = Lv_EmpresaCod
+                                AND   OFICINA_ID = Ln_OficinaId
+                                AND   CODIGO     = Lv_CodigoNumeracionPago;
+                                COMMIT;
 
-                        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_CAB(Lr_InfoPagoCab, Lv_Mensaje);
+                                --INGRESO DE LA CABECERA
+                                Ln_CabPagoId := DB_FINANCIERO.SEQ_INFO_PAGO_CAB.NEXTVAL;
 
-                        IF Lv_Mensaje IS NOT NULL THEN
-                            Lv_Error := 'Error al insertar - INFO_PAGO_CAB: ' || Lv_Mensaje;
-                            Lv_Retorno := '005';
-                            RAISE Le_Errors;
-                        END IF;
+                                Lr_InfoPagoCab.ID_PAGO := Ln_CabPagoId;
+                                Lr_InfoPagoCab.PUNTO_ID := Le_DocFinanciero(Li_Cont_DocFinanciero).PUNTO_ID;
+                                Lr_InfoPagoCab.OFICINA_ID := Ln_OficinaId;
+                                Lr_InfoPagoCab.EMPRESA_ID := Lv_EmpresaCod;
+                                Lr_InfoPagoCab.NUMERO_PAGO := Lv_NumeroPago;
+                                Lr_InfoPagoCab.VALOR_TOTAL := Ln_ValorPagado;
+                                Lr_InfoPagoCab.ESTADO_PAGO := Lv_EstadoPago;
+                                Lr_InfoPagoCab.COMENTARIO_PAGO := Lv_Comentario;
+                                Lr_InfoPagoCab.FE_CREACION := SYSDATE;
+                                Lr_InfoPagoCab.USR_CREACION := Lv_UsrCreacion;
+                                Lr_InfoPagoCab.TIPO_DOCUMENTO_ID := Ln_Tipo_Documento_Id;--Le_DocFinanciero(Li_Cont_DocFinanciero).TIPO_DOCUMENTO_ID;
+                                Lr_InfoPagoCab.RECAUDACION_ID := Ln_EntityRecacudacion;
+                                Lr_InfoPagoCab.RECAUDACION_DET_ID := Ln_EntityRecDet;
+                                Lr_InfoPagoCab.PAGO_LINEA_ID := Ln_EntityPagoLinea;
 
-                        Ln_BanderaPago := 0;
-                        Lv_EstadoImprFact := 'Cerrado';
-                        -- SE VERIFICA SI EL PAGO YA CUBRE LA FACTURA
-                        IF Ln_ValorPagado =  Ln_SaldoFactura THEN
-                            --ACTUALIZACION DEL ESTADO DE LA FACTURA (agregar)
-                            UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB
-                            SET ESTADO_IMPRESION_FACT = Lv_EstadoImprFact
-                            WHERE ID_DOCUMENTO = Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
-                            COMMIT;
-                            Ln_ValorPago := Ln_ValorPagado;
-                            Ln_ValorPagado := Ln_ValorPagado - Ln_SaldoFactura;
-                            Ln_BanderaPago := 1;
-                        ELSIF Ln_SaldoFactura < Ln_ValorPagado THEN
-                            --ACTUALIZACION DEL ESTADO DE LA FACTURA (agregar)
-                            UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB
-                            SET ESTADO_IMPRESION_FACT = Lv_EstadoImprFact
-                            WHERE ID_DOCUMENTO = Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
-                            COMMIT;
-                            Ln_ValorPago := Ln_SaldoFactura;
-                            Ln_ValorPagado := Ln_ValorPagado - Ln_SaldoFactura;
-                            Ln_BanderaPago := 2;
-                        ELSE
-                            Lv_EstadoImprFact := Le_DocFinanciero(Li_Cont_DocFinanciero).ESTADO_IMPRESION_FACT;
-                            Ln_ValorPago := Ln_ValorPagado;
-                            Ln_ValorPagado := 0;
-                            Ln_BanderaPago := 3;
-                        END IF;
+                                DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_CAB(Lr_InfoPagoCab, Lv_Mensaje);
 
-                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
-                                                    'FNCK_PAGOS_LINEA.F_GENERAR_PAGO_ANTICIPO',
-                                                    'Se ingresa Historial por cierre de Documento ID_DOCUMENTO= '|| Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO || ' - ESTADO_IMPRESION_FACT= ' || Lv_EstadoImprFact
-                                                    || ' - SALDO_FACTURA= ' || Ln_SaldoFactura || ' - VALOR_PAGO= ' || Ln_ValorPago || ' - SALDO_VALOR_PAGADO= ' || Ln_ValorPagado
-                                                    || ' - BANDERA= ' || Ln_BanderaPago ,
-                                                    NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
-                                                    SYSDATE,
-                                                    NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                                IF Lv_Mensaje IS NOT NULL THEN
+                                    Lv_Error := 'Error al insertar - INFO_PAGO_CAB: ' || Lv_Mensaje;
+                                    Lv_Retorno := '005';
+                                    RAISE Le_Errors;
+                                END IF;
 
-                        -- INSERTAR EN InfoDocumentoHistorial
-                        Ln_InfoDocHistId := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
-                        Lr_InfoDocumentoHistorial.ID_DOCUMENTO_HISTORIAL := Ln_InfoDocHistId;
-                        Lr_InfoDocumentoHistorial.DOCUMENTO_ID := Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
-                        Lr_InfoDocumentoHistorial.MOTIVO_ID := NULL;
-                        Lr_InfoDocumentoHistorial.FE_CREACION := SYSDATE;
-                        Lr_InfoDocumentoHistorial.USR_CREACION := Lv_UsrCreacion;
-                        Lr_InfoDocumentoHistorial.ESTADO := Lv_EstadoImprFact;
-                        Lr_InfoDocumentoHistorial.OBSERVACION := NULL;
+                                Ln_BanderaPago := 0;
+                                Lv_EstadoImprFact := 'Cerrado';
+                                -- SE VERIFICA SI EL PAGO YA CUBRE LA FACTURA
+                                IF Ln_ValorPagado =  Ln_SaldoFactura THEN
+                                    --ACTUALIZACION DEL ESTADO DE LA FACTURA (agregar)
+                                    UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB
+                                    SET ESTADO_IMPRESION_FACT = Lv_EstadoImprFact
+                                    WHERE ID_DOCUMENTO = Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
+                                    COMMIT;
+                                    Ln_ValorPago := Ln_ValorPagado;
+                                    Ln_ValorPagado := Ln_ValorPagado - Ln_SaldoFactura;
+                                    Ln_BanderaPago := 1;
+                                ELSIF Ln_SaldoFactura < Ln_ValorPagado THEN
+                                    --ACTUALIZACION DEL ESTADO DE LA FACTURA (agregar)
+                                    UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB
+                                    SET ESTADO_IMPRESION_FACT = Lv_EstadoImprFact
+                                    WHERE ID_DOCUMENTO = Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
+                                    COMMIT;
+                                    Ln_ValorPago := Ln_SaldoFactura;
+                                    Ln_ValorPagado := Ln_ValorPagado - Ln_SaldoFactura;
+                                    Ln_BanderaPago := 2;
+                                ELSE
+                                    Lv_EstadoImprFact := Le_DocFinanciero(Li_Cont_DocFinanciero).ESTADO_IMPRESION_FACT;
+                                    Ln_ValorPago := Ln_ValorPagado;
+                                    Ln_ValorPagado := 0;
+                                    Ln_BanderaPago := 3;
+                                END IF;
 
-                        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_Mensaje);
+                                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                            'FNCK_PAGOS_LINEA.F_GENERAR_PAGO_ANTICIPO',
+                                                            'Se ingresa Historial por cierre de Documento ID_DOCUMENTO= '|| Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO || ' - ESTADO_IMPRESION_FACT= ' || Lv_EstadoImprFact
+                                                            || ' - SALDO_FACTURA= ' || Ln_SaldoFactura || ' - VALOR_PAGO= ' || Ln_ValorPago || ' - SALDO_VALOR_PAGADO= ' || Ln_ValorPagado
+                                                            || ' - BANDERA= ' || Ln_BanderaPago ,
+                                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                            SYSDATE,
+                                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
 
-                        IF Lv_Mensaje IS NOT NULL THEN
-                            Lv_Error := 'Error al insertar - INFO_DOC_FINANCIERO_HST: ' || Lv_Mensaje;
-                            Lv_Retorno := '005';
-                            RAISE Le_Errors;
-                        END IF;
+                                -- INSERTAR EN InfoDocumentoHistorial
+                                Ln_InfoDocHistId := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
+                                Lr_InfoDocumentoHistorial.ID_DOCUMENTO_HISTORIAL := Ln_InfoDocHistId;
+                                Lr_InfoDocumentoHistorial.DOCUMENTO_ID := Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
+                                Lr_InfoDocumentoHistorial.MOTIVO_ID := NULL;
+                                Lr_InfoDocumentoHistorial.FE_CREACION := SYSDATE;
+                                Lr_InfoDocumentoHistorial.USR_CREACION := Lv_UsrCreacion;
+                                Lr_InfoDocumentoHistorial.ESTADO := Lv_EstadoImprFact;
+                                Lr_InfoDocumentoHistorial.OBSERVACION := NULL;
 
-                        -- CREAR DETALLES DEL PAGO
-                        Ln_ValorCabeceraPago := Ln_ValorCabeceraPago + Ln_ValorPago;
-                        Lr_InfoPagoDet.PAGO_ID := Ln_CabPagoId;
-                        Lr_InfoPagoDet.ID_PAGO_DET := DB_FINANCIERO.SEQ_INFO_PAGO_DET.NEXTVAL;
-                        Lr_InfoPagoDet.DEPOSITADO := 'N';
-                        Lr_InfoPagoDet.FE_DEPOSITO := Lv_FechaProceso;
-                        Lr_InfoPagoDet.FE_CREACION := SYSDATE;
-                        Lr_InfoPagoDet.USR_CREACION := Lv_UsrCreacion;
-                        Lr_InfoPagoDet.FORMA_PAGO_ID := Lv_IdFormaPago;
-                        Lr_InfoPagoDet.VALOR_PAGO := Ln_ValorPago;
-                        Lr_InfoPagoDet.BANCO_TIPO_CUENTA_ID := Ln_IdBancoTipoCuenta;
-                        Lr_InfoPagoDet.BANCO_CTA_CONTABLE_ID := Ln_IdBancoCtaContable;
-                        Lr_InfoPagoDet.CUENTA_CONTABLE_ID := Ln_IdBancoCtaContable;
-                        Lr_InfoPagoDet.NUMERO_REFERENCIA := Lv_NumeroReferencia;
-                        Lr_InfoPagoDet.COMENTARIO := Lv_Comentario;
-                        Lr_InfoPagoDet.ESTADO := Lv_EstadoPago;
-                        Lr_InfoPagoDet.REFERENCIA_ID := Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
+                                DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_Mensaje);
 
-                        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_DET(Lr_InfoPagoDet, Lv_Mensaje);
+                                IF Lv_Mensaje IS NOT NULL THEN
+                                    Lv_Error := 'Error al insertar - INFO_DOC_FINANCIERO_HST: ' || Lv_Mensaje;
+                                    Lv_Retorno := '005';
+                                    RAISE Le_Errors;
+                                END IF;
 
-                        IF Lv_Mensaje IS NOT NULL THEN
-                            Lv_Error := 'Error al insertar - INFO_PAGO_DET: ' || Lv_Mensaje;
-                            Lv_Retorno := '005';
-                            RAISE Le_Errors;
-                        END IF;
+                                -- CREAR DETALLES DEL PAGO
+                                Ln_ValorCabeceraPago := Ln_ValorCabeceraPago + Ln_ValorPago;
+                                Lr_InfoPagoDet.PAGO_ID := Ln_CabPagoId;
+                                Lr_InfoPagoDet.ID_PAGO_DET := DB_FINANCIERO.SEQ_INFO_PAGO_DET.NEXTVAL;
+                                Lr_InfoPagoDet.DEPOSITADO := 'N';
+                                Lr_InfoPagoDet.FE_DEPOSITO := Lv_FechaProceso;
+                                Lr_InfoPagoDet.FE_CREACION := SYSDATE;
+                                Lr_InfoPagoDet.USR_CREACION := Lv_UsrCreacion;
+                                Lr_InfoPagoDet.FORMA_PAGO_ID := Lv_IdFormaPago;
+                                Lr_InfoPagoDet.VALOR_PAGO := Ln_ValorPago;
+                                Lr_InfoPagoDet.BANCO_TIPO_CUENTA_ID := Ln_IdBancoTipoCuenta;
+                                Lr_InfoPagoDet.BANCO_CTA_CONTABLE_ID := Ln_IdBancoCtaContable;
+                                Lr_InfoPagoDet.CUENTA_CONTABLE_ID := Ln_IdBancoCtaContable;
+                                Lr_InfoPagoDet.NUMERO_REFERENCIA := Lv_NumeroReferencia;
+                                Lr_InfoPagoDet.COMENTARIO := Lv_Comentario;
+                                Lr_InfoPagoDet.ESTADO := Lv_EstadoPago;
+                                Lr_InfoPagoDet.REFERENCIA_ID := Le_DocFinanciero(Li_Cont_DocFinanciero).ID_DOCUMENTO;
 
-                        -- ACTUALIZACION VALOR TOTAL DE CABECERA
-                        UPDATE DB_FINANCIERO.INFO_PAGO_CAB
-                        SET VALOR_TOTAL  = Ln_ValorCabeceraPago
-                        WHERE ID_PAGO    = Ln_CabPagoId
-                        AND   EMPRESA_ID = Lv_EmpresaCod;
-                        COMMIT;
+                                DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_DET(Lr_InfoPagoDet, Lv_Mensaje);
 
-                        Lv_Respuesta := Lv_EstadoPago;
+                                IF Lv_Mensaje IS NOT NULL THEN
+                                    Lv_Error := 'Error al insertar - INFO_PAGO_DET: ' || Lv_Mensaje;
+                                    Lv_Retorno := '005';
+                                    RAISE Le_Errors;
+                                END IF;
 
-                        -- INGRESA HISTORIAL PARA EL ANTICIPO
-                        Ln_InfoPagoHistId := DB_FINANCIERO.SEQ_INFO_PAGO_HISTORIAL.NEXTVAL;                      
-                        Lr_InfoPagoHist.ID_PAGO_HISTORIAL := Ln_InfoPagoHistId;
-                        Lr_InfoPagoHist.PAGO_ID := Ln_CabPagoId;
-                        Lr_InfoPagoHist.MOTIVO_ID := NULL;
-                        Lr_InfoPagoHist.FE_CREACION := SYSDATE;
-                        Lr_InfoPagoHist.USR_CREACION := Lv_UsrCreacion;
-                        Lr_InfoPagoHist.ESTADO := Lv_EstadoPago;
-                        Lr_InfoPagoHist.OBSERVACION := Lv_Comentario;
+                                -- ACTUALIZACION VALOR TOTAL DE CABECERA
+                                UPDATE DB_FINANCIERO.INFO_PAGO_CAB
+                                SET VALOR_TOTAL  = Ln_ValorCabeceraPago
+                                WHERE ID_PAGO    = Ln_CabPagoId
+                                AND   EMPRESA_ID = Lv_EmpresaCod;
+                                COMMIT;
 
-                        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_HIST(Lr_InfoPagoHist, Lv_Mensaje);
+                                Lv_Respuesta := Lv_EstadoPago;
 
-                        IF Lv_Mensaje IS NOT NULL THEN
-                            Lv_Error := 'Error al insertar - INFO_PAGO_HIST: ' || Lv_Mensaje;
-                            Lv_Retorno := '005';
-                            RAISE Le_Errors;
-                        END IF;
+                                -- INGRESA HISTORIAL PARA EL ANTICIPO
+                                Ln_InfoPagoHistId := DB_FINANCIERO.SEQ_INFO_PAGO_HISTORIAL.NEXTVAL;                      
+                                Lr_InfoPagoHist.ID_PAGO_HISTORIAL := Ln_InfoPagoHistId;
+                                Lr_InfoPagoHist.PAGO_ID := Ln_CabPagoId;
+                                Lr_InfoPagoHist.MOTIVO_ID := NULL;
+                                Lr_InfoPagoHist.FE_CREACION := SYSDATE;
+                                Lr_InfoPagoHist.USR_CREACION := Lv_UsrCreacion;
+                                Lr_InfoPagoHist.ESTADO := Lv_EstadoPago;
+                                Lr_InfoPagoHist.OBSERVACION := Lv_Comentario;
 
+                                DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_HIST(Lr_InfoPagoHist, Lv_Mensaje);
+
+                                IF Lv_Mensaje IS NOT NULL THEN
+                                    Lv_Error := 'Error al insertar - INFO_PAGO_HIST: ' || Lv_Mensaje;
+                                    Lv_Retorno := '005';
+                                    RAISE Le_Errors;
+                                END IF;
+
+                            END IF;
+
+                            Li_Cont_DocFinanciero := Le_DocFinanciero.NEXT(Li_Cont_DocFinanciero);
+                        END LOOP;
                     END IF;
 
-                    Li_Cont_DocFinanciero := Le_DocFinanciero.NEXT(Li_Cont_DocFinanciero);
-                  END LOOP;
+                CLOSE Fc_FacturasAbiertas;
 
-              CLOSE Fc_FacturasAbiertas;
-
-              Li_Cont_InfoCliente := Le_InfoCliente.NEXT(Li_Cont_InfoCliente);
-            END LOOP;
-
+                Li_Cont_InfoCliente := Le_InfoCliente.NEXT(Li_Cont_InfoCliente);
+                END LOOP;
+            END IF;
         CLOSE Fc_InfoCliente;
       END IF;
 
@@ -4019,7 +4034,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         -- Actualizo la numeracion en la tabla
         UPDATE DB_COMERCIAL.ADMI_NUMERACION
-        SET SECUENCIA = Ln_SecuenciaAsig + 1
+        SET SECUENCIA = Ln_SecuenciaAsigAnt + 1
         WHERE EMPRESA_ID = Lv_EmpresaCod
         AND   OFICINA_ID = Ln_OficinaId
         AND   CODIGO     = Lv_CodigoNumeracionAnticipo;
