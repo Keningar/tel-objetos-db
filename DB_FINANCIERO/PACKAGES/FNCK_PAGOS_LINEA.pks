@@ -638,7 +638,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
             Lv_Secuencial := null;
 
             APEX_JSON.PARSE(Pcl_Request);
-            Lv_Identificacion  := APEX_JSON.get_varchar2(p_path => 'identificacionCliente'); 
+            Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente'));
             Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa'); 
             Lv_TipoProducto := APEX_JSON.get_varchar2(p_path => 'tipoProducto'); 
 
@@ -1184,7 +1184,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
 
         APEX_JSON.PARSE(Pcl_Request);
-        Lv_Identificacion  := APEX_JSON.get_varchar2(p_path => 'identificacionCliente'); 
+        Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente')); 
 
 
         FNCK_PAGOS_LINEA.P_VALIDAR_CREDENCIALES(Pcl_Request, Lv_Retorno, Lv_Error, Lb_ValidaCred);
@@ -1525,7 +1525,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
     BEGIN     
         APEX_JSON.PARSE(Pcl_Request);
-        Lv_Identificacion  := APEX_JSON.get_varchar2(p_path => 'identificacionCliente'); 
+        Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente')); 
         Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa'); 
         Lv_Usuario  := APEX_JSON.get_varchar2(p_path => 'usuario'); 
         Lv_Canal  := APEX_JSON.get_varchar2(p_path => 'canal'); 
@@ -2005,7 +2005,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
             Lv_Mensaje := 'Exito.';
 
             APEX_JSON.PARSE(Pcl_Request);
-            Lv_Identificacion  := APEX_JSON.get_varchar2(p_path => 'identificacionCliente'); 
+            Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente'));  
             Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa');
             Lv_Pago := APEX_JSON.get_varchar2(p_path => 'valorPago');
             Lv_Canal := APEX_JSON.get_varchar2(p_path => 'canal');
