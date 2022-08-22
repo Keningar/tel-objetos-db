@@ -41,7 +41,27 @@ CREATE OR REPLACE package                                                 DB_SOP
                                            Pv_TAREA_ID         IN VARCHAR2,
                                            Pn_NumeroTarea      IN NUMBER,
                                            Pv_userCreacion     IN VARCHAR2,
-                                           Pv_Error            OUT VARCHAR2);                           
+                                           Pv_Error            OUT VARCHAR2);    
+
+  /**
+  * Documentación para el procedimiento PR_MIGRACION_TAREAS_DEPTO
+  *
+  * Método encargado de generar la solicitud de horas extras al finalizar una tarea, validando el horario linea base.
+  *
+  * @param PN_ID_DEPTO_ANTERIOR IN  NUMBER Codigo de departamento anterior
+  * @param PN_ID_DEPTO_ACTUAL   IN  NUMBER Codigo de departamento actual
+  * @param PN_COD_EMPRESA       IN  NUMBER Codigo de la empresa
+  * @param PV_USR_EJECUTA       IN  VARCHAR2 Usuario que realiza la ejecucion de la mogracion de tareas
+  * @param PV_MENSAJE           OUT VARCHAR2 Mensaje de respuesta del proceso
+  *
+  * @author Pedro Velez <psvelez@telconet.ec>
+  * @version 1.0 15-08-2022
+  */ 
+  PROCEDURE PR_MIGRACION_TAREAS_DEPTO(PN_ID_DEPTO_ANTERIOR  NUMBER, 
+                                      PN_ID_DEPTO_ACTUAL     NUMBER, 
+                                      PN_COD_EMPRESA         NUMBER,
+                                      PV_USR_EJECUTA         VARCHAR2,
+                                      PV_MENSAJE             OUT VARCHAR2 );                        
 
 
 END SPKG_SOPORTE_TAREA;
@@ -483,6 +503,324 @@ CREATE OR REPLACE package body                                           DB_SOPO
                                                 NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
 
   END P_GENERA_HE_TAREA_FINALIZADA;
+
+  PROCEDURE PR_MIGRACION_TAREAS_DEPTO(PN_ID_DEPTO_ANTERIOR  NUMBER, 
+                                      PN_ID_DEPTO_ACTUAL     NUMBER, 
+                                      PN_COD_EMPRESA         NUMBER,
+                                      PV_USR_EJECUTA         VARCHAR2,
+                                      PV_MENSAJE             OUT VARCHAR2 ) IS
+
+    LV_NOMBRE_DEPTO_ACTUAL   Varchar2(100);
+    LV_NOMBRE_DEPTO_ANTERIOR VARCHAR2(100);
+    LN_NUMERO_TAREA1  NUMBER;
+    LN_NUMERO_TAREA2  NUMBER;
+    LN_NUMERO_TAREA3  NUMBER;
+    LV_MENSAJE      VARCHAR2(250);
+    LE_EXCEPTION    EXCEPTION;
+    
+  BEGIN
+
+      DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                        '1',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'Migracion tareas depto',
+                                        'Inicio',
+                                        'Inicio de la migracion de tareas por nuevo departamento',
+                                        'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                        PV_USR_EJECUTA);
+                                        
+  BEGIN 
+    select S.Nombre_Departamento 
+      INTO LV_NOMBRE_DEPTO_ANTERIOR
+      from DB_GENERAL.Admi_Departamento s 
+      where S.Id_Departamento = PN_ID_DEPTO_ANTERIOR 
+        AND S.EMPRESA_COD = PN_COD_EMPRESA;
+  EXCEPTION
+    WHEN OTHERS THEN
+      LV_MENSAJE := 'No existe departamento con codigo: '||PN_ID_DEPTO_ANTERIOR;
+      RAISE LE_EXCEPTION;
+  END;
+  
+  BEGIN 
+    select S.Nombre_Departamento 
+      INTO LV_NOMBRE_DEPTO_ACTUAL
+      from DB_GENERAL.Admi_Departamento s 
+      where S.Id_Departamento = PN_ID_DEPTO_ACTUAL 
+        AND S.EMPRESA_COD = PN_COD_EMPRESA;
+  EXCEPTION
+    WHEN OTHERS THEN
+      LV_MENSAJE := 'No existe departamento con codigo: '||PN_ID_DEPTO_ACTUAL;
+      RAISE LE_EXCEPTION;
+  END;
+  
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA1
+  FROM DB_SOPORTE.Info_Detalle_Asignacion
+  WHERE asignado_id     = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Detalle_Asignacion
+      set asignado_id     = PN_ID_DEPTO_ACTUAL, 
+          Asignado_Nombre = LV_NOMBRE_DEPTO_ACTUAL
+    where asignado_id     = PN_ID_DEPTO_ANTERIOR;
+    
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA2
+  FROM DB_SOPORTE.Info_Detalle_Asignacion
+  WHERE asignado_id     = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Detalle_Asignacion
+      set Departamento_Id = PN_ID_DEPTO_ACTUAL
+    where Departamento_Id = PN_ID_DEPTO_ANTERIOR; 
+    
+    DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                        '1',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'Migracion tareas depto',
+                                        'Ejecucion 1',
+                                        'Se actualiza registros de tabla Info_Detalle_Asignacion, Numero de Registros: '||LN_NUMERO_TAREA1||', segundo query:'||LN_NUMERO_TAREA2,
+                                        'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||' nombre:'||LV_NOMBRE_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||' nombre:'||
+                                        LV_NOMBRE_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,PV_USR_EJECUTA);
+  ------------------------------------------------------------------------------------
+
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA1
+  FROM DB_SOPORTE.Info_Detalle_Historial
+  WHERE asignado_id     = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Detalle_Historial
+      set asignado_id = PN_ID_DEPTO_ACTUAL
+    where asignado_id = PN_ID_DEPTO_ANTERIOR;
+
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA2
+  FROM DB_SOPORTE.Info_Detalle_Historial
+  WHERE Departamento_Origen_Id = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Detalle_Historial
+      set Departamento_Origen_Id = PN_ID_DEPTO_ACTUAL
+    where Departamento_Origen_Id = PN_ID_DEPTO_ANTERIOR;
+
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA3
+  FROM DB_SOPORTE.Info_Detalle_Historial
+  WHERE Departamento_Destino_Id = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Detalle_Historial
+      set Departamento_Destino_Id= PN_ID_DEPTO_ACTUAL
+    where Departamento_Destino_Id = PN_ID_DEPTO_ANTERIOR;
+
+    DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                        '1',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'Migracion tareas depto',
+                                        'Ejecucion 2',
+                                        'Se actualiza registros de tabla Info_Detalle_Historial, Numero de Registros: '||LN_NUMERO_TAREA1||', segundo query:'||LN_NUMERO_TAREA2||', tercer query:'||LN_NUMERO_TAREA3,
+                                        'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                        PV_USR_EJECUTA);
+  -----------------------------------------------------------------
+  
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA1
+  FROM DB_SOPORTE.Info_Tarea
+  WHERE asignado_id     = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Tarea 
+      set asignado_id = PN_ID_DEPTO_ACTUAL,
+          asignado_nombre = LV_NOMBRE_DEPTO_ACTUAL
+    where asignado_id = PN_ID_DEPTO_ANTERIOR;
+
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA2
+  FROM DB_SOPORTE.Info_Tarea
+  WHERE Departamento_Id = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Tarea 
+      set Departamento_Id = PN_ID_DEPTO_ACTUAL
+    where Departamento_Id = PN_ID_DEPTO_ANTERIOR; 
+
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA3
+  FROM DB_SOPORTE.Info_Tarea
+  WHERE Departamento_Origen_Id = PN_ID_DEPTO_ANTERIOR;
+  
+  update DB_SOPORTE.Info_Tarea 
+      set Departamento_Origen_Id = PN_ID_DEPTO_ACTUAL
+    where Departamento_Origen_Id = PN_ID_DEPTO_ANTERIOR;  
+
+    DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                        '1',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'Migracion tareas depto',
+                                        'Ejecucion 3',
+                                        'Se actualiza registros de tabla Info_Tarea, Numero de Registros: '||LN_NUMERO_TAREA1||', segundo query:'||LN_NUMERO_TAREA2||', tercer query:'||LN_NUMERO_TAREA3,
+                                        'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                        PV_USR_EJECUTA);
+  ----------------------------------------------------------------- 
+
+  SELECT COUNT(*) 
+  INTO LN_NUMERO_TAREA1
+  FROM DB_SOPORTE.Info_Tarea_Seguimiento
+  WHERE Departamento_Id = PN_ID_DEPTO_ANTERIOR;
+  
+    update DB_SOPORTE.Info_Tarea_Seguimiento
+      set Departamento_Id = PN_ID_DEPTO_ACTUAL
+    where Departamento_Id = PN_ID_DEPTO_ANTERIOR; 
+  
+    DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                        '1',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'Migracion tareas depto',
+                                        'Ejecucion 4',
+                                        'Se actualiza registros de tabla Info_Tarea_Seguimiento, Numero de Registros: '||LN_NUMERO_TAREA1,
+                                        'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                        PV_USR_EJECUTA); 
+----------------------------------------------------------------------------
+
+ SELECT COUNT(*) 
+ INTO LN_NUMERO_TAREA1
+ FROM DB_SOPORTE.INFO_DETALLE_COLABORADOR
+ WHERE asignado_id = PN_ID_DEPTO_ANTERIOR;
+ 
+  update DB_SOPORTE.INFO_DETALLE_COLABORADOR
+     set asignado_id = PN_ID_DEPTO_ACTUAL,
+         ASIGNADO_NOMBRE = LV_NOMBRE_DEPTO_ACTUAL
+   where asignado_id = PN_ID_DEPTO_ANTERIOR; 
+ 
+  DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                       '1',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'Migracion tareas depto',
+                                       'Ejecucion 5',
+                                       'Se actualiza registros de tabla INFO_DETALLE_COLABORADOR, Numero de Registros: '||LN_NUMERO_TAREA1,
+                                       'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                       PV_USR_EJECUTA); 
+------------------------------------------------------------------------- 
+  SELECT COUNT(*) 
+ INTO LN_NUMERO_TAREA1
+ FROM DB_SOPORTE.Info_detalle_tareas
+ WHERE Departamento_Id = PN_ID_DEPTO_ANTERIOR;
+ 
+  update DB_SOPORTE.Info_detalle_tareas
+     set Departamento_Id = PN_ID_DEPTO_ACTUAL
+   where Departamento_Id = PN_ID_DEPTO_ANTERIOR; 
+ 
+  DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                       '1',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'Migracion tareas depto',
+                                       'Ejecucion 6',
+                                       'Se actualiza registros de tabla Info_detalle_tareas, Numero de Registros: '||LN_NUMERO_TAREA1,
+                                       'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                       PV_USR_EJECUTA); 
+------------------------------------------------------------------------------------------------
+ SELECT COUNT(*) 
+ INTO LN_NUMERO_TAREA1
+ FROM DB_SOPORTE.info_caso_asignacion
+ WHERE asignado_id = PN_ID_DEPTO_ANTERIOR;
+ 
+  update DB_SOPORTE.info_caso_asignacion
+     set asignado_id = PN_ID_DEPTO_ACTUAL,
+         ASIGNADO_NOMBRE = LV_NOMBRE_DEPTO_ACTUAL
+   where asignado_id = PN_ID_DEPTO_ANTERIOR; 
+ 
+  DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                       '1',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'Migracion tareas depto',
+                                       'Ejecucion 7',
+                                       'Se actualiza registros de tabla info_caso_asignacion, Numero de Registros: '||LN_NUMERO_TAREA1,
+                                       'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                       PV_USR_EJECUTA); 
+------------------------------------------------------------------------------------------------
+ SELECT COUNT(*) 
+ INTO LN_NUMERO_TAREA1
+ FROM DB_SOPORTE.INFO_ASIGNACION_SOLICITUD
+ WHERE Departamento_Id = PN_ID_DEPTO_ANTERIOR;
+ 
+  update DB_SOPORTE.INFO_ASIGNACION_SOLICITUD
+     set Departamento_Id = PN_ID_DEPTO_ACTUAL
+   where Departamento_Id = PN_ID_DEPTO_ANTERIOR; 
+ 
+  DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                       '1',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'PR_MIGRACION_TAREAS_DEPTO',
+                                       'Migracion tareas depto',
+                                       'Ejecucion 8',
+                                       'Se actualiza registros de tabla INFO_ASIGNACION_SOLICITUD, Numero de Registros: '||LN_NUMERO_TAREA1,
+                                       'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                       PV_USR_EJECUTA); 
+------------------------------------------------------------------------------------------------
+  SELECT count(Distinct S.Detalle_Id) 
+    into LN_NUMERO_TAREA1
+    FROM DB_SOPORTE.Info_Detalle_Historial S 
+    WHERE S.asignado_id = PN_ID_DEPTO_ANTERIOR 
+      or s.Departamento_Origen_Id = PN_ID_DEPTO_ANTERIOR 
+      or s.Departamento_destino_Id = PN_ID_DEPTO_ANTERIOR;
+
+    DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                        '1',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'PR_MIGRACION_TAREAS_DEPTO',
+                                        'Migracion tareas depto',
+                                        'Ejecucion 9',
+                                        'Se realizó la migracion de '||LN_NUMERO_TAREA1||' tareas',
+                                        'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                        PV_USR_EJECUTA); 
+  
+    COMMIT;
+
+    PV_MENSAJE := 'Se realizó la migracion de '||LN_NUMERO_TAREA1||' tareas';
+
+  EXCEPTION
+  WHEN LE_EXCEPTION THEN
+    
+      DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                          '1',
+                                          'PR_MIGRACION_TAREAS_DEPTO',
+                                          'PR_MIGRACION_TAREAS_DEPTO',
+                                          'PR_MIGRACION_TAREAS_DEPTO',
+                                          'Migracion tareas depto',
+                                          'Error',
+                                          LV_MENSAJE,
+                                          'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                          PV_USR_EJECUTA);
+      PV_MENSAJE:= LV_MENSAJE;
+      
+  WHEN OTHERS THEN
+      Lv_Mensaje := 'Error en proceso de migracion de tareas a nuevos departamento '||substr(sqlerrm,1,200);
+      
+      DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG(Pn_Cod_Empresa,
+                                          '1',
+                                          'PR_MIGRACION_TAREAS_DEPTO',
+                                          'PR_MIGRACION_TAREAS_DEPTO',
+                                          'PR_MIGRACION_TAREAS_DEPTO',
+                                          'Migracion tareas depto',
+                                          'Error',
+                                          LV_MENSAJE,
+                                          'PN_ID_DEPTO_ANTERIOR='||PN_ID_DEPTO_ANTERIOR||'-PN_ID_DEPTO_ACTUAL='||PN_ID_DEPTO_ACTUAL||',-PN_COD_EMPRESA'||PN_COD_EMPRESA,
+                                          PV_USR_EJECUTA);
+    PV_MENSAJE := LV_MENSAJE;
+    
+  END PR_MIGRACION_TAREAS_DEPTO;
 
    
 END SPKG_SOPORTE_TAREA;
