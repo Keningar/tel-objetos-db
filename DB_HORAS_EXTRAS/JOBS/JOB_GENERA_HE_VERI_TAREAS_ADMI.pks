@@ -31,7 +31,7 @@ BEGIN
             END;',
                            
     number_of_arguments => 0,            
-    repeat_interval     => 'FREQ=DAILY;BYHOUR=23;BYMINUTE=50;BYSECOND=00',
+    repeat_interval     => 'FREQ=DAILY;BYHOUR=00;BYMINUTE=01;BYSECOND=00',
     end_date            => NULL,
     enabled             => FALSE,
     auto_drop           => FALSE,

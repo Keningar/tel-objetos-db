@@ -382,7 +382,7 @@ END HEKG_HORASEXTRAS_CONSULTA;
 /
 create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
 
-     PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
+  PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR)
@@ -442,14 +442,9 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
             RAISE Le_Errors;
         END IF;
 
-
         IF Lv_NombrePantalla IS NULL THEN
             Pv_Mensaje := 'El parámetro nombrePantalla está vacío';
             RAISE Le_Errors;
-        END IF;
-
-        IF Lv_Estado IS NULL THEN
-            Lv_Estado:='Pendiente';
         END IF;
 
         IF C_DIA_CORTE%ISOPEN THEN
@@ -516,7 +511,8 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
                                            FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHSOL
                                            JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSDET ON IHSOL.ID_HORAS_SOLICITUD = IHSDET.HORAS_SOLICITUD_ID
                                            JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSDET.TIPO_HORAS_EXTRA_ID
-                                           WHERE IHSOL.ESTADO ='''||Lv_Estado||''' AND IHSDET.ESTADO = '''||Lv_Estado||'''
+                                           WHERE IHSOL.ESTADO IN (''Pendiente'',''Autorizada'',''Pre-Autorizada'',''Anulada'',''Verificacion'') 
+                                           AND IHSDET.ESTADO IN (''Pendiente'',''Autorizada'',''Pre-Autorizada'',''Anulada'',''Verificacion'')
                                            GROUP BY IHSOL.ID_HORAS_SOLICITUD,ATHE.TIPO_HORAS_EXTRA
                                            ORDER BY IHSOL.ID_HORAS_SOLICITUD DESC)TABLA
                             GROUP BY ID_HORAS_SOLICITUD
@@ -535,7 +531,7 @@ create or replace package body                                DB_HORAS_EXTRAS.HE
 
               IF Lv_Estado IS NULL THEN
 
-                 Lcl_Where := Lcl_Where || ' AND IHS.ESTADO = ''Pendiente'' AND IHSE.ESTADO=''Pendiente'' AND IHSD.ESTADO=''Pendiente'' ';
+                 Lcl_Where := Lcl_Where || ' AND IHS.ESTADO IN (''Pendiente'') AND IHSE.ESTADO IN (''Pendiente'') AND IHSD.ESTADO IN (''Pendiente'') ';
 
               ELSE
 
@@ -1653,7 +1649,7 @@ AS
       Lv_EstadoSolicitud     :=  APEX_JSON.get_varchar2(p_path => 'estadoSolicitud');
       Lv_TipoHora            :=  APEX_JSON.get_varchar2(p_path => 'tipoHorasExtra');
       Lv_FechaCorte          := '';
-
+      
       IF Lv_EmpresaCod IS NULL THEN
          Pv_Mensaje := 'El parámetro empresaCod está vacío';
          RAISE Le_Errors;
@@ -1675,21 +1671,18 @@ AS
 
       END IF;
      
-      Lcl_Select :=   'SELECT *
-                        FROM
-                          (SELECT ATHE.TIPO_HORAS_EXTRA,
-                            ROUND((SUM(TO_NUMBER((REGEXP_SUBSTR(IHSD.HORAS,''[^:]+'',1,1)*60*60 + REGEXP_SUBSTR(IHSD.HORAS,''[^:]+'',1,2)*60),''99999'')))/3600) AS TOTAL_HORAS ';
-      Lcl_From   :=   ' FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS ';
+      Lcl_Select :=   ' SELECT  ROUND((SUM(TO_NUMBER((REGEXP_SUBSTR(HORAS,''[^:]+'',1,1)*60*60 + REGEXP_SUBSTR(HORAS,''[^:]+'',1,2)*60),''99999'')))/3600) AS TOTAL_HORAS, TIPO_HORAS_EXTRA';
+      Lcl_From   :=   '  FROM( SELECT ATHE.TIPO_HORAS_EXTRA, VEE.NOMBRE_DEPTO, IHSD.HORAS
+                               FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS 
+                               JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                               JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON IHSE.NO_EMPLE = VEE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
+                               JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                               JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID ';
 
-      Lcl_WhereAndJoin := 'JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
-                           ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                           JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE
-                            ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
-                            JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
-                            ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                            JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE
-                            ON VEE.NO_EMPLE      = IHSE.NO_EMPLE 
-                           WHERE IHS.EMPRESA_COD ='''||Lv_EmpresaCod||''' ';
+      Lcl_WhereAndJoin := 'WHERE IHS.EMPRESA_COD ='''||Lv_EmpresaCod||'''
+                            
+                            AND VEE.TIPO_EMP NOT IN(''03'')
+                            AND IHSD.ESTADO NOT IN (''Eliminada'', ''Inactivo'')';
        
        IF Lv_nombreDepar IS NOT NULL THEN
           Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE_DEPTO  = '''||Lv_nombreDepar||''' ';
@@ -1698,7 +1691,7 @@ AS
        IF Lv_IdMes IS NOT NULL THEN
            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TO_CHAR(IHS.FECHA,''MM-YYYY'') = '''|| Lv_FechaCorte ||''' ';
         ELSE
-           Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TO_CHAR(IHS.FECHA,''MM-YYYY'') = TO_CHAR(SYSDATE- ' || Lr_Parametros.NUM_MES || ',''MM-YYYY'')   ';
+           Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TO_CHAR(IHS.FECHA,''MM-YYYY'') = TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE,''MM''),-' || Lr_Parametros.NUM_MES || '),''MM-YYYY'')   ';
         END IF;
         
         IF Lv_nombreArea IS NOT NULL THEN
@@ -1710,23 +1703,30 @@ AS
        END IF;
        
        IF Lv_noEmpleado IS NOT NULL THEN
-          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE = '''||Lv_noEmpleado||''' ';
+          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NO_EMPLE = '''||Lv_noEmpleado||''' ';
        END IF;
        
        IF Lv_TipoHora IS NOT NULL THEN
-          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATHE.TIPO_HORAS_EXTRA  = '''||Lv_TipoHora||''' ';
+          IF Lv_TipoHora = 'DOBLES' THEN 
+            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATHE.TIPO_HORAS_EXTRA  IN ( '''||Lv_TipoHora||''', ''DIALIBRE_DOBLE'') ';
+          ELSE
+            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATHE.TIPO_HORAS_EXTRA  = '''||Lv_TipoHora||''' ';
+          END IF;
        END IF;
        
+       IF Lv_EstadoSolicitud IS NOT NULL THEN
+            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IHS.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSD.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSE.ESTADO ='''|| Lv_EstadoSolicitud ||''''; 
+       ELSE 
+          Lcl_WhereAndJoin := Lcl_WhereAndJoin ||'AND IHS.ESTADO=''Autorizada'' AND IHSE.ESTADO=''Autorizada'' AND IHSD.ESTADO=''Autorizada'' ';
+       END IF;
        
-      
-       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IHS.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSD.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSE.ESTADO ='''|| Lv_EstadoSolicitud ||''''; 
-       
-       Lcl_OrderAnGroup  :=   ' GROUP BY ATHE.TIPO_HORAS_EXTRA, IHSD.HORAS 
-                                 ORDER BY IHSD.HORAS DESC
-                            ) WHERE TOTAL_HORAS>='''|| Lr_Parametros.TOTAL_HORAS  ||''' AND rownum <= '|| Lr_Parametros.NUM_REGISTROS;
+       Lcl_OrderAnGroup  :=   ' GROUP BY  vee.cedula,vee.nombre,ihsd.fecha_solicitud_det,ihsd.hora_inicio_det,ihsd.hora_fin_det,
+                                          ihsd.horas,ihs.observacion,athe.tipo_horas_extra,vee.nombre_depto,vee.oficina_provincia,
+                                          vee.oficina_canton,ihse.no_emple 
+                                ORDER BY IHSD.HORAS DESC)GROUP BY TIPO_HORAS_EXTRA';
   
-      Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-                  
+      Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;     
+      
       OPEN Pcl_Response FOR Lcl_Query;
 
       Pv_Status     := 'OK';
@@ -1777,8 +1777,8 @@ AS
       APEX_JSON.PARSE(Pcl_Request);
       Lv_EmpresaCod          :=  APEX_JSON.get_varchar2(p_path => 'empresaCod');
       Lv_NombreDepartamento  :=  APEX_JSON.get_varchar2(p_path => 'nombreDepartamento');
-      Lv_Provincia           :=  APEX_JSON.get_varchar2(p_path => 'provincia');
-      Lv_Canton              :=  APEX_JSON.get_varchar2(p_path => 'canton');
+      Lv_Provincia           :=  APEX_JSON.get_varchar2(p_path => 'nombreProvincia');
+      Lv_Canton              :=  APEX_JSON.get_varchar2(p_path => 'nombreCanton');
       Lv_FechaInicio         :=  APEX_JSON.get_varchar2(p_path => 'fechaInicio');
       Lv_FechaFin            :=  APEX_JSON.get_varchar2(p_path => 'fechaFin');
       Lv_Nombres             :=  APEX_JSON.get_varchar2(p_path => 'nombres');
@@ -1892,6 +1892,19 @@ AS
       IF Lv_IdTipoHorario IS NOT NULL THEN
 
           Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AHE.TIPO_HORARIO_ID = '||Lv_IdTipoHorario||' ';
+
+      END IF;
+      
+      --Se agrega el filtro por Provincia
+      IF (Lv_Provincia IS NOT NULL)THEN
+
+          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE_PROVINCIA =  '''||Lv_Provincia||''' ';
+
+      END IF;
+      
+      IF (Lv_Canton IS NOT NULL)THEN
+
+          Lcl_WhereAndJoin := Lcl_WhereAndJoin || 'AND VEE.NOMBRE_CANTON =  '''||Lv_Canton||''' ';
 
       END IF;
                       
@@ -2085,7 +2098,6 @@ AS
       Lv_EstadoSolicitud     :=  APEX_JSON.get_varchar2(p_path => 'estadoSolicitud');
       Lv_TipoHora            :=  APEX_JSON.get_varchar2(p_path => 'tipoHorasExtra');
       Lv_FechaCorte           := '';
-      
 
       IF Lv_EmpresaCod IS NULL THEN
          Pv_Mensaje := 'El parámetro empresaCod está vacío';
@@ -2108,24 +2120,21 @@ AS
 
       END IF;
       
-      Lcl_Select :=   'SELECT *
-                        FROM
-                          (SELECT VEE.NOMBRE_AREA,
-                            VEE.NOMBRE_DEPTO,
-                            VEE.NOMBRE,
-                            ATHE.TIPO_HORAS_EXTRA,
-                            ROUND((SUM(TO_NUMBER((REGEXP_SUBSTR(IHSD.HORAS,''[^:]+'',1,1)*60*60 + REGEXP_SUBSTR(IHSD.HORAS,''[^:]+'',1,2)*60),''99999'')))/3600) AS TOTAL_HORAS ';
+      Lcl_Select :=   'SELECT *      
+                          FROM
+                          (SELECT VEE.NOMBRE_DEPTO,
+                                VEE.NOMBRE_AREA,
+                                VEE.NOMBRE,
+                                ROUND((SUM(TO_NUMBER((REGEXP_SUBSTR(IHSD.HORAS,''[^:]+'',1,1)*60*60 + REGEXP_SUBSTR(IHSD.HORAS,''[^:]+'',1,2)*60),''99999'')))/3600) AS TOTAL_HORAS';
       Lcl_From   :=   ' FROM DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD IHS ';
 
-      Lcl_WhereAndJoin := 'JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD
-                           ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                           JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE
-                            ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
-                            JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE
-                            ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
-                            JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE
-                            ON VEE.NO_EMPLE      = IHSE.NO_EMPLE 
-                           WHERE IHS.EMPRESA_COD ='''||Lv_EmpresaCod||''' ';
+      Lcl_WhereAndJoin := '    JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_EMPLEADO IHSE ON IHSE.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                               JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON IHSE.NO_EMPLE = VEE.NO_EMPLE AND IHS.EMPRESA_COD = VEE.NO_CIA
+                               JOIN DB_HORAS_EXTRAS.INFO_HORAS_SOLICITUD_DETALLE IHSD ON IHSD.HORAS_SOLICITUD_ID = IHS.ID_HORAS_SOLICITUD
+                               JOIN DB_HORAS_EXTRAS.ADMI_TIPO_HORAS_EXTRA ATHE ON ATHE.ID_TIPO_HORAS_EXTRA = IHSD.TIPO_HORAS_EXTRA_ID
+                           WHERE IHS.EMPRESA_COD ='''||Lv_EmpresaCod||''' 
+                           AND VEE.TIPO_EMP NOT IN(''03'')
+                           AND athe.tipo_horas_extra IN (''SIMPLE'', ''DOBLES'', ''DIALIBRE_DOBLE'', ''NOCTURNO'') ';
         IF Lv_nombreDepar IS NOT NULL THEN
            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE_DEPTO  ='''||Lv_nombreDepar||''' ';
         END IF;
@@ -2133,7 +2142,7 @@ AS
        IF Lv_IdMes IS NOT NULL THEN
            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TO_CHAR(IHS.FECHA,''MM-YYYY'') = '''|| Lv_FechaCorte ||''' ';
         ELSE
-          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TO_CHAR(IHS.FECHA,''MM-YYYY'') = TO_CHAR(SYSDATE- ' || Lr_Parametros.NUM_MES || ',''MM-YYYY'')   ';
+           Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TO_CHAR(IHS.FECHA,''MM-YYYY'') = TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE,''MM''),-' || Lr_Parametros.NUM_MES || '),''MM-YYYY'')   ';
         END IF;
         
         IF Lv_nombreArea IS NOT NULL THEN
@@ -2145,22 +2154,29 @@ AS
        END IF;
        
        IF Lv_noEmpleado IS NOT NULL THEN
-          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NOMBRE = '''||Lv_noEmpleado||''' ';
+          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND VEE.NO_EMPLE = '''||Lv_noEmpleado||''' ';
        END IF;
         
        IF Lv_TipoHora IS NOT NULL THEN
-          Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATHE.TIPO_HORAS_EXTRA  = '''||Lv_TipoHora||''' ';
+          IF Lv_TipoHora = 'DOBLES' THEN 
+            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATHE.TIPO_HORAS_EXTRA  IN ( '''||Lv_TipoHora||''', ''DIALIBRE_DOBLE'') ';
+          ELSE
+            Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ATHE.TIPO_HORAS_EXTRA  = '''||Lv_TipoHora||''' ';
+          END IF;
        END IF;     
       
-       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IHS.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSD.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSE.ESTADO ='''|| Lv_EstadoSolicitud ||''''; 
+      IF Lv_EstadoSolicitud IS NOT NULL THEN
+           Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND IHS.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSD.ESTADO ='''|| Lv_EstadoSolicitud ||''' AND IHSE.ESTADO ='''|| Lv_EstadoSolicitud ||''''; 
+       ELSE 
+          Lcl_WhereAndJoin := Lcl_WhereAndJoin ||'AND IHS.ESTADO=''Autorizada'' AND IHSE.ESTADO=''Autorizada'' AND IHSD.ESTADO=''Autorizada'' ';
+       END IF;
        
-       Lcl_OrderAnGroup  :=   ' GROUP BY VEE.NOMBRE_AREA, VEE.NOMBRE_DEPTO, VEE.NOMBRE,
-                                       ATHE.TIPO_HORAS_EXTRA, IHSD.HORAS 
-                                 ORDER BY IHSD.HORAS DESC
+       Lcl_OrderAnGroup  :=   ' GROUP BY  vee.nombre,vee.nombre_depto,VEE.NOMBRE_AREA
+                                 ORDER BY TOTAL_HORAS DESC
                             ) WHERE TOTAL_HORAS>='''|| Lr_Parametros.TOTAL_HORAS  ||''' AND rownum <= '|| Lr_Parametros.NUM_REGISTROS;
   
       Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;    
-     
+
       OPEN Pcl_Response FOR Lcl_Query;
 
       Pv_Status     := 'OK';
