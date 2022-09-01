@@ -63,6 +63,29 @@ CREATE OR REPLACE package                                                 DB_SOP
                                       PV_USR_EJECUTA         VARCHAR2,
                                       PV_MENSAJE             OUT VARCHAR2 );                        
 
+     /**
+   * Documentación para el procedimiento P_GET_FIN_MOVILIZACION
+   *
+   * Metodo encargado de consultar si el evento de movilizacion de una cuadrilla finalizó
+   *
+   * @param Pcl_Request    IN   CLOB Recibe json request
+   *
+   * [
+   *  numeroTarea   Numero de tarea que gestiona la cuadrilla 
+   * ]
+   *
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la consulta
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la consulta
+   * @param Pcl_Response   OUT  CLOB Retorna json de la consulta
+   *
+   * @author  Pedro Velez <psvelez@telconet.ec>
+   * @version 1.0 
+   * @since   03-01-2022
+   */                           
+  PROCEDURE P_GET_EVENTO_TAREA(Pcl_Request  IN CLOB,
+                               Pv_Status    OUT VARCHAR2,
+                               Pv_Mensaje   OUT VARCHAR2,
+                               Pcl_Response OUT CLOB);
 
 END SPKG_SOPORTE_TAREA;
 /
@@ -822,6 +845,60 @@ CREATE OR REPLACE package body                                           DB_SOPO
     
   END PR_MIGRACION_TAREAS_DEPTO;
 
+   PROCEDURE P_GET_EVENTO_TAREA(Pcl_Request  IN CLOB,
+                               Pv_Status    OUT VARCHAR2,
+                               Pv_Mensaje   OUT VARCHAR2,
+                               Pcl_Response OUT CLOB) AS
+                                   
+    Ln_IdComunicacion   DB_COMUNICACION.Info_Comunicacion.Id_Comunicacion%TYPE;
+    Lcl_Response        CLOB;
+    Lb_Fin_Movilizacion BOOLEAN:= false;
+    Ld_Fecha            DATE;
+    Lv_Error            varchar2(250);
+    Le_Error            EXCEPTION;
+   BEGIN
+  
+    APEX_JSON.PARSE(Pcl_Request);
+    Ln_IdComunicacion := APEX_JSON.get_number('numeroTarea');
+    
+    BEGIN			
+		SELECT FECHA_FIN INTO Ld_Fecha 
+		 FROM (SELECT ie.FECHA_FIN
+				 FROM INFO_EVENTO ie 
+				WHERE TIPO_EVENTO_ID  = 1 
+				  AND OBSERVACION LIKE '%CLIENTE|#'||Ln_IdComunicacion||'|%'
+			    ORDER BY ie.id_evento DESC) 
+	     WHERE  rownum = 1;
+    EXCEPTION 
+     WHEN no_data_found THEN
+       Lv_Error:= 'No estiste evento de inicio de movilizacion';
+       raise Le_Error;
+     WHEN OTHERS THEN
+       Lv_Error:= 'Error en la consulta de evento de movilizacion';
+       raise Le_Error;  
+  	 END;   
+  
+  	 IF Ld_Fecha IS NOT NULL THEN
+	    Lb_Fin_Movilizacion:= TRUE;
+	 END IF;   
+   
+    APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+    APEX_JSON.OPEN_OBJECT;
+    APEX_JSON.WRITE('finMovilizacion',Lb_Fin_Movilizacion); 
+    APEX_JSON.CLOSE_OBJECT;
+    Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
+    APEX_JSON.FREE_OUTPUT;
+    Pv_Status := 'OK';
+    Pv_Mensaje := 'Consulta exitosa';
+    Pcl_Response := Lcl_Response;
+   EXCEPTION
+    WHEN Le_Error THEN
+     Pv_Status := 'ERROR';
+     Pv_Mensaje := Lv_Error;
+    WHEN OTHERS THEN
+      Pv_Status := 'ERROR';
+      Pv_Mensaje := 'Error: ' || SQLERRM;
+   END P_GET_EVENTO_TAREA;
    
 END SPKG_SOPORTE_TAREA;
 /
