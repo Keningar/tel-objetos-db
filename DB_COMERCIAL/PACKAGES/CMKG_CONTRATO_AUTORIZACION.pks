@@ -1,6 +1,5 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION
 AS
-
 /**
     * Documentación para la función P_APROBAR_CONTRATO
     * Procedimiento para obtener los datos del cliente
@@ -73,7 +72,6 @@ END CMKG_CONTRATO_AUTORIZACION;
 
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION
 AS
-
 PROCEDURE P_APROBAR_CONTRATO(Pcl_Request IN  DB_COMERCIAL.DATOS_APROBAR_CONTRATO_TYPE,
                                  Pv_Mensaje  OUT VARCHAR2,
                                  Pv_Status   OUT VARCHAR2)

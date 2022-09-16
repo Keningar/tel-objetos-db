@@ -432,6 +432,23 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                                        Pv_Mensaje   OUT VARCHAR2,
                                        Pcl_Response OUT SYS_REFCURSOR);
 
+/**
+  * Documentación para el procedimiento P_FORMA_PAGO
+  *
+  * Método encargado de retornar lista forma de pago
+  *
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  CLOB Retorna cursor de la transacción
+  *
+  * @author Walther Joao Gaibor <wgaibor@telconet.ec>
+  * @version 1.0 04-05-2022
+  */ 
+  PROCEDURE P_FORMA_PAGO(Pcl_Request  IN  VARCHAR2,
+                         Pv_Status    OUT VARCHAR2,
+                         Pv_Mensaje   OUT VARCHAR2,
+                         Pcl_Response OUT CLOB);
+
 end CMKG_CONSULTA; 
 / 
 create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
@@ -2742,6 +2759,102 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
       Pv_Mensaje := SQLERRM;
   END P_CONT_FORMA_PAGO_HISTORIAL;
   
+  PROCEDURE P_FORMA_PAGO(Pcl_Request  IN  VARCHAR2,
+                         Pv_Status    OUT VARCHAR2,
+                         Pv_Mensaje   OUT VARCHAR2,
+                         Pcl_Response OUT CLOB) AS
+    CURSOR C_FormaPago IS 
+       SELECT ID_FORMA_PAGO,
+              CODIGO_FORMA_PAGO,
+              DESCRIPCION_FORMA_PAGO
+       FROM DB_GENERAL.ADMI_FORMA_PAGO
+       WHERE ESTADO  = 'Activo'
+       order by ID_FORMA_PAGO;
+    
+    CURSOR C_TipoCuenta(Cv_NombrePais VARCHAR2) IS 
+      SELECT
+          atct.id_tipo_cuenta     idtipocuenta,
+          atct.descripcion_cuenta descripcioncuenta
+      FROM
+          db_general.admi_tipo_cuenta atct,
+          db_general.admi_pais adps
+      WHERE atct.pais_id = adps.id_pais
+      AND adps.nombre_pais = Cv_NombrePais
+      AND atct.estado = 'Activo';
+    
+    CURSOR C_BancoTipoCuenta(Cn_TipoCuenta NUMBER) IS
+      SELECT
+          adbt.id_banco_tipo_cuenta idbancotipocta,
+          aban.id_banco          idbanco,
+          aban.descripcion_banco descripcionbanco
+      FROM
+          DB_GENERAL.ADMI_BANCO_TIPO_CUENTA adbt,
+          DB_GENERAL.ADMI_BANCO aban
+      WHERE
+            adbt.banco_id = aban.id_banco
+        AND aban.estado IN ( 'Activo', 'Activo-debitos' )
+        AND adbt.tipo_cuenta_id = Cn_TipoCuenta;
+
+  --VARIABLE
+    Lv_CodFormaPago     VARCHAR2(100);
+    Lc_DebitoBancario   SYS_REFCURSOR;
+    Lv_NombrePais       VARCHAR2(100);
+  BEGIN
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_NombrePais         := APEX_JSON.get_varchar2(p_path => 'nombrePais');
+    IF Lv_NombrePais IS NULL THEN
+      RAISE_APPLICATION_ERROR(-20101, 'Es requerido el parámetro nombrePais ');
+    END IF;
+    APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+    apex_json.open_array;
+    FOR i IN  C_FormaPago   LOOP
+      APEX_JSON.OPEN_OBJECT;
+      APEX_JSON.WRITE('idFormaPago', i.ID_FORMA_PAGO);
+      APEX_JSON.WRITE('codigoFormaPago', i.CODIGO_FORMA_PAGO);
+      APEX_JSON.WRITE('descripcionFormaPago', i.DESCRIPCION_FORMA_PAGO);
+      
+      Lv_CodFormaPago:=  i.CODIGO_FORMA_PAGO;
+          
+      IF (Lv_CodFormaPago IS NOT NULL AND Lv_CodFormaPago = 'DEB') THEN 
+        APEX_JSON.OPEN_ARRAY('tipoCuenta');
+        FOR j IN C_TipoCuenta(Lv_NombrePais) LOOP
+          APEX_JSON.OPEN_OBJECT;
+          APEX_JSON.WRITE('idTipoCuenta', j.IDTIPOCUENTA);
+          APEX_JSON.WRITE('descripcionTipoCuenta', j.DESCRIPCIONCUENTA);
+          APEX_JSON.OPEN_ARRAY('tipoBanco');
+          FOR k IN C_BancoTipoCuenta(j.IDTIPOCUENTA) LOOP
+            APEX_JSON.OPEN_OBJECT;
+            APEX_JSON.WRITE('idBancoTipoCuenta', k.IDBANCOTIPOCTA);
+            APEX_JSON.WRITE('idBanco', k.IDBANCO);
+            APEX_JSON.WRITE('descripcionBanco', k.DESCRIPCIONBANCO);
+            APEX_JSON.CLOSE_OBJECT;
+          END LOOP;
+          APEX_JSON.CLOSE_ARRAY;
+          APEX_JSON.CLOSE_OBJECT;
+        END LOOP;
+        APEX_JSON.CLOSE_ARRAY;
+      END IF;
+      APEX_JSON.CLOSE_OBJECT;
+    END LOOP;
+    apex_json.close_all;
+    Pcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
+    APEX_JSON.FREE_OUTPUT;
+    Pv_Mensaje   := 'Proceso realizado con exito';
+    Pv_Status    := 'OK';
+  EXCEPTION
+    WHEN OTHERS THEN
+    ROLLBACK;
+    Pv_Status     := 'ERROR';
+    Pcl_Response  :=  NULL;
+    Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
+                                            'CMKG_CONSULTA.P_FORMA_PAGO',
+                                            'ERROR al procesar COD_ERROR: '||SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                            'telcos',
+                                            SYSDATE,
+                                            '127.0.0.1');
+
+  END P_FORMA_PAGO;
  
 end CMKG_CONSULTA;
 /

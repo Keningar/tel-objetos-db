@@ -1,0 +1,11 @@
+/*
+  ======================================================
+  =========== SCRIPT DE REVERSO - SECUENCIAS ===========
+  ======================================================
+*/
+
+DROP SEQUENCE DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA;
+DROP SEQUENCE DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA_HIST;
+DROP SEQUENCE DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA_RESP;
+DROP SEQUENCE DB_COMERCIAL.SEQ_INF_PTO_CLA_RESP_HIST;
+/

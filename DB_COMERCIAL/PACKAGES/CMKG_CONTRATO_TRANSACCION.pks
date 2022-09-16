@@ -1,6 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION
 AS
 
+
    /**
     * Documentación para la función P_AUTORIZAR_CONTRATO
     * Procedimiento para autorizar un contrato o adendum
@@ -139,6 +140,58 @@ AS
                                   Pv_Mensaje        OUT VARCHAR2,
                                   Pv_Status         OUT VARCHAR2,
                                   Pcl_Response      OUT SYS_REFCURSOR);                     
+
+
+                               
+     /**
+    * Documentación para la función P_VALIDAR_TARJETA_BANCARIA
+    * Procedimiento para validar tarjeta bancaria
+    *
+    * @param  Pcl_Request       -  Datos del contrato,
+    *         Pv_Mensaje        -  Mensaje,
+    *         Pv_Status         -  Estado,
+    * @author Carlos Caguana <ccaguana@telconet.ec>
+    * @version 1.0 02-10-2019
+    */                            
+    PROCEDURE P_VALIDAR_TARJETA_BANCARIA(
+                                  Pcl_Request       IN  VARCHAR2,
+                                  Pv_Mensaje        OUT VARCHAR2,
+                                  Pv_Status         OUT VARCHAR2);
+   /**
+    * Documentación para la función P_GUARDAR_CLAUSULA
+    * Procedimiento que guarda el contrato
+    *
+    * @param  Pcl_Request       -  Json,
+    *         Pv_Mensaje        -  Mensaje,
+    *         Pv_Status         -  Estado,
+    *         Pcl_Response      -  Respuesta
+    * @author Walther Joao Gaibor C. <wgaibor@telconet.ec>
+    * @version 1.0 25-03-2022
+    */
+
+    PROCEDURE P_GUARDAR_CLAUSULA(
+                                  Pcl_Request       IN  VARCHAR2,
+                                  Pv_Mensaje        OUT VARCHAR2,
+                                  Pv_Status         OUT VARCHAR2,
+                                  Pcl_Response      OUT SYS_REFCURSOR);
+
+    /**
+     * Documentación para la función P_ACTUALIZA_CLAUSULA
+     * Procedimiento que actualiza la encuesta.
+     *
+     * @param  Pcl_Request       -  Json,
+     *         Pv_Mensaje        -  Mensaje,
+     *         Pv_Status         -  Estado,
+     *         Pcl_Response      -  Respuesta
+     * @author Walther Joao Gaibor C. <wgaibor@telconet.ec>
+     * @version 1.0 05-04-2022
+     */
+    PROCEDURE P_ACTUALIZA_CLAUSULA(
+                                  Pcl_Request       IN  VARCHAR2,
+                                  Pv_Mensaje        OUT VARCHAR2,
+                                  Pv_Status         OUT VARCHAR2,
+                                  Pcl_Response      OUT SYS_REFCURSOR);
+
 
 END CMKG_CONTRATO_TRANSACCION;
 /
@@ -2421,7 +2474,19 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
             IF Pv_DatosFormaPago.Pn_ContrAdend = 0 OR Pv_DatosFormaPago.Pv_CambioTarjeta = 'S' OR Pv_DatosFormaPago.Pv_NumeroCtaTarjeta IS NOT NULL
             THEN
-                DB_SEGURIDAD.PAQ_ENCRIPCION.PROC_ENCRIPTAR(Pv_DatosFormaPago.Pv_NumeroCtaTarjeta,'c69555ab183de6672b1ebf6100bbed59186a5d72',Lv_ValorCifradoTarjeta);
+                BEGIN 
+                DB_SEGURIDAD.PAQ_ENCRIPCION.PROC_DESCENCRIPTAR(Pv_DatosFormaPago.Pv_NumeroCtaTarjeta,'c69555ab183de6672b1ebf6100bbed59186a5d72', Lv_ValorCifradoTarjeta);
+                EXCEPTION
+                  WHEN OTHERS THEN
+                  Lv_ValorCifradoTarjeta := NULL;
+                END;
+
+                IF Lv_ValorCifradoTarjeta IS NULL
+                THEN
+                  DB_SEGURIDAD.PAQ_ENCRIPCION.PROC_ENCRIPTAR(Pv_DatosFormaPago.Pv_NumeroCtaTarjeta,'c69555ab183de6672b1ebf6100bbed59186a5d72',Lv_ValorCifradoTarjeta);
+                ELSE
+                  Lv_ValorCifradoTarjeta := Pv_DatosFormaPago.Pv_NumeroCtaTarjeta;
+                END IF;
 
                 IF Lv_ValorCifradoTarjeta IS NULL
                 THEN
@@ -2748,6 +2813,363 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
 
     END P_CREAR_ADENDUM;
+
+
+     PROCEDURE P_VALIDAR_TARJETA_BANCARIA(
+                                  Pcl_Request       IN  VARCHAR2,
+                                  Pv_Mensaje        OUT VARCHAR2,
+                                  Pv_Status         OUT VARCHAR2
+                                  )
+  IS
+
+      
+        --Forma Pago
+        Ln_FormaPagoId             INTEGER;
+        Ln_TipoCuentaID            INTEGER;
+        Ln_BancoTipoCuentaId       INTEGER;
+        Lv_NumeroCtaTarjeta        VARCHAR2(400);
+        Lv_CodigoVerificacion      VARCHAR2(400);
+        Ln_CodEmpresa              INTEGER;
+        Lv_RespValidaTarjeta       VARCHAR2(1000);
+        Lv_DatosTarjeta            DB_COMERCIAL.DATOS_TARJETA_TYPE;
+     
+
+  BEGIN
+        APEX_JSON.PARSE(Pcl_Request);
+        Ln_CodEmpresa         := APEX_JSON.get_varchar2(p_path => 'codEmpresa');
+        Lv_NumeroCtaTarjeta   := APEX_JSON.get_varchar2(p_path => 'numeroCtaTarjeta');
+        Ln_BancoTipoCuentaId  := APEX_JSON.get_varchar2(p_path => 'bancoTipoCuentaId');
+        Ln_TipoCuentaID       := APEX_JSON.get_varchar2(p_path => 'tipoCuentaId');
+        Ln_FormaPagoId        := APEX_JSON.get_varchar2(p_path => 'formaPagoId');
+        Lv_CodigoVerificacion := APEX_JSON.get_varchar2(p_path => 'codigoVerificacion');
+
+       
+        Pv_Mensaje   := 'Proceso de validación correcto';
+        Pv_Status    := 'OK';
+       
+        
+       
+         Lv_DatosTarjeta   := DB_COMERCIAL.DATOS_TARJETA_TYPE( Ln_TipoCuentaID,
+                                                                      Ln_BancoTipoCuentaId,
+                                                                      Lv_NumeroCtaTarjeta,
+                                                                      Lv_CodigoVerificacion,
+                                                                      Ln_CodEmpresa);
+
+                                                                     
+                                                                     
+                                                                     
+         P_VALIDAR_NUMERO_TARJETA(Lv_DatosTarjeta,Pv_Mensaje,Pv_Status,Lv_RespValidaTarjeta);
+         IF Lv_RespValidaTarjeta IS NOT NULL
+         THEN
+              RAISE_APPLICATION_ERROR(-20101, Lv_RespValidaTarjeta);
+         END IF;
+      
+       
+  EXCEPTION
+        WHEN OTHERS THEN
+        Pv_Status    := 'ERROR';
+        Pv_Mensaje   := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
+                                             'DB_COMERCIAL.P_VALIDAR_TARJETA_BANCARIA',
+                                             'ERROR al procesar COD_ERROR: '||SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                             'telcos',
+                                             SYSDATE,
+                                             '127.0.0.1');
+
+
+  END P_VALIDAR_TARJETA_BANCARIA;
+
+  PROCEDURE P_GUARDAR_CLAUSULA(
+                                  Pcl_Request       IN  VARCHAR2,
+                                  Pv_Mensaje        OUT VARCHAR2,
+                                  Pv_Status         OUT VARCHAR2,
+                                  Pcl_Response      OUT SYS_REFCURSOR) AS
+
+  CURSOR C_EncuestaPuntoExiste(Cn_PuntoId NUMBER) IS
+  SELECT
+    apla.id_punto_clausula
+  FROM
+    db_comercial.info_punto_clausula apla
+  WHERE
+    apla.punto_id = Cn_PuntoId
+    and apla.estado NOT IN ('Activo', 'Eliminado');
+  -- Estados
+    Lv_EstadoPreActivo      VARCHAR2(400) := 'PreActivo';
+    Lv_EstadoActivo         VARCHAR2(400) := 'Activo';
+    Lv_EstadoEliminado      VARCHAR2(400) := 'Eliminado';
+
+  -- Variables globales de empresa - usuario
+    Lv_UsrCreacion             VARCHAR2(15) := 'telcos';
+    Lv_ClienteIp               VARCHAR2(400) := '127.0.0.1';
+
+  --Variables
+    Ln_puntoId                 INTEGER;
+    Ln_puntoIdClausula         INTEGER;
+    Ln_IdEnunciado             INTEGER;
+    Ln_IdRespuesta             INTEGER;
+    Ln_CountClausulas          INTEGER;
+    Ln_IdDocEnunciadoResp      INTEGER;
+
+    Ln_puntoIdClaResp          INTEGER;
+  --VARIABLE CURSOR
+    Lc_Response                  SYS_REFCURSOR;
+  BEGIN
+
+    APEX_JSON.PARSE(Pcl_Request);
+
+    Ln_puntoId            := APEX_JSON.get_varchar2(p_path => 'puntoId');
+    Lv_UsrCreacion        := SUBSTR(APEX_JSON.get_varchar2(p_path => 'usrCreacion'),0,32);
+    Lv_ClienteIp          := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
+
+    --Tamaños de arreglo clausula
+    Ln_CountClausulas   := APEX_JSON.GET_COUNT(p_path => 'clausulas.enunciado');
+    IF Ln_puntoId IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20101, 'Es requerido el parámetro puntoId ');
+    END IF;
+    IF Ln_CountClausulas IS NOT NULL
+    THEN
+      -- Consultar si el punto ya ingreso clausula en el sistema
+        FOR i IN C_EncuestaPuntoExiste(Ln_puntoId) LOOP
+          UPDATE DB_COMERCIAL.INFO_PUNTO_CLAUSULA ipca
+          SET ipca.ESTADO = Lv_EstadoEliminado,
+              ipca.USUARIO_MODIFICACION = Lv_UsrCreacion,
+              ipca.FECHA_MODIFICACION = SYSDATE
+          WHERE
+              ID_PUNTO_CLAUSULA = i.id_punto_clausula;
+
+          UPDATE DB_COMERCIAL.INFO_PUNTO_CLAUSULA_RESP ICRP
+          SET ICRP.ESTADO = Lv_EstadoEliminado,
+              ICRP.USUARIO_MODIFICACION = Lv_UsrCreacion,
+              ICRP.FECHA_MODIFICACION = SYSDATE
+          WHERE
+              ICRP.PUNTO_CLAUSULA_ID = i.id_punto_clausula;
+        END LOOP;
+      --
+      INSERT INTO DB_COMERCIAL.INFO_PUNTO_CLAUSULA (
+                                                    ID_PUNTO_CLAUSULA,
+                                                    PUNTO_ID,
+                                                    NUMERO_DOCUMENTO,
+                                                    ESTADO,
+                                                    OBSERVACION,
+                                                    USUARIO_CREACION,
+                                                    FECHA_CREACION
+                                                    )
+      VALUES (
+        DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA.NEXTVAL,
+        Ln_puntoId,
+        NULL,
+        Lv_EstadoPreActivo,
+        NULL,
+        Lv_UsrCreacion,
+        SYSDATE) RETURNING ID_PUNTO_CLAUSULA INTO Ln_puntoIdClausula;
+        --Guardar en el Historial
+        INSERT INTO DB_COMERCIAL.INFO_PUNTO_CLAUSULA_HIST (
+                                                            ID_PUNTO_CLAUSULA_HIST,
+                                                            PUNTO_CLAUSULA_ID,
+                                                            PUNTO_ID,
+                                                            ESTADO,
+                                                            USUARIO_CREACION,
+                                                            FECHA_CREACION
+                                                          )
+        VALUES(
+          DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA_HIST.NEXTVAL,
+          Ln_puntoIdClausula,
+          Ln_puntoId,
+          Lv_EstadoPreActivo,
+          Lv_UsrCreacion,
+          SYSDATE
+        );
+        FOR i IN 1 .. Ln_CountClausulas LOOP
+        APEX_JSON.PARSE(Pcl_Request);
+        Ln_IdEnunciado := APEX_JSON.get_varchar2(p_path => 'clausulas.enunciado[%d].idenunciado', p0 => i);
+        Ln_IdRespuesta := APEX_JSON.get_varchar2(p_path => 'clausulas.enunciado[%d].respuestas.idrespuesta', p0 => i);
+
+        SELECT
+          ader.id_doc_enunciado_resp INTO Ln_IdDocEnunciadoResp
+        FROM DB_DOCUMENTO.admi_doc_enunciado_resp ader, DB_DOCUMENTO.admi_documento_enunciado aden
+        WHERE ader.documento_enunciado_id = aden.id_documento_enunciado
+          and ader.respuesta_id = Ln_IdRespuesta
+          and aden.enunciado_id = Ln_IdEnunciado
+          and ader.estado = Lv_EstadoActivo
+          and aden.estado = Lv_EstadoActivo;
+
+        IF Ln_IdDocEnunciadoResp IS NOT NULL THEN
+          INSERT INTO DB_COMERCIAL.INFO_PUNTO_CLAUSULA_RESP (
+                                                        ID_PUNTO_CLAUSULA_RESP,
+                                                        PUNTO_CLAUSULA_ID,
+                                                        DOC_ENUNCIADO_RESP_ID,
+                                                        JUSTIFICACION_RESPUESTA,
+                                                        ESTADO,
+                                                        USUARIO_CREACION,
+                                                        FECHA_CREACION
+                                                        )
+          VALUES (
+            DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA_RESP.NEXTVAL,
+            Ln_puntoIdClausula,
+            Ln_IdDocEnunciadoResp,
+            NULL,
+            Lv_EstadoPreActivo,
+            Lv_UsrCreacion,
+            SYSDATE) RETURNING ID_PUNTO_CLAUSULA_RESP INTO Ln_puntoIdClaResp;
+
+          INSERT INTO DB_COMERCIAL.INFO_PUNTO_CLAUSULA_RESP_HIST(
+                                                                  ID_PUNTO_CLAUSULA_RESP_HIST,
+                                                                  PUNTO_CLAUSULA_RESP_ID,
+                                                                  PUNTO_CLAUSULA_ID,
+                                                                  DOC_ENUNCIADO_RESP_ID,
+                                                                  ESTADO,
+                                                                  USUARIO_CREACION,
+                                                                  FECHA_CREACION
+                                                                )
+          VALUES(
+            DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA_RESP.NEXTVAL,
+            Ln_puntoIdClaResp,
+            Ln_puntoIdClausula,
+            Ln_IdDocEnunciadoResp,
+            Lv_EstadoPreActivo,
+            Lv_UsrCreacion,
+            SYSDATE
+          );
+        END IF;
+      END LOOP;
+    END IF;
+
+    OPEN Pcl_Response FOR
+    SELECT 'Encuesta guardada' AS mensaje
+    FROM   DUAL;
+    --
+    COMMIT;
+    --
+    Pv_Mensaje   := 'Proceso realizado con exito';
+    Pv_Status    := 'OK';
+  EXCEPTION
+    WHEN OTHERS THEN
+    ROLLBACK;
+    Pv_Status     := 'ERROR';
+    Pcl_Response  :=  NULL;
+    Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
+                                            'DB_DOCUMENTO.P_GUARDAR_CLAUSULA',
+                                            'ERROR al procesar COD_ERROR: '||SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                            'telcos',
+                                            SYSDATE,
+                                            '127.0.0.1');
+  END P_GUARDAR_CLAUSULA;
+
+  PROCEDURE P_ACTUALIZA_CLAUSULA(
+                                  Pcl_Request       IN  VARCHAR2,
+                                  Pv_Mensaje        OUT VARCHAR2,
+                                  Pv_Status         OUT VARCHAR2,
+                                  Pcl_Response      OUT SYS_REFCURSOR) AS
+  CURSOR C_CLAUSULA(Cn_PuntoId NUMBER) IS
+  SELECT
+      ipcl.id_punto_clausula,
+      ipcr.id_punto_clausula_resp,
+      ipcl.estado,
+      ipcl.punto_id
+  FROM
+      db_comercial.info_punto_clausula      ipcl,
+      db_comercial.info_punto_clausula_resp ipcr
+  WHERE
+          ipcl.id_punto_clausula = ipcr.punto_clausula_id
+      AND ipcl.punto_id = Cn_PuntoId;
+    -- Estados
+      Lv_Estado         VARCHAR2(400);
+
+  -- Variables globales de empresa - usuario
+    Lv_UsrCreacion             VARCHAR2(15) := 'telcos';
+    Lv_ClienteIp               VARCHAR2(400) := '127.0.0.1';
+
+  --Variables
+    Ln_puntoId                 INTEGER;
+    Ln_puntoIdClausula         INTEGER;
+    Ln_IdEnunciado             INTEGER;
+    Ln_IdRespuesta             INTEGER;
+    Ln_CountClausulas          INTEGER;
+    Ln_IdDocEnunciadoResp      INTEGER;
+
+  --VARIABLE CURSOR
+    Lc_Response                  SYS_REFCURSOR;
+  BEGIN
+
+    APEX_JSON.PARSE(Pcl_Request);
+
+    Ln_puntoId            := APEX_JSON.get_varchar2(p_path => 'puntoId');
+    Lv_UsrCreacion        := SUBSTR(APEX_JSON.get_varchar2(p_path => 'usrCreacion'),0,32);
+    Lv_ClienteIp          := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
+    Lv_Estado             := APEX_JSON.get_varchar2(p_path => 'estado');
+
+    FOR i IN C_CLAUSULA(Ln_puntoId) LOOP
+    IF i.estado = 'PreActivo' THEN
+      UPDATE DB_COMERCIAL.INFO_PUNTO_CLAUSULA
+      SET ESTADO = Lv_Estado,
+          USUARIO_MODIFICACION = Lv_UsrCreacion,
+          FECHA_MODIFICACION = SYSDATE
+      WHERE
+          ID_PUNTO_CLAUSULA = i.id_punto_clausula;
+
+      UPDATE DB_COMERCIAL.INFO_PUNTO_CLAUSULA_RESP
+      SET ESTADO = Lv_Estado,
+          USUARIO_MODIFICACION = Lv_UsrCreacion,
+          FECHA_MODIFICACION = SYSDATE
+      WHERE
+          ID_PUNTO_CLAUSULA_RESP = i.id_punto_clausula_resp;
+      ELSE IF i.estado = 'Eliminado' THEN
+        UPDATE DB_COMERCIAL.INFO_PUNTO_CLAUSULA
+        SET ESTADO = Lv_Estado,
+            USUARIO_MODIFICACION = Lv_UsrCreacion,
+            FECHA_MODIFICACION = SYSDATE
+        WHERE
+            ID_PUNTO_CLAUSULA = i.id_punto_clausula
+            and estado <> i.estado;
+
+        UPDATE DB_COMERCIAL.INFO_PUNTO_CLAUSULA_RESP
+        SET ESTADO = Lv_Estado,
+            USUARIO_MODIFICACION = Lv_UsrCreacion,
+            FECHA_MODIFICACION = SYSDATE
+        WHERE
+            ID_PUNTO_CLAUSULA_RESP = i.id_punto_clausula_resp
+            and estado <> i.estado;
+      END IF;
+    END IF;
+
+    INSERT INTO DB_COMERCIAL.INFO_PUNTO_CLAUSULA_HIST (
+                                                            ID_PUNTO_CLAUSULA_HIST,
+                                                            PUNTO_CLAUSULA_ID,
+                                                            PUNTO_ID,
+                                                            ESTADO,
+                                                            USUARIO_CREACION,
+                                                            FECHA_CREACION
+                                                          )
+    VALUES(
+      DB_COMERCIAL.SEQ_INFO_PUNTO_CLAUSULA_HIST.NEXTVAL,
+      i.id_punto_clausula,
+      i.punto_id,
+      Lv_Estado,
+      Lv_UsrCreacion,
+      SYSDATE
+    );
+    END LOOP;
+
+    OPEN Pcl_Response FOR
+    SELECT 'Encuesta actualizada' AS mensaje
+    FROM   DUAL;
+    --
+    COMMIT;
+    --
+  EXCEPTION
+    WHEN OTHERS THEN
+    ROLLBACK;
+    Pv_Status     := 'ERROR';
+    Pcl_Response  :=  NULL;
+    Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
+                                            'DB_DOCUMENTO.P_ACTUALIZA_CLAUSULA',
+                                            'ERROR al procesar COD_ERROR: '||SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK,
+                                            'telcos',
+                                            SYSDATE,
+                                            '127.0.0.1');
+  END P_ACTUALIZA_CLAUSULA;
 
 END CMKG_CONTRATO_TRANSACCION;
 /

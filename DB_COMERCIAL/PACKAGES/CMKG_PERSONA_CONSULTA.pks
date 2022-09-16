@@ -270,7 +270,31 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   PROCEDURE P_PERSONA_POR_CARACT(Pcl_Request  IN  CLOB,
                              Pv_Status    OUT VARCHAR2,
                              Pv_Mensaje   OUT VARCHAR2,
-                             Pcl_Response OUT SYS_REFCURSOR);                                 
+                             Pcl_Response OUT SYS_REFCURSOR); 
+
+
+
+  /**
+  * Documentación para el procedimiento P_VALIDA_PERFIL_PERSON
+  *
+  * Busca un el perfil de una persona por nombrePerfil,personaEmpresaRolId 
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   nombrePerfil        := nombrePerfil,
+  *   personaEmpresaRolId := personaEmpresaRolId,
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  *
+  * @author Carlos Caguana <ccaguana@telconet.ec>
+  * @version 1.0 12-08-2021
+  */    
+  PROCEDURE P_VALIDA_PERFIL_PERSON(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR);  
+                                                           
                                                                                               
 end CMKG_PERSONA_CONSULTA;
 
@@ -953,7 +977,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     END IF;
    
       
-  Lcl_Select       := '
+    Lcl_Select       := '
 		            SELECT 
 		              	e.ID_DATOS_PAGO ,
 	                    e.PERSONA_EMPRESA_ROL_ID ,
@@ -961,6 +985,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                     	e.ESTADO,
 	                    e.TIPO_CUENTA_ID , 
   						e.FORMA_PAGO_ID ,
+  						fp.DESCRIPCION_FORMA_PAGO,  						
                         e.PERSONA_EMPRESA_ROL_ID AS personEmpresaRolId';
     Lcl_From         := '
               FROM 
@@ -968,6 +993,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                         DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL b,
                         DB_COMERCIAL.INFO_EMPRESA_ROL c, 
                         DB_COMERCIAL.ADMI_ROL  d, 
+                        DB_GENERAL.ADMI_FORMA_PAGO  fp,
                         DB_COMERCIAL.INFO_PERSONA_EMP_FORMA_PAGO  e';
     Lcl_WhereAndJoin := '
                WHERE  a.ID_PERSONA =
@@ -980,6 +1006,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                       AND  c.EMPRESA_COD ='''||Ln_EmpresaCod||'''
                       AND  e.PERSONA_EMPRESA_ROL_ID =b.ID_PERSONA_ROL 
                       AND  e.ESTADO =''Activo''
+                      AND fp.ID_FORMA_PAGO=e.FORMA_PAGO_ID
                       AND  b.ESTADO in (''Pendiente'',''Activo'')';  
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
    
@@ -994,6 +1021,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_FORMA_PAGO_PERSONA_EMPROL;
+
  
  
  
@@ -1236,6 +1264,71 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_PERSONA_POR_CARACT;
+
+
+
+
+  PROCEDURE P_VALIDA_PERFIL_PERSON(Pcl_Request  IN  CLOB,
+                                   Pv_Status    OUT VARCHAR2,
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT SYS_REFCURSOR)  
+
+ AS
+    Lcl_Query          CLOB;
+    Lcl_Select         CLOB;
+    Lcl_From           CLOB;
+    Lcl_WhereAndJoin   CLOB;
+    Lv_NombrePerfil   VARCHAR2(40);
+    Ln_EmpresaRolID      NUMBER; 
+    Le_Errors          EXCEPTION;
+  BEGIN
+    -- RETORNO LAS VARIABLES DEL REQUEST
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_NombrePerfil     := APEX_JSON.get_varchar2(p_path => 'nombrePerfil');
+    Ln_EmpresaRolID         := APEX_JSON.get_number(p_path => 'personaEmpresaRolId');
+    
+    -- VALIDACIONES
+    IF Lv_NombrePerfil IS NULL THEN
+      Pv_Mensaje := 'El parámetro nombrePerfil esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+    IF Ln_EmpresaRolID IS NULL THEN
+     Pv_Mensaje := 'El parámetro personaEmpresaRolId esta vacío';
+      RAISE Le_Errors;
+    END IF;
+   
+     
+    Lcl_Select       := '
+		              SELECT 
+		              	SPP.PERFIL_ID ,
+				         SPP .PERSONA_ID,
+				         SPP .OFICINA_ID,
+				         SPP.EMPRESA_ID';
+    Lcl_From         := '
+                        FROM DB_SEGURIDAD.SEGU_PERFIL_PERSONA SPP';
+    Lcl_WhereAndJoin := ' 
+                        WHERE SPP.PERFIL_ID = (SELECT SPE.ID_PERFIL FROM DB_SEGURIDAD.SIST_PERFIL SPE
+                        WHERE SPE.NOMBRE_PERFIL = '''||Lv_NombrePerfil||''' )
+                        AND SPP.PERSONA_ID =
+                        (select IPER.PERSONA_ID from DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER 
+                        where IPER.ID_PERSONA_ROL = '''||Ln_EmpresaRolID||''')';
+
+
+    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin;
+   
+    OPEN Pcl_Response FOR Lcl_Query;
+    
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_VALIDA_PERFIL_PERSON;
+
  	  
 end CMKG_PERSONA_CONSULTA;
 /
