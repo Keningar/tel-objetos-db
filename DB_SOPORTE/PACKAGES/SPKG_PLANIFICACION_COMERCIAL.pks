@@ -98,7 +98,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
                           WHERE ids.id_detalle_solicitud = Ln_FactibilidadId)
       --AND SER.ESTADO NOT IN ('Activo', 'Rechazado', 'Rechazada', 'Anulado', 'Anulada')
       AND SER.PRODUCTO_ID IS NOT NULL;
-      
+
       CURSOR C_GET_PARAMETRO(Lv_NombreParametro VARCHAR2, Lv_Estado VARCHAR2, Lv_Descripcion VARCHAR2)
       IS
       SELECT DET.VALOR1, DET.VALOR2, DET.VALOR3, DET.VALOR4
@@ -375,6 +375,12 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     FROM DB_SOPORTE.INFO_PARTE_AFECTADA
     WHERE DETALLE_ID = Ln_DetalleId;
 
+    CURSOR C_GET_OBSERVACION(Ln_DetalleId NUMBER)
+    IS
+    SELECT OBSERVACION
+    FROM DB_SOPORTE.info_tarea_seguimiento
+    WHERE DETALLE_ID = Ln_DetalleId;
+
     CURSOR C_GET_DATOS_PUNTO(Ln_IdServicioHistorial NUMBER)
     IS 
     SELECT PUN.ID_PUNTO, PUN.LOGIN, PUN.NOMBRE_PUNTO, SER.ID_SERVICIO,
@@ -429,7 +435,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     WHERE IPB.ID_PLAN = Ln_IdPlan
       AND AC.DESCRIPCION_CARACTERISTICA = Lv_Descripcion
       AND IPC.ESTADO = Lv_Estado;
-      
+
    CURSOR C_GET_NOMBRE_TAREA(Ln_DetalleId NUMBER)
    IS 
    SELECT ADM.NOMBRE_TAREA
@@ -477,6 +483,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
   Lv_Opcion           VARCHAR2(1000);
   Lv_ObservacionData  VARCHAR2(4000);
   Lv_NombreCliente    VARCHAR2(300);
+  Lv_ObservacionPlan  VARCHAR2(4000);
   Lv_DireccionTributa VARCHAR2(400);
   Lv_DireccionPunto   VARCHAR2(400);
   Lv_DescripcionPunto VARCHAR2(400);
@@ -509,7 +516,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     Ln_IdServicioHistorial := APEX_JSON.get_number(p_path => 'idServicioHistorial');
     Ln_IdFactibilidad      := APEX_JSON.get_number(p_path => 'idFactibilidad');
     Lv_CodEmpresa          := APEX_JSON.get_varchar2(p_path => 'codEmpresa');
-
+    Lv_ObservacionPlan     := APEX_JSON.get_varchar2(p_path => 'observacion');    
     Lv_FechaHal       := APEX_JSON.get_varchar2(p_path => 'fechaHal');
     Lv_HoraIniHal     := APEX_JSON.get_varchar2(p_path => 'horaIniHal');
     Lv_HoraFinHal     := APEX_JSON.get_varchar2(p_path => 'horaFinHal');
@@ -579,7 +586,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
       dbms_output.put_line('' || Ln_IdPersonaEmpresaRol || ' ' || Lv_NombreLider);
       Ln_IdPersona           := REG.ID_PERSONA; 
       Lv_NombreRef           := REG.NOMBRES || ' ' || REG.APELLIDOS;
-      
+
       INSERT INTO DB_SOPORTE.INFO_DETALLE_COLABORADOR(ID_COLABORADOR, DETALLE_ASIGNACION_ID, ASIGNADO_ID, ASIGNADO_NOMBRE, REF_ASIGNADO_ID,  REF_ASIGNADO_NOMBRE, USR_CREACION, FE_CREACION, IP_CREACION)
       VALUES (DB_SOPORTE.SEQ_INFO_DETALLE_COLABORADOR.NEXTVAL, Ln_IdDetalleAsignacion, 128, 'Operaciones Urbanas', Ln_IdPersona, Lv_NombreRef, Lv_UsrCreacion, SYSDATE, Lv_IpCreacion);
     END LOOP;
@@ -597,9 +604,15 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
         FE_FIN_PLAN = to_date(Lv_FechaHoraFin,'DD/MM/YYYY HH24:MI:SS')
     WHERE ID_SOLICITUD_HISTORIAL = Ln_DetalleSolHist;
 
+    OPEN C_GET_OBSERVACION(Ln_IdDetalle);
+    FETCH C_GET_OBSERVACION INTO Lv_ObservacionPlan;
+    IF C_GET_OBSERVACION%NOTFOUND THEN
+       Lv_ObservacionPlan := '';
+    END IF;
+    CLOSE C_GET_OBSERVACION;  
 
 
-    Lv_Observacion := '<br>';
+    Lv_Observacion := '<br>' || Lv_ObservacionPlan || '<br>';
     Lv_Observacion := Lv_Observacion || '<br>Fecha Planificada: ' || Lv_FechaHal;
     Lv_Observacion := Lv_Observacion || '<br>Hora Inicio: ' || Lv_HoraIniHal;
     Lv_Observacion := Lv_Observacion || '<br>Hora Fin: ' || Lv_HoraFinHal;
@@ -647,7 +660,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     UPDATE DB_COMERCIAL.INFO_SERVICIO SET ESTADO = 'AsignadoTarea' WHERE ID_SERVICIO =  Ln_IdServicio;
     INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
     VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', Lv_Observacion);
-    
+
     --aqui los cambios de productos adicionales
     Lv_ObservacionData := '<b>Informaci&oacute;n del Cliente</b><br/>';
     Lv_ObservacionData := Lv_ObservacionData || 'Nombre: ' || Lv_NombreCliente || '<br/>';
@@ -705,7 +718,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
       INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
       VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'Asignada', 'Por ser ' || Lv_NombrePlan || ' Pasa a: Asignada'  );      
     ELSE
-        
+
         INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
         VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificación comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
     END IF;
@@ -728,7 +741,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     IF C_GET_NOMBRE_TAREA%NOTFOUND THEN
        Lv_NombreTarea:= '';
     END IF;
-    
+
       OPEN Pcl_Response FOR SELECT Ln_IdComunicacion as idTarea,
                                    Lv_NombreCliente as nombreCliente,
                                    Lv_LoginPunto as login, 
@@ -785,7 +798,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
                           WHERE ids.id_detalle_solicitud = Ln_FactibilidadId)
       --AND SER.ESTADO NOT IN ('Activo', 'Rechazado', 'Rechazada', 'Anulado', 'Anulada')
       AND SER.PRODUCTO_ID IS NOT NULL;
-      
+
   CURSOR C_GET_PARAMETRO(Lv_NombreParametro VARCHAR2, Lv_Estado VARCHAR2, Lv_Descripcion VARCHAR2)
   IS
   SELECT DET.VALOR1, DET.VALOR2, DET.VALOR3, DET.VALOR4
@@ -931,7 +944,7 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
             Lv_PclRequest := Lv_PclRequest || ',"usrCreacion": "' || APEX_JSON.get_varchar2(p_path => 'sugerenciaHal.usrCreacion') || '"'; 
             Lv_PclRequest := Lv_PclRequest || ',"ipCreacion": "' || APEX_JSON.get_varchar2(p_path => 'sugerenciaHal.ipCreacion') || '"'; 
             Lv_PclRequest := Lv_PclRequest || '}';
-            
+
 
            dbms_output.put_line('P_PROGRAMAR_SOLICITUD => ' || Lv_PclRequest);
 
@@ -1009,14 +1022,14 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
                 Lv_PclRequest := Lv_PclRequest || ',"usrCreacion": "' || APEX_JSON.get_varchar2(p_path => 'sugerenciaHal.usrCreacion') || '"'; 
                 Lv_PclRequest := Lv_PclRequest || ',"ipCreacion": "' || APEX_JSON.get_varchar2(p_path => 'sugerenciaHal.ipCreacion') || '"'; 
             Lv_PclRequest := Lv_PclRequest || '}';
-    
+
           --dbms_output.put_line('P_PROGRAMAR_SOLICITUD => ' || Lv_PclRequest);
-        
+
              DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL.P_PROGRAMAR_SOLICITUD (Lv_PclRequest, Pv_Status, Pv_Mensaje, Pcl_Response);
               IF (Pv_Status = 'ERROR') THEN
                 RAISE Le_Errors;
               END IF;
-    
+
               APEX_JSON.PARSE(Pcl_Request);
               LOOP
                 FETCH Pcl_Response  BULK COLLECT INTO V_IdDetalleSolicitud, V_NombreCliente, V_Login, V_Destinatarios, V_NombreJurisdiccion, V_Direccion, V_DescripcionProducto, V_FeCreacion, V_UsrCreacion, V_FechaPlanificacion,
@@ -1024,7 +1037,7 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
                 EXIT WHEN V_IdDetalleSolicitud.count=0;
                 j := V_IdDetalleSolicitud.FIRST;
                 WHILE (j IS NOT NULL)
-    
+
                 LOOP
                   Lv_PclRequest := '{"idDetalle": ' ;
                   Lv_PclRequest := Lv_PclRequest || V_IdDetalle(j);
@@ -1044,7 +1057,7 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
                 END LOOP;  
              END LOOP;  
           --dbms_output.put_line('P_CONFIRMAR_PLANIFICACION => ' || Lv_PclRequest);
-    
+
               DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL.P_CONFIRMAR_PLANIFICACION (Lv_PclRequest, Pv_Status, Pv_Mensaje, Pv_Observacion, Pcl_Response);
               IF (Pv_Status = 'ERROR') THEN
                 RAISE Le_Errors;
@@ -1063,5 +1076,6 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
       dbms_output.put_line('asignar mensaje => ' || Pv_Mensaje);
 
   END P_EJECUTA_GESTION_SIMULTANEA;
+
 END SPKG_PLANIFICACION_COMERCIAL;
 /

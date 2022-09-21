@@ -331,7 +331,7 @@ AS
         IAD.SERVICIO_ID
     FROM DB_COMERCIAL.INFO_ADENDUM IAD
     WHERE IAD.ID_ADENDUM = Ln_IdAdendum;
-    
+
     CURSOR C_GET_CARACTERISTICA (Cv_Descripcion VARCHAR2, Cv_Tipo VARCHAR2, Cv_Estado VARCHAR2)
     IS 
     SELECT ID_CARACTERISTICA
@@ -340,7 +340,7 @@ AS
       AND TIPO = Cv_Tipo
       AND ESTADO = Cv_Estado;
 
-    
+
 
     CURSOR C_EXISTE_CARACT_SERV(Ln_ServicioId NUMBER, Ln_CaracteristicaId NUMBER, Lv_Estado VARCHAR2)
     IS
@@ -374,7 +374,14 @@ AS
       FROM DB_COMERCIAL.INFO_SERVICIO
       WHERE ID_SERVICIO = Ln_ServicioId
         AND ESTADO = 'PrePlanificada';
-      
+        
+      --edg          
+      CURSOR C_GET_ESTADO_SERVICIO (Ln_ServicioId NUMBER)
+      IS
+      SELECT ESTADO
+      FROM DB_COMERCIAL.INFO_SERVICIO
+      WHERE ID_SERVICIO = Ln_ServicioId;
+
       CURSOR C_GET_PRODUCTO_PLANIFICA (Lv_Nombre VARCHAR2)
       IS
       SELECT DISTINCT(valor5) as VALOR
@@ -463,11 +470,11 @@ AS
    Lv_ParamV4              VARCHAR2(300);
    Lv_ParamV5              VARCHAR2(300);
    Lv_ProductosPlanif          VARCHAR2(4000) := '';
-   
+
    Lv_MensajeHistPlanif        VARCHAR2(400);
    Lb_TieneProductoRestringido BOOLEAN := FALSE;
    Ln_IdServicio               NUMBER := 0;
-
+   Lv_EstadoServicio           VARCHAR2(50); 
 
 
       TYPE recordUltimaMillaServ  IS RECORD
@@ -489,7 +496,7 @@ AS
     Ln_ContratoId           := APEX_JSON.get_number(p_path => 'contratoId');
     Ln_PuntoId              := APEX_JSON.get_number(p_path => 'puntoId');
     Lv_NumeroAdendum        := APEX_JSON.get_varchar2(p_path => 'numeroAdendum');
-    
+
     Ln_Descuento            :=0;
     -- VALIDACIONES
     IF Lv_IpCreacion IS NULL THEN
@@ -582,7 +589,7 @@ AS
                 OPEN C_GET_PLANES_CONTRATO(Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID,Lv_EstadoActivo,Lv_NombreParamContrato);
                 FETCH C_GET_PLANES_CONTRATO BULK COLLECT INTO Pcl_ArrayPLanes LIMIT 5000;
                 CLOSE C_GET_PLANES_CONTRATO;
-    
+
                 Ln_IteradorJ := Pcl_ArrayPLanes.FIRST;
                 WHILE (Ln_IteradorJ IS NOT NULL)
                 LOOP
@@ -701,7 +708,7 @@ AS
             FETCH C_GET_PARAMETRO INTO Lv_ParamValor1, Lv_ParamValor2, Lv_ParamValor3, Lv_ParamValor4;
             CLOSE C_GET_PARAMETRO;
             Lv_MensajeHistPlanif := Lv_ParamValor4;
-            
+
       	    --C_GET_PRODUCTO_PLANIFICA
             FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD')
             LOOP
@@ -713,7 +720,7 @@ AS
             CLOSE C_GET_PARAMETRO;
             Lv_ProductosPlanif := Lv_ProductosPlanif || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
 
-            
+
             Lb_TieneProductoRestringido := FALSE;
             FOR i IN C_ADENDUM_PARAMS(Ln_ContratoId, Lv_Tipo)        
             LOOP
@@ -755,17 +762,24 @@ AS
                     Ln_ProductoId := 0;
                   END IF;       
                   CLOSE C_GET_PRODUCTO_SERVICIO;
-                  
+
                   OPEN C_GET_PLAN_SERVICIO(i.SERVICIO_ID);
                   FETCH C_GET_PLAN_SERVICIO INTO Ln_PlanId;
                   IF C_GET_PLAN_SERVICIO%NOTFOUND THEN
                     Ln_PlanId := 0;
                   END IF;
-                  
+
                   CLOSE C_GET_PLAN_SERVICIO;
-                  
+
                   IF (Ln_PlanId > 0 OR (Ln_ProductoId > 0 AND INSTR(Lv_ProductosPlanif, Ln_ProductoId) != 0)) THEN
-              
+                         
+                    OPEN C_GET_ESTADO_SERVICIO(i.SERVICIO_ID);
+                    FETCH C_GET_ESTADO_SERVICIO INTO Lv_EstadoServicio;
+                    IF C_GET_ESTADO_SERVICIO%NOTFOUND THEN
+                      Lv_EstadoServicio := 'PrePlanificada';
+                    END IF;   
+                    CLOSE C_GET_ESTADO_SERVICIO;    
+                    
                     INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
                     (
                         ID_SERVICIO_HISTORIAL, 
@@ -784,7 +798,7 @@ AS
                         Lv_UsrCreacion,
                         SYSDATE,
                         Lv_IpCreacion,
-                        'PrePlanificada',
+                        Lv_EstadoServicio,
                         Lv_MensajeHistPlanif,
                         'Planificacion Comercial'
                     );
@@ -801,7 +815,7 @@ AS
     ELSE 
       -- Autorizar adendum
           Lv_ObservacionHistorial := 'El contrato: ' || Lc_Contrato.Numero_Contrato || ' ' || Lv_ObservacionHistorial;
-    
+
             IF Ln_Descuento = 100 OR Lv_Tipo = 'AS'
             THEN
                 Pcl_AprobarAdendum := DB_COMERCIAL.DATOS_APROBAR_ADENDUM_TYPE(
@@ -813,7 +827,7 @@ AS
                                             Lv_ObservacionHistorial,
                                             Lv_CodEmpresa,
                                             Ln_PersonaEmpresaRolId);                
-    
+
                 DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION.P_APROBAR_ADENDUM(Pcl_AprobarAdendum, Pv_Mensaje, Pv_Status);
 
                 IF Pv_Status != 'OK' 
@@ -865,7 +879,7 @@ AS
                     );   
                    COMMIT;             
                 END IF;
-                  
+
             END IF; 
 
             OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
@@ -881,13 +895,13 @@ AS
             LOOP
                 Lv_ProductosPlanif := Lv_ProductosPlanif || i.valor || ',';               
             END LOOP;
-            
+
 
             OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
             FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
             CLOSE C_GET_PARAMETRO;
             Lv_ProductosPlanif := Lv_ProductosPlanif || ',' || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
-            
+
             Lb_TieneProductoRestringido := FALSE;            
             IF Pcl_ArrayAdendumsNum.EXISTS(1)
             THEN
@@ -940,16 +954,22 @@ AS
                         Ln_ProductoId := 0;
                       END IF;  
                       CLOSE C_GET_PRODUCTO_SERVICIO;  
-                      
+
                       OPEN C_GET_PLAN_SERVICIO(Ln_IdServicio);
                       FETCH C_GET_PLAN_SERVICIO INTO Ln_PlanId;
                       IF C_GET_PLAN_SERVICIO%NOTFOUND THEN
                         Ln_PlanId := 0;
                       END IF;
-                      
+
                       CLOSE C_GET_PLAN_SERVICIO;
-                     
+
                       IF ((Ln_PlanId > 0 OR (Ln_ProductoId > 0 AND INSTR(Lv_ProductosPlanif, Ln_ProductoId) != 0)) OR Lv_Tipo = 'AS') THEN
+                        OPEN C_GET_ESTADO_SERVICIO(Ln_IdServicio);
+                        FETCH C_GET_ESTADO_SERVICIO INTO Lv_EstadoServicio;
+                        IF C_GET_ESTADO_SERVICIO%NOTFOUND THEN
+                          Lv_EstadoServicio := 'PrePlanificada';
+                        END IF;   
+                        CLOSE C_GET_ESTADO_SERVICIO;
                           INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
                           (
                               ID_SERVICIO_HISTORIAL, 
@@ -968,7 +988,7 @@ AS
                               Lv_UsrCreacion,
                               SYSDATE,
                               Lv_IpCreacion,
-                              'PrePlanificada',
+                              Lv_EstadoServicio,
                               Lv_MensajeHistPlanif,
                               'Planificacion Comercial'
                           ); 
@@ -1076,12 +1096,12 @@ PROCEDURE P_GUARDAR_CONTRATO(
         WHERE
         ISE.ID_SERVICIO = Cn_IdServicio AND
         IPU.PERSONA_EMPRESA_ROL_ID = Cn_IdPersonaEmpRol;
-        
+
     CURSOR C_GET_SERVICIO_ALL(Cn_IdServicio INTEGER) IS
         SELECT ISE.*
         FROM DB_COMERCIAL.INFO_SERVICIO ISE
         WHERE ISE.ID_SERVICIO = Cn_IdServicio;
-       
+
     CURSOR C_GET_TIPO_CONTRATO(Cn_IdTipoContrato INTEGER)  IS
       SELECT ATC.*
       FROM DB_COMERCIAL.ADMI_TIPO_CONTRATO ATC
@@ -1109,7 +1129,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
       WHERE IPERC.PERSONA_EMPRESA_ROL_ID = Cn_PersonaEmpresaRolId
           AND IPERC.CARACTERISTICA_ID = Cn_CaracteristicaId
           AND IPERC.ESTADO = Cv_Estado;
-          
+
     -- Estados
     Lv_EstadoActivo            VARCHAR2(400) := 'Activo';
     Lv_EstadoPendiente         VARCHAR2(400) := 'Pendiente';
@@ -1176,7 +1196,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Lv_ServicioId              INTEGER;
     Lv_ServicioValidoId        INTEGER;
     Lv_AdendumId               INTEGER;
-    
+
     Pcl_ArrayAdendumsEncontrado Pcl_AdendumsEncontrado_Type := Pcl_AdendumsEncontrado_Type();
 
     Lv_RespuestaFormaPago      SYS_REFCURSOR;
@@ -1269,13 +1289,13 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Ln_TipoCuentaID      := APEX_JSON.get_varchar2(p_path => 'contrato.tipoCuentaId');
         Ln_BancoTipoCuentaId := APEX_JSON.get_varchar2(p_path => 'contrato.bancoTipoCuentaId');
         Lv_cambioRazonSocial := APEX_JSON.get_varchar2(p_path => 'cambioRazonSocial');
-        
+
         IF Ln_PuntoId IS NULL THEN
           OPEN C_GET_PUNTO (Ln_IdPersonaEmpRol);
           FETCH C_GET_PUNTO INTO Ln_PuntoId;
           CLOSE C_GET_PUNTO;
         END IF;
-       
+
         OPEN C_GET_TIPO_CONTRATO(Ln_TipoContratoId);
         FETCH C_GET_TIPO_CONTRATO INTO Lc_TipoContrato;
         CLOSE C_GET_TIPO_CONTRATO;
@@ -1306,7 +1326,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                 END IF;
             END LOOP;
         END IF;
-        
+
         IF Ln_CountAdendumsRS IS NOT NULL
         THEN
             FOR i IN 1 .. Ln_CountAdendumsRS LOOP
@@ -1332,7 +1352,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
             FETCH C_GET_DATOS_PER_FORMA_PAGO INTO Ln_FormaPagoId,Ln_TipoCuentaID,Ln_BancoTipoCuentaId;
             CLOSE C_GET_DATOS_PER_FORMA_PAGO;
         END IF;
-        
+
         INSERT INTO DB_COMERCIAL.INFO_CONTRATO (ID_CONTRATO,
                                                NUMERO_CONTRATO,
                                                NUMERO_CONTRATO_EMP_PUB,
@@ -1380,7 +1400,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                Lv_Origen)
         RETURNING ID_CONTRATO INTO Ln_IdContrato;
         COMMIT;
- 
+
        --MOVER CARACTERISTICA RECOMENDACION DE EQUIFAX
         IF  Lv_PrefijoEmpresa = 'MD'  THEN
           OPEN C_GET_CARACTERISTICA('EQUIFAX_RECOMENDACION');
@@ -1394,7 +1414,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
           OPEN C_PER_EMP_ROL_CARACT(Ln_IdPersonaEmpRol, Lc_CaractRecomBw.Id_Caracteristica,  Lv_EstadoActivo );
           FETCH C_PER_EMP_ROL_CARACT INTO Lc_PerEmpRolCarContrRecom;
           CLOSE C_PER_EMP_ROL_CARACT;
-          
+
           IF  Lc_PerEmpRolCarContrRecom.ID_PERSONA_EMPRESA_ROL_CARACT IS NOT NULL THEN
 
                 Pcl_InfoContratoCaracteristica.ID_CONTRATO_CARACTERISTICA:= DB_COMERCIAL.SEQ_INFO_CONTRATO_CARAC.NEXTVAL;
@@ -1413,7 +1433,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
           END IF;
         END IF;
 
-          
+
         --Clausulas
         IF Ln_CountClausulas IS NOT NULL
         THEN
@@ -1502,7 +1522,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         IF Lc_TipoContrato.Id_Tipo_Contrato IS NOT NULL AND Lc_TipoContrato.Descripcion_Tipo_Contrato = 'VEHICULO' THEN
           Lb_RequiereFormaPago := FALSE;
         END IF;
-       
+
         IF Lb_RequiereFormaPago THEN
           --Forma de Pago
           Lv_DatosFormPago := DB_COMERCIAL.FORMA_PAGO_TYPE(Ln_FormaPagoId,Ln_TipoCuentaID,
@@ -1515,7 +1535,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                            Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
 
           P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
-        
+
           IF Pv_Status IS NULL OR Pv_Status = 'ERROR'
           THEN
             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
@@ -1647,7 +1667,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                 OPEN C_GET_SERVICIO_CARACT(Ln_ServicioIdPMens, Lc_CaractPromoMens.Id_Caracteristica);
                 FETCH C_GET_SERVICIO_CARACT INTO Lc_ServicioCaractPromoMens;
                 CLOSE C_GET_SERVICIO_CARACT;
-                
+
                 OPEN C_GET_SERVICIO_ALL(Ln_ServicioIdPMens);
                 FETCH C_GET_SERVICIO_ALL INTO Lc_ServicioPromoMens;
                 CLOSE C_GET_SERVICIO_ALL;
@@ -1751,7 +1771,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                 OPEN C_GET_SERVICIO_CARACT(Ln_ServicioIdPIns, Lc_CaractPromoIns.Id_Caracteristica);
                 FETCH C_GET_SERVICIO_CARACT INTO Lc_ServicioCaractPromoIns;
                 CLOSE C_GET_SERVICIO_CARACT;
-                
+
                 OPEN C_GET_SERVICIO_ALL(Ln_ServicioIdPIns);
                 FETCH C_GET_SERVICIO_ALL INTO Lc_ServicioPromoIns;
                 CLOSE C_GET_SERVICIO_ALL;
@@ -1855,7 +1875,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                 OPEN C_GET_SERVICIO_CARACT(Ln_ServicioIdPBw, Lc_CaractPromoBw.Id_Caracteristica);
                 FETCH C_GET_SERVICIO_CARACT INTO Lc_ServicioCaractPromoBw;
                 CLOSE C_GET_SERVICIO_CARACT;
-                
+
                 OPEN C_GET_SERVICIO_ALL(Ln_ServicioIdPBw);
                 FETCH C_GET_SERVICIO_ALL INTO Lc_ServicioPromoBw;
                 CLOSE C_GET_SERVICIO_ALL;
@@ -2362,7 +2382,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
             Pn_Secuencia      := Pn_Secuencia + 1;
             UPDATE DB_COMERCIAL.ADMI_NUMERACION SET SECUENCIA = Pn_Secuencia WHERE ID_NUMERACION = Pn_IdNumeracion;
             COMMIT;
-            
+
             Lv_NumeroContrato := CONCAT(CONCAT(CONCAT(Lv_NumeracionUno,CONCAT('-',Lv_NumeracionDos)),'-'),Lv_SecuenciaAsig);
         END IF;
         Pv_NumeroCA:= Lv_NumeroContrato;
@@ -2602,7 +2622,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       ESTADO               = Lv_EstadoPendiente
                 WHERE ID_ADENDUM = Pv_DatosFormaPago.Pn_Adendums(Ln_IteradorI);
                 COMMIT;
-                
+
                 IF Pv_DatosFormaPago.Pv_NumeroAdendum IS NOT NULL
                   THEN
                       UPDATE DB_COMERCIAL.INFO_ADENDUM
@@ -2698,7 +2718,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Lv_EstadoAdendum           VARCHAR2(400);
         Lv_cambioRazonSocial       VARCHAR2(400);
         Lv_AdendumId               INTEGER;
-        
+
         Pcl_ArrayAdendumsEncontrado Pcl_AdendumsEncontrado_Type := Pcl_AdendumsEncontrado_Type();
 
   BEGIN
@@ -2728,7 +2748,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
         Ln_CountServicios     := APEX_JSON.GET_COUNT(p_path => 'adendum.servicios');
         Ln_CountAdendumsRS    := APEX_JSON.GET_COUNT(p_path => 'adendum.adendumsRazonSocial');
-        
+
         Lv_cambioRazonSocial := APEX_JSON.get_varchar2(p_path => 'cambioRazonSocial');
 
         IF Ln_CountServicios IS NOT NULL
@@ -2747,7 +2767,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                 Lv_Servicio        := CONCAT(Lv_Servicio,CONCAT(Lv_ServicioId,','));
             END LOOP;
         END IF;
-        
+
         IF Ln_CountAdendumsRS IS NOT NULL
         THEN
             FOR i IN 1 .. Ln_CountAdendumsRS LOOP
