@@ -616,14 +616,15 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     Lv_Observacion := Lv_Observacion || '<br>Fecha Planificada: ' || Lv_FechaHal;
     Lv_Observacion := Lv_Observacion || '<br>Hora Inicio: ' || Lv_HoraIniHal;
     Lv_Observacion := Lv_Observacion || '<br>Hora Fin: ' || Lv_HoraFinHal;
+
+    UPDATE DB_COMERCIAL.INFO_SERVICIO_HISTORIAL  
+    SET OBSERVACION = Lv_Observacion
+    WHERE ID_SERVICIO_HISTORIAL = Ln_IdServicioHistorial; 
+
     Lv_Observacion := Lv_Observacion || '<br>Asignada a: Cuadrilla';
     Lv_Observacion := Lv_Observacion || '<br>Nombre: ' || Lv_NombreCuadrilla;
     Lv_Observacion := Lv_Observacion || '<br>Lider de Cuadrilla: ' || Lv_NombreLider;
     Lv_Observacion := Lv_Observacion || '<br><br>';
-
-    UPDATE DB_COMERCIAL.INFO_SERVICIO_HISTORIAL  
-    SET OBSERVACION = OBSERVACION || Lv_Observacion
-    WHERE ID_SERVICIO_HISTORIAL = Ln_IdServicioHistorial; 
 
     INSERT INTO DB_COMERCIAL.INFO_DETALLE_SOL_HIST  (ID_SOLICITUD_HISTORIAL, DETALLE_SOLICITUD_ID, FE_INI_PLAN, FE_FIN_PLAN, OBSERVACION,
                                                      IP_CREACION, FE_CREACION, USR_CREACION, ESTADO)
@@ -1076,6 +1077,7 @@ dbms_output.put_line('fact 0 ' || Ln_IdFactibilidad);
       dbms_output.put_line('asignar mensaje => ' || Pv_Mensaje);
 
   END P_EJECUTA_GESTION_SIMULTANEA;
+
 
 END SPKG_PLANIFICACION_COMERCIAL;
 /
