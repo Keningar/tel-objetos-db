@@ -2496,6 +2496,17 @@ PROCEDURE P_GUARDAR_CONTRATO(
             THEN
                 BEGIN 
                 DB_SEGURIDAD.PAQ_ENCRIPCION.PROC_DESCENCRIPTAR(Pv_DatosFormaPago.Pv_NumeroCtaTarjeta,'c69555ab183de6672b1ebf6100bbed59186a5d72', Lv_ValorCifradoTarjeta);
+                Lv_DatosTarjeta   := DB_COMERCIAL.DATOS_TARJETA_TYPE( Pv_DatosFormaPago.Pn_TipoCuentaID,
+                                                                        Pv_DatosFormaPago.Pn_BancoTipoCuentaId,
+                                                                        Lv_ValorCifradoTarjeta,
+                                                                        Pv_DatosFormaPago.Pv_CodigoVerificacion,
+                                                                        Pv_DatosFormaPago.Pn_CodEmpresa);
+
+                  P_VALIDAR_NUMERO_TARJETA(Lv_DatosTarjeta,Pv_Mensaje,Pv_Status,Lv_RespValidaTarjeta);
+                  IF Lv_RespValidaTarjeta IS NOT NULL OR Pv_Status = 'ERROR'
+                  THEN
+                      Lv_ValorCifradoTarjeta := NULL;
+                  END IF;
                 EXCEPTION
                   WHEN OTHERS THEN
                   Lv_ValorCifradoTarjeta := NULL;
