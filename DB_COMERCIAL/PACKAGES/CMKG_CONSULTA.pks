@@ -324,6 +324,11 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
   * se agrego la columna DESCRIPCION_PRODUCTO en los cursores  C_GET_SERV_ADENDUM ,  C_GET_SERV_ADENDUM_RS ,  C_GET_SERV_CONTRATO ,  C_GET_SERV_CONTRATO_RS
   * @author Jefferson Carrillo <jacarrillo@telconet.ec>
   * @version 1.2 27-05-2022 
+  *
+  *
+  * Se agrego procedura para la generacion de los datos de ademdun temporal 
+  * @author Joel Broncano <jbroncano@telconet.ec>
+  * @version 1.2 01-08-2022 
   */
   PROCEDURE P_OBTENER_SERVICIOS_ADENDUM(Pcl_Request  IN  VARCHAR2,
                                  Pv_Status    OUT VARCHAR2,
@@ -1554,6 +1559,19 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
               INNER JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER ON IPER.ID_PERSONA_ROL=IPU.PERSONA_EMPRESA_ROL_ID
               INNER JOIN DB_COMERCIAL.INFO_PERSONA IPE ON IPE.ID_PERSONA = IPER.PERSONA_ID
               WHERE IPU.ESTADO != 'Eliminado' AND ISE.ID_SERVICIO=Cn_IdServicio;
+              
+      CURSOR C_GET_SERVICIO_ADENDUM(Cv_servicio INTEGER)
+           IS
+            SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
+            to_char(APRO.FUNCION_PRECIO) AS FUNCION_PRECIO,APRO.CODIGO_PRODUCTO,APRO.NOMBRE_TECNICO, APRO.FRECUENCIA,
+            ISE.PLAN_ID,TO_CHAR(ISE.OBSERVACION) AS OBSERVACION,ISE.CANTIDAD ,APRO.DESCRIPCION_PRODUCTO
+            FROM DB_COMERCIAL.INFO_SERVICIO ISE 
+            LEFT JOIN DB_COMERCIAL.INFO_PLAN_CAB APA ON APA.ID_PLAN = ISE.PLAN_ID
+            LEFT JOIN DB_COMERCIAL.ADMI_PRODUCTO APRO ON APRO.ID_PRODUCTO = ISE.PRODUCTO_ID
+            WHERE ISE.ID_SERVICIO = Cv_servicio 
+           AND ISE.ESTADO NOT IN ('Cancelado','Anulado','Inactivo','Eliminado','Cancel','Rechazada','Eliminado-Migra')  
+            ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;   
+              
 
         Ln_CodEmpresa              INTEGER;
         Ln_idPunto                 INTEGER;
@@ -1562,6 +1580,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
         Ln_DescuentoMens           INTEGER;
         Ln_CantPeriodoIns          INTEGER;
         Ln_CantPeriodoMens         INTEGER;
+        Lv_Servicio                INTEGER;
 
         Lr_TipoPromoRegla          DB_COMERCIAL.CMKG_PROMOCIONES.Lr_TipoPromoReglaProcesar;
         Lc_PeriodoDesc             C_PeriodoDesc%ROWTYPE;
@@ -1717,6 +1736,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     Ln_ContratoId         := APEX_JSON.get_number(p_path => 'contratoId');
     Lv_CambioRazonSocial  := APEX_JSON.get_varchar2(p_path => 'cambioRazonSocial');
     Lv_RecuperacionDocumentos:= APEX_JSON.get_varchar2(p_path => 'recuperarDocumentosDigitales');
+    Lv_Servicio  := APEX_JSON.get_number(p_path => 'idServicio');
    
    
    
@@ -1756,30 +1776,39 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     Pcl_ResponseList.IS_PRECIO_PROMO    := '';--
     Pcl_ResponseList.NOMBRE_PLAN        := '';--
     Pcl_ResponseList.NOMBRE_CICLO       := '';--
-
-    IF Lv_CambioRazonSocial = 'N' THEN
-      IF Lv_Tipo = 'C'
-      THEN
-          OPEN C_GET_SERV_CONTRATO(Ln_ContratoId,Lv_Tipo);    
-          FETCH C_GET_SERV_CONTRATO BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
-          CLOSE C_GET_SERV_CONTRATO;
+    
+   IF Lv_Servicio IS NOT NULL THEN 
+            OPEN C_GET_SERVICIO_ADENDUM(Lv_Servicio);    
+            FETCH C_GET_SERVICIO_ADENDUM BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
+            CLOSE C_GET_SERVICIO_ADENDUM;
+   ELSE
+      IF Lv_CambioRazonSocial = 'N' THEN
+        IF Lv_Tipo = 'C'
+        THEN
+            OPEN C_GET_SERV_CONTRATO(Ln_ContratoId,Lv_Tipo);    
+            FETCH C_GET_SERV_CONTRATO BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
+            CLOSE C_GET_SERV_CONTRATO;
+        ELSE
+            OPEN C_GET_SERV_ADENDUM(Lv_NumeroAdendum,Lv_Tipo);
+            FETCH C_GET_SERV_ADENDUM BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
+            CLOSE C_GET_SERV_ADENDUM;
+        END IF;
       ELSE
-          OPEN C_GET_SERV_ADENDUM(Lv_NumeroAdendum,Lv_Tipo);
-          FETCH C_GET_SERV_ADENDUM BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
-          CLOSE C_GET_SERV_ADENDUM;
-      END IF;
-    ELSE
-      IF Lv_Tipo = 'C'
-      THEN
-          OPEN C_GET_SERV_CONTRATO_RS(Ln_ContratoId,Lv_Tipo);    
-          FETCH C_GET_SERV_CONTRATO_RS BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
-          CLOSE C_GET_SERV_CONTRATO_RS;
-      ELSE
-          OPEN C_GET_SERV_ADENDUM_RS(Lv_NumeroAdendum,Lv_Tipo,Ln_idPunto);
-          FETCH C_GET_SERV_ADENDUM_RS BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
-          CLOSE C_GET_SERV_ADENDUM_RS;
+        IF Lv_Tipo = 'C'
+        THEN
+            OPEN C_GET_SERV_CONTRATO_RS(Ln_ContratoId,Lv_Tipo);    
+            FETCH C_GET_SERV_CONTRATO_RS BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
+            CLOSE C_GET_SERV_CONTRATO_RS;
+        ELSE
+            OPEN C_GET_SERV_ADENDUM_RS(Lv_NumeroAdendum,Lv_Tipo,Ln_idPunto);
+            FETCH C_GET_SERV_ADENDUM_RS BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
+            CLOSE C_GET_SERV_ADENDUM_RS;
+        END IF;
       END IF;
     END IF;
+  --
+    
+    
 
     OPEN C_CARAT_CICLO_FACTURACION(Ln_idPunto);
     FETCH C_CARAT_CICLO_FACTURACION INTO Ln_NombreCicloFact;
