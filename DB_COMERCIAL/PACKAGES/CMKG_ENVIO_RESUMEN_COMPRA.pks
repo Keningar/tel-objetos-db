@@ -138,9 +138,15 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                                                                   
      IS
       Lv_servicios              INTEGER;
+      Ln_fecha                  INTEGER;
    BEGIN
     APEX_JSON.PARSE(Pcl_Request);
     Lv_servicios  := APEX_JSON.get_number(p_path => 'idServicio');
+    SELECT  PDET.VALOR1  INTO Ln_fecha FROM DB_GENERAL.admi_parametro_Det PDET
+                      where PDET.PARAMETRO_ID = (SELECT ID_PARAMETRO 
+                                            FROM DB_GENERAL.ADMI_PARAMETRO_CAB PCA
+                                            WHERE PCA.NOMBRE_PARAMETRO = 'CRC_FECHA_REENVIO_CORREO' AND PCA.ESTADO='Activo') 
+                      AND PDET.ESTADO='Activo' AND PDET.DESCRIPCION='CRC_FECHA_REGULARIZACION_CORREO_RESUMEN';                      
     OPEN Pcl_Response FOR SELECT ISV.ID_SERVICIO AS  servicioId, ISV.PUNTO_ID AS  puntoId, ISV.PRODUCTO_ID AS  productoId
     ,trim(to_char(ISV.PRECIO_VENTA,'99,999,999,990.99')) AS  precioVenta
              ,APRO.DESCRIPCION_PRODUCTO AS  descripcionProducto,FPR.ID_PERSONA_ROL personaEmpresaRolId,IER.EMPRESA_COD empresaId,APRO.FRECUENCIA AS frecuencia
@@ -150,8 +156,23 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
           INNER JOIN DB_COMERCIAL.INFO_PUNTO IFP ON  IFP.ID_PUNTO=ISV.PUNTO_ID
           INNER JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL FPR ON IFP.PERSONA_EMPRESA_ROL_ID=FPR.ID_PERSONA_ROL
            INNER JOIN DB_COMERCIAL.INFO_EMPRESA_ROL IER ON IER.ID_EMPRESA_ROL =FPR.EMPRESA_ROL_ID
+             AND IER.EMPRESA_COD IN (SELECT
+                    REGEXP_SUBSTR(T1.VALOR1, '[^,]+', 1, LEVEL) AS VALORES
+                    FROM(
+                           SELECT 
+                              PDET.VALOR1
+                           FROM DB_GENERAL.admi_parametro_Det PDET
+                               where PDET.PARAMETRO_ID = (SELECT ID_PARAMETRO 
+                                                     FROM DB_GENERAL.ADMI_PARAMETRO_CAB PCA
+                                                     WHERE PCA.NOMBRE_PARAMETRO = 'CRC_EMPRESA_RESUMEN_CORREO' AND PCA.ESTADO='Activo') 
+                              AND PDET.ESTADO='Activo'
+                           ) T1
+                           CONNECT BY REGEXP_SUBSTR(T1.VALOR1, '[^,]+', 1, LEVEL) IS NOT NULL
+                 
+                 )
           INNER JOIN DB_COMERCIAL.ADMI_PRODUCTO APRO ON APRO.ID_PRODUCTO = ISV.PRODUCTO_ID
-         WHERE   TRUNC(ISV.FE_CREACION) = DECODE(Lv_servicios,null,TRUNC(SYSDATE),TRUNC(ISV.FE_CREACION)) AND ISV.PRODUCTO_ID is not null 
+          WHERE   (ISV.FE_CREACION) >= (DECODE(Lv_servicios,null,TRUNC(SYSDATE-Ln_fecha),TRUNC(ISV.FE_CREACION)))
+         AND ISV.PRODUCTO_ID is not null 
          AND ISV.ESTADO in (SELECT
           REGEXP_SUBSTR(T1.VALOR1, '[^,]+', 1, LEVEL) AS VALORES
           FROM(
@@ -181,9 +202,15 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                                    Pcl_Response OUT SYS_REFCURSOR) 
    IS
     Lv_servicios              INTEGER;
+    Ln_fecha                  INTEGER;
    BEGIN
     APEX_JSON.PARSE(Pcl_Request);
     Lv_servicios  := APEX_JSON.get_number(p_path => 'idServicio');
+    SELECT  PDET.VALOR1  INTO Ln_fecha FROM DB_GENERAL.admi_parametro_Det PDET
+                      where PDET.PARAMETRO_ID = (SELECT ID_PARAMETRO 
+                                            FROM DB_GENERAL.ADMI_PARAMETRO_CAB PCA
+                                            WHERE PCA.NOMBRE_PARAMETRO = 'CRC_FECHA_REENVIO_CORREO' AND PCA.ESTADO='Activo') 
+                      AND PDET.ESTADO='Activo' AND PDET.DESCRIPCION='CRC_FECHA_REGULARIZACION_CORREO_RESUMEN'; 
     OPEN Pcl_Response FOR  SELECT APRO.ID_PRODUCTO AS productoId, APRO.TERMINO_CONDICION AS terminosCondiciones 
       FROM  DB_COMERCIAL.ADMI_PRODUCTO APRO
           INNER JOIN  (SELECT DISTINCT APRO.ID_PRODUCTO productoId FROM DB_COMERCIAL.ADMI_PRODUCTO APRO 
@@ -203,8 +230,22 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                   
                   )
                 AND ISV.ID_SERVICIO =DECODE(Lv_servicios,null,ISV.ID_SERVICIO,Lv_servicios)
-              WHERE  TRUNC(ISV.FE_CREACION) = DECODE(Lv_servicios,null,TRUNC(SYSDATE),TRUNC(ISV.FE_CREACION))) APRO2 ON APRO2.productoId=APRO.ID_PRODUCTO
-              AND APRO.TERMINO_CONDICION  IS NOT NULL;
+              WHERE  (ISV.FE_CREACION) >=DECODE(Lv_servicios,null,TRUNC(SYSDATE-Ln_fecha),TRUNC(ISV.FE_CREACION))) APRO2 ON APRO2.productoId=APRO.ID_PRODUCTO
+              AND APRO.TERMINO_CONDICION  IS NOT NULL
+              AND APRO.EMPRESA_COD IN (SELECT
+                    REGEXP_SUBSTR(T1.VALOR1, '[^,]+', 1, LEVEL) AS VALORES
+                    FROM(
+                           SELECT 
+                              PDET.VALOR1
+                           FROM DB_GENERAL.admi_parametro_Det PDET
+                               where PDET.PARAMETRO_ID = (SELECT ID_PARAMETRO 
+                                                     FROM DB_GENERAL.ADMI_PARAMETRO_CAB PCA
+                                                     WHERE PCA.NOMBRE_PARAMETRO = 'CRC_EMPRESA_RESUMEN_CORREO' AND PCA.ESTADO='Activo') 
+                              AND PDET.ESTADO='Activo'
+                           ) T1
+                           CONNECT BY REGEXP_SUBSTR(T1.VALOR1, '[^,]+', 1, LEVEL) IS NOT NULL
+                 
+                 );
            Pv_Status     := 'OK';
          Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
