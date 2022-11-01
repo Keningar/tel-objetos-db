@@ -1,0 +1,141 @@
+--Parametros para manejar el estado de los servicios al realizar CRS por punto
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_CAB(ID_PARAMETRO, NOMBRE_PARAMETRO, DESCRIPCION, MODULO, PROCESO,ESTADO, USR_CREACION, FE_CREACION, IP_CREACION)
+VALUES (
+DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,
+'ESTADOS_CAMBIO_RAZON_SOCIALXPUNTO',
+'Estado para servicios clonados a nuevos clientes por cambio de razon social por punto.',
+'COMERCIAL',
+'CAMBIO_RAZON_SOCIAL_POR_PUNTO',
+'Activo',
+'algomez',
+SYSDATE,
+'127.0.0.1'
+);
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET(ID_PARAMETRO_DET, PARAMETRO_ID, DESCRIPCION, VALOR1, ESTADO, USR_CREACION, FE_CREACION, IP_CREACION, EMPRESA_COD)
+VALUES (
+DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+(select s.ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='ESTADOS_CAMBIO_RAZON_SOCIALXPUNTO'),
+'Estado del servicio previo al proceso de autorizacion.',
+'PreActivo',
+'Activo',
+'algomez',
+SYSDATE,
+'127.0.0.1',
+'18'
+);
+
+---parametro con descripcion que se almacena en la info servicio historial al cambiar de estado en em MS
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_CAB(ID_PARAMETRO, NOMBRE_PARAMETRO, DESCRIPCION, MODULO, PROCESO,ESTADO, USR_CREACION, FE_CREACION, IP_CREACION)
+VALUES (
+DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,
+'OBSERVACION_CAMBIO_ESTADO_PREACTIVO',
+'Descripcion para historial de servicio',
+'COMERCIAL',
+'CAMBIO_RAZON_SOCIAL_POR_PUNTO',
+'Activo',
+'algomez',
+SYSDATE,
+'127.0.0.1'
+);
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET(ID_PARAMETRO_DET, PARAMETRO_ID, DESCRIPCION, VALOR1, ESTADO, USR_CREACION, FE_CREACION, IP_CREACION, EMPRESA_COD)
+VALUES (
+DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+(select s.ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='OBSERVACION_CAMBIO_ESTADO_PREACTIVO'),
+'Observacion para historial de servicios en cambio de estado PreActivo a Activo',
+'Se activó servicio de CRS por Contrato Digital',
+'Activo',
+'algomez',
+SYSDATE,
+'127.0.0.1',
+'18'
+);
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET(ID_PARAMETRO_DET, PARAMETRO_ID, DESCRIPCION, VALOR1, ESTADO, USR_CREACION, FE_CREACION, IP_CREACION, EMPRESA_COD)
+VALUES (
+DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+(select s.ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='OBSERVACION_CAMBIO_ESTADO_PREACTIVO'),
+'OBSERVACION_HIST_SERVICIO_PREACTIVO',
+'Confirmación del proceso de Contrato Digital',
+'Activo',
+'algomez',
+SYSDATE,
+'127.0.0.1',
+'18'
+);
+
+
+UPDATE DB_GENERAL.ADMI_PARAMETRO_DET APD
+SET APD.VALOR1 = 'PrePlanificada,Pendiente,Factible,Activo,PreAsignacionInfoTecnica,PreActivo'
+WHERE APD.ID_PARAMETRO_DET=24360;
+
+/* PARAMETROS */
+/* CREACIÓN DEL PARÁMETRO CAB  - ENVIO_CORREO_CRS_CD_PENDIENTE*/
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_CAB
+  (
+    ID_PARAMETRO,
+    NOMBRE_PARAMETRO,
+    DESCRIPCION,
+    MODULO,
+    ESTADO,
+    USR_CREACION,
+    FE_CREACION,
+    IP_CREACION
+  )
+  VALUES
+  (
+     DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,
+    'ENVIO_CORREO_CRS_CD_PENDIENTE',
+    'ENVIO DE CORREO PROCESO CRS CD PENDIENTES',
+    'COMERCIAL',
+    'Activo',
+    'wgaibor',
+     SYSDATE,
+    '127.0.0.1'
+  );
+
+/* DB_GENERAL.ADMI_PARAMETRO_DET */
+/* INSERT DEL ENVIO_CORREO_CRS_CD_PENDIENTE*/
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+  (
+    ID_PARAMETRO_DET,
+    PARAMETRO_ID,
+    DESCRIPCION,
+    VALOR1,
+    VALOR2,
+    VALOR3,
+    VALOR4,
+    VALOR5,
+    VALOR6,
+    VALOR7,
+    OBSERVACION,
+    ESTADO,
+    USR_CREACION,
+    FE_CREACION,
+    IP_CREACION
+  )
+  VALUES
+  (
+     DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+     (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = 'ENVIO_CORREO_CRS_CD_PENDIENTE' AND ESTADO = 'Activo'),
+     'ENVIO DE CORREO PROCESO CRS CD PENDIENTES',
+     'notificaciones_telcos@telconet.ec',
+     'teamceac@netlife.net.ec',
+     'Reporte de los logins Pendientes del proceso CRS CD',
+     '<p>Estimados,</p><p>Por favor su ayuda culminando los logins pendientes de procesar correspondientes al proceso de CRS.</p>',
+     'border:1px solid black;',
+     'border:1px solid black;background-color:#B5B2B2;',
+     'width:70%;margin-left: auto;margin-right: auto;',
+     'PreActivo',
+     'Activo',
+     'wgaibor',
+      SYSDATE,
+     '127.0.0.1'
+  );
+  
+commit;
+
+/

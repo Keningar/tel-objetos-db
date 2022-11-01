@@ -1,0 +1,49 @@
+--Eliminación de Parametros para manejar el estado de los servicios al realizar CRS por punto
+
+delete from DB_GENERAL.ADMI_PARAMETRO_DET d
+where d.parametro_id = 
+(
+select s.ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='ESTADOS_CAMBIO_RAZON_SOCIALXPUNTO'
+);
+
+
+delete from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='ESTADOS_CAMBIO_RAZON_SOCIALXPUNTO';
+
+delete from DB_GENERAL.ADMI_PARAMETRO_DET d
+where d.parametro_id = 
+(
+select s.ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='OBSERVACION_CAMBIO_ESTADO_PREACTIVO'
+);
+
+
+delete from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='OBSERVACION_CAMBIO_ESTADO_PREACTIVO';
+
+
+UPDATE DB_GENERAL.ADMI_PARAMETRO_DET APD
+SET APD.VALOR1 = 'PrePlanificada,Pendiente,Factible,Activo,PreAsignacionInfoTecnica'
+WHERE APD.ID_PARAMETRO_DET=24360;
+
+delete from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='ENVIO_CORREO_CRS_CD_PENDIENTE';
+
+delete from DB_GENERAL.ADMI_PARAMETRO_DET d
+where d.parametro_id = 
+(
+select s.ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB s where s.NOMBRE_PARAMETRO='ENVIO_CORREO_CRS_CD_PENDIENTE'
+);
+
+
+commit;
+
+/
+
+--eliminina paquete
+drop PACKAGE DB_COMERCIAL.SPKG_CAMBIO_RAZON_SOCIAL;
+
+/
+
+--elimina job
+Begin
+  Dbms_Scheduler.Drop_Job (Job_Name => '"DB_COMERCIAL"."JOB_REPORTE_CRS_PENDIENTE"');
+END;
+
+/
