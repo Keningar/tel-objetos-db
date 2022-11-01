@@ -187,7 +187,11 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                  CONNECT BY REGEXP_SUBSTR(T1.VALOR1, '[^,]+', 1, LEVEL) IS NOT NULL
                  
                  )
-         and ISV.ID_SERVICIO =DECODE(Lv_servicios,null,ISV.ID_SERVICIO,Lv_servicios);
+         and ISV.ID_SERVICIO =DECODE(Lv_servicios,null,ISV.ID_SERVICIO,Lv_servicios)
+         AND  ISV.ID_SERVICIO  NOT IN  ( SELECT ISVH.SERVICIO_ID FROM  DB_COMERCIAL.INFO_SERVICIO_HISTORIAL ISVH 
+          WHERE ISVH.SERVICIO_ID=ISV.ID_SERVICIO 
+          AND  INSTR(ISVH.ACCION ,'feOrigServicioTrasladado') >0)
+          AND DB_COMERCIAL.CMKG_REGULARIZACION_MASIVA_DOC.F_ES_CRS(ISV.PUNTO_ID)='N';
          Pv_Status     := 'OK';
          Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
