@@ -379,61 +379,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
           dbms_output.put_line( 'INFO_CONTRATO_FORMA_PAGO EN ORIGEN CONTRATO_ID =>'|| Pcl_ClienteOrigen.ID_CONTRATO); 
         END IF;   
 
---11.- RESTAURAR INFO_PERSONA_REPRESENTANTE
-      IF (Lv_PrefijoEmpresa ='MD' AND  Pcl_ClienteOrigen.TIPO_TRIBUTARIO  =  'JUR' )THEN 
-
-             UPDATE  DB_COMERCIAL.INFO_PERSONA_REPRESENTANTE ipr  SET 
-             ipr.ESTADO = Lv_EstadoActivo  
-             WHERE ipr.PERSONA_EMPRESA_ROL_ID = Pcl_ClienteOrigen.ID_PERSONA_ROL  
-             AND   ipr.ESTADO  IN (Lv_EstadoEliminado)
-             RETURNING  ipr.REPRESENTANTE_EMPRESA_ROL_ID  INTO  Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID ;
-             COMMIT; 
-             dbms_output.put_line( 'INFO_PERSONA_REPRESENTANTE EN ORIGEN REPRESENTANTE_EMPRESA_ROL_ID =>'|| Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID); 
-
-             IF Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID is  NOT NULL THEN 
-               UPDATE  INFO_PERSONA_EMPRESA_ROL iper SET 
-               iper.ESTADO = Lv_EstadoActivo
-               WHERE  iper.ID_PERSONA_ROL =   Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID
-               AND    iper.ESTADO  IN (Lv_EstadoEliminado);
-               COMMIT; 
-               dbms_output.put_line( 'INFO_PERSONA_EMPRESA_ROL DE REPRESENTANTE EN ORIGEN ID_PERSONA_ROL =>'|| Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID); 
-             END IF ;
-
-             UPDATE  DB_COMERCIAL.INFO_PERSONA_REPRESENTANTE ipr  SET 
-             ipr.ESTADO = Lv_EstadoEliminado
-             WHERE ipr.PERSONA_EMPRESA_ROL_ID = Pcl_ClienteDestino.ID_PERSONA_ROL  
-             AND  ipr.ESTADO IN (Lv_EstadoActivo)
-             RETURNING  ipr.REPRESENTANTE_EMPRESA_ROL_ID  INTO  Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID ;
-             COMMIT;
-             dbms_output.put_line('INFO_PERSONA_REPRESENTANTE EN DESTINO REPRESENTANTE_EMPRESA_ROL_ID =>'|| Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID);
-
-             IF Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID IS  NOT NULL THEN 
-               UPDATE  INFO_PERSONA_EMPRESA_ROL iper SET 
-               iper.ESTADO = Lv_EstadoEliminado
-               WHERE  iper.ID_PERSONA_ROL =   Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID
-               AND    iper.ESTADO  IN (Lv_EstadoActivo);
-               COMMIT; 
-               dbms_output.put_line( 'INFO_PERSONA_EMPRESA_ROL DE REPRESENTANTE EN DESTINO ID_PERSONA_ROL =>'|| Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID); 
-
-             END IF ; 
-         END IF; 
-         
-       IF (Lv_PrefijoEmpresa ='MD' AND  Pcl_ClienteDestino.TIPO_TRIBUTARIO  =  'JUR' )THEN 
-           --11.1 .- Se inactiva el representante legal del destino.
-           OPEN  C_GetRepresentanteLegal(Pcl_ClienteDestino.ID_PERSONA); 
-           FETCH C_GetRepresentanteLegal INTO  Pcl_RepresentanteLegal;  
-           CLOSE C_GetRepresentanteLegal;
-
-           IF (Pcl_RepresentanteLegal.ID_PERSONA_REPRESENTANTE IS NOT NULL)  THEN 
-                 UPDATE info_persona_representante  SET
-                    estado = Lv_EstadoEliminado,
-                    usr_ult_mod = Lv_UsrCreacion
-                  WHERE ID_PERSONA_REPRESENTANTE = Pcl_RepresentanteLegal.ID_PERSONA_REPRESENTANTE;
-                 COMMIT;
-           END IF; 
-       END IF; 
-
- 
+--11.- RESTAURAR INFO_PERSONA_REPRESENTANTE(EL PAQUETE REPRESENTANTE SOBRE ESCRIBE LOS REGISTROS)
 --12.- REVERSO INFO_PUNTO
        FOR Pcl_PuntoDestino IN C_GetPunto(Pcl_ClienteDestino.ID_PERSONA)  LOOP 
 

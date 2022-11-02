@@ -1,5 +1,5 @@
-  
- CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PRECLIENTE_TRANSACCION AS
+SET DEFINE OFF;  
+CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PRECLIENTE_TRANSACCION AS
  
    /**
     * Documentación para P_SET_CARACTERISTICAS
@@ -25,7 +25,7 @@
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.0 20/08/2021
     */
-    PROCEDURE P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response  OUT SYS_REFCURSOR);
+    PROCEDURE P_CREAR_PRECLIENTE(Pcl_Request IN CLOB, Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response  OUT SYS_REFCURSOR);
 
 END CMKG_PRECLIENTE_TRANSACCION;
 /
@@ -92,7 +92,11 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
    Lv_UsrCreacion VARCHAR2(100);
    Lv_ClientIp VARCHAR2(100);
    Lv_PrefijoEmpresa VARCHAR2(100);
-   Ln_CountFormasContacto NUMBER;
+   Ln_CountFormaContacto NUMBER;
+   Ln_CountRepresentanteLegal NUMBER;
+   Lcl_RepresentanteLegal  CLOB;
+   Lv_OrigenWeb VARCHAR2(100); 
+   Ln_IdPais NUMBER;
    Lv_Recomendacion CLOB;
    Lv_DataTemp VARCHAR2(100);
    Lv_Revertir VARCHAR2(100);
@@ -121,9 +125,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
        Ln_Id NUMBER, 
        Ln_IdFormaPago NUMBER, 
        Ln_IdTipoCuenta NUMBER, 
-       Ln_IdBancoTipoCuenta VARCHAR2(100), 
-       Lv_OrigenWeb VARCHAR2(100),  
-       Ln_IdPais NUMBER,
+       Ln_IdBancoTipoCuenta VARCHAR2(100),      
        Lv_TipoEmpresa VARCHAR2(100), 
        Lv_DireccionTributaria  CLOB,
        Lv_ContribuyenteEspecial  VARCHAR2(100),
@@ -264,7 +266,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
   CURSOR C_GetListFormaPago(Cn_Id NUMBER) IS   
       SELECT   afp.* FROM DB_GENERAL.ADMI_FORMA_PAGO afp WHERE afp.ID_FORMA_PAGO = Cn_Id; 
  
-  CURSOR C_GetFormaPago(Cn_Id VARCHAR2 , Cv_Descripcion VARCHAR2) IS   
+  CURSOR C_GetFormaContacto(Cn_Id VARCHAR2 , Cv_Descripcion VARCHAR2) IS   
       SELECT afc.ID_FORMA_CONTACTO FROM  DB_COMERCIAL.ADMI_FORMA_CONTACTO afc 
       WHERE afc.ID_FORMA_CONTACTO = Cn_Id   OR afc.DESCRIPCION_FORMA_CONTACTO = Cv_Descripcion ;
 
@@ -272,47 +274,51 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
   BEGIN  
    APEX_JSON.PARSE(Pcl_Request); 
 
-   Lv_CodEmpresa := APEX_JSON.get_varchar2(p_path => 'strCodEmpresa'); 
-   Ln_OficinaId  := APEX_JSON.get_varchar2(p_path => 'intOficinaId'); 
-   Lv_UsrCreacion := APEX_JSON.get_varchar2(p_path => 'strUsrCreacion'); 
-   Lv_ClientIp := APEX_JSON.get_varchar2(p_path => 'strClientIp'); 
-   Lv_PrefijoEmpresa := APEX_JSON.get_varchar2(p_path => 'strPrefijoEmpresa');  
-   Ln_CountFormasContacto := APEX_JSON.get_count(p_path => 'arrayFormasContacto');
-   Lv_Recomendacion := APEX_JSON.get_varchar2(p_path => 'arrayRecomendacionTarjeta');  
-   Pcl_DatosForm.Lv_Identificacion := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.identificacionCliente');
-   Pcl_DatosForm.Lv_TipoTributario := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.tipoTributario');
-   Pcl_DatosForm.Lv_OrigenIngresos := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.origenIngresos');
-   Pcl_DatosForm.Lv_Nacionalidad := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.nacionalidad');
-   Pcl_DatosForm.Lv_Nombres := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.nombres');
-   Pcl_DatosForm.Lv_Apellidos := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.apellidos');
-   Pcl_DatosForm.Lv_RazonSocial := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.razonSocial');
-   Pcl_DatosForm.Lv_RepresentanteLegal := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.representanteLegal');
-   Pcl_DatosForm.Lv_EstadoCivil := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.estadoCivil'); 
-   Pcl_DatosForm.Lv_FechaNacimiento.month := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.fechaNacimiento.month');
-   Pcl_DatosForm.Lv_FechaNacimiento.day := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.fechaNacimiento.day');
-   Pcl_DatosForm.Lv_FechaNacimiento.year := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.fechaNacimiento.year');    
-   Pcl_DatosForm.Lv_Referido := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.referido');
-   Pcl_DatosForm.Ln_IdReferido := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.idreferido');
-   Pcl_DatosForm.Ln_IdPerReferido := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.idperreferido');
-   Pcl_DatosForm.Lv_YaExiste := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.yaexiste');
-   Pcl_DatosForm.Ln_Id := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.id'); 
-   Pcl_DatosForm.Ln_IdFormaPago := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.formaPagoId');
-   Pcl_DatosForm.Ln_IdTipoCuenta := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.tipoCuentaId');
-   Pcl_DatosForm.Ln_IdBancoTipoCuenta := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.bancoTipoCuentaId');
-   Pcl_DatosForm.Lv_OrigenWeb := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.origen_web');
-   Pcl_DatosForm.Ln_IdPais := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.intIdPais');
-   Pcl_DatosForm.Lv_TipoEmpresa := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.tipoEmpresa');
-   Pcl_DatosForm.Lv_DireccionTributaria := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.direccionTributaria');
-   Pcl_DatosForm.Lv_ContribuyenteEspecial  := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.contribuyenteEspecial');
-   Pcl_DatosForm.Lv_PagaIva := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.pagaIva ');
-   Pcl_DatosForm.Lv_NumeroConadis := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.numeroConadis');
-   Pcl_DatosForm.Ln_IdTitulo := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.tituloId');
-   Pcl_DatosForm.Lv_Genero := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.genero');
-   Pcl_DatosForm.Lv_TipoIdentificacion := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.tipoIdentificacion');
-   Pcl_DatosForm.Lv_IdOficinaFacturacion := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.idOficinaFacturacion');
-   Pcl_DatosForm.Lv_EsPrepago := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.esPrepago'); 
-   Pcl_DatosForm.Lv_Holding := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.holding'); 
-   Pcl_DatosForm.Lv_EsDistribuidor := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.es_distribuidor'); 
+   Lv_CodEmpresa := APEX_JSON.get_varchar2(p_path => 'codEmpresa'); 
+   Ln_OficinaId  := APEX_JSON.get_varchar2(p_path => 'oficinaId'); 
+   Lv_UsrCreacion := APEX_JSON.get_varchar2(p_path => 'usrCreacion'); 
+   Lv_ClientIp := APEX_JSON.get_varchar2(p_path => 'clientIp'); 
+   Lv_PrefijoEmpresa := APEX_JSON.get_varchar2(p_path => 'prefijoEmpresa');  
+   Ln_CountFormaContacto  := APEX_JSON.get_count(p_path => 'formaContacto');
+   Ln_CountRepresentanteLegal  := APEX_JSON.get_count(p_path => 'representanteLegal');
+   Lv_Recomendacion       := APEX_JSON.get_varchar2(p_path => 'strRecomendacionTarjeta');  
+   Lv_OrigenWeb := APEX_JSON.get_varchar2(p_path => 'origenWeb');
+   Ln_IdPais := APEX_JSON.get_varchar2(p_path => 'idPais');
+
+   Pcl_DatosForm.Lv_Identificacion := APEX_JSON.get_varchar2(p_path => 'datosForm.identificacionCliente');
+   Pcl_DatosForm.Lv_TipoTributario := APEX_JSON.get_varchar2(p_path => 'datosForm.tipoTributario');
+   Pcl_DatosForm.Lv_OrigenIngresos := APEX_JSON.get_varchar2(p_path => 'datosForm.origenIngresos');
+   Pcl_DatosForm.Lv_Nacionalidad := APEX_JSON.get_varchar2(p_path => 'datosForm.nacionalidad');
+   Pcl_DatosForm.Lv_Nombres := APEX_JSON.get_varchar2(p_path => 'datosForm.nombres');
+   Pcl_DatosForm.Lv_Apellidos := APEX_JSON.get_varchar2(p_path => 'datosForm.apellidos');
+   Pcl_DatosForm.Lv_RazonSocial := APEX_JSON.get_varchar2(p_path => 'datosForm.razonSocial');
+   Pcl_DatosForm.Lv_RepresentanteLegal := APEX_JSON.get_varchar2(p_path => 'datosForm.representanteLegal');
+   Pcl_DatosForm.Lv_EstadoCivil := APEX_JSON.get_varchar2(p_path => 'datosForm.estadoCivil'); 
+
+   Pcl_DatosForm.Lv_FechaNacimiento.month := APEX_JSON.get_varchar2(p_path => 'datosForm.fechaNacimiento.month');
+   Pcl_DatosForm.Lv_FechaNacimiento.day := APEX_JSON.get_varchar2(p_path => 'datosForm.fechaNacimiento.day');
+   Pcl_DatosForm.Lv_FechaNacimiento.year := APEX_JSON.get_varchar2(p_path => 'datosForm.fechaNacimiento.year');     
+
+   Pcl_DatosForm.Lv_Referido := APEX_JSON.get_varchar2(p_path => 'datosForm.referido');
+   Pcl_DatosForm.Ln_IdReferido := APEX_JSON.get_varchar2(p_path => 'datosForm.idreferido');
+   Pcl_DatosForm.Ln_IdPerReferido := APEX_JSON.get_varchar2(p_path => 'datosForm.idperreferido');
+   Pcl_DatosForm.Lv_YaExiste := APEX_JSON.get_varchar2(p_path => 'datosForm.yaexiste');
+   Pcl_DatosForm.Ln_Id := APEX_JSON.get_varchar2(p_path => 'datosForm.id'); 
+   Pcl_DatosForm.Ln_IdFormaPago := APEX_JSON.get_varchar2(p_path => 'datosForm.formaPagoId');
+   Pcl_DatosForm.Ln_IdTipoCuenta := APEX_JSON.get_varchar2(p_path => 'datosForm.tipoCuentaId');
+   Pcl_DatosForm.Ln_IdBancoTipoCuenta := APEX_JSON.get_varchar2(p_path => 'datosForm.bancoTipoCuentaId');
+   Pcl_DatosForm.Lv_TipoEmpresa := APEX_JSON.get_varchar2(p_path => 'datosForm.tipoEmpresa');
+   Pcl_DatosForm.Lv_DireccionTributaria := APEX_JSON.get_varchar2(p_path => 'datosForm.direccionTributaria');
+   Pcl_DatosForm.Lv_ContribuyenteEspecial  := APEX_JSON.get_varchar2(p_path => 'datosForm.contribuyenteEspecial');
+   Pcl_DatosForm.Lv_PagaIva := APEX_JSON.get_varchar2(p_path => 'datosForm.pagaIva ');
+   Pcl_DatosForm.Lv_NumeroConadis := APEX_JSON.get_varchar2(p_path => 'datosForm.numeroConadis');
+   Pcl_DatosForm.Ln_IdTitulo := APEX_JSON.get_varchar2(p_path => 'datosForm.tituloId');
+   Pcl_DatosForm.Lv_Genero := APEX_JSON.get_varchar2(p_path => 'datosForm.genero');
+   Pcl_DatosForm.Lv_TipoIdentificacion := APEX_JSON.get_varchar2(p_path => 'datosForm.tipoIdentificacion');
+   Pcl_DatosForm.Lv_IdOficinaFacturacion := APEX_JSON.get_varchar2(p_path => 'datosForm.idOficinaFacturacion');
+   Pcl_DatosForm.Lv_EsPrepago := APEX_JSON.get_varchar2(p_path => 'datosForm.esPrepago'); 
+   Pcl_DatosForm.Lv_Holding := APEX_JSON.get_varchar2(p_path => 'datosForm.holding'); 
+   Pcl_DatosForm.Lv_EsDistribuidor := APEX_JSON.get_varchar2(p_path => 'datosForm.es_distribuidor'); 
    Lv_Revertir := 'S'; 
    Lv_ExistePreCliente := 'N'; 
     
@@ -332,9 +338,9 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
         RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
     END IF;   
    
-    IF  Pcl_DatosForm.Lv_OrigenWeb IS  NULL THEN 
+    IF  Lv_OrigenWeb IS  NULL THEN 
         Lv_Revertir := 'N';
-        Pv_Mensaje := 'Parametro origen_web es requerido.';
+        Pv_Mensaje := 'Parametro origenWeb es requerido.';
         dbms_output.put_line( Pv_Mensaje );  
         RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
     END IF;  
@@ -476,8 +482,8 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            Pcl_InfoPersona.IDENTIFICACION_CLIENTE  := Pcl_DatosForm.Lv_Identificacion;
            Pcl_InfoPersona.TIPO_EMPRESA            := Pcl_DatosForm.Lv_TipoEmpresa;
            Pcl_InfoPersona.TIPO_TRIBUTARIO         := Pcl_DatosForm.Lv_TipoTributario;
-           Pcl_InfoPersona.RAZON_SOCIAL            :=  Pcl_DatosForm.Lv_RazonSocial;
-           Pcl_InfoPersona.REPRESENTANTE_LEGAL     :=  Pcl_DatosForm.Lv_RepresentanteLegal;
+           Pcl_InfoPersona.RAZON_SOCIAL            := Pcl_DatosForm.Lv_RazonSocial;
+           Pcl_InfoPersona.REPRESENTANTE_LEGAL     := Pcl_DatosForm.Lv_RepresentanteLegal;
            Pcl_InfoPersona.NACIONALIDAD            := Pcl_DatosForm.Lv_Nacionalidad; 
            Pcl_InfoPersona.DIRECCION_TRIBUTARIA    := Pcl_DatosForm.Lv_DireccionTributaria ; 
            Pcl_InfoPersona.DIRECCION               := Pcl_DatosForm.Lv_DireccionTributaria ;
@@ -510,12 +516,12 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
           Pcl_InfoPersona.ORIGEN_INGRESOS:= Pcl_DatosForm.Lv_OrigenIngresos; 
           Pcl_InfoPersona.ORIGEN_PROSPECTO:= 'N'; 
        
-          IF ((Pcl_DatosForm.Lv_OrigenWeb= 'S') OR (Pcl_DatosForm.Lv_OrigenWeb= 'N')OR (Pcl_DatosForm.Lv_OrigenWeb= 'M'))  THEN
-              Pcl_InfoPersona.ORIGEN_WEB := Pcl_DatosForm.Lv_OrigenWeb;
+          IF ((Lv_OrigenWeb= 'S') OR (Lv_OrigenWeb= 'N')OR (Lv_OrigenWeb= 'M'))  THEN
+              Pcl_InfoPersona.ORIGEN_WEB := Lv_OrigenWeb;
           END IF;     
 
           Pcl_InfoPersona.ESTADO:= 'Pendiente';    
-          Pcl_InfoPersona.PAIS_ID:= Pcl_DatosForm.Ln_IdPais;  
+          Pcl_InfoPersona.PAIS_ID:= Ln_IdPais;  
 
  
           IF (Pcl_DatosForm.Lv_YaExiste = 'N')  THEN
@@ -559,7 +565,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                dbms_output.put_line('PERSONA ACTUALIZADA ID_PERSONA=>'||Pcl_InfoPersona.ID_PERSONA);
           END IF;
         
-       
+
          COMMIT;
          --ASIGNA ROL DE PRE-CLIENTE A LA PERSONA
            IF  Lv_ExistePreCliente  ='S' THEN     
@@ -598,7 +604,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            IF Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL IS NULL THEN 
                Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL := DB_COMERCIAL.SEQ_INFO_PERSONA_EMPRESA_ROL.NEXTVAL ;
                INSERT  INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL VALUES   Pcl_InfoPersonaEmpresaRol;  
-               dbms_output.put_line('PERSONA_EMPRESA_ROL ACTUALIZADO ID_PERSONA_ROL=>'||Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL);
+               dbms_output.put_line('PERSONA_EMPRESA_ROL INSERTAD ID_PERSONA_ROL=>'||Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL);
            ELSE 
                UPDATE DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL iper SET 
                iper.ID_PERSONA_ROL       = Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL, 
@@ -619,9 +625,39 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                      
                WHERE iper.ID_PERSONA_ROL = Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL;
                dbms_output.put_line('PERSONA_EMPRESA_ROL ACTUALIZADO ID_PERSONA_ROL=>'||Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL);                    
-           END IF; 
-       
+           END IF;        
            COMMIT;
+
+      IF Lv_PrefijoEmpresa = 'MD' AND  Pcl_DatosForm.Lv_TipoIdentificacion = 'RUC' AND Pcl_DatosForm.Lv_TipoTributario = 'JUR'  AND Pcl_DatosForm.Lv_TipoEmpresa IS NOT NULL THEN  
+
+        if  Ln_CountRepresentanteLegal = 0 then
+            Lv_Revertir := 'S';
+            Pv_Mensaje := 'Se requiere agregar representante legal.';
+            dbms_output.put_line( Pv_Mensaje );  
+            RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
+        else    
+         
+            Lcl_RepresentanteLegal := TRIM( Pcl_Request);  
+            Lcl_RepresentanteLegal := SUBSTR(Lcl_RepresentanteLegal , 0, length(Lcl_RepresentanteLegal)-1); 
+            Lcl_RepresentanteLegal := Lcl_RepresentanteLegal  || ',"tipoIdentificacion":"'||   Pcl_DatosForm.Lv_TipoIdentificacion ||'"';
+            Lcl_RepresentanteLegal := Lcl_RepresentanteLegal  || ',"identificacion":    "'||   Pcl_DatosForm.Lv_Identificacion||'"';
+            Lcl_RepresentanteLegal := Lcl_RepresentanteLegal  ||  '}'; 
+           
+            dbms_output.put_line( 'INGRESANDO REPRESENTANTE LEGAL' ); 
+            DB_COMERCIAL.CMKG_REPRES_LEGAL_TRANSACCION.P_ACTUALIZAR(Lcl_RepresentanteLegal, Pv_Mensaje, Pv_Status,Pcl_Response);  
+             if  Pv_Status = 'ERROR' then
+                Lv_Revertir := 'S'; 
+                dbms_output.put_line( Pv_Mensaje );  
+                RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje); 
+             else  
+                APEX_JSON.PARSE(Pcl_Request);    
+                dbms_output.put_line('Representante Legal => ' || Pv_Mensaje ); 
+             end if;
+ 
+        end if;         
+
+     END IF;  
+
        
             IF Lv_PrefijoEmpresa <>'TN' THEN  
 
@@ -745,10 +781,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                 INSERT  INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO VALUES  Pcl_InfoPersonaEmpresaRolHisto; 
                 dbms_output.put_line( 'PERSONA EMPRES ROL HISTORIAL  INSERTADA ID_PERSONA_EMPRESA_ROL_HISTO =>'|| Pcl_InfoPersonaEmpresaRolHisto.ID_PERSONA_EMPRESA_ROL_HISTO);                    
                 COMMIT;
-                --SE ENVIA ARRAY DE PARAMETROS Y SE AGREGA STROPCIONPERMITIDA Y STRPREFIJOEMPRESA, PREFIJO DE EMPRESA EN SESION PARA VALIDAR
-                --QUE PARA EMPRESA MD NO SE OBLIGUE EL INGRESO DE AL MENOS 1 CORREO 
-                dbms_output.put_line( '******VALIDAR  LAS FORMAS DE PAGO AQUI SE DEJA VALIDACION EN BACKEND ANTES DEL CONSUMO DEL PKS**************');
-
+             
 
             IF (Pcl_DatosForm.Lv_YaExiste = 'S')  THEN
                 --PONE ESTADO INACTIVO A TODOS LAS FORMAS DE CONTACTO DE LA PERSONA QUE tengan estado ACTIVO          
@@ -763,15 +796,15 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                 COMMIT;
             END IF;
 
-            --REGISTRA LAS FORMAS DE CONTACTO DEL PRE-CLIENTE
+            --REGISTRA LAS FORMAS DE CONTACTO DEL PRE-CLIENTE 
 
-
-            FOR i IN 1 .. Ln_CountFormasContacto
-                LOOP        
-                Pcl_InfoPersonaFormaContacto := NULL; 
-                OPEN  C_GetFormaPago(apex_json.get_varchar2 ('arrayFormasContacto[%d].idFormaContacto', i), apex_json.get_varchar2 ('arrayFormasContacto[%d].formaContacto', i) );
-                FETCH C_GetFormaPago INTO  Pcl_InfoPersonaFormaContacto.FORMA_CONTACTO_ID;  
-                CLOSE C_GetFormaPago ;  
+            FOR j IN 1 .. Ln_CountFormaContacto
+                LOOP  
+                APEX_JSON.PARSE(Pcl_Request);      
+                Pcl_InfoPersonaFormaContacto := NULL;  
+                OPEN  C_GetFormaContacto(apex_json.get_varchar2 ('formaContacto[%d].formaContactoId', j), apex_json.get_varchar2 ('formaContacto[%d].formaContacto', j) );
+                FETCH C_GetFormaContacto INTO  Pcl_InfoPersonaFormaContacto.FORMA_CONTACTO_ID;  
+                CLOSE C_GetFormaContacto ;  
 
                 IF  Pcl_InfoPersonaFormaContacto.FORMA_CONTACTO_ID IS NULL THEN
                     Pv_Mensaje := 'No se ha encontro forma de contacto.';
@@ -779,7 +812,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                     RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);     
                 END IF ; 
 
-                Lv_DataTemp :=  apex_json.get_varchar2 ('arrayFormasContacto[%d].valor', i);   
+                Lv_DataTemp :=  apex_json.get_varchar2 ('formaContacto[%d].valor', j);   
                 Pcl_InfoPersonaFormaContacto.ID_PERSONA_FORMA_CONTACTO:= DB_COMERCIAL.SEQ_INFO_PERSONA_FORMA_CONT.NEXTVAL;  
                 Pcl_InfoPersonaFormaContacto.PERSONA_ID:= Pcl_InfoPersona.ID_PERSONA;   
                 Pcl_InfoPersonaFormaContacto.VALOR:= Lv_DataTemp ;                 
@@ -895,4 +928,3 @@ END P_CREAR_PRECLIENTE;
 END CMKG_PRECLIENTE_TRANSACCION; 
  
 /
- 

@@ -152,7 +152,9 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
   --GLOBALES     
   Lv_ExistePreCliente VARCHAR2(100);
   Lv_DescRoles VARCHAR2(100);
-  Lv_Estados  VARCHAR2(100);
+  Lv_Estados  VARCHAR2(100); 
+  LV_PARAMETROCAB VARCHAR2(100);   
+  PCL_LIMITE_RECOMENDACION        DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
 
   Pcl_InfoPersona  DB_COMERCIAL.INFO_PERSONA%ROWTYPE;
   Pcl_InfoPersonaEmpresaRol  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL%ROWTYPE;
@@ -313,7 +315,14 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
    Pcl_DatosForm.Lv_EsDistribuidor := APEX_JSON.get_varchar2(p_path => 'arrayDatosForm.es_distribuidor'); 
    Lv_Revertir := 'S'; 
    Lv_ExistePreCliente := 'N'; 
-   
+    
+    LV_PARAMETROCAB 	      := 'PARAM_FLUJO_PROSPECTO' ;      
+    PCL_LIMITE_RECOMENDACION    := DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA.F_DATA_PARAMETRO(LV_PARAMETROCAB , 'LIMITE_RECOMENDACION');
+    
+    dbms_output.put_line( Lv_Recomendacion );  
+    IF  LENGTH(Lv_Recomendacion) >=   PCL_LIMITE_RECOMENDACION.VALOR1 THEN 
+        Lv_Recomendacion := PCL_LIMITE_RECOMENDACION.VALOR2;         
+    END IF;  
    
     --VALIDACIONES GENERALES   
     IF  Pcl_DatosForm.Lv_TipoIdentificacion IS  NULL THEN 

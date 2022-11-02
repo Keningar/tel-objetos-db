@@ -592,6 +592,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
               WHERE IPR.REPRESENTANTE_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL
                 AND IPER.PERSONA_ID              = IP.ID_PERSONA
                 AND IPR.ESTADO                   = ''Activo''
+                AND IP.TIPO_TRIBUTARIO           = ''NAT''
                 AND IPR.PERSONA_EMPRESA_ROL_ID   = '||Ln_PersonaEmpresaRolId||'';
     Lcl_OrderAnGroup := '';
 
@@ -697,6 +698,13 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
       Pv_Mensaje := SQLERRM;
   END P_INFORMACION_PUNTO;
 
+
+
+/* 
+    * Se actualiza funcionabilidad envio de correo a representante legal tipo natural
+    * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+    * @version 1.0 01/09/2022
+*/
   PROCEDURE P_FORMAS_CONTACTO_PERSONA(Pcl_Request  IN  CLOB,
                                       Pv_Status    OUT VARCHAR2,
                                       Pv_Mensaje   OUT VARCHAR2,
@@ -709,6 +717,38 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     Lcl_OrderAnGroup            CLOB;
     Ln_PersonaId                NUMBER;
     Le_Errors                   EXCEPTION;
+  --
+   CURSOR C_BUSCAR_PERSONA_JURIDICA(Cn_PersonaId INTEGER) IS
+     SELECT 
+     IPJ.ID_PERSONA, 
+     IPJ.TIPO_IDENTIFICACION,
+     IPJ.TIPO_TRIBUTARIO
+     FROM    DB_COMERCIAL.INFO_PERSONA IPJ
+     WHERE   IPJ.ID_PERSONA = Cn_PersonaId;      
+  --
+  CURSOR C_PERSONA_REPRESENTANTE_LEGAL (Cn_PersonaId INTEGER) IS
+        SELECT         
+        REP_IP.ID_PERSONA
+        FROM DB_COMERCIAL.INFO_PERSONA CLI_IP 
+        INNER JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL CLI_IPER ON  CLI_IPER.PERSONA_ID  = CLI_IP.ID_PERSONA
+        INNER JOIN DB_COMERCIAL.INFO_PERSONA_REPRESENTANTE CLI_IPR ON  CLI_IPR.PERSONA_EMPRESA_ROL_ID  =  CLI_IPER.ID_PERSONA_ROL
+        INNER JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL REP_IPER ON  REP_IPER.ID_PERSONA_ROL =  CLI_IPR.REPRESENTANTE_EMPRESA_ROL_ID
+        INNER JOIN DB_COMERCIAL.INFO_PERSONA   REP_IP ON REP_IP.ID_PERSONA = REP_IPER.PERSONA_ID 
+        INNER JOIN DB_COMERCIAL.INFO_EMPRESA_ROL CLI_IER ON  CLI_IER.ID_EMPRESA_ROL  = CLI_IPER.EMPRESA_ROL_ID 
+        INNER JOIN DB_COMERCIAL.INFO_EMPRESA_ROL REP_IER ON  REP_IER.ID_EMPRESA_ROL  = REP_IPER.EMPRESA_ROL_ID 
+        INNER JOIN DB_COMERCIAL.ADMI_ROL  CLI_AROL ON  CLI_AROL.ID_ROL = CLI_IER.ROL_ID
+        INNER JOIN DB_COMERCIAL.ADMI_ROL  REP_AROL ON  REP_AROL .ID_ROL = REP_IER.ROL_ID
+        WHERE CLI_IPR.ESTADO  IN  ('Pendiente','Cancelado', 'Activo')            
+        AND   CLI_AROL.DESCRIPCION_ROL IN ('Cliente', 'Pre-cliente')
+        AND   REP_AROL.DESCRIPCION_ROL IN ('Representante Legal Juridico')
+        AND   REP_IP.TIPO_TRIBUTARIO   = 'NAT'
+        AND   CLI_IP.ID_PERSONA        = Cn_PersonaId  ;
+   
+  --
+    Ln_IdPersona                NUMBER;
+    Lv_TipoIdentificacion       VARCHAR2(50);
+    Lv_TipoTributario           VARCHAR2(50);
+    Ln_IdPersonaRepresentNatul  NUMBER;
   BEGIN
     -- RETORNO LAS VARIABLES DEL REQUEST
     APEX_JSON.PARSE(Pcl_Request);
@@ -719,6 +759,32 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
       Pv_Mensaje := 'El parámetro personaId esta vacío';
       RAISE Le_Errors;
     END IF;
+
+    -- BUSCO SI ES PERSONA JURIDICA
+    FOR LC_BUSCAR_PERSONA_JURIDICA IN C_BUSCAR_PERSONA_JURIDICA(Ln_PersonaId)
+    LOOP
+      Ln_IdPersona          := LC_BUSCAR_PERSONA_JURIDICA.ID_PERSONA;
+      Lv_TipoIdentificacion := LC_BUSCAR_PERSONA_JURIDICA.TIPO_IDENTIFICACION;
+      Lv_TipoTributario     := LC_BUSCAR_PERSONA_JURIDICA.TIPO_TRIBUTARIO;
+    END LOOP;
+
+    -- CONSULTAR SI ES PERSONA JURIDICA CON TIPO IDENTIFICACIÓN RUC Y TIPO TRIBUTARIO JUR
+    IF Ln_IdPersona IS NOT NULL AND  Lv_TipoIdentificacion = 'RUC' AND Lv_TipoTributario = 'JUR' THEN
+    
+       OPEN  C_PERSONA_REPRESENTANTE_LEGAL(Ln_IdPersona); 
+       FETCH C_PERSONA_REPRESENTANTE_LEGAL INTO  Ln_IdPersonaRepresentNatul;  
+       CLOSE C_PERSONA_REPRESENTANTE_LEGAL; 
+     
+        IF  Ln_IdPersonaRepresentNatul IS NOT NULL THEN
+            Ln_PersonaId:=  Ln_IdPersonaRepresentNatul;             
+            ELSE
+            Pv_Mensaje := 'No existe representante legal tipo natural.';
+            RAISE Le_Errors;
+        END IF;
+  
+    END IF;
+    
+    
 
     Lcl_Select       := '
               SELECT  AFC.DESCRIPCION_FORMA_CONTACTO descripcion,
