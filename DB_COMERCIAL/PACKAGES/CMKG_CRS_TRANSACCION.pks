@@ -464,11 +464,17 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                    COMMIT;
                    dbms_output.put_line('PUNTO EN  DESTINO ELIMINADO ID_PUNTO=>'||Pcl_PuntoDestino.ID_PUNTO );                                          
 
-
+                  IF Pcl_PuntoDestino.ESTADO = 'Pendiente' THEN
+                   UPDATE  DB_COMERCIAL.INFO_PUNTO ip SET  
+                   ip.ESTADO          = Lv_EstadoActivo
+                   WHERE ip.ID_PUNTO  = Pcl_PuntoOrigen.ID_PUNTO;              
+                   COMMIT;
+                  ELSE
                    UPDATE  DB_COMERCIAL.INFO_PUNTO ip SET  
                    ip.ESTADO          = Pcl_PuntoDestino.ESTADO
                    WHERE ip.ID_PUNTO  = Pcl_PuntoOrigen.ID_PUNTO;              
                    COMMIT;
+                  END IF;
 
                    Pcl_PuntoHisto                    := NULL; 
                    Pcl_PuntoHisto.ID_PUNTO_HISTORIAL := DB_COMERCIAL.SEQ_INFO_PUNTO_HISTORIAL.NEXTVAL;
@@ -497,9 +503,15 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                          FOR Pcl_ServicioOrigen IN C_GetServicioComparar(Pcl_ServicioDestino.OBSERVACION)  LOOP 
 
         --16.- REVERSO INFO_SERVICIO 
+                                IF Pcl_ServicioDestino.ESTADO = 'PreActivo' THEN
+                                UPDATE DB_COMERCIAL.INFO_SERVICIO is2 SET  
+                                is2.ESTADO               = Lv_EstadoActivo 
+                                WHERE   is2.ID_SERVICIO  = Pcl_ServicioOrigen.ID_SERVICIO;
+                                ELSE
                                 UPDATE DB_COMERCIAL.INFO_SERVICIO is2 SET  
                                 is2.ESTADO               = Pcl_ServicioDestino.ESTADO 
                                 WHERE   is2.ID_SERVICIO  = Pcl_ServicioOrigen.ID_SERVICIO;
+                                END IF;
                                 COMMIT;  
                                 dbms_output.put_line('INFO_SERVICIO EN ORIGEN '||Pcl_ServicioDestino.ESTADO ||' ID_SERVICIO=>' ||Pcl_ServicioOrigen.ID_SERVICIO);
 
@@ -698,7 +710,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                             Pcl_ServicioHisto.USR_CREACION          := Lv_UsrCreacion ;   
                             Pcl_ServicioHisto.FE_CREACION           := SYSDATE;
                             Pcl_ServicioHisto.IP_CREACION           := Lv_ClientIp ;  
-                            Pcl_ServicioHisto.ESTADO                := Lv_EstadoActivo;
+                            Pcl_ServicioHisto.ESTADO                := Lv_EstadoEliminado;
                             Pcl_ServicioHisto.OBSERVACION           := Lv_MotivoReverso;  
                             INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL VALUES  Pcl_ServicioHisto ; 
                             dbms_output.put_line('INFO_SERVICIO_HISTORIAL EN ORIGEN CREADO ID_SERVICIO_HISTORIAL=>' ||Pcl_ServicioHisto.ID_SERVICIO_HISTORIAL  );
