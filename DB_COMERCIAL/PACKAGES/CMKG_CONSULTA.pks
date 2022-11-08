@@ -356,7 +356,6 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                                     Pv_Mensaje   OUT VARCHAR2,
                                     Pcl_Response OUT SYS_REFCURSOR);
 
-
  /**
   * Documentación para el procedimiento P_VERIFICA_DOCUMENTOS_REQ
   * Método encargado de retornar el descuento del empleado CRS
@@ -437,7 +436,7 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                                        Pv_Mensaje   OUT VARCHAR2,
                                        Pcl_Response OUT SYS_REFCURSOR);
 
-/**
+  /**
   * Documentación para el procedimiento P_FORMA_PAGO
   *
   * Método encargado de retornar lista forma de pago
@@ -453,6 +452,26 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                          Pv_Status    OUT VARCHAR2,
                          Pv_Mensaje   OUT VARCHAR2,
                          Pcl_Response OUT CLOB);
+  /**
+  * Documentación para el procedimiento P_GET_PUNTOS_SERVICIOS_CLIENTE
+  *
+  * Método encargado de retornar los puntos y servicios que tiene un cliente
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * [
+  *   idPersonaEmpresaRol Id de Persona empresa rol del cliente
+  * ]
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la consulta
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la consulta
+  * @param Pcl_Response   OUT  CLOB Retorna cursor de la consulta
+  *
+  * @author David De La Cruz <ddelacruz@telconet.ec>
+  * @version 1.0 03-01-2022
+  */                                  
+  PROCEDURE P_GET_PUNTOS_SERVICIOS_CLIENTE(Pcl_Request  IN  CLOB,
+                                           Pv_Status    OUT VARCHAR2,
+                                           Pv_Mensaje   OUT VARCHAR2,
+                                           Pcl_Response OUT CLOB);                                       
 
 end CMKG_CONSULTA; 
 / 
@@ -2473,8 +2492,6 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
 
     END P_OBTENER_DESCUENTO_RS; 
 
-
-
    PROCEDURE P_VERIFICA_DOCUMENTOS_REQ(Pcl_Request  IN  VARCHAR2,
                                  Pv_Status    OUT VARCHAR2,
                                  Pv_Mensaje   OUT VARCHAR2,
@@ -2786,6 +2803,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
+
   END P_CONT_FORMA_PAGO_HISTORIAL;
   
   PROCEDURE P_FORMA_PAGO(Pcl_Request  IN  VARCHAR2,
@@ -2884,6 +2902,155 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                                             '127.0.0.1');
 
   END P_FORMA_PAGO;
+    
+  PROCEDURE P_GET_PUNTOS_SERVICIOS_CLIENTE(Pcl_Request  IN  CLOB,
+                                           Pv_Status    OUT VARCHAR2,
+                                           Pv_Mensaje   OUT VARCHAR2,
+                                           Pcl_Response OUT CLOB)
+  AS
+  
+    Lv_Estados              VARCHAR2(1000);
+    Ln_IdPersonaEmpresaRol  NUMBER;
+    Ln_IdPunto              NUMBER;
+    Ln_CantEstadosPunto     NUMBER;
+    Ln_CantEstadosServicio  NUMBER;
+    Lcl_QueryPuntos         CLOB;
+    Lcl_QueryServicios      CLOB;
+    Lr_Punto                CMKG_TYPES.Ltr_Punto;
+    Lr_Servicio             CMKG_TYPES.Ltr_Servicio;
+    Li_Cont_Punto           PLS_INTEGER;
+    Li_Cont_Servicio        PLS_INTEGER;
+    Lrf_Puntos              SYS_REFCURSOR;
+    Lrf_Servicios           SYS_REFCURSOR;
+    Le_Errors               EXCEPTION;
+  BEGIN
+    APEX_JSON.PARSE(Pcl_Request);
+    Ln_IdPersonaEmpresaRol := APEX_JSON.get_number('idPersonaEmpresaRol');
+    Ln_IdPunto := APEX_JSON.get_number('idPunto');
+    Ln_CantEstadosPunto := APEX_JSON.get_count('estadosPunto');
+    Ln_CantEstadosServicio := APEX_JSON.get_count('estadosServicio');
+
+    IF Ln_IdPersonaEmpresaRol IS NULL THEN
+      Pv_Mensaje := 'El parámetro Ln_IdPersonaEmpresaRol esta vacío';
+      RAISE Le_Errors;
+    END IF;
+    
+    IF NVL(Ln_CantEstadosPunto,0) > 0 THEN
+      FOR i IN 1..Ln_CantEstadosPunto LOOP
+        Lv_Estados := Lv_Estados ||''''||APEX_JSON.get_varchar2('estadosPunto[%d]',i)||''',';
+      END LOOP;      
+      Lv_Estados := Substr(Initcap(Lv_Estados),1,length(Lv_Estados)-1);
+    END IF;
+    
+    Lcl_QueryPuntos := 'SELECT
+                            Ipu.Id_Punto,
+                            Ipu.Login,
+                            Ipu.Estado,
+                            Ipu.Nombre_Punto,
+                            Ipu.Direccion,
+                            Ipu.Longitud,
+                            Ipu.Latitud,
+                            Ase.Id_Sector,
+                            Ase.Nombre_Sector,
+                            Apa.Id_Parroquia,
+                            Apa.Nombre_Parroquia,
+                            Aca.Id_Canton,
+                            Aca.Nombre_Canton,
+                            Apr.Id_Provincia,
+                            Apr.Nombre_Provincia
+                        FROM
+                           Info_Punto Ipu 
+                        INNER JOIN Db_General.Admi_Sector    Ase ON Ipu.Sector_Id = Ase.Id_Sector
+                        INNER JOIN Db_General.Admi_Parroquia Apa ON Ase.Parroquia_Id = Apa.Id_Parroquia
+                        INNER JOIN Db_General.Admi_Canton    Aca ON Apa.Canton_Id = Aca.Id_Canton
+                        INNER JOIN Db_General.Admi_Provincia Apr ON Aca.Provincia_Id = Apr.Id_Provincia ';
+    
+    DBMS_LOB.APPEND(Lcl_QueryPuntos,REPLACE('WHERE Ipu.Persona_Empresa_Rol_Id = :idPersonaEmpresaRol ',':idPersonaEmpresaRol',Ln_IdPersonaEmpresaRol));
+    
+    IF Ln_IdPunto IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_QueryPuntos,REPLACE('AND Ipu.Id_Punto = :id_punto ',':id_punto',Ln_IdPunto));
+    END IF;
+    
+    DBMS_LOB.APPEND(Lcl_QueryPuntos,REPLACE('AND Ipu.Estado IN (:estados) ',':estados',Lv_Estados));
+    DBMS_LOB.APPEND(Lcl_QueryPuntos,'ORDER BY Ipu.Id_Punto ASC');
+    
+    OPEN Lrf_Puntos FOR Lcl_QueryPuntos;                       
+                 
+    Lv_Estados := '';             
+    IF NVL(Ln_CantEstadosServicio,0) > 0 THEN
+      FOR i IN 1..Ln_CantEstadosServicio LOOP
+        Lv_Estados := Lv_Estados ||''''||APEX_JSON.get_varchar2('estadosServicio[%d]',i)||''',';
+      END LOOP;      
+      Lv_Estados := Substr(Initcap(Lv_Estados),1,length(Lv_Estados)-1);
+    END IF;                              
+    
+    APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+    APEX_JSON.OPEN_ARRAY();
+    LOOP
+      FETCH Lrf_Puntos BULK COLLECT INTO Lr_Punto LIMIT 100;
+        Li_Cont_Punto := Lr_Punto.FIRST;
+        WHILE (Li_Cont_Punto IS NOT NULL) LOOP
+          APEX_JSON.OPEN_OBJECT;
+          APEX_JSON.WRITE('idPunto',Lr_Punto(Li_Cont_Punto).Id_Punto);
+          APEX_JSON.WRITE('login', Lr_Punto(Li_Cont_Punto).Login);
+          APEX_JSON.WRITE('estado', Lr_Punto(Li_Cont_Punto).Estado);
+          APEX_JSON.WRITE('nombrePunto', Lr_Punto(Li_Cont_Punto).Nombre_Punto);
+          APEX_JSON.WRITE('direccion', Lr_Punto(Li_Cont_Punto).Direccion);
+          APEX_JSON.WRITE('longitud', Lr_Punto(Li_Cont_Punto).Longitud);
+          APEX_JSON.WRITE('latitud', Lr_Punto(Li_Cont_Punto).Latitud);          
+          APEX_JSON.WRITE('idSector',Lr_Punto(Li_Cont_Punto).Id_Sector);
+          APEX_JSON.WRITE('nombreSector',Lr_Punto(Li_Cont_Punto).Nombre_Sector);
+          APEX_JSON.WRITE('idParroquia',Lr_Punto(Li_Cont_Punto).Id_Parroquia);
+          APEX_JSON.WRITE('nombreParroquia',Lr_Punto(Li_Cont_Punto).Nombre_Parroquia);
+          APEX_JSON.WRITE('idCanton',Lr_Punto(Li_Cont_Punto).Id_Canton);
+          APEX_JSON.WRITE('nombreCanton',Lr_Punto(Li_Cont_Punto).Nombre_Canton);
+          APEX_JSON.WRITE('idProvincia',Lr_Punto(Li_Cont_Punto).Id_Provincia);
+          APEX_JSON.WRITE('nombreProvincia',Lr_Punto(Li_Cont_Punto).Nombre_Provincia);
+          
+          Lcl_QueryServicios := 'SELECT
+                                    *
+                                 FROM
+                                    Info_Servicio Ise ';
+          DBMS_LOB.APPEND(Lcl_QueryServicios,REPLACE('WHERE Ise.Punto_Id = :idPunto ',':idPunto',Lr_Punto(Li_Cont_Punto).Id_Punto));
+          DBMS_LOB.APPEND(Lcl_QueryServicios,REPLACE('AND Ise.Estado IN (:estados) ',':estados',Lv_Estados)); 
+          DBMS_LOB.APPEND(Lcl_QueryServicios,'ORDER BY Ise.Id_Servicio ASC');
+          
+          OPEN Lrf_Servicios FOR Lcl_QueryServicios; 
+          
+          APEX_JSON.OPEN_ARRAY('servicios');
+          LOOP
+            FETCH Lrf_Servicios BULK COLLECT INTO Lr_Servicio LIMIT 100;
+              Li_Cont_Servicio := Lr_Servicio.FIRST;
+              WHILE (Li_Cont_Servicio IS NOT NULL) LOOP
+                APEX_JSON.OPEN_OBJECT;
+                APEX_JSON.WRITE('idServicio',Lr_Servicio(Li_Cont_Servicio).Id_Servicio);
+                APEX_JSON.WRITE('loginAux', Lr_Servicio(Li_Cont_Servicio).Login_Aux);
+                APEX_JSON.WRITE('estado', Lr_Servicio(Li_Cont_Servicio).Estado);                
+                APEX_JSON.CLOSE_OBJECT;
+                Li_Cont_Servicio:= Lr_Servicio.NEXT(Li_Cont_Servicio);
+              END LOOP;
+            EXIT WHEN Lrf_Servicios%NOTFOUND;
+          END LOOP;              
+          APEX_JSON.CLOSE_ARRAY;
+          APEX_JSON.CLOSE_OBJECT;
+          Li_Cont_Punto:= Lr_Punto.NEXT(Li_Cont_Punto);
+        END LOOP;
+      EXIT WHEN Lrf_Puntos%NOTFOUND;
+    END LOOP;              
+    APEX_JSON.CLOSE_ARRAY;
+    Pcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
+    APEX_JSON.FREE_OUTPUT;
+
+    Pv_Status     := 'OK';
+    Pv_Mensaje    := 'Transacción exitosa';
+  EXCEPTION
+    WHEN Le_Errors THEN
+      Pv_Status  := 'ERROR';
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  
+  END P_GET_PUNTOS_SERVICIOS_CLIENTE;    
  
 end CMKG_CONSULTA;
 /
