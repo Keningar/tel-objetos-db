@@ -22,6 +22,30 @@ create or replace package DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
                                     Pv_Status    OUT VARCHAR2,
                                     Pv_Mensaje   OUT VARCHAR2,
                                     Pcl_Response OUT SYS_REFCURSOR);
+                                    
+  /**
+  * Documentación para proceso 'P_GET_DETALLE_PARAMETRO'
+  * 
+  * Permite consultar el detalle de un parámetro de acuerdo a la información ingresada
+  *
+  * @param  Pv_NombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE Recibe nombre del parámetro de la tabla cabecera
+  * @param  Pv_Descripcion      IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE Recibe descripcion del parámetro de la tabla detalle
+  * @param  Pv_Empresa_Cod      IN DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE Recibe el identificador de la empresa
+  * @param  Pr_AdmiParametroDet OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Retorna Registro del detalle del parámetro
+  * @param  Pv_Status           OUT VARCHAR2 Retorna estatus de la consulta
+  * @param  Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la consulta
+  *
+  * @author   David De La Cruz <ddelacruz@telconet.ec>
+  * @version  1.0 
+  * @since    29-10-2021
+  */ 
+  PROCEDURE P_GET_DETALLE_PARAMETRO(Pv_NombreParametro   IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE,
+                                    Pv_Descripcion       IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE,
+                                    Pv_Empresa_Cod       IN DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE,
+                                    Pr_AdmiParametroDet  OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE,
+                                    Pv_Status            OUT VARCHAR2,
+                                    Pv_Mensaje           OUT VARCHAR2);   
+                                    
 end GNKG_PARAMETRO_CONSULTA;
 /
 create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
@@ -91,6 +115,62 @@ create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_DETALLE_POR_PARAMETRO;
+  
+  PROCEDURE P_GET_DETALLE_PARAMETRO(Pv_NombreParametro   IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE,
+                                    Pv_Descripcion       IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE,
+                                    Pv_Empresa_Cod       IN DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE,
+                                    Pr_AdmiParametroDet  OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE,
+                                    Pv_Status            OUT VARCHAR2,
+                                    Pv_Mensaje           OUT VARCHAR2) AS
+
+    /**
+     * C_GetAdmiDetalleParametro, obtiene el detalle del parametro segun los datos ingresados
+     * @author  David De La Cruz <ddelacruz@telconet.ec>
+     * @version 1.0 
+     * @since   29-10-2021
+     * @costo   3, cardinalidad 1
+     */
+    CURSOR C_GetAdmiDetalleParametro(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE,
+                                     Cv_Descripcion     DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE,
+                                     Cv_Empresa_Cod     DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE) IS
+      SELECT
+        Apd.*
+      FROM
+             Db_General.Admi_Parametro_Cab Apc
+        JOIN Db_General.Admi_Parametro_Det Apd ON Apc.Id_Parametro = Apd.Parametro_Id
+      WHERE
+        Apc.Nombre_Parametro = Cv_NombreParametro
+        AND Apc.Estado = 'Activo'
+        AND Apd.Descripcion = Cv_Descripcion
+        AND Apd.Empresa_Cod = Cv_Empresa_Cod
+        AND Apd.Estado = 'Activo';
+
+    Le_NotFound EXCEPTION;
+  BEGIN
+
+    IF C_GetAdmiDetalleParametro%ISOPEN THEN
+        CLOSE C_GetAdmiDetalleParametro;
+    END IF;
+
+    OPEN C_GetAdmiDetalleParametro(Pv_NombreParametro, Pv_Descripcion, Pv_Empresa_Cod);
+    FETCH C_GetAdmiDetalleParametro INTO Pr_AdmiParametroDet;
+    IF C_GetAdmiDetalleParametro%NOTFOUND THEN
+        CLOSE C_GetAdmiDetalleParametro;
+        RAISE Le_NotFound;
+    END IF;
+    CLOSE C_GetAdmiDetalleParametro;
+
+    Pv_Status := 'OK';
+    Pv_Mensaje := 'Consulta exitosa';
+  EXCEPTION
+    WHEN Le_NotFound THEN
+        Pv_Status := 'ERROR';
+        Pv_Mensaje := 'No se encontro detalle de parametro';
+    WHEN OTHERS THEN
+        Pv_Status := 'ERROR';
+        Pv_Mensaje := 'Error: ' || SQLERRM;
+  END P_GET_DETALLE_PARAMETRO;  
+  
 end GNKG_PARAMETRO_CONSULTA;
 /
 

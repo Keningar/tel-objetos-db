@@ -1,4 +1,4 @@
-CREATE OR REPLACE package                                                 DB_SOPORTE.SPKG_SOPORTE_TAREA IS
+CREATE OR REPLACE package DB_SOPORTE.SPKG_SOPORTE_TAREA IS
 
  /**
   * Documentación para el procedimiento P_TAREA_EMPLEADO
@@ -87,10 +87,94 @@ CREATE OR REPLACE package                                                 DB_SOP
                                Pv_Mensaje   OUT VARCHAR2,
                                Pcl_Response OUT CLOB);
 
+  /**
+   * Documentación para el proceso 'P_GET_ADMI_PROCESO'
+   *
+   * Metodo encargado de consultar uno o varios procesos, según los datos ingresados
+   *
+   * @param Pcl_Request    IN   CLOB Recibe json request
+   * [
+   *  idProceso           Id del proceso,
+   *  nombreProceso       Nombre del proceso,
+   *  estado              Estado del proceso,
+   *  procesoPadreId      Id del proceso padre,
+   *  aplicaEstado        Indica si aplica estado,
+   *  visible             Indica si es visible,
+   *  planMantenimiento   Indica si es parte del plan de mantenimiento
+   * ]
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la consulta
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la consulta
+   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la consulta
+   *
+   * @author  David De La Cruz <ddelacruz@telconet.ec>
+   * @version 1.0 
+   * @since   22-10-2021
+   */                              
+  PROCEDURE P_GET_ADMI_PROCESO(Pcl_Request  IN  CLOB,
+                               Pv_Status    OUT VARCHAR2,
+                               Pv_Mensaje   OUT VARCHAR2,
+                               Prf_Response OUT SYS_REFCURSOR);
+
+  /**
+   * Documentación para el proceso 'P_GET_ADMI_TAREA'
+   *
+   * Metodo encargado de consultar uno o varias tareas, según los datos ingresados
+   *
+   * @param Pcl_Request    IN   CLOB Recibe json request
+   * [
+   *  idTarea       Id de la tarea,
+   *  idProceso     Id del proceso,
+   *  estado        Estado de la tarea,
+   *  nombreTarea   Nombre de la tarea
+   * ]
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la consulta
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la consulta
+   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la consulta
+   *
+   * @author  David De La Cruz <ddelacruz@telconet.ec>
+   * @version 1.0 
+   * @since   22-10-2021
+   */                               
+  PROCEDURE P_GET_ADMI_TAREA(Pcl_Request  IN  CLOB,
+                             Pv_Status    OUT VARCHAR2,
+                             Pv_Mensaje   OUT VARCHAR2,
+                             Prf_Response OUT SYS_REFCURSOR);  
+
+  /**
+   * Documentación para el procedimiento P_GET_TAREAS
+   *
+   * Metodo encargado de consultar uno o varias tareas (actividades), segun los datos ingresados
+   *
+   * @param Pcl_Request    IN   CLOB Recibe json request
+   *
+   * [
+   *  codEmpresa              Código de la empresa,
+   *  fechaCreacionDesde      Fecha de inicio para buscar tarea según la fecha de creación,
+   *  fechaCreacionHasta      Fecha fin para buscar tarea según la fecha de creación,
+   *  estados                 Estados de la(s) tarea(s) a consultar,
+   *  nombreAfectado          Nombre del afectado en la tarea,
+   *  identificacionCliente   Identificación del cliente
+   * ]
+   *
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la consulta
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la consulta
+   * @param Pcl_Response   OUT  CLOB Retorna json de la consulta
+   *
+   * @author  David De La Cruz <ddelacruz@telconet.ec>
+   * @version 1.0 
+   * @since   26-10-2021
+   */                           
+  PROCEDURE P_GET_TAREAS(Pcl_Request  IN CLOB,
+                         Pv_Status    OUT VARCHAR2,
+                         Pv_Mensaje   OUT VARCHAR2,
+                         Pcl_Response OUT CLOB);                                   
+
 END SPKG_SOPORTE_TAREA;
+
 /
 
-CREATE OR REPLACE package body                                           DB_SOPORTE.SPKG_SOPORTE_TAREA IS
+
+CREATE OR REPLACE package body DB_SOPORTE.SPKG_SOPORTE_TAREA IS
 
    PROCEDURE P_TAREA_EMPLEADO(Pcl_Request  IN  CLOB,
                               Pv_Status    OUT VARCHAR2,
@@ -108,25 +192,25 @@ CREATE OR REPLACE package body                                           DB_SOPO
       Lv_NombreDepartamento  VARCHAR2(50);
       Lv_Nombres             VARCHAR2(50);
       Le_Errors              EXCEPTION;
-   
-   
+
+
    BEGIN 
-   
+
       -- RETORNO LAS VARIABLES DEL REQUEST
       APEX_JSON.PARSE(Pcl_Request);
       Lv_NumeroTarea         :=  APEX_JSON.get_varchar2(p_path => 'numeroTarea');
       Lv_EmpresaCod          :=  APEX_JSON.get_varchar2(p_path => 'empresaCod');
       Lv_NombreDepartamento  :=  APEX_JSON.get_varchar2(p_path => 'nombreDpto');
       Lv_Nombres             :=  APEX_JSON.get_varchar2(p_path => 'nombres');
-   
+
       Lcl_Select       :=  '
                      SELECT DISTINCT IP.IDENTIFICACION_CLIENTE IDENTIFICACION, VEE.NOMBRE NOMBRES,ATA.NOMBRE_TAREA,ATA.ESTADO ESTADO_TAREA,
                             VEE.NO_EMPLE,VEE.MAIL_CIA, VEE.NOMBRE_DEPTO DEPARTAMENTO,ICO.ID_COMUNICACION NUMERO_TAREA  ';
-   
-   
+
+
       Lcl_From         :=   ' 
                      FROM DB_COMUNICACION.INFO_COMUNICACION ICO ';
-      
+
       Lcl_WhereAndJoin := '  
                      JOIN DB_SOPORTE.INFO_DETALLE IDE ON IDE.ID_DETALLE = ICO.DETALLE_ID
                      JOIN DB_SOPORTE.INFO_DETALLE_ASIGNACION IDA ON IDA.DETALLE_ID = IDE.ID_DETALLE
@@ -136,30 +220,30 @@ CREATE OR REPLACE package body                                           DB_SOPO
                      JOIN NAF47_TNET.V_EMPLEADOS_EMPRESAS VEE ON VEE.LOGIN_EMPLE = IP.LOGIN 
                      WHERE ICO.ID_COMUNICACION='||Lv_NumeroTarea||' AND VEE.ESTADO=''A'' AND IPER.ESTADO=''Activo''
                      AND VEE.NO_CIA='''||Lv_EmpresaCod||''' AND VEE.NOMBRE_DEPTO = '''||Lv_NombreDepartamento||''' ';
-      
-      
+
+
       IF Lv_Nombres IS NOT NULL THEN
-      
+
          Lcl_WhereAndJoin := Lcl_WhereAndJoin ||' AND VEE.NOMBRE='''||Lv_Nombres||''' ' ;
-         
+
       END IF;
-      
+
       Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin;
-      
+
       OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status     := 'OK';
     Pv_Mensaje    := 'Transacción exitosa';
-    
-  
+
+
    EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
-      
-   
+
+
    END P_TAREA_EMPLEADO;
 
    ----
@@ -899,6 +983,552 @@ CREATE OR REPLACE package body                                           DB_SOPO
       Pv_Status := 'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
    END P_GET_EVENTO_TAREA;
+
+  PROCEDURE P_GET_ADMI_PROCESO(Pcl_Request IN  CLOB,
+                               Pv_Status    OUT VARCHAR2,
+                               Pv_Mensaje   OUT VARCHAR2,
+                               Prf_Response OUT SYS_REFCURSOR)
+  AS
+
+    Lr_AdmiProceso  ADMI_PROCESO%ROWTYPE;  
+    Lcl_SelectFrom  CLOB;
+    Lcl_Where       CLOB;
+    Lcl_Query       CLOB;
+
+  BEGIN
+
+    APEX_JSON.PARSE(Pcl_Request);
+    Lr_AdmiProceso.Id_Proceso := APEX_JSON.get_varchar2(p_path => 'idProceso');
+    Lr_AdmiProceso.Nombre_Proceso := APEX_JSON.get_varchar2(p_path => 'nombreProceso');
+    Lr_AdmiProceso.Estado         :=  APEX_JSON.get_varchar2(p_path => 'estado');
+    Lr_AdmiProceso.Proceso_Padre_Id := APEX_JSON.get_varchar2(p_path => 'procesoPadreId');
+    Lr_AdmiProceso.Aplica_Estado := APEX_JSON.get_varchar2(p_path => 'aplicaEstado');
+    Lr_AdmiProceso.Visible := APEX_JSON.get_varchar2(p_path => 'visible');
+    Lr_AdmiProceso.PlanMantenimiento := APEX_JSON.get_varchar2(p_path => 'planMantenimiento');
+
+    DBMS_LOB.CREATETEMPORARY(Lcl_SelectFrom, true); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_Where, true); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_Query, true);
+
+    DBMS_LOB.APPEND(Lcl_SelectFrom,'SELECT * FROM DB_SOPORTE.ADMI_PROCESO apr ');
+
+    IF Lr_AdmiProceso.Estado IS NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'WHERE apr.estado = ''Activo'' ');
+    ELSE
+      DBMS_LOB.APPEND(Lcl_Where,'WHERE apr.estado = '''||Lr_AdmiProceso.Estado||''' ');
+    END IF;
+
+    IF Lr_AdmiProceso.Id_Proceso IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND apr.id_proceso = '||Lr_AdmiProceso.Id_Proceso||' ');
+    END IF;
+
+    IF Lr_AdmiProceso.Nombre_Proceso IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND apr.nombre_proceso = '''||Lr_AdmiProceso.Nombre_Proceso||''' ');
+    END IF;
+
+    IF Lr_AdmiProceso.Proceso_Padre_Id IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND apr.proceso_padre_id = '||Lr_AdmiProceso.Proceso_Padre_Id||' ');
+    END IF;
+
+    IF Lr_AdmiProceso.Visible IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND apr.visible = '''||Lr_AdmiProceso.Visible||''' ');
+    END IF;
+
+    IF Lr_AdmiProceso.PlanMantenimiento IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND apr.planmantenimiento = '''||Lr_AdmiProceso.PlanMantenimiento||''' ');
+    END IF;
+
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_SelectFrom);
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_Where);
+
+    OPEN Prf_Response FOR Lcl_Query;
+
+    Pv_Status  := 'OK';
+    Pv_Mensaje := 'Consulta exitosa';
+
+  EXCEPTION
+  WHEN OTHERS THEN
+    Pv_Status  := 'ERROR';
+    Pv_Mensaje := SQLERRM;
+  END P_GET_ADMI_PROCESO;
+
+  PROCEDURE P_GET_ADMI_TAREA(Pcl_Request  IN  CLOB,
+                             Pv_Status    OUT VARCHAR2,
+                             Pv_Mensaje   OUT VARCHAR2,
+                             Prf_Response OUT SYS_REFCURSOR)
+  AS
+
+    Lr_AdmiTarea  ADMI_TAREA%ROWTYPE;  
+    Lcl_SelectFrom  CLOB;
+    Lcl_Where       CLOB;
+    Lcl_Query       CLOB;
+
+  BEGIN
+
+    APEX_JSON.PARSE(Pcl_Request);
+    Lr_AdmiTarea.Id_Tarea := APEX_JSON.get_varchar2(p_path => 'idTarea');
+    Lr_AdmiTarea.Proceso_Id := APEX_JSON.get_varchar2(p_path => 'idProceso');
+    Lr_AdmiTarea.Estado         :=  APEX_JSON.get_varchar2(p_path => 'estado');
+    Lr_AdmiTarea.Nombre_Tarea := APEX_JSON.get_varchar2(p_path => 'nombreTarea');
+
+    DBMS_LOB.CREATETEMPORARY(Lcl_SelectFrom, true); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_Where, true); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_Query, true);
+
+    DBMS_LOB.APPEND(Lcl_SelectFrom,'SELECT * FROM DB_SOPORTE.ADMI_TAREA ata ');
+
+    IF Lr_AdmiTarea.Estado IS NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'WHERE ata.estado = ''Activo'' ');
+    ELSE
+      DBMS_LOB.APPEND(Lcl_Where,'WHERE ata.estado = '''||Lr_AdmiTarea.Estado||''' ');
+    END IF;
+
+    IF Lr_AdmiTarea.Id_Tarea IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND ata.id_tarea = '||Lr_AdmiTarea.Id_Tarea||' ');
+    END IF;
+
+    IF Lr_AdmiTarea.Nombre_Tarea IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND ata.nombre_tarea = '''||Lr_AdmiTarea.Nombre_Tarea||''' ');
+    END IF;
+
+    IF Lr_AdmiTarea.Proceso_Id IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Where,'AND ata.proceso_id = '||Lr_AdmiTarea.Proceso_Id||' ');
+    END IF;
+
+
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_SelectFrom);
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_Where);
+
+    OPEN Prf_Response FOR Lcl_Query;
+
+    Pv_Status  := 'OK';
+    Pv_Mensaje := 'Consulta exitosa';
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje := SQLERRM;
+  END P_GET_ADMI_TAREA;
+
+  PROCEDURE P_GET_TAREAS(Pcl_Request  IN CLOB,
+                         Pv_Status    OUT VARCHAR2,
+                         Pv_Mensaje   OUT VARCHAR2,
+                         Pcl_Response OUT CLOB) AS
+
+    /**
+     * C_GetHistorialTarea, obtiene el historial de una tarea (actividad)
+     * @author  David De La Cruz <ddelacruz@telconet.ec>
+     * @version 1.0 15-11-2021
+     * @costo   7, cardinalidad 3
+     */
+    CURSOR C_GetHistorialTarea(Cn_IdDetalle Number) IS
+      SELECT
+        Idh.*
+      FROM
+        Db_Soporte.Info_Detalle_Historial Idh
+      WHERE
+        Idh.Detalle_Id = Cn_IdDetalle
+      ORDER BY Idh.fe_creacion ASC;
+      
+    /**
+     * C_GetAsignacionTarea, obtiene información de asignación de la tarea
+     * @author  David De La Cruz <ddelacruz@telconet.ec>
+     * @version 1.0 11-11-2021
+     * @costo   4, cardinalidad 1
+     */
+    CURSOR C_GetAsignacionTarea(Cn_IdDetalle Number, Cn_IdPersonaEmpresaRol Number) IS
+      SELECT
+        Ida.*
+      FROM
+        Info_Detalle_Asignacion Ida
+      WHERE
+        Ida.Detalle_Id = Cn_IdDetalle
+        AND Ida.Persona_Empresa_Rol_Id = Cn_IdPersonaEmpresaRol
+        AND ROWNUM = 1;   
+        
+    /**
+     * C_GetAfectadosTarea, obtiene información de afectados de la tarea (actividad)
+     * @author  David De La Cruz <ddelacruz@telconet.ec>
+     * @version 1.0 11-11-2021
+     * @costo   5, cardinalidad 1
+     */
+    CURSOR C_GetAfectadosTarea(Cn_IdDetalle Number, Cv_TipoAfectado Varchar2) IS
+      SELECT
+        Ipa.*
+      FROM
+             Db_Soporte.Info_Criterio_Afectado Ica
+        INNER JOIN Db_Soporte.Info_Parte_Afectada Ipa ON Ica.Detalle_Id = Ipa.Detalle_Id
+                                                         AND Ica.Id_Criterio_Afectado = Ipa.Criterio_Afectado_Id
+      WHERE
+        Ica.Detalle_Id = Cn_IdDetalle
+         AND Initcap(Ipa.Tipo_Afectado) = Cv_TipoAfectado;
+         
+    /**
+     * C_GetInfoPunto, obtiene información del punto afectado
+     * @author  David De La Cruz <ddelacruz@telconet.ec>
+     * @version 1.0 11-11-2021
+     * @costo   3, cardinalidad 1
+     */
+    CURSOR C_GetInfoPunto(Cn_IdPunto Number) IS
+      SELECT
+        Ipu.*
+      FROM
+        Db_Comercial.Info_Punto Ipu
+      WHERE
+        Ipu.Id_Punto = Cn_IdPunto;
+        
+    /**
+     * C_GetInfoPersona, obtiene información de la persona
+     * @author  David De La Cruz <ddelacruz@telconet.ec>
+     * @version 1.0 15-11-2021
+     * @costo   3, cardinalidad 1
+     */
+    CURSOR C_GetInfoPersona(Cn_IdPersona Number) IS
+      SELECT
+        Ipe.*
+      FROM
+        Db_Comercial.Info_Persona Ipe
+      WHERE
+        Ipe.Id_Persona = Cn_IdPersona; 
+
+    Lr_AdmiParametroDet DB_GENERAL.Admi_Parametro_Det%ROWTYPE;
+    Lr_DocRelacion      DB_COMUNICACION.INFO_DOCUMENTO_RELACION%ROWTYPE;
+    Lc_DetalleAsigna    C_GetAsignacionTarea%ROWTYPE;
+    Lc_InfoPunto        C_GetInfoPunto%ROWTYPE;
+    Lc_InfoPersona      C_GetInfoPersona%ROWTYPE;
+    Lv_CodEmpresa       DB_COMERCIAL.Info_Empresa_Grupo.cod_Empresa%TYPE;
+    Lv_IdentCliente     DB_COMERCIAL.Info_Persona.Identificacion_Cliente%TYPE;
+    Ln_IdComunicacion   DB_COMUNICACION.Info_Comunicacion.Id_Comunicacion%TYPE;
+    Lv_NombreAfectado   Info_Parte_Afectada.Afectado_Nombre%TYPE;
+    Lr_Tarea            SPKG_TYPES.Ltr_Tarea;
+    Lr_Documento        SPKG_TYPES.Ltr_Documento;
+    Lv_FeCreacionDesde  VARCHAR2(25);
+    Lv_FeCreacionHasta  VARCHAR2(25);
+    Lv_WhereFeCreacionD VARCHAR2(500);
+    Lv_WhereFeCreacionH VARCHAR2(500);
+    Lv_Estados          VARCHAR2(1000);
+    Lv_Status           VARCHAR2(200);
+    Lv_Mensaje          VARCHAR2(3000);
+    Lrf_Tareas          SYS_REFCURSOR;
+    Lrf_Documentos      SYS_REFCURSOR;
+    Lcl_QuerySelect     CLOB;
+    Lcl_QuerySelectCar  CLOB;
+    Lcl_QueryFrom       CLOB;
+    Lcl_QueryFromCar    CLOB;
+    Lcl_QueryWhere      CLOB;
+    Lcl_QueryWhereCar   CLOB;
+    Lcl_Query           CLOB;
+    Lcl_Response        CLOB;
+    Ln_CantidadEstados  NUMBER;
+    Li_Cont             PLS_INTEGER;
+    Li_Cont_Doc         PLS_INTEGER;
+  BEGIN
+    
+    APEX_JSON.PARSE(Pcl_Request);
+    Lv_CodEmpresa := APEX_JSON.get_varchar2('codEmpresa');
+    Lv_FeCreacionDesde := APEX_JSON.get_varchar2('fechaCreacionDesde');
+    Lv_FeCreacionHasta := APEX_JSON.get_varchar2('fechaCreacionHasta');
+    Lv_NombreAfectado := APEX_JSON.get_varchar2('nombreAfectado');
+    Lv_IdentCliente := APEX_JSON.get_varchar2('identificacionCliente');
+    Ln_IdComunicacion := APEX_JSON.get_number('numeroTarea');
+    
+    Ln_CantidadEstados := APEX_JSON.get_count('estados');
+
+    IF NVL(Ln_CantidadEstados,0) > 0 THEN
+      FOR i IN 1..Ln_CantidadEstados LOOP
+        lv_estados := lv_estados ||''''||APEX_JSON.get_varchar2('estados[%d]',i)||''',';
+      END LOOP;      
+      IF lv_estados IS NOT NULL THEN
+        lv_estados := Substr(Initcap(lv_estados),1,length(lv_estados)-1);
+      END IF;    
+    END IF;
+
+    DBMS_LOB.CREATETEMPORARY(Lcl_QuerySelect, TRUE); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_QueryFrom, TRUE); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_QueryWhere, TRUE); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_Query, TRUE); 
+    
+    DBMS_LOB.CREATETEMPORARY(Lcl_QuerySelectCar, TRUE); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_QueryFromCar, TRUE); 
+    DBMS_LOB.CREATETEMPORARY(Lcl_QueryWhereCar, TRUE); 
+
+    IF Lv_FeCreacionDesde IS NULL AND Ln_IdComunicacion IS NULL THEN
+      DB_GENERAL.GNKG_PARAMETRO_CONSULTA.P_GET_DETALLE_PARAMETRO(Pv_NombreParametro   => 'MS_CORE_SOPORTE', 
+                                                                  Pv_Descripcion       => 'DIAS_DEFAULT_PARA_CONSULTAR_TAREAS',
+                                                                  Pv_Empresa_Cod       => Nvl(Lv_CodEmpresa,10),
+                                                                  Pr_AdmiParametroDet  => Lr_AdmiParametroDet,
+                                                                  Pv_Status            => Lv_Status,
+                                                                  Pv_Mensaje           => Lv_Mensaje); 
+
+      Lv_FeCreacionDesde := to_char(Sysdate - Lr_AdmiParametroDet.Valor1,'rrrr-mm-dd');
+    END IF;
+
+    IF Lv_FeCreacionHasta IS NULL THEN
+      Lv_FeCreacionHasta := to_char(Sysdate,'rrrr-mm-dd hh24:mi:ss');
+    ELSE
+      IF LENGTH(Lv_FeCreacionHasta) = 10 THEN
+        Lv_FeCreacionHasta := Lv_FeCreacionHasta || ' 23:59:59';
+      END IF;
+    END IF;
+
+    DBMS_LOB.APPEND(Lcl_QuerySelect,'SELECT
+                                      Ico.Id_Comunicacion AS numeroTarea,
+                                      Ico.forma_Contacto_Id AS idFormaContacto,
+                                      Afc.descripcion_Forma_Contacto AS formaContacto,
+                                      Ico.Caso_Id AS idCaso,
+                                      Ico.Detalle_Id AS idDetalle,
+                                      Ide.observacion,
+                                      Ico.fecha_comunicacion AS fechaCreacion,
+                                      (
+                                        SELECT
+                                          Idhi.Estado
+                                        FROM
+                                          Db_Soporte.Info_Detalle_Historial Idhi
+                                        WHERE
+                                          Idhi.Id_Detalle_Historial = (
+                                            SELECT
+                                              MAX(Idh.Id_Detalle_Historial)
+                                            FROM
+                                              Db_Soporte.Info_Detalle_Historial Idh
+                                            WHERE
+                                              Idh.Detalle_Id = Ico.Detalle_Id
+                                          )
+                                      ) AS Estado,
+                                      Ico.usr_Creacion AS usuarioCreacion,
+                                      Ico.ip_Creacion AS ipCreacion,
+                                      Ipa.Tipo_Afectado,
+                                      Ipa.Afectado_Id ');
+    DBMS_LOB.APPEND(Lcl_QueryFrom,'FROM
+                                         Db_Comunicacion.Info_Comunicacion Ico
+                                    INNER JOIN Db_Soporte.Info_Tarea             Ita ON Ico.id_Comunicacion = Ita.Numero_Tarea
+                                    INNER JOIN Db_Soporte.Info_Detalle           Ide ON Ico.Detalle_Id = Ide.Id_Detalle
+                                    INNER JOIN Db_Soporte.Info_Criterio_Afectado Ica ON Ide.Id_Detalle = Ica.Detalle_Id
+                                    INNER JOIN Db_Soporte.Info_Parte_Afectada    Ipa ON Ica.Detalle_Id = Ipa.Detalle_Id
+                                                                                     AND Ica.Id_Criterio_Afectado = Ipa.Criterio_Afectado_Id
+                                    INNER JOIN Db_Comercial.Info_Punto Ipu ON Ipa.Afectado_Id = Ipu.Id_Punto  
+                                    INNER JOIN Db_Comercial.Info_Persona_Empresa_Rol Iper ON Ipu.Persona_Empresa_Rol_Id = Iper.id_Persona_Rol
+                                    INNER JOIN Db_Comercial.Info_Persona Ipe ON Iper.Persona_Id = Ipe.Id_Persona
+                                    INNER JOIN Db_Comercial.Admi_Forma_Contacto Afc ON Ico.Forma_Contacto_Id = Afc.id_Forma_Contacto ');
+    
+    DBMS_LOB.APPEND(Lcl_QuerySelectCar,'SELECT
+                                      Ico.Id_Comunicacion AS numeroTarea,
+                                      Ico.forma_Contacto_Id AS idFormaContacto,
+                                      Afc.descripcion_Forma_Contacto AS formaContacto,
+                                      Ico.Caso_Id AS idCaso,
+                                      Ico.Detalle_Id AS idDetalle,
+                                      Ide.observacion,
+                                      Ico.fecha_comunicacion AS fechaCreacion,
+                                      (
+                                        SELECT
+                                          Idhi.Estado
+                                        FROM
+                                          Db_Soporte.Info_Detalle_Historial Idhi
+                                        WHERE
+                                          Idhi.Id_Detalle_Historial = (
+                                            SELECT
+                                              MAX(Idh.Id_Detalle_Historial)
+                                            FROM
+                                              Db_Soporte.Info_Detalle_Historial Idh
+                                            WHERE
+                                              Idh.Detalle_Id = Ico.Detalle_Id
+                                          )
+                                      ) AS Estado,
+                                      Ico.usr_Creacion AS usuarioCreacion,
+                                      Ico.ip_Creacion AS ipCreacion,
+                                      Aca.Descripcion_Caracteristica ,
+                                      To_Number(Itc.Valor) ');
+                                      
+    DBMS_LOB.APPEND(Lcl_QueryFromCar,'FROM
+                                         Db_Comunicacion.Info_Comunicacion Ico
+                                    INNER JOIN Db_Soporte.Info_Detalle           Ide ON Ico.Detalle_Id = Ide.Id_Detalle
+                                    INNER JOIN Db_Soporte.Info_Tarea_Caracteristica Itc ON Ide.Id_Detalle = Itc.Detalle_Id
+                                    INNER JOIN Db_Comercial.Admi_Caracteristica Aca ON Itc.Caracteristica_Id = Aca.Id_Caracteristica
+                                    INNER JOIN Db_Comercial.Info_Persona Ipe ON Itc.Valor = Ipe.Id_Persona
+                                    INNER JOIN Db_Comercial.Admi_Forma_Contacto Afc ON Ico.Forma_Contacto_Id = Afc.id_Forma_Contacto ');                                    
+
+    IF Ln_IdComunicacion IS NULL THEN
+      Lv_WhereFeCreacionD := 'WHERE Ico.Fecha_Comunicacion >= To_Date('':feCreacionD'',''rrrr-mm-dd hh24:mi:ss'') ';
+      Lv_WhereFeCreacionH:= 'AND Ico.Fecha_Comunicacion <= To_Date('':feCreacionH'',''rrrr-mm-dd hh24:mi:ss'') ';
+  
+      DBMS_LOB.APPEND(Lcl_QueryWhere,REPLACE(Lv_WhereFeCreacionD, ':feCreacionD', Lv_FeCreacionDesde));
+      DBMS_LOB.APPEND(Lcl_QueryWhere,REPLACE(Lv_WhereFeCreacionH, ':feCreacionH', Lv_FeCreacionHasta));
+      
+      DBMS_LOB.APPEND(Lcl_QueryWhereCar,REPLACE(Lv_WhereFeCreacionD, ':feCreacionD', Lv_FeCreacionDesde));
+      DBMS_LOB.APPEND(Lcl_QueryWhereCar,REPLACE(Lv_WhereFeCreacionH, ':feCreacionH', Lv_FeCreacionHasta));
+    ELSE
+      DBMS_LOB.APPEND(Lcl_QueryWhere,REPLACE('WHERE Ico.Id_Comunicacion = :idComunicacion ', ':idComunicacion', Ln_IdComunicacion));
+      DBMS_LOB.APPEND(Lcl_QueryWhereCar,REPLACE('WHERE Ico.Id_Comunicacion = :idComunicacion ', ':idComunicacion', Ln_IdComunicacion));
+    END IF;
+    
+    DBMS_LOB.APPEND(Lcl_QueryWhereCar,'AND Aca.Descripcion_Caracteristica = ''REFERENCIA_PERSONA'' ');
+        
+    IF Lv_CodEmpresa IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_QueryWhere,REPLACE('AND Ico.Empresa_Cod = '':codEmpresa'' ',':codEmpresa',Lv_CodEmpresa));  
+      DBMS_LOB.APPEND(Lcl_QueryWhereCar,REPLACE('AND Ico.Empresa_Cod = '':codEmpresa'' ',':codEmpresa',Lv_CodEmpresa));  
+    END IF;
+
+    IF Lv_NombreAfectado IS NOT NULL THEN
+       DBMS_LOB.APPEND(Lcl_QueryWhere,'AND Ipa.Afectado_Nombre = '''||Lv_NombreAfectado||''' ');
+    END IF;
+
+    IF Lv_IdentCliente IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_QueryWhere,REPLACE('AND Ipe.Identificacion_Cliente = '':idenCliente'' ',':idenCliente',Lv_IdentCliente));   
+      DBMS_LOB.APPEND(Lcl_QueryWhereCar,REPLACE('AND Ipe.Identificacion_Cliente = '':idenCliente'' ',':idenCliente',Lv_IdentCliente)); 
+    END IF;
+    
+    DBMS_LOB.APPEND(Lcl_QueryWhereCar,'AND not exists (SELECT ''X'' FROM Db_Soporte.Info_Criterio_Afectado Ica WHERE Ica.Detalle_Id = Ide.Id_Detalle) ');
+
+    DBMS_LOB.APPEND(Lcl_Query,'SELECT tab.* FROM ( ');
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_QuerySelect);
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_QueryFrom);
+    DBMS_LOB.APPEND(Lcl_Query,Lcl_QueryWhere);
+    
+    IF Lv_NombreAfectado IS NULL AND Lv_IdentCliente IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Query,'Union All ');
+      DBMS_LOB.APPEND(Lcl_Query,Lcl_QuerySelectCar);
+      DBMS_LOB.APPEND(Lcl_Query,Lcl_QueryFromCar);
+      DBMS_LOB.APPEND(Lcl_Query,Lcl_QueryWhereCar);
+    END IF;
+    
+    DBMS_LOB.APPEND(Lcl_Query,') tab ');  
+
+    IF Lv_Estados IS NOT NULL THEN
+      DBMS_LOB.APPEND(Lcl_Query,'WHERE tab.estado IN ('||Lv_Estados||') ');
+    END IF;
+
+    DBMS_LOB.APPEND(Lcl_Query,'ORDER BY tab.fechaCreacion DESC');
+    
+    OPEN Lrf_Tareas FOR Lcl_Query;
+    
+    APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+    APEX_JSON.OPEN_ARRAY();
+    LOOP
+      FETCH Lrf_Tareas BULK COLLECT INTO Lr_Tarea LIMIT 100;
+        Li_Cont := Lr_Tarea.FIRST;
+        WHILE (Li_Cont IS NOT NULL) LOOP
+          APEX_JSON.OPEN_OBJECT;
+          APEX_JSON.WRITE('numeroTarea', Lr_Tarea(Li_Cont).Numero_Tarea);
+          APEX_JSON.WRITE('idFormaContacto', Lr_Tarea(Li_Cont).Id_Forma_Contacto);
+          APEX_JSON.WRITE('formaContacto', Lr_Tarea(Li_Cont).Forma_Contacto);
+          APEX_JSON.WRITE('idCaso', Lr_Tarea(Li_Cont).Id_Caso);
+          APEX_JSON.WRITE('idDetalle', Lr_Tarea(Li_Cont).Id_Detalle);
+          APEX_JSON.WRITE('observacion', Lr_Tarea(Li_Cont).Observacion);
+          APEX_JSON.WRITE('fechaCreacion', Lr_Tarea(Li_Cont).Fe_Creacion);
+          APEX_JSON.WRITE('estado', Lr_Tarea(Li_Cont).Estado);
+          APEX_JSON.WRITE('usuarioCreacion', Lr_Tarea(Li_Cont).Usr_Creacion);
+          APEX_JSON.WRITE('ipCreacion', Lr_Tarea(Li_Cont).Ip_Creacion);
+          
+          APEX_JSON.OPEN_ARRAY('historial');
+          FOR i in C_GetHistorialTarea(Lr_Tarea(Li_Cont).Id_Detalle) LOOP
+            APEX_JSON.OPEN_OBJECT;
+            APEX_JSON.WRITE('fechaCambioEstado', i.Fe_Creacion);
+            APEX_JSON.WRITE('estado', i.Estado);
+            APEX_JSON.WRITE('accion', i.Accion);
+            APEX_JSON.WRITE('observacion', i.Observacion);
+            
+            APEX_JSON.OPEN_OBJECT('detalleAsignacion');
+            OPEN C_GetAsignacionTarea(Lr_Tarea(Li_Cont).Id_Detalle,i.Persona_Empresa_Rol_Id);
+            FETCH C_GetAsignacionTarea INTO Lc_DetalleAsigna;
+            CLOSE C_GetAsignacionTarea;
+            APEX_JSON.WRITE('idAsignado', Lc_DetalleAsigna.Asignado_Id);
+            APEX_JSON.WRITE('nombreAsignado', Lc_DetalleAsigna.Asignado_Nombre);
+            APEX_JSON.WRITE('refIdAsignado', Lc_DetalleAsigna.Ref_Asignado_Id);
+            APEX_JSON.WRITE('refNombreAsignado', Lc_DetalleAsigna.Ref_Asignado_Nombre);
+            APEX_JSON.WRITE('idPersonaEmpresaRol', Lc_DetalleAsigna.Persona_Empresa_Rol_Id);
+            APEX_JSON.WRITE('tipoAsignado', Lc_DetalleAsigna.Tipo_Asignado);              
+            APEX_JSON.CLOSE_OBJECT;            
+            
+            APEX_JSON.CLOSE_OBJECT;
+          END LOOP;
+          APEX_JSON.CLOSE_ARRAY; 
+          
+          APEX_JSON.OPEN_ARRAY('afectados');          
+          IF Lr_Tarea(Li_Cont).Tipo_Afectado = 'REFERENCIA_PERSONA' THEN
+            
+            OPEN C_GetInfoPersona(Lr_Tarea(Li_Cont).Afectado_Id);
+            FETCH C_GetInfoPersona INTO Lc_InfoPersona;
+            CLOSE C_GetInfoPersona;
+            APEX_JSON.OPEN_OBJECT;
+            APEX_JSON.WRITE('tipoAfectado', Lr_Tarea(Li_Cont).Tipo_Afectado);
+            APEX_JSON.WRITE('idAfectado', Lr_Tarea(Li_Cont).Afectado_Id);
+            IF Lc_InfoPersona.Razon_Social IS NOT NULL THEN
+              APEX_JSON.WRITE('descripcionAfectado', Lc_InfoPersona.Razon_Social);
+            ELSE
+              APEX_JSON.WRITE('descripcionAfectado', Lc_InfoPersona.Nombres ||' '|| Lc_InfoPersona.Apellidos);
+            END IF;
+            APEX_JSON.CLOSE_OBJECT;
+          ELSE
+            FOR i in C_GetAfectadosTarea(Lr_Tarea(Li_Cont).Id_Detalle,'Cliente') LOOP
+              APEX_JSON.OPEN_OBJECT;
+              APEX_JSON.WRITE('tipoAfectado', i.Tipo_Afectado);
+              APEX_JSON.WRITE('idAfectado', i.Afectado_Id);
+              APEX_JSON.WRITE('nombreAfectado', i.Afectado_Nombre);
+              APEX_JSON.WRITE('descripcionAfectado', i.Afectado_Descripcion);
+              
+              IF Initcap(i.Tipo_Afectado) = 'Cliente' THEN
+                APEX_JSON.OPEN_OBJECT('detallePunto');
+                OPEN C_GetInfoPunto(i.Afectado_Id);
+                FETCH C_GetInfoPunto INTO Lc_InfoPunto;
+                CLOSE C_GetInfoPunto;
+                APEX_JSON.WRITE('direccion', Lc_InfoPunto.Direccion);
+                APEX_JSON.WRITE('latitud', Lc_InfoPunto.Latitud);
+                APEX_JSON.WRITE('longitud', Lc_InfoPunto.Longitud);
+                APEX_JSON.WRITE('idPuntoCobertura', Lc_InfoPunto.Punto_Cobertura_Id);
+                APEX_JSON.WRITE('idTipoUbicacion', Lc_InfoPunto.Tipo_Ubicacion_Id);
+                APEX_JSON.WRITE('idSector', Lc_InfoPunto.Sector_Id);
+                APEX_JSON.WRITE('idTipoNegocio', Lc_InfoPunto.Tipo_Negocio_Id);
+                APEX_JSON.CLOSE_OBJECT;
+              END IF;           
+              
+              APEX_JSON.CLOSE_OBJECT;
+            END LOOP;
+          END IF;          
+          APEX_JSON.CLOSE_ARRAY;
+          
+          Lr_DocRelacion.Detalle_Id := Lr_Tarea(Li_Cont).Id_Detalle;
+          Lr_DocRelacion.Estado := 'Activo';
+          
+          DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA.P_GET_DOCUMENTOS_RELACIONADOS(Pr_DocumentoRelacion => Lr_DocRelacion,
+                                                                                     Pv_Status            => Lv_Status,
+                                                                                     Pv_Mensaje           => Lv_Mensaje,
+                                                                                     Prf_Response         => Lrf_Documentos);
+          
+          APEX_JSON.OPEN_ARRAY('documentos');
+          LOOP
+            FETCH Lrf_Documentos BULK COLLECT INTO Lr_Documento LIMIT 100;
+              Li_Cont_Doc := Lr_Documento.FIRST;
+              WHILE (Li_Cont_Doc IS NOT NULL) LOOP
+                APEX_JSON.OPEN_OBJECT;
+                APEX_JSON.WRITE('idDocumento',Lr_Documento(Li_Cont_Doc).Id_Documento);
+                APEX_JSON.WRITE('nombreDocumento', Lr_Documento(Li_Cont_Doc).Ubicacion_Logica_Documento);
+                APEX_JSON.WRITE('rutaDocumento', Lr_Documento(Li_Cont_Doc).Ubicacion_Fisica_Documento);
+                APEX_JSON.CLOSE_OBJECT;
+                Li_Cont_Doc:= Lr_Documento.NEXT(Li_Cont_Doc);
+              END LOOP;
+            EXIT WHEN Lrf_Documentos%NOTFOUND;
+          END LOOP;              
+          APEX_JSON.CLOSE_ARRAY;
+          
+          APEX_JSON.CLOSE_OBJECT;
+          Li_Cont:= Lr_Tarea.NEXT(Li_Cont);
+        END LOOP;
+      EXIT WHEN Lrf_Tareas%NOTFOUND;
+    END LOOP;
+    APEX_JSON.CLOSE_ARRAY;
+    Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
+    APEX_JSON.FREE_OUTPUT;
+    
+    Pv_Status := 'OK';
+    Pv_Mensaje := 'Consulta exitosa';
+    Pcl_Response := Lcl_Response;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      Pv_Status := 'ERROR';
+      Pv_Mensaje := 'Error: ' || SQLERRM;
+  END P_GET_TAREAS;
    
 END SPKG_SOPORTE_TAREA;
+
 /
+

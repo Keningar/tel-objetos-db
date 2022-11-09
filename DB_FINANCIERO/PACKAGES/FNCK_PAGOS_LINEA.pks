@@ -61,6 +61,26 @@ create or replace PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     RETURN VARCHAR2;
 
     /**
+    * Documentacion para el procedimiento P_BUSCAR_INFO_CONTRATO
+    *
+    * El procedimiento retorna el numero de contrato, forma de pago y id de contrato de un cliente, dependiendo de su código de Empresa,  
+    * identificación, y/o estado del contrato
+    *
+    * @param Pv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Pv_EmpresaCod IN VARCHAR2 código de empresa
+    * @param Pv_Estado IN VARCHAR2 estado de contrato del cliente
+    * @param Pv_NumeroContrato OUT VARCHAR2
+    * @param Pv_FormaPago OUT VARCHAR2
+    * @param Pn_IdContrato OUT NUMBER
+    * 
+    * @author David De La Cruz <ddelacruz@telconet.ec>
+    * @version 1.0 30/08/2022
+    */
+    PROCEDURE P_BUSCAR_INFO_CONTRATO(Pv_Identificacion IN VARCHAR2, Pv_EmpresaCod IN VARCHAR2, 
+                                     Pv_NumeroContrato OUT VARCHAR2, Pv_FormaPago OUT VARCHAR2, 
+                                     Pn_IdContrato OUT NUMBER, Pv_Estado IN VARCHAR2 DEFAULT NULL);
+
+    /**
     * Documentacion para la funcion F_OBTENER_SALDOS_POR_IDENTIF
     *
     * La funcion retorna la registros (cursor) de un cliente y su saldo dependiendo de su código de Empresa e  
@@ -593,6 +613,8 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     Lv_Identificacion     VARCHAR2(50);
     Lv_EmpresaCod         VARCHAR2(50);
     Lv_NumeroContrato     VARCHAR2(50);
+    Lv_FormaPago          VARCHAR2(100);
+    Ln_IdContrato         NUMBER;
     Lv_SaldoTotal         VARCHAR2(50);
     Lv_NombreCliente      VARCHAR2(500);
     Lv_RazonSocial        VARCHAR2(500);
@@ -671,13 +693,15 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
             END IF;
 
-            Lv_NumeroContrato := FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, 'Activo');
-            IF Lv_NumeroContrato IS NULL THEN
-
-                Lv_NumeroContrato := FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, 'Cancelado');
-                IF Lv_NumeroContrato IS NULL THEN
-
-                    Lv_NumeroContrato := FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO(Lv_Identificacion, Lv_EmpresaCod);
+            --Lv_NumeroContrato := FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, 'Activo');            
+            FNCK_PAGOS_LINEA.P_BUSCAR_INFO_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, Lv_NumeroContrato, Lv_FormaPago, Ln_IdContrato, 'Activo');
+            
+            IF Lv_NumeroContrato IS NULL THEN            
+                --Lv_NumeroContrato := FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, 'Cancelado');
+                FNCK_PAGOS_LINEA.P_BUSCAR_INFO_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, Lv_NumeroContrato, Lv_FormaPago, Ln_IdContrato, 'Cancelado');
+                IF Lv_NumeroContrato IS NULL THEN                
+                    --Lv_NumeroContrato := FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO(Lv_Identificacion, Lv_EmpresaCod);
+                    FNCK_PAGOS_LINEA.P_BUSCAR_INFO_CONTRATO(Lv_Identificacion, Lv_EmpresaCod, Lv_NumeroContrato, Lv_FormaPago, Ln_IdContrato);
                 END IF;
             END IF;
 
@@ -699,13 +723,15 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                 '"valorRetener":"' || Lv_ValorRetener || '",' ||
                                 '"baseImponible":"' || Lv_BaseImp || '",' ||
                                 '"secuencialPagoInterno":null,' ||
-                                '"identificacionCliente":null'
+                                '"identificacionCliente":null,' ||
+                                '"formaPago":null'
                             || '}';
 
                 Pv_Status := 'ERROR';
                 Pv_Mensaje := 'No existe numero de contrato';
 
             ELSE
+
                 Ld_Date := SYSDATE;
                 Lv_PeriodoRec := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH24:MI:SS');
 
@@ -721,7 +747,8 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                 '"baseImponible":"' || Lv_BaseImp || '",' ||
                                 '"periodoRecaudacion":"' || Lv_PeriodoRec || '",' ||
                                 '"secuencialPagoInterno":"' || Lv_Secuencial || '",' ||
-                                '"identificacionCliente":"' || Lv_Identificacion || '"'
+                                '"identificacionCliente":"' || Lv_Identificacion || '",' ||
+                                '"formaPago":"' || Lv_FormaPago || '"'
                             || '}';
 
                 Pv_Status     := 'OK';
@@ -743,7 +770,8 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                 '"valorRetener":"' || Lv_ValorRetener || '",' ||
                                 '"baseImponible":"' || Lv_BaseImp || '",' ||
                                 '"secuencialPagoInterno":null,' ||
-                                '"identificacionCliente":null' 
+                                '"identificacionCliente":null,' ||
+                                '"formaPago":null' 
                             || '}';
 
             Pv_Status := 'ERROR';
@@ -888,6 +916,96 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN Fv_NumeroContrato; 
 
     END F_BUSCAR_NUM_CONTRATO;
+
+    /**
+    * Documentacion para el procedimiento P_BUSCAR_INFO_CONTRATO
+    *
+    * El procedimiento retorna el numero de contrato, forma de pago y id de contrato de un cliente, dependiendo de su código de Empresa,  
+    * identificación, y/o estado del contrato
+    *
+    * @param Pv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Pv_EmpresaCod IN VARCHAR2 código de empresa
+    * @param Pv_Estado IN VARCHAR2 estado de contrato del cliente
+    * @param Pv_NumeroContrato OUT VARCHAR2
+    * @param Pv_FormaPago OUT VARCHAR2
+    * @param Pn_IdContrato OUT NUMBER
+    * 
+    * @author David De La Cruz <ddelacruz@telconet.ec>
+    * @version 1.0 30/08/2022
+    */
+    PROCEDURE P_BUSCAR_INFO_CONTRATO(Pv_Identificacion IN VARCHAR2, Pv_EmpresaCod IN VARCHAR2, 
+                                     Pv_NumeroContrato OUT VARCHAR2, Pv_FormaPago OUT VARCHAR2, 
+                                     Pn_IdContrato OUT NUMBER, Pv_Estado IN VARCHAR2 DEFAULT NULL)
+    IS   
+
+        CURSOR C_INFO_CONTRATO(Cn_IdContrato Number) IS
+          SELECT
+            Ic.Id_Contrato,
+            Ic.Numero_Contrato,
+            Afp.Id_Forma_Pago,
+            Afp.Descripcion_Forma_Pago
+          FROM
+                 Db_Comercial.Info_Contrato Ic
+            INNER JOIN Db_General.Admi_Forma_Pago Afp ON Ic.Forma_Pago_Id = Afp.Id_Forma_Pago
+          WHERE
+            Ic.Id_Contrato = Cn_IdContrato;
+
+        Lcl_Query           CLOB;
+        Lcl_Select          CLOB;
+        Lcl_From            CLOB;
+        Lcl_Where           CLOB;
+        Lc_Cursor           SYS_REFCURSOR;
+        Ln_IdContrato       NUMBER;
+        Lc_InfoContrato     C_INFO_CONTRATO%ROWTYPE;
+
+    BEGIN
+        Lcl_Select  := 'SELECT MAX(con.id_contrato) AS idContrato ';   
+        Lcl_From    := 'FROM DB_COMERCIAL.info_contrato con
+                            JOIN DB_COMERCIAL.info_persona_empresa_rol rol ON rol.id_persona_rol=con.persona_empresa_rol_id
+                            JOIN DB_COMERCIAL.info_empresa_rol emp ON emp.id_empresa_rol=rol.empresa_rol_id
+                            JOIN DB_COMERCIAL.info_persona per ON per.id_persona=rol.persona_id ';
+        IF Pv_Estado IS NOT NULL THEN
+            Lcl_Where := 'WHERE emp.empresa_cod='''||Pv_EmpresaCod||''' AND per.identificacion_cliente='''||Pv_Identificacion||''' AND con.estado='''||Pv_Estado||'''';
+        ELSE
+            Lcl_Where := 'WHERE emp.empresa_cod='''||Pv_EmpresaCod||''' AND per.identificacion_cliente='''||Pv_Identificacion||'''';
+        END IF;
+
+        Lcl_Query := Lcl_Select || Lcl_From || Lcl_Where;    
+
+        IF Lc_Cursor%ISOPEN THEN
+            CLOSE Lc_Cursor;
+        END IF;
+        OPEN Lc_Cursor FOR Lcl_Query;
+        FETCH Lc_Cursor INTO Ln_IdContrato;
+        IF Lc_Cursor%ISOPEN THEN
+            CLOSE Lc_Cursor;
+        END IF;
+        
+        IF Ln_IdContrato IS NOT NULL THEN
+          OPEN C_INFO_CONTRATO(Ln_IdContrato);
+          FETCH C_INFO_CONTRATO INTO Lc_InfoContrato;
+          CLOSE C_INFO_CONTRATO;
+        
+          Pv_NumeroContrato  := Lc_InfoContrato.Numero_Contrato;
+          Pv_FormaPago  := Lc_InfoContrato.Descripcion_Forma_Pago;
+          Pn_IdContrato := Lc_InfoContrato.Id_Contrato;
+        END IF;
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                          'FNCK_PAGOS_LINEA.P_BUSCAR_INFO_CONTRATO',
+                                          'No se encontró info de contrato del cliente. Parametros (Identidicacion_cliente: '||Pv_Identificacion||', Codigo_empresa: '
+                                          ||Pv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+        Pv_NumeroContrato := NULL;
+        Pv_FormaPago := NULL;
+        Pn_IdContrato := NULL;
+
+    END P_BUSCAR_INFO_CONTRATO;
 
     /**
     * Documentacion para la funcion F_OBTENER_SALDOS_POR_IDENTIF

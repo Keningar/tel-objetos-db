@@ -70,7 +70,7 @@ create or replace package body DB_GENERAL.GNKG_GEOGRAFIA_CONSULTA is
     IF Lv_NombrePais IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND AP2.NOMBRE_PAIS = '''||Lv_NombrePais||'''';
     END IF;
-    Lcl_OrderAnGroup := '';
+    Lcl_OrderAnGroup := ' ORDER BY AP.NOMBRE_PROVINCIA';
     
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
     
