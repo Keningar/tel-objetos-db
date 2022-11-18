@@ -435,6 +435,24 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2,
                                        Pcl_Response OUT SYS_REFCURSOR);
+                          
+   /** 
+   * P_INFO_CLIENTE_NOT_MASIVA_DET
+   *
+   * Procedimiento que obtiene la informacion de los clientes afectados por fallas masivas 
+   *
+   * @author Pedro Velez <psvelez@telconet.ec>
+   * @version 1.0 10/05/2022
+   * 
+   * @param Pcl_Request  IN  CLOB
+   * @param Pv_Status          OUT VARCHAR2
+   * @param Pv_Mensaje         OUT VARCHAR2
+   * @param Pcl_Response       OUT CLOB 
+   */                                   
+  PROCEDURE P_INFO_CLIENTE_NOT_MASIVA_DET(Pcl_Request  IN  CLOB,
+                                         Pv_Status          OUT VARCHAR2,
+                           			         Pv_Mensaje   	   OUT VARCHAR2,
+                                          Pcl_Response       OUT CLOB); 
 
   /**
   * Documentación para el procedimiento P_FORMA_PAGO
@@ -2871,6 +2889,81 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
       Pv_Mensaje := SQLERRM;
 
   END P_CONT_FORMA_PAGO_HISTORIAL;
+
+   PROCEDURE P_INFO_CLIENTE_NOT_MASIVA_DET(Pcl_Request  IN  CLOB,
+                                          Pv_Status    OUT VARCHAR2,
+                           			      Pv_Mensaje   OUT VARCHAR2,
+                                          Pcl_Response OUT CLOB) AS
+                                          
+   CURSOR C_GetPersonas(Cn_ProcesoMasivoCabId number,Cv_Estado Varchar2) IS
+    SELECT  count(per.IDENTIFICACION_CLIENTE) CANTIDAD_PUNTOS,
+            per.NOMBRES,
+            per.APELLIDOS,
+            ipmd.estado AS ESTADO_REGISTRO,
+            listagg(ipmd.login,' | ') within GROUP (order by ipmd.login)  as LOGIN,
+            listagg(REPLACE(ip.direccion,'-',' '),' - ') 
+            within GROUP (order by ip.direccion)  as DIRECCION,
+            per.IDENTIFICACION_CLIENTE,
+            iper.ID_PERSONA_ROL,
+            iperc.VALOR TOKEN_APP        
+    FROM DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET ipmd,
+        DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL iper,
+        DB_COMERCIAL.INFO_PERSONA per,
+        DB_COMERCIAL.INFO_PUNTO ip,
+        DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC iperc,
+        DB_COMERCIAL.ADMI_CARACTERISTICA ac 
+    WHERE ipmd.PERSONA_EMPRESA_ROL_ID = iper.ID_PERSONA_ROL
+    AND per.ID_PERSONA = iper.PERSONA_ID
+    AND ipmd.PUNTO_ID = ip.ID_PUNTO
+    AND iperc.PERSONA_EMPRESA_ROL_ID = iper.ID_PERSONA_ROL 
+    AND iperc.CARACTERISTICA_ID = ac.ID_CARACTERISTICA 
+    AND ac.DESCRIPCION_CARACTERISTICA ='PUSH_ID_CLIENTE'
+    AND ipmd.PROCESO_MASIVO_CAB_ID = Cn_ProcesoMasivoCabId
+    AND IPMD.ESTADO = decode(Cv_Estado,'Finalizado',IPMD.ESTADO,Cv_Estado)
+    AND ip.ESTADO = 'Activo'
+    AND iper.ESTADO = 'Activo'
+    AND per.ESTADO ='Activo'
+    AND iperc.ESTADO = 'Activo'
+    GROUP BY per.IDENTIFICACION_CLIENTE,NOMBRES,iperc.VALOR,
+    iper.ID_PERSONA_ROL,ipmd.estado,per.APELLIDOS;
+   
+   Lv_Estado_Registro  varchar2(50);Ln_Id_Proceso_Masivo_Cab number;
+   Lcl_Response        CLOB;
+   Le_Error            EXCEPTION;
+      
+  BEGIN
+     APEX_JSON.PARSE(Pcl_Request);
+     Lv_Estado_Registro       := APEX_JSON.get_varchar2('estadoRegistro');
+     Ln_Id_Proceso_Masivo_Cab := APEX_JSON.get_number('idProcesoMasivoCab');
+     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+     APEX_JSON.OPEN_ARRAY();
+    
+     FOR i in C_GetPersonas(Ln_Id_Proceso_Masivo_Cab, Lv_Estado_Registro) LOOP
+     	 APEX_JSON.OPEN_OBJECT;
+     	 APEX_JSON.WRITE('cantidadPuntos', i.CANTIDAD_PUNTOS);
+		   APEX_JSON.WRITE('cliente', i.NOMBRES||' '||i.APELLIDOS);
+		   APEX_JSON.WRITE('estadoRegistro', i.ESTADO_REGISTRO);
+		   APEX_JSON.WRITE('login', i.LOGIN);
+		   APEX_JSON.WRITE('direccion', i.DIRECCION);
+		   APEX_JSON.WRITE('identificacion', i.IDENTIFICACION_CLIENTE);
+		   APEX_JSON.WRITE('personaEmpresaRolId', i.ID_PERSONA_ROL);
+		   APEX_JSON.WRITE('tokenApp', i.TOKEN_APP);
+       APEX_JSON.CLOSE_OBJECT;
+     END LOOP;
+    
+     APEX_JSON.CLOSE_ARRAY;
+     Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
+     APEX_JSON.FREE_OUTPUT;
+
+     Pv_Status := 'OK';
+     Pv_Mensaje := 'Consulta exitosa';
+     Pcl_Response := Lcl_Response;
+   
+  EXCEPTION
+	WHEN OTHERS THEN
+	  Pv_Status  := 'ERROR';
+	  Pv_Mensaje := SQLERRM;
+  END P_INFO_CLIENTE_NOT_MASIVA_DET;
   
   PROCEDURE P_FORMA_PAGO(Pcl_Request  IN  VARCHAR2,
                          Pv_Status    OUT VARCHAR2,
