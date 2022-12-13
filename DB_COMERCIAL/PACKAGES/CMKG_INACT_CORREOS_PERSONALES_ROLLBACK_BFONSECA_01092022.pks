@@ -1,0 +1,8 @@
+/**
+* DROP DEL PAQUETE 'DB_COMERCIAL.CMKG_INACT_CORREOS_PERSONALES'
+*
+* @author Bryan Fonseca <bfonseca@telconet.ec>
+* @version 1.0 27-10-2022
+**/
+DROP PACKAGE DB_COMERCIAL.CMKG_INACT_CORREOS_PERSONALES;
+/

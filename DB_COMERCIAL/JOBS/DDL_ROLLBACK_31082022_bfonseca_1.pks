@@ -1,0 +1,17 @@
+/**
+* DROP DEL JOB 'JOB_INACTIVAR_CORREOS_PERSONALES'
+*
+* @author Bryan Fonseca <bfonseca@telconet.ec>
+* @version 1.0 27-10-2022
+**/
+SET SERVEROUTPUT ON;
+BEGIN
+	DBMS_SCHEDULER.DROP_JOB(JOB_NAME => '"DB_COMERCIAL"."JOB_INAC_CORR_PERSONALES"',
+							DEFER    => FALSE,
+							FORCE    => TRUE);
+	DBMS_OUTPUT.PUT_LINE('Se eliminó el JOB.');
+EXCEPTION
+	WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('El JOB aún no ha sido creado...');
+END;
+/
