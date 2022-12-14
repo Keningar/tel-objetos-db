@@ -3765,8 +3765,8 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       Lv_TipoTransaccion VARCHAR2(50);
       Lv_CodigoNumeracionPago VARCHAR2(50);
       Lv_CodigoNumeracionAnticipo VARCHAR2(50); 
-      Lv_Comentario         VARCHAR2(100); 
-      Lv_ComentarioAnticipo VARCHAR2(100); 
+      Lv_Comentario         VARCHAR2(4000); 
+      Lv_ComentarioAnticipo VARCHAR2(4000); 
       Lv_Respuesta            VARCHAR2(20);
       Lv_Retorno            VARCHAR2(1000);
       Lv_Error              VARCHAR2(500);
@@ -3817,7 +3817,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       Lv_NumeracionUnoAnt VARCHAR2(3); 
       Lv_NumeracionDosAnt VARCHAR2(3);
       Lv_TipoDocumentoAnticipo VARCHAR2(5);
-      Lv_ComentarioPagoLinea VARCHAR2(1000);
+      Lv_ComentarioPagoLinea VARCHAR2(4000);
       Lv_StrTrama VARCHAR2(100);
       Ln_PuntoId NUMBER;
       Ln_CantidadClientes NUMBER;
