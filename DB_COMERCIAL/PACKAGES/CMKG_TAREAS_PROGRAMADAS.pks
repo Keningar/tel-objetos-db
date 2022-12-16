@@ -230,13 +230,43 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
     where nombre_parametro = 'CONTRATO_FISICO_VALIDACION');
 
     -- CONSULTAR EL ID_RESPUESTA DE LA TABLA ADMI_RESPUESTAS.
-    CURSOR C_RESPUESTA_DEFAULT(Cv_Pregunta VARCHAR2) IS
+    CURSOR C_RESPUESTA_DEFAULT(Cv_codigo VARCHAR2, Cn_docEnunciadoId NUMBER) IS
     SELECT
-        id_respuesta 
-    FROM db_documento.admi_respuesta
-    where nombre = Cv_Pregunta
-        and estado = 'Activo';
+    AAEN.VALOR
+    FROM
+        DB_DOCUMENTO.ADMI_CAB_ENUNCIADO       ACEN,
+        DB_DOCUMENTO.ADMI_ATRIBUTO_ENUNCIADO  AAEN,
+        DB_DOCUMENTO.ADMI_ENUNCIADO           ADEN,
+        DB_DOCUMENTO.ADMI_DOCUMENTO_ENUNCIADO ADOE
+    WHERE
+            ACEN.ID_CAB_ENUNCIADO = AAEN.CAB_ENUNCIADO_ID
+        AND AAEN.ENUNCIADO_ID = ADEN.ID_ENUNCIADO
+        AND ADEN.ID_ENUNCIADO = ADOE.ENUNCIADO_ID
+        AND ACEN.ID_CAB_ENUNCIADO = (
+            SELECT
+                ACEN.ID_CAB_ENUNCIADO
+            FROM
+                DB_DOCUMENTO.ADMI_CAB_ENUNCIADO ACEN
+            WHERE
+                ACEN.CODIGO = Cv_codigo
+        )
+        AND ADOE.ID_DOCUMENTO_ENUNCIADO = Cn_docEnunciadoId
+        AND ADEN.ESTADO = 'Activo'
+        AND ACEN.ESTADO = 'Activo'
+        AND AAEN.ESTADO = 'Activo'
+        AND ADOE.ESTADO = 'Activo';
 
+    -- CONSULTAR LA IDENTIFICACION DEL PUNTO
+    CURSOR C_IDENTIFICACION_PUNTO(Cn_puntoId NUMBER) IS
+    SELECT
+        inpe.identificacion_cliente
+    FROM DB_COMERCIAL.info_punto INPT,
+         DB_COMERCIAL.info_persona_empresa_rol IPER,
+         DB_COMERCIAL.info_persona inpe
+    WHERE INPT.PERSONA_EMPRESA_ROL_ID = iper.id_persona_rol
+    AND iper.persona_id = inpe.id_persona
+    and inpt.id_punto = Cn_puntoId
+    and ROWNUM <= 2;
     -- CONSULTAR LOS ENUNCIADOS DE LAS CLAUSULAS
     CURSOR C_ENUNCIADOS_CLAUSULAS IS
     SELECT
@@ -253,7 +283,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
     Ln_tienePlanEmpleado       NUMBER;
     Ln_CRS_TRADICIONAL         NUMBER;
     Ln_CRS_POR_PUNTO           NUMBER;
-    ln_id_punto_clausula       NUMBER;
+    ln_id_documento_relacion   NUMBER;
     Lv_Pregunta1               varchar2(200);
     Lv_Respuesta1              varchar2(200);
     Lv_Pregunta2               varchar2(200);
@@ -271,6 +301,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
     lc_contratoFisico          Tv_ContratoFisico;
 
     ln_contador                NUMBER:=0;
+    Lv_Proceso                 VARCHAR2(100):='LinkDatosBancarios';
+    Lv_valorRespuesta          VARCHAR2(100);
+    Lv_IdentificacionCliente   VARCHAR2(100);
     BEGIN
         OPEN C_CONTRATO_DIG_REG(PV_FECHA_INICIO, PV_FECHA_FIN);    
         FETCH C_CONTRATO_DIG_REG BULK COLLECT INTO lc_contratoDigital LIMIT 5000;
@@ -284,7 +317,6 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
         Ln_IteradorI := lc_contratoDigital.FIRST;
         WHILE (Ln_IteradorI IS NOT NULL) 
         LOOP
-            DBMS_OUTPUT.PUT_LINE(lc_contratoDigital(Ln_IteradorI).contrato_id);
             OPEN C_TIENE_PLAN_EMPLEADO(lc_contratoDigital(Ln_IteradorI).punto_id, '%EMPL%');
             FETCH C_TIENE_PLAN_EMPLEADO INTO Ln_tienePlanEmpleado;
             CLOSE C_TIENE_PLAN_EMPLEADO;
@@ -298,7 +330,6 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             FETCH C_TIENE_CRS_TRADICIONAL INTO Ln_CRS_TRADICIONAL;
             CLOSE C_TIENE_CRS_TRADICIONAL;
             IF Ln_CRS_TRADICIONAL IS NOT NULL THEN
-                DBMS_OUTPUT.PUT_LINE('Punto: ' || lc_contratoDigital(Ln_IteradorI).punto_id || ' tiene un camino de razon social tradicional');
                 Ln_IteradorI := lc_contratoDigital.NEXT(Ln_IteradorI);
                 CONTINUE;
             END IF;
@@ -306,58 +337,123 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             FETCH C_TIENE_CRS_POR_PUNTO INTO Ln_CRS_POR_PUNTO;
             CLOSE C_TIENE_CRS_POR_PUNTO;
             IF Ln_CRS_POR_PUNTO IS NOT NULL THEN
-                DBMS_OUTPUT.PUT_LINE('Punto: ' || lc_contratoDigital(Ln_IteradorI).punto_id || ' tiene un camino de razon social por punto');
                 Ln_IteradorI := lc_contratoDigital.NEXT(Ln_IteradorI);
                 CONTINUE;
             END IF;
-            -- SE PROCEDE A INSERTAR EL REGISTRO EN LA TABLA DE INFO_PUNTO_CLAUSULA Y INFO_PUNTO_CLAUSULA_RESP
-            INSERT INTO db_comercial.info_punto_clausula(
-                ID_PUNTO_CLAUSULA,
-                PUNTO_ID,
-                NUMERO_DOCUMENTO,
+            -- SE PROCEDE A INSERTAR EL REGISTRO EN LA TABLA INFO_DOCUMENTO_RELACION
+            INSERT INTO db_documento.info_documento_relacion(
+                ID_DOCUMENTO_RELACION,
+                PROCESO,
                 ESTADO,
                 OBSERVACION,
                 USUARIO_CREACION,
                 FECHA_CREACION)
-                VALUES(
-                db_comercial.SEQ_INFO_PUNTO_CLAUSULA.NEXTVAL,
-                lc_contratoDigital(Ln_IteradorI).punto_id,
-                null,
+            VALUES(
+                db_documento.SEQ_INFO_DOCUMENTO_RELACION.nextval,
+                Lv_Proceso,
                 'Activo',
                 'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS DIGITAL',
                 'reg_clausulas_digital',
-                SYSDATE) RETURNING ID_PUNTO_CLAUSULA INTO ln_id_punto_clausula;
+                SYSDATE) RETURNING ID_DOCUMENTO_RELACION INTO ln_id_documento_relacion;
 
+            -- SE PROCEDE A INSERTAR EL REGISTRO EN LA TABLA INFO_DOCUMENTO_RELACION_HIST
+            INSERT INTO db_documento.info_documento_relacion_hist(
+                ID_DOCUMENTO_RELACION_HIST,
+                DOCUMENTO_RELACION_ID,
+                VALOR,
+                EVENTO,
+                USUARIO_EVENTO,
+                FECHA_EVENTO)
+            VALUES(
+                db_documento.SEQ_INFO_DOC_RELACION_HIST.nextval,
+                ln_id_documento_relacion,
+                'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS DIGITAL',
+                'REGULARIZACIÓN',
+                'reg_clausulas_digital',
+                SYSDATE);
+            --
+
+            -- RELACIONO EL DOCUMENTO CON EL PUNTO
+            INSERT INTO DB_DOCUMENTO.INFO_DOCUMENTO_CARAC(
+                ID_DOCUMENTO_CARAC,
+                DOCUMENTO_RELACION_ID,
+                DOC_REFERENCIA_ID,
+                VALOR,
+                ESTADO,
+                USUARIO_CREACION,
+                FECHA_CREACION)
+            VALUES(
+                db_documento.SEQ_INFO_DOCUMENTO_CARAC.nextval,
+                ln_id_documento_relacion,
+                (SELECT id_doc_referencia
+                 FROM DB_DOCUMENTO.ADMI_DOC_REFERENCIA 
+                 WHERE nombre = 'PUNTO'),
+                lc_contratoDigital(Ln_IteradorI).punto_id,
+                'Activo',
+                'reg_clausulas_digital',
+                SYSDATE);
+
+            OPEN C_IDENTIFICACION_PUNTO(lc_contratoDigital(Ln_IteradorI).punto_id);
+            FETCH C_IDENTIFICACION_PUNTO INTO Lv_IdentificacionCliente;
+            CLOSE C_IDENTIFICACION_PUNTO;
+            -- RELACIONAR EL DOCUMENTO CON LA PERSONA
+            INSERT INTO DB_DOCUMENTO.INFO_DOCUMENTO_CARAC(
+                ID_DOCUMENTO_CARAC,
+                DOCUMENTO_RELACION_ID,
+                DOC_REFERENCIA_ID,
+                VALOR,
+                ESTADO,
+                USUARIO_CREACION,
+                FECHA_CREACION)
+            VALUES(
+                db_documento.SEQ_INFO_DOCUMENTO_CARAC.nextval,
+                ln_id_documento_relacion,
+                (SELECT id_doc_referencia
+                 FROM DB_DOCUMENTO.ADMI_DOC_REFERENCIA 
+                 WHERE nombre = 'PERSONA'),
+                Lv_IdentificacionCliente,
+                'Activo',
+                'reg_clausulas_digital',
+                SYSDATE);
             -- OBTENER EL ENUNCIANDO RESPUESTA PARA LA INSERCIÓN EN LA TABLA DE INFO_PUNTO_CLAUSULA_RESP
             FOR j IN C_ENUNCIADOS_CLAUSULAS 
             LOOP
-                IF(j.NOMBRE_CLAUSULA = Lv_Pregunta2) THEN
-                    OPEN C_RESPUESTA_DEFAULT(Lv_Respuesta2);
-                    FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
-                    CLOSE C_RESPUESTA_DEFAULT;
-                ELSE
-                    OPEN C_RESPUESTA_DEFAULT(Lv_RespuestaDefault);
-                    FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
-                    CLOSE C_RESPUESTA_DEFAULT;
+                Ln_CRS_TRADICIONAL          := NULL;
+                Ln_tienePlanEmpleado        := NULL;
+                Ln_CRS_POR_PUNTO            := NULL;
+                Lv_IdentificacionCliente    := NULL;
+
+                OPEN C_RESPUESTA_DEFAULT('OR-MD', j.DOCUMENTO_ENUNCIADO_ID);
+                FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
+                CLOSE C_RESPUESTA_DEFAULT;
+
+                IF Ln_IdRespuesta IS NULL THEN
+                    RAISE_APPLICATION_ERROR(-20101, 'No se encontró respuesta para la clausula ' || j.NOMBRE_CLAUSULA);
                 END IF;
 
                 SELECT ID_DOC_ENUNCIADO_RESP INTO Ln_DocEnunciadoResp
                 FROM db_documento.admi_doc_enunciado_resp
                 WHERE documento_enunciado_id = j.DOCUMENTO_ENUNCIADO_ID 
                     AND respuesta_id = Ln_IdRespuesta;
-                INSERT INTO db_comercial.info_punto_clausula_resp(
-                    ID_PUNTO_CLAUSULA_RESP,
-                    PUNTO_CLAUSULA_ID,
+
+                --
+                SELECT VALOR INTO Lv_valorRespuesta
+                FROM db_documento.admi_respuesta
+                WHERE id_respuesta = Ln_IdRespuesta;
+
+                INSERT INTO db_documento.INFO_DOC_RESPUESTA(
+                    ID_DOC_RESPUESTA,
+                    DOCUMENTO_RELACION_ID,
                     DOC_ENUNCIADO_RESP_ID,
                     JUSTIFICACION_RESPUESTA,
                     ESTADO,
                     USUARIO_CREACION,
                     FECHA_CREACION)
-                    VALUES(
-                    db_comercial.SEQ_INFO_PUNTO_CLAUSULA_RESP.NEXTVAL,
-                    ln_id_punto_clausula,
+                VALUES(
+                    db_documento.SEQ_INFO_DOC_RESPUESTA.nextval,
+                    ln_id_documento_relacion,
                     Ln_DocEnunciadoResp,
-                    NULL,
+                    Lv_valorRespuesta,
                     'Activo',
                     'reg_clausulas_digital',
                     SYSDATE);
@@ -366,6 +462,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             Ln_IteradorI := lc_contratoDigital.NEXT(Ln_IteradorI);
         END LOOP;
 
+        ln_id_documento_relacion := NULL;
         --REGULARIZACIÓN DE CONTRATOS FÍSICOS.
         OPEN C_CONTRATO_FIS_REG(PV_FECHA_INICIO, PV_FECHA_FIN);    
         FETCH C_CONTRATO_FIS_REG BULK COLLECT INTO lc_contratoFisico LIMIT 5000;
@@ -373,9 +470,10 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
         Ln_FisIteradorI := lc_contratoFisico.FIRST;
         WHILE (Ln_FisIteradorI IS NOT NULL)
         LOOP
-            Ln_CRS_TRADICIONAL   := NULL;
-            Ln_tienePlanEmpleado := NULL;
-            Ln_CRS_POR_PUNTO     := NULL;
+            Ln_CRS_TRADICIONAL          := NULL;
+            Ln_tienePlanEmpleado        := NULL;
+            Ln_CRS_POR_PUNTO            := NULL;
+            Lv_IdentificacionCliente    := NULL;
             OPEN C_TIENE_PLAN_EMPLEADO(lc_contratoFisico(Ln_FisIteradorI).puntoId, '%EMPL%');
             FETCH C_TIENE_PLAN_EMPLEADO INTO Ln_tienePlanEmpleado;
             CLOSE C_TIENE_PLAN_EMPLEADO;
@@ -403,58 +501,115 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             END IF;
 
             -- SE PROCEDE A INSERTAR EL REGISTRO EN LA TABLA DE INFO_PUNTO_CLAUSULA Y INFO_PUNTO_CLAUSULA_RESP
-            INSERT INTO db_comercial.info_punto_clausula(
-                ID_PUNTO_CLAUSULA,
-                PUNTO_ID,
-                NUMERO_DOCUMENTO,
+            INSERT INTO db_documento.info_documento_relacion(
+                ID_DOCUMENTO_RELACION,
+                PROCESO,
                 ESTADO,
                 OBSERVACION,
                 USUARIO_CREACION,
                 FECHA_CREACION)
-                VALUES(
-                db_comercial.SEQ_INFO_PUNTO_CLAUSULA.NEXTVAL,
-                lc_contratoFisico(Ln_FisIteradorI).puntoId,
-                null,
+            VALUES(
+                db_documento.SEQ_INFO_DOCUMENTO_RELACION.nextval,
+                Lv_Proceso,
                 'Activo',
                 'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS FÍSICO',
                 'reg_clausulas_fisico',
-                SYSDATE) RETURNING ID_PUNTO_CLAUSULA INTO ln_id_punto_clausula;
+                SYSDATE) RETURNING ID_DOCUMENTO_RELACION INTO ln_id_documento_relacion;
 
+            -- SE PROCEDE A INSERTAR EL REGISTRO EN LA TABLA INFO_DOCUMENTO_RELACION_HIST
+            INSERT INTO db_documento.info_documento_relacion_hist(
+                ID_DOCUMENTO_RELACION_HIST,
+                DOCUMENTO_RELACION_ID,
+                VALOR,
+                EVENTO,
+                USUARIO_EVENTO,
+                FECHA_EVENTO)
+            VALUES(
+                db_documento.SEQ_INFO_DOC_RELACION_HIST.nextval,
+                ln_id_documento_relacion,
+                'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS FÍSICO',
+                'REGULARIZACIÓN',
+                'reg_clausulas_fisico',
+                SYSDATE);
+            --
+
+            -- RELACIONO EL DOCUMENTO CON EL PUNTO
+            INSERT INTO DB_DOCUMENTO.INFO_DOCUMENTO_CARAC(
+                ID_DOCUMENTO_CARAC,
+                DOCUMENTO_RELACION_ID,
+                DOC_REFERENCIA_ID,
+                VALOR,
+                ESTADO,
+                USUARIO_CREACION,
+                FECHA_CREACION)
+            VALUES(
+                db_documento.SEQ_INFO_DOCUMENTO_CARAC.nextval,
+                ln_id_documento_relacion,
+                (SELECT id_doc_referencia
+                 FROM DB_DOCUMENTO.ADMI_DOC_REFERENCIA 
+                 WHERE nombre = 'PUNTO'),
+                lc_contratoFisico(Ln_FisIteradorI).puntoId,
+                'Activo',
+                'reg_clausulas_fisico',
+                SYSDATE);
+
+            OPEN C_IDENTIFICACION_PUNTO(lc_contratoFisico(Ln_FisIteradorI).puntoId);
+            FETCH C_IDENTIFICACION_PUNTO INTO Lv_IdentificacionCliente;
+            CLOSE C_IDENTIFICACION_PUNTO;
+            -- RELACIONAR EL DOCUMENTO CON LA PERSONA
+            INSERT INTO DB_DOCUMENTO.INFO_DOCUMENTO_CARAC(
+                ID_DOCUMENTO_CARAC,
+                DOCUMENTO_RELACION_ID,
+                DOC_REFERENCIA_ID,
+                VALOR,
+                ESTADO,
+                USUARIO_CREACION,
+                FECHA_CREACION)
+            VALUES(
+                db_documento.SEQ_INFO_DOCUMENTO_CARAC.nextval,
+                ln_id_documento_relacion,
+                (SELECT id_doc_referencia
+                 FROM DB_DOCUMENTO.ADMI_DOC_REFERENCIA 
+                 WHERE nombre = 'PERSONA'),
+                Lv_IdentificacionCliente,
+                'Activo',
+                'reg_clausulas_fisico',
+                SYSDATE);
             -- OBTENER EL ENUNCIANDO RESPUESTA PARA LA INSERCIÓN EN LA TABLA DE INFO_PUNTO_CLAUSULA_RESP
             FOR j IN C_ENUNCIADOS_CLAUSULAS
             LOOP
-                IF(j.NOMBRE_CLAUSULA = Lv_Pregunta1) THEN
-                    OPEN C_RESPUESTA_DEFAULT(Lv_Respuesta1);
-                    FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
-                    CLOSE C_RESPUESTA_DEFAULT;
-                ELSIF(j.NOMBRE_CLAUSULA = Lv_Pregunta2) THEN
-                    OPEN C_RESPUESTA_DEFAULT(Lv_Respuesta2);
-                    FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
-                    CLOSE C_RESPUESTA_DEFAULT;
-                ELSE
-                    OPEN C_RESPUESTA_DEFAULT(Lv_RespuestaDefault);
-                    FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
-                    CLOSE C_RESPUESTA_DEFAULT;
-                END IF;
+                --
+                Ln_IdRespuesta      := NULL;
+                Lv_valorRespuesta   := NULL;
+                Ln_DocEnunciadoResp := NULL;
+                --
+                OPEN C_RESPUESTA_DEFAULT('OR-MD', j.DOCUMENTO_ENUNCIADO_ID);
+                FETCH C_RESPUESTA_DEFAULT INTO Ln_IdRespuesta;
+                CLOSE C_RESPUESTA_DEFAULT;
 
                 SELECT ID_DOC_ENUNCIADO_RESP INTO Ln_DocEnunciadoResp
                 FROM db_documento.admi_doc_enunciado_resp
                 WHERE documento_enunciado_id = j.DOCUMENTO_ENUNCIADO_ID 
                     AND respuesta_id = Ln_IdRespuesta;
 
-                INSERT INTO db_comercial.info_punto_clausula_resp(
-                    ID_PUNTO_CLAUSULA_RESP,
-                    PUNTO_CLAUSULA_ID,
+                --
+                SELECT VALOR INTO Lv_valorRespuesta
+                FROM db_documento.admi_respuesta
+                WHERE id_respuesta = Ln_IdRespuesta;
+
+                INSERT INTO db_documento.INFO_DOC_RESPUESTA(
+                    ID_DOC_RESPUESTA,
+                    DOCUMENTO_RELACION_ID,
                     DOC_ENUNCIADO_RESP_ID,
                     JUSTIFICACION_RESPUESTA,
                     ESTADO,
                     USUARIO_CREACION,
                     FECHA_CREACION)
-                    VALUES(
-                    db_comercial.SEQ_INFO_PUNTO_CLAUSULA_RESP.NEXTVAL,
-                    ln_id_punto_clausula,
+                VALUES(
+                    db_documento.SEQ_INFO_DOC_RESPUESTA.nextval,
+                    ln_id_documento_relacion,
                     Ln_DocEnunciadoResp,
-                    NULL,
+                    Lv_valorRespuesta,
                     'Activo',
                     'reg_clausulas_fisico',
                     SYSDATE);

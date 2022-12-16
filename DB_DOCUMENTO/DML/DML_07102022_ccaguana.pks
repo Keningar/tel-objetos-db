@@ -1,0 +1,586 @@
+/*
+ * SCRIPT DML DEL ESQUEMA DB_DOCUMENTO. 
+ *
+ * @author: Carlos Caguana <ccaguana@telconet.ec>
+ */
+
+INSERT INTO DB_DOCUMENTO.ADMI_PROCESO(ID_PROCESO,
+NOMBRE,
+CODIGO,
+DESCRIPCION,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_PROCESO.NEXTVAL,
+    'LinkDatosBancarios',
+    'LDB',
+    'Proceso de link Bancarios',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+--
+INSERT INTO DB_DOCUMENTO.ADMI_DOCUMENTO(ID_DOCUMENTO,
+NOMBRE,
+CODIGO,
+DESCRIPCION,
+PROCESO_ID,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_DOCUMENTO.NEXTVAL,
+    'Contrato de adhesión',
+    'CDA',
+    'Documento Contrato de adhesión',
+    (SELECT
+    id_proceso FROM DB_DOCUMENTO.admi_proceso
+    WHERE codigo = 'LDB'
+    AND estado = 'Activo'),
+    'Activo',
+    'wgaibor',
+    SYSDATE
+);
+
+
+--Creación en la admi tipo
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_TIPO (
+ID_TIPO,
+NOMBRE,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_TIPO.NEXTVAL,
+    'Check único',
+    'Tipo respuesta de Check único',
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+----
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_TIPO (
+ID_TIPO,
+NOMBRE,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_TIPO.NEXTVAL,
+    'Check por respuesta',
+    'Tipo respuesta de Check por respuesta',
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_TIPO (
+ID_TIPO,
+NOMBRE,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_TIPO.NEXTVAL,
+    'Respuestas',
+    'Respuestas de la admi respuestas',
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+------Creación de la cabecera enunciado
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+ES_REQUERIDO,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Opciones de respuesta de lista negra',
+    'OR-LN',
+     8,
+     'N',
+    'SELECT valor FROM admi_respuesta where id_respuesta = :idValor and estado = :estado',
+    'Configuración de opciones de lista negra',
+    'multiSelect',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+--
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+ES_REQUERIDO,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Opciones de respuesta de lista blanca',
+    'OR-LB',
+     7,
+     'N',
+    'SELECT valor FROM admi_respuesta where id_respuesta = :idValor and estado = :estado',
+    'Configuración de opciones de lista blanca',
+    'multiSelect',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Opciones de respuestas permitidas para continuar con el flujo',
+    'OR-PCF',
+    6,
+    'SELECT valor FROM admi_respuesta where id_respuesta = :idValor and estado = :estado',
+    'Configuración de opciones permitidas para continuar con el flujo',
+    'multiSelect',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+---
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+ES_REQUERIDO,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Opciones de respuesta marcada por default',
+    'OR-MD',
+    5,
+    'N',
+    'SELECT valor FROM admi_respuesta where id_respuesta = :idValor and estado = :estado',
+    'Configuración de opciones respuesta marcada por default',
+    'select',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Opción de respuesta',
+    'OR',
+    4,
+    'SELECT valor FROM admi_respuesta where id_respuesta = :idValor and estado = :estado',
+    'Configuración de opciones de respuesta',
+    'multiSelect',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Tipo de selección de respuesta',
+    'OR-TSR',
+     3,
+    'SELECT nombre FROM ADMI_TIPO where id_tipo = :idValor and estado = :estado',
+    'Configuración de tipo de selección de respuesta',
+    'select',
+     18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+ES_REQUERIDO,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Detalle',
+    'DETALLE',
+     2,
+    'N',
+     NULL,
+    'Configuración detalle',
+    'textarea',
+     18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+ES_REQUERIDO,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'Link',
+    'LINK',
+     1,
+    'N',
+     NULL,
+    'Configuración de link',
+    'url',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_CAB_ENUNCIADO (
+ID_CAB_ENUNCIADO,
+NOMBRE,
+CODIGO,
+ORDEN,
+ES_REQUERIDO,
+REFERENCIA_TABLA,
+DESCRIPCION,
+TIPO_INPUT,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_CAB_ENUNCIADO.NEXTVAL,
+    'ORDEN',
+    'ORDEN',
+     0,
+    'S',
+     NULL,
+    'Configuración de orden',
+    'number',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+
+-------
+
+INSERT INTO DB_DOCUMENTO.ADMI_TIPO_ENUNCIADO (
+ID_TIPO_ENUNCIADO,
+TIPO_ID,
+CAB_ENUNCIADO_ID,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_TIPO_ENUNCIADO.NEXTVAL,
+    (SELECT
+    ID_TIPO FROM DB_DOCUMENTO.ADMI_TIPO
+    WHERE NOMBRE = 'Check único'
+    AND estado = 'Activo'),
+     (SELECT
+    ID_CAB_ENUNCIADO FROM DB_DOCUMENTO.ADMI_CAB_ENUNCIADO
+    WHERE codigo = 'OR-TSR'
+    AND estado = 'Activo'),
+    (SELECT
+    DESCRIPCION  FROM DB_DOCUMENTO.ADMI_TIPO
+    WHERE NOMBRE = 'Check único'
+    AND estado = 'Activo'),
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_TIPO_ENUNCIADO (
+ID_TIPO_ENUNCIADO,
+TIPO_ID,
+CAB_ENUNCIADO_ID,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_TIPO_ENUNCIADO.NEXTVAL,
+    (SELECT
+    ID_TIPO FROM DB_DOCUMENTO.ADMI_TIPO
+    WHERE NOMBRE = 'Check por respuesta'
+    AND estado = 'Activo'),
+     (SELECT
+    ID_CAB_ENUNCIADO FROM DB_DOCUMENTO.ADMI_CAB_ENUNCIADO
+    WHERE codigo = 'OR-TSR'
+    AND estado = 'Activo'),
+    (SELECT
+    DESCRIPCION  FROM DB_DOCUMENTO.ADMI_TIPO
+    WHERE NOMBRE = 'Check por respuesta'
+    AND estado = 'Activo'),
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_TIPO_ENUNCIADO (
+ID_TIPO_ENUNCIADO,
+TIPO_ID,
+CAB_ENUNCIADO_ID,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_TIPO_ENUNCIADO.NEXTVAL,
+    (SELECT
+    ID_TIPO FROM DB_DOCUMENTO.ADMI_TIPO
+    WHERE NOMBRE = 'Respuestas'
+    AND estado = 'Activo'),
+     (SELECT
+    ID_CAB_ENUNCIADO FROM DB_DOCUMENTO.ADMI_CAB_ENUNCIADO
+    WHERE codigo = 'OR'
+    AND estado = 'Activo'),
+    (SELECT
+    DESCRIPCION  FROM DB_DOCUMENTO.ADMI_TIPO
+    WHERE NOMBRE = 'Respuestas'
+    AND estado = 'Activo'),
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+-----Creacion de referencia del documento 
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_DOC_REFERENCIA (
+ID_DOC_REFERENCIA,
+NOMBRE ,
+CODIGO ,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_DOC_REFERENCIA.NEXTVAL,
+    'PERSONA',
+    'IP-IDENTIFICACION',
+    'REFERENCIA DE LA TABLA DB_COMERCIAL.INFO_PERSONA IDENTIFICACION',
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_DOC_REFERENCIA (
+ID_DOC_REFERENCIA,
+NOMBRE ,
+CODIGO ,
+DESCRIPCION,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_DOC_REFERENCIA.NEXTVAL,
+    'PUNTO',
+    'IP-IDPUNTO',
+    'REFERENCIA DE LA TABLA DB_COMERCIAL.INFO_PUNTO ID_PUNTO',
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_RESPUESTA  (
+ID_RESPUESTA,
+NOMBRE ,
+VALOR ,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_RESPUESTA.NEXTVAL,
+    'ELECTRÓNICA',
+    'ELECTRÓNICA',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_RESPUESTA  (
+ID_RESPUESTA,
+NOMBRE ,
+VALOR ,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_RESPUESTA.NEXTVAL,
+    'ACEPTA',
+    'ACEPTA',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+
+
+INSERT INTO DB_DOCUMENTO.ADMI_RESPUESTA  (
+ID_RESPUESTA,
+NOMBRE ,
+VALOR ,
+EMPRESA_COD,
+ESTADO,
+USUARIO_CREACION,
+FECHA_CREACION
+)
+VALUES(
+    DB_DOCUMENTO.SEQ_ADMI_RESPUESTA.NEXTVAL,
+    'NO ACEPTA',
+    'NO ACEPTA',
+    18,
+    'Activo',
+    'ccaguana',
+    SYSDATE
+);
+
+commit;
+/
