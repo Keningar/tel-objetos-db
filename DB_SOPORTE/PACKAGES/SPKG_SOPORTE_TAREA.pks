@@ -169,6 +169,41 @@ CREATE OR REPLACE package DB_SOPORTE.SPKG_SOPORTE_TAREA IS
                          Pv_Mensaje   OUT VARCHAR2,
                          Pcl_Response OUT CLOB);                                   
 
+ /**
+  * Documentación para el procedimiento P_CAMBIAR_ESTADO_TAREA
+  *
+  * Método encargado de actualizar el estado de una tarea
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT CLOB Retorna la información de la tarea actualizado el estado
+  *
+  * @author Andrés Montero H. <amontero@telconet.ec>
+  * @version 1.0 10-05-2022
+  */    
+  PROCEDURE P_CAMBIAR_ESTADO_TAREA(Pcl_Request IN  CLOB,
+                             Pv_Status         OUT VARCHAR2,
+                             Pv_Mensaje        OUT VARCHAR2,
+                             Pcl_Response      OUT CLOB) ;
+
+ /**
+  * Documentación para el procedimiento P_REVERSAR_ESTADO_TAREA
+  *
+  * Método encargado de reversar el cambio de estado de una tarea
+  *
+  * @param Pcl_Request    IN   CLOB Recibe json request
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT CLOB Retorna la información de la tarea actualizado el estado
+  *
+  * @author Andrés Montero H. <amontero@telconet.ec>
+  * @version 1.0 10-05-2022
+  */    
+  PROCEDURE P_REVERSAR_ESTADO_TAREA(Pcl_Request          IN  CLOB,
+                             Pv_Status         OUT VARCHAR2,
+                             Pv_Mensaje        OUT VARCHAR2,
+                             Pcl_Response OUT CLOB);
 END SPKG_SOPORTE_TAREA;
 
 /
@@ -1528,6 +1563,579 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_SOPORTE_TAREA IS
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_GET_TAREAS;
    
+
+
+  PROCEDURE P_CAMBIAR_ESTADO_TAREA(Pcl_Request          IN  CLOB,
+                             Pv_Status         OUT VARCHAR2,
+                             Pv_Mensaje        OUT VARCHAR2,
+                             Pcl_Response OUT CLOB) IS
+
+      --Variables para el query dinámico
+      Lrf_Parametros        SYS_REFCURSOR;
+
+      Lv_IdComunicacion     VARCHAR2(20);
+      Lv_DetalleId          VARCHAR2(20);
+      Lv_Estado             VARCHAR2(200);
+      Lv_Observacion        VARCHAR2(2000);
+      Lv_UsrCreacion        VARCHAR2(20);
+      Lv_Adjuntos           VARCHAR2(20);
+      Le_Errors             EXCEPTION;
+
+      Ln_cantAdjuntos       NUMBER := 0;
+      Ln_cantParametros     NUMBER := 0;
+      Ln_cantParamEstPerm   NUMBER := 0;
+
+      Lv_MensajeError       VARCHAR2(4000);
+      Ln_TotalRegistros     NUMBER := 0;
+      Lo_TareaSeguimiento   DB_SOPORTE.INFO_TAREA_SEGUIMIENTO%ROWTYPE;
+      Lo_DetalleHistorial   DB_SOPORTE.INFO_DETALLE_HISTORIAL%ROWTYPE;
+
+      Lv_RequestSolPlanif   CLOB;
+      Lv_StatusSolPlanif    VARCHAR2(200);
+      Lv_MensajeSolPlanif   VARCHAR2(200);
+      Lv_RequestSolicitud   CLOB;
+      Lv_StatusSolicitud    VARCHAR2(200);
+      Lv_MensajeSolicitud   VARCHAR2(200);
+        
+      Lv_Status_info_tarea  VARCHAR2(200);
+      Lv_Mensaje_info_tarea VARCHAR2(200);
+
+      Ln_IdSolPlanif        NUMBER;
+      Ln_IdDetalleSolicitud NUMBER;
+      Lv_UltimoEstado       VARCHAR2(20);
+
+      Lv_parametroEstados   VARCHAR2(2000);
+
+      Ln_esEstadoPermitido  NUMBER := 0;
+
+      Lr_InfoDocumento      DB_COMUNICACION.INFO_DOCUMENTO%ROWTYPE;
+      Ln_IdDocumento        DB_COMUNICACION.INFO_DOCUMENTO.ID_DOCUMENTO%TYPE;
+      Lv_MsjErrorDocumento  VARCHAR2(4000);
+      Lr_InfoDocumentoRel   DB_COMUNICACION.INFO_DOCUMENTO_RELACION%ROWTYPE;
+      Ln_IdDocumentoRel     DB_COMUNICACION.INFO_DOCUMENTO_RELACION.ID_DOCUMENTO_RELACION%TYPE;
+      Lv_MsjErrorDocumentRe VARCHAR2(4000);
+
+        CURSOR C_GetIdDetalleTarea(Cn_idComunicacion DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE)
+        IS
+          SELECT COM.DETALLE_ID
+          FROM DB_COMUNICACION.INFO_COMUNICACION COM
+          WHERE COM.ID_COMUNICACION = Cn_idComunicacion;
+
+        CURSOR C_GetDetalleTarea(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+          SELECT DET.ID_DETALLE
+          FROM DB_SOPORTE.INFO_DETALLE DET
+          WHERE DET.ID_DETALLE = Cn_idDetalle;
+
+        CURSOR C_GetUltimoEstadoTarea(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+         SELECT idh1.ESTADO
+         FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL idh1
+         WHERE
+         ID_DETALLE_HISTORIAL =
+         (
+               SELECT MAX(idh.id_detalle_historial)
+               FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL idh WHERE idh.DETALLE_ID = Cn_idDetalle
+         );
+
+        CURSOR C_GetIdSolicitudPlanif(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+          SELECT SP.ID_DETALLE_SOL_PLANIF, SP.DETALLE_SOLICITUD_ID
+          FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF SP
+          JOIN DB_COMUNICACION.INFO_COMUNICACION COM ON COM.ID_COMUNICACION = SP.TAREA_ID
+          WHERE COM.DETALLE_ID = Cn_idDetalle;
+
+        CURSOR C_GetParametros(Cv_nombreParametro VARCHAR2, Cv_descripcionParamDet VARCHAR2)
+        IS
+            SELECT APD.* 
+            FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC,
+                   DB_GENERAL.ADMI_PARAMETRO_DET APD 
+                   WHERE APC.ID_PARAMETRO = APD.PARAMETRO_ID
+                   AND APC.ESTADO = 'Activo' 
+                   AND APD.EMPRESA_COD = '10'
+                   AND APD.ESTADO = 'Activo'
+                   AND APC.NOMBRE_PARAMETRO = Cv_nombreParametro 
+                   AND APD.DESCRIPCION = Cv_descripcionParamDet;
+
+    BEGIN
+
+      apex_json.parse(Pcl_Request);
+      Lv_IdComunicacion         := apex_json.get_varchar2('idComunicacion');
+      Lv_DetalleId              := apex_json.get_varchar2('detalleId');
+      Lv_Estado                 := apex_json.get_varchar2('estado');
+      Lv_Observacion            := apex_json.get_varchar2('observacion');
+      Lv_UsrCreacion            := apex_json.get_varchar2('registerUser');
+
+      IF Lv_IdComunicacion IS NULL AND Lv_DetalleId IS NULL THEN
+          Pv_Mensaje := 'ERROR: Debe enviar al menos uno de los siguientes parámetros idComunicacion o detalleId';
+          RAISE Le_Errors;
+      END IF;
+
+      IF Lv_Estado IS NULL THEN
+          Pv_Mensaje := 'ERROR: Debe enviar al menos un estado';
+          RAISE Le_Errors;
+      END IF;
+
+      IF Lv_UsrCreacion IS NULL THEN
+          Pv_Mensaje := 'ERROR: Debe enviar un registerUser';
+          RAISE Le_Errors;
+      END IF;
+
+      IF Lv_DetalleId IS NOT NULL THEN
+            OPEN C_GetDetalleTarea(Lv_DetalleId);
+            FETCH C_GetDetalleTarea INTO Lv_DetalleId;
+            IF C_GetDetalleTarea%NOTFOUND THEN
+               Lv_DetalleId := NULL;
+            END IF;
+            CLOSE C_GetDetalleTarea;
+      END IF;
+
+      IF Lv_IdComunicacion IS NOT NULL THEN
+            Lv_DetalleId := NULL;
+            OPEN C_GetIdDetalleTarea(Lv_IdComunicacion);
+            FETCH C_GetIdDetalleTarea INTO Lv_DetalleId;
+            IF C_GetIdDetalleTarea%NOTFOUND THEN
+               Lv_DetalleId := NULL;
+            END IF;
+            CLOSE C_GetIdDetalleTarea;
+      END IF;
+
+      IF Lv_DetalleId IS NULL THEN
+         Pv_Mensaje := 'ERROR: No se encontro el detalle de la tarea con el idComunicacion enviado';
+         RAISE Le_Errors;
+      END IF;
+
+      --CONSULTAR EL ULTIMO ESTADO DE LA TAREA
+      IF C_GetUltimoEstadoTarea%ISOPEN THEN
+            CLOSE C_GetUltimoEstadoTarea;
+      END IF;
+      OPEN C_GetUltimoEstadoTarea(Lv_DetalleId);
+      FETCH C_GetUltimoEstadoTarea INTO Lv_UltimoEstado;
+      IF C_GetUltimoEstadoTarea%NOTFOUND THEN
+         Lv_UltimoEstado := NULL;
+      END IF;
+      CLOSE C_GetUltimoEstadoTarea;
+
+      --VALIDAR QUE LA TAREA TENGA PERMITIDO EL CAMBIO DE ESTADO
+      IF (C_GetParametros%isopen) THEN 
+         CLOSE C_GetParametros;
+      END IF;
+      FOR parametros IN C_GetParametros('INSP_CALC_PARAM_INSPECTION','ALLOWED_CHANGE_STATUS') LOOP
+          Lv_parametroEstados := parametros.VALOR1;
+      END LOOP;
+
+      apex_json.parse('{"data":'||Lv_parametroEstados||'}');
+      Ln_cantParametros := apex_json.get_count(p_path => 'data');
+
+      IF Ln_cantParametros > 0 THEN
+
+         FOR j IN 1 .. Ln_cantParametros LOOP
+            IF Lv_UltimoEstado = apex_json.get_varchar2('data[%d].currentStatus',p0 => j) THEN
+               Ln_cantParamEstPerm := apex_json.get_count(p_path => 'data[%d].allowedStatus',p0 => j);
+               IF Ln_cantParamEstPerm > 0 THEN
+                  FOR a IN 1 .. Ln_cantParamEstPerm LOOP
+                     IF Lv_Estado = apex_json.get_varchar2(p_path => 'data[%d].allowedStatus[%d].status', p0 => j, p1 => a) THEN
+                           Ln_esEstadoPermitido := Ln_esEstadoPermitido + 1;
+                     END IF;
+                  END LOOP;
+               END IF;
+            END IF;
+         END LOOP;
+
+      END IF;
+
+      IF Ln_esEstadoPermitido <= 0 THEN
+         Pv_Mensaje:= 'No es permitido cambiar esta tarea de ('||Lv_UltimoEstado||') a ('||Lv_Estado||')';
+         RAISE Le_Errors;
+      END IF;
+
+      --SE AGREGA REGISTRO EN LA INFO_TAREA_SEGUIMIENTO
+      Lo_TareaSeguimiento   := NULL;
+      Lv_MensajeError       := '';
+
+      Lo_TareaSeguimiento.DETALLE_ID    := Lv_DetalleId;
+      Lo_TareaSeguimiento.OBSERVACION   := 'Se cambia estado de la tarea a '||Lv_Estado||' por el motivo: ' || Lv_Observacion;
+      Lo_TareaSeguimiento.USR_CREACION  := Lv_UsrCreacion;
+      Lo_TareaSeguimiento.ESTADO_TAREA  := Lv_Estado;
+
+      DB_SOPORTE.SPKG_UTILIDADES.P_INSERT_TAREA_SEGUIMIENTO(Lo_TareaSeguimiento, Lv_MensajeError);
+
+      IF TRIM(Lv_MensajeError) IS NOT NULL THEN
+         Pv_Mensaje := Lv_MensajeError;
+         RAISE Le_Errors;
+      END IF;
+
+      --SE AGREGA REGISTRO EN LA INFO_DETALLE_HISTORIAL
+      Lo_DetalleHistorial   := NULL;
+      Lv_MensajeError       := '';
+
+      Lo_DetalleHistorial.DETALLE_ID    := Lv_DetalleId;
+      Lo_DetalleHistorial.OBSERVACION   := 'Se cambio estado de la tarea a '||Lv_Estado||' por el motivo: ' || Lv_Observacion;
+      Lo_DetalleHistorial.USR_CREACION  := Lv_UsrCreacion;
+      Lo_DetalleHistorial.ESTADO        := Lv_Estado;
+      Lo_DetalleHistorial.IP_CREACION   := '127.0.0.1';
+
+      DB_SOPORTE.SPKG_UTILIDADES.P_INSERT_DETALLE_HISTORIAL(Lo_DetalleHistorial, Lv_MensajeError);
+
+      IF TRIM(Lv_MensajeError) IS NOT NULL THEN
+         Pv_Mensaje := Lv_MensajeError;
+         RAISE Le_Errors;
+      END IF;
+
+      --SE ADJUNTA DOCUMENTOS A LA TAREA SI ES REQUERIDO
+      apex_json.parse(Pcl_Request);
+      Ln_cantAdjuntos           := apex_json.get_count(p_path => 'adjuntos');
+      Lv_Adjuntos := '';
+      IF Ln_cantAdjuntos > 0 THEN
+
+        FOR j IN 1 .. Ln_cantAdjuntos LOOP
+
+            Ln_IdDocumento := DB_COMUNICACION.SEQ_INFO_DOCUMENTO.NEXTVAL;
+            Lr_InfoDocumento.ID_DOCUMENTO := Ln_IdDocumento;
+            Lr_InfoDocumento.TIPO_DOCUMENTO_ID := apex_json.get_varchar2(p_path => 'adjuntos[%d].tipoDocumentoId',p0 => j);
+            Lr_InfoDocumento.NOMBRE_DOCUMENTO := apex_json.get_varchar2(p_path => 'adjuntos[%d].nombreDocumento',p0 => j);
+            Lr_InfoDocumento.MENSAJE := apex_json.get_varchar2(p_path => 'adjuntos[%d].mensaje',p0 => j);
+            Lr_InfoDocumento.UBICACION_FISICA_DOCUMENTO := apex_json.get_varchar2(p_path => 'adjuntos[%d].ubicacionFisica',p0 => j);
+            Lr_InfoDocumento.UBICACION_LOGICA_DOCUMENTO := apex_json.get_varchar2(p_path => 'adjuntos[%d].ubicacionLogica',p0 => j);
+            Lr_InfoDocumento.ESTADO := apex_json.get_varchar2(p_path => 'adjuntos[%d].estado',p0 => j);
+            Lr_InfoDocumento.FE_CREACION := SYSDATE;
+            Lr_InfoDocumento.FECHA_DOCUMENTO := SYSDATE;
+            Lr_InfoDocumento.IP_CREACION := '127.0.0.1';
+            Lr_InfoDocumento.USR_CREACION := apex_json.get_varchar2(p_path => 'adjuntos[%d].registerUser',p0 => j);
+            Lr_InfoDocumento.EMPRESA_COD := apex_json.get_varchar2(p_path => 'adjuntos[%d].empresaCod',p0 => j);
+            Lr_InfoDocumento.LATITUD := apex_json.get_varchar2(p_path => 'adjuntos[%d].latitud',p0 => j);
+            Lr_InfoDocumento.LONGITUD := apex_json.get_varchar2(p_path => 'adjuntos[%d].longitud',p0 => j);
+
+            Lv_MsjErrorDocumento := 'OK';
+            DB_COMUNICACION.CUKG_UTILS.P_INSERT_INFO_DOCUMENTO(Lr_InfoDocumento, Lv_MsjErrorDocumento);
+            
+            IF Lv_MsjErrorDocumento <> 'OK' THEN
+                  Pv_Mensaje := 'Ocurrio un Error: '|| Lv_MsjErrorDocumento;
+                  RAISE Le_Errors;
+            END IF;
+
+            Ln_IdDocumentoRel := DB_COMUNICACION.SEQ_INFO_DOCUMENTO_RELACION.NEXTVAL;
+            Lr_InfoDocumentoRel.ID_DOCUMENTO_RELACION := Ln_IdDocumentoRel;
+            Lr_InfoDocumentoRel.MODULO := 'SOPORTE';
+            Lr_InfoDocumentoRel.ESTADO := Lr_InfoDocumento.ESTADO;
+            Lr_InfoDocumentoRel.FE_CREACION := SYSDATE;
+            Lr_InfoDocumentoRel.USR_CREACION := Lr_InfoDocumento.USR_CREACION;
+            Lr_InfoDocumentoRel.DETALLE_ID := Lv_DetalleId;
+            Lr_InfoDocumentoRel.DOCUMENTO_ID := Lr_InfoDocumento.ID_DOCUMENTO;
+
+            Lv_MsjErrorDocumentRe := 'OK';
+            DB_COMUNICACION.CUKG_UTILS.P_INSERT_INFO_DOCUMENTO_RELAC(Lr_InfoDocumentoRel, Lv_MsjErrorDocumentRe);
+
+            IF Lv_MsjErrorDocumentRe <> 'OK' THEN
+                  Pv_Mensaje := 'Ocurrio un Error: '|| Lv_MsjErrorDocumentRe;
+                  RAISE Le_Errors;
+            END IF;
+
+        END LOOP;
+      END IF;
+
+      --SI SE FINALIZA TAREA LLAMA A PROCEDIMIENTO DE FINALIZAR TAREA
+      IF UPPER(Lv_Estado) = 'FINALIZADA' THEN
+
+          --OBTIENE ID DE PLANIFICACION DE SOLICITUD
+            IF C_GetIdSolicitudPlanif%ISOPEN THEN
+                  CLOSE C_GetIdSolicitudPlanif;
+            END IF;
+            OPEN C_GetIdSolicitudPlanif(Lv_DetalleId);
+            FETCH C_GetIdSolicitudPlanif INTO Ln_IdSolPlanif,Ln_IdDetalleSolicitud;
+            IF C_GetIdSolicitudPlanif%NOTFOUND THEN
+               Ln_IdSolPlanif := NULL;
+            END IF;
+            CLOSE C_GetIdSolicitudPlanif;
+
+            IF Ln_IdSolPlanif IS NOT NULL THEN
+               --CAMBIA ESTADO A SOLICITUD
+               APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+               APEX_JSON.OPEN_OBJECT;
+               APEX_JSON.WRITE('idDetalleSolPlanif'  , Ln_IdSolPlanif);
+               APEX_JSON.WRITE('idDetalleSolicitud'  , Ln_IdDetalleSolicitud);
+               APEX_JSON.WRITE('estado'      , 'Finalizada');
+               APEX_JSON.WRITE('accion'      , 'CAMBIAR_ESTADO');
+               APEX_JSON.WRITE('usrCreacion'  , Lv_UsrCreacion);
+               APEX_JSON.WRITE('ipCreacion'  , '127.0.0.1');
+               APEX_JSON.WRITE('observacion'  , Lv_Observacion);
+               APEX_JSON.CLOSE_OBJECT;
+               Lv_RequestSolPlanif := APEX_JSON.GET_CLOB_OUTPUT;
+               APEX_JSON.FREE_OUTPUT;
+
+               --EJECUTA FINALIZACION DE PLANIFICACION DE LA SOLICITUD ASOCIADA A LA TAREA
+               DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_CAMBIAR_ESTADO_PLANIF_SOL(Lv_RequestSolPlanif, Lv_StatusSolPlanif, Lv_MensajeSolPlanif);
+
+               IF Lv_StatusSolPlanif <> 'OK' THEN
+                  Pv_Mensaje := 'Ocurrio error en procedimiento DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_CAMBIAR_ESTADO_PLANIF_SOL, Mensaje:' || 
+                                Lv_MensajeSolPlanif;
+                  RAISE Le_Errors;
+               END IF; 
+            END IF;
+
+      END IF;
+
+      COMMIT;
+
+      --ACTUALIZAR DETALLE EN INFO_TAREA
+      DB_SOPORTE.SPKG_INFO_TAREA.P_UPDATE_TAREA( Lv_DetalleId,
+                                                Lv_UsrCreacion,
+                                                Lv_Status_info_tarea,
+                                                Lv_Mensaje_info_tarea);
+          Pv_Status  := 'ok';
+          Pv_Mensaje := 'Actualización de tarea ejecutada correctamente';
+          Pcl_Response := Pv_Mensaje;
+
+    EXCEPTION
+      WHEN Le_Errors THEN
+
+          ROLLBACK;
+
+          Pv_Status  := 'ERROR';
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('SPKG_SOPORTE_TAREA',
+                                              'P_CAMBIAR_ESTADO_TAREA',
+                                                Pv_Mensaje,
+                                                'DB_COMERCIAL',
+                                                SYSDATE,
+                                                NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+      WHEN OTHERS THEN
+
+          ROLLBACK;
+
+          Pv_Status  := 'fail';
+          Pv_Mensaje := 'Error: '||SQLCODE ||' ERROR_STACK -'||DBMS_UTILITY.FORMAT_ERROR_STACK;
+
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('SPKG_SOPORTE_TAREA',
+                                              'P_CAMBIAR_ESTADO_TAREA',
+                                                'Error: ' || SQLCODE || ' - ERROR_STACK:'||
+                                                  DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: '||
+                                                  DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
+                                                'DB_COMERCIAL',
+                                                SYSDATE,
+                                                NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+
+  END P_CAMBIAR_ESTADO_TAREA;
+
+  PROCEDURE P_REVERSAR_ESTADO_TAREA(Pcl_Request          IN  CLOB,
+                             Pv_Status         OUT VARCHAR2,
+                             Pv_Mensaje        OUT VARCHAR2,
+                             Pcl_Response OUT CLOB) IS
+
+      --Variables para el query dinámico
+      Lrf_Parametros        SYS_REFCURSOR;
+      Lv_IdComunicacion     VARCHAR2(20);
+      Lv_DetalleId          VARCHAR2(20);
+      Lv_Estado             VARCHAR2(200);
+      Lv_Observacion        VARCHAR2(2000);
+      Lv_UsrCreacion        VARCHAR2(20);
+      Le_Errors             EXCEPTION;
+      Ln_cantAdjuntos       NUMBER := 0;
+      Lv_RequestSolPlanif   CLOB;
+      Lv_StatusSolPlanif    VARCHAR2(200);
+      Lv_MensajeSolPlanif   VARCHAR2(200);
+      Ln_IdSolPlanif        NUMBER;
+      Lv_UltimoEstado       VARCHAR2(20);
+      Lv_parametroEstados   VARCHAR2(2000);
+      Ln_esEstadoPermitido  NUMBER := 0;
+      Lv_Status_info_tarea  VARCHAR2(200);
+      Lv_Mensaje_info_tarea VARCHAR2(200);
+
+      Lr_InfoDocumento      DB_COMUNICACION.INFO_DOCUMENTO%ROWTYPE;
+      Lr_InfoDetalleHistAnt DB_SOPORTE.INFO_DETALLE_HISTORIAL%ROWTYPE;
+      Lr_InfoDetalleHistUlt DB_SOPORTE.INFO_DETALLE_HISTORIAL%ROWTYPE;
+      Lr_InfoTareaSeguimUlt DB_SOPORTE.INFO_TAREA_SEGUIMIENTO%ROWTYPE;
+      Lr_InfoDocumentRelac  DB_COMUNICACION.INFO_DOCUMENTO_RELACION%ROWTYPE;
+
+        CURSOR C_GetIdDetalleTarea(Cn_idComunicacion DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE)
+        IS
+          SELECT COM.DETALLE_ID
+          FROM DB_COMUNICACION.INFO_COMUNICACION COM
+          WHERE COM.ID_COMUNICACION = Cn_idComunicacion;
+
+        CURSOR C_GetDetalleTarea(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+          SELECT DET.ID_DETALLE
+          FROM DB_SOPORTE.INFO_DETALLE DET
+          WHERE DET.ID_DETALLE = Cn_idDetalle;
+
+        CURSOR C_GetIdSolicitudPlanif(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+          SELECT SP.ID_DETALLE_SOL_PLANIF
+          FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF SP
+          JOIN DB_COMUNICACION.INFO_COMUNICACION COM ON COM.ID_COMUNICACION = SP.TAREA_ID
+          WHERE COM.DETALLE_ID = Cn_idDetalle;
+
+        CURSOR C_GetUltimoDetalleHist(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+         SELECT idh1.*
+         FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL idh1
+         WHERE
+         ID_DETALLE_HISTORIAL =
+         (
+               SELECT MAX(idh.id_detalle_historial)
+               FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL idh WHERE idh.DETALLE_ID = Cn_idDetalle
+         );
+
+        CURSOR C_GetUltimoDetalleSeg(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
+        IS
+         SELECT its1.*
+         FROM DB_SOPORTE.INFO_TAREA_SEGUIMIENTO its1
+         WHERE
+         ID_SEGUIMIENTO =
+         (
+               SELECT MAX(its.ID_SEGUIMIENTO)
+               FROM DB_SOPORTE.INFO_TAREA_SEGUIMIENTO its WHERE its.DETALLE_ID = Cn_idDetalle
+         );
+
+        CURSOR C_GetDocumento(Cn_idDetalle DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE,
+                              Cn_nombreDocumento DB_COMUNICACION.INFO_DOCUMENTO.NOMBRE_DOCUMENTO%TYPE,
+                              Cn_ubicFisicaDoc DB_COMUNICACION.INFO_DOCUMENTO.UBICACION_FISICA_DOCUMENTO%TYPE)
+        IS
+          SELECT docr.*
+          FROM DB_COMUNICACION.INFO_DOCUMENTO doc
+          JOIN DB_COMUNICACION.INFO_DOCUMENTO_RELACION docr ON docr.DOCUMENTO_ID = doc.ID_DOCUMENTO
+          WHERE docr.DETALLE_ID = Cn_idDetalle 
+          AND doc.NOMBRE_DOCUMENTO = Cn_nombreDocumento 
+          AND doc.UBICACION_FISICA_DOCUMENTO = Cn_ubicFisicaDoc;
+
+   BEGIN
+      apex_json.parse(Pcl_Request);
+      Lv_IdComunicacion         := apex_json.get_varchar2('idComunicacion');
+      Lv_DetalleId              := apex_json.get_varchar2('detalleId');
+      Lv_Estado                 := apex_json.get_varchar2('estado');
+      Lv_Observacion            := apex_json.get_varchar2('observacion');
+      Lv_UsrCreacion            := apex_json.get_varchar2('registerUser');
+
+      IF Lv_IdComunicacion IS NULL AND Lv_DetalleId IS NULL THEN
+          Pv_Mensaje := 'ERROR: Debe enviar al menos uno de los siguientes parámetros idComunicacion o detalleId';
+          RAISE Le_Errors;
+      END IF;
+
+      IF Lv_DetalleId IS NOT NULL THEN
+            OPEN C_GetDetalleTarea(Lv_DetalleId);
+            FETCH C_GetDetalleTarea INTO Lv_DetalleId;
+            IF C_GetDetalleTarea%NOTFOUND THEN
+               Lv_DetalleId := NULL;
+            END IF;
+            CLOSE C_GetDetalleTarea;
+      END IF;
+
+      IF Lv_IdComunicacion IS NOT NULL THEN
+            Lv_DetalleId := NULL;
+            OPEN C_GetIdDetalleTarea(Lv_IdComunicacion);
+            FETCH C_GetIdDetalleTarea INTO Lv_DetalleId;
+            IF C_GetIdDetalleTarea%NOTFOUND THEN
+               Lv_DetalleId := NULL;
+            END IF;
+            CLOSE C_GetIdDetalleTarea;
+      END IF;
+
+      IF Lv_DetalleId IS NULL THEN
+         Pv_Mensaje := 'ERROR: No se encontro el detalle de la tarea con el idComunicacion enviado';
+         RAISE Le_Errors;
+      END IF;
+
+      --OBTIENE ID DE PLANIFICACION DE SOLICITUD
+      IF C_GetIdSolicitudPlanif%ISOPEN THEN
+            CLOSE C_GetIdSolicitudPlanif;
+      END IF;
+      OPEN C_GetIdSolicitudPlanif(Lv_DetalleId);
+      FETCH C_GetIdSolicitudPlanif INTO Ln_IdSolPlanif;
+      IF C_GetIdSolicitudPlanif%NOTFOUND THEN
+         Ln_IdSolPlanif := NULL;
+      END IF;
+      CLOSE C_GetIdSolicitudPlanif;
+
+      APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+      APEX_JSON.OPEN_OBJECT;
+      APEX_JSON.WRITE('accion'      , 'REVERSAR');
+      APEX_JSON.WRITE('idDetalleSolPlanif'  , Ln_IdSolPlanif);
+      APEX_JSON.WRITE('estado'      , '');
+      APEX_JSON.WRITE('usrCreacion'  , '');
+      APEX_JSON.WRITE('ipCreacion'  , '');
+      APEX_JSON.WRITE('observacion'  , '');
+      APEX_JSON.CLOSE_OBJECT;
+      Lv_RequestSolPlanif := APEX_JSON.GET_CLOB_OUTPUT;
+      APEX_JSON.FREE_OUTPUT;
+
+      --EJECUTA FINALIZACION DE PLANIFICACION DE LA SOLICITUD ASOCIADA A LA TAREA
+      DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_CAMBIAR_ESTADO_PLANIF_SOL(Lv_RequestSolPlanif, Lv_StatusSolPlanif, Lv_MensajeSolPlanif);
+
+      --SE ADJUNTA DOCUMENTOS A LA TAREA SI ES REQUERIDO
+      apex_json.parse(Pcl_Request);
+      Ln_cantAdjuntos           := apex_json.get_count(p_path => 'adjuntos');
+
+      IF Ln_cantAdjuntos > 0 THEN
+
+        FOR j IN 1 .. Ln_cantAdjuntos LOOP
+
+            Lr_InfoDocumento.NOMBRE_DOCUMENTO := apex_json.get_varchar2(p_path => 'adjuntos[%d].nombreDocumento',p0 => j);
+            Lr_InfoDocumento.UBICACION_FISICA_DOCUMENTO := apex_json.get_varchar2(p_path => 'adjuntos[%d].ubicacionFisica',p0 => j);
+
+            Lr_InfoDocumentRelac := NULL;
+            --ELIMINAR DOCUMENTO RELACION
+            OPEN C_GetDocumento(Lv_DetalleId,Lr_InfoDocumento.NOMBRE_DOCUMENTO,Lr_InfoDocumento.UBICACION_FISICA_DOCUMENTO);
+            FETCH C_GetDocumento INTO Lr_InfoDocumentRelac;
+            CLOSE C_GetDocumento;
+
+            IF Lr_InfoDocumentRelac.ID_DOCUMENTO_RELACION IS NOT NULL THEN
+
+               DELETE FROM DB_COMUNICACION.INFO_DOCUMENTO_RELACION WHERE ID_DOCUMENTO_RELACION = Lr_InfoDocumentRelac.ID_DOCUMENTO_RELACION;
+               --ELIMINAR DOCUMENTO
+               DELETE FROM DB_COMUNICACION.INFO_DOCUMENTO WHERE ID_DOCUMENTO = Lr_InfoDocumentRelac.DOCUMENTO_ID;
+            END IF;
+
+        END LOOP;
+      END IF;
+
+      --ELIMINAR DETALLE HISTORIAL
+      OPEN C_GetUltimoDetalleHist(Lv_DetalleId);
+      FETCH C_GetUltimoDetalleHist INTO Lr_InfoDetalleHistUlt;
+      CLOSE C_GetUltimoDetalleHist;
+      DELETE FROM DB_SOPORTE.INFO_DETALLE_HISTORIAL WHERE ID_DETALLE_HISTORIAL = Lr_InfoDetalleHistUlt.ID_DETALLE_HISTORIAL;
+      --ELIMINAR SEGUIMIENTO
+      OPEN C_GetUltimoDetalleSeg(Lv_DetalleId);
+      FETCH C_GetUltimoDetalleSeg INTO Lr_InfoTareaSeguimUlt;
+      CLOSE C_GetUltimoDetalleSeg;
+      DELETE FROM DB_SOPORTE.INFO_TAREA_SEGUIMIENTO WHERE ID_SEGUIMIENTO = Lr_InfoTareaSeguimUlt.ID_SEGUIMIENTO;
+
+      COMMIT;
+
+      --ACTUALIZAR DETALLE EN INFO_TAREA
+      DB_SOPORTE.SPKG_INFO_TAREA.P_UPDATE_TAREA( Lv_DetalleId,
+                                                Lr_InfoDetalleHistUlt.USR_CREACION,
+                                                Lv_Status_info_tarea,
+                                                Lv_Mensaje_info_tarea);
+
+      Pv_Status  := 'ok';
+      Pv_Mensaje := 'Actualización de tarea ejecutada correctamente';
+      Pcl_Response := Pv_Mensaje;
+
+    EXCEPTION
+      WHEN Le_Errors THEN
+          ROLLBACK;
+          Pv_Status  := 'ERROR';
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('SPKG_SOPORTE_TAREA',
+                                              'P_REVERSAR_ESTADO_TAREA',
+                                                Pv_Mensaje,
+                                                'DB_COMERCIAL',
+                                                SYSDATE,
+                                                NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+      WHEN OTHERS THEN
+          ROLLBACK;
+          Pv_Status  := 'fail';
+          Pv_Mensaje := 'Error: '||SQLCODE ||' ERROR_STACK -'||DBMS_UTILITY.FORMAT_ERROR_STACK;
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('SPKG_SOPORTE_TAREA',
+                                              'P_REVERSAR_ESTADO_TAREA',
+                                                'Error: ' || SQLCODE || ' - ERROR_STACK:'||
+                                                  DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: '||
+                                                  DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
+                                                'DB_COMERCIAL',
+                                                SYSDATE,
+                                                NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+
+  END P_REVERSAR_ESTADO_TAREA;
+
 END SPKG_SOPORTE_TAREA;
 
 /

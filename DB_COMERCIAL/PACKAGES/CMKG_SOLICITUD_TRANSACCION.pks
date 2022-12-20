@@ -85,6 +85,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION AS
                                            Pv_Status   OUT VARCHAR2,
                                            Pv_Mensaje  OUT VARCHAR2);
 
+  /**
+   * Documentación para el procedimiento 'P_CAMBIAR_ESTADO_PLANIF_SOL'.
+   *
+   * Método encargado de actualizar estado de la 'INFO_DETALLE_SOL_PLANIF' del esquema 'DB_COMERCIAL'.
+   *
+   * @param Pcl_Request IN  CLOB Recibe json request.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   *
+   * @author Andrés Montero H. <amontero@telconet.ec>
+   * @version 1.0 20-05-2022
+   */
+  PROCEDURE P_CAMBIAR_ESTADO_PLANIF_SOL(Pcl_Request IN  CLOB,
+                                           Pv_Status   OUT VARCHAR2,
+                                           Pv_Mensaje  OUT VARCHAR2);
+
 END CMKG_SOLICITUD_TRANSACCION;
 /
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION AS
@@ -622,6 +638,259 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION AS
       Pv_Mensaje :=  SUBSTR(SQLERRM   ||' - ERROR_BACKTRACE: '||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,0,3000);
 
   END P_ACTUALIZAR_DETALLE_SOLICITUD;
+
+
+
+  PROCEDURE P_CAMBIAR_ESTADO_PLANIF_SOL(Pcl_Request IN  CLOB,
+                                           Pv_Status   OUT VARCHAR2,
+                                           Pv_Mensaje  OUT VARCHAR2)
+  IS
+    --Cursores Locales
+    CURSOR C_GetDetalleSolPlanif(Cn_IdDetalleSolPlanif NUMBER)
+    IS
+      SELECT DSP.ID_DETALLE_SOL_PLANIF, DS.ID_DETALLE_SOLICITUD, DS.ESTADO 
+      FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF DSP 
+      JOIN DB_COMERCIAL.INFO_DETALLE_SOLICITUD DS ON DS.ID_DETALLE_SOLICITUD = DSP.DETALLE_SOLICITUD_ID
+      WHERE DSP.ID_DETALLE_SOL_PLANIF = Cn_IdDetalleSolPlanif;
+
+    CURSOR C_CantidadPlanifActivas(Cn_IdDetalleSolicitud NUMBER)
+    IS
+      SELECT COUNT(*) FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF SP
+      WHERE SP.DETALLE_SOLICITUD_ID = Cn_IdDetalleSolicitud AND SP.ESTADO NOT IN ('Finalizada','Cancelada','Anulada');
+
+    CURSOR C_GetUltimoDetPlanifHist(Cn_idDetalleSolPla DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF.ID_DETALLE_SOL_PLANIF%TYPE)
+    IS
+      SELECT idh1.* FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST idh1
+      WHERE
+      ID_DETALLE_SOL_PLANIF_HIST =
+      (
+            SELECT MAX(idh.ID_DETALLE_SOL_PLANIF_HIST)
+            FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST idh WHERE idh.DETALLE_SOL_PLANIF_ID = Cn_idDetalleSolPla
+      );
+
+    CURSOR C_GetPenultimoDetPlanHist(Cn_idDetalleSolPla DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF.ID_DETALLE_SOL_PLANIF%TYPE)
+    IS
+      SELECT * FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST idh1
+      WHERE
+      ID_DETALLE_SOL_PLANIF_HIST =
+      (
+        SELECT MIN(idh1.ID_DETALLE_SOL_PLANIF_HIST)
+        FROM 
+        (SELECT *
+            FROM (
+              SELECT idh.ID_DETALLE_SOL_PLANIF_HIST
+                  FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST idh
+                  WHERE  idh.DETALLE_SOL_PLANIF_ID = Cn_idDetalleSolPla
+                  ORDER BY idh.ID_DETALLE_SOL_PLANIF_HIST DESC
+              ) WHERE rownum <= 2) idh1
+      );
+
+    CURSOR C_GetUltimoDetSolHist(Cn_idDetalleSolicitud DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE)
+    IS
+      SELECT idh1.* FROM DB_COMERCIAL.INFO_DETALLE_SOL_HIST idh1
+      WHERE
+      ID_SOLICITUD_HISTORIAL =
+      (
+            SELECT MAX(idh.ID_SOLICITUD_HISTORIAL)
+            FROM DB_COMERCIAL.INFO_DETALLE_SOL_HIST idh WHERE idh.DETALLE_SOLICITUD_ID = Cn_idDetalleSolicitud
+      );
+
+    CURSOR C_GetPenultimoDetSolHist(Cn_idDetalleSolicitud DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE)
+    IS
+      SELECT * FROM DB_COMERCIAL.INFO_DETALLE_SOL_HIST idh1
+      WHERE
+      ID_SOLICITUD_HISTORIAL =
+      (
+        SELECT MIN(idh1.ID_SOLICITUD_HISTORIAL)
+        FROM 
+        (SELECT *
+            FROM (
+              SELECT idh.ID_SOLICITUD_HISTORIAL
+                  FROM DB_COMERCIAL.INFO_DETALLE_SOL_HIST idh
+                  WHERE  idh.DETALLE_SOLICITUD_ID = Cn_idDetalleSolicitud
+                  ORDER BY idh.ID_SOLICITUD_HISTORIAL DESC
+              ) WHERE rownum <= 2) idh1
+      );
+
+    --Variables Locales.
+    Lv_Mensaje                VARCHAR2(3000);
+    Le_Exception              EXCEPTION;
+    Ln_IdDetalleSolPlanif     NUMBER;
+    Ln_IdDetalleSolicitud     NUMBER;
+    Lv_EstadoSolicitud        VARCHAR2(20);
+    Lv_Estado                 VARCHAR2(20);
+    Lv_Accion                 VARCHAR2(40);
+    Lv_UsrCreacion            VARCHAR2(40);
+    Lv_Observacion            VARCHAR2(3000);
+    Lv_IpCreacion             VARCHAR2(20);
+
+    Ln_ExistePlanifActivas    NUMBER := 0;
+
+    Lc_RequestDetalleSol      CLOB;
+    Lv_StatusDetalleSol       VARCHAR2(200);
+    Lv_MensajeDetalleSol      VARCHAR2(200);
+
+    Lc_RequestDetSolHist      CLOB;
+    Lv_StatusDetSolHist       VARCHAR2(200);
+    Lv_MensajeDetSolHist      VARCHAR2(200);
+
+    Ln_IdDetalleSolHist       NUMBER := 0;
+
+    Lr_InfoDetSolPlaHistAnt DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST%ROWTYPE;
+    Lr_InfoDetSolPlaHistUlt DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST%ROWTYPE;
+    Lr_InfoDetalleSolHistAnt DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE;
+    Lr_InfoDetalleSolHistUlt DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE;
+  BEGIN
+
+    IF C_GetDetalleSolPlanif%ISOPEN THEN
+      CLOSE C_GetDetalleSolPlanif;
+    END IF;
+    IF C_CantidadPlanifActivas%ISOPEN THEN
+      CLOSE C_CantidadPlanifActivas;
+    END IF;
+
+    --Parse del JSON.
+    APEX_JSON.PARSE(Pcl_Request);
+    Ln_IdDetalleSolPlanif := APEX_JSON.GET_NUMBER(P_PATH => 'idDetalleSolPlanif');
+    Lv_Estado             := APEX_JSON.GET_VARCHAR2(P_PATH => 'estado');
+    Lv_Accion             := APEX_JSON.GET_VARCHAR2(P_PATH => 'accion');
+    Lv_UsrCreacion        := APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion');
+    Lv_IpCreacion         := APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion');
+    Lv_Observacion        := APEX_JSON.GET_VARCHAR2(P_PATH => 'observacion');
+
+    --Validación.
+    IF Ln_IdDetalleSolPlanif IS NULL THEN
+      Lv_Mensaje := 'Ningún valor puede ir nulo (idDetalleSolPlanif)';
+      RAISE Le_Exception;
+    END IF;
+
+    OPEN C_GetDetalleSolPlanif(Ln_IdDetalleSolPlanif);
+      FETCH C_GetDetalleSolPlanif INTO Ln_IdDetalleSolPlanif, Ln_IdDetalleSolicitud, Lv_EstadoSolicitud;
+    CLOSE C_GetDetalleSolPlanif;
+
+    IF Ln_IdDetalleSolPlanif IS NULL THEN
+      Lv_Mensaje := 'No existe la planificación de solicitud con el id('||Ln_IdDetalleSolPlanif||')';
+      RAISE Le_Exception;
+    END IF;
+
+    IF Lv_Accion = 'CAMBIAR_ESTADO' THEN
+
+      --ACTUALIZA LA PLANIFICACION DE LA SOLICITUD
+      UPDATE DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF
+        SET 
+            ESTADO               = NVL(Lv_Estado     , ESTADO),
+            USR_ULT_MOD          = NVL(Lv_UsrCreacion , USR_ULT_MOD),
+            FE_ULT_MOD           = SYSDATE
+      WHERE ID_DETALLE_SOL_PLANIF = Ln_IdDetalleSolPlanif;
+
+      --INGRESA HISTORIAL EN LA PLANIFICACION DE LA SOLICITUD
+      INSERT INTO DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST (
+        ID_DETALLE_SOL_PLANIF_HIST,
+        DETALLE_SOL_PLANIF_ID,
+        USR_CREACION,
+        FE_CREACION,
+        IP_CREACION,
+        OBSERVACION,
+        ESTADO
+      ) VALUES (
+        DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_PLANIF_HI.NEXTVAL,
+        Ln_IdDetalleSolPlanif,
+        Lv_UsrCreacion,
+        SYSDATE,
+        Lv_IpCreacion,
+        Lv_Observacion,
+        Lv_Estado
+      );
+
+      --CONSULTA LAS PLANIFICACIONES ACTIVAS
+      OPEN C_CantidadPlanifActivas(Ln_IdDetalleSolicitud);
+        FETCH C_CantidadPlanifActivas INTO Ln_ExistePlanifActivas;
+      CLOSE C_CantidadPlanifActivas;
+
+      --SI LA SOLICITUD YA NO TIENE PLANIFICACIONES ACTIVAS SE FINALIZA SOLICITUD
+      IF Ln_ExistePlanifActivas < 1 THEN
+
+          --CAMBIA ESTADO A SOLICITUD
+          APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+          APEX_JSON.OPEN_OBJECT;
+          APEX_JSON.WRITE('idDetalleSolicitud'  , Ln_IdDetalleSolicitud);
+          APEX_JSON.WRITE('estado', Lv_Estado);
+          APEX_JSON.CLOSE_OBJECT;
+          Lc_RequestDetalleSol := APEX_JSON.GET_CLOB_OUTPUT;
+          APEX_JSON.FREE_OUTPUT;
+
+          DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_ACTUALIZAR_DETALLE_SOLICITUD(Lc_RequestDetalleSol, Lv_StatusDetalleSol, Lv_MensajeDetalleSol);
+
+          --INGRESA HISTORIAL EN SOLICITUD
+          APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+          APEX_JSON.OPEN_OBJECT;
+          APEX_JSON.WRITE('detalleSolicitudId', Ln_IdDetalleSolicitud);
+          APEX_JSON.WRITE('estado'            , Lv_Estado);
+          APEX_JSON.WRITE('usrCreacion'       , Lv_UsrCreacion);
+          APEX_JSON.WRITE('ipCreacion'        , Lv_IpCreacion);
+          APEX_JSON.WRITE('observacion'       , Lv_Observacion);
+          APEX_JSON.CLOSE_OBJECT;
+          Lc_RequestDetSolHist := APEX_JSON.GET_CLOB_OUTPUT;
+          APEX_JSON.FREE_OUTPUT;
+
+          DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_GUARDAR_DETALLE_SOL_HIST(
+            Lc_RequestDetSolHist,Ln_IdDetalleSolHist,Lv_StatusDetSolHist,Lv_MensajeDetSolHist);
+
+      END IF;
+    ELSIF  Lv_Accion = 'REVERSAR' THEN
+
+      --CONSULTAR PENULTIMO ESTADO DE PLANIFICACION DE SOLICITUD
+      OPEN C_GetPenultimoDetPlanHist(Ln_IdDetalleSolPlanif);
+      FETCH C_GetPenultimoDetPlanHist INTO Lr_InfoDetSolPlaHistAnt;
+      CLOSE C_GetPenultimoDetPlanHist;
+      --ELIMINAR HISTORIAL DE PLANIFICACION DE SOLICITUD
+      OPEN C_GetUltimoDetPlanifHist(Ln_IdDetalleSolPlanif);
+      FETCH C_GetUltimoDetPlanifHist INTO Lr_InfoDetSolPlaHistUlt;
+      CLOSE C_GetUltimoDetPlanifHist;
+
+      DELETE FROM DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF_HIST WHERE ID_DETALLE_SOL_PLANIF_HIST = Lr_InfoDetSolPlaHistUlt.ID_DETALLE_SOL_PLANIF_HIST;
+
+      --ACTUALIZAR PLANIFICACION DE SOLICITUD
+      UPDATE DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF SET 
+            ESTADO = Lr_InfoDetSolPlaHistAnt.ESTADO,
+            FE_ULT_MOD = Lr_InfoDetSolPlaHistAnt.FE_CREACION,
+            USR_ULT_MOD = Lr_InfoDetSolPlaHistAnt.USR_CREACION
+      WHERE ID_DETALLE_SOL_PLANIF = Ln_IdDetalleSolPlanif;
+
+      IF UPPER(Lv_EstadoSolicitud) = 'FINALIZADA' THEN
+            --CONSULTAR PENULTIMO HISTORIAL DE SOLICITUD
+            OPEN C_GetPenultimoDetSolHist(Ln_IdDetalleSolicitud);
+            FETCH C_GetPenultimoDetSolHist INTO Lr_InfoDetalleSolHistAnt;
+            CLOSE C_GetPenultimoDetSolHist;
+            --CONSULTAR ULTIMO HISTORIAL DE SOLICITUD
+            OPEN C_GetUltimoDetSolHist(Ln_IdDetalleSolicitud);
+            FETCH C_GetUltimoDetSolHist INTO Lr_InfoDetalleSolHistUlt;
+            CLOSE C_GetUltimoDetSolHist;
+
+            --ELIMINAR HISTORIAL DE SOLICITUD
+            DELETE FROM DB_COMERCIAL.INFO_DETALLE_SOL_HIST WHERE ID_SOLICITUD_HISTORIAL = Lr_InfoDetalleSolHistUlt.ID_SOLICITUD_HISTORIAL;
+
+            --ACTUALIZAR SOLICITUD
+            UPDATE DB_COMERCIAL.INFO_DETALLE_SOLICITUD SET 
+            ESTADO = Lr_InfoDetalleSolHistAnt.ESTADO
+            WHERE ID_DETALLE_SOLICITUD = Ln_IdDetalleSolicitud;
+      END IF;
+
+    END IF;
+    
+    Pv_Status  := 'OK';
+    Pv_Mensaje := 'Transación exitosa';
+
+  EXCEPTION
+    WHEN Le_Exception THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje :=  SUBSTR(Lv_Mensaje||' - ERROR_BACKTRACE: '||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,0,3000);
+    WHEN OTHERS THEN
+      Pv_Status  := 'ERROR';
+      Pv_Mensaje :=  SUBSTR(SQLERRM   ||' - ERROR_BACKTRACE: '||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,0,3000);
+
+  END P_CAMBIAR_ESTADO_PLANIF_SOL;
+
 ----
 ----
 END CMKG_SOLICITUD_TRANSACCION;
