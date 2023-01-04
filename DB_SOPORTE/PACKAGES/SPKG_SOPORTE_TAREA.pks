@@ -240,7 +240,7 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_SOPORTE_TAREA IS
 
       Lcl_Select       :=  '
                      SELECT DISTINCT IP.IDENTIFICACION_CLIENTE IDENTIFICACION, VEE.NOMBRE NOMBRES,ATA.NOMBRE_TAREA,ATA.ESTADO ESTADO_TAREA,
-                            VEE.NO_EMPLE,VEE.MAIL_CIA, VEE.NOMBRE_DEPTO DEPARTAMENTO,ICO.ID_COMUNICACION NUMERO_TAREA  ';
+                            VEE.NO_EMPLE,VEE.MAIL_CIA, VEE.NOMBRE_DEPTO DEPARTAMENTO,ICO.ID_COMUNICACION NUMERO_TAREA,VEE.OFICINA_CANTON, VEE.OFICINA_PROVINCIA ';
 
 
       Lcl_From         :=   ' 
@@ -367,13 +367,20 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_SOPORTE_TAREA IS
 
         --CURSOR QUE OBTIENE TAREAS FINALIZADAS EN EL MES Y AÑO ACTUAL, (TAREA_ID)
           CURSOR C_GET_TAREA (CV_ID_TAREA VARCHAR2, CV_ESTADO VARCHAR2 , CV_ID_DETALLE VARCHAR2 ) IS
-          SELECT  IT.*
+          SELECT  IT.TAREA_ID, IT.DETALLE_ID, IT.NUMERO_TAREA, IT.ASIGNADO_NOMBRE
           FROM DB_SOPORTE.INFO_TAREA IT
           WHERE IT.ESTADO = CV_ESTADO
             AND IT.TAREA_ID=CV_ID_TAREA
             AND IT.DETALLE_ID=CV_ID_DETALLE
+            AND IT.ASIGNADO_NOMBRE IN (SELECT pardet.valor1 AS ASIGNADO_NOMBRE
+                                FROM db_general.admi_parametro_cab parcab, db_general.admi_parametro_det pardet
+                                WHERE parcab.nombre_parametro = 'DEPARTAMENTOS_ADMINISTRATIVA'
+                                AND pardet.parametro_id = parcab.id_parametro
+                                AND pardet.descripcion = 'DEP. ADM. (ATENCION INTERNA) PARA JOB BARRIDO DE TAREA Y GENERACION DE HORAS EXTRAS'
+                                AND pardet.estado = 'Activo'
+                                AND parcab.estado = 'Activo'
+                                AND pardet.valor2 = '1')
             AND PROCESO_ID = (SELECT ID_PROCESO FROM DB_SOPORTE.ADMI_PROCESO WHERE NOMBRE_PROCESO='TAREAS DE HORAS EXTRA' AND ESTADO='Activo')
-
        ORDER BY IT.NUMERO_TAREA DESC;
 
       Lc_Datostarea             C_GET_TAREA%ROWTYPE;   

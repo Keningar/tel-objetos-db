@@ -95,7 +95,7 @@ create or replace package body                        DB_SOPORTE.SPKG_CUADRILLA_
   
   
     Lcl_Select       := '
-              SELECT VEE.NO_EMPLE,IP.IDENTIFICACION_CLIENTE,VEE.NOMBRE,VEE.MAIL_CIA,AC.ID_CUADRILLA ';
+              SELECT VEE.NO_EMPLE,IP.IDENTIFICACION_CLIENTE,VEE.NOMBRE,VEE.MAIL_CIA,AC.ID_CUADRILLA,VEE.OFICINA_PROVINCIA,VEE.OFICINA_CANTON ';
           
     Lcl_From         := '
               FROM DB_COMERCIAL.INFO_PERSONA IP  ';
