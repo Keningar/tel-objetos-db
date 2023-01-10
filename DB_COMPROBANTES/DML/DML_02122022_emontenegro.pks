@@ -1,0 +1,3 @@
+INSERT INTO DB_COMPROBANTES.INFO_CAMPO_ADICIONAL(ID_CAMPO_ADICIONAL,EMPRESA_ID,TIPO_DOC_ID,CODIGO,ETIQUETA,DESCRIPCION,POSICION,ESTADO,FE_CREACION,USR_CREACION,FE_ULT_MOD,USR_ULT_MOD,IP_CREACION) VALUES (DB_COMPROBANTES.SEQ_INFO_CAMPO_ADICIONAL.NEXTVAL,2,1,'fmaxPago','Fecha Máxima de pago',null,10,'Activo', '02-DEC-22','emontenegro',null,null,'0.0.0.0');
+UPDATE DB_COMPROBANTES.INFO_NOTIFICACION SET MENSAJE_ADICIONAL = 'Para consultas o requerimientos puede contactarse a nuestro Centro de Atenci'||chr(38)||'oacute;n a nivel nacional al $empresa_telefono. Si su reclamo NO ha sido resuelto por el prestador, ingrese su queja a trav'||chr(38)||'eacute;s del formulario respectivo en www.gob.ec', USR_ULT_MOD='emontenegro',FE_ULT_MOD='02-DEC-22' WHERE ID_NOTIFICACION=1;
+/
