@@ -540,6 +540,20 @@ create or replace PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN CLOB;
 
     /**
+    * Documentacion para la funcion F_OBTENER_PTO_PADRE_PER_ID
+    *
+    * La funcion obtiene el primer punto id padre por cliente con su id de persona empresa rol
+    *
+    * @param Fn_IdPersonaEmpresaRol IN NUMBER Id Persona empresa rol del cliente
+    * return Fn_IdPuntoPadre NUMBER
+    * 
+    * @author Javier Hidalgo <jihidalgo@telconet.ec>
+    * @version 1.0 09/01/2023
+    */
+    FUNCTION F_OBTENER_PTO_PADRE_PER_ID(Fn_IdPersonaEmpresaRol IN NUMBER)
+        RETURN NUMBER;
+
+    /**
     * Documentacion para la funcion F_LLAMAR_JAR
     *
     * La funcion llama a archivo JAR de reactivacion de puntos RC
@@ -4134,6 +4148,20 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       -- CREA ANTICIPO SI ES NECESARIO y SI ENCONTRO EL CLIENTE
     IF Ln_ValorPagado > 0 THEN
 
+        --Si no encontro factura no tendra punto para asignar
+        --por lo tanto se busca el primer punto padre activo y se le asigna el pago
+        IF (Ln_PuntoId IS NULL AND Li_Cont_InfoCliente > 0) THEN
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                            'F_OBTENER_PTO_PADRE_PER_ID',
+                                            'Ingresa a consultar con Id persona empresa rol: '||Le_InfoCliente(Le_InfoCliente.FIRST).ID_PERSONA_ROL,
+                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                            SYSDATE,
+                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+            Ln_PuntoId := FNCK_PAGOS_LINEA.F_OBTENER_PTO_PADRE_PER_ID(Le_InfoCliente(Le_InfoCliente.FIRST).ID_PERSONA_ROL);            
+
+        END IF;
+
         --Obtener la numeracion de la tabla Admi_numeracion
         Lv_NumeroPago := '';
         OPEN C_Numero_Pago(Lv_EmpresaCod, Ln_OficinaId, Lv_CodigoNumeracionAnticipo);
@@ -4329,6 +4357,59 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       END;
 
     END F_GENERAR_PAGO_ANTICIPO;
+
+    /**
+    * Documentacion para la funcion F_OBTENER_PTO_PADRE_PER_ID
+    *
+    * La funcion obtiene el primer punto id padre por cliente con su id de persona empresa rol
+    *
+    * @param Fn_IdPersonaEmpresaRol IN NUMBER Id Persona empresa rol del cliente
+    * return Fn_IdPuntoPadre NUMBER
+    * 
+    * @author Javier Hidalgo <jihidalgo@telconet.ec>
+    * @version 1.0 09/01/2023
+    */
+    FUNCTION F_OBTENER_PTO_PADRE_PER_ID(Fn_IdPersonaEmpresaRol IN NUMBER)
+    RETURN NUMBER IS
+        Lcl_Query       CLOB;
+        Lc_Cursor       SYS_REFCURSOR;
+        Fn_IdPuntoPadre NUMBER;  
+    
+    BEGIN
+        
+        Lcl_Query := 'SELECT a.id_punto
+                FROM
+                DB_COMERCIAL.info_punto a,
+                DB_COMERCIAL.info_punto_dato_adicional e
+                WHERE
+                a.id_punto = e.punto_id AND
+				a.persona_empresa_rol_id='||Fn_IdPersonaEmpresaRol||' AND
+				e.es_padre_facturacion=''S'' AND rownum = 1
+                order by a.id_punto ASC';
+
+        IF Lc_Cursor%ISOPEN THEN
+            CLOSE Lc_Cursor;
+        END IF;
+        OPEN Lc_Cursor FOR Lcl_Query;
+        FETCH Lc_Cursor INTO Fn_IdPuntoPadre;
+        IF Lc_Cursor%ISOPEN THEN
+            CLOSE Lc_Cursor;
+        END IF;
+
+        RETURN Fn_IdPuntoPadre;
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                          'FNCK_PAGOS_LINEA.F_OBTENER_PTO_PADRE_PER_ID',
+                                          'No se encontró Id Punto padre del cliente. Parametros (Id Persona Empresa Rol: '||Fn_IdPersonaEmpresaRol||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+        Fn_IdPuntoPadre := NULL;
+        RETURN Fn_IdPuntoPadre; 
+    END;
 
     /**
     * Documentacion para la funcion F_LLAMAR_JAR
