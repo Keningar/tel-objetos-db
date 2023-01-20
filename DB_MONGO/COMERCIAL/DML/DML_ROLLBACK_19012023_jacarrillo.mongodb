@@ -1,0 +1,14 @@
+/**
+ * Rollback de creación de origenes para logs
+ *
+ * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+ *
+ * @version 1.0
+ */
+
+ 
+   
+db.origen.deleteMany({
+	"nombre": { $in: [ "ListaNegraBlanca", "CredencialesComercial" , "registrarLogsClientes"  ]}
+});
+ 
