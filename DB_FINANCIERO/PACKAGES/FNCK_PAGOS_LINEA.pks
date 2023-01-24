@@ -124,41 +124,6 @@ create or replace PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     */
     FUNCTION F_OBTENER_CANAL_PAGO_LINEA(Fv_NombreCanal IN VARCHAR2)
     RETURN SYS_REFCURSOR;
-
-    /**
-    * Documentación para TYPE 'Lr_ParametrosDetalle'.
-    *  
-    * @author Javier Hidalgo <jihidalgo@telconet.ec>
-    * @version 1.0 11/07/2022
-    */
-    TYPE Lr_ParametrosDetalle IS RECORD (
-      ID_PARAMETRO_DET          DB_GENERAL.ADMI_PARAMETRO_DET.ID_PARAMETRO_DET%TYPE,
-      PARAMETRO_ID              DB_GENERAL.ADMI_PARAMETRO_DET.PARAMETRO_ID%TYPE,
-      DESCRIPCION               DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE,
-      VALOR1                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE,
-      VALOR2                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE,
-      VALOR3                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR3%TYPE,
-      VALOR4                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR4%TYPE,
-      ESTADO                    DB_GENERAL.ADMI_PARAMETRO_DET.ESTADO%TYPE,
-      USR_CREACION              DB_GENERAL.ADMI_PARAMETRO_DET.USR_CREACION%TYPE,
-      FE_CREACION               DB_GENERAL.ADMI_PARAMETRO_DET.FE_CREACION%TYPE,
-      IP_CREACION               DB_GENERAL.ADMI_PARAMETRO_DET.IP_CREACION%TYPE,
-      USR_ULT_MOD               DB_GENERAL.ADMI_PARAMETRO_DET.USR_ULT_MOD%TYPE,
-      FE_ULT_MOD                DB_GENERAL.ADMI_PARAMETRO_DET.FE_ULT_MOD%TYPE,
-      IP_ULT_MOD                DB_GENERAL.ADMI_PARAMETRO_DET.IP_ULT_MOD%TYPE, 
-      VALOR5                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR5%TYPE,
-      EMPRESA_COD               DB_GENERAL.ADMI_PARAMETRO_DET.EMPRESA_COD%TYPE,
-      VALOR6                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR6%TYPE,
-      VALOR7                    DB_GENERAL.ADMI_PARAMETRO_DET.VALOR7%TYPE,
-      OBSERVACION               DB_GENERAL.ADMI_PARAMETRO_DET.OBSERVACION%TYPE);
-
-    /**
-    * Documentación para TYPE 'T_ParametrosDetalle'.
-    *  
-    * @author Javier Hidalgo <jihidalgo@telconet.ec>
-    * @version 1.0 11/07/2022
-    */                   
-    TYPE T_ParametrosDetalle IS TABLE OF Lr_ParametrosDetalle INDEX BY PLS_INTEGER;
     
     /**
     * Documentación para TYPE 'Lr_PuntoCliente'.
@@ -1209,6 +1174,9 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 01/07/2022
     *
+    * @author Javier Hidalgo <jihidalgo@telconet.ec>
+    * @version 1.1 24/01/2023 Se reemplaza obtencion de parametro PAGO_SIN_SALDO por un cursor con consulta directa.
+    *
     * @param Pcl_Request IN CLOB
     * @param Pv_Status OUT VARCHAR2 estado
     * @param Pv_Mensaje OUT VARCHAR2 Devuelve el mensaje de respuesta
@@ -1229,6 +1197,12 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         FROM DB_FINANCIERO.INFO_OFICINA_GRUPO OG
         WHERE OG.ES_VIRTUAL = 'N' AND OG.EMPRESA_ID = Cv_EmpresaCod AND OG.ESTADO = 'Activo' 
         AND OG.ES_MATRIZ = 'S' ORDER BY OG.FE_CREACION ASC;
+
+    CURSOR C_GetParamsPagoLinea
+        IS 
+        select det.valor2 from db_general.admi_parametro_cab cab 
+        inner join db_general.admi_parametro_det det on cab.id_parametro = det.parametro_id
+        where cab.nombre_parametro = 'PARAMETROS_PAGOS_LINEA' and det.valor1 = 'PAGO_SIN_SALDO';
 
     Li_Limit              CONSTANT PLS_INTEGER DEFAULT 50;
 
@@ -1257,8 +1231,6 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     Lv_Terminal           VARCHAR2(50);
     Lv_Saldo              VARCHAR2(50);
     Lv_NombreCliente      VARCHAR2(500);
-    Lrf_AdmiParametroDet  SYS_REFCURSOR;    
-    Le_AdmiParametroDet   T_ParametrosDetalle;
     Li_Cont_ParamDet      PLS_INTEGER;
     Lr_InfoPagoLinea              DB_FINANCIERO.INFO_PAGO_LINEA%ROWTYPE;
     Lr_InfoPagoLineaHist          DB_FINANCIERO.INFO_PAGO_LINEA_HISTORIAL%ROWTYPE;
@@ -1321,23 +1293,16 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         FNCK_PAGOS_LINEA.P_VALIDAR_CREDENCIALES(Pcl_Request, Lv_Retorno, Lv_Error, Lb_ValidaCred);
 
-        Lrf_AdmiParametroDet := DB_GENERAL.GNRLPCK_UTIL.F_GET_PARAMS_DETS('PARAMETROS_PAGOS_LINEA');
-
-        FETCH Lrf_AdmiParametroDet BULK COLLECT INTO Le_AdmiParametroDet LIMIT Li_Limit;
-
-        Li_Cont_ParamDet := Le_AdmiParametroDet.FIRST;
-
-        WHILE (Li_Cont_ParamDet IS NOT NULL)  
-        LOOP
-            IF Le_AdmiParametroDet(Li_Cont_ParamDet).VALOR1 = 'PAGO_SIN_SALDO' THEN
-              Ln_PagoSinSaldo := Le_AdmiParametroDet(Li_Cont_ParamDet).VALOR2;
-            END IF;
-
-            EXIT WHEN Le_AdmiParametroDet(Li_Cont_ParamDet).VALOR1 = 'PAGO_SIN_SALDO';
-
-            Li_Cont_ParamDet:= Le_AdmiParametroDet.NEXT(Li_Cont_ParamDet);
-        END LOOP;
-        CLOSE Lrf_AdmiParametroDet;
+        IF C_GetParamsPagoLinea%ISOPEN THEN
+            CLOSE C_GetParamsPagoLinea;
+        END IF;
+        
+        OPEN C_GetParamsPagoLinea;
+        FETCH C_GetParamsPagoLinea INTO Ln_PagoSinSaldo;
+        
+        IF C_GetParamsPagoLinea%ISOPEN THEN
+            CLOSE C_GetParamsPagoLinea;
+        END IF;
 
         IF Lb_ValidaCred THEN
 
@@ -3733,6 +3698,10 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * @author Erick Melgar <emelgar@telconet.ec>
     * @version 1.0 14/07/2022
     * 
+    * @author Javier Hidalgo <jihidalgo@telconet.ec>
+    * @version 1.1 24/01/2023 Se agrega consulta de puntoPadre a servicios que no poseen saldo o facturas abiertas.
+    *                           Se evita que se cree anticipos sin clientes.
+    *
     * @param Fc_request IN CLOB data
     * @param RETURN CLOB Devuelve respuesta con data
     */ 
@@ -3842,6 +3811,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       Ln_Tipo_Documento_Id NUMBER;
       Lv_EstadoImprFact VARCHAR2(50);
       Lv_Cadena VARCHAR2(50);
+      Ln_PosUnoCliente NUMBER;
 
     BEGIN
       APEX_JSON.PARSE(Fc_request);
@@ -3914,6 +3884,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
             FETCH Fc_InfoCliente BULK COLLECT INTO Le_InfoCliente LIMIT Li_Limit;
 
             Li_Cont_InfoCliente := Le_InfoCliente.FIRST;
+            Ln_PosUnoCliente := Le_InfoCliente.FIRST;
 
             IF Li_Cont_InfoCliente > 0 THEN
 
@@ -4148,18 +4119,23 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       -- CREA ANTICIPO SI ES NECESARIO y SI ENCONTRO EL CLIENTE
     IF Ln_ValorPagado > 0 THEN
 
-        --Si no encontro factura no tendra punto para asignar
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                            'F_OBTENER_PTO_PADRE_PER_ID_MSG',
+                                            Lv_NumeroReferencia || ' - Ln_PuntoId: '||Ln_PuntoId || ' - Ln_PosUnoCliente: ' || Ln_PosUnoCliente,
+                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                            SYSDATE,
+                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );  
+
+        --Si no encontro factura no tendra punto para asignar                                         
         --por lo tanto se busca el primer punto padre activo y se le asigna el pago
-        IF (Ln_PuntoId IS NULL AND Li_Cont_InfoCliente > 0) THEN
+        IF (Ln_PuntoId IS NULL AND Ln_PosUnoCliente > 0) THEN
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                             'F_OBTENER_PTO_PADRE_PER_ID',
-                                            'Ingresa a consultar con Id persona empresa rol: '||Le_InfoCliente(Le_InfoCliente.FIRST).ID_PERSONA_ROL,
+                                            'Ingresa a consultar con Id persona empresa rol: '||Le_InfoCliente(Ln_PosUnoCliente).ID_PERSONA_ROL,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
-
-            Ln_PuntoId := FNCK_PAGOS_LINEA.F_OBTENER_PTO_PADRE_PER_ID(Le_InfoCliente(Le_InfoCliente.FIRST).ID_PERSONA_ROL);            
-
+            Ln_PuntoId := FNCK_PAGOS_LINEA.F_OBTENER_PTO_PADRE_PER_ID(Le_InfoCliente(Ln_PosUnoCliente).ID_PERSONA_ROL);            
         END IF;
 
         --Obtener la numeracion de la tabla Admi_numeracion
