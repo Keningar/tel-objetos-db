@@ -1020,6 +1020,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
             DBMS_LOB.APPEND(Lv_JsonRetorno, '"idServicioSimultaneo":' || V_IdServicioSimultaneo(i) || ', ');
             DBMS_LOB.APPEND(Lv_JsonRetorno, '"idProdServicioGestionado":"' || V_IdProdServicioSimultaneo(i) || '", ');
             DBMS_LOB.APPEND(Lv_JsonRetorno, '"descripServicioSimultaneo":"' || V_DescripServicioSimultaneo(i) || '", ');
+            DBMS_LOB.APPEND(Lv_JsonRetorno, '"estadoServicioSimultaneo":"' || V_EstadoServicioSimultaneo(i) || '", ');
             DBMS_LOB.APPEND(Lv_JsonRetorno, '"idProdServicioSimultaneo":"' || V_IdProdServicioSimultaneo(i) || '",');
             DBMS_LOB.APPEND(Lv_JsonRetorno, '"idSolicitudSimultanea":'   || V_IdSolSimultanea(i) || '');
             Ln_IdPunto := V_IdPuntoGestionado(i);
@@ -1043,6 +1044,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
                 DBMS_LOB.APPEND(Lv_JsonRetorno, '"idServicioSimultaneo":' || REG.ID_SERVICIO || ', ');
                 DBMS_LOB.APPEND(Lv_JsonRetorno, '"idProdServicioGestionado":"' || 0 || '", ');
                 DBMS_LOB.APPEND(Lv_JsonRetorno, '"descripServicioSimultaneo":"' ||'' || '", ');
+                DBMS_LOB.APPEND(Lv_JsonRetorno, '"estadoServicioSimultaneo":"' ||'' || '", ');
                 DBMS_LOB.APPEND(Lv_JsonRetorno, '"idProdServicioSimultaneo":"' || REG.PRODUCTO_ID || '",');
                 DBMS_LOB.APPEND(Lv_JsonRetorno, '"idSolicitudSimultanea":'   || nvl(Ln_IdSolicitud,0) || '');
                 DBMS_LOB.APPEND(Lv_JsonRetorno, '},');       
