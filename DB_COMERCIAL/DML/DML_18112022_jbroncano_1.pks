@@ -1,0 +1,96 @@
+/**
+ * DEBE EJECUTARSE EN DB_COMERCIAL
+ *  Ingreso de caracteristica VELOCIDAD COMERCIAL
+ * @author Joel Broncano<jbroncano@telconet.ec>
+ * @version 1.0 18-11-2022 - Versión Inicial.
+ */
+ 
+INSERT INTO DB_COMERCIAL.ADMI_CARACTERISTICA (
+        ID_CARACTERISTICA,
+        DESCRIPCION_CARACTERISTICA,
+        TIPO_INGRESO,
+        ESTADO,
+        FE_CREACION,
+        USR_CREACION,
+        TIPO
+    ) VALUES (
+        DB_COMERCIAL.SEQ_ADMI_CARACTERISTICA.NEXTVAL,
+        'VELOCIDAD MÁXIMA COMERCIAL',
+        'N',
+        'Activo',
+        SYSDATE,
+        'jbroncano',
+        'COMERCIAL'
+    );
+
+
+
+	INSERT INTO DB_COMERCIAL.ADMI_CARACTERISTICA (
+        ID_CARACTERISTICA,
+        DESCRIPCION_CARACTERISTICA,
+        TIPO_INGRESO,
+        ESTADO,
+        FE_CREACION,
+        USR_CREACION,
+        TIPO
+    ) VALUES (
+        DB_COMERCIAL.SEQ_ADMI_CARACTERISTICA.NEXTVAL,
+        'VELOCIDAD MÍNIMA COMERCIAL',
+        'N',
+        'Activo',
+        SYSDATE,
+        'jbroncano',
+        'COMERCIAL'
+    );
+
+
+INSERT INTO DB_COMERCIAL.Admi_Producto_Caracteristica (
+        ID_PRODUCTO_CARACTERISITICA,
+        PRODUCTO_ID,
+        CARACTERISTICA_ID,
+        FE_CREACION,
+        FE_ULT_MOD,
+        USR_CREACION,
+        USR_ULT_MOD,
+        ESTADO,
+        VISIBLE_COMERCIAL
+    ) VALUES (
+        DB_COMERCIAL.SEQ_ADMI_PRODUCTO_CARAC.NEXTVAL,
+        (select APRO.ID_PRODUCTO from 
+            DB_COMERCIAL.ADMI_PRODUCTO APRO where APRO.DESCRIPCION_PRODUCTO='INTERNET DEDICADO'
+            and APRO.EMPRESA_COD=18),
+        (SELECT ACA.ID_CARACTERISTICA FROM DB_COMERCIAL.ADMI_CARACTERISTICA ACA  WHERE ACA.DESCRIPCION_CARACTERISTICA = 'VELOCIDAD MÁXIMA COMERCIAL'),
+         SYSDATE,
+         null,
+         'jbroncano',
+         null,
+        'Activo',     
+        'SI'
+    );
+
+
+
+
+INSERT INTO DB_COMERCIAL.Admi_Producto_Caracteristica (
+        ID_PRODUCTO_CARACTERISITICA,
+        PRODUCTO_ID,
+        CARACTERISTICA_ID,
+        FE_CREACION,
+        FE_ULT_MOD,
+        USR_CREACION,
+        USR_ULT_MOD,
+        ESTADO,
+        VISIBLE_COMERCIAL
+    ) VALUES (
+        DB_COMERCIAL.SEQ_ADMI_PRODUCTO_CARAC.NEXTVAL,
+        (select APRO.ID_PRODUCTO from 
+            DB_COMERCIAL.ADMI_PRODUCTO APRO where APRO.DESCRIPCION_PRODUCTO='INTERNET DEDICADO'
+            and APRO.EMPRESA_COD=18),
+        (SELECT ACA.ID_CARACTERISTICA FROM DB_COMERCIAL.ADMI_CARACTERISTICA ACA  WHERE ACA.DESCRIPCION_CARACTERISTICA = 'VELOCIDAD MÍNIMA COMERCIAL'),
+         SYSDATE,
+         null,
+         'jbroncano',
+         null,
+        'Activo',     
+        'SI'
+    );

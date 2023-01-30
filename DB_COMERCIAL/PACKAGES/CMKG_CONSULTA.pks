@@ -1486,7 +1486,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             SELECT ACA.ID_CARACTERISTICA
             FROM DB_COMERCIAL.ADMI_CARACTERISTICA ACA
             WHERE
-            ACA.DESCRIPCION_CARACTERISTICA = Cv_DescripcionCaract ; 
+            ACA.ID_CARACTERISTICA=(select adet.VALOR1 from  DB_GENERAL.admi_parametro_det adet where adet.DESCRIPCION=Cv_DescripcionCaract) ; 
 
         CURSOR C_GET_DET_PLAN(Cn_IdPlan VARCHAR2,Cv_NombreParametro VARCHAR2)
         IS
@@ -1520,15 +1520,12 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
             WHERE
             ISPC.SERVICIO_ID = Cn_IdServicio ;
 
-        CURSOR C_GET_PRODUCTO_CARACT(Cn_IdProducto INTEGER,Cn_IdCaracteristica INTEGER,Cn_IdPlanDet INTEGER)
+        CURSOR C_GET_PRODUCTO_CARACT(Cn_IdCaracteristica INTEGER,Cn_planDet INTEGER)
         IS
-            SELECT IPPC.VALOR
-            FROM DB_COMERCIAL.ADMI_PRODUCTO_CARACTERISTICA APC
-            INNER JOIN INFO_PLAN_PRODUCTO_CARACT IPPC ON IPPC.PRODUCTO_CARACTERISITICA_ID = APC.ID_PRODUCTO_CARACTERISITICA 
-            WHERE
-            APC.PRODUCTO_ID = Cn_IdProducto 
-            AND APC.CARACTERISTICA_ID = Cn_IdCaracteristica
-            AND IPPC.PLAN_DET_ID = Cn_IdPlanDet;
+            SELECT APC.VALOR
+            FROM DB_COMERCIAL.INFO_PLAN_CARACTERISTICA APC
+            WHERE  APC.CARACTERISTICA_ID = Cn_IdCaracteristica
+            AND APC.PLAN_ID = Cn_planDet;
 
         CURSOR C_OBTENER_IMPUESTO(Cn_IdProducto INTEGER)
         IS
@@ -1699,8 +1696,8 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
 --      Lv_NombreParametroProd     VARCHAR2(400) := 'PRODUCTOS_TM_COMERCIAL';
         Lv_ModuloParametroProd     VARCHAR2(400) := 'COMERCIAL';
         Lv_ModuloParametroMens     VARCHAR2(400) := 'CONTRATO-DIGITAL';
-        Lv_DescripCaracteristicaNa VARCHAR2(400) := 'CAPACIDAD1';
-        Lv_DescripCaracteristicaIn VARCHAR2(400) := 'CAPACIDAD2';
+        Lv_DescripCaracteristicaNa VARCHAR2(400) := 'VELOCIDAD_MAXIMA';
+        Lv_DescripCaracteristicaIn VARCHAR2(400) := 'VELOCIDAD_MINIMA';
         Lv_DescipValorEquipa       VARCHAR2(400);
         Lv_DescipValorMensCRS      VARCHAR2(400) := 'MENSAJE_CONTRATO_DIGITAL_CRS';
         Lv_DescipValorMensEmple    VARCHAR2(400) := 'MENSAJE_CONTRATO_DIGITAL_EMPLEADO';
@@ -2178,24 +2175,24 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                         Lv_ObservacionContrato := Lv_ObservacionContrato ||'</li>'; 
                         Pcl_ResponseList.NOMBRE_PLAN := Pcl_arrayServicio(Ln_IteradorI).NOMBRE_PLAN;
 
-                        OPEN C_GET_PRODUCTO_CARACT (Pcl_arrayPlanDet(Ln_IteradorJ).PRODUCTO_ID,Ln_idCaracteristicaNa,Pcl_arrayPlanDet(Ln_IteradorJ).ID_ITEM);
-                        FETCH C_GET_PRODUCTO_CARACT INTO Lv_ValorProducCaractNa;
+                        OPEN C_GET_PRODUCTO_CARACT (Ln_idCaracteristicaNa,Pcl_arrayServicio(Ln_IteradorI).ID_PLAN);
+                        FETCH C_GET_PRODUCTO_CARACT INTO Lv_ValorProducCaractNa;   
                         CLOSE C_GET_PRODUCTO_CARACT;
 
                         IF Lv_ValorProducCaractNa IS NOT NULL
                         THEN
-                            Pcl_ResponseList.VEL_NAC_MAX        := ROUND(Lv_ValorProducCaractNa/1000,1);
-                            Pcl_ResponseList.VEL_NAC_MIN        := ROUND((ROUND(Lv_ValorProducCaractNa/1000,1))/2,1);
+                            Pcl_ResponseList.VEL_NAC_MAX        := Lv_ValorProducCaractNa;
+                            Pcl_ResponseList.VEL_INT_MAX        := Lv_ValorProducCaractNa;
                         END IF;
 
-                        OPEN C_GET_PRODUCTO_CARACT (Pcl_arrayPlanDet(Ln_IteradorJ).PRODUCTO_ID,Ln_idCaracteristicaIn,Pcl_arrayPlanDet(Ln_IteradorJ).ID_ITEM);
+                        OPEN C_GET_PRODUCTO_CARACT (Ln_idCaracteristicaIn,Pcl_arrayServicio(Ln_IteradorI).ID_PLAN);
                         FETCH C_GET_PRODUCTO_CARACT INTO Lv_ValorProducCaractInt;
                         CLOSE C_GET_PRODUCTO_CARACT;
 
                         IF Lv_ValorProducCaractInt IS NOT NULL
                         THEN
-                            Pcl_ResponseList.VEL_INT_MAX        := ROUND(Lv_ValorProducCaractInt/1000,1);
-                            Pcl_ResponseList.VEL_INT_MIN        := ROUND((ROUND(Lv_ValorProducCaractInt/1000,1))/2,1);
+                            Pcl_ResponseList.VEL_NAC_MIN       :=  Lv_ValorProducCaractInt;
+                            Pcl_ResponseList.VEL_INT_MIN        := Lv_ValorProducCaractInt;
                         END IF;
 
                     END IF;
