@@ -1,0 +1,31 @@
+           
+ /**
+ * creación de origenes para logs
+ *
+ * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+ *
+ * @version 1.0
+ */
+
+   
+db.origen.insertMany([
+{
+	"nombre":"ListaNegraBlanca",
+	"descripcion":"Lista Negra y Blanca, Clausulas y politicas",
+	"autorizadoPor":"jacarrillo",
+	"estado":"Activo"
+},
+{
+	"nombre":"CredencialesComercial",
+	"descripcion":"Credenciales Comercial",
+	"autorizadoPor":"epin",
+	"estado":"Activo"
+},
+{
+	"nombre":"registrarLogsClientes",
+	"descripcion":"Registrar Logs Clientes",
+	"autorizadoPor":"jacarrillo",
+	"estado":"Activo"
+}
+]);
+ 
