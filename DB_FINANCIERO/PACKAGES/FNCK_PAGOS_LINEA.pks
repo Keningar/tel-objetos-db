@@ -3958,7 +3958,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
                                 CLOSE C_Numero_Pago; 
 
-                                Lv_NumeroPago := Lv_NumeracionUno || '-' || Lv_NumeracionDos || '-' || TRIM(TO_CHAR(Ln_SecuenciaAsig, '0000009'));
+                                Lv_NumeroPago := Lv_NumeracionUno || '-' || Lv_NumeracionDos || '-' || LPAD(TO_CHAR(Ln_SecuenciaAsig), GREATEST(LENGTH(Ln_SecuenciaAsig),7), '0');
 
                                 -- Actualizo la numeracion en la tabla
                                 UPDATE DB_COMERCIAL.ADMI_NUMERACION
@@ -4152,7 +4152,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         CLOSE C_Numero_Pago;
 
-        Lv_NumeroPagoAnticipo := Lv_NumeracionUnoAnt || '-' || Lv_NumeracionDosAnt || '-' || TRIM(TO_CHAR(Ln_SecuenciaAsigAnt, '0000009'));
+        Lv_NumeroPagoAnticipo := Lv_NumeracionUnoAnt || '-' || Lv_NumeracionDosAnt || '-' || LPAD(TO_CHAR(Ln_SecuenciaAsigAnt), GREATEST(LENGTH(Ln_SecuenciaAsigAnt),7), '0');
 
         -- Actualizo la numeracion en la tabla
         UPDATE DB_COMERCIAL.ADMI_NUMERACION
