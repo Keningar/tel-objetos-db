@@ -1,5 +1,32 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS 
 
+   /**
+   * Documentación para proceso 'P_REINICIAR_SECUENCIAS_CASOS'
+   *
+   * Procedimiento encargado de reiniciar las secuencias que permiten obtener el número respectivo según el tipo de caso
+   *
+   * @author   Jorge Gómez <jigomez@telconet.ec>
+   * @version  1.0
+   * @since    20-01-2023
+   */
+   PROCEDURE P_REINICIAR_SECUENCIAS_CASOS;
+  
+  /**
+   * Documentación para proceso 'P_OBTENER_NUMERO_CASO'
+   *
+   * Procedimiento encargado de obtener el número de caso correspondiente
+   *
+   * @param Pv_TipoCaso   IN ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE Recibe el nombre del tipo de caso
+   * @param Pv_NumeroCaso OUT VARCHAR2 Retorna el número del caso generado
+   *
+   * @author   Jorge Gómez <jigomez@telconet.ec>
+   * @version  1.0
+   * @since    22-01-2023
+   */
+  PROCEDURE P_OBTENER_NUMERO_CASO(Pv_TipoCaso   IN ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE,
+                                  Pv_NumeroCaso OUT INFO_CASO.NUMERO_CASO%TYPE,
+                                  Pv_Status     OUT VARCHAR2,
+                                  Pv_Mensaje    OUT VARCHAR2);
   /**
    * Documentación para proceso 'P_GENERAR_CASO'
    *
@@ -110,50 +137,115 @@ END SPKG_CASOS_INSERT_TRANSACCION;
 
 
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
+
+
+  PROCEDURE P_REINICIAR_SECUENCIAS_CASOS AS
   
+    Ln_ValorSecuencia NUMBER;
+  
+    BEGIN
+      
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_A.nextval FROM DUAL' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_A INCREMENT BY -' || Ln_ValorSecuencia || ' MINVALUE 0';
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_A.nextval from dual' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_A INCREMENT BY 1 MINVALUE 0';
+      
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_B.nextval FROM DUAL' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_B INCREMENT BY -' || Ln_ValorSecuencia || ' MINVALUE 0';
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_B.nextval from dual' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_B INCREMENT BY 1 MINVALUE 0';
+      
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_M.nextval FROM DUAL' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_M INCREMENT BY -' || Ln_ValorSecuencia || ' MINVALUE 0';
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_M.nextval from dual' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_M INCREMENT BY 1 MINVALUE 0';
+      
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_T.nextval FROM DUAL' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_T INCREMENT BY -' || Ln_ValorSecuencia || ' MINVALUE 0';
+      EXECUTE IMMEDIATE 'SELECT DB_SOPORTE.SEQ_NUM_CASO_T.nextval from dual' INTO Ln_ValorSecuencia;
+      EXECUTE IMMEDIATE 'ALTER SEQUENCE DB_SOPORTE.SEQ_NUM_CASO_T INCREMENT BY 1 MINVALUE 0';
+      
+    EXCEPTION
+      WHEN OTHERS THEN
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'SPKG_CASOS_INSERT_TRANSACCION', 
+                                              'P_REINICIAR_SECUENCIAS_CASOS', 
+                                              'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK 
+                                              || ' ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE, 
+                                              NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_SOPORTE'), 
+                                              SYSDATE, 
+                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));   
+  END P_REINICIAR_SECUENCIAS_CASOS;
+
+  PROCEDURE P_OBTENER_NUMERO_CASO   (Pv_TipoCaso   IN Admi_Tipo_Caso.Nombre_Tipo_Caso%TYPE,
+                                     Pv_NumeroCaso OUT Info_Caso.Numero_Caso%TYPE,
+                                     Pv_Status     OUT VARCHAR2,
+                                     Pv_Mensaje    OUT VARCHAR2) AS
+      Lv_NumeroCaso   Info_Caso.Numero_Caso%TYPE;
+      Lv_MensajeError VARCHAR2(200);
+      Le_Error        Exception;
+    BEGIN
+    
+      IF Pv_TipoCaso NOT IN ('Arcotel','Backbone','Movilizacion','Tecnico') THEN
+        Lv_MensajeError := 'Tipo de Caso no permitido';
+        RAISE Le_Error;
+      END IF;
+    
+      CASE Pv_TipoCaso
+         WHEN 'Arcotel' THEN
+              EXECUTE IMMEDIATE 'select LPAD(DB_SOPORTE.SEQ_NUM_CASO_A.nextval,4,0)  || ''A'' from dual' into Lv_NumeroCaso;
+          WHEN 'Backbone' THEN
+              EXECUTE IMMEDIATE 'select LPAD(DB_SOPORTE.SEQ_NUM_CASO_B.nextval,4,0)  || ''B'' from dual' into Lv_NumeroCaso;
+          WHEN 'Movilizacion' THEN
+              EXECUTE IMMEDIATE 'select LPAD(DB_SOPORTE.SEQ_NUM_CASO_M.nextval,4,0)  || ''M'' from dual' into Lv_NumeroCaso;
+          ELSE
+              EXECUTE IMMEDIATE 'select LPAD(DB_SOPORTE.SEQ_NUM_CASO_T.nextval,4,0) from dual' into Lv_NumeroCaso;
+      END CASE;
+      
+      Pv_NumeroCaso := TO_CHAR(SYSDATE,'RRRRMMDD') || '-' || Lv_NumeroCaso;
+      Pv_Status :=  'EXITO';
+    EXCEPTION
+      WHEN Le_Error THEN
+        Pv_NumeroCaso := '';
+        Pv_Status :=  'ERROR';
+        Pv_Mensaje := Lv_MensajeError;
+      WHEN OTHERS THEN
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'SPKG_CASOS_INSERT_TRANSACCION', 
+                                              'P_OBTENER_NUMERO_CASO', 
+                                              'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK 
+                                              || ' ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE, 
+                                              NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_SOPORTE'), 
+                                              SYSDATE, 
+                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+        Pv_NumeroCaso := '';
+        Pv_Status :=  'ERROR';
+        Pv_Mensaje := 'Error general al obtener el número de caso';
+  END P_OBTENER_NUMERO_CASO;
+
+
   PROCEDURE P_GENERAR_CASO(Pr_InfoCaso   IN INFO_CASO%ROWTYPE,
                            Pv_TipoCaso   IN ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE,
                            Pn_Contador   IN OUT INTEGER,
                            Pv_NumeroCaso IN OUT VARCHAR2,
                            Pn_IdCaso     OUT INFO_CASO.ID_CASO%TYPE) AS
-   
-    CURSOR C_GetNumeroCaso(Cn_IdTipoCaso ADMI_TIPO_CASO.ID_TIPO_CASO%TYPE, 
-                           Cv_TipoCaso ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE, 
-                           Cn_Contador NUMBER) IS
-      SELECT
-        ICA.NUMERO_CASO AS NUMERO_CASO_BASE, TIC2.NUMERO_CASO
-      FROM 
-        (SELECT
-           TO_CHAR(TRUNC(SYSDATE),'YYYYMMDD')  ||'-' || LPAD(TIC1.CANT_CASOS+Cn_Contador,4,0) || 
-       (CASE Cv_TipoCaso
-         WHEN 'Arcotel'THEN 'A'
-         WHEN 'Backbone' THEN 'B'
-         WHEN 'Movilizacion'THEN 'M'
-         ELSE ''
-       END) AS NUMERO_CASO
-         FROM   
-           (SELECT 
-              COUNT(IC.ID_CASO) AS CANT_CASOS
-            FROM
-              DB_SOPORTE.INFO_CASO IC,
-              DB_SOPORTE.ADMI_TIPO_CASO ATC
-            WHERE TRUNC(IC.FE_creacion) = TRUNC(SYSDATE) 
-            AND IC.TIPO_CASO_ID = ATC.ID_TIPO_CASO
-            AND ATC.ID_TIPO_CASO = Cn_IdTipoCaso
-           ) TIC1 
-        ) TIC2          
-      LEFT JOIN DB_SOPORTE.INFO_CASO ICA ON ICA.NUMERO_CASO = TIC2.NUMERO_CASO;
-        
+     
+                                         
+                           
+    Lv_TipoCaso   Admi_Tipo_Caso.Nombre_Tipo_Caso%TYPE; 
+    Lv_NumeroCaso  Info_Caso.Numero_Caso%TYPE;
+    Lv_Status    VARCHAR2(200);
+    Lv_Mensaje   VARCHAR2(200);
     Ln_NumeroCasoBase   VARCHAR2(400) := 'N'; 
   BEGIN
+  
+    Lv_TipoCaso := Pv_TipoCaso;
 
     WHILE Pv_NumeroCaso = Ln_NumeroCasoBase LOOP
-      OPEN C_GetNumeroCaso (Pr_InfoCaso.Tipo_Caso_Id, Pv_TipoCaso, Pn_Contador);
-      FETCH C_GetNumeroCaso INTO Ln_NumeroCasoBase,Pv_NumeroCaso;
-      CLOSE C_GetNumeroCaso;
-      Pn_Contador := Pn_Contador +1;
+      
+      SPKG_CASOS_INSERT_TRANSACCION.P_OBTENER_NUMERO_CASO(Lv_TipoCaso, Lv_NumeroCaso, Lv_Status, Lv_Mensaje);
+      Pv_NumeroCaso := Lv_NumeroCaso;
+      
     END LOOP;
-    
+
     IF Pv_NumeroCaso <> 'N' THEN   
       INSERT INTO DB_SOPORTE.INFO_CASO 
         (ID_CASO,EMPRESA_COD,TIPO_CASO_ID,FORMA_CONTACTO_ID,NIVEL_CRITICIDAD_ID,NUMERO_CASO,TITULO_INI,VERSION_INI,
@@ -164,7 +256,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
         Pr_InfoCaso.Usr_Creacion,Pr_InfoCaso.Ip_Creacion,Pr_InfoCaso.Tipo_Afectacion,Pr_InfoCaso.Tipo_Backbone,Pr_InfoCaso.Origen)
       RETURNING ID_CASO INTO Pn_IdCaso;
     END IF;
-    
+
   EXCEPTION 
     WHEN OTHERS THEN  
       Pn_IdCaso   := NULL;
