@@ -256,7 +256,7 @@ BEGIN
         INTO Ln_IdPersona
         FROM DB_COMERCIAL.INFO_PERSONA
         WHERE IDENTIFICACION_CLIENTE    = Lv_identificacion
-        AND ESTADO                      = 'Activo';
+        AND ESTADO                      IN('Activo','Pendiente');
     EXCEPTION
        WHEN NO_DATA_FOUND THEN
          Ln_IdPersona := NULL;
