@@ -1217,6 +1217,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Lc_CaractRecomBw    C_GET_CARACTERISTICA%rowtype;
     Lc_PerEmpRolCarContrRecom C_PER_EMP_ROL_CARACT%rowtype;
     Pcl_InfoContratoCaracteristica DB_COMERCIAL.INFO_CONTRATO_CARACTERISTICA%rowtype;
+    Lv_FormaPago               VARCHAR2(40);
 
     BEGIN
 
@@ -1228,6 +1229,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Lv_UsrCreacion        := SUBSTR(APEX_JSON.get_varchar2(p_path => 'usrCreacion'),0,14);
         Lv_ClienteIp          := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
         Lv_Origen             := APEX_JSON.get_varchar2(p_path => 'origen');
+        Lv_FormaPago          := APEX_JSON.get_varchar2(p_path => 'formaContrato');
 
         --Valores de Contrato
         Ln_PuntoId            := APEX_JSON.get_number(p_path => 'contrato.puntoId');
@@ -1512,8 +1514,9 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                            Ln_IdContrato,Lv_MesVencimiento,
                                                            Lv_UsrCreacion,Lv_ClienteIp,
                                                            Ln_PuntoId,Lv_Servicio,'N',0,'C',Lv_ValorEstado,NULL,
-                                                           Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
-
+                                                           Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado,
+                                                           Lv_FormaPago, Lv_Origen);
+          
           P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
 
           IF Pv_Status IS NULL OR Pv_Status = 'ERROR'
@@ -2421,6 +2424,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Ln_IngresoAdendum          NUMBER := 0;
         Lv_DatosTarjeta            DB_COMERCIAL.DATOS_TARJETA_TYPE;
         Ln_IteradorI               NUMBER := 0;
+        Lv_EstadoAdendum           VARCHAR2(40);
     BEGIN                                
         OPEN C_GET_FORMA_PAGO (Pv_DatosFormaPago.Pn_FormaPagoId);
         FETCH C_GET_FORMA_PAGO INTO Lv_CodigoFormaPago;
@@ -2563,6 +2567,10 @@ PROCEDURE P_GUARDAR_CONTRATO(
               Ln_IngresoAdendum := 1;
               IF REGEXP_LIKE(Pv_DatosFormaPago.Pv_Servicio,i.SERVICIO_ID)
               THEN
+                  Lv_EstadoAdendum := 'PorAutorizar';
+                  IF Pv_DatosFormaPago.Pv_FormaContrato = 'FISICO' THEN
+                    Lv_EstadoAdendum := 'Pendiente';
+                  END IF;
                   UPDATE DB_COMERCIAL.INFO_ADENDUM
                   SET CONTRATO_ID          = Pv_DatosFormaPago.Pn_IdContrato,
                       FORMA_PAGO_ID        = Pv_DatosFormaPago.Pn_FormaPagoId,
@@ -2574,7 +2582,9 @@ PROCEDURE P_GUARDAR_CONTRATO(
                       ANIO_VENCIMIENTO     = Pv_DatosFormaPago.Pv_AnioVencimiento,
                       CODIGO_VERIFICACION  = Pv_DatosFormaPago.Pv_CodigoVerificacion,
                       TIPO                 = Pv_DatosFormaPago.Pv_Tipo,
-                      ESTADO               = 'PorAutorizar'
+                      ESTADO               = Lv_EstadoAdendum,
+                      FORMA_CONTRATO       = Pv_DatosFormaPago.Pv_FormaContrato,
+                      ORIGEN               = Pv_DatosFormaPago.Pv_Origen
                       -- Para Adendum Pv_EstadoAdendum Pv_NumeroAdendum
                   WHERE ID_ADENDUM = i.ID_ADENDUM;
                   COMMIT;
@@ -2583,7 +2593,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                   THEN
                       UPDATE DB_COMERCIAL.INFO_ADENDUM
                       SET NUMERO               = Pv_DatosFormaPago.Pv_NumeroAdendum,
-                          ESTADO               = Pv_DatosFormaPago.Pv_EstadoAdendum
+                          ESTADO               = Lv_EstadoAdendum
                       WHERE ID_ADENDUM = i.ID_ADENDUM;
                       COMMIT;
                   END IF;
@@ -2709,7 +2719,10 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Lv_EstadoAdendum           VARCHAR2(400);
         Lv_cambioRazonSocial       VARCHAR2(400);
         Lv_AdendumId               INTEGER;
-
+        Lv_FormaContrato           VARCHAR2(40);
+        Lv_Origen                  VARCHAR2(40);
+        Lv_ValorEstado             VARCHAR2(40);
+        
         Pcl_ArrayAdendumsEncontrado Pcl_AdendumsEncontrado_Type := Pcl_AdendumsEncontrado_Type();
 
   BEGIN
@@ -2721,6 +2734,8 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Lv_UsrCreacion        := SUBSTR(APEX_JSON.get_varchar2(p_path => 'usrCreacion'),0,14);
         Lv_ClienteIp          := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
         Lv_Tipo               := APEX_JSON.get_varchar2(p_path => 'tipo');
+        Lv_FormaContrato      := APEX_JSON.get_varchar2(p_path => 'formaContrato');
+        Lv_Origen             := APEX_JSON.get_varchar2(p_path => 'origen');
 
         Lv_CambioTarjeta      := APEX_JSON.get_varchar2(p_path => 'adendum.cambioNumeroTarjeta');
 
@@ -2784,6 +2799,12 @@ PROCEDURE P_GUARDAR_CONTRATO(
             RAISE_APPLICATION_ERROR(-20101, 'No se pudo obtener la numeracion');
         END IF;
 
+        Lv_ValorEstado := 'PorAutorizar';
+        IF Lv_FormaContrato IS NOT NULL AND Lv_FormaContrato = 'FISICO'
+        THEN
+            Lv_ValorEstado := 'Pendiente';
+        END IF;
+
         --Forma de Pago
         Lv_DatosFormPago := DB_COMERCIAL.FORMA_PAGO_TYPE(Ln_FormaPagoId,Ln_TipoCuentaID,
                                                          Ln_BancoTipoCuentaId,Lv_NumeroCtaTarjeta,
@@ -2792,8 +2813,9 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                                          Ln_IdContrato,Lv_MesVencimiento,
                                                          Lv_UsrCreacion,Lv_ClienteIp,
                                                          Ln_PuntoId,Lv_Servicio,Lv_CambioTarjeta,
-                                                         1,Lv_Tipo,'PorAutorizar',Lv_NumeroAdendum,
-                                                         Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado);
+                                                         1,Lv_Tipo,Lv_ValorEstado,Lv_NumeroAdendum,
+                                                         Lv_cambioRazonSocial, Pcl_ArrayAdendumsEncontrado,
+                                                         Lv_FormaContrato, Lv_Origen);
 
         P_GUARDAR_FORMA_PAGO(Lv_DatosFormPago,Pv_Mensaje,Pv_Status,Lv_RespuestaFormaPago);
 
