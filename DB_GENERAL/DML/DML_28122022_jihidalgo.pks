@@ -1,0 +1,16 @@
+/**
+ * DEBE EJECUTARSE EN DB_GENERAL.
+ * Parametrizaciones para consumo de WS desde BusPagos
+ *
+ * VALOR6 = NOMBRE DE PROCESO PARA CORTE MASIVO
+ * VALOR7 = BANDERA PARA REPROCESO DE PAGO POR JOB
+ * VALOR8 = BANDERA PARA REVERSO DE PAGO POR JOB
+ *
+ * @author Milen Ortega <mortega1@telconet.ec>
+ * @version 1.0 28/12/2022
+ */
+
+UPDATE DB_GENERAL.ADMI_PARAMETRO_DET SET VALOR6 = 'callJarCorteMasivo', VALOR7 = '0', VALOR8 = '0' WHERE VALOR1 = 'BUSPAGOS';
+
+COMMIT;
+/

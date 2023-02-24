@@ -1,0 +1,13 @@
+/**
+ * DEBE EJECUTARSE EN DB_BUSPAGOS.
+ * Parametrizacion de para aumento en secuencial recaudador 
+ *
+ * @author Milen Ortega <mortega1@telconet.ec>
+ * @version 1.0 28/12/2022
+ */
+
+ALTER TABLE DB_BUSPAGOS.INFO_PAGO MODIFY SECUENCIAL_RECAUDADOR VARCHAR2( 50 );
+ALTER TABLE DB_BUSPAGOS.INFO_PAGO_DETALLE MODIFY SECUENCIAL_RECAUDADOR VARCHAR2( 50 );
+
+COMMIT;
+/

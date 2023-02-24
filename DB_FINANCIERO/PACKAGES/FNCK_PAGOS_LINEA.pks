@@ -265,7 +265,7 @@ create or replace PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                     Pv_Status OUT VARCHAR2, 
                                     Pv_Mensaje OUT VARCHAR2,
                                     Pcl_Response OUT CLOB);
-
+                                    
     /**
     * Documentación para F_REAC_SERVICIO_X_PAGO_LINEA
     * Funcion que realiza reactivacion masiva
@@ -530,9 +530,10 @@ create or replace PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 26/07/2022
-    */    
-    FUNCTION F_LLAMAR_JAR(Fv_Servicios IN VARCHAR2, Fv_UsrCreacion IN VARCHAR2, Fv_ClienteIp IN VARCHAR2)
-        RETURN VARCHAR2; 
+    */
+    FUNCTION F_LLAMAR_JAR(Fv_Servicios IN VARCHAR2, Fv_IdsPuntosCR IN VARCHAR2, Fn_MontoDeuda IN NUMBER, Fv_NumFactAbiertas IN VARCHAR2, Fn_IdOficina IN NUMBER, 
+                Fn_IdFormaPago IN NUMBER, Fv_UsrCreacion IN VARCHAR2, Fv_ClienteIp IN VARCHAR2)
+    RETURN VARCHAR2;
 
     /**
    * Documentacion para P_GENERAR_TOKEN
@@ -557,7 +558,225 @@ create or replace PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                 Pv_Status       OUT VARCHAR2,
                                 Pv_Message      OUT VARCHAR2,
                                 Pv_MensajeError OUT VARCHAR2);
+                               
+     /**
+    * Documentación para P_REVERSAR_CONCIL_PAGO_LINEA
+    * Procedimiento que reversar un pago conciliado en linea
+    * 
+    * @author Milen Ortega <mortega1@telconet.ec>
+    * @version 1.0 28/12/2022
+    *
+    * @param Pcl_Request  IN CLOB
+    * @param Pv_Status    OUT VARCHAR2 estado
+    * @param Pv_Mensaje   OUT VARCHAR2 Devuelve el mensaje de respuesta
+    * @param Pcl_Response OUT CLOB Devuelve respuesta con data
+    */ 
+    PROCEDURE P_REVERSAR_CONCIL_PAGO_LINEA(Pcl_Request  IN CLOB, 
+                                           Pv_Status    OUT VARCHAR2, 
+                                           Pv_Mensaje   OUT VARCHAR2,
+                                           Pcl_Response OUT CLOB);                              
+   
+   /**
+   * Documentación para el procedure 'P_ENVIA_CORTAR_CLIENTE'
+   * Realiza la logica para enviar a cortar un cliente por reverso de un pago
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_UsrUltMod    IN  VARCHAR2
+   * @param Pv_EmpresaId    IN  VARCHAR2
+   * @param Pv_IdPagoLinea  IN  VARCHAR2
+   * @param Pv_Codigo       OUT VARCHAR2
+   * @param Pv_Error        OUT VARCHAR2
+   */
+    PROCEDURE P_ENVIA_CORTAR_CLIENTE(Pv_UsrUltMod    IN  VARCHAR2,
+                                     Pv_EmpresaId    IN  VARCHAR2,
+                                     Pv_IdPagoLinea  IN  VARCHAR2,
+                                     Pv_Codigo       OUT VARCHAR2,
+                                     Pv_Error        OUT VARCHAR2);
+                                    
+    /**
+   * Documentación para el procedure 'P_CORTA_CLIENTE'
+   * Inserta punto en las tablas de procesos masivos de clientes a cortar.
+   * El proceso de corte lee de la tabla de procesos masivos para realizar el corte de los clientes
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdEmpresa            IN  VARCHAR2
+   * @param Pv_StrPrefijoEmpresa    IN  VARCHAR2
+   * @param Pv_UsrCreacion          IN  VARCHAR2
+   * @param Pc_Info                 IN  CLOB
+   * @param Pv_StrIp                IN  VARCHAR2
+   * @param Pv_StrPunto             IN  VARCHAR2
+   * @param Pv_Codigo               OUT VARCHAR2
+   * @param Pv_Error                OUT VARCHAR2
+   */
+    PROCEDURE P_CORTA_CLIENTE      (Pv_IdEmpresa            IN  VARCHAR2,
+                                    Pv_StrPrefijoEmpresa    IN  VARCHAR2,
+                                    Pv_UsrCreacion          IN  VARCHAR2,
+                                    Pc_Info                 IN  CLOB,
+                                    Pv_StrIp                IN  VARCHAR2,
+                                    Pv_StrPunto             IN  VARCHAR2,
+                                    Pv_Codigo               OUT VARCHAR2,
+                                    Pv_Error                OUT VARCHAR2); 
+                                   
+   /**
+   * Documentación para el procedure 'P_GUARDAR_PUNTOS_X_CORTE_MASIVO'
+   * Metodo para realizar la generación de cabecera y detalle de procesos masivos de corte
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdEmpresa            IN  VARCHAR2,
+   * @param Pv_StrPrefijoEmpresa    IN  VARCHAR2,
+   * @param Pv_UsrCreacion          IN  VARCHAR2,
+   * @param Pc_Info                 IN  CLOB,
+   * @param Pv_IdsPuntos            IN  VARCHAR2,
+   * @param Pn_CantidadPuntos       IN  NUMBER
+   * @param Pv_ClienteIp            IN VARCHAR2
+   */
+    PROCEDURE P_GUARDAR_PUNTO_X_CORTE_MASIVO      ( Pv_IdEmpresa            IN  VARCHAR2,
+                                                    Pv_StrPrefijoEmpresa    IN  VARCHAR2,
+                                                    Pv_UsrCreacion          IN  VARCHAR2,
+                                                    Pc_Info                 IN  CLOB,
+                                                    Pv_IdsPuntos            IN  VARCHAR2,
+                                                    Pn_CantidadPuntos       IN  NUMBER,
+                                                    Pv_ClienteIp            IN  VARCHAR2);
+                                                   
+     /**
+   * Documentación para la funcion 'F_GET_PUNTO_X_ULT_MILLA'
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_StrPunto    IN  VARCHAR2 
+   */
+    FUNCTION F_GET_PUNTO_X_ULT_MILLA (Pv_StrPunto    IN  VARCHAR2) RETURN CLOB;
+   
+   /**************************************************************************
+    **************************ELIMINA PAGO***********************************
+    **************************************************************************/
 
+    /**
+    * Documentación para P_ELIMINA_PAGO_LINEA
+    * Procedimiento que elimina pago en linea
+    * 
+    * @author Milen Ortega <mortega1@telconet.ec>
+    * @version 1.0 28/12/2022
+    *
+    * @param Pcl_Request IN CLOB
+    * @param Pv_Status OUT VARCHAR2 estado
+    * @param Pv_Mensaje OUT VARCHAR2 Devuelve el mensaje de respuesta
+    * @param Pcl_Response OUT CLOB Devuelve respuesta con data
+    */ 
+    PROCEDURE P_ELIMINA_PAGO_LINEA(Pcl_Request  IN CLOB, 
+                                   Pv_Status    OUT VARCHAR2, 
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT CLOB);
+                                  
+    /**
+   * Documentación para el procedure 'P_CREAR_HIST_BY_REVERSO'
+   * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
+   * y regulariza los documentos financieros asociados a estos pagos.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdPagoLinea   IN  VARCHAR2,
+   * @param Pv_StrProceso    IN  VARCHAR2,
+   * @param Pv_StrUsrUltMod  IN  VARCHAR2,
+   * @param Pv_Error         OUT VARCHAR2
+   */
+    PROCEDURE P_CREAR_HIST_BY_REVERSO      (Pv_IdPagoLinea   IN  VARCHAR2,
+                                            Pv_StrProceso    IN  VARCHAR2,
+                                            Pv_Codigo        OUT VARCHAR2,
+                                            Pv_Error         OUT VARCHAR2);
+                                           
+    /**
+   * Documentación para el procedure 'P_INSERT_HIST_PAGO_LINEA'
+   * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
+   * y regulariza los documentos financieros asociados a estos pagos.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdPagoLinea   IN  VARCHAR2,
+   * @param Pv_EmpresaCod    IN  VARCHAR2,
+   * @param Pv_Mesnsaje      OUT VARCHAR2,
+   * @param Pv_Codigo        OUT VARCHAR2
+   */
+    PROCEDURE P_INSERT_HIST_PAGO_LINEA (Pv_IdPagoLinea   IN  VARCHAR2,
+                                            Pv_StrProceso    IN  VARCHAR2,
+                                            Pv_UsrCreacion    IN  VARCHAR2,
+                                            Pv_Observacion   IN CLOB,
+                                            Pv_Codigo        OUT VARCHAR2,
+                                            Pv_Error         OUT VARCHAR2);
+                                           
+     /**
+   * Documentación para el procedure 'P_INACTIVA_PAL_REGULARIZA_DF'
+   * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
+   * y regulariza los documentos financieros asociados a estos pagos.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdPagoLinea   IN  VARCHAR2,
+   * @param Pv_EmpresaCod    IN  VARCHAR2,
+   * @param Pv_Mesnsaje      OUT VARCHAR2,
+   * @param Pv_Codigo        OUT VARCHAR2,
+   * @param Pv_Error         OUT VARCHAR2
+   */
+    PROCEDURE P_INACTIVA_PAL_REGULARIZA_DF (Pv_IdPagoLinea   IN  VARCHAR2,
+                                            Pv_EmpresaCod    IN  VARCHAR2,
+                                            Pv_Codigo        OUT VARCHAR2,
+                                            Pv_Mensaje       OUT VARCHAR2,
+                                            Pv_Error         OUT VARCHAR2);
+                                           
+     /**
+   * Documentación para el procedure 'P_REGULARIZA_DOCS_INACT_PC'
+   * Regulariza un documento que este relacionado al pago anulado.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pr_InfoPagoCab  IN  DB_FINANCIERO.INFO_PAGO_CAB%ROWTYPE,
+   * @param Pv_ArrayPagos   OUT VARCHAR2,
+   * @param Pv_Codigo       OUT VARCHAR2
+   * @param Pv_Mensaje      OUT VARCHAR2,
+   * @param Pv_Error        OUT VARCHAR2
+   */
+    PROCEDURE P_REGULARIZA_DOCS_INACT_PC (Pr_InfoPagoCab   IN  DB_FINANCIERO.INFO_PAGO_CAB%ROWTYPE,
+                                          Pv_ArrayPagos    OUT VARCHAR2,
+                                          Pv_Codigo        OUT VARCHAR2,
+                                          Pv_Mensaje       OUT VARCHAR2,
+                                          Pv_Error         OUT VARCHAR2) ;
+                                         
+     /**
+   * Documentación para el procedure 'P_CAMBIA_ESTADO_DOCUMENTO'
+   *
+   * Cambia el estado del documento financiero
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pn_ReferenciaId   IN  NUMBER,
+   * @param Pn_IdPago_Cab     IN  NUMBER,
+   * @param Pv_Codigo        OUT VARCHAR2
+   */
+    PROCEDURE P_CAMBIA_ESTADO_DOCUMENTO (Pn_ReferenciaId   IN  NUMBER,
+                                         Pn_IdPago_Cab     IN  NUMBER,
+                                         Pv_Error          OUT VARCHAR2);
+                                        
+    /**
+    * Documentación para P_CONCILIAR_PAGO_WSDL
+    * Procedimiento que realiza pago en linea
+    * 
+    * @author Milen Ortega <mortega1@telconet.ec>
+    * @version 1.0 28/12/2022
+    */ 
+    PROCEDURE P_CONCILIAR_PAGO_WSDL; 
+ 
 END FNCK_PAGOS_LINEA;
 /
 
@@ -623,7 +842,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         Lv_ValorRetener := '0.00';
         Lv_BaseImp := '0.00';
         Lv_NumCobros := '1';
-
+        
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_CONSULTAR_SALDO_POR_IDENTIF',
                                           SUBSTR('REQUEST:'||Pcl_Request,1,4000),
@@ -1620,7 +1839,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         Lvr_IdEmpresaRol    VARCHAR2(50);
         Ln_Count            NUMBER;
 
-    BEGIN     
+    BEGIN    
         APEX_JSON.PARSE(Pcl_Request);
         Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente')); 
         Lv_EmpresaCod  := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa'); 
@@ -1738,7 +1957,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                      Pb_Response OUT BOOLEAN)
     AS
         Lv_CodProceso       VARCHAR2(50); 
-        Lv_Secuencial       VARCHAR2(50);    
+        Lv_Secuencial       VARCHAR2(60);    
         Lv_ValorPago        VARCHAR2(50);
         Lv_Contrato         VARCHAR2(50);
         Lv_FechaTransac     VARCHAR2(100);
@@ -1753,9 +1972,9 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         Pb_Response := true;
 
-        IF Lv_CodProceso = '200' OR Lv_CodProceso = '400' THEN --PROCESAR PAGO  O CONCILIAR
+        IF Lv_CodProceso = '200' OR Lv_CodProceso = '400' OR Lv_CodProceso = '300'  THEN --PROCESAR PAGO  O CONCILIAR O REVERSAR 
 
-            IF Lv_CodProceso = '200' THEN --PROCESAR PAGO
+            IF Lv_CodProceso = '200' OR Lv_CodProceso = '300 'THEN --PROCESAR PAGO O REVERSAR 
                 IF Lv_Contrato IS NULL
                 THEN
                     Pv_Status := '004';
@@ -2351,7 +2570,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                 || '}';
 
     END P_CONCILIAR_PAGO_LINEA;
-
+    
     /**
     * Documentación para F_REAC_SERVICIO_X_PAGO_LINEA
     * Funcion que realiza reactivacion masiva
@@ -3274,7 +3493,7 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
             --lv_Ejecutar:= NAF47_TNET.javaruncommand(lv_Comando);
 
             BEGIN
-                lv_Ejecutar:= FNCK_PAGOS_LINEA.F_LLAMAR_JAR(lv_Servicios_Reactivar, Fv_Usr_Creacion, Fv_Cliente_Ip);
+                lv_Ejecutar:= FNCK_PAGOS_LINEA.F_LLAMAR_JAR(lv_Servicios_Reactivar, NULL, NULL, NULL, NULL, NULL, Fv_Usr_Creacion, Fv_Cliente_Ip);
             EXCEPTION
                 WHEN OTHERS THEN
                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
@@ -4400,7 +4619,8 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 26/07/2022
     */
-    FUNCTION F_LLAMAR_JAR(Fv_Servicios IN VARCHAR2, Fv_UsrCreacion IN VARCHAR2, Fv_ClienteIp IN VARCHAR2)
+    FUNCTION F_LLAMAR_JAR(Fv_Servicios IN VARCHAR2, Fv_IdsPuntosCR IN VARCHAR2, Fn_MontoDeuda IN NUMBER, Fv_NumFactAbiertas IN VARCHAR2, Fn_IdOficina IN NUMBER, 
+                Fn_IdFormaPago IN NUMBER, Fv_UsrCreacion IN VARCHAR2, Fv_ClienteIp IN VARCHAR2)
     RETURN VARCHAR2
     IS
         Lv_Fecha_Doc    VARCHAR2(20);
@@ -4453,7 +4673,11 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         Lv_Password     := Le_AdmiParametroDet.valor2; 
         Lv_URLToken     := Le_AdmiParametroDet.valor3;   
         Lv_UrlTelcoTg   := Le_AdmiParametroDet.valor4;   
-        Lv_Op           := Le_AdmiParametroDet.valor5;  
+        Lv_Op           := Le_AdmiParametroDet.valor5;
+       
+       IF Fv_IdsPuntosCR IS NOT NULL THEN
+        Lv_Op           := Le_AdmiParametroDet.valor6;
+       END IF;
 
         DB_FINANCIERO.FNCK_PAGOS_LINEA.P_GENERAR_TOKEN ( Lv_UserName,
                                                       Lv_Password,                                             
@@ -4466,20 +4690,42 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                                     );
         IF Lv_MensajeError IS NOT NULL OR Lv_StatusToken <>'200' THEN
           RAISE Le_Error;
-        ELSE            
+        ELSE  
+          IF Fv_Servicios IS NOT NULL THEN
             Lcl_Json := '{';
-            Lcl_Json := Lcl_Json || '"op":"' || Lv_Op ||'",';
-            Lcl_Json := Lcl_Json || '"token":"' || Lv_Token ||'",';
-            Lcl_Json := Lcl_Json || '"user":"' ||Lv_UserName ||'",';
-            Lcl_Json := Lcl_Json || '"data":' ||'{"servicios":"' ||Fv_Servicios ||'",';
-            Lcl_Json := Lcl_Json || '"usrCreacion":"' || Fv_UsrCreacion ||'",';
-            Lcl_Json := Lcl_Json || '"ipCliente":"' ||Fv_ClienteIp ||'",';
-            Lcl_Json := Lcl_Json || '"proceso":"' ||'pago en linea' ||'",';
-            Lcl_Json := Lcl_Json || '"fechaProceso":"' ||Lv_Fecha_Doc ||'"},';
-            Lcl_Json := Lcl_Json || '"source":'||'{"name":"' ||Lv_Name||'",';
-            Lcl_Json := Lcl_Json || '"originID":"' ||'127.0.0.1' ||'",';
-            Lcl_Json := Lcl_Json || '"tipoOriginID":"'||'IP' ||'"}';
-            Lcl_Json := Lcl_Json ||'}';
+              Lcl_Json := Lcl_Json || '"op":"' || Lv_Op ||'",';
+              Lcl_Json := Lcl_Json || '"token":"' || Lv_Token ||'",';
+              Lcl_Json := Lcl_Json || '"user":"' ||Lv_UserName ||'",';
+              Lcl_Json := Lcl_Json || '"data":' ||'{"servicios":"' ||Fv_Servicios ||'",';
+              Lcl_Json := Lcl_Json || '"usrCreacion":"' || Fv_UsrCreacion ||'",';
+              Lcl_Json := Lcl_Json || '"ipCliente":"' ||Fv_ClienteIp ||'",';
+              Lcl_Json := Lcl_Json || '"proceso":"' ||'pago en linea' ||'",';
+              Lcl_Json := Lcl_Json || '"fechaProceso":"' ||Lv_Fecha_Doc ||'"},';
+              Lcl_Json := Lcl_Json || '"source":'||'{"name":"' ||Lv_Name||'",';
+              Lcl_Json := Lcl_Json || '"originID":"' ||'127.0.0.1' ||'",';
+              Lcl_Json := Lcl_Json || '"tipoOriginID":"'||'IP' ||'"}';
+              Lcl_Json := Lcl_Json ||'}';
+         ELSE
+            Lcl_Json := '{';
+              Lcl_Json := Lcl_Json || '"op":"' || Lv_Op ||'",';
+              Lcl_Json := Lcl_Json || '"token":"' || Lv_Token ||'",';
+              Lcl_Json := Lcl_Json || '"user":"' ||Lv_UserName ||'",';
+              Lcl_Json := Lcl_Json || '"data":' ||'{"idsPuntosCR":"' ||Fv_IdsPuntosCR ||'",';
+              Lcl_Json := Lcl_Json || '"montoDeuda":"' || Fn_MontoDeuda ||'",';
+              Lcl_Json := Lcl_Json || '"numFactAbiertas":"' || Fv_NumFactAbiertas ||'",';
+              Lcl_Json := Lcl_Json || '"idOficina":"' || Fn_IdOficina ||'",';
+              Lcl_Json := Lcl_Json || '"idFormaPago":"' || Fn_IdFormaPago ||'",';
+              Lcl_Json := Lcl_Json || '"usrCreacion":"' || Fv_UsrCreacion ||'",';
+              Lcl_Json := Lcl_Json || '"ipCliente":"' ||Fv_ClienteIp ||'",';
+              Lcl_Json := Lcl_Json || '"proceso":"' ||'pago en linea' ||'",';
+              Lcl_Json := Lcl_Json || '"fechaProceso":"' ||Lv_Fecha_Doc ||'"},';
+              Lcl_Json := Lcl_Json || '"source":'||'{"name":"' ||Lv_Name||'",';
+              Lcl_Json := Lcl_Json || '"originID":"' ||'127.0.0.1' ||'",';
+              Lcl_Json := Lcl_Json || '"tipoOriginID":"'||'IP' ||'"}';
+              Lcl_Json := Lcl_Json ||'}';
+             
+         END IF;
+            
 
             Lhttp_Request := UTL_HTTP.begin_request (Lv_UrlTelcoTg,
                                                      Lv_Metodo,
@@ -4643,6 +4889,2440 @@ create or replace PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                               NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
             
     END P_GENERAR_TOKEN;
+   
+   /**
+    * Documentación para P_REVERSAR_CONCIL_PAGO_LINEA
+    * Procedimiento que reversar un pago conciliado en linea
+    * 
+    * @author Milen Ortega <mortega1@telconet.ec>
+    * @version 1.0 28/12/2022
+    *
+    * @param Pcl_Request  IN CLOB
+    * @param Pv_Status    OUT VARCHAR2 estado
+    * @param Pv_Mensaje   OUT VARCHAR2 Devuelve el mensaje de respuesta
+    * @param Pcl_Response OUT CLOB Devuelve respuesta con data
+    */ 
+    PROCEDURE P_REVERSAR_CONCIL_PAGO_LINEA(Pcl_Request  IN CLOB, 
+                                           Pv_Status    OUT VARCHAR2, 
+                                           Pv_Mensaje   OUT VARCHAR2,
+                                           Pcl_Response OUT CLOB)
+    AS
+    
+    CURSOR C_GetInfoPersona(Cv_IdPersona VARCHAR2)
+        IS SELECT IP.IDENTIFICACION_CLIENTE FROM DB_COMERCIAL.INFO_PERSONA IP WHERE IP.ID_PERSONA=Cv_IdPersona; 
+
+    CURSOR C_GetPrefijoEmpresa(Cv_CodEmpresa VARCHAR2)    
+        IS SELECT IEG.PREFIJO FROM DB_FINANCIERO.INFO_EMPRESA_GRUPO IEG WHERE IEG.COD_EMPRESA=Cv_CodEmpresa;
+
+    CURSOR C_GetFormaPago(Cv_IdFormaPago VARCHAR2)
+        IS SELECT FP.CODIGO_FORMA_PAGO FROM DB_FINANCIERO.ADMI_FORMA_PAGO FP WHERE FP.ID_FORMA_PAGO = Cv_IdFormaPago;    
+
+    Lv_Retorno            VARCHAR2(5);
+    Lv_Error              CLOB;
+    Lb_ValidaCred         BOOLEAN;
+    Lv_Identificacion     VARCHAR2(50);
+    Lv_EmpresaCod         VARCHAR2(50);
+    Ln_Pago               NUMBER;
+    Lv_FechaTransac       VARCHAR2(100);
+    Lv_Canal              VARCHAR2(50);
+    Lv_SecuencialRec      VARCHAR2(50);
+    Lc_PagoLinea          SYS_REFCURSOR;
+    Lc_CanalPago          SYS_REFCURSOR;
+    Lv_IdentPersona       VARCHAR2(50);
+    Lv_Contrato           VARCHAR2(50);
+    Lv_IdPagoLinea        VARCHAR2(50);
+    Lv_IdCanalPago        VARCHAR2(50);
+    Lv_IdEmpresa          VARCHAR2(50);
+    Lv_OficinaId          VARCHAR2(50);
+    Lv_IdPersona          VARCHAR2(50);
+    Lv_ValorPago          VARCHAR2(100);
+    Lv_NumeroRef          VARCHAR2(50);
+    Lv_EstadoPagoL        VARCHAR2(50);
+    Lv_EstadoPago         VARCHAR2(50);
+    Lv_ComentarioPago     VARCHAR2(5000);
+    Lv_UsrCreacion        VARCHAR2(50);
+    Lv_FechaPago          VARCHAR2(100);
+    Lv_UsrUltMod          VARCHAR2(50);
+    Lv_FechaUltMod        VARCHAR2(100);
+    Lv_UsrElimina         VARCHAR2(50);
+    Lv_FechaElimina       VARCHAR2(100);
+    Lv_ProMasivoId        VARCHAR2(50);
+    Lv_FechaT             VARCHAR2(100);
+    Lv_Reversado          VARCHAR2(50); 
+    Lv_MsnError           CLOB;
+    Lv_FechaCrea          VARCHAR2(50);
+    Ld_Date               DATE;
+    Lv_Prefijo            VARCHAR2(50);
+    Lv_UsuarioCrea        VARCHAR2(50);
+    Lv_EsReactivado       VARCHAR2(50);
+    Lv_IdProcesoMasivo    VARCHAR2(50);
+    Lv_Mensaje            VARCHAR2(5000);
+    Lvr_IdCanal           VARCHAR2(50);
+    Lvr_FormaPagoId       VARCHAR2(50); 
+    Lvr_IdTipoCta         VARCHAR2(50);
+    Lvr_IdCtaCble         VARCHAR2(50);
+    Lvr_CodigoCanal       VARCHAR2(50);
+    Lvr_DescCanal         VARCHAR2(100);
+    Lvr_NombreCanal       VARCHAR2(50);
+    Lvr_UsuarioCanal      VARCHAR2(50);
+    Lvr_ClaveCanal        VARCHAR2(50);
+    Lv_CodFormaPago       VARCHAR2(50);
+    Lcl_Activacion        CLOB;
+    Lcl_ActivaResp        CLOB;
+    Lcl_Anticipo          CLOB;
+    Lcl_AnticipoResp      CLOB;
+    Lv_RetornoAnt         VARCHAR2(50);
+    Lv_ErrorAnt           CLOB;    
+    Lv_Documento          VARCHAR2(50);
+    Lv_Cadena             VARCHAR2(50);
+    Lv_Accion             VARCHAR2(50);
+    Lv_Codigo             VARCHAR2(5);
+    Lv_CodPInact          VARCHAR2(5);
+    Lv_MensajePInact      CLOB;
+    Lv_StrProceso         VARCHAR2(50);
+    Lv_ErrorHist          CLOB;
+    Lv_CodHist            VARCHAR2(5);
+    Lv_StrCodPlantilla    VARCHAR2(50);
+    Lv_StrAsunto          VARCHAR2(100);
+    Lv_MensajeCorreo      CLOB;
+    Lv_CodHistPL          VARCHAR2(5);
+    Lcl_ResConsulta       CLOB;
+    Lv_Estado             VARCHAR2(5);
+    Lv_StatusEP           VARCHAR2(50);
+    Lv_MensajeEP          CLOB;
+    Lcl_ResponseEP        CLOB;
+    Lv_CodCortarCliente   VARCHAR2(5);
+    Lv_NumeroContrato     VARCHAR2(50);
+    Lv_Saldo              VARCHAR2(50);
+    Lv_NombreCliente      VARCHAR2(500);
+    Lv_Contrapartida      VARCHAR2(50);
+    Le_Error              EXCEPTION;
+    BEGIN
+
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                              'FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA',
+                                              SUBSTR('REQUEST:'||Pcl_Request,1,4000),
+                                              NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                              SYSDATE,
+                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+
+        FNCK_PAGOS_LINEA.P_VALIDAR_CREDENCIALES(Pcl_Request, Lv_Retorno, Lv_Error, Lb_ValidaCred);
+        Lv_StrProceso := 'reversarPagoAction';
+        Lv_EstadoPago := 'Reversado';
+        
+        IF Lb_ValidaCred THEN
+
+          Lv_Retorno     := '000';
+          Lv_Error       := null;
+          Lv_UsuarioCrea := 'telcos_pal';
+          Lv_Mensaje     := 'Exito.';
+
+          APEX_JSON.PARSE(Pcl_Request);
+          Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente'));  
+          Lv_EmpresaCod      := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa');
+          Ln_Pago            := APEX_JSON.get_number(p_path => 'valorPago');
+          Lv_Canal           := APEX_JSON.get_varchar2(p_path => 'canal');
+          Lv_SecuencialRec   := APEX_JSON.get_varchar2(p_path => 'secuencialRecaudador');
+          Lv_FechaTransac    := APEX_JSON.get_varchar2(p_path => 'fechaTransaccion');
+          Lv_Accion          := APEX_JSON.get_varchar2(p_path => 'accion');
+          Lv_NumeroContrato  := APEX_JSON.get_varchar2(p_path => 'numeroContrato');
+
+          Lv_FechaTransac := TO_CHAR(TO_TIMESTAMP(Lv_FechaTransac, 'YYYY-MM-DD HH24:MI:SS'));
+            
+          Lc_CanalPago := FNCK_PAGOS_LINEA.F_OBTENER_CANAL_PAGO_LINEA(Lv_Canal);
+          FETCH Lc_CanalPago INTO Lvr_IdCanal, Lvr_FormaPagoId, Lvr_IdTipoCta, Lvr_IdCtaCble, Lvr_CodigoCanal, 
+                                  Lvr_DescCanal, Lvr_NombreCanal, Lvr_UsuarioCanal, Lvr_ClaveCanal;
+
+          Lc_PagoLinea := FNCK_PAGOS_LINEA.F_OBTENER_PAGO_LINEA(Lv_Canal, Lv_SecuencialRec);
+          FETCH Lc_PagoLinea INTO Lv_IdPagoLinea, Lv_IdCanalPago, Lv_IdEmpresa, Lv_OficinaId, Lv_IdPersona, Lv_ValorPago, Lv_NumeroRef, Lv_EstadoPagoL, Lv_ComentarioPago, 
+                                  Lv_UsrCreacion, Lv_FechaPago, Lv_UsrUltMod, Lv_FechaUltMod, Lv_UsrElimina, Lv_FechaElimina, Lv_ProMasivoId, Lv_FechaT, Lv_Reversado;                                
+             
+          IF C_GetFormaPago%ISOPEN THEN
+             CLOSE C_GetFormaPago;
+          END IF;
+          
+          OPEN C_GetFormaPago(Lvr_FormaPagoId);
+          FETCH C_GetFormaPago INTO Lv_CodFormaPago;
+          
+          IF C_GetFormaPago%ISOPEN THEN
+             CLOSE C_GetFormaPago;
+          END IF;                        
+
+          IF C_GetInfoPersona%ISOPEN THEN
+             CLOSE C_GetInfoPersona;
+          END IF;
+          
+          OPEN C_GetInfoPersona(Lv_IdPersona);
+          FETCH C_GetInfoPersona INTO Lv_IdentPersona;
+          
+          IF C_GetInfoPersona%ISOPEN THEN
+             CLOSE C_GetInfoPersona;
+          END IF;
+            
+          IF Lc_PagoLinea%NOTFOUND THEN
+              Lv_Retorno := '017';
+              Lv_Error   := 'Pago a reversar no existe.';
+              Pv_Status  := 'ERROR';
+              Pv_Mensaje := 'Pago a reversar no existe.';
+              
+          ELSIF (Lv_IdEmpresa <> Lv_EmpresaCod) OR (ROUND(TO_NUMBER(Ln_Pago), 2) <> ROUND(TO_NUMBER(Lv_ValorPago), 2)) 
+                    OR (Lv_Identificacion <> Lv_IdentPersona)
+                    OR (SUBSTR(Lv_FechaPago,1,9) <> SUBSTR(Lv_FechaTransac,1,9)) THEN
+                Lv_Retorno := '017';
+                Lv_Error := 'El pago contiene datos distintos a los proporcionados.';
+                Pv_Status := 'ERROR';
+                Pv_Mensaje := 'Datos distintos al pago.';
+                RAISE Le_Error;    
+              
+          ELSIF (Lv_EstadoPagoL = 'Reversado') OR (Lv_EstadoPagoL = 'Eliminado') THEN
+              Lv_Retorno := '012';
+              Lv_Error   := 'El pago '||Lv_NumeroRef||' se encuentra en Estado: '||Lv_EstadoPagoL;
+              Pv_Status  := 'ERROR';
+              Pv_Mensaje := 'Pago Eliminado/Reversado.';  
+              
+          ELSIF (Lv_EstadoPagoL = 'Conciliado') OR (Lv_EstadoPagoL = 'Pendiente') THEN    
+            
+            FNCK_PAGOS_LINEA.P_INACTIVA_PAL_REGULARIZA_DF(Lv_IdPagoLinea,
+                                                          Lv_EmpresaCod,
+                                                          Lv_CodPInact,
+                                                          Lv_MensajePInact,
+                                                          Lv_Error);
+                                                         
+           IF  Lv_CodPInact <> '000' THEN
+           
+              Pv_Mensaje := 'Existio un error al reversar el pago';
+              ROLLBACK;
+               IF  Lv_CodPInact = '010' THEN
+                  FNCK_PAGOS_LINEA.P_CREAR_HIST_BY_REVERSO(Lv_IdPagoLinea, Lv_StrProceso, Lv_CodHist, Lv_ErrorHist);
+                  Pv_Mensaje := 'No es posible reversar el pago';
+                  
+               END IF;
+              Lv_Retorno := '003';
+              Lv_Error := 'Existio un error al reversar el pago';
+              Pv_Status := 'ERROR'; 
+              Lv_StrCodPlantilla := 'PAL_NO_REVERSAD';
+              Lv_StrAsunto := 'Reverso de pago '|| Lv_SecuencialRec;
+              
+              Lv_MensajeCorreo := 'El siguiente correo es para informarle el reverso no &eacute;xito del pago en linea '|| Lv_SecuencialRec;
+              FNCK_COM_ELECTRONICO.SEND_MAIL_PLANTILLA('notificaciones_telcos@telconet.ec',
+                                                        Lv_StrAsunto,
+                                                        Lv_MensajeCorreo,
+                                                        Lv_StrCodPlantilla );            
+  
+              COMMIT;
+              RAISE Le_Error;
+              
+           END IF;
+           
+           UPDATE DB_FINANCIERO.INFO_PAGO_LINEA IPL
+            SET IPL.REVERSADO    = 'S',
+                IPL.FE_ULT_MOD   = SYSDATE,
+                IPL.USR_ULT_MOD  = 'telcos_pal',
+                IPL.ESTADO_PAGO_LINEA = Lv_EstadoPago
+            WHERE IPL.ID_PAGO_LINEA   = Lv_IdPagoLinea;
+           
+           
+           
+           FNCK_PAGOS_LINEA.P_INSERT_HIST_PAGO_LINEA (Lv_IdPagoLinea,
+                                                      Lv_StrProceso,
+                                                      Lv_UsuarioCrea,
+                                                      Pcl_Request,
+                                                      Lv_CodHistPL,
+                                                      Lv_Error);
+                                                      
+            
+           COMMIT;  
+         
+            Lv_StrCodPlantilla := 'PAL_REVERSADO';
+            Lv_StrAsunto := 'Reverso de pago '|| Lv_SecuencialRec;
+            
+            Lv_MensajeCorreo := 'El siguiente correo es para informarle el reverso con &eacute;xito del pago en linea '|| Lv_SecuencialRec;
+           
+            FNCK_COM_ELECTRONICO.SEND_MAIL_PLANTILLA('notificaciones_telcos@telconet.ec',
+                                                     Lv_StrAsunto,
+                                                     Lv_MensajeCorreo,
+                                                     Lv_StrCodPlantilla );                                                 
+          
+            FNCK_PAGOS_LINEA.P_CONSULTAR_SALDO_POR_IDENTIF(Pcl_Request, Lv_Estado, Pv_Mensaje, Lcl_ResConsulta);
+            APEX_JSON.PARSE(Lcl_ResConsulta);
+            Lv_Saldo                := APEX_JSON.get_varchar2(p_path => 'saldoAdeudado');
+            Lv_NombreCliente        := APEX_JSON.get_varchar2(p_path => 'nombreCliente');
+            Lv_Contrapartida        := APEX_JSON.get_varchar2(p_path => 'contrapartida');
+            
+            IF Lv_Accion = 'REVERSAR_ELIMINAR' THEN
+              Lv_EstadoPago := 'Eliminado';
+              FNCK_PAGOS_LINEA.P_ELIMINA_PAGO_LINEA(Pcl_Request, 
+                                                    Lv_StatusEP, 
+                                                    Lv_MensajeEP,
+                                                    Lcl_ResponseEP);
+                                  
+      
+            
+              
+            END IF;
+            
+            IF  Lv_StatusEP <>  'OK' or Lv_StatusEP is null THEN
+              
+              FNCK_PAGOS_LINEA.P_ENVIA_CORTAR_CLIENTE(Lv_UsrUltMod,
+                                                      Lv_IdEmpresa,
+                                                      Lv_IdPagoLinea,
+                                                      Lv_CodCortarCliente,
+                                                      Lv_Error);
+                                                     
+            END IF;   
+           
+          ELSE 
+            Lv_Retorno := '017';
+            Lv_Error   := 'El pago no tiene estado';                              
+          END IF;
+
+            
+      END IF;
+     
+      IF Lv_Retorno = '000' THEN
+          Pcl_Response := '{' ||
+                                  '"retorno":"' || Lv_Retorno || '",' ||
+                                  '"error":"' || Lv_Error || '",' ||
+                                  '"contrapartida":"' || Lv_Contrapartida || '",' ||
+                                  '"nombreCliente":"' || Lv_NombreCliente || '",' ||
+                                  '"fechaTransaccion":"' || Lv_FechaTransac || '",' ||
+                                  '"secuencialEntidadRecaudadora":"' || Lv_SecuencialRec || '",' ||
+                                  '"secuencialPagoInterno":"' || Lv_IdPagoLinea || '",' ||
+                                  '"numeroPagos":1,' ||
+                                  '"valorTotalReversado":"' || Ln_Pago || '",' ||
+                                  '"observacion":"' || Lv_Mensaje || '",' ||
+                                  '"mensajeVoucher":"' || Lv_Mensaje || '",' ||
+                                  '"saldo":"' || Lv_Saldo || '"' 
+                              || '}';
+
+            Pv_Status     := 'OK';
+            Pv_Mensaje    := 'Transacción exitosa';
+            COMMIT;
+      ELSE
+       
+        Pcl_Response := '{' ||
+                                  '"retorno":"' || Lv_Retorno || '",' ||
+                                  '"error":"' || Lv_Error || '",' ||
+                                  '"contrapartida":null,' || 
+                                  '"nombreCliente":null,' || 
+                                  '"fechaTransaccion":null,' ||
+                                  '"secuencialEntidadRecaudadora":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"numeroPagos":null,' ||
+                                  '"valorTotalReversado":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"observacion":null,' ||
+                                  '"mensajeVoucher":null,' ||
+                                  '"saldo": null'  
+                              || '}';
+                              
+           Pv_Status     := 'ERROR';
+           Pv_Mensaje    := Lv_Error;          
+                    
+      END IF; 
+
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                              'FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA',
+                                              SUBSTR('RESPONSE:'||Pcl_Response,1,4000),
+                                              NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                              SYSDATE,
+                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+      
+      EXCEPTION
+      WHEN Le_Error THEN
+      
+        Pcl_Response := '{' ||
+                                  '"retorno":"' || Lv_Retorno || '",' ||
+                                  '"error":' || Lv_Error || '",' ||
+                                  '"contrapartida":null,' || 
+                                  '"nombreCliente":null,' || 
+                                  '"fechaTransaccion":null,' ||
+                                  '"secuencialEntidadRecaudadora":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"numeroPagos":null,' ||
+                                  '"valorTotalReversado":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"observacion":null,' ||
+                                  '"mensajeVoucher":null,' ||
+                                  '"saldo": null'  
+                              || '}';
+                              
+    WHEN OTHERS THEN
+      
+      
+         ROLLBACK;
+        
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                          'FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA',
+                                          'No se realizó EL reverso post conciliación cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+        Lv_Retorno := '003';
+        Lv_Error := 'Error, Indisponibilidad del sistema. Error - ' || SQLERRM;
+        Pv_Status  := 'ERROR';
+        Pv_Mensaje := SQLERRM;  
+
+        Pcl_Response := '{' ||
+                                  '"retorno":"' || Lv_Retorno || '",' ||
+                                  '"error":' || Lv_Error || '",' ||
+                                  '"contrapartida":null,' || 
+                                  '"nombreCliente":null,' || 
+                                  '"fechaTransaccion":null,' ||
+                                  '"secuencialEntidadRecaudadora":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"numeroPagos":null,' ||
+                                  '"valorTotalReversado":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"observacion":null,' ||
+                                  '"mensajeVoucher":null,' ||
+                                  '"saldo": null'  
+                              || '}';
+      
+      
+    END P_REVERSAR_CONCIL_PAGO_LINEA;
+   
+   /**
+   * Documentación para el procedure 'P_ENVIA_CORTAR_CLIENTE'
+   * Realiza la logica para enviar a cortar un cliente por reverso de un pago
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_UsrUltMod    IN  VARCHAR2
+   * @param Pv_EmpresaId    IN  VARCHAR2
+   * @param Pv_IdPagoLinea  IN  VARCHAR2
+   * @param Pv_Codigo       OUT VARCHAR2
+   * @param Pv_Error        OUT VARCHAR2
+   */
+    PROCEDURE P_ENVIA_CORTAR_CLIENTE(Pv_UsrUltMod    IN  VARCHAR2,
+                                     Pv_EmpresaId    IN  VARCHAR2,
+                                     Pv_IdPagoLinea  IN  VARCHAR2,
+                                     Pv_Codigo       OUT VARCHAR2,
+                                     Pv_Error        OUT VARCHAR2) IS
+                                            
+       --arrayRequestCortar
+       Lv_StrIp                 VARCHAR2(10); 
+       Lv_StrPunto              VARCHAR2(500);
+       Ln_CantidadPuntos        NUMBER;
+       Lv_UsrCreacion           VARCHAR2(50);
+       Lv_StrPrefijoEmpresa     VARCHAR2(10);
+       C_GetPuntosPorPago_rec   SYS_REFCURSOR;
+       Fc_GetHistorialServicios SYS_REFCURSOR;
+       Lc_Info                  CLOB;
+       --arrayRequestCortar
+       
+       Ln_IdServicio            NUMBER;
+       Ln_CountHist             NUMBER;
+       Lb_InCorte               BOOLEAN;
+       Lb_Activo                BOOLEAN;
+       
+       CURSOR C_GetPrefijoEmpresa(Cv_EmpresaId VARCHAR2) IS
+        SELECT PREFIJO 
+          FROM DB_COMERCIAL.INFO_EMPRESA_GRUPO
+          WHERE COD_EMPRESA = Cv_EmpresaId;
+          
+      CURSOR C_GetPuntosPorPago(Cv_IdPagoLinea VARCHAR2) IS 
+        SELECT  ipc.PUNTO_ID
+          FROM Info_Pago_Cab ipc
+          WHERE ipc.PAGO_LINEA_ID= Cv_IdPagoLinea
+          AND ipc.PUNTO_ID IS NOT NULL
+          GROUP BY ipc.PUNTO_ID;  
+      
+      CURSOR C_GetServPrefByPunto(Cn_Punto NUMBER)  IS
+        SELECT A.* FROM (SELECT DB_COMERCIAL.GET_ID_SERVICIO_PREF(Cn_Punto) ID_SERVICIO FROM DUAL) A WHERE ROWNUM = 1;
+       
+      CURSOR C_GetHistServ(Cn_Rows NUMBER, Cv_Order VARCHAR2, Cn_Field NUMBER, Cn_IdServicio NUMBER) IS
+          WITH LAST_2_STATES AS ( 
+                  SELECT 
+                       ISH.* 
+                   FROM 
+                       DB_COMERCIAL.INFO_SERVICIO_HISTORIAL ISH 
+                   WHERE 
+                       ISH.SERVICIO_ID = Cn_IdServicio ORDER BY 
+                    Cn_Field DESC
+               ) 
+               SELECT TBL_SERV_HIST.FE_CREACION, TBL_SERV_HIST.ID_SERVICIO, TBL_SERV_HIST.ESTADO FROM ( 
+                 SELECT TO_CHAR(L2S.FE_CREACION, 'DD-MM-YYYY HH24:MI:SS') FE_CREACION, 
+                   L2S.SERVICIO_ID ID_SERVICIO, 
+                   L2S.ESTADO ESTADO, 
+                   L2S.FE_CREACION AS FECHA 
+                 FROM LAST_2_STATES L2S 
+                 WHERE ROWNUM < Cn_Rows
+               UNION 
+                 SELECT TO_CHAR(L2S.FE_CREACION, 'DD-MM-YYYY HH24:MI:SS') FE_CREACION, 
+                   L2S.SERVICIO_ID ID_SERVICIO, 
+                   L2S.ESTADO ESTADO, 
+                   L2S.FE_CREACION AS FECHA 
+                 FROM LAST_2_STATES L2S WHERE 
+                   FE_CREACION < (SELECT TRUNC(MAX(FE_CREACION)) FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL ISH 
+                         WHERE ISH.SERVICIO_ID = Cn_IdServicio ) 
+               AND ROWNUM < Cn_Rows ) TBL_SERV_HIST ORDER BY TBL_SERV_HIST.FECHA DESC; 
+        
+        C_GetHistServ_rec C_GetServPrefByPunto%ROWTYPE;
+        Lv_Error CLOB;
+        Lv_Cod varchar2(5);
+     BEGIN                     
+     
+     
+       Lv_StrIp                := '127.0.0.1'; 
+       Lv_StrPunto             := ''; 
+       Ln_CantidadPuntos       := 1;
+       Lv_UsrCreacion          := Pv_UsrUltMod;
+       
+       
+       OPEN C_GetPrefijoEmpresa(Pv_EmpresaId);
+       FETCH C_GetPrefijoEmpresa INTO Lv_StrPrefijoEmpresa;
+       CLOSE C_GetPrefijoEmpresa;
+                       
+                       
+       FOR C_GetPuntosPorPago_rec IN C_GetPuntosPorPago(PV_IdPagoLinea)
+           LOOP              
+           
+           Ln_IdServicio := 0;
+           OPEN C_GetServPrefByPunto (C_GetPuntosPorPago_rec.PUNTO_ID);
+           FETCH C_GetServPrefByPunto INTO Ln_IdServicio;
+           CLOSE C_GetServPrefByPunto;
+           
+           IF Ln_IdServicio IS NOT NULL THEN
+              Ln_CountHist := 0;
+              Lb_InCorte := FALSE;
+              Lb_Activo := FALSE;
+              
+              FOR C_GetHistServ_rec IN C_GetHistServ(2, 'DESC', 1, Ln_IdServicio)
+                LOOP
+                
+                IF Ln_CountHist = 0 AND C_GetHistServ_rec.Estado = 'Activo'  THEN
+                  Lb_InCorte := TRUE;
+                 
+                END IF;
+                
+                IF Ln_CountHist = 1 AND C_GetHistServ_rec.Estado = 'In-Corte'  THEN
+                  Lb_Activo := TRUE;
+                 
+                END IF;
+                
+                Ln_CountHist := Ln_CountHist +1;
+              END LOOP;  
+              
+              IF Lb_InCorte AND Lb_Activo THEN
+                Lv_StrPunto := Lv_StrPunto || to_char(C_GetPuntosPorPago_rec.PUNTO_ID) || '|';
+              END IF;
+              
+           END IF;
+           Lc_Info:= '{' ||
+                                                '"NumFactAbiertas":"",' ||
+                                                '"FechaEmisionFact":"",' ||
+                                                '"MontoDeuda":null,' ||
+                                                '"IdFormaPago":null,' ||
+                                                '"IdOficina":null' 
+                                            || '}';
+           IF LENGTH(Lv_StrPunto) > 0 THEN
+              FNCK_PAGOS_LINEA.P_CORTA_CLIENTE(Pv_EmpresaId,
+                                                Lv_StrPrefijoEmpresa,
+                                                Lv_UsrCreacion,
+                                                Lc_Info,
+                                                Lv_StrIp,
+                                                Lv_StrPunto,
+                                                Lv_Cod,
+                                                Lv_Error);
+           END IF;
+           
+       END LOOP;                
+                                            
+     END P_ENVIA_CORTAR_CLIENTE;   
+     /**
+   * Documentación para el procedure 'P_CORTA_CLIENTE'
+   * Inserta punto en las tablas de procesos masivos de clientes a cortar.
+   * El proceso de corte lee de la tabla de procesos masivos para realizar el corte de los clientes
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdEmpresa            IN  VARCHAR2
+   * @param Pv_StrPrefijoEmpresa    IN  VARCHAR2
+   * @param Pv_UsrCreacion          IN  VARCHAR2
+   * @param Pc_Info                 IN  CLOB
+   * @param Pv_StrIp                IN  VARCHAR2
+   * @param Pv_StrPunto             IN  VARCHAR2
+   * @param Pv_Codigo               OUT VARCHAR2
+   * @param Pv_Error                OUT VARCHAR2
+   */
+    PROCEDURE P_CORTA_CLIENTE      (Pv_IdEmpresa            IN  VARCHAR2,
+                                    Pv_StrPrefijoEmpresa    IN  VARCHAR2,
+                                    Pv_UsrCreacion          IN  VARCHAR2,
+                                    Pc_Info                 IN  CLOB,
+                                    Pv_StrIp                IN  VARCHAR2,
+                                    Pv_StrPunto             IN  VARCHAR2,
+                                    Pv_Codigo               OUT VARCHAR2,
+                                    Pv_Error                OUT VARCHAR2) IS
+     
+      lv_Entorno            VARCHAR2(20);  
+      lv_Jar_Name           VARCHAR2(50); 
+      lv_Ruta_Log           VARCHAR2(400); 
+      lv_Nombre_Log         VARCHAR2(20);    
+      json_RespuestaPuntos  CLOB;
+      ln_TotalFO            NUMBER ;
+      ln_TotalCoRa          NUMBER;
+      lv_PuntosFO           VARCHAR2(4000); 
+      lv_PuntosCR           VARCHAR2(4000);
+      lv_Fecha_Doc          VARCHAR2(20);
+      Lv_PrefijoEmpresaEqui VARCHAR2(20);
+      Lv_IdEmpresa          VARCHAR2(50) := Pv_IdEmpresa;
+      Lv_IdEmpresaC         VARCHAR2(50);
+      lv_Ejecutar           VARCHAR2(32767);
+      
+      Lv_NumFactAbiertas    VARCHAR2(500);
+      Lv_FechaEmisionFact   VARCHAR2(500);
+      Ln_MontoDeuda         NUMBER;
+      Ln_IdFormaPago        NUMBER;
+      Ln_IdBancosTarjetas   NUMBER;
+      Ln_IdOficina          NUMBER;
+      
+      CURSOR C_ObtenerParametro(CV_VALOR1 VARCHAR2, CV_VALOR2 VARCHAR2 ) IS
+       SELECT PD.VALOR3
+                  FROM DB_GENERAL.ADMI_PARAMETRO_DET PD,
+                       DB_GENERAL.ADMI_PARAMETRO_CAB PC
+                  WHERE PC.ID_PARAMETRO= PD.PARAMETRO_ID
+                  AND PC.NOMBRE_PARAMETRO = 'EMPRESA_EQUIVALENTE'
+                  AND PC.estado = 'Activo'
+                  AND PD.estado = 'Activo'
+                  AND PD.VALOR1 = CV_VALOR1
+                  AND PD.VALOR2 = CV_VALOR2;
+      
+      CURSOR C_ObtenerIdEmpresa(Cv_PrefijoEmpresaEqui VARCHAR2) IS
+      SELECT COD_EMPRESA FROM INFO_EMPRESA_GRUPO WHERE PREFIJO= Cv_PrefijoEmpresaEqui;
+      
+      
+     BEGIN                               
+           
+       
+      APEX_JSON.PARSE(Pc_Info); 
+      Lv_NumFactAbiertas   := APEX_JSON.get_number(p_path => 'NumFactAbiertas'); 
+      Lv_FechaEmisionFact  := APEX_JSON.get_number(p_path => 'FechaEmisionFact');
+      Ln_MontoDeuda        := APEX_JSON.get_varchar2(p_path => 'MontoDeuda');
+      Ln_IdFormaPago       := APEX_JSON.get_varchar2(p_path => 'IdFormaPago');  
+      Ln_IdOficina         := APEX_JSON.get_varchar2(p_path => 'IdOficina'); 
+      
+      json_RespuestaPuntos := F_GET_PUNTO_X_ULT_MILLA(Pv_StrPunto);
+      
+      APEX_JSON.PARSE(json_RespuestaPuntos); 
+      ln_TotalFO   := APEX_JSON.get_number(p_path => 'totalFO'); 
+      ln_TotalCoRa := APEX_JSON.get_number(p_path => 'totalCoRa');
+      lv_PuntosFO  := APEX_JSON.get_varchar2(p_path => 'FO');
+      lv_PuntosCR  := APEX_JSON.get_varchar2(p_path => 'CR');  
+      lv_Fecha_Doc :=to_date(sysdate,'yyyy-mm-dd') ; 
+      
+      IF lv_PuntosCR IS NOT NULL THEN
+      
+          --llamar JAR
+          BEGIN
+              lv_Ejecutar:= FNCK_PAGOS_LINEA.F_LLAMAR_JAR(NULL, lv_PuntosCR, Ln_MontoDeuda, Lv_NumFactAbiertas, Ln_IdOficina, Ln_IdFormaPago, pv_UsrCreacion, Pv_StrIp);
+              
+          EXCEPTION
+              WHEN OTHERS THEN
+              DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                        'FNCK_PAGOS_LINEA.P_CORTA_CLIENTE.JAR',
+                                        '(Puntos_Cortar: '||lv_PuntosCR||','||'Usr_Creacion:'||Pv_UsrCreacion||','||'Cliente_IP:'||Pv_StrIp||','||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                        NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                        SYSDATE,
+                                        NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+          END;
+          
+          OPEN C_ObtenerParametro(Pv_StrPrefijoEmpresa, 'CO');
+          FETCH C_ObtenerParametro INTO Lv_PrefijoEmpresaEqui;
+          CLOSE C_ObtenerParametro;
+          
+          OPEN C_ObtenerIdEmpresa(Lv_PrefijoEmpresaEqui);
+          FETCH C_ObtenerIdEmpresa INTO Lv_IdEmpresaC;
+          CLOSE C_ObtenerIdEmpresa;
+          
+          IF Lv_IdEmpresaC IS NOT NULL THEN
+            Lv_IdEmpresa := Lv_IdEmpresaC;
+          END IF;
+          
+          
+          FNCK_PAGOS_LINEA.P_GUARDAR_PUNTO_X_CORTE_MASIVO(Lv_IdEmpresa, 
+                                                          Lv_PrefijoEmpresaEqui,
+                                                          Pv_UsrCreacion,
+                                                          Pc_Info,
+                                                          lv_PuntosCR,
+                                                          ln_TotalCoRa, 
+                                                          Pv_StrIp);
+        
+      END IF;
+      
+      IF lv_PuntosFO IS NOT NULL THEN
+      
+          
+          
+          OPEN C_ObtenerParametro(Pv_StrPrefijoEmpresa, 'FO');
+          FETCH C_ObtenerParametro INTO Lv_PrefijoEmpresaEqui;
+          CLOSE C_ObtenerParametro;
+          
+          OPEN C_ObtenerIdEmpresa(Lv_PrefijoEmpresaEqui);
+          FETCH C_ObtenerIdEmpresa INTO Lv_IdEmpresaC;
+          CLOSE C_ObtenerIdEmpresa;
+          
+          IF Lv_IdEmpresaC IS NOT NULL THEN
+            Lv_IdEmpresa := Lv_IdEmpresaC;
+          END IF;
+          
+          
+          FNCK_PAGOS_LINEA.P_GUARDAR_PUNTO_X_CORTE_MASIVO(Lv_IdEmpresa, 
+                                                          Lv_PrefijoEmpresaEqui,
+                                                          Pv_UsrCreacion,
+                                                          Pc_Info,
+                                                          lv_PuntosFO,
+                                                          ln_TotalFO, 
+                                                          Pv_StrIp);
+        
+      END IF;
+      
+     END P_CORTA_CLIENTE;
+     
+    
+    /**
+   * Documentación para el procedure 'P_GUARDAR_PUNTOS_X_CORTE_MASIVO'
+   * Metodo para realizar la generación de cabecera y detalle de procesos masivos de corte
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdEmpresa            IN  VARCHAR2,
+   * @param Pv_StrPrefijoEmpresa    IN  VARCHAR2,
+   * @param Pv_UsrCreacion          IN  VARCHAR2,
+   * @param Pc_Info                 IN  CLOB,
+   * @param Pv_IdsPuntos            IN  VARCHAR2,
+   * @param Pn_CantidadPuntos       IN  NUMBER
+   * @param Pv_ClienteIp            IN VARCHAR2
+   */
+    PROCEDURE P_GUARDAR_PUNTO_X_CORTE_MASIVO      ( Pv_IdEmpresa            IN  VARCHAR2,
+                                                    Pv_StrPrefijoEmpresa    IN  VARCHAR2,
+                                                    Pv_UsrCreacion          IN  VARCHAR2,
+                                                    Pc_Info                 IN  CLOB,
+                                                    Pv_IdsPuntos            IN  VARCHAR2,
+                                                    Pn_CantidadPuntos       IN  NUMBER,
+                                                    Pv_ClienteIp            IN  VARCHAR2) IS
+                                                    
+      Ln_ContadorRegistros        number :=0;  
+      Ld_FechaProceso             Date   := SYSDATE;
+      Lv_NombreProceso            varchar2(50):= '';
+      lv_MsnError                 VARCHAR2(2000); 
+      row_info_proceso_masivo     DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE; 
+      row_IdInfoProcesoMasivoCab  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE := 0;
+      row_info_proceso_masivo_det DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET%ROWTYPE;   
+      row_IdInfoProcesoMasivoDet  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ID_PROCESO_MASIVO_DET%TYPE := 0;
+      
+      Ln_IdxIni  NUMBER := 1;
+      Ln_IdxFin  NUMBER :=  LENGTH(Pv_IdsPuntos);
+      Lv_Punto   VARCHAR2(50);
+      Ln_IdxPipe NUMBER := 0;
+      Ln_Avance  NUMBER := 0;
+      
+      Pv_NumFactAbiertas    VARCHAR2(500);
+      Pv_FechaEmisionFact   VARCHAR2(500);
+      Pn_MontoDeuda         NUMBER;
+      Pn_IdFormaPago        NUMBER;
+      Pn_IdBancosTarjetas   NUMBER;
+      Pn_IdOficina          NUMBER;
+      
+     BEGIN         
+       
+        APEX_JSON.PARSE(Pc_Info); 
+        Pv_NumFactAbiertas   := APEX_JSON.get_number(p_path => 'NumFactAbiertas'); 
+        Pv_FechaEmisionFact  := APEX_JSON.get_number(p_path => 'FechaEmisionFact');
+        Pn_MontoDeuda        := APEX_JSON.get_varchar2(p_path => 'MontoDeuda');
+        Pn_IdFormaPago       := APEX_JSON.get_varchar2(p_path => 'IdFormaPago');  
+        Pn_IdOficina         := APEX_JSON.get_varchar2(p_path => 'IdOficina'); 
+               
+       row_info_proceso_masivo.tipo_proceso := 'CortarCliente';
+       row_info_proceso_masivo.cantidad_puntos := Pn_CantidadPuntos;
+       row_info_proceso_masivo.FACTURAS_RECURRENTES := Pv_NumFactAbiertas;
+       
+       IF Pv_FechaEmisionFact IS NOT NULL THEN
+          row_info_proceso_masivo.FECHA_EMISION_FACTURA := Pv_FechaEmisionFact;
+       END IF;
+       
+       row_info_proceso_masivo.VALOR_DEUDA := Pn_MontoDeuda;
+       row_info_proceso_masivo.FORMA_PAGO_ID := Pn_IdFormaPago;
+       row_info_proceso_masivo.IDS_BANCOS_TARJETAS := Pn_IdBancosTarjetas;
+       row_info_proceso_masivo.IDS_OFICINAS := Pn_IdOficina;
+       row_info_proceso_masivo.EMPRESA_ID   := Pv_IdEmpresa;
+       
+       IF Pv_StrPrefijoEmpresa = 'TTCO' THEN
+        row_info_proceso_masivo.ESTADO := 'Finalizada';
+        row_info_proceso_masivo.USR_ULT_MOD := Pv_UsrCreacion;
+        row_info_proceso_masivo.FE_ULT_MOD := SYSDATE;
+       ELSE 
+        row_info_proceso_masivo.ESTADO := 'Pendiente';
+       END IF;
+       
+      row_info_proceso_masivo.FE_CREACION := SYSDATE; 
+      row_info_proceso_masivo.USR_ULT_MOD := Pv_UsrCreacion;
+      row_info_proceso_masivo.IP_CREACION := Pv_ClienteIp;
+      
+      DB_INFRAESTRUCTURA.INFRK_TRANSACCIONES.INSERT_PROCESO_MASIVO_CAB(row_info_proceso_masivo, row_IdInfoProcesoMasivoCab, Lv_MsnError);
+        
+      WHILE Ln_IdxIni < Ln_IdxFin 
+        LOOP
+        
+        Ln_IdxPipe := INSTR(Pv_IdsPuntos, '|',  Ln_IdxIni);
+        Ln_Avance  := Ln_IdxPipe - Ln_IdxIni;
+        Lv_Punto   := SUBSTR(Pv_IdsPuntos, Ln_IdxIni, Ln_Avance);
+        
+        row_info_proceso_masivo_det.punto_id := Lv_Punto;
+        row_info_proceso_masivo_det.PROCESO_MASIVO_CAB_ID := row_IdInfoProcesoMasivoCab;
+        
+        IF Pv_StrPrefijoEmpresa = 'TTCO' THEN
+          row_info_proceso_masivo_det.ESTADO := 'In-Corte';
+          row_info_proceso_masivo_det.USR_ULT_MOD := Pv_UsrCreacion;
+          row_info_proceso_masivo_det.FE_ULT_MOD := SYSDATE;
+         ELSE 
+          row_info_proceso_masivo_det.ESTADO := 'Pendiente';
+         END IF;
+       
+        row_info_proceso_masivo_det.FE_CREACION := SYSDATE; 
+        row_info_proceso_masivo_det.USR_ULT_MOD := Pv_UsrCreacion;
+        row_info_proceso_masivo_det.IP_CREACION := Pv_ClienteIp;
+        DB_INFRAESTRUCTURA.INFRK_TRANSACCIONES.INSERT_PROCESO_MASIVO_DET(row_info_proceso_masivo_det, row_IdInfoProcesoMasivoDet, Lv_MsnError);
+        
+        Ln_Avance := 0;
+        Ln_IdxIni := Ln_IdxPipe+1;
+        
+        
+        
+      END LOOP;
+    EXCEPTION
+    WHEN OTHERS THEN
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                      'FNCK_PAGOS_LINEA.P_GUARDAR_PUNTO_X_CORTE_MASIVO',
+                                      'Problemas al reactivar servicio Masivos . - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                      NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                      SYSDATE,
+                                      NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+     
+    END P_GUARDAR_PUNTO_X_CORTE_MASIVO; 
+   
+   /**
+   * Documentación para la funcion 'F_GET_PUNTO_X_ULT_MILLA'
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_StrPunto    IN  VARCHAR2 
+   */
+    FUNCTION F_GET_PUNTO_X_ULT_MILLA (Pv_StrPunto    IN  VARCHAR2) RETURN CLOB AS
+    
+      Ln_IdxIni  NUMBER := 1;
+      
+      Ln_IdxFin  NUMBER :=  LENGTH(Pv_StrPunto);
+      Lv_Punto   VARCHAR2(50);
+      Ln_IdxPipe NUMBER := 0;
+      Ln_Avance  NUMBER := 0;
+      
+      json_response        CLOB;
+      json_Response_Puntos CLOB;
+      ln_TotalFO           number ;
+      ln_TotalCoRa         number;
+
+      lv_PuntosFO_Final  varchar2(4000); 
+      lv_PuntosCR_Final  varchar2(4000);
+      ln_TotalFO_Final   number :=0 ;
+      ln_TotalCoRa_Final number := 0;
+
+      
+     BEGIN
+      
+      WHILE Ln_IdxIni < Ln_IdxFin 
+        LOOP
+        
+        Ln_IdxPipe := INSTR(Pv_StrPunto, '|',  Ln_IdxIni);
+        Ln_Avance  := Ln_IdxPipe - Ln_IdxIni;
+        Lv_Punto   := SUBSTR(Pv_StrPunto, Ln_IdxIni, Ln_Avance);
+        
+        
+        json_response := F_OBTENER_PUNTOS_X_ULT_MILLA(Lv_Punto); 
+
+         --WSA VERIFICA RESPUESTA DE VALIDACION
+         IF json_response IS NOT NULL THEN
+
+         APEX_JSON.PARSE(json_response); 
+         ln_TotalFO    := APEX_JSON.get_number(p_path => 'totalFO'); 
+         ln_TotalCoRa  := APEX_JSON.get_number(p_path => 'totalCoRa');
+     
+
+         --WSA COMPRUEBA SI PASO VALIDACION FO 
+           IF  ln_TotalFO > 0 THEN
+
+              lv_PuntosFO_Final  := lv_PuntosFO_Final||''||Lv_Punto || '|'; 
+              ln_TotalFO_Final   := ln_TotalFO_Final + 1 ; 
+           END IF; 
+
+             --WSA COMPRUEBA SI PASO VALIDACION CO 
+           IF ln_TotalCoRa > 0 THEN 
+
+               lv_PuntosCR_Final  := lv_PuntosCR_Final||''||Lv_Punto || '|'; 
+               ln_TotalCoRa_Final := ln_TotalCoRa_Final + 1 ; 
+
+           END IF;
+
+         END IF;  
+        Ln_Avance := 0;
+        Ln_IdxIni := Ln_IdxPipe+1;
+        
+        
+        
+      END LOOP;
+      
+        json_Response_Puntos:= '{'
+                                    || '"FO":"'|| lv_PuntosFO_Final || '",'
+                                    || '"totalFO":'|| ln_TotalFo_Final || ','
+                                    || '"CR":"'|| lv_PuntosCR_Final  || '",'
+                                    || '"totalCoRa":'|| ln_TotalCoRa_Final
+                                    || '}';
+  
+      
+          RETURN json_Response_Puntos;
+  
+     END F_GET_PUNTO_X_ULT_MILLA;
+    
+     /**************************************************************************
+    **************************ELIMINA PAGO***********************************
+    **************************************************************************/
+
+    /**
+    * Documentación para P_ELIMINA_PAGO_LINEA
+    * Procedimiento que elimina pago en linea
+    * 
+    * @author Milen Ortega <mortega1@telconet.ec>
+    * @version 1.0 28/12/2022
+    *
+    * @param Pcl_Request IN CLOB
+    * @param Pv_Status OUT VARCHAR2 estado
+    * @param Pv_Mensaje OUT VARCHAR2 Devuelve el mensaje de respuesta
+    * @param Pcl_Response OUT CLOB Devuelve respuesta con data
+    */ 
+    PROCEDURE P_ELIMINA_PAGO_LINEA(Pcl_Request  IN CLOB, 
+                                   Pv_Status    OUT VARCHAR2, 
+                                   Pv_Mensaje   OUT VARCHAR2,
+                                   Pcl_Response OUT CLOB)
+    AS
+      CURSOR C_GetInfoPersona(Cv_IdPersona VARCHAR2)
+          IS SELECT IP.IDENTIFICACION_CLIENTE FROM DB_COMERCIAL.INFO_PERSONA IP WHERE IP.ID_PERSONA=Cv_IdPersona; 
+  
+      CURSOR C_GetPrefijoEmpresa(Cv_CodEmpresa VARCHAR2)    
+          IS SELECT IEG.PREFIJO FROM DB_FINANCIERO.INFO_EMPRESA_GRUPO IEG WHERE IEG.COD_EMPRESA=Cv_CodEmpresa;
+  
+      CURSOR C_GetFormaPago(Cv_IdFormaPago VARCHAR2)
+          IS SELECT FP.CODIGO_FORMA_PAGO FROM DB_FINANCIERO.ADMI_FORMA_PAGO FP WHERE FP.ID_FORMA_PAGO = Cv_IdFormaPago;    
+  
+      Lv_Retorno            VARCHAR2(5);
+      Lv_Error              CLOB;
+      Lb_ValidaCred         BOOLEAN;
+      Lv_Identificacion     VARCHAR2(50);
+      Lv_EmpresaCod         VARCHAR2(50);
+      Ln_Pago               NUMBER;
+      Lv_FechaTransac       VARCHAR2(100);
+      Lv_NumeroContrato     VARCHAR2(50);
+      Lv_Canal              VARCHAR2(50);
+      Lv_SecuencialRec      VARCHAR2(60);
+      Lc_PagoLinea          SYS_REFCURSOR;
+      Lc_CanalPago          SYS_REFCURSOR;
+      Lv_IdentPersona       VARCHAR2(50);
+      Lv_Contrato           VARCHAR2(50);
+      Lr_InfoPagoLineaHist  DB_FINANCIERO.INFO_PAGO_LINEA_HISTORIAL%ROWTYPE;
+      Lv_IdPagoLinea        VARCHAR2(50);
+      Lv_IdCanalPago        VARCHAR2(50);
+      Lv_IdEmpresa          VARCHAR2(50);
+      Lv_OficinaId          VARCHAR2(50);
+      Lv_IdPersona          VARCHAR2(50);
+      Lv_ValorPago          VARCHAR2(100);
+      Lv_NumeroRef          VARCHAR2(50);
+      Lv_EstadoPago         VARCHAR2(50);
+      Lv_ComentarioPago     VARCHAR2(500);
+      Lv_UsrCreacion        VARCHAR2(50);
+      Lv_FechaPago          VARCHAR2(100);
+      Lv_UsrUltMod          VARCHAR2(50);
+      Lv_FechaUltMod        VARCHAR2(100);
+      Lv_UsrElimina         VARCHAR2(50);
+      Lv_FechaElimina       VARCHAR2(100);
+      Lv_ProMasivoId        VARCHAR2(50);
+      Lv_FechaT             VARCHAR2(100);
+      Lv_Reversado          VARCHAR2(50); 
+      Lv_MsnError           VARCHAR2(500);
+      Lv_FechaCrea          VARCHAR2(50);
+      Ld_Date               DATE;
+      Lv_Prefijo            VARCHAR2(50);
+      Lv_UsuarioCrea        VARCHAR2(50);
+      Lv_EsReactivado       VARCHAR2(50);
+      Lv_IdProcesoMasivo    VARCHAR2(50);
+      Lv_Mensaje            VARCHAR2(5000);
+      Lvr_IdCanal           VARCHAR2(50);
+      Lvr_FormaPagoId       VARCHAR2(50); 
+      Lvr_IdTipoCta         VARCHAR2(50);
+      Lvr_IdCtaCble         VARCHAR2(50);
+      Lvr_CodigoCanal       VARCHAR2(50);
+      Lvr_DescCanal         VARCHAR2(100);
+      Lvr_NombreCanal       VARCHAR2(50);
+      Lvr_UsuarioCanal      VARCHAR2(50);
+      Lvr_ClaveCanal        VARCHAR2(50);
+      Lv_CodFormaPago       VARCHAR2(50);
+      Lcl_Activacion        CLOB;
+      Lcl_ActivaResp        CLOB;
+      Lcl_Anticipo          CLOB;
+      Lcl_AnticipoResp      CLOB;
+      Lv_RetornoAnt         VARCHAR2(50);
+      Lv_ErrorAnt           CLOB;    
+      Lv_Documento          VARCHAR2(50);
+      Lv_Cadena             VARCHAR2(50);
+      Lv_Saldo              VARCHAR2(50);
+      Lv_NombreCliente      VARCHAR2(500);
+      Lv_Estado             VARCHAR2(50);
+      Lcl_ResConsulta       CLOB;
+      Lv_Contrapartida    VARCHAR2(50);
+      LE_ERROR            EXCEPTION;
+    BEGIN
+    
+    
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                          'FNCK_PAGOS_LINEA.P_ELIMINAR_PAGO_LINEA',
+                                          SUBSTR('REQUEST:'||Pcl_Request,1,4000),
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                                          
+      FNCK_PAGOS_LINEA.P_VALIDAR_CREDENCIALES(Pcl_Request, Lv_Retorno, Lv_Error, Lb_ValidaCred);
+      
+       IF Lb_ValidaCred THEN
+       
+       
+        Lv_Retorno := '000';
+        Lv_Error := null;
+        Lv_UsuarioCrea := 'telcos_pal';
+        Lv_Mensaje := 'Exito.';
+        
+        APEX_JSON.PARSE(Pcl_Request);
+        Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacionCliente'));  
+        Lv_EmpresaCod      := APEX_JSON.get_varchar2(p_path => 'codigoExternoEmpresa');
+        Ln_Pago            := APEX_JSON.get_number(p_path => 'valorPago');
+        Lv_Canal           := APEX_JSON.get_varchar2(p_path => 'canal');
+        Lv_SecuencialRec   := APEX_JSON.get_varchar2(p_path => 'secuencialRecaudador');
+        Lv_FechaTransac    := APEX_JSON.get_varchar2(p_path => 'fechaTransaccion');
+        
+        Lv_FechaTransac := TO_CHAR(TO_TIMESTAMP(Lv_FechaTransac, 'YYYY-MM-DD HH24:MI:SS'));
+            
+        Lc_CanalPago := FNCK_PAGOS_LINEA.F_OBTENER_CANAL_PAGO_LINEA(Lv_Canal);
+        FETCH Lc_CanalPago INTO Lvr_IdCanal, Lvr_FormaPagoId, Lvr_IdTipoCta, Lvr_IdCtaCble, Lvr_CodigoCanal, 
+                                Lvr_DescCanal, Lvr_NombreCanal, Lvr_UsuarioCanal, Lvr_ClaveCanal;
+
+        Lc_PagoLinea := FNCK_PAGOS_LINEA.F_OBTENER_PAGO_LINEA(Lv_Canal, Lv_SecuencialRec);
+        FETCH Lc_PagoLinea INTO Lv_IdPagoLinea, Lv_IdCanalPago, Lv_IdEmpresa, Lv_OficinaId, Lv_IdPersona, Lv_ValorPago, Lv_NumeroRef, Lv_EstadoPago, Lv_ComentarioPago, 
+                                Lv_UsrCreacion, Lv_FechaPago, Lv_UsrUltMod, Lv_FechaUltMod, Lv_UsrElimina, Lv_FechaElimina, Lv_ProMasivoId, Lv_FechaT, Lv_Reversado;
+                                          
+        IF C_GetFormaPago%ISOPEN THEN
+           CLOSE C_GetFormaPago;
+        END IF;
+         
+        OPEN C_GetFormaPago(Lvr_FormaPagoId);
+        FETCH C_GetFormaPago INTO Lv_CodFormaPago;
+        
+        IF C_GetFormaPago%ISOPEN THEN
+           CLOSE C_GetFormaPago;
+        END IF;                        
+
+        IF C_GetInfoPersona%ISOPEN THEN
+            CLOSE C_GetInfoPersona;
+        END IF;
+        
+        OPEN C_GetInfoPersona(Lv_IdPersona);
+        FETCH C_GetInfoPersona INTO Lv_IdentPersona;
+        
+        IF C_GetInfoPersona%ISOPEN THEN
+                CLOSE C_GetInfoPersona;
+        END IF;   
+        
+        IF Lc_PagoLinea%NOTFOUND THEN
+        
+            Lv_Retorno := '017'; 
+            Lv_Error := 'Pago a eliminar no existe.';
+            Pv_Status := 'ERROR';
+            Pv_Mensaje := 'Pago a eliminar no existe.';
+            
+        ELSIF Lv_EstadoPago = 'Conciliado' THEN
+            Lv_Retorno := '021';
+            Lv_Error := 'El pago '||Lv_NumeroRef||' se encuentra en Estado: '||Lv_EstadoPago;
+            Pv_Status := 'ERROR';
+            Pv_Mensaje := 'Pago ya conciliado.';
+
+        ELSIF Lv_EstadoPago <> 'Reversado' THEN
+            Lv_Retorno := '017';
+            Lv_Error := 'El pago '||Lv_NumeroRef||' se encuentra en Estado: '||Lv_EstadoPago;
+            Pv_Status := 'ERROR';
+            Pv_Mensaje := 'Pago no se encuentra Pendiente.';    
+            
+        ELSIF (Lv_IdEmpresa <> Lv_EmpresaCod) OR (ROUND(TO_NUMBER(Ln_Pago), 2) <> ROUND(TO_NUMBER(Lv_ValorPago), 2)) 
+                OR (Lv_Identificacion <> Lv_IdentPersona)
+                OR (SUBSTR(Lv_FechaPago,1,9) <> SUBSTR(Lv_FechaTransac,1,9)) THEN
+            Lv_Retorno := '017';
+            Lv_Error := 'El pago contiene datos distintos a los proporcionados.';
+            Pv_Status := 'ERROR';
+            Pv_Mensaje := 'Datos distintos al pago.';    
+            
+        ELSE 
+        
+          Ld_Date := SYSDATE;
+          Lv_FechaCrea := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH24:MI:SS');
+
+          UPDATE DB_FINANCIERO.INFO_PAGO_LINEA IPL
+          SET IPL.ESTADO_PAGO_LINEA = 'Eliminado',
+              IPL.FE_ULT_MOD        = Ld_Date,
+              IPL.USR_ULT_MOD       = Lv_UsuarioCrea
+          WHERE IPL.ID_PAGO_LINEA   = Lv_IdPagoLinea;
+           
+          Lr_InfoPagoLineaHist.ID_PAGO_LINEA_HIST := DB_FINANCIERO.SEQ_INFO_PAGO_LINEA_HIST.NEXTVAL;
+          Lr_InfoPagoLineaHist.PAGO_LINEA_ID := Lv_IdPagoLinea;
+          Lr_InfoPagoLineaHist.CANAL_PAGO_LINEA_ID := Lv_IdCanalPago;
+          Lr_InfoPagoLineaHist.EMPRESA_ID := Lv_IdEmpresa;
+          Lr_InfoPagoLineaHist.PERSONA_ID := Lv_IdPersona;
+          Lr_InfoPagoLineaHist.VALOR_PAGO_LINEA := Lv_ValorPago;
+          Lr_InfoPagoLineaHist.NUMERO_REFERENCIA := Lv_NumeroRef;
+          Lr_InfoPagoLineaHist.ESTADO_PAGO_LINEA := 'Eliminado';
+          Lr_InfoPagoLineaHist.OBSERVACION := Pcl_Request;
+          Lr_InfoPagoLineaHist.PROCESO := 'eliminarPagoAction';
+          Lr_InfoPagoLineaHist.USR_CREACION := Lv_UsuarioCrea;
+          Lr_InfoPagoLineaHist.FE_CREACION := Ld_Date;
+          FNCK_TRANSACTION.P_INSERT_INFO_PAGO_HISTORIAL(Lr_InfoPagoLineaHist, Lv_MsnError);
+          
+          IF Lv_MsnError IS NOT NULL THEN
+              Lv_Retorno := '003';
+              Lv_Error := Lv_MsnError;
+              Pv_Status := 'ERROR';
+              Pv_Mensaje := 'Error al insertar en InfoPagoLineaHistorial: '||Lv_MsnError;
+              RAISE LE_ERROR;
+              
+          ELSE
+              COMMIT;
+              
+              
+              FNCK_PAGOS_LINEA.P_CONSULTAR_SALDO_POR_IDENTIF(Pcl_Request, Lv_Estado, Pv_Mensaje, Lcl_ResConsulta);
+              APEX_JSON.PARSE(Lcl_ResConsulta);
+              Lv_Saldo := APEX_JSON.get_varchar2(p_path => 'saldoAdeudado');
+              Lv_NombreCliente := APEX_JSON.get_varchar2(p_path => 'nombreCliente');
+              Lv_Contrapartida := APEX_JSON.get_varchar2(p_path => 'contrapartida');
+            
+              Pcl_Response := '{' ||
+                                  '"retorno":"'                      || Lv_Retorno || '",' ||
+                                  '"error":null,'                    ||
+                                  '"contrapartida":"'                || Lv_Contrapartida || '",' ||
+                                  '"nombreCliente":"'                || Lv_NombreCliente || '",' || 
+                                  '"fechaTransaccion":"'             || Lv_FechaCrea || '",' || 
+                                  '"secuencialPagoInterno":'         || Lv_IdPagoLinea || ',' ||
+                                  '"secuencialEntidadRecaudadora":"' || Lv_SecuencialRec || '",' ||
+                                  '"numeroPagos": 1 ,'               || 
+                                  '"valorTotalReversado":'           || Ln_Pago || ',' ||
+                                  '"observacion":'                   || Lv_Mensaje || ',' ||
+                                  '"mensaje":'                       || Lv_Mensaje || ',' ||
+                                  '"saldo":"'                        || Lv_Saldo || '"' 
+                              || '}';
+              
+              Pv_Status     := 'OK';
+              Pv_Mensaje    := 'Transacción exitosa';
+
+          END IF;     
+            
+        END IF;   
+        
+       END IF;
+
+       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                          'FNCK_PAGOS_LINEA.P_ELIMINAR_PAGO_LINEA',
+                                          SUBSTR('RESPONSE:'||Pcl_Response,1,4000),
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+       EXCEPTION
+      WHEN Le_Error THEN
+        ROLLBACK;
+        Pcl_Response := '{' ||
+                                  '"retorno":"'                      || Lv_Retorno || '",' ||
+                                  '"error":"'                        || Lv_Error || '",' ||
+                                  '"contrapartida":null,' ||
+                                  '"nombreCliente":null,' ||
+                                  '"fechaTransaccion":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"secuencialEntidadRecaudadora":"null,' ||
+                                  '"numeroPagos":null,' ||
+                                  '"valorTotalReversado":null,' ||
+                                  '"observacion":null,' ||
+                                  '"mensaje":null,' ||
+                                  '"saldo":null'
+                              || '}';
+              Pv_Status     := 'ERROR';
+              
+    WHEN OTHERS THEN
+      ROLLBACK;
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                          'FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA',
+                                          'No se realizó EL reverso post conciliación cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+
+        Lv_Retorno := '003';
+        Lv_Error := 'Error, Indisponibilidad del sistema. Error - ' || SQLERRM;
+        Pv_Status  := 'ERROR';
+        Pv_Mensaje := SQLERRM;  
+
+        Pcl_Response := '{' ||
+                                  '"retorno":"' || Lv_Retorno || '",' ||
+                                  '"error":"' || Lv_Error || '",' ||
+                                  '"contrapartida":null,' || 
+                                  '"nombreCliente":null,' || 
+                                  '"fechaTransaccion":null,' ||
+                                  '"secuencialEntidadRecaudadora":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"numeroPagos":null,' ||
+                                  '"valorTotalReversado":null,' ||
+                                  '"secuencialPagoInterno":null,' ||
+                                  '"observacion":null,' ||
+                                  '"mensajeVoucher":null,' ||
+                                  '"saldo": null'  
+                              || '}';                                   
+    END P_ELIMINA_PAGO_LINEA;
+   
+    /**
+   * Documentación para el procedure 'P_CREAR_HIST_BY_REVERSO'
+   * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
+   * y regulariza los documentos financieros asociados a estos pagos.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdPagoLinea   IN  VARCHAR2,
+   * @param Pv_StrProceso    IN  VARCHAR2,
+   * @param Pv_StrUsrUltMod  IN  VARCHAR2,
+   * @param Pv_Error         OUT VARCHAR2
+   */
+    PROCEDURE P_CREAR_HIST_BY_REVERSO      (Pv_IdPagoLinea   IN  VARCHAR2,
+                                            Pv_StrProceso    IN  VARCHAR2,
+                                            Pv_Codigo        OUT VARCHAR2,
+                                            Pv_Error         OUT VARCHAR2) IS
+     
+     
+  
+    Ld_Date       DATE;       
+    Lv_MsnError   CLOB;
+    Lv_Error      CLOB;
+    Lv_Cod        VARCHAR2(50);
+    Le_Errors     EXCEPTION;
+    
+    
+    BEGIN
+    
+      Ld_Date := SYSDATE;
+
+      UPDATE DB_FINANCIERO.INFO_PAGO_LINEA IPL
+      SET IPL.REVERSADO    = 'N',
+          IPL.FE_ULT_MOD   = Ld_Date,
+          IPL.USR_ULT_MOD  = 'telcos_pal'
+      WHERE IPL.ID_PAGO_LINEA   = Pv_IdPagoLinea;
+      
+      
+      
+      FNCK_PAGOS_LINEA.P_INSERT_HIST_PAGO_LINEA (Pv_IdPagoLinea,
+                                                  Pv_StrProceso,
+                                                  'telcos_pal',
+                                                  'No se pudo reversar el pago, ya que se encuentra en estado Asignado',
+                                                  --null,
+                                                  Lv_Cod,
+                                                  Lv_Error);
+      IF Lv_Cod <> '000' THEN
+        
+        RAISE Le_Errors;
+      END IF;
+      
+      
+      EXCEPTION
+        WHEN Le_Errors THEN
+            Pv_Codigo := Lv_Cod;
+            Pv_Error := Lv_Error;
+            
+            
+    END  P_CREAR_HIST_BY_REVERSO;    
+   
+    /**
+   * Documentación para el procedure 'P_INSERT_HIST_PAGO_LINEA'
+   * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
+   * y regulariza los documentos financieros asociados a estos pagos.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/07/2022 
+   *
+   * @param Pv_IdPagoLinea   IN  VARCHAR2,
+   * @param Pv_EmpresaCod    IN  VARCHAR2,
+   * @param Pv_Mesnsaje      OUT VARCHAR2,
+   * @param Pv_Codigo        OUT VARCHAR2
+   */
+    PROCEDURE P_INSERT_HIST_PAGO_LINEA (Pv_IdPagoLinea   IN  VARCHAR2,
+                                            Pv_StrProceso    IN  VARCHAR2,
+                                            Pv_UsrCreacion    IN  VARCHAR2,
+                                            Pv_Observacion   IN CLOB,
+                                            Pv_Codigo        OUT VARCHAR2,
+                                            Pv_Error         OUT VARCHAR2) IS
+                                            
+                                            
+      Lr_InfoPagoLineaHist          DB_FINANCIERO.INFO_PAGO_LINEA_HISTORIAL%ROWTYPE;
+      Lr_InfoPagoLinea              DB_FINANCIERO.INFO_PAGO_LINEA%ROWTYPE;
+      Ld_Date                       DATE;       
+      Lv_MsnError                   CLOB;
+      Lv_Error                      CLOB;
+      Lv_Cod                        VARCHAR2(50);
+      Le_Errors                     EXCEPTION;
+      Lv_FechaCrea          VARCHAR2(100);
+      
+      CURSOR C_ObtieneInfoPagoLinea(Cv_IdPagoLinea VARCHAR2) IS
+        SELECT IPL.* FROM DB_FINANCIERO.INFO_PAGO_LINEA IPL
+        WHERE IPL.ID_PAGO_LINEA =  Cv_IdPagoLinea;
+        
+        
+    BEGIN
+    
+      OPEN C_ObtieneInfoPagoLinea(Pv_IdPagoLinea);
+      FETCH C_ObtieneInfoPagoLinea INTO Lr_InfoPagoLinea;
+      CLOSE C_ObtieneInfoPagoLinea;
+     
+      Ld_Date := SYSDATE;
+      Lv_FechaCrea := TO_CHAR(Ld_Date, 'YYYY-MM-DD HH24:MI:SS');
+                   
+      Lr_InfoPagoLineaHist.ID_PAGO_LINEA_HIST := DB_FINANCIERO.SEQ_INFO_PAGO_LINEA_HIST.NEXTVAL;
+      Lr_InfoPagoLineaHist.PAGO_LINEA_ID := Pv_IdPagoLinea;
+      Lr_InfoPagoLineaHist.CANAL_PAGO_LINEA_ID := Lr_InfoPagoLinea.CANAL_PAGO_LINEA_ID;
+      Lr_InfoPagoLineaHist.EMPRESA_ID := Lr_InfoPagoLinea.EMPRESA_ID;
+      Lr_InfoPagoLineaHist.PERSONA_ID := Lr_InfoPagoLinea.PERSONA_ID;
+      Lr_InfoPagoLineaHist.VALOR_PAGO_LINEA := Lr_InfoPagoLinea.VALOR_PAGO_LINEA;
+      Lr_InfoPagoLineaHist.NUMERO_REFERENCIA := Lr_InfoPagoLinea.NUMERO_REFERENCIA;
+      Lr_InfoPagoLineaHist.ESTADO_PAGO_LINEA := Lr_InfoPagoLinea.ESTADO_PAGO_LINEA;
+      Lr_InfoPagoLineaHist.OBSERVACION := Pv_Observacion;
+      Lr_InfoPagoLineaHist.PROCESO := Pv_StrProceso;
+      Lr_InfoPagoLineaHist.USR_CREACION := Pv_UsrCreacion;
+      Lr_InfoPagoLineaHist.FE_CREACION := Ld_Date;
+      FNCK_TRANSACTION.P_INSERT_INFO_PAGO_HISTORIAL(Lr_InfoPagoLineaHist, Lv_MsnError);
+      
+      
+      IF Lv_MsnError IS NOT NULL THEN
+          Lv_Cod := '003';
+          Lv_Error := Lv_MsnError;
+          RAISE Le_Errors;
+      ELSE
+          COMMIT;
+          Pv_Codigo := '000';
+      END IF;
+      
+      EXCEPTION
+        WHEN Le_Errors THEN
+            Pv_Codigo := Lv_Cod;
+            Pv_Error := Lv_Error;
+      WHEN OTHERS THEN
+      
+      
+        Lv_Error := 'Error, Indisponibilidad del sistema. Error - ' || SQLERRM;
+              
+        
+    
+    END P_INSERT_HIST_PAGO_LINEA;
+
+   
+   /**
+   * Documentación para el procedure 'P_INACTIVA_PAL_REGULARIZA_DF'
+   * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
+   * y regulariza los documentos financieros asociados a estos pagos.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pv_IdPagoLinea   IN  VARCHAR2,
+   * @param Pv_EmpresaCod    IN  VARCHAR2,
+   * @param Pv_Mesnsaje      OUT VARCHAR2,
+   * @param Pv_Codigo        OUT VARCHAR2,
+   * @param Pv_Error         OUT VARCHAR2
+   */
+    PROCEDURE P_INACTIVA_PAL_REGULARIZA_DF (Pv_IdPagoLinea   IN  VARCHAR2,
+                                            Pv_EmpresaCod    IN  VARCHAR2,
+                                            Pv_Codigo        OUT VARCHAR2,
+                                            Pv_Mensaje       OUT VARCHAR2,
+                                            Pv_Error         OUT VARCHAR2) IS 
+                                            
+      
+          
+     Lv_Codigo               VARCHAR2(10);
+      Lv_Mensaje             CLOB;
+      Lv_Error                CLOB;
+      Le_Errors               EXCEPTION;
+      Lv_ArrayPagos           VARCHAR2(5000);
+      C_GetInfoPagoCab_rec    SYS_REFCURSOR;  
+      Ln_IdPago_Cab           NUMBER;
+      Lv_EstadoPago           VARCHAR2(15);
+      
+      Lv_Code_ReversaContPal  VARCHAR2(50);
+      
+      CURSOR C_GetInfoPagoCab(Cv_IdPagoLinea VARCHAR2) IS
+       SELECT A.* FROM DB_FINANCIERO.INFO_PAGO_CAB A
+        WHERE PAGO_LINEA_ID = Cv_IdPagoLinea AND USR_CREACION = 'telcos_pal'; 
+      
+      BEGIN
+      
+        Lv_Codigo            := '006';
+        Lv_Mensaje           :=  '';
+    
+      FOR C_GetInfoPagoCab_rec IN C_GetInfoPagoCab(Pv_IdPagoLinea)
+           LOOP
+         
+            FNCK_PAGOS_LINEA.P_REGULARIZA_DOCS_INACT_PC(C_GetInfoPagoCab_rec,
+                                                         Lv_ArrayPagos,
+                                                         Lv_Codigo,
+                                                         Lv_Mensaje,
+                                                         Lv_Error);
+                                     
+            IF Lv_Codigo <>  '000' THEN
+              RAISE Le_Errors;
+            END IF;
+      END LOOP;    
+      
+      IF Lv_ArrayPagos IS NOT NULL THEN
+       
+        NAF47_TNET.ARCK_PAL.P_REVERSA_CONT_PAL(  Lv_ArrayPagos,
+                                                 Pv_EmpresaCod,
+                                                 'telcos_pal',
+                                                 Lv_Code_ReversaContPal);
+      END IF;
+      
+      IF Lv_Code_ReversaContPal <>  '100' THEN
+        Lv_Codigo            := '003';
+        Lv_Mensaje           :=  'No se pudo reversar la contabilidad del pago';
+        RAISE Le_Errors;
+      END IF;
+      
+       Lv_Codigo            := '000';
+       Lv_Mensaje           :=  'Pagos anulados correctamente';  
+       
+      EXCEPTION
+        WHEN Le_Errors THEN
+            Pv_codigo  := Lv_Codigo;
+            Pv_Mensaje := Lv_Mensaje;
+        WHEN OTHERS THEN
+         
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                  'FNCK_PAGOS_LINEA.P_INACTIVA_PAL_REGULARIZA_DF',
+                                                  '-ERROR- ' || SQLERRM,
+                                                  NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                  SYSDATE,
+                                                  NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+                                                 
+            Pv_codigo := '003';
+            Pv_Mensaje := 'Existio un error: ' || SQLERRM || 'EN P_INACTIVA_PAL_REGULARIZA_DF';
+            
+    END P_INACTIVA_PAL_REGULARIZA_DF;
+    
+   
+   /**
+   * Documentación para el procedure 'P_REGULARIZA_DOCS_INACT_PC'
+   * Regulariza un documento que este relacionado al pago anulado.
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pr_InfoPagoCab  IN  DB_FINANCIERO.INFO_PAGO_CAB%ROWTYPE,
+   * @param Pv_ArrayPagos   OUT VARCHAR2,
+   * @param Pv_Codigo       OUT VARCHAR2
+   * @param Pv_Mensaje      OUT VARCHAR2,
+   * @param Pv_Error        OUT VARCHAR2
+   */
+    PROCEDURE P_REGULARIZA_DOCS_INACT_PC (Pr_InfoPagoCab   IN  DB_FINANCIERO.INFO_PAGO_CAB%ROWTYPE,
+                                          Pv_ArrayPagos    OUT VARCHAR2,
+                                          Pv_Codigo        OUT VARCHAR2,
+                                          Pv_Mensaje       OUT VARCHAR2,
+                                          Pv_Error         OUT VARCHAR2) IS
+         
+        
+    --ini_set('max_execution_time', 60);
+    
+        CURSOR C_GetInfoPagoCabA(CN_IdPagoLinea NUMBER) IS
+        SELECT A.* FROM DB_FINANCIERO.INFO_PAGO_CAB A
+        WHERE ANTICIPO_ID = CN_IdPagoLinea;
+        
+        CURSOR C_GetInfoPagoCabD(CN_IdPagoD NUMBER) IS
+        SELECT A.* FROM DB_FINANCIERO.INFO_PAGO_CAB A
+          WHERE ID_pago = CN_IdPagoD;
+        
+       CURSOR C_GetInfoPagoDetP(Cn_IdPagoLinea NUMBER) IS
+        SELECT A.* FROM DB_FINANCIERO.INFO_PAGO_DET A
+          WHERE PAGO_ID = Cn_IdPagoLinea ;
+          
+        CURSOR C_GetInfoPagoDetD(Cn_IdDoc NUMBER) IS
+        SELECT A.* FROM DB_FINANCIERO.INFO_PAGO_DET A
+          WHERE REFERENCIA_ID = Cn_IdDoc ;
+          
+        CURSOR C_GetDocFinanDet(Cn_IdPagoDet NUMBER) IS
+        SELECT DOCUMENTO_ID FROM INFO_DOCUMENTO_FINANCIERO_DET
+          WHERE PAGO_DET_ID = Cn_IdPagoDet;
+          
+          
+         Lv_Codigo               VARCHAR2(10);
+         Lv_Mensaje              CLOB;
+         Lv_Error                CLOB;  
+         C_GetInfoPagoCabD_rec   SYS_REFCURSOR;  
+         C_GetInfoPagoCabA_rec   SYS_REFCURSOR; 
+         Ln_IdPago_Cab           NUMBER;
+         Lv_EstadoPago           VARCHAR2(15);
+         Ln_IdPago_CabA          NUMBER;
+         Lv_EstadoPagoA          VARCHAR2(15);
+         Lr_InfoPagoHist         INFO_PAGO_HISTORIAL%ROWTYPE;
+         Lv_Mensaje_Error        CLOB;
+         Ln_InfoPagoHistId       NUMBER := 0;
+         C_GetInfoPagoDetP_rec   SYS_REFCURSOR;
+         C_GetInfoPagoDetA_rec   SYS_REFCURSOR; 
+         Lr_InfoPagoCabD         INFO_PAGO_CAB%ROWTYPE;
+         Ln_ReferenciaId         NUMBER;
+         Ln_IdPagoDet            NUMBER;
+         Ln_IdPagoDetA           NUMBER;
+         Ln_DocId                NUMBER;
+         Ln_PagoId               NUMBER;
+         Ln_PagoIdD              NUMBER;
+         Le_Errors               EXCEPTION;
+         Lv_ArrayPagos           VARCHAR2(5000); 
+         Lv_ArrayPagosR          VARCHAR2(5000);        
+         Ln_IdPagoLinea          NUMBER;
+         
+          BEGIN     
+        
+          Lv_Codigo            := '006';
+          Lv_Mensaje           := '';
+          Lv_ArrayPagos        := '';
+      
+          Ln_IdPago_Cab := Pr_InfoPagoCab.ID_PAGO;
+          Lv_EstadoPago := Pr_InfoPagoCab.ESTADO_PAGO;
+          Ln_IdPagoLinea:= Pr_InfoPagoCab.PAGO_LINEA_ID;
+         
+          
+          IF Lv_EstadoPago = 'Asignado' THEN 
+            Lv_Codigo            := '010';
+            Lv_Mensaje           := 'No se puede realizar el reverso del pago, porque tiene un detalle Asignado';
+            RAISE Le_Errors;
+            
+          ELSIF  Lv_EstadoPago = 'Cerrado' OR Lv_EstadoPago = 'Pendiente' THEN 
+            
+            UPDATE DB_FINANCIERO.INFO_PAGO_CAB
+            SET ESTADO_PAGO = 'Anulado',
+                FE_ULT_MOD = SYSDATE
+            WHERE ID_PAGO = Ln_IdPago_Cab;
+            --COMMIT;
+            
+            -- INGRESA HISTORIAL
+            Ln_InfoPagoHistId := DB_FINANCIERO.SEQ_INFO_PAGO_HISTORIAL.NEXTVAL;                      
+            Lr_InfoPagoHist.ID_PAGO_HISTORIAL := Ln_InfoPagoHistId;
+            Lr_InfoPagoHist.PAGO_ID := Ln_IdPagoLinea;
+            Lr_InfoPagoHist.MOTIVO_ID := NULL;
+            Lr_InfoPagoHist.FE_CREACION := SYSDATE;
+            Lr_InfoPagoHist.USR_CREACION := 'telcos_pal';
+            Lr_InfoPagoHist.ESTADO := 'Anulado';
+            Lr_InfoPagoHist.OBSERVACION := 'Reverso de pago en linea';
+
+            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_HIST(Lr_InfoPagoHist, Lv_Mensaje_Error);
+            
+            IF Lv_Mensaje_Error IS NOT NULL THEN
+                Lv_Mensaje := 'Error al insertar - INFO_PAGO_HIST: ' || Lv_Mensaje_Error;
+                Lv_Codigo := '005';
+                RAISE Le_Errors;
+            END IF;
+            
+            FOR C_GetInfoPagoDetP_rec IN C_GetInfoPagoDetP(Ln_IdPago_Cab)
+              LOOP
+                Ln_ReferenciaId := C_GetInfoPagoDetP_rec.REFERENCIA_ID;
+               
+                IF Ln_ReferenciaId IS NOT NULL THEN
+                    FNCK_PAGOS_LINEA.P_CAMBIA_ESTADO_DOCUMENTO(Ln_ReferenciaId,
+                                                                Ln_IdPago_Cab,
+                                                                Lv_error);
+                                             
+                                            
+                    IF Lv_error IS NOT NULL THEN
+                      
+                        Lv_Mensaje := Lv_error;
+                        Lv_Codigo := '003';
+                        RAISE Le_Errors;
+                    END IF;
+                    
+                 END IF;
+                 
+                  Ln_IdPagoDet := C_GetInfoPagoDetP_rec.ID_PAGO_DET;
+                  
+                  OPEN C_GetDocFinanDet(Ln_IdPagoDet);
+                  FETCH C_GetDocFinanDet INTO Ln_DocId;
+                  CLOSE C_GetDocFinanDet;
+                  
+                  IF Ln_DocId IS NOT NULL THEN
+                  
+                    FNCK_PAGOS_LINEA.P_CAMBIA_ESTADO_DOCUMENTO(Ln_DocId,
+                                                                Ln_IdPago_Cab,
+                                                                Lv_error);
+                                              
+                    IF Lv_error IS NOT NULL THEN
+                      
+                      Lv_Mensaje := Lv_error;
+                      Lv_Codigo := '003';
+                      RAISE Le_Errors;
+                    END IF;             
+                                 
+                    FOR C_GetInfoPagoDetD_rec IN C_GetInfoPagoDetD(Ln_DocId)
+                      LOOP
+                        Ln_PagoIdD := C_GetInfoPagoDetD_rec.PAGO_ID;
+                        
+                        OPEN C_GetInfoPagoCabD(Ln_PagoIdD);
+                        FETCH C_GetInfoPagoCabD INTO Lr_InfoPagoCabD;
+                        CLOSE C_GetInfoPagoCabD;
+                        
+                        FNCK_PAGOS_LINEA.P_REGULARIZA_DOCS_INACT_PC(Lr_InfoPagoCabD,
+                                                                   Lv_ArrayPagosR,
+                                                                   Lv_Codigo,
+                                                                   Lv_Mensaje,
+                                                                   Lv_Error);
+                                                
+                        IF Lv_error IS NOT NULL THEN
+                          Lv_Mensaje := Lv_error;
+                          
+                          Lv_Codigo := '003';
+                          RAISE Le_Errors;
+                        END IF;
+                    END LOOP;  
+                  END IF;
+                
+                
+                UPDATE DB_FINANCIERO.INFO_PAGO_DET
+                SET ESTADO = 'Anulado',
+                    FE_ULT_MOD = SYSDATE
+                WHERE ID_PAGO_DET = Ln_IdPagoDet;
+                
+                Lv_ArrayPagos := Lv_ArrayPagos || ','|| TO_CHAR(Ln_IdPagoDet); 
+            END LOOP;
+            
+            Lv_Codigo            := '000';
+            Lv_Mensaje           := 'Pagos anulados';
+            
+            
+          ELSIF  UPPER(Lv_EstadoPago) = 'ASIGNADO' THEN   
+            
+            UPDATE DB_FINANCIERO.INFO_PAGO_CAB
+            SET ESTADO_PAGO = 'Anulado',
+                FE_ULT_MOD = SYSDATE
+            WHERE ID_PAGO = Ln_IdPago_Cab;
+            
+            
+            FOR C_GetInfoPagoCabA_rec IN C_GetInfoPagoCabA(Ln_IdPago_Cab)
+                 LOOP
+                  FNCK_PAGOS_LINEA.P_REGULARIZA_DOCS_INACT_PC(C_GetInfoPagoCabA_rec,
+                                                               Lv_ArrayPagosR,
+                                                               Lv_Codigo,
+                                                               Lv_Mensaje,
+                                                               Lv_Error);
+                IF Lv_error IS NOT NULL THEN
+                   Lv_Mensaje := Lv_error;
+                  Lv_Codigo := '003';
+                  RAISE Le_Errors;
+                END IF;   
+                
+             END LOOP;  
+              -- INGRESA HISTORIAL
+            Ln_InfoPagoHistId := DB_FINANCIERO.SEQ_INFO_PAGO_HISTORIAL.NEXTVAL;                      
+            Lr_InfoPagoHist.ID_PAGO_HISTORIAL := Ln_InfoPagoHistId;
+            Lr_InfoPagoHist.PAGO_ID := Ln_IdPago_Cab;
+            Lr_InfoPagoHist.MOTIVO_ID := NULL;
+            Lr_InfoPagoHist.FE_CREACION := SYSDATE;
+            Lr_InfoPagoHist.USR_CREACION := 'telcos_pal';
+            Lr_InfoPagoHist.ESTADO := 'Anulado';
+            Lr_InfoPagoHist.OBSERVACION := 'Reverso de pago en linea';
+
+            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_PAGO_HIST(Lr_InfoPagoHist, Lv_Mensaje_Error);
+            
+            IF Lv_Mensaje_Error IS NOT NULL THEN
+                Lv_Mensaje := 'Error al insertar - INFO_PAGO_HIST: ' || Lv_Mensaje_Error;
+                Lv_Codigo := '005';
+                RAISE Le_Errors;
+            END IF;
+            
+            FOR C_GetInfoPagoDetA_rec IN C_GetInfoPagoDetP(Ln_IdPago_Cab)
+              LOOP
+              
+              Ln_IdPagoDetA := C_GetInfoPagoDetA_rec.ID_PAGO_DET;
+              
+              UPDATE DB_FINANCIERO.INFO_PAGO_DET
+              SET ESTADO = 'Anulado',
+                  FE_ULT_MOD = SYSDATE
+              WHERE ID_PAGO_DET = Ln_IdPagoDetA;
+              
+              
+            END LOOP; 
+            Lv_Codigo            := '000';
+            Lv_Mensaje           := 'Pagos anulados';
+            
+        ELSE 
+          Lv_Codigo            := '004';
+          Lv_Mensaje           := 'No existe el estado';
+        END IF;    
+        
+        Pv_codigo := Lv_Codigo;
+        Pv_Mensaje := Lv_Mensaje;
+        
+        IF LENGTH(Lv_ArrayPagos) > 0 THEN
+          Pv_ArrayPagos := Lv_ArrayPagos;
+        ELSE  
+          Pv_ArrayPagos := NULL;
+        END IF;
+        
+        EXCEPTION
+        WHEN Le_Errors THEN
+            Pv_codigo := Lv_Codigo;
+            Pv_Mensaje := Lv_Mensaje;
+        WHEN OTHERS THEN
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                  'FNCK_PAGOS_LINEA.P_REGULARIZA_DOCS_INACT_PC',
+                                                  '-ERROR- ' || SQLERRM,
+                                                  NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                  SYSDATE,
+                                                  NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+                                                 
+            Pv_codigo := '003';
+           
+            Pv_Mensaje := 'Existio un error: ';
+        
+        
+     END P_REGULARIZA_DOCS_INACT_PC;  
+    
+    /**
+   * Documentación para el procedure 'P_CAMBIA_ESTADO_DOCUMENTO'
+   *
+   * Cambia el estado del documento financiero
+   *
+   * @author Milen Ortega <mortega1@telconet.ec>
+   * @version 1.0 28/12/2022 
+   *
+   * @param Pn_ReferenciaId   IN  NUMBER,
+   * @param Pn_IdPago_Cab     IN  NUMBER,
+   * @param Pv_Codigo        OUT VARCHAR2
+   */
+    PROCEDURE P_CAMBIA_ESTADO_DOCUMENTO (Pn_ReferenciaId   IN  NUMBER,
+                                         Pn_IdPago_Cab     IN  NUMBER,
+                                         Pv_Error          OUT VARCHAR2) IS     
+      
+      CURSOR C_GetDocumentoFinancieroCab(Cn_ReferenciaId NUMBER) IS
+        SELECT A.*, B.CODIGO_TIPO_DOCUMENTO FROM INFO_DOCUMENTO_FINANCIERO_CAB A
+          JOIN ADMI_TIPO_DOCUMENTO_FINANCIERO B
+          ON A.TIPO_DOCUMENTO_ID = B.ID_TIPO_DOCUMENTO
+          WHERE A.ID_DOCUMENTO = Cn_ReferenciaId;
+       
+      CURSOR C_GetAdmiCaracteristica IS
+        SELECT ID_CARACTERISTICA FROM DB_COMERCIAL.Admi_Caracteristica
+          WHERE DESCRIPCION_CARACTERISTICA='PROCESO_DIFERIDO';
+      
+      CURSOR C_GetDocumentoCaracteristica(Cn_DocId NUMBER, Cn_CaracteristicaId NUMBER) IS
+      SELECT ID_DOCUMENTO_CARACTERISTICA FROM INFO_DOCUMENTO_CARACTERISTICA
+        WHERE DOCUMENTO_ID = Cn_DocId
+        AND CARACTERISTICA_ID = Cn_CaracteristicaId
+        AND ESTADO = 'Activo';
+              
+       Lr_DocumentoFinancieroCab  C_GetDocumentoFinancieroCab%ROWTYPE;    
+       Lv_CodTipoDoc              VARCHAR2(10);
+       Lv_EstadoDocCambio         VARCHAR2(50);
+       Lv_EstadoDoc               VARCHAR2(50);
+       Lb_InsertarHistoria        BOOLEAN;
+       Lb_InsertarDocFinan        BOOLEAN;
+       Ln_IdCaracteristica        NUMBER;
+       Ln_IdDocCaracteristica     NUMBER;
+       Ln_InfoDocHistId           NUMBER := 0;
+       Lr_InfoDocumentoHistorial  INFO_DOCUMENTO_HISTORIAL%ROWTYPE;
+       Le_Errors                  EXCEPTION;
+       Lv_Error                   CLOB;
+       Lv_Mensaje_Error           CLOB;
+       
+      BEGIN     
+        
+        Lv_EstadoDocCambio := 'Activo';
+        Lb_InsertarHistoria :=  FALSE;
+        Lb_InsertarDocFinan :=  FALSE;
+        
+        OPEN C_GetDocumentoFinancieroCab(Pn_ReferenciaId);
+        FETCH C_GetDocumentoFinancieroCab INTO Lr_DocumentoFinancieroCab;
+        CLOSE C_GetDocumentoFinancieroCab;
+        
+        Lv_CodTipoDoc := Lr_DocumentoFinancieroCab.CODIGO_TIPO_DOCUMENTO;
+        Lv_EstadoDoc  := Lr_DocumentoFinancieroCab.ESTADO_IMPRESION_FACT;
+        
+        
+        IF Lv_CodTipoDoc IS NOT NULL THEN
+        
+            IF Lv_CodTipoDoc = 'FACP' or Lv_CodTipoDoc = 'FAC' THEN 
+              IF Lv_EstadoDoc = 'Cerrado' THEN
+                Lb_InsertarDocFinan :=  TRUE;
+                
+              END IF;
+              
+              Lb_InsertarHistoria :=  TRUE;
+              
+            ELSIF  Lv_CodTipoDoc = 'NDI' or Lv_CodTipoDoc = 'ND' THEN
+              
+              OPEN C_GetAdmiCaracteristica;
+              FETCH C_GetAdmiCaracteristica INTO Ln_IdCaracteristica;
+              CLOSE C_GetAdmiCaracteristica;
+             
+              IF Ln_IdCaracteristica IS NOT NULL THEN
+              
+                OPEN C_GetDocumentoCaracteristica(Pn_ReferenciaId, Ln_IdCaracteristica);
+                FETCH C_GetDocumentoCaracteristica INTO Ln_IdDocCaracteristica;
+                CLOSE C_GetDocumentoCaracteristica;
+                
+                IF Ln_IdDocCaracteristica IS NULL THEN
+                  Lv_EstadoDocCambio := 'Anulado';
+                END IF;
+                
+                IF Lv_EstadoDoc = 'Cerrado' OR Lv_EstadoDoc = 'Activo' THEN
+                  Lb_InsertarDocFinan :=  TRUE;
+                END IF;
+                
+                Lb_InsertarHistoria :=  TRUE;
+                
+              END IF;
+            END IF;
+            
+            IF Lb_InsertarDocFinan THEN
+              UPDATE INFO_DOCUMENTO_FINANCIERO_CAB
+              SET ESTADO_IMPRESION_FACT = Lv_EstadoDocCambio
+              WHERE ID_DOCUMENTO = Pn_ReferenciaId;
+            END IF;  
+            
+            IF Lb_InsertarHistoria THEN
+              
+              Ln_InfoDocHistId                                 := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
+              Lr_InfoDocumentoHistorial.ID_DOCUMENTO_HISTORIAL := Ln_InfoDocHistId;
+              Lr_InfoDocumentoHistorial.DOCUMENTO_ID           := Pn_ReferenciaId;
+              Lr_InfoDocumentoHistorial.MOTIVO_ID              := NULL;
+              Lr_InfoDocumentoHistorial.FE_CREACION            := SYSDATE;
+              Lr_InfoDocumentoHistorial.USR_CREACION           := 'telcos_pal';
+              Lr_InfoDocumentoHistorial.ESTADO                 := Lv_EstadoDocCambio;
+              Lr_InfoDocumentoHistorial.OBSERVACION            := 'Documento actualizado a estado ' || Lv_EstadoDocCambio || ' por reverso de pago en linea';
+
+              DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_Mensaje_Error);
+              
+              IF Lv_Mensaje_Error IS NOT NULL THEN
+                  Lv_Error := 'Error al insertar - INFO_DOC_FINANCIERO_HST: ' || Lv_Mensaje_Error;
+                  RAISE Le_Errors;
+              END IF;
+              
+            END IF;  
+              
+        END IF;
+        
+        EXCEPTION
+        WHEN Le_Errors THEN
+            Pv_Error :=  Lv_Error;
+        WHEN OTHERS THEN
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                  'FNCK_PAGOS_LINEA.P_CAMBIA_ESTADO_DOCUMENTO',
+                                                  '-ERROR- ' || SQLERRM,
+                                                  NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                  SYSDATE,
+                                                  NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
+            Pv_Error :=  '-ERROR- ' || SQLERRM;
+            
+            
+    END P_CAMBIA_ESTADO_DOCUMENTO; 
+
+    /**************************************************************************
+    **************************CONCILIAR PAGO WSDL******************************
+    **************************************************************************/
+
+    /**
+    * Documentación para P_CONCILIAR_PAGO_WSDL
+    * Procedimiento que realiza pago en linea
+    * 
+    * @author Milen Ortega <mortega1@telconet.ec>
+    * @version 1.0 01/07/2022
+    */ 
+    PROCEDURE P_CONCILIAR_PAGO_WSDL
+    IS
+      
+                                    
+      CURSOR C_ObtenerUrlProxy 
+      IS
+        SELECT VALOR 
+        FROM DB_BUSPAGOS.INFO_CONFIG_ENT_REC_EMP
+        WHERE PARAMETRO = 'URL_CONCILIACION_WSDL_PROXY' ;
+    
+      
+      CURSOR C_PagosPendienteBP(Cn_IdEntidadRecaudadora NUMBER)
+      IS 
+        SELECT S.SECUENCIAL_RECAUDADOR,
+         IP.IDENTIFICACION_CLIENTE,
+          Y.VALOR_TOTAL_PAGADO,
+          Y.FECHA_TRANSACCION_RECAUDADOR,
+          Y.TIPO_PRODUCTO,
+          Y.NUMERO_PAGOS,
+          Z.TIPO_TRANSACCION,
+          Y.FECHA_TRANSACCION_EMPRESA,
+          S.REFERENCIA,
+          S.TIPO_MONEDA,
+          IC.NUMERO_CONTRATO,
+          S.ESTADO_TRANSACCION
+               FROM DB_BUSPAGOS.INFO_PAGO_DETALLE S 
+                INNER JOIN DB_BUSPAGOS.INFO_PAGO_EVENTO Z
+                ON S.ID_PAGO_DETALLE = Z.PAGO_DETALLE_ID
+                INNER JOIN DB_BUSPAGOS.INFO_PAGO Y
+                ON Y.SECUENCIAL_RECAUDADOR = S.SECUENCIAL_RECAUDADOR
+                INNER JOIN DB_COMERCIAL.INFO_PERSONA IP
+                ON IP.ID_PERSONA = Y.CLIENTE_ID
+                INNER JOIN DB_BUSPAGOS.INFO_CLIENTE IC
+                ON IC.ID_CLIENTE = Y.CLIENTE_ID
+                WHERE Y.ENTIDAD_REC_EMPRESA_ID = Cn_IdEntidadRecaudadora
+                AND S.ESTADO_TRANSACCION IN ('Pendiente', 'Conciliado')
+                AND Y.FECHA_TRANSACCION_RECAUDADOR <= SYSDATE
+                AND Y.LOTE = 'A';       
+                
+        CURSOR C_ObtenerPago(Cn_SecuencialRecaudador VARCHAR2, Cn_IdEntidadRecaudadora NUMBER, Cn_Fecha DATE)
+        IS 
+          SELECT 
+            y.tipo_producto,
+            y.canal_transaccional,
+            ic.numero_contrato,
+            y.valor_total_pagado,
+            y.secuencial_recaudador,
+            y.forma_pago_1,
+            y.valor_pago_1,
+            y.tipo_deuda,
+            ape.identificacion,
+            y.fecha_transaccion_recaudador,
+            y.numero_pagos,
+            y.lote,
+            y.fecha_transaccion_empresa,
+            s.referencia,
+            s.estado_transaccion,
+            y.usr_creacion
+        FROM
+                 db_buspagos.info_pago_detalle s
+            INNER JOIN db_buspagos.info_pago        y ON y.secuencial_recaudador = s.secuencial_recaudador
+            INNER JOIN db_buspagos.info_cliente     ic ON ic.id_cliente = y.cliente_id
+            INNER JOIN db_buspagos.admi_persona     ape ON ape.id_persona = ic.persona_id
+        WHERE
+                y.entidad_rec_empresa_id = Cn_IdEntidadRecaudadora
+            AND y.secuencial_recaudador = Cn_SecuencialRecaudador
+            AND y.fe_creacion >= Cn_Fecha -1;       
+         
+         
+       CURSOR C_ObtenerEntRecaudadora(Cv_NombreEntidad VARCHAR2) IS 
+        SELECT D.*, A.REFERENCIA_EMPRESA
+          FROM DB_BUSPAGOS.INFO_ENTIDAD_REC_EMPRESA D
+          JOIN DB_BUSPAGOS.ADMI_EMPRESA A  
+          ON A.ID_EMPRESA = D.EMPRESA_ID
+          WHERE D.USUARIO_BUS=Cv_NombreEntidad;
+                              
+        CURSOR C_ObtenerPagoWSDL(Cx_resp XMLType, Cv_Secuencial varchar2) IS
+        select  count(*) 
+               from 
+               XMLTABLE('/NETLIFE_Cobranzas_VIEW' PASSING Cx_resp COLUMNS
+                              secuencial varchar2(4000) PATH 'secuencial',
+                              estado     varchar2(4000) PATH 'estado') t
+                              where t.secuencial = Cv_Secuencial
+                              and t.estado = 'A';
+
+        CURSOR C_ObtenerPagoLinea(Cv_NumRef VARCHAR2, Cv_IdCanal VARCHAR2, Cd_Fecha DATE, Cv_EstadoUno VARCHAR2, Cv_EstadoDos VARCHAR2) IS 
+        SELECT IPL.ID_PAGO_LINEA, IPL.ESTADO_PAGO_LINEA, IPL.PERSONA_ID FROM DB_FINANCIERO.INFO_PAGO_LINEA IPL
+        WHERE IPL.NUMERO_REFERENCIA = Cv_NumRef
+        AND IPL.CANAL_PAGO_LINEA_ID = Cv_IdCanal
+        AND IPL.ESTADO_PAGO_LINEA IN (Cv_EstadoUno, Cv_EstadoDos)
+        AND IPL.FE_CREACION >= Cd_Fecha -1;
+
+        CURSOR C_ObtenerBanderas 
+        IS
+        SELECT
+            d.valor7,
+            d.valor8
+        FROM
+            db_general.admi_parametro_det d
+        WHERE
+            d.parametro_id = (
+                SELECT
+                    c.id_parametro
+                FROM
+                    db_general.admi_parametro_cab c
+                WHERE
+                    c.nombre_parametro = 'BUS_PAGOS'
+            );
+        
+      Ln_NumPagosBusPagos       NUMBER;
+      Ln_NumPagosWSDL           NUMBER;
+      Lv_UsuarioConciliacion    VARCHAR2(30);
+      Lv_ClaveConciliacion      VARCHAR2(60);
+      Ld_FechaDesde             DATE := SYSDATE-1;
+      Ld_FechaHasta             DATE := SYSDATE;
+      Ln_PagoBP                 NUMBER;
+      Ln_PagoWSDL               NUMBER;
+      C_PagosPendienteBP_rec    SYS_REFCURSOR;
+      Lc_EntidadRecaudadora     C_ObtenerEntRecaudadora%ROWTYPE;
+      Ln_IdEntidadRecaudadora   NUMBER;
+      Lv_EntidadRecaudadora     VARCHAR2(20):='activaecuador';
+      Lc_ObtenerPago            C_ObtenerPago%ROWTYPE;                        
+      Lv_Identificacion         VARCHAR2(50);
+      Lv_EmpresaCod             VARCHAR2(50);
+      Ln_Pago                   NUMBER;
+      Lv_FechaTransac           VARCHAR2(100);
+      Ld_FechaTransac           TIMESTAMP;
+      Lv_Canal                  VARCHAR2(20):='activaecuador';
+      Lv_SecuencialRec          VARCHAR2(60);
+      Lv_StatusConciliar        VARCHAR2(50); 
+      Lv_MensajeConciliar       VARCHAR2(500);
+      Lv_StatusReversar         VARCHAR2(50); 
+      Lv_MensajeReversar        VARCHAR2(500);
+      Lcl_ResponseConciliar     CLOB; 
+      Lcl_ResponseReversar      CLOB; 
+      Lv_Accion                 VARCHAR2(20):='REVERSAR_ELIMINAR';
+      Lv_NumeroContrato         VARCHAR2(50);
+      Lv_UsuarioBus             VARCHAR2(50);
+      Lv_ClaveBus               VARCHAR2(50);
+      Lv_TipoTransaccion        VARCHAR2(50);
+      Lv_SecuencialPagoEmpresa  VARCHAR2(50);
+      Lv_TipoProducto           VARCHAR2(50);
+      Lv_FechaTransacEmp        VARCHAR2(50);
+      Ln_NumeroPagos            NUMBER;
+      Lv_TipoMoneda             VARCHAR2(50);
+      Lv_FechaConciliacion      VARCHAR2(50);
+      Lv_EstadoPagoWSDL         VARCHAR2(5);
+      --SOAP API
+      Lc_soap_request           CLOB;
+      Lc_soap_respond           CLOB;
+      Lh_http_req               utl_http.req;
+      Lh_http_resp              utl_http.resp;
+      Lx_resp                   XMLType;
+      Le_soap_err               EXCEPTION;
+      v_len                     NUMBER;
+      Pcl_RequestConciliar      CLOB;
+      Pcl_RequestReversar       CLOB;
+      v_txt                     VARCHAR2(32767);
+      Lv_IdPagoLinea            VARCHAR2(50);
+      Lv_UrlProxy               VARCHAR2(500);
+      Ld_FechaSist              DATE := SYSDATE; 
+      Lc_CanalPagoLinea     SYS_REFCURSOR;
+      Lv_IdCanalPL          VARCHAR2(50);
+      Lv_FormaPagoIdPL      VARCHAR2(50);
+      Lv_IdTipoCtaPL        VARCHAR2(50);
+      Lv_IdCtaCblePL        VARCHAR2(50);
+      Lv_CodigoCanalPL      VARCHAR2(50);
+      Lv_DescCanalPL        VARCHAR2(100);
+      Lv_NombreCanalPL      VARCHAR2(50);
+      Lv_UsuarioCanalPL     VARCHAR2(50);
+      Lv_ClaveCanalPL       VARCHAR2(50);
+      Lv_Estado_Pago_Linea  VARCHAR2(50);
+      Ln_Id_Pago_Linea      NUMBER;
+      Lv_Persona_Id         VARCHAR2(1000);
+      Lv_Estado_Pago_Linea_Temp  VARCHAR2(50);
+      Ln_Id_Pago_Linea_Temp      NUMBER;
+      Lv_Persona_Id_Temp         VARCHAR2(1000);
+      Lv_SecRegularizado         VARCHAR2(100);
+      Lr_InfoPagoLineaHist       DB_FINANCIERO.INFO_PAGO_LINEA_HISTORIAL%ROWTYPE;
+      Lv_MsnError                VARCHAR2(2000);
+      Lcl_ReqProcPago                 CLOB;
+      Lcl_ReqConciliacion             CLOB;
+      Pv_Status                       VARCHAR2(1000);
+      Pv_Mensaje                      VARCHAR2(1000);
+      Pcl_Response                    CLOB;
+      Lv_ValorTotalPagado             VARCHAR2(1000); 
+      Lv_ValorPagoUno                 VARCHAR2(1000);
+      Ln_BanderaReproceso             NUMBER; 
+      Ln_BanderaReverso               NUMBER;
+      
+    BEGIN
+      
+      OPEN C_ObtenerBanderas;
+      FETCH C_ObtenerBanderas INTO Ln_BanderaReproceso, Ln_BanderaReverso;
+      CLOSE C_ObtenerBanderas;  
+
+      Lc_CanalPagoLinea := FNCK_PAGOS_LINEA.F_OBTENER_CANAL_PAGO_LINEA(Lv_Canal);
+      FETCH Lc_CanalPagoLinea INTO Lv_IdCanalPL, Lv_FormaPagoIdPL, Lv_IdTipoCtaPL, Lv_IdCtaCblePL, Lv_CodigoCanalPL, 
+                                Lv_DescCanalPL, Lv_NombreCanalPL, Lv_UsuarioCanalPL, Lv_ClaveCanalPL;
+    
+      OPEN C_ObtenerEntRecaudadora(Lv_EntidadRecaudadora);
+      FETCH C_ObtenerEntRecaudadora INTO Lc_EntidadRecaudadora;
+      CLOSE C_ObtenerEntRecaudadora;
+      
+      OPEN C_ObtenerUrlProxy;
+      FETCH C_ObtenerUrlProxy INTO Lv_UrlProxy;
+      CLOSE C_ObtenerUrlProxy;     
+    
+    
+      Ln_IdEntidadRecaudadora := Lc_EntidadRecaudadora.ID_ENTIDAD_REC_EMPRESA;
+      Lv_UsuarioConciliacion  := Lc_EntidadRecaudadora.USUARIO_CONCILIACION;
+      Lv_ClaveConciliacion    := Lv_ClaveCanalPL;
+      Lv_EmpresaCod           := Lc_EntidadRecaudadora.REFERENCIA_EMPRESA; 
+      Lv_UsuarioBus           := Lc_EntidadRecaudadora.USUARIO_BUS; 
+      Lv_ClaveBus             := Lc_EntidadRecaudadora.CLAVE_BUS; 
+      Lv_FechaConciliacion    := to_char(Ld_FechaSist, 'YYYY-MM-DD')||'T'||to_char(Ld_FechaSist, 'HH24:MI:SS');
+      --Lv_UsuarioConciliacion := 'desarrollo';
+      --Lv_ClaveConciliacion := 'Desa2530$$1';
+      --Lv_FechaConciliacion := '2021-10-05T12:52:00'; 
+      
+      Lc_soap_request:= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tran="http://transferunion.com/"><soapenv:Header/><soapenv:Body><tran:ConsultaMovimientos><tran:usuario>'||Lv_UsuarioConciliacion||'</tran:usuario><tran:contraseña>'||Lv_ClaveConciliacion||'</tran:contraseña><tran:fecha>'||Lv_FechaConciliacion||'</tran:fecha></tran:ConsultaMovimientos></soapenv:Body></soapenv:Envelope>';
+                      
+      Lh_http_req:= utl_http.begin_request(Lv_UrlProxy, 'POST', 'HTTP/1.1');
+     
+      utl_http.set_header(Lh_http_req, 'Content-Type', 'text/xml; charset=utf-8');
+      utl_http.set_header(Lh_http_req, 'Content-Length', length(Lc_soap_request));
+      utl_http.set_header(Lh_http_req, 'SOAPAction', '"http://transferunion.com/ConsultaMovimientos"');
+      Utl_Http.Set_Header(Lh_http_req, 'Transfer-Encoding', 'chunked'); 
+      utl_http.write_text(Lh_http_req, Lc_soap_request);
+      
+      Lh_http_resp:= utl_http.get_response(Lh_http_req);
+      
+    IF Lh_http_resp.reason_phrase = 'OK' THEN
+
+          utl_http.get_header_by_name(Lh_http_resp, 'Content-Length', v_len, 1); 
+                
+          --dbms_output.put_line('Response> status_code..: "' || Lh_http_resp.status_code || '"');
+          --dbms_output.put_line('Response> reason_phrase: "' || Lh_http_resp.reason_phrase || '"');
+          --dbms_output.put_line('Response> http_version.: "' || Lh_http_resp.http_version || '"');
+    
+          FOR i in 1..CEIL(v_len/32767) 
+          LOOP
+              utl_http.read_text(Lh_http_resp, v_txt, case when i < CEIL(v_len/32767) then 32767 else mod(v_len,32767) end);
+              Lc_soap_respond := Lc_soap_respond || v_txt;
+          END LOOP;
+          
+          utl_http.end_response(Lh_http_resp);
+          Lx_resp:= XMLType.createXML(Lc_soap_respond);
+          Lx_resp := Lx_resp.EXtract('//*/*//NETLIFE_Cobranzas_VIEW'); 
+         
+         --for de XMLType
+          FOR i in (select t.Secuencial, t.Valor, t.fecha, t.documento, t.estado
+                   from XMLTABLE('/NETLIFE_Cobranzas_VIEW' PASSING Lx_resp COLUMNS 
+                                  secuencial VARCHAR2(4000) PATH 'Secuencial',
+                                  valor      NUMBER         PATH 'Valor',
+                                  fecha      VARCHAR2(4000) PATH 'Fecha',
+                                  documento  VARCHAR2(4000) PATH 'Documento',
+                                  estado     VARCHAR2(5)    PATH 'Estado') t) LOOP
+                                  
+                                  
+            
+            Lv_SecuencialRec  := i.secuencial;
+            Ln_Pago           := to_number(i.Valor, '9999.99');
+            Ld_FechaTransac   := TO_TIMESTAMP(i.fecha, 'MM/DD/YYYY HH:MI:SS AM');
+            Lv_FechaTransac   := TO_CHAR(Ld_FechaTransac, 'YYYY-MM-DD HH24:MI:SS');
+            Lv_Identificacion := i.documento;
+            Lv_EstadoPagoWSDL := i.estado;
+                        
+            IF Lv_EstadoPagoWSDL = 'A' THEN
+              
+              OPEN C_ObtenerPagoLinea(Lv_SecuencialRec, Lv_IdCanalPL, Ld_FechaSist, 'Conciliado', 'Pendiente');
+              FETCH C_ObtenerPagoLinea INTO Ln_Id_Pago_Linea, Lv_Estado_Pago_Linea, Lv_Persona_Id;
+              CLOSE C_ObtenerPagoLinea;
+              
+              IF Lv_Estado_Pago_Linea IS NULL THEN 
+              
+                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                        'MSG_JOB_WSDL',
+                                                        SUBSTR('WSDL Indica pago ' || Lv_SecuencialRec || ' en estado A. ' || 'Telcos Indica No Conciliado. Se REPROCESA',1,4000),
+                                                        NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                        SYSDATE,
+                                                        NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                  
+                  IF Ln_BanderaReproceso = 1 THEN
+
+                    OPEN C_ObtenerPagoLinea(Lv_SecuencialRec, Lv_IdCanalPL, Ld_FechaSist, 'Eliminado', 'Anulado');
+                    FETCH C_ObtenerPagoLinea INTO Ln_Id_Pago_Linea_Temp, Lv_Estado_Pago_Linea_Temp, Lv_Persona_Id_Temp;
+                    CLOSE C_ObtenerPagoLinea;
+
+                    IF LENGTH(Lv_SecuencialRec) > 48 THEN
+                        Lv_SecRegularizado := SUBSTR(Lv_SecuencialRec,1,48) || '=R';
+                    ELSE
+                        Lv_SecRegularizado := Lv_SecuencialRec || '=R';
+                    END IF;
+
+                    IF Ln_Id_Pago_Linea_Temp IS NOT NULL THEN
+                        UPDATE DB_FINANCIERO.INFO_PAGO_LINEA TMP 
+                        SET TMP.NUMERO_REFERENCIA = Lv_SecRegularizado
+                        WHERE TMP.ID_PAGO_LINEA = Ln_Id_Pago_Linea_Temp;
+                    END IF;
+
+                    COMMIT;
+                  
+                    OPEN C_ObtenerPago(Lv_SecuencialRec, Ln_IdEntidadRecaudadora, Ld_FechaSist);
+                    FETCH C_ObtenerPago INTO Lc_ObtenerPago;
+                    CLOSE C_ObtenerPago;
+                    
+                    Lv_ValorTotalPagado := Lc_ObtenerPago.VALOR_TOTAL_PAGADO;
+                    Lv_ValorPagoUno := Lc_ObtenerPago.VALOR_PAGO_1;
+                        
+                    IF Lc_ObtenerPago.VALOR_TOTAL_PAGADO < 1 THEN
+                        Lv_ValorTotalPagado := REPLACE(REGEXP_REPLACE(TO_CHAR(Lc_ObtenerPago.VALOR_TOTAL_PAGADO),'\.(\d)','0.\1'),'00.','0.');
+                    END IF;
+                    
+                    IF Lc_ObtenerPago.VALOR_PAGO_1 < 1 THEN
+                        Lv_ValorPagoUno := REPLACE(REGEXP_REPLACE(TO_CHAR(Lc_ObtenerPago.VALOR_PAGO_1),'\.(\d)','0.\1'),'00.','0.');
+                    END IF;
+                    
+                    Lcl_ReqProcPago := '{' ||
+                                        '"startTime":0,' ||
+                                        '"codigoExternoEmpresa":"18",' ||
+                                        '"tipoTransaccion":"200",' ||
+                                        '"tipoProducto":"' || Lc_ObtenerPago.TIPO_PRODUCTO || '",' ||
+                                        '"canalTransaccional":"' || Lc_ObtenerPago.CANAL_TRANSACCIONAL || '",' ||
+                                        '"contrapartida":"' || Lc_ObtenerPago.NUMERO_CONTRATO || '",' ||
+                                        '"valorPago":' || Lv_ValorTotalPagado || ',' ||
+                                        '"fechaTransaccion":"' || TO_CHAR(Ld_FechaSist, 'YYYY-MM-DD HH:MI:SS') || '",' ||
+                                        '"secuencialRecaudador":"' || Lc_ObtenerPago.SECUENCIAL_RECAUDADOR || '",' ||
+                                        '"formaPago1":"' || Lc_ObtenerPago.FORMA_PAGO_1 || '",' ||
+                                        '"valorPago1":' || Lv_ValorPagoUno || ',' ||
+                                        '"tipoDeuda":"' || Lc_ObtenerPago.TIPO_DEUDA || '",' ||
+                                        '"numeroContrato":"' || Lc_ObtenerPago.NUMERO_CONTRATO || '",' ||
+                                        '"identificacionCliente":"' || Lc_ObtenerPago.IDENTIFICACION || '",' ||
+                                        '"numeroPagos":' || Lc_ObtenerPago.NUMERO_PAGOS || ',' ||
+                                        '"tipoMoneda":"USD",' ||
+                                        '"lote":"' || Lc_ObtenerPago.LOTE || '",' ||
+                                        '"canal":"' || Lc_ObtenerPago.USR_CREACION || '",' ||
+                                        '"usuario":"' || Lc_ObtenerPago.USR_CREACION || '",' ||
+                                        '"clave":"' || Lv_ClaveCanalPL || '"'
+                                    || '}';
+                                    
+                                    
+                        BEGIN
+                            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                            'REGULAR_PAGO_JOB_WSDL',
+                                                            SUBSTR('REQUEST:'||Lcl_ReqProcPago,1,4000),
+                                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                            SYSDATE,
+                                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                            DB_FINANCIERO.FNCK_PAGOS_LINEA.P_PROCESAR_PAGO_LINEA(Lcl_ReqProcPago, Pv_Status, Pv_Mensaje, Pcl_Response);
+                            
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                            'REGULAR_PAGO_JOB_WSDL_ERROR',
+                                                            SUBSTR('Error:'|| SQLCODE || ' -ERROR- ' || SQLERRM,1,4000),
+                                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                            SYSDATE,
+                                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                        END;
+                        
+                        IF(Pv_Status = 'OK') THEN
+                        
+                            Ln_Id_Pago_Linea := 0;
+                            OPEN C_ObtenerPagoLinea(Lv_SecuencialRec, Lv_IdCanalPL, Ld_FechaSist, 'Conciliado', 'Pendiente');
+                            FETCH C_ObtenerPagoLinea INTO Ln_Id_Pago_Linea, Lv_Estado_Pago_Linea, Lv_Persona_Id;
+                            CLOSE C_ObtenerPagoLinea;
+                            
+                            IF Lv_Estado_Pago_Linea = 'Pendiente' THEN
+                            
+                                Lcl_ReqConciliacion := '{' ||
+                                        '"codigoExternoEmpresa":"18",' ||
+                                        '"fechaTransaccion":"' || TO_CHAR(Ld_FechaSist, 'YYYY-MM-DD HH:MI:SS') || '",' ||
+                                        '"secuencialRecaudador":"' || Lc_ObtenerPago.SECUENCIAL_RECAUDADOR || '",' ||
+                                        '"secuencialPagoInterno":"' || Ln_Id_Pago_Linea || '",' ||
+                                        '"identificacionCliente":"' || Lc_ObtenerPago.IDENTIFICACION  || '",' ||
+                                        '"valorPago":' || Lv_ValorTotalPagado || ',' ||
+                                        '"tipoTransaccion":"400",' ||
+                                        '"canal":"' || Lc_ObtenerPago.USR_CREACION || '",' ||
+                                        '"usuario":"' || Lc_ObtenerPago.USR_CREACION || '",' ||
+                                        '"clave":"' || Lv_ClaveCanalPL || '"'
+                                    || '}';
+                                    
+                                BEGIN
+                                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                                    'REGULAR_CONCILIAR_JOB_WSDL_ERROR',
+                                                                    SUBSTR('REQUEST:'||Lcl_ReqConciliacion,1,4000),
+                                                                    NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                                    SYSDATE,
+                                                                    NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                                    DB_FINANCIERO.FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_LINEA(Lcl_ReqConciliacion, Pv_Status, Pv_Mensaje, Pcl_Response);
+                                    
+                                EXCEPTION
+                                    WHEN OTHERS THEN
+                                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                                    'REGULAR_CONCILIAR_JOB_WSDL_ERROR',
+                                                                    SUBSTR('Error:'|| SQLCODE || ' -ERROR- ' || SQLERRM,1,4000),
+                                                                    NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                                    SYSDATE,
+                                                                    NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                                END;
+
+                                IF(Pv_Status = 'OK') THEN
+                                    Lr_InfoPagoLineaHist.ID_PAGO_LINEA_HIST := DB_FINANCIERO.SEQ_INFO_PAGO_LINEA_HIST.NEXTVAL;
+                                    Lr_InfoPagoLineaHist.PAGO_LINEA_ID := Ln_Id_Pago_Linea;
+                                    Lr_InfoPagoLineaHist.CANAL_PAGO_LINEA_ID := Lv_IdCanalPL;
+                                    Lr_InfoPagoLineaHist.EMPRESA_ID := Lv_EmpresaCod;
+                                    Lr_InfoPagoLineaHist.PERSONA_ID := Lv_Persona_Id;
+                                    Lr_InfoPagoLineaHist.VALOR_PAGO_LINEA := Lv_ValorTotalPagado;
+                                    Lr_InfoPagoLineaHist.NUMERO_REFERENCIA := Lv_SecuencialRec;
+                                    Lr_InfoPagoLineaHist.ESTADO_PAGO_LINEA := 'Regularizado';
+                                    Lr_InfoPagoLineaHist.OBSERVACION := 'Regularizacion de pago por JOB_PAGOS_WSDL';
+                                    Lr_InfoPagoLineaHist.PROCESO := 'procesarPagoAction';
+                                    Lr_InfoPagoLineaHist.USR_CREACION := 'job_pago_wsdl';
+                                    Lr_InfoPagoLineaHist.FE_CREACION := Ld_FechaSist;
+                                    FNCK_TRANSACTION.P_INSERT_INFO_PAGO_HISTORIAL(Lr_InfoPagoLineaHist, Lv_MsnError);
+
+                                    IF Lv_MsnError IS NOT NULL THEN
+                                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                                    'REGULAR_CONCILIAR_JOB_WSDL_ERROR_HIST',
+                                                                    SUBSTR('Error: El historial no ha sido insertado correctamente IdPagoLinea: ' || Ln_Id_Pago_Linea,1,4000),
+                                                                    NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                                    SYSDATE,
+                                                                    NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                                
+                                    ELSE
+                                        COMMIT;
+                                    END IF;
+
+                                END IF;   
+                            
+                            END IF;
+                        
+                        END IF;
+
+                    END IF;
+
+              END IF;
+              
+            END IF;   
+
+            IF Lv_EstadoPagoWSDL = 'E' THEN
+            
+              OPEN C_ObtenerPagoLinea(Lv_SecuencialRec, Lv_IdCanalPL, Ld_FechaSist, 'Conciliado', 'Conciliado'); 
+              FETCH C_ObtenerPagoLinea INTO Ln_Id_Pago_Linea, Lv_Estado_Pago_Linea, Lv_Persona_Id;
+              CLOSE C_ObtenerPagoLinea;
+              
+              IF Lv_Estado_Pago_Linea IS NOT NULL THEN 
+              
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                        'MSG_JOB_WSDL',
+                                                        SUBSTR('WSDL Indica pago ' || Lv_SecuencialRec || ' en estado E. ' || 'Telcos Indica Conciliado. Se REVERSA',1,4000),
+                                                        NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                        SYSDATE,
+                                                        NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                  
+                  IF Ln_BanderaReverso = 1 THEN
+                  
+                    OPEN C_ObtenerPago(Lv_SecuencialRec, Ln_IdEntidadRecaudadora, Ld_FechaSist);
+                    FETCH C_ObtenerPago INTO Lc_ObtenerPago;
+                    CLOSE C_ObtenerPago;
+                    
+                    Lv_ValorTotalPagado := Lc_ObtenerPago.VALOR_TOTAL_PAGADO;
+                        
+                    IF Lc_ObtenerPago.VALOR_TOTAL_PAGADO < 1 THEN
+                        Lv_ValorTotalPagado := REPLACE(REGEXP_REPLACE(TO_CHAR(Lc_ObtenerPago.VALOR_TOTAL_PAGADO),'\.(\d)','0.\1'),'00.','0.');
+                    END IF;
+                    
+                    Pcl_RequestReversar:= '{' ||
+                                                        '"accion":"'                                 || Lv_Accion || '",' ||
+                                                        '"codigoExternoEmpresa":"'                   || '18' || '",' ||
+                                                        '"tipoTransaccion":"'                        || '300' || '",' ||
+                                                        '"tipoProducto":"'                           || Lc_ObtenerPago.TIPO_PRODUCTO || '",' ||
+                                                        '"secuencialPagoEmpresa":"'                  || Lc_ObtenerPago.REFERENCIA || '",' ||
+                                                        '"secuencialRecaudador":"'                   || Lc_ObtenerPago.SECUENCIAL_RECAUDADOR || '",' ||
+                                                        '"contrapartida":"'                          || Lc_ObtenerPago.IDENTIFICACION || '",' ||
+                                                        '"valorPago":'                               || Lv_ValorTotalPagado || ',' ||
+                                                        '"fechaTransaccionEntidadRecaudadora":"'     || TO_CHAR(Lc_ObtenerPago.FECHA_TRANSACCION_RECAUDADOR, 'YYYY-MM-DD HH24:MI:SS') || '",' ||
+                                                        '"fechaTransaccion":"'                       || TO_CHAR(Lc_ObtenerPago.FECHA_TRANSACCION_EMPRESA, 'YYYY-MM-DD HH24:MI:SS') || '",' ||
+                                                        '"numeroPagos":'                             || Lc_ObtenerPago.NUMERO_PAGOS || ',' ||
+                                                        '"identificacionCliente":"'                  || Lc_ObtenerPago.IDENTIFICACION || '",' ||
+                                                        '"tipoMoneda":"'                             || 'USD' || '",' ||
+                                                        '"secuencialRecaudadorItem":"'               || Lc_ObtenerPago.SECUENCIAL_RECAUDADOR || '",' ||
+                                                        '"canal":"'                                  || Lc_ObtenerPago.USR_CREACION || '",' ||
+                                                        '"usuario":"'                                || Lc_ObtenerPago.USR_CREACION || '",' ||
+                                                        '"numeroContrato":"'                         || Lc_ObtenerPago.NUMERO_CONTRATO || '",' ||
+                                                        '"clave":"'                                  || Lv_ClaveCanalPL || '"' 
+                                                    || '}';
+                    
+                        BEGIN
+                            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                            'REGULAR_REVERSO_JOB_WSDL',
+                                                            SUBSTR('REQUEST:'||Pcl_RequestReversar,1,4000),
+                                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                            SYSDATE,
+                                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                            FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA(Pcl_RequestReversar, 
+                                                                Lv_StatusReversar, 
+                                                                Lv_MensajeReversar,
+                                                                Lcl_ResponseReversar);
+                            
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                            'REGULAR_REVERSO_JOB_WSDL_ERROR',
+                                                            SUBSTR('Error:'|| SQLCODE || ' -ERROR- ' || SQLERRM,1,4000),
+                                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                            SYSDATE,
+                                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                        END;
+
+                    END IF;
+
+                    IF(Lv_StatusReversar = 'OK') THEN
+                        Lr_InfoPagoLineaHist.ID_PAGO_LINEA_HIST := DB_FINANCIERO.SEQ_INFO_PAGO_LINEA_HIST.NEXTVAL;
+                        Lr_InfoPagoLineaHist.PAGO_LINEA_ID := Ln_Id_Pago_Linea;
+                        Lr_InfoPagoLineaHist.CANAL_PAGO_LINEA_ID := Lv_IdCanalPL;
+                        Lr_InfoPagoLineaHist.EMPRESA_ID := Lv_EmpresaCod;
+                        Lr_InfoPagoLineaHist.PERSONA_ID := Lv_Persona_Id;
+                        Lr_InfoPagoLineaHist.VALOR_PAGO_LINEA := Lv_ValorTotalPagado;
+                        Lr_InfoPagoLineaHist.NUMERO_REFERENCIA := Lv_SecuencialRec;
+                        Lr_InfoPagoLineaHist.ESTADO_PAGO_LINEA := 'Regularizado';
+                        Lr_InfoPagoLineaHist.OBSERVACION := 'Regularizacion de pago por JOB_PAGOS_WSDL';
+                        Lr_InfoPagoLineaHist.PROCESO := 'reversarPagoAction';
+                        Lr_InfoPagoLineaHist.USR_CREACION := 'job_pago_wsdl';
+                        Lr_InfoPagoLineaHist.FE_CREACION := Ld_FechaSist;
+                        FNCK_TRANSACTION.P_INSERT_INFO_PAGO_HISTORIAL(Lr_InfoPagoLineaHist, Lv_MsnError);
+
+                        IF Lv_MsnError IS NOT NULL THEN
+                            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                                        'REGULAR_REVERSO_JOB_WSDL_ERROR_HIST',
+                                                        SUBSTR('Error: El historial no ha sido insertado correctamente IdPagoLinea: ' || Ln_Id_Pago_Linea,1,4000),
+                                                        NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                                        SYSDATE,
+                                                        NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+                    
+                        ELSE
+                            COMMIT;
+                        END IF;
+
+                    END IF;   
+
+              END IF;
+                
+            END IF;  
+
+            Lv_Estado_Pago_Linea := NULL;
+            
+         END LOOP;
+        
+    ELSE
+    
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                            'FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_WSDL',
+                                            'Error en llamado de WSDL de activa ecuador' || ' - ' || Lh_http_resp.reason_phrase,
+                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                            SYSDATE,
+                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+    
+    END IF;
+              
+     EXCEPTION
+     WHEN OTHERS THEN
+         ROLLBACK;
+        
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
+                                            'FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_WSDL',
+                                            'Error en Conciliación de pagos WSDL de activa ecuador' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                            SYSDATE,
+                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+     
+    END P_CONCILIAR_PAGO_WSDL;
 
 END FNCK_PAGOS_LINEA;
 /

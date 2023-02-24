@@ -1,0 +1,14 @@
+/**
+ * DEBE EJECUTARSE EN DB_BUSPAGOS.
+ * Rollback para aumento en secuencial recaudador 
+ *
+ * @author Milen Ortega <mortega1@telconet.ec>
+ * @version 1.0 28/12/2022
+ */
+
+ALTER TABLE DB_BUSPAGOS.INFO_PAGO MODIFY SECUENCIAL_RECAUDADOR VARCHAR2( 20 );
+ALTER TABLE DB_BUSPAGOS.INFO_PAGO_DETALLE MODIFY SECUENCIAL_RECAUDADOR VARCHAR2( 20 );
+
+
+COMMIT;
+/
