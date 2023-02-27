@@ -2091,16 +2091,16 @@ AS
    BEGIN
       -- RETORNO LAS VARIABLES DEL REQUEST
       APEX_JSON.PARSE(Pcl_Request);
-      Lv_EmpresaCod          :=  APEX_JSON.get_varchar2(p_path => 'empresaCod');
+      Lv_EmpresaCod          :=  TRIM(APEX_JSON.get_varchar2(p_path => 'empresaCod'));
       Lv_IdArea              :=  APEX_JSON.get_varchar2(p_path => 'idArea');
       Lv_nombreArea          :=  APEX_JSON.get_varchar2(p_path => 'nombreArea');
       Lv_IdDep               :=  APEX_JSON.get_varchar2(p_path => 'idDep');
       Lv_nombreDepar         :=  APEX_JSON.get_varchar2(p_path => 'nombreDpto');
       Lv_noEmpleado          :=  APEX_JSON.get_varchar2(p_path => 'noEmpleado');
       Lv_IdMes               :=  APEX_JSON.get_varchar2(p_path => 'idMes');
-      Lv_EstadoSolicitud     :=  APEX_JSON.get_varchar2(p_path => 'estadoSolicitud');
-      Lv_TipoHora            :=  APEX_JSON.get_varchar2(p_path => 'tipoHorasExtra');
-      Lv_nombrePantalla      :=  APEX_JSON.get_varchar2(p_path => 'nombrePantalla');
+      Lv_EstadoSolicitud     :=  TRIM(APEX_JSON.get_varchar2(p_path => 'estadoSolicitud'));
+      Lv_TipoHora            :=  TRIM(APEX_JSON.get_varchar2(p_path => 'tipoHorasExtra'));
+      Lv_nombrePantalla      :=  TRIM(APEX_JSON.get_varchar2(p_path => 'nombrePantalla'));
       Lv_FechaCorte           := '';
 
       IF Lv_EmpresaCod IS NULL THEN
@@ -2219,7 +2219,7 @@ AS
       Pv_Mensaje := 'Se ha producido un error en el proceso HEKG_HORASEXTRAS_CONSULTA. P_CONS_HE_DASH_FILTROS: - '||SQLCODE||' -ERROR- '||SQLERRM;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('HORAS_EXTRAS',
                                                  'HEKG_HORASEXTRAS_CONSULTA. P_CONS_HE_DASH_FILTROS: ',
-                                                 Pv_Mensaje,
+                                                 Pv_Mensaje || ' Linea: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE|| ' - ' ||Pcl_Request,
                                                  NVL(SYS_CONTEXT('USERENV', 'HOST'), USER),
                                                  SYSDATE,
                                                  NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
