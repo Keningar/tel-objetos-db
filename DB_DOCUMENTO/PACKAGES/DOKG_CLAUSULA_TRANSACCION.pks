@@ -12,6 +12,8 @@ AS
     *
     * @author Walther Joao Gaibor C. <wgaibor@telconet.ec>
     * @version 1.1 11-10-2022
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.2 01-03-2023 Se añade validación en excepción para cambiar estatus
     */
     PROCEDURE P_OBTIENE_ENUNCIADO(
                                   Pcl_Request       IN  VARCHAR2,
@@ -576,6 +578,9 @@ AS
     Pv_Status     := 'ERROR';
     Pcl_Response  :=  NULL;
     Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
+    IF SQLCODE = -20101 THEN
+      Pv_Status  := 'ERROR-CONTROL';
+    END IF;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
                                             'DB_DOCUMENTO.DOKG_CLAUSULA_TRANSACCION.P_OBTIENE_ENUNCIADO',
                                             'ERROR al procesar COD_ERROR: '||SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' '|| DBMS_UTILITY.FORMAT_ERROR_STACK,
