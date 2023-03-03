@@ -1,3 +1,10 @@
+/**
+* Se agregan el campo rango y se agregan nuevas razones para 
+* propuestas perdidas, ganadas y expiradas.
+*
+* @author Bryan Fonseca <bfonseca@telconet.ec>
+* @version 1.0 01-09-2022
+*/
     select
         ac.name                                   as nombre_del_cliente,
         ac_c.ruc_c                                as identificacion,
@@ -86,6 +93,22 @@
             else
                 ''
         end                                       as estado,
+		case
+            when op_c.rango_c = '0_10'    then
+                '0% a 10%'
+            when op_c.rango_c = '11_20'   then
+                '11% a 20%'
+            when op_c.rango_c = '21_30'   then
+                '21% a 30%'
+            when op_c.rango_c = '31_40'   then
+                '31% a 40%'
+			when op_c.rango_c = '41_50'   then
+				'41% a 50%'
+			when op_c.rango_c = '51_100'  then
+				'Mayor a 51%'
+            else
+                ''
+        end                                       as rango,
         case
             when op_c.strategy_c = 'Servicios_Competencia' then
                 'Servicios Competencia'
@@ -147,8 +170,62 @@
                 'Prefiere Proveedor Actual'
             when op_c.reasonwinloss_c = 'High delivery time'                                then
                 'Tiempo de entrega elevado'
+            when op_c.reasonwinloss_c ='perdida_1'                                          then 
+                'Menor precio de competencia, con la misma solución y mismo fabricante'
+            when op_c.reasonwinloss_c ='perdida_2'                                          then 
+                'Menor precio de competencia, con la misma solución y distinto fabricante'
+            when op_c.reasonwinloss_c ='perdida_3'                                          then 
+                'Nuestro precio de instalación y obras civiles fue mayor'
+            when op_c.reasonwinloss_c ='perdida_4'                                          then 
+                'TDR´s estaban direccionados a otro competidor'
+            when op_c.reasonwinloss_c ='perdida_5'                                          then 
+                'No contábamos con la experiencia y certificaciones de la solución'
+            when op_c.reasonwinloss_c ='perdida_6'                                          then 
+                'Se nos descalifica por incumplir uno o varios requerimientos del proceso de contratación'
+            when op_c.reasonwinloss_c ='perdida_7'                                          then 
+                'Competidor internacional ofertó mejores precios'
+            when op_c.reasonwinloss_c ='perdida_8'                                          then 
+                'El diseño de la solución estuvo sobre dimensionado y eso ocasionó un precio mayor'
+            when op_c.reasonwinloss_c ='perdida_9'                                          then 
+                'No alcanzamos a presentar la oferta debido al poco tiempo en prepararla'
+            when op_c.reasonwinloss_c ='perdida_10'                                         then 
+                'El proceso para elaborar y presentar la cotización superó el tiempo que el cliente estuvo dispuesto a esperar'
+            when op_c.reasonwinloss_c ='perdida_11'                                         then 
+                'No estábamos habilitados en el portal de compras públicas'
+            when op_c.reasonwinloss_c ='perdida_12'                                         then 
+                'Se perdió en la puja en el Portal'
+            when op_c.reasonwinloss_c ='perdida_13'                                         then 
+                'Nuestro tiempo de instalación, entrega o implementación de la solución fue mayor que el de la competencia'
+            when op_c.reasonwinloss_c ='perdida_14'                                         then 
+                'El proceso de implementación supero el tiempo acordado y el cliente decidió cancelar la implementación'
+            when op_c.reasonwinloss_c ='perdida_15'                                         then 
+                'La competencia tiene mejor relacionamiento'
+            when op_c.reasonwinloss_c ='perdida_16'                                         then 
+                'El cliente tenía servicios instalados y su experiencia fue negativa'
+            when op_c.reasonwinloss_c ='perdida_17'                                         then 
+                'La competencia presentó una mejor propuesta TÉCNICA'
+            when op_c.reasonwinloss_c ='perdida_18'                                         then 
+                'Telconet no tiene la infraestructura para brindar el servicio. (FO, puertos disponibles, radio enlaces, torres o capacidad de ancho de banda, hardware, software)'
+            when op_c.reasonwinloss_c ='perdida_19'                                         then 
+                'Existen excedentes de materiales u obra civil que el cliente no presupuestó'
+            when op_c.reasonwinloss_c ='perdida_20'                                         then 
+                'El cliente decide mantenerse con su proveedor actual'
+            when op_c.reasonwinloss_c ='ganada_1'                                           then 
+                'Llegamos primeros a la oportunidad y estuvimos asesorando al cliente desde el inicio del proceso'
+            when op_c.reasonwinloss_c ='ganada_2'                                           then 
+                'El cliente tenía servicios instalados y su experiencia fue satisfactoria'
+            when op_c.reasonwinloss_c ='ganada_3'                                           then 
+                'Tuvimos mejor relacionamiento que la competencia'
+            when op_c.reasonwinloss_c ='ganada_4'                                           then 
+                'Por una mejor solución técnica presentada'
+            when op_c.reasonwinloss_c ='expirada_1'                                         then 
+                'El cliente prefirió un desarrollo IN HOUSE y no contrató con ningún proveedor'
+            when op_c.reasonwinloss_c ='expirada_2'                                         then 
+                'Cliente analizó técnica y comercialmente la propuesta y decidió no contratar. Volverá analizar a futuro'
+            when op_c.reasonwinloss_c ='expirada_4'                                         then 
+                'El cliente indica que se quedó sin presupuesto, y no contrató con ningún proveedor'
             else
-                ''
+                op_c.reasonwinloss_c
         end                                       as razon_ganado_perdido,
         op_c.observation_c                        as observacion,
         op_c.is_project_c                         as es_proyecto,
@@ -318,6 +395,7 @@ Concatenate
         ''                                        as competidor,
         ''                                        as etapa_de_ventas,
         ''                                        as estado,
+        ''                                        as rango,
         ''                                        as estrategia,
         ''                                        as razon_ganado_perdido,
         ''                                        as observacion,
