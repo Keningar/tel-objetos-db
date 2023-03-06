@@ -190,7 +190,7 @@ PROCEDURE P_CANCELAR_DETALLE_APU(
 
 END INKG_GESTION_APUS;
 /
-create or replace PACKAGE BODY NAF47_TNET.INKG_GESTION_APUS AS
+create or replace PACKAGE BODY            NAF47_TNET.INKG_GESTION_APUS AS
   --
 
     FUNCTION f_get_parametros_solicitudes (
@@ -1367,18 +1367,15 @@ end;
                           || lr_datos.code
                           || '",'
                           || '"name":"'
-                          || lr_datos.nombre_apu
+                          || REGEXP_REPLACE(lr_datos.nombre_apu, '[^0-9A-Za-z]', ' ')
                           || '",'
                           
                           || '"description":"'
-                          || REPLACE(lr_datos.description,chr(10),' ')
+                          || REGEXP_REPLACE(lr_datos.description, '[^0-9A-Za-z]', ' ')
                           || '",'
-    
                           || '"companyCode":"'
                           || lr_datos.companyCode
-                          || '",'
-                          
-                              
+                          || '",'    
                           || '"brand":"'
                           || lr_datos.brand
                           || '",'
@@ -1497,19 +1494,19 @@ end;
                           || lr_datos.amountdefault
                           || '",'
                           || '"model":"'
-                          || lr_datos.modelo
+                          || REGEXP_REPLACE(lr_datos.modelo, '[^0-9A-Za-z]', ' ')
                           || '",'
                           || '"codeNaf":"'
                           || lr_datos.codenaf
                           || '",'
                           || '"description":"'
-                          || REPLACE(lr_datos.description,chr(10),' ')
+                          || REGEXP_REPLACE(lr_datos.description, '[^0-9A-Za-z]', ' ')
                           || '",'
                           || '"brand":"'
-                          || REPLACE(lr_datos.brand,chr(10),' ')
+                          || TRANSLATE(lr_datos.brand, '!@#$%^&*()', '          ')
                           || '",'
                           || '"category":"'
-                          || REPLACE(lr_datos.category,chr(10),' ')
+                        || TRANSLATE(lr_datos.category, '!@#$%^&*()', '          ')
                           || '",'
                           || '"itemType":"'
                           || lr_datos.itemtype
