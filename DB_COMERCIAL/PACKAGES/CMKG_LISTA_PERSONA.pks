@@ -56,6 +56,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     *         Pcl_Response      -  Respuesta
     * @author Walther Joao Gaibor <wgaibor@telconet.ec>
     * @version 1.0 06-11-2022
+    *
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.1 02/03/2023  Nuevo cod y status de error para lista vacía
     */
     PROCEDURE P_BUSQUEDA_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
                                        Pv_Mensaje        OUT VARCHAR2,
@@ -812,7 +815,7 @@ BEGIN
     EXECUTE IMMEDIATE Lv_sqlPerEmpRolEnum BULK COLLECT INTO La_RegistrosPerEnun;
     --
     IF La_RegistrosPerEnun.COUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20101, 'No se encontraron registros');
+        RAISE_APPLICATION_ERROR(-20102, 'No se encontraron registros');
     END IF;
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     apex_json.open_array;
@@ -965,7 +968,7 @@ BEGIN
     Pcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
     IF NOT Lb_HayProceso THEN
-      RAISE_APPLICATION_ERROR(-20101, 'No existe registros a buscar');
+      RAISE_APPLICATION_ERROR(-20102, 'No existe registros a buscar');
     END IF;
     --
     Pv_Mensaje   := Pv_Mensaje||' Transacción realizada correctamente.';
@@ -979,6 +982,9 @@ EXCEPTION
         Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
         IF SQLCODE = -20101 THEN
             Pv_Status  := 'ERROR-CONTROL';
+        END IF;
+        IF SQLCODE = -20102 THEN
+            Pv_Status  := 'ERROR-NOT-FOUND';
         END IF;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
                                                 'DB_COMERCIAL.CMKG_LISTA_PERSONA.P_BUSQUEDA_PERSONA_LISTA',
