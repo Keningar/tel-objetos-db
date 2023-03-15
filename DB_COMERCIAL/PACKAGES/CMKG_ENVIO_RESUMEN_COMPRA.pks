@@ -1,3 +1,4 @@
+
 create or replace PACKAGE   DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
 
 
@@ -125,7 +126,23 @@ create or replace PACKAGE   DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
                               Pv_Status         OUT VARCHAR2,
                               Pv_Descripcion       OUT VARCHAR2);
                                                              
-                                                             
+
+
+
+     /**
+    * SE OBTIENE LOS SERVICIOS DE LAS FECHAS ESPESIFICAS PARA REENVIAR DOCUMENTO
+    *      @param  
+    *         Pv_Mensaje        -  Mensaje,
+    *         Pv_Status         -  Estado,
+    *         Pv_Descripcion      -  Data Respuesta
+    *
+    * @author Joel Broncano <jbroncano@telconet.ec>
+    * @version 1.0 13-03-2023
+    */                          
+   PROCEDURE P_REGU_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
+                                  Pv_Status    OUT VARCHAR2,
+                                  Pv_Mensaje   OUT VARCHAR2,
+                                  Pcl_Response OUT SYS_REFCURSOR);                                                              
 END;
 /
 
@@ -281,13 +298,14 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                   AND ROWNUM <=1  ORDER BY IFD.FE_CREACION DESC ;
         IF (Ln_count >0)THEN
               OPEN Pcl_Response FOR  
+              SELECT SB.nombreDoc AS nombreDoc ,SB.ubicacionDoc AS ubicacionDoc, SB.tipoDocumento AS tipoDocumento  FROM (
                SELECT SB.nombreDoc AS nombreDoc ,SB.ubicacionDoc AS ubicacionDoc, SB.tipoDocumento AS tipoDocumento 
                 FROM (SELECT IFD.NOMBRE_DOCUMENTO AS nombreDoc ,IFD.UBICACION_FISICA_DOCUMENTO AS ubicacionDoc, 'A' AS tipoDocumento 
                 FROM   DB_COMUNICACION.info_documento_relacion  IDR 
                 INNER JOIN DB_COMUNICACION.info_documento  IFD ON IFD.ID_DOCUMENTO=IDR.DOCUMENTO_ID AND  IFD.ESTADO='Activo' 
                 AND IFD.EMPRESA_COD=Ln_CodEmpresa  AND IDR.ESTADO='Activo'
                  WHERE IDR.SERVICIO_ID=Lv_servicios  
-                  AND INSTR(IFD.UBICACION_FISICA_DOCUMENTO ,'adendumMegaDatos') >0 ORDER BY IFD.FE_CREACION DESC ) SB WHERE ROWNUM <=1;
+                  AND INSTR(IFD.UBICACION_FISICA_DOCUMENTO ,'adendumMegaDatos') >0 ORDER BY IFD.FE_CREACION DESC ) SB ) SB WHERE ROWNUM <=1;
            END IF; 
             
           select IFD.TIPO into Ln_tipo from DB_COMERCIAL.info_adendum IFD where  IFD.servicio_id=Lv_servicios; 
@@ -319,13 +337,14 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                AND ROWNUM <=1 ORDER BY IFA.FE_CREACION DESC ;  
        IF (Ln_count >0)THEN   
         OPEN Pcl_Response FOR   
+            SELECT SB.nombreDoc AS nombreDoc  ,SB.ubicacionDoc AS ubicacionDoc, SB.tipoDocumento AS tipoDocumento   from (
              SELECT SB.nombreDoc AS nombreDoc  ,SB.ubicacionDoc AS ubicacionDoc, SB.tipoDocumento AS tipoDocumento  
              FROM (SELECT IFD.nombre_documento AS nombreDoc ,IFD.UBICACION_FISICA_DOCUMENTO AS ubicacionDoc, 'A' AS tipoDocumento 
               FROM DB_COMERCIAL.info_adendum IFA  
               INNER JOIN DB_COMUNICACION.info_documento_relacion  IDR ON IDR.numero_adendum=IFA.NUMERO AND IDR.ESTADO='Activo'
               INNER JOIN DB_COMUNICACION.info_documento  IFD ON IFD.ID_DOCUMENTO=IDR.DOCUMENTO_ID AND  IFD.ESTADO='Activo' AND IFD.EMPRESA_COD=Ln_CodEmpresa
                WHERE IFA.SERVICIO_ID=Lv_servicios AND  IFA.ESTADO='Activo' 
-                AND INSTR(IFD.UBICACION_FISICA_DOCUMENTO ,'adendumMegaDatos') >0 ORDER BY IFA.FE_CREACION DESC ) SB WHERE ROWNUM <=1;
+                AND INSTR(IFD.UBICACION_FISICA_DOCUMENTO ,'adendumMegaDatos') >0 ORDER BY IFA.FE_CREACION DESC ) SB ) SB WHERE ROWNUM <=1;
         END IF;
 
       Pv_Status     := 'OK';
@@ -518,5 +537,38 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
         Pv_Status     := 'Error';
         Pv_Mensaje := SQLERRM;      
       END P_VALIDA_PROMOCION;
+
+
+
+    PROCEDURE P_REGU_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
+                                  Pv_Status    OUT VARCHAR2,
+                                  Pv_Mensaje   OUT VARCHAR2,
+                                  Pcl_Response OUT SYS_REFCURSOR) 
+       IS
+      Ld_FechaDesde VARCHAR2(20);
+      Ld_FechaHasta VARCHAR2(20);
+      Ln_CodEmpresa INTEGER;
+      Lv_servicios INTEGER;
+      Begin
+      APEX_JSON.PARSE(Pcl_Request);
+      dbms_output.put_line('id_Caracterisitica ->'|| Ld_FechaHasta);
+      Ln_CodEmpresa:=APEX_JSON.get_number(p_path => 'codEmpresa');
+      Ld_FechaDesde:=APEX_JSON.get_varchar2(p_path => 'feDesde');
+      Ld_FechaHasta:=APEX_JSON.get_varchar2(p_path => 'feHasta');
+      Lv_servicios  := APEX_JSON.get_number(p_path => 'idServicio');
+      OPEN Pcl_Response FOR  SELECT IDR.SERVICIO_ID from DB_COMUNICACION.info_documento IFD--2176
+            inner join DB_COMUNICACION.info_documento_relacion  IDR  on IFD.ID_DOCUMENTO=IDR.DOCUMENTO_ID 
+             WHERE   INSTR(IFD.UBICACION_FISICA_DOCUMENTO ,'/ResumenCompra/Comercial/DocResumenCompra/') >0 
+             AND TRUNC(IFD.FE_CREACION) >= (DECODE(Ld_FechaDesde,null,TRUNC(IFD.FE_CREACION),TRUNC((to_date(Ld_FechaDesde , 'dd/mm/yyyy')))))
+             AND TRUNC(IFD.FE_CREACION) <= (DECODE(Ld_FechaHasta,null,TRUNC(IFD.FE_CREACION),TRUNC((to_date(Ld_FechaHasta , 'dd/mm/yyyy')))))
+             AND IFD.EMPRESA_COD =Ln_CodEmpresa
+             and IDR.SERVICIO_ID =DECODE(Lv_servicios,null,IDR.SERVICIO_ID,Lv_servicios);
+      Pv_Status     := 'OK';
+      Pv_Mensaje    := 'Transacción exitosa';      
+      EXCEPTION
+      WHEN OTHERS THEN 
+        Pv_Status     := 'Error';
+        Pv_Mensaje := SQLERRM;      
+      END P_REGU_OBTENER_SERVICIOS;   
 END;
 /
