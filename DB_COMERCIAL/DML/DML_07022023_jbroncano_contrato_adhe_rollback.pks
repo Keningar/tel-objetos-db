@@ -1,4 +1,3 @@
-
 /**
  * se debe ejecutar en DB_COMERCIAL 
  * @author Joel Broncano<jbroncano@telconet.ec>

@@ -1,4 +1,4 @@
-create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
+create or replace package                  DB_COMERCIAL.CMKG_CONSULTA is
   -- Author  : Marlon Plùas <mpluas@telconet.ec>
   -- Created : 15/10/2020
   -- Purpose : Paquete general de consultas del db-repositorio-comercial
@@ -491,9 +491,9 @@ create or replace package              DB_COMERCIAL.CMKG_CONSULTA is
                                            Pv_Mensaje   OUT VARCHAR2,
                                            Pcl_Response OUT CLOB);                                       
 
-end CMKG_CONSULTA; 
-/ 
-create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
+end CMKG_CONSULTA;
+/
+create or replace package body                          DB_COMERCIAL.CMKG_CONSULTA is
   PROCEDURE P_INFORMACION_CLIENTE(Pcl_Request  IN  CLOB,
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2,
@@ -501,6 +501,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
   AS
     Lcl_Query                   CLOB;
     Lcl_Select                  CLOB;
+    Lcl_Select_Mot              CLOB;
     Lcl_From                    CLOB;
     Lcl_WhereAndJoin            CLOB;
     Lcl_OrderAnGroup            CLOB;
@@ -539,7 +540,26 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                       IP.NACIONALIDAD           nacionalidad          ,
                       IPU.ID_PUNTO              punto_id              ,
                       AC.Jurisdiccion           ciudad_pagare         ,
-                      IPER.ID_PERSONA_ROL       persona_empresa_rol_id';
+                      IPER.ID_PERSONA_ROL       persona_empresa_rol_id,';
+    Lcl_Select_Mot    :='(SELECT COUNT(IDS2.MOTIVO_ID) 
+                      FROM 
+                           DB_COMERCIAL.INFO_SERVICIO IFO2,
+                           DB_COMERCIAL.INFO_PUNTO IFP2,
+                           DB_COMERCIAL.INFO_PLAN_DET IPLAN2,
+                           DB_COMERCIAL.ADMI_PRODUCTO ADMP2,
+                           DB_COMERCIAL.INFO_DETALLE_SOLICITUD  IDS2,
+                           DB_GENERAL.ADMI_MOTIVO AM2
+                      WHERE IFP2.ID_PUNTO = IFO2.PUNTO_ID 
+                          AND IDS2.SERVICIO_ID= IFO2.ID_SERVICIO
+                           AND IDS2.MOTIVO_ID=AM2.ID_MOTIVO
+                           AND IFO2.ESTADO  IN( ''Activo'',''Factible'')
+                           AND IFO2.PLAN_ID = IPLAN2.PLAN_ID
+                           AND IPLAN2.PRODUCTO_ID = ADMP2.ID_PRODUCTO
+                           AND IFP2.PERSONA_EMPRESA_ROL_ID ='||Ln_PersonaEmpresaRolId||'
+                           AND TRIM(IDS2.ESTADO)=''Finalizada''
+                           AND ADMP2.NOMBRE_TECNICO = ''INTERNET''
+                           AND TRIM(AM2.NOMBRE_MOTIVO) in(''Beneficio 3era Edad / Adulto Mayor'',''3era Edad Resolución 07-2021'') 
+                    )AS "CANT_MOTIVO"';
     Lcl_From         := '
               FROM  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
                     DB_COMERCIAL.INFO_PERSONA             IP 
@@ -564,7 +584,7 @@ create or replace package body              DB_COMERCIAL.CMKG_CONSULTA is
                 AND IPU.ESTADO				         IN (''Activo'',''Pendiente'')';
     Lcl_OrderAnGroup := '';
 
-    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
+    Lcl_Query := Lcl_Select || Lcl_Select_Mot || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
 
     OPEN Pcl_Response FOR Lcl_Query;
 
