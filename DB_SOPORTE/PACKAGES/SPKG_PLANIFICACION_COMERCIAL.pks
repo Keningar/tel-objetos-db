@@ -50,6 +50,7 @@ AS
 
 
 
+
 END SPKG_PLANIFICACION_COMERCIAL;
 /
 create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
@@ -285,7 +286,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
         END IF;
       END IF;
 
-      IF (Lv_PrefijoEmpresa = 'MD' AND Ln_Opcion = 0 AND Lb_ControlaCupo) THEN
+      IF ((Lv_PrefijoEmpresa = 'MD' OR Lv_PrefijoEmpresa = 'EN') AND Ln_Opcion = 0 AND Lb_ControlaCupo) THEN
          Lb_ControlaCupo := FALSE;  
          --se debe quitar la linea superior y poner el llamado a la funcion que controla el cupo web
       END IF;
@@ -768,7 +769,8 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
       --ROLLBACK;
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM; 
+      Pv_Mensaje := SQLCODE||' - '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||
+                                          ' '|| DBMS_UTILITY.FORMAT_ERROR_STACK; 
       dbms_output.put_line('error confirmar => ' || Pv_Mensaje);
       --ROLLBACK;  
   END P_CONFIRMAR_PLANIFICACION;   

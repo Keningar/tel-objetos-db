@@ -109,20 +109,10 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       Lv_Nombres             VARCHAR2(300);
       Lv_Apellidos           VARCHAR2(300);
       Lv_EstadoPunto         VARCHAR2(30);
-      Lv_CodEmpresa          VARCHAR2(30) := '18';
+      Lv_CodEmpresa          VARCHAR2(30) := '33';
       j apex_json.t_values;    
       BEGIN
-      dbms_output.put_line('mensaje 1000');
-      Lcl_Where := 'WHERE S.ID_SERVICIO = IDS.SERVICIO_ID AND S.PUNTO_ID = P.ID_PUNTO AND IST.SERVICIO_ID = S.ID_SERVICIO  AND ATS.ID_TIPO_SOLICITUD = IDS.TIPO_SOLICITUD_ID AND P.PERSONA_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL AND IER.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
-                      AND IER.ROL_ID = AR.ID_ROL AND IPER.PERSONA_ID = IP.ID_PERSONA AND P.SECTOR_ID = ASE.ID_SECTOR AND ASE.PARROQUIA_ID = AP.ID_PARROQUIA AND AP.CANTON_ID = AC.ID_CANTON AND AJ.ID_JURISDICCION = P.PUNTO_COBERTURA_ID AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL AND IST.ELEMENTO_CONTENEDOR_ID = ILEM.ID_ELEMENTO
-                      AND IER.EMPRESA_COD = ''' ||Lv_CodEmpresa ||''' AND ROWNUM < 500
-                      AND SYSDATE <= IDS.FE_CREACION + (to_number((SELECT VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET WHERE PARAMETRO_ID = (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = ''TIEMPO_BANDEJA_PLAN_AUTOMATICA'' AND MODULO = ''COMERCIAL'' AND ESTADO = ''Activo'')
-                                                        AND DESCRIPCION = ''TIEMPO MÁXIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACIÓN AUTOMÁTICA''))/1440)
-                      AND (IDS.MOTIVO_ID NOT IN ' || '(SELECT REGEXP_SUBSTR(T1.VALOR1,''[^,]+'', 1, LEVEL) AS VALOR FROM(SELECT VALOR1
-                             FROM DB_GENERAL.admi_parametro_Det where PARAMETRO_ID = (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = ''PROGRAMAR_MOTIVO_HAL'')) T1
-                             CONNECT BY REGEXP_SUBSTR(T1.VALOR1, ''[^,]+'', 1, LEVEL) IS NOT NULL ) OR IDS.MOTIVO_ID IS NULL) 
-                       AND not exists(SELECT servicio_id FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL WHERE SERVICIO_ID = IDS.SERVICIO_ID AND ESTADO = ''PrePlanificada''
-      AND cast(OBSERVACION as VARCHAR(1000)) = ''La solicitud no aplica para Planificación comercial. Se envía la solicitud a PYL.'') ';
+
       APEX_JSON.PARSE(Pcl_Request);
       Ld_FechaDesdePlan   := APEX_JSON.get_varchar2(p_path => 'fechaDesdePlanif');
       Ld_FechaHastaPlan   := APEX_JSON.get_varchar2(p_path => 'fechaHastaPlanif');
@@ -132,9 +122,22 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       Lv_DescripcionPunto := APEX_JSON.get_varchar2(p_path => 'descripcionPunto');
       Lv_EstadoPunto      := APEX_JSON.get_varchar2(p_path => 'estadoPunto');    
       Lv_Vendedor         := APEX_JSON.get_varchar2(p_path => 'vendedor');
+      Lv_CodEmpresa       := APEX_JSON.get_varchar2(p_path => 'codEmpresa');
+
+      Lcl_Where := 'WHERE S.ID_SERVICIO = IDS.SERVICIO_ID AND S.PUNTO_ID = P.ID_PUNTO AND IST.SERVICIO_ID = S.ID_SERVICIO  AND ATS.ID_TIPO_SOLICITUD = IDS.TIPO_SOLICITUD_ID AND P.PERSONA_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL AND IER.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
+                      AND IER.ROL_ID = AR.ID_ROL AND IPER.PERSONA_ID = IP.ID_PERSONA AND P.SECTOR_ID = ASE.ID_SECTOR AND ASE.PARROQUIA_ID = AP.ID_PARROQUIA AND AP.CANTON_ID = AC.ID_CANTON AND AJ.ID_JURISDICCION = P.PUNTO_COBERTURA_ID AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL AND IST.ELEMENTO_CONTENEDOR_ID = ILEM.ID_ELEMENTO
+                      AND IER.EMPRESA_COD = ''' ||Lv_CodEmpresa ||''' AND ROWNUM < 500
+                      AND SYSDATE <= IDS.FE_CREACION + (to_number((SELECT VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET WHERE PARAMETRO_ID = (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = ''TIEMPO_BANDEJA_PLAN_AUTOMATICA'' AND MODULO = ''COMERCIAL'' AND ESTADO = ''Activo'')
+                                                        AND DESCRIPCION = ''TIEMPO MÁXIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACIÓN AUTOMÁTICA'' AND EMPRESA_COD = ''' ||Lv_CodEmpresa ||'''))/1440 )
+                      AND (IDS.MOTIVO_ID NOT IN ' || '(SELECT REGEXP_SUBSTR(T1.VALOR1,''[^,]+'', 1, LEVEL) AS VALOR FROM(SELECT VALOR1
+                             FROM DB_GENERAL.admi_parametro_Det where PARAMETRO_ID = (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = ''PROGRAMAR_MOTIVO_HAL'') AND EMPRESA_COD = ''' ||Lv_CodEmpresa ||''') T1
+                             CONNECT BY REGEXP_SUBSTR(T1.VALOR1, ''[^,]+'', 1, LEVEL) IS NOT NULL ) OR IDS.MOTIVO_ID IS NULL) 
+                       AND not exists(SELECT servicio_id FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL WHERE SERVICIO_ID = IDS.SERVICIO_ID AND ESTADO = ''PrePlanificada''
+      AND cast(OBSERVACION as VARCHAR(1000)) = ''La solicitud no aplica para Planificación comercial. Se envía la solicitud a PYL.'') ';
+      
       Lv_Ciudad           := '';
       apex_json.parse(j, Pcl_Request);
-      dbms_output.put_line('mensaje 2000');
+
       IF (APEX_JSON.get_count(p_path => 'ciudad') > 0) THEN
         FOR i in 1..APEX_JSON.get_count(p_path => 'ciudad') LOOP
             Lv_Ciudad := Lv_Ciudad || apex_json.get_varchar2(p_path=>'ciudad[%d]',p0=> i,p_values=>j) || ',';            
@@ -219,7 +222,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       IF Lv_UltimaMilla IS NOT NULL THEN 
         Lcl_Where := CONCAT(Lcl_Where, 'AND IST.ULTIMA_MILLA_ID = ''' || Lv_UltimaMilla ||'''' );  
       END IF;       
-      dbms_output.put_line('mensaje 3000');
+
       Lcl_Select := '
         SELECT IDS.ID_DETALLE_SOLICITUD AS idDetalleSolicitud, S.ID_SERVICIO AS idServicio, P.ID_PUNTO AS idPunto, P.ESTADO AS estadoPunto, IST.TERCERIZADORA_ID AS tercerizadoraId, IST.ID_SERVICIO_TECNICO AS idServicioTecnico,
                ASE.NOMBRE_SECTOR AS nombreSector, AP.NOMBRE_PARROQUIA AS nombreParroquia, AC.NOMBRE_CANTON AS nombreCanton, IP.ID_PERSONA AS idPersona, IP.RAZON_SOCIAL AS razonSocial, IP.NOMBRES AS nombres,
@@ -724,7 +727,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
           AND LOWER(Lv_DescripcionSol) IN ('solicitud agregar equipo', 'solicitud agregar equipo masivo')) THEN
         Lb_SigueFlujoPlanif := TRUE;
       END IF;
-        DBMS_OUTPUT.PUT_LINE('origen ' || Lv_Origen);           
+
       Lv_NombreProceso :=  'SOLICITAR NUEVO SERVICIO FIBRA';          
         
       IF (Lv_Origen IN ('local', 'otro', 'otro2', 'MOVIL')) THEN
@@ -778,7 +781,6 @@ create or replace PACKAGE BODY                                        DB_COMERCI
           END IF;         
         END IF;
 
-        DBMS_OUTPUT.PUT_LINE('proceso ' || Lv_NombreProceso);     
         IF (Ln_IdPlan IS NOT NULL AND LOWER(Lv_DescripcionSol) = 'solicitud planificacion') THEN
           BEGIN
             SELECT NVL(CAB.ID_PLAN,0) 
@@ -800,7 +802,7 @@ create or replace PACKAGE BODY                                        DB_COMERCI
         OPEN C_GET_PROCESO(Lv_NombreProceso);
         FETCH C_GET_PROCESO INTO Ln_IdProceso;
         CLOSE C_GET_PROCESO;      
-        IF (Ln_IdProceso IS NOT NULL AND Lv_PrefijoEmpresa = 'MD') THEN
+        IF (Ln_IdProceso IS NOT NULL AND (Lv_PrefijoEmpresa = 'MD' OR Lv_PrefijoEmpresa = 'EN')) THEN
             IF (Ln_IdPlan IS NOT NULL) THEN
                 DB_COMERCIAL.TECNK_SERVICIOS.P_VERIFICA_TECNOLOGIA_DB(NULL, NULL, NULL, Ln_IdServicio, Pv_Status, Pv_Mensaje, Lv_ModelosEquiposOntXTipoOnt, Lv_ModelosEquiposEdbXTipoOnt, Lv_ModelosEquiposWdb, Lv_ModelosEquiposEdb);
                 IF (Pv_Status = 'OK') THEN 
@@ -1028,11 +1030,11 @@ create or replace PACKAGE BODY                                        DB_COMERCI
             i := V_IdSolGestionada.NEXT(i);
         END LOOP;
       END LOOP;
-      dbms_output.put_line('SOLICITUD ' || Pn_IdSolicitud);
+
       OPEN C_GET_PUNTO(Pn_IdSolicitud);
       FETCH C_GET_PUNTO INTO Ln_IdPunto;
       CLOSE C_GET_PUNTO;  
-      dbms_output.put_line('PUNTO ' || Ln_IdPunto);
+
       FOR REG IN C_GET_SERVICIOS_SIMULTANEOS(Ln_IdPunto) LOOP
             IF (instr(Lv_JsonRetorno, ''||REG.PRODUCTO_ID, 1) = 0) THEN
                 OPEN C_GET_SOLICITUD(REG.ID_SERVICIO);
@@ -1052,12 +1054,11 @@ create or replace PACKAGE BODY                                        DB_COMERCI
       END LOOP;
       Lv_JsonRetorno := SUBSTR(Lv_JsonRetorno, 0, LENGTH(Lv_JsonRetorno) - 1);
       DBMS_LOB.APPEND(Lv_JsonRetorno, ']');
-      dbms_output.put_line(Lv_JsonRetorno);      
+
       CLOSE Lc_Consulta;      
       Pv_Status := 'OK';
       Pv_Mensaje := 'Transaccion Exitosa';
       Pv_Response := Lv_JsonRetorno;    
-    END P_JSON_SERVICIOS_GESTION;    
-       
+    END P_JSON_SERVICIOS_GESTION;      
 END CMKG_PLANIFICACION_COMERCIAL;
 /

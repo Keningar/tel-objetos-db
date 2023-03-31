@@ -628,7 +628,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            END IF;        
            COMMIT;
 
-      IF Lv_PrefijoEmpresa = 'MD' AND  Pcl_DatosForm.Lv_TipoIdentificacion = 'RUC' AND Pcl_DatosForm.Lv_TipoTributario = 'JUR'  AND Pcl_DatosForm.Lv_TipoEmpresa IS NOT NULL THEN  
+      IF (Lv_PrefijoEmpresa = 'MD'OR  Lv_PrefijoEmpresa = 'EN' ) AND  Pcl_DatosForm.Lv_TipoIdentificacion = 'RUC' AND Pcl_DatosForm.Lv_TipoTributario = 'JUR'  AND Pcl_DatosForm.Lv_TipoEmpresa IS NOT NULL THEN  
 
         if  Ln_CountRepresentanteLegal = 0 then
             Lv_Revertir := 'S';
@@ -738,7 +738,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
             END IF;   
 
        
-            IF Lv_PrefijoEmpresa = 'MD' THEN  
+            IF (Lv_PrefijoEmpresa = 'MD' or Lv_PrefijoEmpresa = 'EN')  THEN  
                 --INSERTAR FORMA DE PAGO
                 Pcl_InfoPersonaEmpFormaPago.ID_DATOS_PAGO:=            DB_COMERCIAL.SEQ_INFO_PERSONA_EMP_FORMA_PAG.NEXTVAL; 
                 Pcl_InfoPersonaEmpFormaPago.PERSONA_EMPRESA_ROL_ID:=   Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL;         
@@ -860,7 +860,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
             END IF ;
 
             --RECOMENDACION DE TARJETA MD
-            IF Lv_Recomendacion  IS NOT NULL AND Lv_PrefijoEmpresa = 'MD'  THEN    
+            IF Lv_Recomendacion  IS NOT NULL AND (Lv_PrefijoEmpresa = 'MD' or Lv_PrefijoEmpresa = 'EN')   THEN    
                 P_SET_CARACTERISTICAS(
                 'EQUIFAX_RECOMENDACION', 
                 Lv_Recomendacion ,

@@ -466,14 +466,15 @@ PROCEDURE P_ACTUALIZAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT
           
           
   
-        CURSOR C_GetIdEmpresaRol(Cv_NombreRol VARCHAR2) IS  
+        CURSOR C_GetIdEmpresaRol(Cv_NombreRol VARCHAR2,Cv_CodEmpresa VARCHAR2) IS  
           SELECT INER.ID_EMPRESA_ROL 
           FROM DB_COMERCIAL.INFO_EMPRESA_ROL  INER
           INNER JOIN  DB_COMERCIAL.ADMI_ROL   ADRO 
           ON INER.ROL_ID =  ADRO.ID_ROL  
           WHERE  ADRO.DESCRIPCION_ROL = Cv_NombreRol 
           AND ADRO.ESTADO = 'Activo'
-          AND INER.ESTADO = 'Activo'; 
+          AND INER.ESTADO = 'Activo'
+          AND INER.EMPRESA_COD=Cv_CodEmpresa; 
 
 
 
@@ -543,7 +544,7 @@ PROCEDURE P_ACTUALIZAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT
         ELSE
         
         
-        OPEN C_GetIdEmpresaRol('Representante Legal Juridico'); 
+        OPEN C_GetIdEmpresaRol('Representante Legal Juridico',Lv_CodEmpresa); 
          FETCH C_GetIdEmpresaRol INTO   Ln_EmpresaRolId ;  
         CLOSE C_GetIdEmpresaRol;  
         
