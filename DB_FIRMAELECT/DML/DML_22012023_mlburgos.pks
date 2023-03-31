@@ -1,4 +1,4 @@
- DECLARE
+DECLARE
     bada clob:='<!DOCTYPE html>'; 
 BEGIN
 DBMS_LOB.APPEND(bada, '<!DOCTYPE html> 
@@ -163,12 +163,12 @@ DBMS_LOB.APPEND(bada, '<!DOCTYPE html>
  
              .clausulas li {
                  padding-left: 16px;
-                 font-size: 8.5px;
+                 font-size: 10px;
              }
 
              .clausulasFont li {
                  padding-left: 16px;
-                 $!fontSize
+                 font-size: 10px;
              }
  
              .clausulas li:before {
@@ -385,23 +385,18 @@ DBMS_LOB.APPEND(bada, '<body style="$!fontSize" onload="substitutePdfVariables()
        <div id="contenedor" class="col-width-100" style="border:1px; $!fontSize">
          <table class="col-width-100">         
            <tr>     
-               <td id="netlife" class="col-width-100" text-align="right">
-               <div class="col-width-20">
-               <img class="textRight" style="margin-left: -0.54rem;" src="http://images.telconet.net/others/telcos/logo_netlife.png" alt="log" title="NETLIFE" height="50"/>
-               <div class="textCenter" style="font-size:8px">CONECTA TU VIDA</div>
+             <td class="col-width-75" style="$!fontSize"><strong>CONTRATO DE ADHESIÓN PARA LA PRESTACIÓN DEL SERVICIO</strong></td> 
+             <td id="netlife" class="col-width-25" text-align="right" rowspan="4">
+               <div class="col-width-100" style="margin-left: 3.88rem; margin-top:-0.50rem;">
+               <img src="http://images.telconet.net/others/telcos/logo_netlife.png" alt="log" title="NETLIFE" height="40"/>
+               <div style="font-size:14px">Telf 3920000</div>
+               <div style="font-size:20px"><strong>$!numeroAdendum</strong></div>
                </div>
              </td>
            </tr>
-           <tr> <td class="col-width-100 textCenter" style="$!fontSize"><strong>CONTRATO DE ADHESIÓN PARA LA PRESTACIÓN DEL SERVICIO</strong></td> </tr>
-          </table>
-       </div><br/>
-');
-DBMS_LOB.APPEND(bada, '<!-- ============================ -->
-         <!-- Datos iniciales del Contrato -->
-         <!-- ============================ -->
-         <div style="clear: both;"></div>
-           <div id="contenedor" class="col-width-60">
-              <div id="row">
+           <tr >
+             <td class="col-width-75">
+             <div id="row">
                 <div id="col" class="col-width-30 ">
                     <strong>CONTRATO: </strong>
                 </div>
@@ -415,8 +410,12 @@ DBMS_LOB.APPEND(bada, '<!-- ============================ -->
                     <div class="line">$!isExistente</div>
                 </div>
             </div>
+             </td>
+           </tr>
+           <tr>
+            <td class="col-width-75" >
             <div id="row">
-                <div id="col" class="col-width-30 ">
+                <div id="col" class="col-width-10 ">
                     <strong>FECHA(aa-mm-dd): </strong>
                 </div>
                 <div id="col" class="col-width-30 ">
@@ -425,6 +424,10 @@ DBMS_LOB.APPEND(bada, '<!-- ============================ -->
                 </div>
                 
             </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
             <div id="row" style="min-height: 2em;">
                 <div id="col" class="col-width-30">
                     <strong>TIPO DE CLIENTE:</strong>
@@ -439,12 +442,19 @@ DBMS_LOB.APPEND(bada, '<!-- ============================ -->
                     <div class="line">$!isJuridico</div>
                 </div>
             </div>
-         </div>');
+            </td>
+          </tr>
+          
+         </table>
+       </div><br/>
+        <div style="clear: both;"></div>
+');
+
 DBMS_LOB.APPEND(bada, '<!-- ========================================================= -->
          <!--        Datos de Adhesión de prestación de servicios       -->
          <!-- ========================================================= -->
          <div style="clear: both;"></div>
-         <br/><br/>
+         
          <div style="text-align: justify; $!fontSize">
              <span>
               
@@ -559,7 +569,7 @@ DBMS_LOB.APPEND(bada, '<!-- ============================== -->
     </div>
      <div id="contenedor" class="col-width-100" >
              <div id="row">
-                 <div id="col" class="col-width-15"><strong>Origen Ingresos:</strong></div>
+                 <div id="col" class="col-width-5"><strong>Origen Ingresos:</strong></div>
                  <div id="col" class="col-width-23 labelGris">
                      <span class="textPadding">$!origenIngresos</span>
                  </div>
@@ -645,7 +655,7 @@ DBMS_LOB.APPEND(bada, '<!-- ======================================== -->
     </div>
      <div id="contenedor" class="col-width-100" >
              <div id="row">
-                 <div id="col" class="col-width-49">
+                 <div id="col" class="col-width-53">
                      <div class="box-label">Casa</div>
                      <div class="box">$isCasa</div>
  
@@ -655,7 +665,7 @@ DBMS_LOB.APPEND(bada, '<!-- ======================================== -->
                      <div class="box-label">Conjunto</div>
                      <div class="box">$isConjunto</div>
                  </div>
-                 <div id="col" class="col-width-5" style="width: 0.1% !important;"></div>
+                 <div id="col" class="col-width-5" ></div>
                  <div id="col" class="col-width-10"> <strong>Correo: </strong> </div>
                  <div id="col" class="col-width-27 ">
                          <div id="col" class="labelGris">
@@ -877,6 +887,10 @@ DBMS_LOB.APPEND(bada, '<!-- ======================================== -->
          <br/>
         <br/>
          <br/>
+         <br/>
+         <br/>
+          <br/><br/>
+         
          ');
 DBMS_LOB.APPEND(bada, '<!-- ============================== -->
         <!--      Servicios Contratados     -->
@@ -890,10 +904,10 @@ DBMS_LOB.APPEND(bada, '<!-- ============================== -->
             <table class="box-section-content col-width-100 borderTable" style="border-collapse:collapse;border-spacing:0;">
               <tbody>
               <tr>
-                      <td class="col-width-50 line-height textCenter" colspan="2" style="$!fontSize">
+                      <td class="col-width-35 line-height textCenter" colspan="2" style="$!fontSize">
                           <strong>Nivel de compartición</strong>
                       </td>
-                      <td class="col-width-50 line-height textCenter" colspan="3" style="$!fontSize">
+                      <td class="col-width-65 line-height textCenter" colspan="3" style="$!fontSize">
                            <strong>Tipo de Cuenta</strong>
                       </td>
   
@@ -1012,6 +1026,27 @@ DBMS_LOB.APPEND(bada, '<!-- ============================== -->
                 </tr>
                 
                      {{listaProductos}}
+                <tr style="height: 25px;">
+                  <td style="height: 25px;" class="line-height labelGris"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                </tr>
+                <tr style="height: 25px;">
+                  <td style="height: 25px;" class="line-height labelGris"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                </tr>
+                <tr style="height: 25px;">
+                  <td style="height: 25px;" class="line-height labelGris"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                  <td style="height: 25px;" class="line-height textCenter"></td>
+                </tr>
                 <tr>
                     <td class="line-height textCenter" style="border-bottom:1px white solid;">SUBTOTAL:</td>
                     <td class="line-height textCenter">$!subtotalInstalacion</td>
@@ -1058,12 +1093,10 @@ DBMS_LOB.APPEND(bada, '<!-- ============================== -->
 DBMS_LOB.APPEND(bada, '<!-- ========================================== -->
         <!-- Observaciones de los Servicios Contratados -->
         <!-- ========================================== -->        
-        <br/>  <br/>  <br/>
+         
                                          
         <div style="clear: both;"></div>
-        <div style="clear: both;"></div>
-        <div style="clear: both;"></div>
-        <br/>
+        
         <div id="contenedor" class="col-width-100" style="height: 65px;">
             <div id="row">
                 <table class="box-section-content col-width-70" style="border-collapse:collapse;border-spacing:0;">
@@ -1085,7 +1118,7 @@ DBMS_LOB.APPEND(bada, '<!-- ========================================== -->
             </table>
             </div>
         </div>
-        <div id="contenedor" class="col-width-100" style="height: 65px;">
+        <div id="contenedor" class="col-width-100" style="height: 25px;">
         <spam>El tiempo de instlación promedio del servicio será hasta 5 días hábiles</spam></div>
         <div id="contenedor" class="col-width-100" style="height: 65px;">
             <div id="row">
@@ -1097,10 +1130,7 @@ DBMS_LOB.APPEND(bada, '<!-- ========================================== -->
                 </div>
             </div>
         </div>
-        
- 
-        
-        <br/>');
+        ');
 DBMS_LOB.APPEND(bada, '<br/>');
 DBMS_LOB.APPEND(bada, '
         <!-- ================================================= -->
@@ -1159,7 +1189,7 @@ DBMS_LOB.APPEND(bada, '
                 horas después de que el ABONADO haya pagado los valores pendientes. <strong>5.8.-</strong> La modalidad de contratación es
                 pospago para lo cual el abonado acepta que NETLIFE facturará y cobrará de manera anticipada y mensual el
                 servicio contratado, basado en el ciclo de facturación en que haya sido definido.
-                <br/><br/><br/><br/><br/><br/><br/><br/><strong>SEXTA.-</strong> ENTREGA DE EQUIPOS: <strong>6.1.-</strong>EL ABONADO reconoce que los equipos terminales y cualquier equipo
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><strong>SEXTA.-</strong> ENTREGA DE EQUIPOS: <strong>6.1.-</strong>EL ABONADO reconoce que los equipos terminales y cualquier equipo
                 adicional que eventualmente instalen nuestros técnicos son propiedad de NETLIFE. Ningún equipo terminal forma
                 parte íntegra del servicio contratado, NETLIFE instalará el equipo más conveniente según factibilidad y
                 disponibilidad técnica. En el caso de hurto o daño por negligencia del ABONADO, éste asumirá el valor total de su
@@ -1236,7 +1266,7 @@ DBMS_LOB.APPEND(bada, '
                   <li><div id="row"><div id="col">Acepto envío de comunicaciones comerciales propios.</div>{{isSeptimaClausula2}}</li>
                   <li><div id="row"><div id="col">Acepto envío de comunicaciones comerciales de terceros.</div>{{isSeptimaClausula3}}</li>
                 </ul>
-                <br/><br/>');
+                ');
 DBMS_LOB.APPEND(bada, '<strong>OCTAVA.-</strong> 
                 RECLAMOS Y SOPORTE TÉCNICO: Sobre los canales de atención al cliente presenciales y virtuales
                 oficiales de NETLIFE, consulte la página web www.netlife.ec <strong>8.1.-</strong> En caso de reclamos o quejas, el tiempo máximo
@@ -1255,7 +1285,7 @@ DBMS_LOB.APPEND(bada, '<strong>OCTAVA.-</strong>
                 Correo Tradicional, Página web de la ARCOTEL y la página www.gob.ec <strong>8.3.-</strong>La atención telefónica del Call Center
                 es 7 días, 23 horas incluyendo fines de semana y feriados. El soporte presencial se lo realizará en días y horas
                 laborables.
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 <strong>NOVENA.- </strong>OBLIGACIONES Y CONDICIONES DE NETLIFE: <strong>9.1.- </strong>El tiempo de instalación promedio del servicio
                 será hasta 5 días hábiles; sin embargo, podría variar dependiendo de la factibilidad técnica, caso fortuito y/o fuerza
                 mayor o restricciones impuestas por autoridad competente. <strong>9.2.- </strong>El servicio está sujeto a factibilidad, disponibilidad
@@ -1352,7 +1382,7 @@ DBMS_LOB.APPEND(bada, '<strong>OCTAVA.-</strong>
                 acepta que ha sido explicado sobre todo el contenido de este instrumento compartido por parte de NETLIFE, por
                 convenir a sus intereses, así mismo declara que conoce íntegramente el presente contrato de adhesión, mismo
                 que no puede ser considerado de negociación.
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 <strong>DÉCIMA PRIMERA.- </strong>CONTROVERSIAS.- Las controversias o diferencias que surjan entre las partes con ocasión
                 del cobro de valores pendientes de pago a la terminación del Contrato, así como de cualquier otro asunto
                 relacionado con el presente Contrato, serán sometidas a la revisión de las partes para buscar un arreglo directo,
@@ -1614,7 +1644,7 @@ DBMS_LOB.APPEND(bada, '<!-- ========================================== -->
          </div>
         </div>
         <div style="clear: both;"></div>
-        <div style="clear: both;"></div><br><br><br><br><br><br><br><br>');
+        <div style="clear: both;"></div><br><br><br><br><br><br><br><br><br><br>');
 DBMS_LOB.APPEND(bada, '<!-- ================================================================= -->
         <!-- Autorización para Debito por concepto de pago del servicio -->
         <!-- ================================================================= -->
@@ -1808,7 +1838,6 @@ DBMS_LOB.APPEND(bada, '<!-- ====================================================
     ');          
 DBMS_LOB.APPEND(bada, '    </body>
 </html>');
-
 
 
 UPDATE DB_FIRMAELECT.ADM_EMPRESA_PLANTILLA
