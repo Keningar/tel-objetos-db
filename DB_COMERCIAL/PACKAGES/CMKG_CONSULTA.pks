@@ -493,7 +493,7 @@ create or replace package                  DB_COMERCIAL.CMKG_CONSULTA is
 
 end CMKG_CONSULTA;
 /
-create or replace package body                          DB_COMERCIAL.CMKG_CONSULTA is
+create or replace package body DB_COMERCIAL.CMKG_CONSULTA is
   PROCEDURE P_INFORMACION_CLIENTE(Pcl_Request  IN  CLOB,
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2,
@@ -540,6 +540,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                       IP.NACIONALIDAD           nacionalidad          ,
                       IPU.ID_PUNTO              punto_id              ,
                       AC.Jurisdiccion           ciudad_pagare         ,
+                      IER.EMPRESA_COD           empresa_cod           ,
                       IPER.ID_PERSONA_ROL       persona_empresa_rol_id,';
     Lcl_Select_Mot    :='(SELECT COUNT(IDS2.MOTIVO_ID) 
                       FROM 
@@ -562,6 +563,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                     )AS "CANT_MOTIVO"';
     Lcl_From         := '
               FROM  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+                    DB_COMERCIAL.INFO_EMPRESA_ROL         IER,
                     DB_COMERCIAL.INFO_PERSONA             IP 
                     LEFT JOIN DB_COMERCIAL.ADMI_TITULO ATI ON IP.TITULO_ID = ATI.ID_TITULO,
                     DB_COMERCIAL.INFO_PUNTO               IPU ,
@@ -574,6 +576,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
     Lcl_WhereAndJoin := '
               WHERE IPER.PERSONA_ID            = IP.ID_PERSONA
                 AND IPU.PERSONA_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL
+                AND IER.ID_EMPRESA_ROL         = IPER.EMPRESA_ROL_ID
                 AND IPU.SECTOR_ID              = ASE.ID_SECTOR
                 AND ASE.PARROQUIA_ID           = AP.ID_PARROQUIA
                 AND AP.CANTON_ID               = AC.ID_CANTON
@@ -800,7 +803,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
         AND   REP_AROL.DESCRIPCION_ROL IN ('Representante Legal Juridico')
         AND   REP_IP.TIPO_TRIBUTARIO   = 'NAT'
         AND   CLI_IP.ID_PERSONA        = Cn_PersonaId  ;
-   
+
   --
     Ln_IdPersona                NUMBER;
     Lv_TipoIdentificacion       VARCHAR2(50);
@@ -827,21 +830,21 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 
     -- CONSULTAR SI ES PERSONA JURIDICA CON TIPO IDENTIFICACIÓN RUC Y TIPO TRIBUTARIO JUR
     IF Ln_IdPersona IS NOT NULL AND  Lv_TipoIdentificacion = 'RUC' AND Lv_TipoTributario = 'JUR' THEN
-    
+
        OPEN  C_PERSONA_REPRESENTANTE_LEGAL(Ln_IdPersona); 
        FETCH C_PERSONA_REPRESENTANTE_LEGAL INTO  Ln_IdPersonaRepresentNatul;  
        CLOSE C_PERSONA_REPRESENTANTE_LEGAL; 
-     
+
         IF  Ln_IdPersonaRepresentNatul IS NOT NULL THEN
             Ln_PersonaId:=  Ln_IdPersonaRepresentNatul;             
             ELSE
             Pv_Mensaje := 'No existe representante legal tipo natural.';
             RAISE Le_Errors;
         END IF;
-  
+
     END IF;
-    
-    
+
+
 
     Lcl_Select       := '
               SELECT  AFC.DESCRIPCION_FORMA_CONTACTO descripcion,
@@ -1501,14 +1504,14 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
             AND APD.DESCRIPCION like Cv_Porcentaje
             AND APD.DESCRIPCION = Cv_DescripcionParametro;
 
-        CURSOR C_GET_CARACTERISTICA(Cv_DescripcionCaract VARCHAR2)
+        CURSOR C_GET_CARACTERISTICA(Cv_DescripcionCaract VARCHAR2, Cn_CodEmpresa           INTEGER)
         IS
             SELECT ACA.ID_CARACTERISTICA
             FROM DB_COMERCIAL.ADMI_CARACTERISTICA ACA
             WHERE
-            ACA.ID_CARACTERISTICA=(select adet.VALOR1 from  DB_GENERAL.admi_parametro_det adet where adet.DESCRIPCION=Cv_DescripcionCaract) ; 
+            ACA.ID_CARACTERISTICA=(select adet.VALOR1 from  DB_GENERAL.admi_parametro_det adet where adet.DESCRIPCION=Cv_DescripcionCaract AND adet.EMPRESA_COD=Cn_CodEmpresa) ; 
 
-        CURSOR C_GET_DET_PLAN(Cn_IdPlan VARCHAR2,Cv_NombreParametro VARCHAR2)
+        CURSOR C_GET_DET_PLAN(Cn_IdPlan VARCHAR2,Cv_NombreParametro VARCHAR2,Cn_CodEmpresa           INTEGER)
         IS
             SELECT IPD.PRODUCTO_ID,IPD.ID_ITEM,IPD.PRECIO_ITEM
             FROM DB_COMERCIAL.INFO_PLAN_DET IPD
@@ -1522,6 +1525,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                     FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC
                     WHERE APC.NOMBRE_PARAMETRO = Cv_NombreParametro
                     ) AND APD.ESTADO = 'Activo'
+                    AND APD.EMPRESA_COD = Cn_CodEmpresa 
             ); 
 
         CURSOR C_GET_PRODUCTO(Cn_IdProducto INTEGER)
@@ -1606,9 +1610,9 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                         AND MONTHS_BETWEEN(SYSDATE,IDMS.FE_CREACION) <= 36) T1
                 WHERE ROWNUM = 1
                 CONNECT BY REGEXP_SUBSTR(T1.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL) T2;
-               
-               
-               
+
+
+
        CURSOR C_OBT_PRO_INST_PERIODO(Cn_IdServicio INTEGER)
         IS
 	     SELECT 
@@ -1632,15 +1636,15 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 	                  AND IDMP.ID_DETALLE_MAPEO = IDMS.DETALLE_MAPEO_ID
 	                  AND IDMP.TIPO_PROMOCION = 'PROM_INS'
 	                  AND ATPR.TIPO_PROMOCION_id = IDMP.TIPO_PROMOCION_ID
-	                  
+
 	                  )T
 	                  CONNECT BY REGEXP_SUBSTR(T.VALOR, '[^,]+', 1, LEVEL) IS NOT NULL) T1) AS PERIODOS,
 	      (SELECT ESTADO 
 	       FROM DB_COMERCIAL.INFO_SERVICIO 
 	     WHERE ID_SERVICIO = Cn_IdServicio) AS ESTADO FROM DUAL;       
-               
-               
-               
+
+
+
 	   CURSOR C_OBT_PRO_MENS_REGENERAR(Cn_IdServicio INTEGER)
         IS
 	      SELECT 
@@ -1655,8 +1659,8 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                  AND ATPR.TIPO_PROMOCION_id = IDMP.TIPO_PROMOCION_ID
                  AND AC.DESCRIPCION_CARACTERISTICA = 'PROM_PERIODO'
                  AND AC.ID_CARACTERISTICA          = ATPR.CARACTERISTICA_ID;
-	    
-	    
+
+
 	     --Costo: 3
 	   CURSOR C_PeriodoDesc(Cv_Trama  DB_COMERCIAL.ADMI_TIPO_PROMOCION_REGLA.VALOR%TYPE,
                          Cv_Orden  NUMBER) IS       
@@ -1669,7 +1673,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                    CONNECT BY REGEXP_SUBSTR(Cv_Trama, '[^,]+', 1, LEVEL) IS NOT NULL) T) T2
       GROUP BY T2.DESCUENTO
       ORDER BY Cv_Orden DESC;
-	    
+
         CURSOR C_OBTENER_LOGIN(Cn_IdServicio INTEGER)
         IS
             SELECT IPU.LOGIN, 
@@ -1679,7 +1683,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
               INNER JOIN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER ON IPER.ID_PERSONA_ROL=IPU.PERSONA_EMPRESA_ROL_ID
               INNER JOIN DB_COMERCIAL.INFO_PERSONA IPE ON IPE.ID_PERSONA = IPER.PERSONA_ID
               WHERE IPU.ESTADO != 'Eliminado' AND ISE.ID_SERVICIO=Cn_IdServicio;
-              
+
       CURSOR C_GET_SERVICIO_ADENDUM(Cv_servicio INTEGER)
            IS
             SELECT DISTINCT ISE.ID_SERVICIO,APA.TIPO,APA.ID_PLAN,APA.NOMBRE_PLAN,ISE.PRODUCTO_ID,
@@ -1691,7 +1695,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
             WHERE ISE.ID_SERVICIO = Cv_servicio 
            AND ISE.ESTADO NOT IN ('Cancelado','Anulado','Inactivo','Eliminado','Cancel','Rechazada','Eliminado-Migra')  
             ORDER BY ISE.PLAN_ID ASC,ISE.PRODUCTO_ID DESC;   
-              
+
 
         Ln_CodEmpresa              INTEGER;
         Ln_idPunto                 INTEGER;
@@ -1857,9 +1861,9 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
     Lv_CambioRazonSocial  := APEX_JSON.get_varchar2(p_path => 'cambioRazonSocial');
     Lv_RecuperacionDocumentos:= APEX_JSON.get_varchar2(p_path => 'recuperarDocumentosDigitales');
     Lv_Servicio  := APEX_JSON.get_number(p_path => 'idServicio');
-   
-   
-   
+
+
+
     --OPEN C_GET_PARAMETROS_EMPR(Lv_NombreParametroProd,Lv_ModuloParametroProd,Ln_CodEmpresa);
     --FETCH C_GET_PARAMETROS_EMPR BULK COLLECT INTO Pcl_arrayParametrosEmpr;
     --CLOSE C_GET_PARAMETROS_EMPR;    
@@ -1896,7 +1900,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
     Pcl_ResponseList.IS_PRECIO_PROMO    := '';--
     Pcl_ResponseList.NOMBRE_PLAN        := '';--
     Pcl_ResponseList.NOMBRE_CICLO       := '';--
-    
+
    IF Lv_Servicio IS NOT NULL THEN 
             OPEN C_GET_SERVICIO_ADENDUM(Lv_Servicio);    
             FETCH C_GET_SERVICIO_ADENDUM BULK COLLECT INTO Pcl_arrayServicio LIMIT 5000;
@@ -1927,22 +1931,22 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
       END IF;
     END IF;
   --
-    
-    
+
+
 
     OPEN C_CARAT_CICLO_FACTURACION(Ln_idPunto);
     FETCH C_CARAT_CICLO_FACTURACION INTO Ln_NombreCicloFact;
     CLOSE C_CARAT_CICLO_FACTURACION;
-    
+
     Pcl_ResponseList.NOMBRE_CICLO := Ln_NombreCicloFact;
 
     IF Pcl_arrayServicio IS NOT NULL AND Pcl_arrayServicio.EXISTS(1)
     THEN
-        OPEN C_GET_CARACTERISTICA(Lv_DescripCaracteristicaNa);
+        OPEN C_GET_CARACTERISTICA(Lv_DescripCaracteristicaNa,Ln_CodEmpresa);
         FETCH C_GET_CARACTERISTICA INTO Ln_idCaracteristicaNa;
         CLOSE C_GET_CARACTERISTICA;
 
-        OPEN C_GET_CARACTERISTICA(Lv_DescripCaracteristicaIn);
+        OPEN C_GET_CARACTERISTICA(Lv_DescripCaracteristicaIn,Ln_CodEmpresa);
         FETCH C_GET_CARACTERISTICA INTO Ln_idCaracteristicaIn;
         CLOSE C_GET_CARACTERISTICA;
 
@@ -1990,7 +1994,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                     Pcl_ResponseList.VALOR_PLAN_LETRAS := Lv_ParametroEquipaValor3;
                 END IF;
 
-                OPEN C_GET_DET_PLAN(Pcl_arrayServicio(Ln_IteradorI).ID_PLAN,Lv_NombreParametroEstado);
+                OPEN C_GET_DET_PLAN(Pcl_arrayServicio(Ln_IteradorI).ID_PLAN,Lv_NombreParametroEstado,Ln_CodEmpresa);
                 FETCH C_GET_DET_PLAN BULK COLLECT INTO Pcl_arrayPlanDet LIMIT 5000;
                 CLOSE C_GET_DET_PLAN;
 
@@ -2011,7 +2015,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                         Lv_internet := 'S';
                         IF Lv_CambioRazonSocial = 'N' 
                         THEN
-                        
+
                          IF Lv_RecuperacionDocumentos= 'N'  
                          THEN
                               DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA
@@ -2048,35 +2052,35 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                             END IF;
 
                          ELSE   
-                        
+
 	                          OPEN C_OBTENER_PROMO_INSTALACION_RS(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
 	                          FETCH C_OBTENER_PROMO_INSTALACION_RS INTO Ln_DescuentoIns;
 	                          CLOSE C_OBTENER_PROMO_INSTALACION_RS;
-	                         
-	                         
+
+
 	                          OPEN C_OBT_PRO_INST_PERIODO(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
 	                          FETCH C_OBT_PRO_INST_PERIODO INTO Lc_Datos;
 	                          CLOSE C_OBT_PRO_INST_PERIODO;
-	                         
-	                         
+
+
 	                          IF Ln_DescuentoIns IS NOT NULL AND  Ln_DescuentoIns <>  0
 	                          THEN
 	                             Lv_ObservacionIns := 'Desct. Inst. Porcentaje: ' || Ln_DescuentoIns ||'%, #Numero de Periodos: '||Lc_Datos.PERIODOS;
 	                          ELSE
 	                             Lv_ObservacionIns := 'No aplica Promoción por descuento de Instalación.';
 	                          END IF;
-	                                          
-	                         
-	                         
-	                         
+
+
+
+
 	                          OPEN C_OBT_PRO_MENS_REGENERAR(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO));
 	                          FETCH C_OBT_PRO_MENS_REGENERAR INTO Lv_PromoMensual,Ln_PromoId;
 	                          CLOSE C_OBT_PRO_MENS_REGENERAR;
-	                         
+
 	                          IF Lv_PromoMensual IS NOT NULL
 	                          THEN                          
 		                            Lr_TipoPromoRegla := DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_PROMO_TIPO_REGLA(Ln_PromoId);
-  
+
 		                            IF Lr_TipoPromoRegla.PROM_DESCUENTO IS NOT NULL THEN
 							        --
 							          Lv_DescuentMensualReco := Lr_TipoPromoRegla.PROM_DESCUENTO;
@@ -2089,11 +2093,11 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 								      Lv_DescuentMensualReco := Lc_PeriodoDesc.DESCUENTO;
 							        --
 							        END IF;
-							       
-							       							       
+
+
 							        Ln_DescuentoMens:=TO_NUMBER(Lv_DescuentMensualReco,'9999');
 
-									                           	                           		                           
+
 		                            IF UPPER(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA) = 'SI' THEN
 							        Ln_DescuentoMens := ' Descuento: ' || Lv_DescuentMensualReco ||'%';
 							        ELSE
@@ -2109,10 +2113,10 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 	                             Ln_DescuentoMens:=0;
 	                             Lv_ObservacionMens := 'No aplica Promoción por descuento Mensual.';
 	                          END IF;
-                                               
+
                           END IF;  
-                           
-                         
+
+
                             Lv_ObservacionIns := REPLACE(Lv_ObservacionIns, ', revisar en info_error','');
                             Lv_ObservacionMens := REPLACE(Lv_ObservacionMens, ', revisar en info_error','');
 
@@ -2121,7 +2125,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                             CLOSE C_GET_PARAM_EMPR_EMPL_DESC; 
 
                             Lv_ObservacionContrato := '<li>'|| Pcl_arrayServicio(Ln_IteradorI).NOMBRE_PLAN || '<br>'; 
- 
+
                             IF Lv_ParametroDescripEmpl IS NOT NULL
                             THEN
                                OPEN C_GET_PARAMETROS_EMPR_DESC1(Lv_NombreParametroMensaje,Lv_ModuloParametroMens,Lv_DescipValorMensEmple,Ln_CodEmpresa);
@@ -2139,35 +2143,35 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                                Lv_ObservacionContrato := Lv_ObservacionContrato ||
                                               Lv_ObservacionIns;
                             END IF;
-                           
-                           
-                                            
+
+
+
                             IF Ln_DescuentoIns <>  0 AND  Ln_DescuentoMens = 0 AND Lv_ParametroDescripEmpl IS NULL
                             THEN                                                        
                             Lv_ObservacionContrato:=  Lv_ObservacionContrato|| ' Desct. Aplica Condiciones';
                             END IF;
-                                               
+
                             Lv_ObservacionContrato:=  Lv_ObservacionContrato||'<br>'||Lv_ObservacionMens;
-                                                    
+
                             IF Ln_DescuentoMens = 0 
                             THEN
                             Lv_ObservacionContrato:= Lv_ObservacionContrato || 
                                                             '<br> Desct. Serv. Internet.'|| 
                                                               Ln_DescuentoMens|| '%; #Meses Desc 0';                          
                             END IF;
-                           
-                           
+
+
                             IF Lv_ParametroDescripEmpl IS NOT NULL
                             THEN                            
                               Lv_ObservacionContrato := Lv_ObservacionContrato || '; Desct. Aplica Condiciones.';
                             END IF;
-                           
+
                             IF   Ln_DescuentoMens  <>  0 AND Lv_ParametroDescripEmpl IS NULL 
                             THEN                            
                               Lv_ObservacionContrato := Lv_ObservacionContrato || '<br> Desct. Aplica Condiciones.';
                             END IF;
-                           
-                           
+
+
                         ELSE
                            -- Cursor para obtener la promociones de instalacion del anterior cliente
                           OPEN C_OBTENER_PROMO_INSTALACION_RS(TO_NUMBER(Pcl_arrayServicio(Ln_IteradorI).OBSERVACION));
@@ -2243,13 +2247,13 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 
                 If (Lv_internet = 'S') THEN
 
-                
+
                    Lv_JsonServiciosContratados := Lv_JsonServiciosContratados || '"INTERNET":{"CANTIDAD":"'||Ln_CantidadProducto||'","PRECIO":"'||Ln_total_servicio||'","DESCUENTO":"'||Ln_DescuentoMens||'","OBSERVACION":"'||Lv_ObservacionMens||'"},'; 
-                  
+
                    Ln_total_servicio := 0;
                    Lv_internet := 'N';
                 END IF;
- 
+
             ELSIF Pcl_arrayServicio(Ln_IteradorI).PRODUCTO_ID IS NOT NULL
             THEN             
                 OPEN C_GET_SERV_PRODUCTO (Pcl_arrayServicio(Ln_IteradorI).ID_SERVICIO);
@@ -2317,7 +2321,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                CLOSE C_GET_PRODUCTO;                
 
 
-               
+
                 EXECUTE IMMEDIATE Lv_FuncionPrecio INTO Lv_PrecioProducto;
 
                 Lv_DigitoVerificacion := SUBSTR(Lv_PrecioProducto||'',-1,1);                
@@ -2361,8 +2365,8 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                 Pcl_ResponseList.NOMBRE_PLAN := Lv_NombrePlan;
 
                 Ln_CantidadProductoTec := Ln_CantidadProductoTec + 1;
-                
-                     
+
+
                 Ln_DescuentoMens   := 0;
                 Ln_CantPeriodoMens := 0 ; 
                 DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA
@@ -2375,7 +2379,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                             Ln_CantPeriodoMens,
                             Lv_ObservacionMens
                         );   
-                        
+
               IF  Ln_DescuentoMens IS NOT NULL AND   Ln_DescuentoMens <> 0  THEN                   
                 Lv_ObservacionContrato := Lv_ObservacionContrato|| '<li>' ||  Pcl_arrayServicio(Ln_IteradorI).DESCRIPCION_PRODUCTO || '<br>';
                 Lv_ObservacionContrato := Lv_ObservacionContrato|| Lv_ObservacionMens || '</li>';                    
@@ -2383,7 +2387,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                 Ln_DescuentoMens := 0;
                 Lv_ObservacionMens := 'No aplica Promoción por descuento Mensual.'; 
               END IF;               
-                               
+
               IF (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) != trim(Lv_NombreProdPosterior) OR 
                  (trim(Pcl_arrayServicio(Ln_IteradorI).CODIGO_PRODUCTO) = trim(Lv_NombreProdPosterior) AND Ln_DescuentoMens = 0)
                  OR Pcl_arrayServicio.COUNT = Ln_IteradorI) THEN
@@ -2391,7 +2395,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                     Ln_SubTotalProd        := 0; 
                     Ln_CantidadProductoTec := 0;
               END IF;
-                
+
 
                    Pcl_ResponseList.IMPUESTOS_UNICO   := trim(to_char(Ln_ImpuestoUnico,'99,999,999,990.99'));
                    Pcl_ResponseList.SUBTOTAL_UNICO    := trim(to_char(Ln_SubTotalUnico,'99,999,999,990.99'));
@@ -2440,7 +2444,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
              Pcl_ResponseList.IMPUESTOS    := trim(to_char(Ln_Impuesto,'99,999,999,990.99'));
              Pcl_ResponseList.SUBTOTAL     := trim(to_char(Ln_SubTotal,'99,999,999,990.99'));
              Pcl_ResponseList.TOTAL        := trim(to_char(Ln_SubTotal + Ln_Impuesto,'99,999,999,990.99'));
-             
+
 
              IF Pcl_ResponseList.DESC_PLAN  IS NOT NULL AND Pcl_ResponseList.DESC_PLAN != 0
              THEN
@@ -2452,7 +2456,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
              --Ln_Impuesto   := 0;
              Ln_IteradorI := Pcl_arrayServicio.NEXT(Ln_IteradorI);
         END LOOP;
-         
+
     ELSE
       Pv_Mensaje := 'No se encuentran servicios asociados a Contrato/Adendum';
       RAISE Le_Errors;
@@ -2609,7 +2613,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 --    Lv_CodigoTipoDocumento  VARCHAR2(200);
       Lv_Default  VARCHAR2(200);
       Lv_NombreParametro VARCHAR2(200);
-     
+
        CURSOR C_FormaPago(Cn_IdFormaPago NUMBER) IS 
        SELECT CODIGO_FORMA_PAGO FROM DB_GENERAL.ADMI_FORMA_PAGO
        WHERE ID_FORMA_PAGO = Cn_IdFormaPago
@@ -2619,8 +2623,8 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
        SELECT DESCRIPCION_CUENTA FROM DB_GENERAL.ADMI_TIPO_CUENTA
        WHERE ID_TIPO_CUENTA = Cn_IdTipoCuenta
        AND ESTADO  = 'Activo'; 
- 
- 	   
+
+
        BEGIN  
         APEX_JSON.PARSE(Pcl_Request);   
         Lv_CodEmpresa  := APEX_JSON.GET_VARCHAR2(p_path => 'codEmpresa');
@@ -2632,13 +2636,13 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
         Lv_TipoTributario := APEX_JSON.GET_VARCHAR2(p_path => 'tipoTributario');
         Lv_Default :='DEFAULT';
         Lv_NombreParametro := 'PARAM_FLUJO_VALIDACIONES_FORMAS_PAGOS'; 
-       
-      
+
+
         --DOCUMENTOS POR FORMA DE PAGO
         FOR i IN  C_FormaPago(Ln_IdFormaPago)   LOOP    
              Lv_CodFormaPago:=  i.CODIGO_FORMA_PAGO;  
              dbms_output.put_line('Lv_CodFormaPago'||Lv_CodFormaPago);  
-             
+
             IF (Ln_IdTipoCuenta IS NOT NULL) THEN 
               dbms_output.put_line('Ln_IdTipoCuentaDD'||Ln_IdTipoCuenta);  
               FOR j IN  C_TipoCuenta(Ln_IdTipoCuenta)   LOOP   
@@ -2651,13 +2655,13 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
               END LOOP;
             END IF;
       	END LOOP;         
-       
-               
-       
+
+
+
        Pv_Status := 'OK';  
        Pv_Mensaje := 'Transacción exitosa';  
-       
-        
+
+
        OPEN  Pcl_Response FOR
        SELECT  
        atdg.ID_TIPO_DOCUMENTO ,  
@@ -2673,13 +2677,14 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
        AND   apc.ESTADO  = 'Activo'
        AND   atdg.ESTADO = 'Activo' 
        AND   apd.VALOR4  = 'S' 
+       AND   apd.EMPRESA_COD = Lv_CodEmpresa
        AND   apc.NOMBRE_PARAMETRO =  Lv_NombreParametro
        AND   apd.VALOR3  IN (       
        select regexp_substr( Lv_Default || ','|| Lv_CodFormaPago || ','||      Lv_TipoTributario,'[^,]+', 1, level) from dual
        connect by regexp_substr( Lv_Default || ','|| Lv_CodFormaPago || ','||      Lv_TipoTributario, '[^,]+', 1, level) is not null
        );  
-            
-     
+
+
      EXCEPTION
        WHEN OTHERS THEN
        Pv_Status := 'ERROR';  
@@ -2690,9 +2695,9 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                                               'telcos',
                                               SYSDATE,
                                               '127.0.0.1');
-   
+
   END P_VERIFICA_DOCUMENTOS_REQ;   
- 
+
  PROCEDURE P_SERVICIO_PERSONA(Pcl_Request  IN  VARCHAR2,
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2,
@@ -2783,24 +2788,24 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 	IF Lv_ProductoNombreTecnico IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND (AP.NOMBRE_TECNICO='''||Lv_ProductoNombreTecnico||''' OR APP.NOMBRE_TECNICO='''||Lv_ProductoNombreTecnico||''')';
     END IF;	
-    
+
    IF Ld_FechaDesde IS NOT NULL AND Ld_FechaHasta IS NOT NULL AND Ld_FechaDesde > Ld_FechaHasta THEN
         Pv_Mensaje := 'La fecha Deste es mayor a la fecha Hasta';
         RAISE Le_Errors;
     END IF;
-    
+
     IF Ld_FechaDesde IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ISE.FE_CREACION)>='''||Ld_FechaDesde||'''';
     END IF;	
-    
+
      IF Ld_FechaHasta IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ISE.FE_CREACION)<='''||Ld_FechaHasta||'''';
     END IF;	
-	
+
 	IF NOT Lb_EsVentaExterna THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND (ISE.ES_VENTA <> ''E'' OR ISE.ES_VENTA IS NULL)';
     END IF;
-	
+
     Lcl_OrderAnGroup := '
               ORDER BY ISE.FE_CREACION ASC';
 
@@ -2817,7 +2822,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_SERVICIO_PERSONA;
-  
+
   PROCEDURE P_CONT_FORMA_PAGO_HISTORIAL(Pcl_Request  IN  VARCHAR2,
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2,
@@ -2872,24 +2877,24 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 							ICFPH.DCTO_APLICADO';
 	Lcl_From         := ' FROM  DB_COMERCIAL.INFO_CONTRATO_FORMA_PAGO_HIST ICFPH';
 	Lcl_WhereAndJoin := ' WHERE ICFPH.CONTRATO_ID= '''||Ln_ContratoId||'''';
-					
+
 	IF Ln_FormaPagoId IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND ICFPH.FORMA_PAGO = '''||Ln_FormaPagoId||'''';
     END IF;	
-	
+
 	IF Ld_FechaDesde IS NOT NULL AND Ld_FechaHasta IS NOT NULL AND Ld_FechaDesde > Ld_FechaHasta THEN
         Pv_Mensaje := 'La fecha Deste es mayor a la fecha Hasta';
         RAISE Le_Errors;
     END IF;
-    
+
     IF Ld_FechaDesde IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ICFPH.FE_CREACION)>='''||Ld_FechaDesde||'''';
     END IF;	
-    
+
      IF Ld_FechaHasta IS NOT NULL THEN
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND TRUNC(ICFPH.FE_CREACION)<='''||Ld_FechaHasta||'''';
     END IF;	
-	
+
     Lcl_OrderAnGroup := ' ORDER BY ICFPH.FE_CREACION ASC';
 
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
@@ -2911,7 +2916,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                                           Pv_Status    OUT VARCHAR2,
                            			      Pv_Mensaje   OUT VARCHAR2,
                                           Pcl_Response OUT CLOB) AS
-                                          
+
    CURSOR C_GetPersonas(Cn_ProcesoMasivoCabId number,Cv_Estado Varchar2) IS
     SELECT  count(per.IDENTIFICACION_CLIENTE) CANTIDAD_PUNTOS,
             per.NOMBRES,
@@ -2943,18 +2948,18 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
     AND iperc.ESTADO = 'Activo'
     GROUP BY per.IDENTIFICACION_CLIENTE,NOMBRES,iperc.VALOR,
     iper.ID_PERSONA_ROL,ipmd.estado,per.APELLIDOS;
-   
+
    Lv_Estado_Registro  varchar2(50);Ln_Id_Proceso_Masivo_Cab number;
    Lcl_Response        CLOB;
    Le_Error            EXCEPTION;
-      
+
   BEGIN
      APEX_JSON.PARSE(Pcl_Request);
      Lv_Estado_Registro       := APEX_JSON.get_varchar2('estadoRegistro');
      Ln_Id_Proceso_Masivo_Cab := APEX_JSON.get_number('idProcesoMasivoCab');
      APEX_JSON.INITIALIZE_CLOB_OUTPUT;
      APEX_JSON.OPEN_ARRAY();
-    
+
      FOR i in C_GetPersonas(Ln_Id_Proceso_Masivo_Cab, Lv_Estado_Registro) LOOP
      	 APEX_JSON.OPEN_OBJECT;
      	 APEX_JSON.WRITE('cantidadPuntos', i.CANTIDAD_PUNTOS);
@@ -2967,7 +2972,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
 		   APEX_JSON.WRITE('tokenApp', i.TOKEN_APP);
        APEX_JSON.CLOSE_OBJECT;
      END LOOP;
-    
+
      APEX_JSON.CLOSE_ARRAY;
      Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
      APEX_JSON.FREE_OUTPUT;
@@ -2975,13 +2980,13 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
      Pv_Status := 'OK';
      Pv_Mensaje := 'Consulta exitosa';
      Pcl_Response := Lcl_Response;
-   
+
   EXCEPTION
 	WHEN OTHERS THEN
 	  Pv_Status  := 'ERROR';
 	  Pv_Mensaje := SQLERRM;
   END P_INFO_CLIENTE_NOT_MASIVA_DET;
-  
+
   PROCEDURE P_FORMA_PAGO(Pcl_Request  IN  VARCHAR2,
                          Pv_Status    OUT VARCHAR2,
                          Pv_Mensaje   OUT VARCHAR2,
@@ -2993,7 +2998,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
        FROM DB_GENERAL.ADMI_FORMA_PAGO
        WHERE ESTADO  = 'Activo'
        order by ID_FORMA_PAGO;
-    
+
     CURSOR C_TipoCuenta(Cv_NombrePais VARCHAR2) IS 
       SELECT
           atct.id_tipo_cuenta     idtipocuenta,
@@ -3004,7 +3009,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
       WHERE atct.pais_id = adps.id_pais
       AND adps.nombre_pais = Cv_NombrePais
       AND atct.estado = 'Activo';
-    
+
     CURSOR C_BancoTipoCuenta(Cn_TipoCuenta NUMBER) IS
       SELECT
           adbt.id_banco_tipo_cuenta idbancotipocta,
@@ -3035,9 +3040,9 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
       APEX_JSON.WRITE('idFormaPago', i.ID_FORMA_PAGO);
       APEX_JSON.WRITE('codigoFormaPago', i.CODIGO_FORMA_PAGO);
       APEX_JSON.WRITE('descripcionFormaPago', i.DESCRIPCION_FORMA_PAGO);
-      
+
       Lv_CodFormaPago:=  i.CODIGO_FORMA_PAGO;
-          
+
       IF (Lv_CodFormaPago IS NOT NULL AND Lv_CodFormaPago = 'DEB') THEN 
         APEX_JSON.OPEN_ARRAY('tipoCuenta');
         FOR j IN C_TipoCuenta(Lv_NombrePais) LOOP
@@ -3078,13 +3083,13 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                                             '127.0.0.1');
 
   END P_FORMA_PAGO;
-    
+
   PROCEDURE P_GET_PUNTOS_SERVICIOS_CLIENTE(Pcl_Request  IN  CLOB,
                                            Pv_Status    OUT VARCHAR2,
                                            Pv_Mensaje   OUT VARCHAR2,
                                            Pcl_Response OUT CLOB)
   AS
-  
+
     Lv_Estados              VARCHAR2(1000);
     Ln_IdPersonaEmpresaRol  NUMBER;
     Ln_IdPunto              NUMBER;
@@ -3110,14 +3115,14 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
       Pv_Mensaje := 'El parámetro Ln_IdPersonaEmpresaRol esta vacío';
       RAISE Le_Errors;
     END IF;
-    
+
     IF NVL(Ln_CantEstadosPunto,0) > 0 THEN
       FOR i IN 1..Ln_CantEstadosPunto LOOP
         Lv_Estados := Lv_Estados ||''''||APEX_JSON.get_varchar2('estadosPunto[%d]',i)||''',';
       END LOOP;      
       Lv_Estados := Substr(Initcap(Lv_Estados),1,length(Lv_Estados)-1);
     END IF;
-    
+
     Lcl_QueryPuntos := 'SELECT
                             Ipu.Id_Punto,
                             Ipu.Login,
@@ -3140,18 +3145,18 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
                         INNER JOIN Db_General.Admi_Parroquia Apa ON Ase.Parroquia_Id = Apa.Id_Parroquia
                         INNER JOIN Db_General.Admi_Canton    Aca ON Apa.Canton_Id = Aca.Id_Canton
                         INNER JOIN Db_General.Admi_Provincia Apr ON Aca.Provincia_Id = Apr.Id_Provincia ';
-    
+
     DBMS_LOB.APPEND(Lcl_QueryPuntos,REPLACE('WHERE Ipu.Persona_Empresa_Rol_Id = :idPersonaEmpresaRol ',':idPersonaEmpresaRol',Ln_IdPersonaEmpresaRol));
-    
+
     IF Ln_IdPunto IS NOT NULL THEN
       DBMS_LOB.APPEND(Lcl_QueryPuntos,REPLACE('AND Ipu.Id_Punto = :id_punto ',':id_punto',Ln_IdPunto));
     END IF;
-    
+
     DBMS_LOB.APPEND(Lcl_QueryPuntos,REPLACE('AND Ipu.Estado IN (:estados) ',':estados',Lv_Estados));
     DBMS_LOB.APPEND(Lcl_QueryPuntos,'ORDER BY Ipu.Id_Punto ASC');
-    
+
     OPEN Lrf_Puntos FOR Lcl_QueryPuntos;                       
-                 
+
     Lv_Estados := '';             
     IF NVL(Ln_CantEstadosServicio,0) > 0 THEN
       FOR i IN 1..Ln_CantEstadosServicio LOOP
@@ -3159,7 +3164,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
       END LOOP;      
       Lv_Estados := Substr(Initcap(Lv_Estados),1,length(Lv_Estados)-1);
     END IF;                              
-    
+
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_ARRAY();
     LOOP
@@ -3182,7 +3187,7 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
           APEX_JSON.WRITE('nombreCanton',Lr_Punto(Li_Cont_Punto).Nombre_Canton);
           APEX_JSON.WRITE('idProvincia',Lr_Punto(Li_Cont_Punto).Id_Provincia);
           APEX_JSON.WRITE('nombreProvincia',Lr_Punto(Li_Cont_Punto).Nombre_Provincia);
-          
+
           Lcl_QueryServicios := 'SELECT
                                     *
                                  FROM
@@ -3190,9 +3195,9 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
           DBMS_LOB.APPEND(Lcl_QueryServicios,REPLACE('WHERE Ise.Punto_Id = :idPunto ',':idPunto',Lr_Punto(Li_Cont_Punto).Id_Punto));
           DBMS_LOB.APPEND(Lcl_QueryServicios,REPLACE('AND Ise.Estado IN (:estados) ',':estados',Lv_Estados)); 
           DBMS_LOB.APPEND(Lcl_QueryServicios,'ORDER BY Ise.Id_Servicio ASC');
-          
+
           OPEN Lrf_Servicios FOR Lcl_QueryServicios; 
-          
+
           APEX_JSON.OPEN_ARRAY('servicios');
           LOOP
             FETCH Lrf_Servicios BULK COLLECT INTO Lr_Servicio LIMIT 100;
@@ -3225,8 +3230,9 @@ create or replace package body                          DB_COMERCIAL.CMKG_CONSUL
     WHEN OTHERS THEN
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
-  
+
   END P_GET_PUNTOS_SERVICIOS_CLIENTE;    
- 
+
 end CMKG_CONSULTA;
+
 /

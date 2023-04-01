@@ -174,11 +174,12 @@ AS
                                   Pv_Status         OUT VARCHAR2);
 
 END CMKG_CONTRATO_TRANSACCION;
+
 /
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION
 AS
 
- PROCEDURE P_AUTORIZAR_CONTRATO(Pcl_Request     IN  VARCHAR2,
+  PROCEDURE P_AUTORIZAR_CONTRATO(Pcl_Request     IN  VARCHAR2,
                                    Pv_Mensaje      OUT VARCHAR2,
                                    Pv_Status       OUT VARCHAR2,
                                    Pn_SeAutorizo   OUT NUMBER)
@@ -232,31 +233,13 @@ AS
                                     AND APC.ESTADO              = Cv_Estado)
       AND (ISE.ES_VENTA   <> 'E' OR ISE.ES_VENTA IS NULL);
 
-    CURSOR C_DET_PARAMETRO_PARAMS(Cv_NombreParametro VARCHAR2,
-                                  Cv_Descripcion VARCHAR2,
-                                  Cv_CodEmpresa VARCHAR2)
-    IS
-    SELECT APD.*
-    FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC, DB_GENERAL.ADMI_PARAMETRO_DET APD
-    WHERE APC.ID_PARAMETRO = APD.PARAMETRO_ID
-    AND APC.NOMBRE_PARAMETRO = Cv_NombreParametro
-    AND APD.DESCRIPCION = Cv_Descripcion
-    AND APD.EMPRESA_COD = Cv_CodEmpresa
-    AND APC.ESTADO = 'Activo'
-    AND APD.ESTADO = 'Activo';
-
-    CURSOR C_LIST_DET_PARAMETRO(Cv_NombreParametro VARCHAR2)
-    IS
-    SELECT APD.*
-    FROM DB_GENERAL.ADMI_PARAMETRO_CAB APC, DB_GENERAL.ADMI_PARAMETRO_DET APD
-    WHERE APC.ID_PARAMETRO = APD.PARAMETRO_ID
-    AND APC.NOMBRE_PARAMETRO = Cv_NombreParametro
-    AND APC.ESTADO = 'Activo'
-    AND APD.ESTADO = 'Activo';
+  
 
     CURSOR C_GET_PLANES_CONTRATO(Cn_IdPlan             INTEGER,
                                  Cv_Estado             VARCHAR2,
-                                 Cv_NombreParametro    VARCHAR2)
+                                 Cv_NombreParametro    VARCHAR2,
+                                 Cv_CodEmpresa         VARCHAR2
+                                 )
     IS   
     SELECT  
         DET.PRODUCTO_ID,NOMBRE_TECNICO
@@ -271,6 +254,7 @@ AS
                 INNER JOIN DB_GENERAL.ADMI_PARAMETRO_DET APD ON APD.PARAMETRO_ID=APC.ID_PARAMETRO
                 WHERE APC.NOMBRE_PARAMETRO  = Cv_NombreParametro 
                 AND APD.ESTADO              = Cv_Estado
+                AND APD.EMPRESA_COD         = Cv_CodEmpresa
                 AND APC.ESTADO              = Cv_Estado
         );
 
@@ -330,7 +314,7 @@ AS
         AND CARACTERISTICA_ID = Ln_CaracteristicaId
         and ESTADO = Lv_Estado;
 
-      CURSOR C_GET_PARAMETRO(Lv_NombreParametro VARCHAR2, Lv_Estado VARCHAR2, Lv_Descripcion VARCHAR2)
+      CURSOR C_GET_PARAMETRO(Lv_NombreParametro VARCHAR2, Lv_Estado VARCHAR2, Lv_Descripcion VARCHAR2, Cv_CodEmpresa VARCHAR2)
       IS
       SELECT DET.VALOR1, DET.VALOR2, DET.VALOR3, DET.VALOR4
       FROM DB_GENERAL.ADMI_PARAMETRO_CAB CAB
@@ -339,6 +323,7 @@ AS
       WHERE CAB.NOMBRE_PARAMETRO = Lv_NombreParametro
         AND CAB.ESTADO = Lv_Estado
         AND DET.DESCRIPCION = Lv_Descripcion
+        AND DET.EMPRESA_COD = Cv_CodEmpresa
         AND DET.ESTADO = Lv_Estado;
 
       CURSOR C_GET_PRODUCTO_SERVICIO (Ln_ServicioId NUMBER)
@@ -362,13 +347,15 @@ AS
       FROM DB_COMERCIAL.INFO_SERVICIO
       WHERE ID_SERVICIO = Ln_ServicioId;
 
-      CURSOR C_GET_PRODUCTO_PLANIFICA (Lv_Nombre VARCHAR2)
+      CURSOR C_GET_PRODUCTO_PLANIFICA (Lv_Nombre VARCHAR2, Cv_CodEmpresa VARCHAR2)
       IS
       SELECT DISTINCT(valor5) as VALOR
       FROM DB_GENERAL.ADMI_PARAMETRO_DET 
       WHERE PARAMETRO_ID = (SELECT id_parametro 
                             FROM db_general.admi_parametro_cab 
-                            WHERE nombre_parametro = Lv_Nombre) --'PARAMETROS_ASOCIADOS_A_SERVICIOS_MD'
+                            WHERE nombre_parametro = Lv_Nombre
+                            AND EMPRESA_COD = Cv_CodEmpresa
+                            ) --'PARAMETROS_ASOCIADOS_A_SERVICIOS_MD'
      AND valor1 = 'GESTION_PYL_SIMULTANEA' 
      AND VALOR3 = 'PLANIFICAR';
 
@@ -399,6 +386,7 @@ AS
     Ln_ContratoId              NUMBER;
     Ln_PuntoId                 NUMBER;
     Lv_NumeroAdendum           VARCHAR2(1000);
+    Lv_AplicaTentativa         VARCHAR2(1);
     Lc_Contrato                C_CONTRATO_PARAMS%rowtype;
     Lc_PersonaEmpRol           C_PERSONA_EMP_ROL_PARAMS%rowtype;
     Lc_Punto                   C_PUNTO_PARAMS%rowtype;
@@ -476,6 +464,12 @@ AS
     Ln_ContratoId           := APEX_JSON.get_number(p_path => 'contratoId');
     Ln_PuntoId              := APEX_JSON.get_number(p_path => 'puntoId');
     Lv_NumeroAdendum        := APEX_JSON.get_varchar2(p_path => 'numeroAdendum');
+    Lv_AplicaTentativa      := APEX_JSON.get_varchar2(p_path => 'aplicaTentativa');
+
+    if Lv_AplicaTentativa is null then
+      Lv_AplicaTentativa := 'S';
+    end if;
+  
 
     Ln_Descuento            :=0;
     -- VALIDACIONES
@@ -528,7 +522,12 @@ AS
       Pv_Mensaje := 'El contrato ya se encuentra Activo';
       RAISE Le_Errors;
     END IF;
-    IF Lc_Contrato.Estado != 'PorAutorizar' AND Lv_Tipo = 'C' 
+
+    IF (Lv_AplicaTentativa = 'N' AND Lc_Contrato.Estado != 'Pendiente') AND Lv_Tipo = 'C'
+    THEN
+      Pv_Mensaje := 'El contrato no se encuentra en estado Pendiente';
+      RAISE Le_Errors;
+    ELSIF Lc_Contrato.Estado != 'PorAutorizar' AND Lv_Tipo = 'C' AND Lv_AplicaTentativa != 'N'
     THEN
       Pv_Mensaje := 'El contrato no se encuentra en estado PorAutorizar';
       RAISE Le_Errors;
@@ -566,7 +565,7 @@ AS
           IF Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID IS NOT NULL THEN
                 Ln_ServicioPlan := Pcl_ArrayServicio(Ln_IteradorI).ID_SERVICIO;
                 --Obtener planes permitidos
-                OPEN C_GET_PLANES_CONTRATO(Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID,Lv_EstadoActivo,Lv_NombreParamContrato);
+                OPEN C_GET_PLANES_CONTRATO(Pcl_ArrayServicio(Ln_IteradorI).PLAN_ID,Lv_EstadoActivo,Lv_NombreParamContrato,Lv_CodEmpresa);
                 FETCH C_GET_PLANES_CONTRATO BULK COLLECT INTO Pcl_ArrayPLanes LIMIT 5000;
                 CLOSE C_GET_PLANES_CONTRATO;
 
@@ -574,8 +573,8 @@ AS
                 WHILE (Ln_IteradorJ IS NOT NULL)
                 LOOP
                     IF Pcl_ArrayPLanes(Ln_IteradorJ).NOMBRE_TECNICO IS NOT NULL AND Pcl_ArrayPLanes(Ln_IteradorJ).NOMBRE_TECNICO = 'INTERNET'
-                    THEN
-                     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA(Ln_PuntoId,
+                      AND Lv_AplicaTentativa != 'N' THEN
+                    DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_CONSUME_EVALUA_TENTATIVA(Ln_PuntoId,
                                                                                   Pcl_ArrayServicio(Ln_IteradorI).ID_SERVICIO,
                                                                                   Lv_PromoInst,
                                                                                   Lv_CodEmpresa,
@@ -592,12 +591,13 @@ AS
    --     Pv_Mensaje := 'No cuenta con servicios Factibles.';
    --     RAISE Le_Errors;
     END IF;
-    IF Ln_Descuento IS NULL
+
+    IF Ln_Descuento IS NULL AND Lv_AplicaTentativa != 'N'
     THEN
         Lv_NombreMotivoRechazo := 'Contrato en Estado Rechazado';
         Lv_MensajeRechazo := 'Se rechazo contrato por error al obtener descuento';
         RAISE Le_ErrorRechazarContrato;
-    ELSIF Ln_Descuento = 100 OR Lv_Tipo = 'AS'
+    ELSIF Ln_Descuento = 100 OR Lv_Tipo = 'AS' OR Lv_AplicaTentativa = 'N'
     THEN
         OPEN C_GET_SERVICIOS(Ln_PersonaEmpresaRolId, Lv_EstadoActivo,Lv_NombreParamEstaC,Lv_CodEmpresa,Lv_NumeroAdendum);
         FETCH C_GET_SERVICIOS BULK COLLECT INTO Pcl_ArrayServicioPromo LIMIT 5000;
@@ -667,7 +667,7 @@ AS
             RAISE Le_Errors;
           END IF;
 
-          IF Ln_Descuento = 100 THEN
+          IF Ln_Descuento = 100 OR Lv_AplicaTentativa = 'N' THEN
             Pcl_AprobarContrato := DB_COMERCIAL.DATOS_APROBAR_CONTRATO_TYPE(
                                           Pcl_ArrayServEncontrado,
                                           Lv_UsrCreacion,
@@ -684,18 +684,18 @@ AS
               RAISE Le_Errors;
             END IF;
             Lv_EstadoContrato := 'Activo';
-            OPEN C_GET_PARAMETRO('PRODUCTOS QUE NO SE PLANIFICAN', 'Activo', 'PRODUCTOS QUE NO SE PLANIFICAN');
+            OPEN C_GET_PARAMETRO('PRODUCTOS QUE NO SE PLANIFICAN', 'Activo', 'PRODUCTOS QUE NO SE PLANIFICAN',Lv_CodEmpresa);
             FETCH C_GET_PARAMETRO INTO Lv_ParamValor1, Lv_ParamValor2, Lv_ParamValor3, Lv_ParamValor4;
             CLOSE C_GET_PARAMETRO;
             Lv_MensajeHistPlanif := Lv_ParamValor4;
 
       	    --C_GET_PRODUCTO_PLANIFICA
-            FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD')
+            FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD',Lv_CodEmpresa)
             LOOP
                 Lv_ProductosPlanif := Lv_ProductosPlanif || i.valor || ',';               
             END LOOP;
 
-            OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
+            OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar',Lv_CodEmpresa);
             FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
             CLOSE C_GET_PARAMETRO;
             Lv_ProductosPlanif := Lv_ProductosPlanif || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
@@ -735,7 +735,7 @@ AS
               SET IC.ESTADO = Lv_EstadoContrato
               WHERE
                 IC.ID_ADENDUM = i.Id_Adendum;
-              IF Ln_Descuento = 100 THEN  
+              IF Ln_Descuento = 100 OR Lv_AplicaTentativa = 'N' THEN  
                   OPEN C_GET_PRODUCTO_SERVICIO(i.SERVICIO_ID);
                   FETCH C_GET_PRODUCTO_SERVICIO INTO Ln_ProductoId;
                   IF C_GET_PRODUCTO_SERVICIO%NOTFOUND THEN
@@ -796,7 +796,7 @@ AS
       -- Autorizar adendum
           Lv_ObservacionHistorial := 'El contrato: ' || Lc_Contrato.Numero_Contrato || ' ' || Lv_ObservacionHistorial;
 
-            IF Ln_Descuento = 100 OR Lv_Tipo = 'AS'
+            IF Ln_Descuento = 100 OR Lv_Tipo = 'AS' OR Lv_AplicaTentativa = 'N'
             THEN
                 Pcl_AprobarAdendum := DB_COMERCIAL.DATOS_APROBAR_ADENDUM_TYPE(
                                             Pcl_ArrayServEncontrado,
@@ -865,19 +865,19 @@ AS
             OPEN C_GET_ADENDUM_NUMERO (Lv_Tipo,Lv_NumeroAdendum);
             FETCH C_GET_ADENDUM_NUMERO BULK COLLECT INTO Pcl_ArrayAdendumsNum LIMIT 5000;
             CLOSE C_GET_ADENDUM_NUMERO;
-            OPEN C_GET_PARAMETRO('PRODUCTOS QUE NO SE PLANIFICAN', 'Activo', 'PRODUCTOS QUE NO SE PLANIFICAN');
+            OPEN C_GET_PARAMETRO('PRODUCTOS QUE NO SE PLANIFICAN', 'Activo', 'PRODUCTOS QUE NO SE PLANIFICAN',Lv_CodEmpresa);
             FETCH C_GET_PARAMETRO INTO Lv_ParamValor1,Lv_ParamValor3,Lv_ParamValor3,Lv_ParamValor4;
             CLOSE C_GET_PARAMETRO;
 
             Lv_MensajeHistPlanif := Lv_ParamValor4;
             Lv_ProductosPlanif := '';
-            FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD')
+            FOR i IN C_GET_PRODUCTO_PLANIFICA('PARAMETROS_ASOCIADOS_A_SERVICIOS_MD',Lv_CodEmpresa)
             LOOP
                 Lv_ProductosPlanif := Lv_ProductosPlanif || i.valor || ',';               
             END LOOP;
 
 
-            OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
+            OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar',Lv_CodEmpresa);
             FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
             CLOSE C_GET_PARAMETRO;
             Lv_ProductosPlanif := Lv_ProductosPlanif || ',' || Lv_ParamV1 || ',' || Lv_ParamV2 || ',' || Lv_ParamV3 || ',' || Lv_ParamV4;
@@ -923,7 +923,7 @@ AS
                         SET IA.ESTADO      = Lv_EstadoAdendum
                     WHERE IA.ID_ADENDUM = Pcl_ArrayAdendumsNum(Ln_IteradorJ).ID_ADENDUM;
 
-                    IF Ln_Descuento = 100  OR Lv_Tipo = 'AS' THEN
+                    IF Ln_Descuento = 100  OR Lv_Tipo = 'AS' OR Lv_AplicaTentativa = 'N' THEN
                       OPEN C_GET_ADENDUM_SERVICIO (Pcl_ArrayAdendumsNum(Ln_IteradorJ).ID_ADENDUM);
                       FETCH C_GET_ADENDUM_SERVICIO INTO Ln_IdServicio;
                       CLOSE C_GET_ADENDUM_SERVICIO;  
@@ -1328,7 +1328,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         END IF;
 
         --Forma de Pago del cliente
-        IF Lv_PrefijoEmpresa = 'MD' AND Lv_cambioRazonSocial = 'N'
+        IF (Lv_PrefijoEmpresa = 'MD'  OR Lv_PrefijoEmpresa = 'EN' ) AND Lv_cambioRazonSocial = 'N'
         THEN
             OPEN C_GET_DATOS_PER_FORMA_PAGO (Ln_IdPersonaEmpRol,Ln_CodEmpresa,Lv_DescripcionRol,Lv_EstadoActivo,Lv_EstadoPendiente);
             FETCH C_GET_DATOS_PER_FORMA_PAGO INTO Ln_FormaPagoId,Ln_TipoCuentaID,Ln_BancoTipoCuentaId;
@@ -1384,7 +1384,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         COMMIT;
 
        --MOVER CARACTERISTICA RECOMENDACION DE EQUIFAX
-        IF  Lv_PrefijoEmpresa = 'MD'  THEN
+        IF  Lv_PrefijoEmpresa = 'MD' OR  Lv_PrefijoEmpresa = 'EN' THEN
           OPEN C_GET_CARACTERISTICA('EQUIFAX_RECOMENDACION');
           FETCH C_GET_CARACTERISTICA INTO  Lc_CaractRecomBw;
           CLOSE C_GET_CARACTERISTICA; 
@@ -2962,4 +2962,6 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                             '127.0.0.1');
   END P_EXISTE_PERSONA_CONTRATO;
 END CMKG_CONTRATO_TRANSACCION;
+
+
 /

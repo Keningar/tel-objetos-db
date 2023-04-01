@@ -1,0 +1,190 @@
+ /**
+ * Inclusion de nuevos parametros de Regularizacion de Contrato TM Comercial.
+ *
+ * @author Miguel Guzman <mguzman@telconet.ec>
+ *
+ * @version 1.0
+ */
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET (
+	ID_PARAMETRO_DET,
+	PARAMETRO_ID,
+	DESCRIPCION,
+	VALOR1,
+	VALOR2,
+	VALOR3,
+	ESTADO,
+	USR_CREACION,
+	FE_CREACION,
+	IP_CREACION,
+	EMPRESA_COD
+) VALUES (
+	DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+	(
+		SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+			WHERE NOMBRE_PARAMETRO = 'REGULARIZACION_CONTRATO_TM_COMERCIAL'
+	),
+	'CONFIGURACIÓN PARA LA REGULARIZACIÓN DE LOS CONTRATOS DEL TM COMERCIAL',
+	'Activo,Pendiente,PorAutorizar',
+	'Existe inconsistencia en la data. Por favor comuníquese con soporte para su revisión ',
+	'Activo,Pendiente',
+	'Activo',
+	'mguzman',
+	SYSDATE,
+	'127.0.0.1',
+	'18'
+);
+
+/
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET (
+	ID_PARAMETRO_DET,
+	PARAMETRO_ID,
+	DESCRIPCION,
+	VALOR1,
+	VALOR2,
+	VALOR3,
+	ESTADO,
+	USR_CREACION,
+	FE_CREACION,
+	IP_CREACION,
+	EMPRESA_COD
+) VALUES (
+	DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+	(
+		SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+			WHERE NOMBRE_PARAMETRO = 'REGULARIZACION_CONTRATO_TM_COMERCIAL'
+	),
+	'CONFIGURACIÓN PARA LA REGULARIZACIÓN DE LOS CONTRATOS DEL TM COMERCIAL',
+	'Activo,Pendiente,PorAutorizar',
+	'Existe inconsistencia en la data. Por favor comuníquese con soporte para su revisión ',
+	'Activo,Pendiente',
+	'Activo',
+	'mguzman',
+	SYSDATE,
+	'127.0.0.1',
+	'33'
+);
+
+/
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+(
+  ID_PARAMETRO_DET,
+  PARAMETRO_ID,
+  DESCRIPCION,
+  VALOR1,
+  ESTADO,
+  USR_CREACION,
+  FE_CREACION,
+  IP_CREACION,
+  EMPRESA_COD,
+  OBSERVACION
+) VALUES (
+  DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+  (
+    SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+      WHERE NOMBRE_PARAMETRO = 'PARAMETROS_TM_COMERCIAL'
+  ),
+  'CANTIDAD DE PUNTOS A MOSTRAR',
+  '60',
+  'Activo',
+  'mguzman',
+  SYSDATE,
+  '127.0.0.1',
+  '33',
+  'Cantidad de puntos que se mostraran cuando se haga getPersona'
+);
+
+/
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+(
+  ID_PARAMETRO_DET,
+  PARAMETRO_ID,
+  DESCRIPCION,
+  VALOR1,
+  ESTADO,
+  USR_CREACION,
+  FE_CREACION,
+  IP_CREACION,
+  EMPRESA_COD,
+  OBSERVACION
+) VALUES (
+  DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+  (
+    SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+      WHERE NOMBRE_PARAMETRO = 'PARAMETROS_TM_COMERCIAL'
+  ),
+  'ESTADOS ADENDUM VALIDOS MOVIL',
+  'Pendiente,PorAutorizar,Activo,Migrado,Traslado,Factible',
+  'Activo',
+  'mguzman',
+  SYSDATE,
+  '127.0.0.1',
+  '33',
+  'Estados de ademdums que filtrara para visualizarse en el movil'
+);
+
+/
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+(
+  ID_PARAMETRO_DET,
+  PARAMETRO_ID,
+  DESCRIPCION,
+  VALOR1,
+  VALOR2,
+  ESTADO,
+  USR_CREACION,
+  FE_CREACION,
+  IP_CREACION,
+  EMPRESA_COD
+) VALUES (
+  DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+  (
+    SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+      WHERE NOMBRE_PARAMETRO = 'PARAMETROS_TM_COMERCIAL'
+  ),
+  'ESTADOS_SERVICIO_FACTIBILIDAD',
+  'Factible,Anulado,Inactivo,Eliminado,Rechazada,PreFactibilidad,Pre-servicio',
+  'Anulado, Inactivo, Eliminado, Cancel, Rechazada',
+  'Activo',
+  'mguzman',
+  SYSDATE,
+  '127.0.0.1',
+  '18'
+);
+
+/
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+(
+  ID_PARAMETRO_DET,
+  PARAMETRO_ID,
+  DESCRIPCION,
+  VALOR1,
+  VALOR2,
+  ESTADO,
+  USR_CREACION,
+  FE_CREACION,
+  IP_CREACION,
+  EMPRESA_COD
+) VALUES (
+  DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+  (
+    SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+      WHERE NOMBRE_PARAMETRO = 'PARAMETROS_TM_COMERCIAL'
+  ),
+  'ESTADOS_SERVICIO_FACTIBILIDAD',
+  'Factible,Anulado,Inactivo,Eliminado,Rechazada,PreFactibilidad,Pre-servicio',
+  'Anulado, Inactivo, Eliminado, Cancel, Rechazada',
+  'Activo',
+  'mguzman',
+  SYSDATE,
+  '127.0.0.1',
+  '33'
+);
+
+COMMIT;
+/
