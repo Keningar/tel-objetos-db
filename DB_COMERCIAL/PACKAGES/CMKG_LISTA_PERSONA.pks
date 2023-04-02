@@ -553,6 +553,9 @@ BEGIN
         --
 
 
+        IF Lv_TipoRolBuscar IS NULL THEN
+            CONTINUE;
+        END IF;
 
         --CONSULTAR SI EL ENUNCIADO TIENE REGISTRADA UNA LISTA BLANCA O NEGRA.
         IF Lb_RequierePersonaEmp = FALSE THEN
