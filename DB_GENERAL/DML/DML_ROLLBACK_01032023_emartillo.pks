@@ -1,0 +1,29 @@
+/**
+ * DEBE EJECUTARSE EN DB_GENERAL
+ * Rollback de las banderas para que tome progreso porcentaje  para la empresa ecuanet.
+ * Rollback para que el producto internet dedicado siga el flujo de MD para ecuanet.
+ * @author Emmanuel Martillo<emartillo@telconet.ec>
+ * @version 1.0 01-03-2023 - Versión Inicial.
+ */
+
+
+DELETE FROM DB_GENERAL.ADMI_PARAMETRO_DET 
+WHERE PARAMETRO_ID= (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO='IDS_PROGRESOS_TAREAS')
+AND VALOR1 IN ('PROG_SOPORTE_EN_FIBRA','PROG_SOPORTE_EN_MATERIALES','PROG_INSTALACION_EN_FIBRA','PROG_INSTALACION_EN_MATERIALES')
+AND USR_CREACION = 'emartillo';
+/*ROLLBACK para que obtenga el producto internet dedicado el flujo de MD en Ecuanet*/    
+DELETE FROM DB_GENERAL.ADMI_PARAMETRO_DET 
+WHERE PARAMETRO_ID= (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO='EMPRESA_EQUIVALENTE')
+AND DESCRIPCION = 'EN Y FIBRA RETORNA EN'
+AND USR_CREACION = 'emartillo';
+
+  Delete from DB_GENERAL.ADMI_PARAMETRO_DET
+where parametro_id=(select ID_PARAMETRO from DB_GENERAL.ADMI_PARAMETRO_CAB 
+		    where nombre_parametro = 'PARAMETROS_ASOCIADOS_A_SERVICIOS_EN')
+        AND EMPRESA_COD='33'
+        AND VALOR2= 'ESTADOS_SERVICIOS_PERMITIDOS'
+        AND VALOR1 = 'TRASLADO'
+        AND USR_CREACION = 'emartillo';
+
+COMMIT;
+/

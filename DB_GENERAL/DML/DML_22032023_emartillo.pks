@@ -1,0 +1,93 @@
+/**
+ * DEBE EJECUTARSE EN DB_GENERAL
+ * Insert de las banderas para envio de SMS para Massend para Ecuanet y Megadatos.
+ * 
+ * @author Emmanuel Martillo<emartillo@telconet.ec>
+ * @version 1.0 22-03-2023 - Versión Inicial.
+ */
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_CAB
+  (
+    ID_PARAMETRO,
+    NOMBRE_PARAMETRO,
+    DESCRIPCION,
+    MODULO,
+    ESTADO,
+    USR_CREACION,
+    FE_CREACION,
+    IP_CREACION
+  )
+  VALUES
+  (
+     DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,
+    'CONFIG_SMS_MASSEND',
+    'CONFIGURACION DE PARAMETROS PARA ENVIO SMS',
+    'PLANIFICACION',
+    'Activo',
+    'emartillo',
+     SYSDATE,
+    '127.0.0.1'
+  );
+
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+  (
+    ID_PARAMETRO_DET,
+    PARAMETRO_ID,
+    DESCRIPCION,
+    VALOR1,
+    VALOR2,
+    VALOR3,
+    VALOR4,
+    ESTADO,
+    USR_CREACION,
+    FE_CREACION,
+    IP_CREACION,
+    EMPRESA_COD
+  )
+  VALUES
+  (
+     DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+     (SELECT ID_PARAMETRO        FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO   = 'CONFIG_SMS_MASSEND' AND ESTADO = 'Activo' AND USR_CREACION = 'emartillo'),
+     'CONFIG_SMS_MASSEND_EN',
+     'COMPOSE_MESSAGE',
+     'MASSEND',
+     'CONDIG-PIN',
+     '1005',
+    'Activo',
+    'emartillo',
+     SYSDATE,
+    '127.0.0.1',
+    '33'
+  );
+INSERT INTO DB_GENERAL.ADMI_PARAMETRO_DET
+  (
+    ID_PARAMETRO_DET,
+    PARAMETRO_ID,
+    DESCRIPCION,
+    VALOR1,
+    VALOR2,
+    VALOR3,
+    VALOR4,
+    ESTADO,
+    USR_CREACION,
+    FE_CREACION,
+    IP_CREACION,
+    EMPRESA_COD
+  )
+  VALUES
+  (
+     DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.NEXTVAL,
+     (SELECT ID_PARAMETRO        FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO   = 'CONFIG_SMS_MASSEND' AND ESTADO = 'Activo' AND USR_CREACION = 'emartillo'),
+     'CONFIG_SMS_MASSEND_MD',
+     'COMPOSE_MESSAGE',
+     'MASSEND',
+     'CONDIG-PIN',
+     '1007',
+    'Activo',
+    'emartillo',
+     SYSDATE,
+    '127.0.0.1',
+    '18'
+  );
+  COMMIT;
+/
