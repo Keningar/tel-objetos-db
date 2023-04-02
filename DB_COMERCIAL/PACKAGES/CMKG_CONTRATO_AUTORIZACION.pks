@@ -554,7 +554,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
               Lv_ObservacionHistorialServ := 'Se solicito planificacion';
               Lv_EstadoSolPlanificacion := 'PrePlanificada';
               -- Actualizo servicio con la orden de trabajo
-              IF Pcl_Request.Pv_PrefijoEmpresa = 'MD' THEN
+              IF Pcl_Request.Pv_PrefijoEmpresa = 'MD'  OR  Pcl_Request.Pv_PrefijoEmpresa = 'EN' THEN
                 Lv_EstadoServicio := 'PrePlanificada';
                 Lb_RequierePlanficacion := TRUE;
                 Lb_HayServicio := TRUE;
@@ -1729,6 +1729,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
                         ISE.ID_SERVICIO = Ln_IdServicio;
                     COMMIT;
                     IF Pcl_Request.Pv_PrefijoEmpresa = Lv_PrefioEmprComparaMD
+                      OR Pcl_Request.Pv_PrefijoEmpresa = 'EN'
                     THEN
                         IF Ln_PlanId IS NOT NULL THEN
                             Ln_RequierePlanifi := 1;

@@ -1,0 +1,19 @@
+ /**
+ * Reverso de Parámetros de formularios comercial credencial
+ *
+ * @author Jefferson Alexy Carrillo <jacarrillo@telconet.ec>
+ *
+ * @version 1.0
+ */
+DELETE FROM DB_GENERAL.ADMI_PARAMETRO_DET 
+WHERE  parametro_id IN (SELECT ID_PARAMETRO
+FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+WHERE NOMBRE_PARAMETRO IN ( 'PARAMETROS_FORMULARIOS_COMERCIAL_CREDENCIAL')
+);
+
+DELETE FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+WHERE NOMBRE_PARAMETRO IN ( 'PARAMETROS_FORMULARIOS_COMERCIAL_CREDENCIAL'); 
+           
+        
+COMMIT;
+/

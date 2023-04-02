@@ -40,6 +40,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     *         Pcl_Response      -  Respuesta
     * @author Walther Joao Gaibor <wgaibor@telconet.ec>
     * @version 1.0 06-11-2022
+    *
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.2 02-03-2023 Se añade filtro por empresa
     */
     PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
                                       Pv_Mensaje        OUT VARCHAR2,
@@ -59,6 +62,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     *
     * @author Alex Gómez <algomez@telconet.ec>
     * @version 1.1 02/03/2023  Nuevo cod y status de error para lista vacía
+    *
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.2 02-03-2023 Se añade filtro por empresa
     */
     PROCEDURE P_BUSQUEDA_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
                                        Pv_Mensaje        OUT VARCHAR2,
@@ -94,14 +100,15 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
             AND ADRO.ESTADO                 = Cv_ESTADO
             AND IERO.ESTADO                 = Cv_ESTADO
             AND IPEM.ESTADO                 = Cv_ESTADO
-            AND INFP.ESTADO                 = Cv_ESTADO
+            AND INFP.ESTADO              IN ( Cv_ESTADO, 'Pendiente')
             AND INFP.ID_PERSONA             = Cn_IdPersona;
     --
-    CURSOR C_CAB_ENUNCIADO(Cv_codigo VARCHAR2, Cv_ESTADO VARCHAR2) IS
+    CURSOR C_CAB_ENUNCIADO(Cv_codigo VARCHAR2, Cv_ESTADO VARCHAR2, Cv_EmpresaCod VARCHAR2) IS
         SELECT ID_CAB_ENUNCIADO
           FROM DB_DOCUMENTO.ADMI_CAB_ENUNCIADO
          WHERE CODIGO = Cv_codigo
-           AND ESTADO = Cv_ESTADO;
+           AND ESTADO = Cv_ESTADO
+           AND EMPRESA_COD = Cv_EmpresaCod;
     --
     CURSOR C_APLICA_LISTA(Cn_IdDocRespuesta NUMBER, Cn_IdEnunciado NUMBER, Cn_IdCabEnunciado NUMBER, Cv_ESTADO VARCHAR2) IS
         SELECT 
@@ -128,7 +135,7 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
             AND AAEN.ESTADO                  = Cv_ESTADO
             AND ACEN.ESTADO                  = Cv_ESTADO;
     --
-    CURSOR C_EMPRESA_ROL(Cv_DescripcionTipoRol VARCHAR2, Cv_DescripcionRol VARCHAR2) IS
+    CURSOR C_EMPRESA_ROL(Cv_DescripcionTipoRol VARCHAR2, Cv_DescripcionRol VARCHAR2, Cv_EmpresaCod VARCHAR2) IS
         SELECT
             IERO.ID_EMPRESA_ROL
         FROM DB_GENERAL.ADMI_TIPO_ROL ATRO,
@@ -137,7 +144,8 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
         WHERE ATRO.ID_TIPO_ROL              = ADRO.TIPO_ROL_ID
             AND ADRO.ID_ROL                 = IERO.ROL_ID
             AND ATRO.DESCRIPCION_TIPO_ROL   = Cv_DescripcionTipoRol
-            AND adro.descripcion_rol        = Cv_DescripcionRol;
+            AND adro.descripcion_rol        = Cv_DescripcionRol
+            AND iero.EMPRESA_COD            = Cv_EmpresaCod;
     --
     CURSOR C_PERSONA_FORMA_CONTACTO(Cn_FormaContactoId NUMBER, Cv_PersonaId VARCHAR2, Cv_ESTADO VARCHAR2) IS
         SELECT
@@ -159,7 +167,8 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
     SELECT
         INDR.ID_DOC_RESPUESTA        idDocRespuesta,
         INDR.JUSTIFICACION_RESPUESTA valor,
-        AENU.ID_ENUNCIADO            enunciadoId
+        AENU.ID_ENUNCIADO            enunciadoId,
+        AENU.EMPRESA_COD             empresaCod
     FROM
         DB_DOCUMENTO.INFO_DOCUMENTO_RELACION               IDRE,
         DB_DOCUMENTO.INFO_DOC_RESPUESTA                    INDR,
@@ -177,8 +186,34 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
         AND ADER.ESTADO                 = Cv_estado
         AND ADEN.ESTADO                 = Cv_estado
         AND AENU.ESTADO                 = Cv_estado;
+        
+        
+         
     --
-    CURSOR C_PARAMETROS(Cv_NombreParametro VARCHAR2, Cv_Estado VARCHAR2) IS
+  CURSOR C_OBTENER_EMPRESA_COD (Cn_IdDocRelacion NUMBER, Cv_Estado VARCHAR2) IS
+    SELECT  
+        AENU.EMPRESA_COD             empresaCod
+    FROM
+        DB_DOCUMENTO.INFO_DOCUMENTO_RELACION               IDRE,
+        DB_DOCUMENTO.INFO_DOC_RESPUESTA                    INDR,
+        DB_DOCUMENTO.ADMI_DOC_ENUNCIADO_RESP  ADER,
+        DB_DOCUMENTO.ADMI_DOCUMENTO_ENUNCIADO ADEN,
+        DB_DOCUMENTO.ADMI_ENUNCIADO           AENU
+    WHERE
+            INDR.DOCUMENTO_RELACION_ID  = IDRE.ID_DOCUMENTO_RELACION
+        AND INDR.DOC_ENUNCIADO_RESP_ID  = ADER.ID_DOC_ENUNCIADO_RESP
+        AND ADER.DOCUMENTO_ENUNCIADO_ID = ADEN.ID_DOCUMENTO_ENUNCIADO
+        AND ADEN.ENUNCIADO_ID           = AENU.ID_ENUNCIADO
+        AND IDRE.ESTADO                 = Cv_Estado
+        AND INDR.ESTADO                 = Cv_Estado
+        AND ADER.ESTADO                 = Cv_Estado
+        AND ADEN.ESTADO                 = Cv_Estado
+        AND AENU.ESTADO                 = Cv_Estado
+        AND IDRE.ID_DOCUMENTO_RELACION  = Cn_IdDocRelacion
+        GROUP  BY  AENU.EMPRESA_COD ; 
+        
+    --
+    CURSOR C_PARAMETROS(Cv_NombreParametro VARCHAR2, Cv_Estado VARCHAR2, Cv_EmpresaCod VARCHAR2) IS
         SELECT DET.VALOR1 AS VALOR1
         FROM   DB_GENERAL.ADMI_PARAMETRO_DET DET
         INNER JOIN DB_GENERAL.ADMI_PARAMETRO_CAB CAB
@@ -186,8 +221,10 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
         WHERE CAB.NOMBRE_PARAMETRO = Cv_NombreParametro
           AND CAB.ESTADO           = Cv_Estado
           AND DET.ESTADO           = Cv_Estado
+          AND DET.EMPRESA_COD      =  Cv_EmpresaCod 
         ORDER BY DET.ID_PARAMETRO_DET ASC;
     --
+    Lv_EmpresaCod           VARCHAR2(100);
     Lv_identificacion       VARCHAR2(300);
     Lv_tipoIdentificacion   VARCHAR2(7);
     Lv_tipoPersona          VARCHAR2(3);
@@ -239,7 +276,7 @@ BEGIN
     Lv_apellido             := APEX_JSON.get_varchar2(p_path => 'apellidos');
     Ln_formaContacto        := APEX_JSON.get_count(p_path => 'contactos');
     Lv_IdDocumentoRelacion  := APEX_JSON.get_varchar2(p_path => 'idDocumentoRelacion');
-    Lv_usrCreacion          := SUBSTR(APEX_JSON.get_varchar2(p_path => 'usrCreacion'),0,32);
+    Lv_usrCreacion          := SUBSTR(APEX_JSON.get_varchar2(p_path => 'usrCreacion'),0,32); 
     Lv_ipCreacion           := APEX_JSON.get_varchar2(p_path => 'ipCreacion');
 
     --
@@ -250,6 +287,15 @@ BEGIN
     IF Lv_IdDocumentoRelacion IS NULL THEN
         RAISE_APPLICATION_ERROR(-20101, 'El campo idDocumentoRelacion es obligatorio');
     END IF;
+    
+     
+    
+    OPEN  C_OBTENER_EMPRESA_COD (Lv_IdDocumentoRelacion, 'Activo');
+    FETCH  C_OBTENER_EMPRESA_COD  INTO  Lv_EmpresaCod  ;
+    CLOSE  C_OBTENER_EMPRESA_COD ;
+     
+    
+    
     --
     --
     -- CONSULTAR SI LA PERSONA EXISTE EN LA INFO_PERSONA
@@ -291,7 +337,7 @@ BEGIN
         --
     ELSE
         --UPDATE DE LA TABLA INFO_PERSONA
-        OPEN C_PARAMETROS('REQUIERE_ACTUALIZAR_PERSONA','Activo');
+        OPEN C_PARAMETROS('REQUIERE_ACTUALIZAR_PERSONA','Activo', Lv_EmpresaCod);
         FETCH C_PARAMETROS INTO Lv_ValorParametro;
         CLOSE C_PARAMETROS;
         --
@@ -436,7 +482,7 @@ BEGIN
         --
         -- consultamos la cab_enunciado de lista blanca.
         --
-        OPEN c_cab_enunciado(Lv_CodigoListaBlanca, 'Activo');
+        OPEN c_cab_enunciado(Lv_CodigoListaBlanca, 'Activo', k.empresaCod);
         FETCH c_cab_enunciado INTO Ln_IdCabEnunciado;
         CLOSE c_cab_enunciado;
 
@@ -464,7 +510,7 @@ BEGIN
         --
         -- consultamos la cab_enunciado de lista negra.
         --
-        OPEN c_cab_enunciado(Lv_CodigoListaNegra, 'Activo');
+        OPEN c_cab_enunciado(Lv_CodigoListaNegra, 'Activo', k.empresaCod);
         FETCH c_cab_enunciado INTO Ln_IdCabEnunciado;
         CLOSE c_cab_enunciado;
 
@@ -506,9 +552,7 @@ BEGIN
         END LOOP;
         --
 
-        IF Lv_TipoRolBuscar IS NULL THEN
-            CONTINUE;
-        END IF;
+
 
         --CONSULTAR SI EL ENUNCIADO TIENE REGISTRADA UNA LISTA BLANCA O NEGRA.
         IF Lb_RequierePersonaEmp = FALSE THEN
@@ -516,11 +560,11 @@ BEGIN
         END IF;
 
         --CONSULTAR EN LA INFO_PERSONA_EMPRESA_ROL EXISTE CON EL ROL LISTA BLANCA O NEGRA
-        --EN BASE A LA ENCUESTA LO QUE HUBIERE ENCONTRADO
+        --EN BASE A LA ENCUESTA LO QUE HUBIERE ENCONTRADO 
         IF Ln_personaEmpresaRolId IS NULL THEN
             dbms_output.put_line('Lv_TipoRol  '||Lv_TipoRol);
             dbms_output.put_line('Lv_TipoRolBuscar  '||Lv_TipoRolBuscar);
-            OPEN C_EMPRESA_ROL(Lv_TipoRol, Lv_TipoRolBuscar);
+            OPEN C_EMPRESA_ROL(Lv_TipoRol, Lv_TipoRolBuscar, k.empresaCod);
             FETCH C_EMPRESA_ROL INTO Ln_IdEmpresaRol;
             close C_EMPRESA_ROL;
 
@@ -640,11 +684,12 @@ PROCEDURE P_BUSQUEDA_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
             AND ACEN.ESTADO                  = Cv_ESTADO
             AND ROWNUM < 2;
     --
-    CURSOR C_CAB_ENUNCIADO(Cv_codigo VARCHAR2, Cv_ESTADO VARCHAR2) IS
+    CURSOR C_CAB_ENUNCIADO(Cv_codigo VARCHAR2, Cv_ESTADO VARCHAR2, Cv_empresaCod VARCHAR2) IS
         SELECT ID_CAB_ENUNCIADO
           FROM DB_DOCUMENTO.ADMI_CAB_ENUNCIADO
          WHERE CODIGO = Cv_codigo
-           AND ESTADO = Cv_ESTADO;
+           AND ESTADO = Cv_ESTADO
+           AND EMPRESA_COD = Cv_empresaCod;
     --
     CURSOR C_FORMA_CONTACTO (Cn_IdPersona NUMBER, Cv_ESTADO VARCHAR2) IS
         SELECT IPFC.FORMA_CONTACTO_ID, IPFC.VALOR
@@ -686,6 +731,7 @@ PROCEDURE P_BUSQUEDA_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
     Lv_valorFormaContacto   VARCHAR2(500);
     Lv_nombre               VARCHAR2(500);
     Lv_apellido             VARCHAR2(500);
+    Lv_empresaCod           VARCHAR2(5);
     --
     La_RegistrosPerEnun     T_RegistrosPerEnun;
     Lv_sqlPerEmpRolEnum     VARCHAR2(4000);
@@ -693,6 +739,7 @@ PROCEDURE P_BUSQUEDA_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
     Lv_sqlTable             VARCHAR2(3000);
     Lv_sqlWhere             VARCHAR2(3000);
     --
+    Lv_nombreRoles          VARCHAR2(100):='''Cliente'',''Pre-cliente''';
     Lv_codigoBlanco         VARCHAR2(30):='OR-LB';
     Lv_codigoNegro          VARCHAR2(30):='OR-LN';
     Lv_codigoBuscar         VARCHAR2(30);
@@ -724,9 +771,14 @@ BEGIN
     Lv_valorFormaContacto   := APEX_JSON.get_varchar2(p_path => 'detalleContacto.contacto');
     Lv_nombre               := APEX_JSON.get_varchar2(p_path => 'nombres');
     Lv_apellido             := APEX_JSON.get_varchar2(p_path => 'apellidos');
+    Lv_empresaCod           := APEX_JSON.get_varchar2(p_path => 'empresaCod');
 
     IF Lv_estado IS NULL THEN
         RAISE_APPLICATION_ERROR(-20101, 'El campo estado es obligatorio');
+    END IF;
+
+    IF Lv_empresaCod IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20101, 'El campo empresaCod es obligatorio');
     END IF;
     --
     
@@ -748,10 +800,9 @@ BEGIN
                                     AND pero.persona_id = ipsa.id_persona
                                     AND ipsa.id_persona = INFP.ID_PERSONA
                                     AND PERO.estado = ''Activo''
-                                    AND PERO.EMPRESA_ROL_ID in(813,1542)
                                     AND IROL.estado = ''Activo''
-                                    AND IROL.empresa_cod = 18
-                                    AND atro.descripcion_tipo_rol <> ''listaPersona''
+                                    AND IROL.empresa_cod = ' || Lv_empresaCod || '
+                                    AND ATRO.descripcion_tipo_rol IN (' || Lv_nombreRoles || ')
                                     AND ROWNUM < 2),''PROSPECTO'') TIPO_PERSONA,
                                 INFP.NOMBRES, 
                                 INFP.APELLIDOS,
@@ -764,12 +815,14 @@ BEGIN
     Lv_sqlTable     := ' 
                             FROM DB_COMERCIAL.INFO_PERSONA INFP,
                                 DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
-                                DB_COMERCIAL.INFO_PERSONA_EMP_ROL_ENUNCIADO IERE';
+                                DB_COMERCIAL.INFO_PERSONA_EMP_ROL_ENUNCIADO IERE,
+                                DB_COMERCIAL.INFO_EMPRESA_ROL IER';
 
     Lv_sqlWhere     := '                             
                             WHERE INFP.ID_PERSONA = IPER.PERSONA_ID
                                 AND IPER.ID_PERSONA_ROL = IERE.PERSONA_EMPRESA_ROL_ID
-                                AND IPER.ID_PERSONA_ROL = IERE.PERSONA_EMPRESA_ROL_ID
+                                AND IPER.EMPRESA_ROL_ID = IER.ID_EMPRESA_ROL
+                                AND IER.EMPRESA_COD = ' || Lv_empresaCod || '
                                 AND IERE.ESTADO IN (SELECT REGEXP_SUBSTR(TRIM('''||Lv_estado||'''),''[^,]+'', 1, LEVEL) FROM DUAL
                                 CONNECT BY REGEXP_SUBSTR(TRIM('''||Lv_estado||'''),''[^,]+'', 1, LEVEL) IS NOT NULL) ';
     --
@@ -815,7 +868,7 @@ BEGIN
     EXECUTE IMMEDIATE Lv_sqlPerEmpRolEnum BULK COLLECT INTO La_RegistrosPerEnun;
     --
     IF La_RegistrosPerEnun.COUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20102, 'No se encontraron registros');
+        RAISE_APPLICATION_ERROR(-20101, 'No se encontraron registros');
     END IF;
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     apex_json.open_array;
@@ -851,7 +904,7 @@ BEGIN
                 RAISE_APPLICATION_ERROR(-20101, 'El parametro lista no es valido - '||Lv_lista);
             ELSE
                 --
-                OPEN c_cab_enunciado(Lv_codigoBuscar, 'Activo');
+                OPEN c_cab_enunciado(Lv_codigoBuscar, 'Activo', Lv_empresaCod);
                 FETCH c_cab_enunciado INTO Ln_IdCabEnunciado;
                 CLOSE c_cab_enunciado;
                 --
@@ -868,11 +921,11 @@ BEGIN
             END IF;
         ELSE
             --Obtener el id de la lista blanca
-            OPEN c_cab_enunciado(Lv_codigoBlanco, 'Activo');
+            OPEN c_cab_enunciado(Lv_codigoBlanco, 'Activo', Lv_empresaCod);
             FETCH c_cab_enunciado INTO Ln_IdCabEnunciadoBlanco;
             CLOSE c_cab_enunciado;
             --Obtener el id de la lista negra
-            OPEN c_cab_enunciado(Lv_codigoNegro, 'Activo');
+            OPEN c_cab_enunciado(Lv_codigoNegro, 'Activo', Lv_empresaCod);
             FETCH c_cab_enunciado INTO Ln_IdCabEnunciadoNegro;
             CLOSE c_cab_enunciado;
             --
@@ -968,7 +1021,7 @@ BEGIN
     Pcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
     IF NOT Lb_HayProceso THEN
-      RAISE_APPLICATION_ERROR(-20102, 'No existe registros a buscar');
+      RAISE_APPLICATION_ERROR(-20101, 'No existe registros a buscar');
     END IF;
     --
     Pv_Mensaje   := Pv_Mensaje||' Transacción realizada correctamente.';
@@ -982,9 +1035,6 @@ EXCEPTION
         Pv_Mensaje    := SUBSTR(REGEXP_SUBSTR(SQLERRM,':[^:]+'),2);
         IF SQLCODE = -20101 THEN
             Pv_Status  := 'ERROR-CONTROL';
-        END IF;
-        IF SQLCODE = -20102 THEN
-            Pv_Status  := 'ERROR-NOT-FOUND';
         END IF;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONTRATO',
                                                 'DB_COMERCIAL.CMKG_LISTA_PERSONA.P_BUSQUEDA_PERSONA_LISTA',
