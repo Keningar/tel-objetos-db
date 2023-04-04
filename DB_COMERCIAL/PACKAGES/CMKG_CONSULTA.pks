@@ -2944,7 +2944,6 @@ create or replace package body DB_COMERCIAL.CMKG_CONSULTA is
     AND IPMD.ESTADO = decode(Cv_Estado,'Finalizado',IPMD.ESTADO,Cv_Estado)
     AND ip.ESTADO = 'Activo'
     AND iper.ESTADO = 'Activo'
-    AND per.ESTADO ='Activo'
     AND iperc.ESTADO = 'Activo'
     GROUP BY per.IDENTIFICACION_CLIENTE,NOMBRES,iperc.VALOR,
     iper.ID_PERSONA_ROL,ipmd.estado,per.APELLIDOS;
