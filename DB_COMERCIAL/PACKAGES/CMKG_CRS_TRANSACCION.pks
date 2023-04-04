@@ -91,20 +91,26 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
         WHERE ipc.PERSONA_EMPRESA_ROL_ID =  Cn_IdPersonaEmpRol 
         AND   ipc. ESTADO= 'Activo';
 
-     CURSOR C_GetPunto(Cn_IdPersonaDestino NUMBER) IS
-        SELECT  ip.* FROM DB_COMERCIAL.INFO_PUNTO ip 
-            WHERE ip.PERSONA_EMPRESA_ROL_ID IN (SELECT IPER.ID_PERSONA_ROL FROM DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
-                WHERE IPER.PERSONA_ID = Cn_IdPersonaDestino) 
-            AND ip.ESTADO != 'Eliminado' ;
+     CURSOR C_GetPunto(Cn_IdPersonaEmpresaRol NUMBER) IS
+        SELECT          
+        ip.ID_PUNTO,
+        ip.LOGIN,
+        ip.ESTADO
+        FROM 
+        DB_COMERCIAL.INFO_PUNTO ip 
+        WHERE ip.PERSONA_EMPRESA_ROL_ID = Cn_IdPersonaEmpresaRol
+        AND ip.ESTADO != 'Eliminado' ;
 
-    CURSOR C_GetPuntoComparar(Cn_IdPersonaRol NUMBER, Cn_PuntoCoberturaId NUMBER, Cn_TipoNegocio NUMBER, Cn_TipoUbicacion  NUMBER, Cn_SectorId  NUMBER, Cv_Direccion VARCHAR2,  Cv_Latitud VARCHAR2, Cv_Longitud VARCHAR2) IS
-        SELECT  ip.* FROM DB_COMERCIAL.INFO_PUNTO ip 
-        WHERE ip.PERSONA_EMPRESA_ROL_ID = Cn_IdPersonaRol
-         AND  ip.PUNTO_COBERTURA_ID = Cn_PuntoCoberturaId
-         AND  ip.TIPO_NEGOCIO_ID = Cn_TipoNegocio
-         AND  ip.TIPO_UBICACION_ID = Cn_TipoUbicacion
-         AND  ip.SECTOR_ID = Cn_SectorId
-         AND  ip.DIRECCION = Cv_Direccion; 
+    CURSOR C_GetPuntoComparar( Cn_IdPersonaEmpresaRol NUMBER, Cv_Login VARCHAR2) IS
+        SELECT  
+        ip.ID_PUNTO,
+        ip.LOGIN,
+        ip.ESTADO
+        FROM 
+        DB_COMERCIAL.INFO_PUNTO ip 
+        WHERE ip.PERSONA_EMPRESA_ROL_ID = Cn_IdPersonaEmpresaRol
+        AND ip.LOGIN = Cv_Login
+        AND ip.ESTADO != 'Eliminado' ;
 
      CURSOR C_GetServicio(Cn_IdPunto VARCHAR2) IS
        SELECT  is2.* FROM DB_COMERCIAL.INFO_SERVICIO is2 
@@ -381,16 +387,9 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 
 --11.- RESTAURAR INFO_PERSONA_REPRESENTANTE(EL PAQUETE REPRESENTANTE SOBRE ESCRIBE LOS REGISTROS)
 --12.- REVERSO INFO_PUNTO
-       FOR Pcl_PuntoDestino IN C_GetPunto(Pcl_ClienteDestino.ID_PERSONA)  LOOP 
+       FOR Pcl_PuntoOrigen IN C_GetPunto(Pcl_ClienteOrigen.ID_PERSONA_ROL)  LOOP 
 
-              FOR Pcl_PuntoOrigen IN C_GetPuntoComparar(    Pcl_ClienteOrigen.ID_PERSONA_ROL, 
-                                                            Pcl_PuntoDestino.PUNTO_COBERTURA_ID,
-                                                            Pcl_PuntoDestino.TIPO_NEGOCIO_ID,
-                                                            Pcl_PuntoDestino.TIPO_UBICACION_ID,
-                                                            Pcl_PuntoDestino.SECTOR_ID,
-                                                            Pcl_PuntoDestino.DIRECCION,
-                                                            Pcl_PuntoDestino.LATITUD,
-                                                            Pcl_PuntoDestino.LONGITUD)  LOOP 
+              FOR Pcl_PuntoDestino IN C_GetPuntoComparar( Pcl_ClienteDestino.ID_PERSONA_ROL, Pcl_PuntoOrigen.LOGIN||'2')  LOOP 
 
 --13.- REVERSO INFO_PUNTO
                    UPDATE  DB_COMERCIAL.INFO_PUNTO ip SET 
@@ -431,6 +430,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                    Pcl_PuntoHisto.IP_CREACION        := Lv_ClientIp ;  
                    INSERT INTO DB_COMERCIAL.INFO_PUNTO_HISTORIAL  VALUES  Pcl_PuntoHisto;
                    COMMIT;
+
                    dbms_output.put_line('PUNTO  EN ORIGEN '||Pcl_PuntoDestino.ESTADO||' ID_PUNTO=>'||Pcl_PuntoOrigen.ID_PUNTO );                                          
 
 
@@ -445,7 +445,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 
                     dbms_output.put_line('SERVICIO PUNTO_ID =>'||Pcl_PuntoDestino.ID_PUNTO );
                     FOR Pcl_ServicioDestino IN C_GetServicio( Pcl_PuntoDestino.ID_PUNTO)  LOOP             
-                        dbms_output.put_line('SERVICIO  OBSERVACION=>'|| Pcl_ServicioDestino.OBSERVACION); 
+                        dbms_output.put_line('SERVICIO  OBSERVACION =>'|| Pcl_ServicioDestino.OBSERVACION); 
                          FOR Pcl_ServicioOrigen IN C_GetServicioComparar(Pcl_ServicioDestino.OBSERVACION)  LOOP 
 
         --16.- REVERSO INFO_SERVICIO 

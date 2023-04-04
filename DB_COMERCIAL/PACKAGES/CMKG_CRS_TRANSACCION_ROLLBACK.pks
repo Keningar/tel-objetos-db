@@ -379,61 +379,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
           dbms_output.put_line( 'INFO_CONTRATO_FORMA_PAGO EN ORIGEN CONTRATO_ID =>'|| Pcl_ClienteOrigen.ID_CONTRATO); 
         END IF;   
 
---11.- RESTAURAR INFO_PERSONA_REPRESENTANTE
-      IF (Lv_PrefijoEmpresa ='MD' AND  Pcl_ClienteOrigen.TIPO_TRIBUTARIO  =  'JUR' )THEN 
-
-             UPDATE  DB_COMERCIAL.INFO_PERSONA_REPRESENTANTE ipr  SET 
-             ipr.ESTADO = Lv_EstadoActivo  
-             WHERE ipr.PERSONA_EMPRESA_ROL_ID = Pcl_ClienteOrigen.ID_PERSONA_ROL  
-             AND   ipr.ESTADO  IN (Lv_EstadoEliminado)
-             RETURNING  ipr.REPRESENTANTE_EMPRESA_ROL_ID  INTO  Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID ;
-             COMMIT; 
-             dbms_output.put_line( 'INFO_PERSONA_REPRESENTANTE EN ORIGEN REPRESENTANTE_EMPRESA_ROL_ID =>'|| Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID); 
-
-             IF Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID is  NOT NULL THEN 
-               UPDATE  INFO_PERSONA_EMPRESA_ROL iper SET 
-               iper.ESTADO = Lv_EstadoActivo
-               WHERE  iper.ID_PERSONA_ROL =   Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID
-               AND    iper.ESTADO  IN (Lv_EstadoEliminado);
-               COMMIT; 
-               dbms_output.put_line( 'INFO_PERSONA_EMPRESA_ROL DE REPRESENTANTE EN ORIGEN ID_PERSONA_ROL =>'|| Pcl_ClienteOrigen.REPRESENTANTE_EMPRESA_ROL_ID); 
-             END IF ;
-
-             UPDATE  DB_COMERCIAL.INFO_PERSONA_REPRESENTANTE ipr  SET 
-             ipr.ESTADO = Lv_EstadoEliminado
-             WHERE ipr.PERSONA_EMPRESA_ROL_ID = Pcl_ClienteDestino.ID_PERSONA_ROL  
-             AND  ipr.ESTADO IN (Lv_EstadoActivo)
-             RETURNING  ipr.REPRESENTANTE_EMPRESA_ROL_ID  INTO  Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID ;
-             COMMIT;
-             dbms_output.put_line('INFO_PERSONA_REPRESENTANTE EN DESTINO REPRESENTANTE_EMPRESA_ROL_ID =>'|| Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID);
-
-             IF Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID IS  NOT NULL THEN 
-               UPDATE  INFO_PERSONA_EMPRESA_ROL iper SET 
-               iper.ESTADO = Lv_EstadoEliminado
-               WHERE  iper.ID_PERSONA_ROL =   Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID
-               AND    iper.ESTADO  IN (Lv_EstadoActivo);
-               COMMIT; 
-               dbms_output.put_line( 'INFO_PERSONA_EMPRESA_ROL DE REPRESENTANTE EN DESTINO ID_PERSONA_ROL =>'|| Pcl_ClienteDestino.REPRESENTANTE_EMPRESA_ROL_ID); 
-
-             END IF ; 
-         END IF; 
-         
-       IF (Lv_PrefijoEmpresa ='MD' AND  Pcl_ClienteDestino.TIPO_TRIBUTARIO  =  'JUR' )THEN 
-           --11.1 .- Se inactiva el representante legal del destino.
-           OPEN  C_GetRepresentanteLegal(Pcl_ClienteDestino.ID_PERSONA); 
-           FETCH C_GetRepresentanteLegal INTO  Pcl_RepresentanteLegal;  
-           CLOSE C_GetRepresentanteLegal;
-
-           IF (Pcl_RepresentanteLegal.ID_PERSONA_REPRESENTANTE IS NOT NULL)  THEN 
-                 UPDATE info_persona_representante  SET
-                    estado = Lv_EstadoEliminado,
-                    usr_ult_mod = Lv_UsrCreacion
-                  WHERE ID_PERSONA_REPRESENTANTE = Pcl_RepresentanteLegal.ID_PERSONA_REPRESENTANTE;
-                 COMMIT;
-           END IF; 
-       END IF; 
-
- 
+--11.- RESTAURAR INFO_PERSONA_REPRESENTANTE(EL PAQUETE REPRESENTANTE SOBRE ESCRIBE LOS REGISTROS)
 --12.- REVERSO INFO_PUNTO
        FOR Pcl_PuntoDestino IN C_GetPunto(Pcl_ClienteDestino.ID_PERSONA)  LOOP 
 
@@ -464,11 +410,17 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                    COMMIT;
                    dbms_output.put_line('PUNTO EN  DESTINO ELIMINADO ID_PUNTO=>'||Pcl_PuntoDestino.ID_PUNTO );                                          
 
-
+                  IF Pcl_PuntoDestino.ESTADO = 'Pendiente' THEN
+                   UPDATE  DB_COMERCIAL.INFO_PUNTO ip SET  
+                   ip.ESTADO          = Lv_EstadoActivo
+                   WHERE ip.ID_PUNTO  = Pcl_PuntoOrigen.ID_PUNTO;              
+                   COMMIT;
+                  ELSE
                    UPDATE  DB_COMERCIAL.INFO_PUNTO ip SET  
                    ip.ESTADO          = Pcl_PuntoDestino.ESTADO
                    WHERE ip.ID_PUNTO  = Pcl_PuntoOrigen.ID_PUNTO;              
                    COMMIT;
+                  END IF;
 
                    Pcl_PuntoHisto                    := NULL; 
                    Pcl_PuntoHisto.ID_PUNTO_HISTORIAL := DB_COMERCIAL.SEQ_INFO_PUNTO_HISTORIAL.NEXTVAL;
@@ -497,9 +449,15 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                          FOR Pcl_ServicioOrigen IN C_GetServicioComparar(Pcl_ServicioDestino.OBSERVACION)  LOOP 
 
         --16.- REVERSO INFO_SERVICIO 
+                                IF Pcl_ServicioDestino.ESTADO = 'PreActivo' THEN
+                                UPDATE DB_COMERCIAL.INFO_SERVICIO is2 SET  
+                                is2.ESTADO               = Lv_EstadoActivo 
+                                WHERE   is2.ID_SERVICIO  = Pcl_ServicioOrigen.ID_SERVICIO;
+                                ELSE
                                 UPDATE DB_COMERCIAL.INFO_SERVICIO is2 SET  
                                 is2.ESTADO               = Pcl_ServicioDestino.ESTADO 
                                 WHERE   is2.ID_SERVICIO  = Pcl_ServicioOrigen.ID_SERVICIO;
+                                END IF;
                                 COMMIT;  
                                 dbms_output.put_line('INFO_SERVICIO EN ORIGEN '||Pcl_ServicioDestino.ESTADO ||' ID_SERVICIO=>' ||Pcl_ServicioOrigen.ID_SERVICIO);
 
@@ -698,7 +656,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                             Pcl_ServicioHisto.USR_CREACION          := Lv_UsrCreacion ;   
                             Pcl_ServicioHisto.FE_CREACION           := SYSDATE;
                             Pcl_ServicioHisto.IP_CREACION           := Lv_ClientIp ;  
-                            Pcl_ServicioHisto.ESTADO                := Lv_EstadoActivo;
+                            Pcl_ServicioHisto.ESTADO                := Lv_EstadoEliminado;
                             Pcl_ServicioHisto.OBSERVACION           := Lv_MotivoReverso;  
                             INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL VALUES  Pcl_ServicioHisto ; 
                             dbms_output.put_line('INFO_SERVICIO_HISTORIAL EN ORIGEN CREADO ID_SERVICIO_HISTORIAL=>' ||Pcl_ServicioHisto.ID_SERVICIO_HISTORIAL  );
