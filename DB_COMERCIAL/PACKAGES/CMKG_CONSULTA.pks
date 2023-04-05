@@ -2362,7 +2362,10 @@ create or replace package body DB_COMERCIAL.CMKG_CONSULTA is
                   Ln_Impuesto   := Ln_Impuesto + ((Lv_PrecioProducto)* (Ln_PorcentajeImps/100));
                 END IF;
 
+                IF Lv_NombrePlan IS NOT NULL
+                THEN 
                 Pcl_ResponseList.NOMBRE_PLAN := Lv_NombrePlan;
+                END IF;
 
                 Ln_CantidadProductoTec := Ln_CantidadProductoTec + 1;
 
