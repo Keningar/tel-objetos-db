@@ -112,11 +112,22 @@ PROCEDURE P_GET_DATA_CIFRAR (Pv_IdentificacionCliente IN DB_COMERCIAL.INFO_PERSO
  * @author William Sanchez <wdsanchez@telconet.ec>
 */
 PROCEDURE P_CLI_DATA_CIFRAR (Pcl_Request IN CLOB,
-                             Pcl_Resultado OUT CLOB);    
+                             Pcl_Resultado OUT CLOB);   
+                             
+                            
+  /**
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
+ *
+ * P_CLI_DATA_DESCIFRAR
+ * Procedimiento para validacion de  descifrado para clientes.
+ * @since 1.0
+ * @author William Sanchez <wdsanchez@telconet.ec>
+*/
+PROCEDURE P_CLI_DATA_DESCIFRAR (Pcl_Request IN CLOB,
+                             Pcl_Resultado OUT CLOB);   
 
 
-
-
+                            
 END SPKG_DERECHO_LEGAL;
 /
 create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
@@ -137,7 +148,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
   
   
   
-  --costo: 11
+  
   CURSOR C_GET_CLIENTE_VALIDO(Cv_identificacion VARCHAR2) IS
         SELECT
         IPE.ID_PERSONA,IPER.ID_PERSONA_ROL
@@ -174,8 +185,8 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
      IF  Lv_IdPersona IS NOT NULL THEN
      
       Lv_Retorno := '000';
-      Lv_Error := 'Exito.';
-      Pv_Mensaje := 'Exito.';
+      Lv_Error := 'Éxito.';
+      Pv_Mensaje := 'Éxito.';
      
      
      Pcl_Response := '{' ||
@@ -251,7 +262,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
   Lcl_Response           SYS_REFCURSOR;
   Le_Errors              EXCEPTION; 
   
-  --costo: 10
+  
   CURSOR C_GET_CLIENTE_CARACT(Cv_identificacion VARCHAR2) IS
    select IP.ID_PERSONA from 
       DB_COMERCIAL.INFO_PERSONA IP,
@@ -400,6 +411,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        
        FETCH Lcl_Response INTO Lv_IdPersona, Lv_Identificacion2, Lv_RazonSocial, Lv_Nombres, Lv_Apellidos, Ln_Saldo;
        
+        DBMS_OUTPUT.PUT_LINE('DEUDA '||Ln_Saldo);
        
        IF Ln_Saldo IS NULL THEN 
         Ln_SaldoTotal:=0;
@@ -410,7 +422,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        IF Ln_SaldoTotal > 0 THEN
        
            Lv_Retorno := '007';
-           Lv_Error := 'El cliente no cumple las condiciones de eliminación ya que tiene deudas pendientes.';
+           Lv_Error := 'El cliente no cumple las condiciones de eliminación, ya que tiene deudas pendientes.';
            
            
            Pcl_Response := '{' ||
@@ -420,13 +432,13 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                             || '}';
 
                 Pv_Status := 'ERROR';
-                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminación ya que tiene deudas pendientes.';
+                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminación, ya que tiene deudas pendientes.';
            
        
        ELSE 
        
            Lv_Retorno := '000';
-           Lv_Error := 'Exito.';
+           Lv_Error := 'Éxito.';
            
             Pcl_Response := '{' ||
                                 '"retorno":"' || Lv_Retorno || '",' ||
@@ -504,7 +516,6 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
    Li_Limit                    CONSTANT PLS_INTEGER DEFAULT 50;    
    Li_Cont_Servicio            PLS_INTEGER;
   
-  --costo: 12
    CURSOR C_GET_CLIENTE_SERVI(Cv_identificacion VARCHAR2) IS
             select IFO.ID_SERVICIO,IFO.ESTADO
         from DB_COMERCIAL.INFO_PERSONA  IP,
@@ -559,7 +570,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             Lv_IdServicio:=  Le_Servicio(Li_Cont_Servicio).ID_SERVICIO; 
             Lv_Estado:=  Le_Servicio(Li_Cont_Servicio).ESTADO; 
             
-            IF upper(Lv_Estado) not in ('CANCEL','CANCELADO') THEN
+            IF upper(Lv_Estado) in ('ACTIVO') THEN
              Lb_banderaSer:=false; 
             END IF; 
             
@@ -572,7 +583,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        IF Lb_banderaSer != true THEN 
        
            Lv_Retorno := '006';
-           Lv_Error := 'El cliente no cumple las condiciones de eliminación ya que no tiene todos los servicios cancelados';
+           Lv_Error := 'El cliente no cumple las condiciones de eliminación, ya que no tiene todos los servicios cancelados';
            
            
            Pcl_Response := '{' ||
@@ -582,13 +593,13 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                                 || '}';
 
                 Pv_Status := 'ERROR';
-                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminación ya que no tiene todos los servicios cancelados';
+                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminación, ya que no tiene todos los servicios cancelados';
            
        
        ELSE 
        
            Lv_Retorno := '000';
-           Lv_Error := 'Exito.';
+           Lv_Error := 'Éxito.';
            
               
            Pcl_Response := '{' ||
@@ -686,7 +697,6 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
   Li_Cont_Punto         PLS_INTEGER;
   Li_Cont_Tarea         PLS_INTEGER;
   
-     --costo: 12
     CURSOR C_GET_CLIENTE_PUNTO(Cv_identificacion VARCHAR2) IS
             select IPU.ID_PUNTO
         from DB_COMERCIAL.INFO_PERSONA  IP,
@@ -708,7 +718,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        and EMP.EMPRESA_COD = '18'
        group by IPU.ID_PUNTO; 
        
-       --costo: 5
+       
     CURSOR C_GET_PARAM_SOL_ENTREGA IS
     select det.valor2 from DB_GENERAL.ADMI_PARAMETRO_DET det
      where det.PARAMETRO_ID in (
@@ -718,7 +728,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
       )
       AND DESCRIPCION = 'TAREA_ENTREGA_EQUIPO';       
        
-     --costo: 5   
+       
     CURSOR C_GET_PARAM_SOL_PAGO IS
     select det.valor2 from DB_GENERAL.ADMI_PARAMETRO_DET det
      where det.PARAMETRO_ID in (
@@ -731,7 +741,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        
       
       --BANDERA_FINALIZA_TAREA
-       --costo: 5
+      
       CURSOR C_GET_PARAM_BANDERA IS
     select det.valor2 from DB_GENERAL.ADMI_PARAMETRO_DET det
      where det.PARAMETRO_ID in (
@@ -741,7 +751,6 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
       )
       AND DESCRIPCION = 'BANDERA_FINALIZA_TAREA';   
  
-  --costo: 12
    CURSOR C_GET_VALIDA_SOL_ENTREGA(Cv_idPunto VARCHAR2) IS 
        SELECT
         (
@@ -846,16 +855,16 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        WHILE (Li_Cont_Tarea IS NOT NULL) LOOP  
             Lv_IdTarea:=  Le_Tarea(Li_Cont_Tarea).TAREA_ID; 
             Lv_EstadoTarea:=  Le_Tarea(Li_Cont_Tarea).ESTADO_TAREA; 
-           
+            Lv_Estado:=   Le_Tarea(Li_Cont_Tarea).ESTADO;          
              
-            IF Lv_IdTarea in (Lv_param_TareaEntrega,Lv_param_TareaPago) AND Lv_param_Bandera in ('S') AND Lv_EstadoTarea = 'Finalizada' THEN
+            IF Lv_IdTarea in (Lv_param_TareaEntrega,Lv_param_TareaPago) AND Lv_param_Bandera in ('S') AND Lv_EstadoTarea = 'Finalizada' AND Lv_Estado = 'Activo' THEN
               
               Lb_bandera_vali := true;
                DBMS_OUTPUT.PUT_LINE('Equipo entregado a punto: '||Lv_IdPunto);
               
             END IF;
              
-            IF Lv_IdTarea in (Lv_param_TareaEntrega,Lv_param_TareaPago) AND NOT Lv_param_Bandera in ('S') THEN
+            IF Lv_IdTarea in (Lv_param_TareaEntrega,Lv_param_TareaPago) AND NOT Lv_param_Bandera in ('S')  AND Lv_Estado = 'Activo'  THEN
               
                Lb_bandera_vali := true;
                DBMS_OUTPUT.PUT_LINE('Equipo entregado a punto: '||Lv_IdPunto);
@@ -877,7 +886,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             DBMS_OUTPUT.PUT_LINE('Todo entregado');
             
              Lv_Retorno := '000';
-             Lv_Error := 'Exito.';
+             Lv_Error := 'Éxito.';
              
              Pv_Status     := 'OK';
              Pv_Mensaje    := 'Transacción exitosa'; 
@@ -887,10 +896,10 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             DBMS_OUTPUT.PUT_LINE('Falta entregar algo');
             
              Lv_Retorno := '008';
-             Lv_Error := 'El cliente no cumple las condiciones de eliminacion ya que tiene pendiente la entrega de equipos';
+             Lv_Error := 'El cliente no cumple las condiciones de eliminación, ya que tiene pendiente la entrega de equipos';
              
              Pv_Status     := 'ERROR';
-             Pv_Mensaje    := 'El cliente no cumple las condiciones de eliminacion ya que tiene pendiente la entrega de equipos';
+             Pv_Mensaje    := 'El cliente no cumple las condiciones de eliminación, ya que tiene pendiente la entrega de equipos';
            
            END IF;
            
@@ -985,7 +994,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        IF Lv_Retorno = '004' THEN   
           lb_bandera := FALSE;
        END IF;
-        
+        lb_bandera := TRUE;
         --2do validar servicios cancelados
         
         IF lb_bandera = TRUE THEN
@@ -1050,7 +1059,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             ELSE
           
             Lv_Retorno := '000';
-            Lv_Error := 'Exito.';
+            Lv_Error := 'Éxito.';
             
             
             Pcl_Response := '{' ||
@@ -1260,7 +1269,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             APEX_JSON.free_output;
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'DB_COMERCIAL',
-                                          'PSKG_DERECHO_LEGAL.P_VALIDAR_GENERAL_ENCRYPT',
+                                          'PSKG_DERECHO_LEGAL.P_GET_DATA_CIFRAR',
                                           'Problemas al consultar la data a cifrar. Parametros ('||Pv_IdentificacionCliente||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1276,7 +1285,7 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                             || '}';  
    END P_GET_DATA_CIFRAR;
    
-  PROCEDURE P_CLI_DATA_CIFRAR (Pcl_Request IN CLOB,
+   PROCEDURE P_CLI_DATA_CIFRAR (Pcl_Request IN CLOB,
                                 Pcl_Resultado OUT CLOB)  AS
                                 
                                 
@@ -1301,8 +1310,27 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
    Lv_usr_mod                  VARCHAR2(50);
    Lv_ip_mod                   VARCHAR2(50);
    Lv_IdPersonaEmpresa         VARCHAR2(50);
-   Lv_IdServicio                VARCHAR2(50);
+   Lv_IdServicio               VARCHAR2(50);
+   Lv_IdPersonaEmpresaValid           VARCHAR2(50);
    
+     
+     CURSOR C_GET_CLIENTE_CARACT(Cv_identificacion VARCHAR2) IS
+   select IPERC.ID_PERSONA_EMPRESA_ROL_CARACT from 
+      DB_COMERCIAL.INFO_PERSONA IP,
+      DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+      DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC IPERC, 
+      DB_COMERCIAL.ADMI_CARACTERISTICA CA
+   where 
+        IP.IDENTIFICACION_CLIENTE = Cv_identificacion
+    AND IP.ID_PERSONA = IPER.PERSONA_ID
+    AND IPERC.PERSONA_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL
+    AND IPERC.ESTADO = 'Activo'
+    /*AND IPER.ESTADO = 'Activo'*/
+    AND IPERC.CARACTERISTICA_ID = CA.ID_CARACTERISTICA
+    AND CA.estado = 'Activo'
+    AND CA.DESCRIPCION_CARACTERISTICA = 'CLIENTE CIFRADO'
+    AND IPERC.VALOR = 'N'
+    and rownum < 2; 
      
    
    
@@ -1553,53 +1581,63 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
          
          Li_Cont_Servicio := Le_Servicio.NEXT(Li_Cont_Servicio);
         END LOOP;
+        
+        
+        IF C_GET_CLIENTE_CARACT%ISOPEN THEN
+                    CLOSE C_GET_CLIENTE_CARACT;
+                END IF;
+                OPEN C_GET_CLIENTE_CARACT(Lv_Identificacion);
+                FETCH C_GET_CLIENTE_CARACT INTO Lv_IdPersonaEmpresaValid;
+        
+        IF Lv_IdPersonaEmpresaValid IS NULL THEN
          
-      IF C_GET_CLIENTE_ID%ISOPEN THEN
-            CLOSE C_GET_CLIENTE_ID;
-        END IF;
-        OPEN C_GET_CLIENTE_ID(Lv_Identificacion);
+          IF C_GET_CLIENTE_ID%ISOPEN THEN
+                CLOSE C_GET_CLIENTE_ID;
+            END IF;
+            OPEN C_GET_CLIENTE_ID(Lv_Identificacion);
+        
+           FETCH C_GET_CLIENTE_ID BULK COLLECT INTO Le_Persona LIMIT Li_Limit;
+            Li_Cont_Persona_rol := Le_Persona.FIRST;
+          
+           WHILE (Li_Cont_Persona_rol IS NOT NULL) LOOP
+       
+                Lv_IdPersonaEmpresa:=  Le_Persona(Li_Cont_Persona_rol).ID_PERSONA_ROL; 
+        
+                DBMS_OUTPUT.PUT_LINE ('Insert INFO_PERSONA_EMPRESA_ROL_CARAC: '|| Lv_IdPersonaEmpresa);
+                
+                insert into DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC
+                values (
+                DB_COMERCIAL.SEQ_INFO_PERSONA_EMP_ROL_CARAC.NEXTVAL, 
+                Lv_IdPersonaEmpresa,
+               (select CA.ID_CARACTERISTICA from DB_COMERCIAL.ADMI_CARACTERISTICA CA where CA.DESCRIPCION_CARACTERISTICA = 'CLIENTE CIFRADO'),
+                'Y',
+                sysdate,
+                null,
+                Lv_usr_mod,
+                null,
+                Lv_ip_mod,
+                'Activo',
+                null
+               ); 
+                Li_Cont_Persona_rol := Le_Persona.NEXT(Li_Cont_Persona_rol);
     
-       FETCH C_GET_CLIENTE_ID BULK COLLECT INTO Le_Persona LIMIT Li_Limit;
-        Li_Cont_Persona_rol := Le_Persona.FIRST;
-      
-       WHILE (Li_Cont_Persona_rol IS NOT NULL) LOOP
-   
-            Lv_IdPersonaEmpresa:=  Le_Persona(Li_Cont_Persona_rol).ID_PERSONA_ROL; 
-    
-            DBMS_OUTPUT.PUT_LINE ('Insert INFO_PERSONA_EMPRESA_ROL_CARAC: '|| Lv_IdPersonaEmpresa);
-            
-            insert into DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC
-            values (
-            DB_COMERCIAL.SEQ_INFO_PERSONA_EMP_ROL_CARAC.NEXTVAL, 
-            Lv_IdPersonaEmpresa,
-           (select CA.ID_CARACTERISTICA from DB_COMERCIAL.ADMI_CARACTERISTICA CA where CA.DESCRIPCION_CARACTERISTICA = 'CLIENTE CIFRADO'),
-            'Y',
-            sysdate,
-            null,
-            Lv_usr_mod,
-            null,
-            Lv_ip_mod,
-            'Activo',
-            null
-           ); 
-            Li_Cont_Persona_rol := Le_Persona.NEXT(Li_Cont_Persona_rol);
-
-        END LOOP;
-         
+            END LOOP;
+          
+          ELSE
+          
+           update DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC IPERC 
+              set  valor = 'Y', fe_ult_mod = sysdate, usr_ult_mod = Lv_usr_mod
+            where ID_PERSONA_EMPRESA_ROL_CARACT =Lv_IdPersonaEmpresaValid;
+          
+        END IF; 
      
-  
-    
-    
-         
-         
-   
    DBMS_OUTPUT.PUT_LINE('fin ofuscar'); 
         
          
   commit;
   
    Lv_Retorno := '000'; 
-   Lv_Error := 'Exito.';
+   Lv_Error := 'Éxito.';
    Pcl_Resultado  := '{' ||
                                 '"retorno":"' || Lv_Retorno || '",' ||
                                 '"error":"' || Lv_Error || '",' ||
@@ -1643,6 +1681,508 @@ create or replace PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                             || '}';  
    
    END P_CLI_DATA_CIFRAR;
+   
+   PROCEDURE P_CLI_DATA_DESCIFRAR (Pcl_Request IN CLOB,
+                                Pcl_Resultado OUT CLOB)  AS
+       
+   Lcl_Persona                 CLOB;
+   Le_Errors                   EXCEPTION;
+   Lv_Retorno                  VARCHAR2(3);
+   Lv_Error                    VARCHAR2(4000);     
+   lv_cadena                   VARCHAR2(8); 
+   Lv_Identificacion           VARCHAR2(50);
+   Lv_usr_mod                  VARCHAR2(50);
+   Lv_ip_mod                   VARCHAR2(50);
+   
+   l_countInfoPersona              NUMBER;
+   l_countInfoPunto                NUMBER;
+   l_countInfoPesonaFormaContacto  NUMBER;
+   l_countInfoPuntoFormaContacto   NUMBER;
+   l_countInfoContrato             NUMBER;
+   l_countInfoPersonaRepre         NUMBER;
+   l_countInfoInfoConFormaPago     NUMBER;
+   
+   
+   --info persona
+   Ln_idPersona               NUMBER; 
+   Lv_nombres                 VARCHAR2(100);
+   Lv_apellidos               VARCHAR2(100);
+   Lv_nacionalidad            VARCHAR2(50);
+   Lv_genero                  VARCHAR2(50);
+   Lv_numeroConadis           VARCHAR2(50);
+   Lv_tipoEmpresa             VARCHAR2(50);
+   Lv_tipoTributario          VARCHAR2(50);
+   Ln_tituloId                NUMBER;
+   Lv_razonSocial             VARCHAR2(1000);
+   Lv_estadoCivil             VARCHAR2(50);
+   Lv_origenIngresos          VARCHAR2(50);
+   Lv_fechaNacimiento         VARCHAR2(50);
+   Lv_direccion               VARCHAR2(1000);
+   Lv_direccionTributaria     VARCHAR2(1000);
+   Lv_representanteLegal      VARCHAR2(50);
+   
+   --info punto
+   Lv_idPunto                 VARCHAR2(50);
+   Lv_direccionPunto          VARCHAR2(1000);
+   Lv_descripcionPunto        VARCHAR2(1000);
+   Lv_nombrePunto             VARCHAR2(1000);
+   Ln_SectorId                NUMBER;
+   Ln_longitud                FLOAT(126);
+   Ln_latitud                 FLOAT(126);
+   
+    --info punto contacto 
+   Ln_idPuntoFormaContacto   NUMBER;
+   Lv_valorContactoPunto     VARCHAR2(1000); 
+         
+    --info persona contacto 
+   Ln_idPersonaFormaContacto NUMBER ;
+   Lv_valorPersonaFormaContacto VARCHAR2(1000); 
+   
+   --info contrato
+   Ln_idContrato NUMBER;
+   Ln_formaPagoId NUMBER;
+                  
+   --info representante
+   Ln_idPersonaRepresentante NUMBER;
+   Ln_representanteEmpresaRolId NUMBER;
+   
+   --info contrato forma pago 
+      Ln_idDatosPago       NUMBER;
+			Ln_bancoTipoCuentaId NUMBER;
+			Ln_tipoCuentaId      NUMBER;
+			Lv_titularCuenta     VARCHAR2(1000);
+			Lv_anioVencimiento   VARCHAR2(20);
+			Lv_mesVencimiento    VARCHAR2(20);
+   
+   Lv_IdServicio VARCHAR2(50);
+   
+   TYPE typ_rec   IS RECORD
+        (
+          ID_PERSONA_EMPRESA_ROL_CARACT      VARCHAR2(20)
+        );
+   
+   TYPE typ_rec2   IS RECORD
+        (
+          ID_SERVICIO      VARCHAR2(20)
+        );
+   
+    CURSOR C_GET_SERVICIOS(Cv_identificacion VARCHAR2) IS
+     select IFO.id_servicio
+        from DB_COMERCIAL.INFO_PERSONA  IP,
+             DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+             DB_COMERCIAL.INFO_PUNTO IPU,
+             DB_COMERCIAL.INFO_EMPRESA_ROL EMP,
+             DB_COMERCIAL.INFO_SERVICIO IFO,
+             DB_COMERCIAL.INFO_PLAN_DET IPLAN,
+             DB_COMERCIAL.ADMI_PRODUCTO ADMP
+      where
+           IP.IDENTIFICACION_CLIENTE = Cv_identificacion
+       and IPER.PERSONA_ID = IP.ID_PERSONA
+       and EMP.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
+       and IPER.ID_PERSONA_ROL = IPU.PERSONA_EMPRESA_ROL_ID
+       and IPU.ID_PUNTO = IFO.PUNTO_ID 
+       and IFO.PLAN_ID = IPLAN.PLAN_ID
+       and IPLAN.PRODUCTO_ID = ADMP.ID_PRODUCTO
+       and ADMP.NOMBRE_TECNICO = 'INTERNET'
+       and EMP.EMPRESA_COD = '18'; 
+       
+       
+  CURSOR C_GET_CLIENTE_ID(Cv_identificacion VARCHAR2) IS
+    select IPERC.ID_PERSONA_EMPRESA_ROL_CARACT from 
+      DB_COMERCIAL.INFO_PERSONA IP,
+      DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
+      DB_COMERCIAL.INFO_EMPRESA_ROL EROL,
+      DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC IPERC, 
+      DB_COMERCIAL.ADMI_CARACTERISTICA CA,
+      DB_COMERCIAL.ADMI_ROL AROL
+   where 
+        IP.IDENTIFICACION_CLIENTE = Cv_identificacion
+    AND IP.ID_PERSONA = IPER.PERSONA_ID
+    AND IPERC.PERSONA_EMPRESA_ROL_ID = IPER.ID_PERSONA_ROL
+    AND IPERC.ESTADO = 'Activo'
+    AND IPERC.CARACTERISTICA_ID = CA.ID_CARACTERISTICA
+    AND CA.estado = 'Activo'
+    AND CA.DESCRIPCION_CARACTERISTICA = 'CLIENTE CIFRADO'
+    AND IPERC.VALOR = 'Y'
+    AND EROL.ID_EMPRESA_ROL = IPER.EMPRESA_ROL_ID
+    AND EROL.EMPRESA_COD = '18'
+    AND AROL.ID_ROL = EROL.ROL_ID;
+          
+           
+          
+    
+          
+     
+     TYPE Te_Persona IS TABLE OF typ_rec INDEX BY PLS_INTEGER;
+     TYPE Te_Servicio IS TABLE OF typ_rec2 INDEX BY PLS_INTEGER;
+     Le_Persona Te_Persona;  
+     Le_Servicio Te_Servicio;  
+     Li_Limit                    CONSTANT PLS_INTEGER DEFAULT 50;    
+     Li_Cont_Persona_rol         PLS_INTEGER;
+     Li_Cont_Servicio            PLS_INTEGER;
+     
+     Lv_IdPersonaEmpresa varchar2(50);
+   
+      
+                           
+     BEGIN
+     
+   
+    
+       
+       DBMS_OUTPUT.PUT_LINE('APEX_JSON');  
+        
+        APEX_JSON.parse(Pcl_Request);
+        Lv_Identificacion  := UPPER(APEX_JSON.get_varchar2(p_path => 'identificacion'));
+        l_countInfoPersona := APEX_JSON.get_count('infoPersona');
+        l_countInfoPunto := APEX_JSON.get_count('infoPunto');
+        l_countInfoPuntoFormaContacto := APEX_JSON.get_count('infoPuntoFormaContacto');
+        l_countInfoPesonaFormaContacto := APEX_JSON.get_count('infoPersonaFormaContacto');
+        l_countInfoContrato := APEX_JSON.get_count('infoContrato');
+        l_countInfoPersonaRepre := APEX_JSON.get_count('infoPersonaRepresentante');
+        l_countInfoInfoConFormaPago  := APEX_JSON.get_count('infoContratoFormaPago');  
+        
+        
+          Lv_usr_mod   := APEX_JSON.get_varchar2(p_path => 'usuarioMod'); 
+          Lv_ip_mod      := APEX_JSON.get_varchar2(p_path => 'ipMod');
+        
+        DBMS_OUTPUT.PUT_LINE('infoPersona '||l_countInfoPersona);
+        IF l_countInfoPunto is not null 
+        then
+        FOR i IN 1 .. l_countInfoPersona LOOP
+        
+        Ln_idPersona := APEX_JSON.get_number('infoPersona[%d].idPersona', i);
+        Lv_nombres := APEX_JSON.get_varchar2('infoPersona[%d].nombres', i);
+        Lv_apellidos := APEX_JSON.get_varchar2('infoPersona[%d].apellidos', i);
+        Lv_nacionalidad := APEX_JSON.get_varchar2('infoPersona[%d].nacionalidad', i);
+        Lv_genero := APEX_JSON.get_varchar2('infoPersona[%d].genero', i);
+        Lv_numeroConadis := APEX_JSON.get_varchar2('infoPersona[%d].discapacidad', i);
+        Lv_tipoEmpresa := APEX_JSON.get_varchar2('infoPersona[%d].tipoEmpresa', i);
+        Lv_tipoTributario := APEX_JSON.get_varchar2('infoPersona[%d].tipoTributario', i);
+        Ln_tituloId := APEX_JSON.get_number('infoPersona[%d].tituloId', i);
+        Lv_razonSocial := APEX_JSON.get_varchar2('infoPersona[%d].razonSocial', i);
+        Lv_estadoCivil := APEX_JSON.get_varchar2('infoPersona[%d].estadoCivil', i);
+        Lv_origenIngresos := APEX_JSON.get_varchar2('infoPersona[%d].origenIngresos', i);
+        Lv_fechaNacimiento := APEX_JSON.get_varchar2('infoPersona[%d].fechaNacimiento', i);
+        Lv_direccion := APEX_JSON.get_varchar2('infoPersona[%d].direccion', i);
+        Lv_direccionTributaria := APEX_JSON.get_varchar2('infoPersona[%d].direccionTributaria', i);
+        Lv_representanteLegal := APEX_JSON.get_varchar2('infoPersona[%d].representanteLegal', i);
+        
+        IF Lv_fechaNacimiento is not null  THEN 
+        --to_date(Lv_fechaNacimiento,'dd-mm-yyyy')
+        DBMS_OUTPUT.PUT_LINE('infoPersona dat '||Lv_fechaNacimiento);
+        END IF;
+       
+       DBMS_OUTPUT.PUT_LINE('infoPersona dat'||Ln_idPersona);
+       
+            update DB_COMERCIAL.INFO_PERSONA 
+            set
+               nombres = case when Lv_nombres is not null then Lv_nombres else nombres end, 
+               apellidos = case when Lv_apellidos is not null then Lv_apellidos  else apellidos end,
+               nacionalidad = case when Lv_nacionalidad is not null then Lv_nacionalidad  else nacionalidad end , 
+               genero = case when Lv_genero is not null then Lv_genero else genero end ,
+               numero_conadis = case when Lv_numeroConadis is not null then Lv_numeroConadis else numero_conadis end,
+               tipo_empresa = case when Lv_tipoEmpresa is not null then Lv_tipoEmpresa else tipo_empresa end,
+               tipo_tributario = case when Lv_tipoTributario is not null then Lv_tipoTributario else tipo_tributario end ,
+               titulo_id = case when Ln_tituloId != 0 then Ln_tituloId  else titulo_id end ,
+               razon_social = case when Lv_razonSocial is not null then Lv_razonSocial else razon_social end ,
+               estado_civil = case when Lv_estadoCivil is not null then Lv_estadoCivil else estado_civil end ,
+               origen_ingresos = case when Lv_origenIngresos is not null then Lv_origenIngresos   else origen_ingresos end ,
+               fecha_nacimiento = case when Lv_fechaNacimiento is not null then TO_DATE(TO_CHAR(TO_DATE(SUBSTR(Lv_fechaNacimiento, 1, 19),'YYYY-MM-DD"T"HH24:MI:SS'),'YYYY-MM-DD'),'YYYY-MM-DD')    else fecha_nacimiento end  ,
+               direccion = case when Lv_direccion is not null then Lv_direccion else direccion end,
+               direccion_tributaria = case when Lv_direccionTributaria is not null then Lv_direccionTributaria else direccion_tributaria end,
+               representante_legal = case when Lv_representanteLegal is not null then Lv_representanteLegal else representante_legal end
+           where id_persona in (
+          select ip.id_persona 
+            from DB_COMERCIAL.INFO_PERSONA ip    
+          where ip.id_persona  = Ln_idPersona
+          and ip.identificacion_cliente = Lv_Identificacion);
+          
+        END LOOP;
+        end if; 
+        
+        DBMS_OUTPUT.PUT_LINE('infoPunto');
+        IF l_countInfoPunto is not null 
+        then
+        FOR i IN 1 .. l_countInfoPunto LOOP
+        
+        Lv_idPunto := APEX_JSON.get_varchar2('infoPunto[%d].idPunto', i);
+        Lv_direccionPunto := APEX_JSON.get_varchar2('infoPunto[%d].direccion', i);
+        Lv_descripcionPunto := APEX_JSON.get_varchar2('infoPunto[%d].descripcionPunto', i);
+        Lv_nombrePunto := APEX_JSON.get_varchar2('infoPunto[%d].nombrePunto', i);
+        Ln_SectorId := APEX_JSON.get_number('infoPunto[%d].sectorId', i);
+        Ln_longitud := APEX_JSON.get_number('infoPunto[%d].longitud', i);
+        Ln_latitud := APEX_JSON.get_number('infoPunto[%d].latitud', i);
+        
+            update  info_punto 
+            set  
+            direccion = case when Lv_direccionPunto is not null then Lv_direccionPunto else direccion end,  
+            descripcion_punto = case when Lv_descripcionPunto is not null then Lv_descripcionPunto else descripcion_punto end, 
+            nombre_punto = case when Lv_nombrePunto is not null then Lv_nombrePunto else nombre_punto end, 
+            longitud =  case when Ln_longitud != 0 then Ln_longitud else longitud end, 
+            latitud =  case when Ln_latitud != 0  then Ln_latitud else latitud end,
+            FE_ULT_MOD = sysdate,
+            USR_ULT_MOD = Lv_usr_mod,
+            IP_ULT_MOD = Lv_ip_mod
+            where id_punto in (
+             select ipu.id_punto
+               from DB_COMERCIAL.info_punto ipu, 
+                      DB_COMERCIAL.info_persona iper,
+                      DB_COMERCIAL.info_persona_empresa_rol ipero
+                 where iper.identificacion_cliente = Lv_Identificacion
+                   and ipu.id_punto = Lv_idPunto
+                   and iper.id_persona = ipero.persona_id
+                   and ipu.persona_empresa_rol_id = ipero.id_persona_rol);
+          
+        END LOOP;
+        end if;
+        
+         DBMS_OUTPUT.PUT_LINE('infoPuntoFormaContacto');
+          IF l_countInfoPuntoFormaContacto is not null 
+          then
+         FOR i IN 1 .. l_countInfoPuntoFormaContacto LOOP
+          Ln_idPuntoFormaContacto := APEX_JSON.get_number('infoPuntoFormaContacto[%d].idPuntoFormaContacto', i);
+          Lv_valorContactoPunto := APEX_JSON.get_varchar2('infoPuntoFormaContacto[%d].valor', i);
+         
+         update DB_COMERCIAL.info_punto_forma_contacto
+         set  
+             valor = case when Lv_valorContactoPunto is not null then Lv_valorContactoPunto else valor end
+       where id_punto_forma_contacto in (
+      select ipfc.id_punto_forma_contacto
+               FROM DB_COMERCIAL.info_punto ipu, 
+                    DB_COMERCIAL.info_persona iper,
+                    DB_COMERCIAL.info_persona_empresa_rol ipero,
+                    DB_COMERCIAL.info_punto_forma_contacto ipfc
+               where
+                   iper.identificacion_cliente = Lv_Identificacion
+               and iper.id_persona = ipero.persona_id
+               and ipu.persona_empresa_rol_id = ipero.id_persona_rol
+               and ipfc.punto_id = ipu.id_punto
+               and ipfc.forma_contacto_id IN (5,45,218,215,26,8,25,7,27,212,214,4)
+               and ipfc.id_punto_forma_contacto = Ln_idPuntoFormaContacto);
+        END LOOP;
+        end if;
+        
+        DBMS_OUTPUT.PUT_LINE('infoPersonaFormaContacto');
+       IF l_countInfoPesonaFormaContacto is not null 
+       then
+        FOR i IN 1 .. l_countInfoPesonaFormaContacto LOOP
+         Ln_idPuntoFormaContacto := APEX_JSON.get_number('infoPersonaFormaContacto[%d].idPersonaFormaContacto', i);
+         Lv_valorContactoPunto := APEX_JSON.get_varchar2('infoPersonaFormaContacto[%d].valor', i);
+        
+         update DB_COMERCIAL.info_persona_forma_contacto 
+         set  valor = case when Lv_valorContactoPunto is not null then Lv_valorContactoPunto else valor end,
+              FE_ULT_MOD = sysdate,
+              USR_ULT_MOD = Lv_usr_mod
+       where id_persona_forma_contacto in ( 
+      select ipfc.id_persona_forma_contacto
+        from DB_COMERCIAL.info_persona iper,
+                DB_COMERCIAL.info_persona_forma_contacto ipfc
+           where
+               iper.identificacion_cliente = Lv_Identificacion
+           and ipfc.persona_id = iper.id_persona
+           and ipfc.forma_contacto_id IN (5,45,218,215,26,8,25,7,27,212,214,4)
+           and ipfc.id_persona_forma_contacto = Ln_idPuntoFormaContacto);
+       END LOOP;
+       end if; 
+       
+       DBMS_OUTPUT.PUT_LINE('infoContrato');
+       IF l_countInfoContrato is not null 
+       then
+       
+       FOR i IN 1 .. l_countInfoContrato LOOP
+       
+         Ln_idContrato := APEX_JSON.get_number('infoContrato[%d].idContrato', i);
+         Ln_formaPagoId := APEX_JSON.get_number('infoContrato[%d].formaPagoId', i);
+       
+          update DB_COMERCIAL.info_contrato
+          set forma_pago_id = case when Ln_formaPagoId !=0 then Ln_formaPagoId else forma_pago_id end 
+         where id_contrato in (
+         SELECT ico.id_contrato
+         FROM DB_COMERCIAL.info_persona ipe,
+              DB_COMERCIAL.info_persona_empresa_rol iper,
+              DB_COMERCIAL.info_contrato ico
+         WHERE ipe.identificacion_cliente = Lv_Identificacion
+         AND iper.persona_id = ipe.id_persona
+         AND ico.persona_empresa_rol_id = iper.id_persona_rol
+         AND ico.id_contrato = Ln_idContrato);
+       
+       END LOOP;
+       end if;
+       
+       DBMS_OUTPUT.PUT_LINE('infoPersonaRepresentante '||l_countInfoPersonaRepre);
+       IF l_countInfoPersonaRepre is not null 
+       then
+       
+       FOR i IN 1 .. l_countInfoPersonaRepre LOOP
+       
+       Ln_idPersonaRepresentante := APEX_JSON.get_number('infoPersonaRepresentante[%d].idPersonaRepresentante', i);
+       Ln_representanteEmpresaRolId := APEX_JSON.get_number('infoPersonaRepresentante[%d].representanteEmpresaRolId', i);
+       
+       
+       update DB_COMERCIAL.info_persona_representante 
+          set REPRESENTANTE_EMPRESA_ROL_ID =  Ln_representanteEmpresaRolId ,
+              FE_ULT_MOD = sysdate,
+              USR_ULT_MOD = Lv_usr_mod,
+              IP_ULT_MOD = Lv_ip_mod
+        where id_persona_representante in (
+       SELECT ipre.id_persona_representante
+         FROM DB_COMERCIAL.info_persona ipe ,
+              DB_COMERCIAL.info_persona_empresa_rol iper,
+              DB_COMERCIAL.info_persona_representante ipre
+         WHERE ipe.identificacion_cliente = Lv_Identificacion
+         AND iper.persona_id = ipe.id_persona
+         AND ipre.persona_empresa_rol_id = iper.id_persona_rol
+         AND ipre.id_persona_representante = Ln_idPersonaRepresentante); 
+         
+    
+         
+       END LOOP;
+       
+       end if;
+       
+        DBMS_OUTPUT.PUT_LINE('l_countInfoInfoConFormaPago '||l_countInfoInfoConFormaPago);
+     
+     IF l_countInfoInfoConFormaPago is not null 
+     then
+        
+     FOR x IN 1 .. l_countInfoInfoConFormaPago LOOP
+       DBMS_OUTPUT.PUT_LINE('l_countInfoInfoConFormaPago ');
+      Ln_idDatosPago       :=APEX_JSON.get_number('infoContratoFormaPago[%d].idDatosPago', x);
+			Ln_bancoTipoCuentaId :=APEX_JSON.get_number('infoContratoFormaPago[%d].bancoTipoCuentaId', x);
+			Ln_tipoCuentaId      :=APEX_JSON.get_number('infoContratoFormaPago[%d].tipoCuentaId', x);
+			Lv_titularCuenta     :=APEX_JSON.get_varchar2('infoContratoFormaPago[%d].titularCuenta', x);
+			Lv_anioVencimiento   :=APEX_JSON.get_varchar2('infoContratoFormaPago[%d].anioVencimiento', x);
+			Lv_mesVencimiento    :=APEX_JSON.get_varchar2('infoContratoFormaPago[%d].mesVencimiento', x);
+       
+       update DB_COMERCIAL.INFO_CONTRATO_FORMA_PAGO  
+            set  
+              BANCO_TIPO_CUENTA_ID = case when Ln_bancoTipoCuentaId != 0 then Ln_bancoTipoCuentaId else BANCO_TIPO_CUENTA_ID end,
+              TIPO_CUENTA_ID = case when Ln_tipoCuentaId != 0 then Ln_tipoCuentaId else TIPO_CUENTA_ID end,
+              titular_cuenta  = case when Lv_titularCuenta is not null then Lv_titularCuenta else titular_cuenta end,
+              anio_vencimiento = case when Lv_anioVencimiento is not null then Lv_anioVencimiento else anio_vencimiento end,
+              mes_vencimiento = case when Lv_mesVencimiento is not null then Lv_mesVencimiento else mes_vencimiento end
+              where ID_DATOS_PAGO in(
+               select  ifo.ID_DATOS_PAGO
+                   FROM DB_COMERCIAL.info_persona ipe,
+                        DB_COMERCIAL.info_persona_empresa_rol iper,
+                        DB_COMERCIAL.info_contrato ico,
+                        DB_COMERCIAL.INFO_EMPRESA_ROL EMP,
+                        DB_COMERCIAL.INFO_CONTRATO_FORMA_PAGO ifo
+                   WHERE ipe.identificacion_cliente = Lv_Identificacion
+                   AND iper.persona_id = ipe.id_persona
+                   AND ico.persona_empresa_rol_id = iper.id_persona_rol
+                   AND EMP.ID_EMPRESA_ROL = iper.empresa_rol_id
+                   AND EMP.EMPRESA_COD = '18'
+                   AND ifo.contrato_id = ico.id_contrato
+                   AND ifo.ID_DATOS_PAGO = Ln_idDatosPago) ;
+         
+       END LOOP;
+       
+     end if; 
+       
+        DBMS_OUTPUT.PUT_LINE('C_GET_SERVICIOS');
+       IF C_GET_SERVICIOS%ISOPEN THEN
+            CLOSE C_GET_SERVICIOS;
+        END IF;
+        OPEN C_GET_SERVICIOS(Lv_Identificacion);
+        
+       FETCH C_GET_SERVICIOS BULK COLLECT INTO Le_Servicio LIMIT Li_Limit;
+        Li_Cont_Servicio := Le_Servicio.FIRST;
+      
+        WHILE (Li_Cont_Servicio IS NOT NULL) LOOP  
+            Lv_IdServicio:=  Le_Servicio(Li_Cont_Servicio).ID_Servicio; 
+    
+            DBMS_OUTPUT.PUT_LINE ('Insert INFO_SERVICIO_HISTORIAL: '|| Lv_IdServicio);
+       
+           INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
+           values ( 
+            DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL,
+            Lv_IdServicio,
+            Lv_usr_mod,
+            sysdate,
+            Lv_ip_mod,
+            'Activo',
+            null,
+            'Proceso desencriptar información del cliente',
+            null
+           );
+         
+         Li_Cont_Servicio := Le_Servicio.NEXT(Li_Cont_Servicio);
+        END LOOP;
+        
+        
+         IF C_GET_CLIENTE_ID%ISOPEN THEN
+            CLOSE C_GET_CLIENTE_ID;
+        END IF;
+        OPEN C_GET_CLIENTE_ID(Lv_Identificacion);
+    
+       FETCH C_GET_CLIENTE_ID BULK COLLECT INTO Le_Persona LIMIT Li_Limit;
+        Li_Cont_Persona_rol := Le_Persona.FIRST;
+      
+       WHILE (Li_Cont_Persona_rol IS NOT NULL) LOOP
+   
+            Lv_IdPersonaEmpresa:=  Le_Persona(Li_Cont_Persona_rol).ID_PERSONA_EMPRESA_ROL_CARACT; 
+    
+            DBMS_OUTPUT.PUT_LINE ('Insert INFO_PERSONA_EMPRESA_ROL_CARAC: '|| Lv_IdPersonaEmpresa);
+            
+            UPDATE DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC act SET act.VALOR = 'N' WHERE ID_PERSONA_EMPRESA_ROL_CARACT = Lv_IdPersonaEmpresa;
+            
+            Li_Cont_Persona_rol := Le_Persona.NEXT(Li_Cont_Persona_rol);
+
+        END LOOP;
+        
+        
+        DBMS_OUTPUT.PUT_LINE('Fin descifrar');
+     
+   Lv_Retorno := '000'; 
+   Lv_Error := 'Éxito.';
+   Pcl_Resultado  := '{' ||
+                                '"retorno":"' || Lv_Retorno || '",' ||
+                                '"error":"' || Lv_Error || '",' ||
+                                '"identificacion":"' || Lv_Identificacion || '"' 
+                            || '}';  
+     
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'DB_COMERCIAL',
+                                          'SPKG_DERECHO_LEGAL.P_CLI_DATA_DESCIFRAR',
+                                          SUBSTR('RESPONSE:'||Pcl_Resultado,1,4000),
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') ); 
+                            
+     commit ;
+     EXCEPTION 
+    WHEN Le_Errors THEN
+           rollback;
+            APEX_JSON.initialize_clob_output;
+            APEX_JSON.open_object;
+            APEX_JSON.write('error','Ocurrio un error al descifrar informacion' );
+            APEX_JSON.close_object;
+            Pcl_Resultado := APEX_JSON.GET_CLOB_OUTPUT;
+            APEX_JSON.free_output;
+   
+    WHEN OTHERS THEN
+        rollback;
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'DB_COMERCIAL',
+                                          'PSKG_DERECHO_LEGAL.P_CLI_DATA_DESCIFRAR',
+                                          'Problemas al cifrar la descifar data. Parametros ('||Lv_Identificacion||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
+                                          SYSDATE,
+                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
+        
+        
+        Lv_Retorno := '003';
+        Lv_Error := 'Error, Indisponibilidad del sistema. Error - ' || SQLERRM;
+        Pcl_Resultado  := '{' ||
+                                '"retorno":"' || Lv_Retorno || '",' ||
+                                '"error":"' || Lv_Error || '",' ||
+                                '"identificacion":"' || Lv_Identificacion || '"' 
+                            || '}';  
+                            
+                            
+                            
+                                                 
+  END P_CLI_DATA_DESCIFRAR;
    
 END SPKG_DERECHO_LEGAL;
 /
