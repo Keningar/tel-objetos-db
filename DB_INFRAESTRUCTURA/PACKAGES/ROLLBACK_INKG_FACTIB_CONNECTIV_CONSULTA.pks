@@ -158,10 +158,6 @@ AS
    * @author Emmanuel Martillo <emartillo@telconet.ec>
    * @version 1.4 13-02-2023  Se agrega bandera de Prefijo Empresa EN para Ecuanet.
    *
-   * @author Steven Ruano <sruano@telconet.ec>
-   * @version 1.5 31-03-2023  Se agrega variable para verificar que el proceso pasa por
-   *                          Nuevo Algoritmo Factiblidad o Factbilidad Lineal
-   *
    */
   PROCEDURE P_OBTIENE_DATOS_FACTIBILIDAD(
     Pcl_JsonRequest     IN CLOB,
@@ -209,10 +205,6 @@ AS
    *
    * @author Antonio Ayala <afayala@telconet.ec>
    * @version 1.0 08-08-2022
-   * 
-   * @author Steven Ruano <sruano@telconet.ec>
-   * @version 1.1 31-03-2023  Se agrega variable para verificar que el proceso pasa por
-   *                          Nuevo Algoritmo Factiblidad o Factbilidad Lineal.
    *
    */
   PROCEDURE P_FACTIBILIDAD_LINEAL(
@@ -1117,10 +1109,8 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
             APEX_JSON.write('nombreElementoConector', Lr_RegCajasConectoresFactib.NOMBRE_CONECTOR);
             APEX_JSON.write('estadoElementoConector', Lr_RegCajasConectoresFactib.ESTADO_CONECTOR);
             APEX_JSON.write('idInterfaceElementoConector', Lr_RegCajasConectoresFactib.ID_INTERFACE_ELEMENTO);
-            APEX_JSON.write('idServicio', Ln_IdServicio);
             APEX_JSON.write('nombreInterfaceElementoConector', Lr_RegCajasConectoresFactib.NOMBRE_INTERFACE_ELEMENTO);
             APEX_JSON.write('distancia', Ln_DistanciaFinal);
-            APEX_JSON.write('pasaNuevoAlgoritmo', 'SI');
             EXIT;
           END IF;
       DBMS_OUTPUT.PUT_LINE(Pcl_JsonResponse);
@@ -1129,6 +1119,18 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
       APEX_JSON.close_object; -- }
       Lcl_JsonReturn    := apex_json.get_clob_output;
       APEX_JSON.free_output;
+      
+      Lr_ServicioHistorial              := NULL;
+      Lr_ServicioHistorial.SERVICIO_ID  := Ln_IdServicio;
+      Lr_ServicioHistorial.USR_CREACION := 'nuevoAlgoritmo';
+      Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
+      Lr_ServicioHistorial.ESTADO       := 'Factible';
+      Lr_ServicioHistorial.OBSERVACION  := 'Pasa por el proceso de nuevo algoritmo de factibilidad';
+      Lr_ServicioHistorial.ACCION       := 'algoritmoFactibilidad';
+
+      DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_Mensaje);
+      
+      COMMIT;
       
       IF Lv_Mensaje IS NOT NULL THEN
           RAISE Le_Exception;
@@ -1492,8 +1494,7 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     APEX_JSON.write('estadoElementoConector', Lv_EstadoConector);
     APEX_JSON.write('idInterfaceElementoConector', Ln_IdInterface);
     APEX_JSON.write('nombreInterfaceElementoConector', Lv_NombreInterface);
-    APEX_JSON.write('distancia', Ln_DistanciaCaja);
-    APEX_JSON.write('pasaNuevoAlgoritmo', 'NO');    
+    APEX_JSON.write('distancia', Ln_DistanciaCaja);    
     APEX_JSON.close_object; -- }
 
     Lcl_JsonReturn    := apex_json.get_clob_output;
@@ -1527,3 +1528,4 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
   END P_FACTIBILIDAD_LINEAL;
 END INKG_FACTIB_CONNECTIV_CONSULTA;
 /
+
