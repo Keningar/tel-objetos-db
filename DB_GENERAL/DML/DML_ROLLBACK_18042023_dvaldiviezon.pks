@@ -1,0 +1,27 @@
+/**
+* DEBE EJECUTARSE EN DB_GENERAL
+* Script para ejecución de ROLLBACK crear los parametros de cabecera y detalle para los valores de Jurisdicciones PE 
+* @author David Valdivieso <dvaldiviezon@telconet.ec>
+* @version 1.0 18/04/2023
+*/
+
+DELETE FROM DB_GENERAL.ADMI_PARAMETRO_DET 
+WHERE PARAMETRO_ID = 
+(
+    SELECT ID_PARAMETRO
+    FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+    WHERE NOMBRE_PARAMETRO = 'JURISDICCIONES_PE'
+)
+AND USR_CREACION = 'dvaldiviezon';
+
+DELETE FROM DB_GENERAL.ADMI_PARAMETRO_CAB 
+WHERE ID_PARAMETRO = 
+(
+    SELECT ID_PARAMETRO
+    FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+    WHERE NOMBRE_PARAMETRO = 'JURISDICCIONES_PE'
+)
+AND USR_CREACION = 'dvaldiviezon';
+
+COMMIT;
+/
