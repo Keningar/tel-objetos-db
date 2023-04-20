@@ -43,6 +43,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     *
     * @author Alex Gómez <algomez@telconet.ec>
     * @version 1.2 02-03-2023 Se añade filtro por empresa
+    *
+    * @author Carlos Caguana <ccaguana@telconet.ec>
+    * @version 1.3 18-04-2023 Se actualiza fecha de creacion en roles desde documento respuesta
+    *
     */
     PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
                                       Pv_Mensaje        OUT VARCHAR2,
@@ -168,7 +172,8 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
         INDR.ID_DOC_RESPUESTA        idDocRespuesta,
         INDR.JUSTIFICACION_RESPUESTA valor,
         AENU.ID_ENUNCIADO            enunciadoId,
-        AENU.EMPRESA_COD             empresaCod
+        AENU.EMPRESA_COD             empresaCod,
+        INDR.FECHA_CREACION          fechaCreacion
     FROM
         DB_DOCUMENTO.INFO_DOCUMENTO_RELACION               IDRE,
         DB_DOCUMENTO.INFO_DOC_RESPUESTA                    INDR,
@@ -237,6 +242,7 @@ PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
     Lv_ipCreacion           VARCHAR2(30);
     Ln_IdDocRespuesta       NUMBER;
     Ln_EnunciadoId          NUMBER;
+    Lv_FechaCreacion        DATE;
     Lv_MsgSalida            VARCHAR2(4000);
 
     --
@@ -471,6 +477,7 @@ BEGIN
         Ln_EnunciadoId      := k.enunciadoId;
         Ln_IdDocRespuesta   := k.idDocRespuesta;
         Lv_valor            := k.valor;
+        Lv_FechaCreacion    := k.fechaCreacion;
         --
         dbms_output.put_line('Ln_IdDocRespuesta: '||Ln_IdDocRespuesta);
         dbms_output.put_line('Lv_Enunciado: '||Ln_EnunciadoId);
@@ -586,7 +593,8 @@ BEGIN
             'Activo',
             Lv_usrCreacion,
             Lv_ipCreacion,
-            SYSDATE) RETURNING ID_PERSONA_ROL INTO Ln_personaEmpresaRolId;
+            Lv_FechaCreacion
+            ) RETURNING ID_PERSONA_ROL INTO Ln_personaEmpresaRolId;
         END IF;
 
         --
@@ -623,7 +631,7 @@ BEGIN
                 Lv_valor,
                 Lv_usrCreacion,
                 Lv_ipCreacion,
-                SYSDATE) RETURNING ID_PERSONA_EMP_ROL_ENUM INTO Ln_IdPersonaEmpRolEnum;
+                Lv_FechaCreacion) RETURNING ID_PERSONA_EMP_ROL_ENUM INTO Ln_IdPersonaEmpRolEnum;
         
         END IF;
         --
