@@ -1024,6 +1024,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 14-04-2022
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 27-04-2023 - Se agregan log para falicitar revisiones de seguimento.
   */ 
   PROCEDURE P_PROMOCION_TENTATIVA(Pn_IdPunto              IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                                   Pv_CodigoGrupoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
@@ -1055,6 +1058,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en parámetros para cursor C_GetIdPromocionMens.
   *                           Se agrega empresa_cod en el llamado a función P_GET_RESTRIC_PLAN_INST.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.2 27-04-2023 - Se agregan log para falicitar revisiones de seguimento.
   */ 
   PROCEDURE P_PROMOCION_EVALUA_TENTATIVA(Pn_IdPunto              IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                                          Pv_CodigoGrupoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
@@ -6903,8 +6909,18 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     La_ServiciosProcesar DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar;
 
   BEGIN  
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+    'Empieza el proceso de evaluación de promociones tentativa para el idPunto: '||Pn_IdPunto,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     Lv_EsCodigo := 'S';
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+    'Consumo del proceso P_PROMOCION_EVALUA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+    || ' - Lv_EsCodigo: ' || Lv_EsCodigo,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA(Pn_IdPunto              => Pn_IdPunto,
                                                                     Pv_CodigoGrupoPromocion => TRIM(Pv_CodigoGrupoPromocion),
                                                                     Pv_CodEmpresa           => Pv_CodEmpresa,
@@ -6912,11 +6928,22 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                     Pv_CodMensaje           => Lv_CodMensaje,
                                                                     Pv_Status               => Lv_Status,
                                                                     Pv_Mensaje              => Lv_Mensaje);
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+    'Despues del consumo del proceso P_PROMOCION_EVALUA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+    || ' - Lv_EsCodigo: ' || Lv_EsCodigo,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     La_ServiciosProcesar.DELETE();
 
     --Se valida si existe servicios a procesar para llamar al proceso por código 'N'.
     Lv_EsCodigo := 'N';
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+    'Consumo del proceso P_OBTIENE_SERVICIOS_PUNTO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+    || ' - Lv_EsCodigo: ' || Lv_EsCodigo,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_OBTIENE_SERVICIOS_PUNTO(Pn_IdPunto              => Pn_IdPunto,
                                                                  Pv_CodEmpresa           => Pv_CodEmpresa,
                                                                  Pv_EsCodigo             => Lv_EsCodigo,
@@ -6924,14 +6951,31 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                  Pv_CodigoGrupoPromocion => TRIM(Pv_CodigoGrupoPromocion),
                                                                  Pa_ServiciosProcesar    => La_ServiciosProcesar);
 
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+    'Despues del consumo del proceso P_OBTIENE_SERVICIOS_PUNTO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+    || ' - Lv_EsCodigo: ' || Lv_EsCodigo,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     IF La_ServiciosProcesar.COUNT > 0 THEN
-        DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA(Pn_IdPunto              => Pn_IdPunto,
-                                                                        Pv_CodigoGrupoPromocion => TRIM(Pv_CodigoGrupoPromocion),
-                                                                        Pv_CodEmpresa           => Pv_CodEmpresa,
-                                                                        Pv_EsCodigo             => Lv_EsCodigo,
-                                                                        Pv_CodMensaje           => Lv_CodMensaje,
-                                                                        Pv_Status               => Lv_Status,
-                                                                        Pv_Mensaje              => Lv_Mensaje);
+    --
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+      'Consumo del proceso P_PROMOCION_EVALUA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+      || ' - Lv_EsCodigo: ' || Lv_EsCodigo,
+      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+      --
+      DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA(Pn_IdPunto              => Pn_IdPunto,
+                                                                      Pv_CodigoGrupoPromocion => TRIM(Pv_CodigoGrupoPromocion),
+                                                                      Pv_CodEmpresa           => Pv_CodEmpresa,
+                                                                      Pv_EsCodigo             => Lv_EsCodigo,
+                                                                      Pv_CodMensaje           => Lv_CodMensaje,
+                                                                      Pv_Status               => Lv_Status,
+                                                                      Pv_Mensaje              => Lv_Mensaje);
+      --
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
+      'Despues del consumo del proceso P_PROMOCION_EVALUA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+      || ' - Lv_EsCodigo: ' || Lv_EsCodigo,
+      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     END IF;                                                                    
 
     Pv_Status     := Lv_Status;
@@ -7204,10 +7248,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     Lv_EstadoServicio             VARCHAR2(50);
     Ln_IdServicioEval             NUMBER;
 
-  BEGIN  
-
+  BEGIN
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'Inicia la evaluacion del proceso P_PROMOCION_EVALUA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     IF TRIM(Pv_CodigoGrupoPromocion) NOT IN ('PROM_INS','PROM_MENS') THEN
       Lv_CodMensaje := 'COD_GRUPOS_PROM';
+      --
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+      'Error en COD_GRUPOS_PROM para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+      --
       RAISE Le_ExceptionProceso;
     END IF;
 
@@ -7229,6 +7282,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lv_CodEmpresa IS NULL THEN
       Lv_CodMensaje := 'COD_EMPRESA';
+      --
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+      'Error en COD_EMPRESA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+      --
       RAISE Le_ExceptionProceso;
     END IF;
 
@@ -7236,8 +7294,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                     Fv_CodEmpresa => Pv_CodEmpresa);
 
     IF NOT Lb_AplicaRol THEN
-        Lv_CodMensaje := 'COD_ROL';
-        RAISE Le_ExceptionProceso;
+      Lv_CodMensaje := 'COD_ROL';
+      --
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+      'Error en COD_ROL para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+      --
+      RAISE Le_ExceptionProceso;
     END IF;
     
     IF Pv_CodigoGrupoPromocion = 'PROM_INS' THEN 
@@ -7259,7 +7322,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     END IF;
 
     La_ServiciosProcesar.DELETE();
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'Antes del cosnumo del proceso P_OBTIENE_SERVICIOS_PUNTO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+    || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa || ' - Lv_Caracteristica: ' || Lv_Caracteristica,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_OBTIENE_SERVICIOS_PUNTO(Pn_IdPunto              => Pn_IdPunto,
                                                                  Pv_CodEmpresa           => Pv_CodEmpresa,
                                                                  Pv_EsCodigo             => Pv_EsCodigo,
@@ -7267,16 +7335,35 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                  Pv_CodigoGrupoPromocion => Pv_CodigoGrupoPromocion,
                                                                  Pv_CaractCodProm        => Lv_Caracteristica,
                                                                  Pa_ServiciosProcesar    => La_ServiciosProcesar);
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'Despues del cosnumo del proceso P_OBTIENE_SERVICIOS_PUNTO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     IF La_ServiciosProcesar.COUNT = 0 THEN
-        Lv_CodMensaje := 'COD_SIN_SERVICIOS';
-        RAISE Le_ExceptionProceso; 
+      Lv_CodMensaje := 'COD_SIN_SERVICIOS';
+      --
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+      'Error en COD_SIN_SERVICIOS para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+      --
+      RAISE Le_ExceptionProceso; 
     END IF;
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'Antes del cosnumo del proceso F_GET_FECHA_ADENDUM para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     --Se obtiene la fecha de vigencia.
     Ld_FechaEvalua := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_GET_FECHA_ADENDUM(Fn_IdPunto           => Pn_IdPunto,
                                                                              Fv_CodEmpresa        => Pv_CodEmpresa,
                                                                              Fa_ServiciosProcesar => La_ServiciosProcesar);
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'Despues del cosnumo del proceso F_GET_FECHA_ADENDUM para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+    || ' - Ld_FechaEvalua: ' || Ld_FechaEvalua,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
     IF Ld_FechaEvalua IS NULL THEN
         Ld_FechaEvalua := SYSDATE;
     END IF;
@@ -7297,12 +7384,22 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
             Ln_IndGpro         := NULL;
             Lv_CodMensaje      := '';
             Lv_TieneTentativa  := ''; 
-
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'Antes del cosnumo del proceso F_VALIDA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+            || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
             --Verifica si el servicio a procesar tiene tentativa, caso contrario avanza al siguiente. 
             Lv_TieneTentativa := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_TENTATIVA(Fn_IdServicio           => Ln_IdServicio,
                                                                                        Fv_CodEmpresa           => Pv_CodEmpresa,
                                                                                        Fv_CodigoGrupoPromocion => Pv_CodigoGrupoPromocion);
-            
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'Despues del cosnumo del proceso F_VALIDA_TENTATIVA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+            || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa || ' - Lv_TieneTentativa: ' || Lv_TieneTentativa,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
             IF Lv_TieneTentativa = 'S' THEN
                 CONTINUE;
             END IF;
@@ -7344,6 +7441,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 Lv_TieneSolicitud := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_SOLICITUD_SERVICIO(Ln_IdServicio);
                 IF Lv_TieneSolicitud = 'N' THEN
                     Lv_CodMensaje := 'COD_SOLICITUD';
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Error en COD_SOLICITUD para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                    || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     RAISE Le_ExceptionServicios;
                 END IF;
             END IF;
@@ -7366,14 +7469,33 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 IF Lc_GetNombrePlan.NOMBRE_PLAN IS NOT NULL THEN 
                     --Si posee plan con restricción debo generar la Solicitud de Facturación con el valor base por FO y con el Descuento obtenido
                     --del parametro RESTRICCION_PLANES_X_INSTALACION
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Antes del cosnumo del proceso P_GET_RESTRIC_PLAN_INST para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                    || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa || ' - Lc_GetNombrePlan.NOMBRE_PLAN: ' 
+                    || Lc_GetNombrePlan.NOMBRE_PLAN,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     DB_COMERCIAL.COMEK_TRANSACTION.P_GET_RESTRIC_PLAN_INST(Pv_NombrePlan           => Lc_GetNombrePlan.NOMBRE_PLAN,
                                                                            Pv_EmpresaCod           => Pv_CodEmpresa,
                                                                            Pb_PlanConRestriccion   => Lb_PlanConRestriccion,
                                                                            Pn_PorcentajeDescuento  => Ln_PorcentajeDescuento,
                                                                            Pv_Observacion          => Lv_ObservacionIsnt);
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Despues del cosnumo del proceso P_GET_RESTRIC_PLAN_INST para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                    || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa || ' - Lc_GetNombrePlan.NOMBRE_PLAN: ' 
+                    || Lc_GetNombrePlan.NOMBRE_PLAN,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     IF Lb_PlanConRestriccion THEN 
                         Ln_PorcentajeInst := Ln_PorcentajeDescuento;
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'Error en RESTRINCION_PLAN para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                        || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         RAISE Le_ExceptionServicios;
                     END IF;
                 END IF;
@@ -7402,6 +7524,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
                         Lv_ObservacionIsnt := Lc_Parametros.VALOR1;
                         Ln_PorcentajeInst  := Lc_Parametros.VALOR2;
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'Error en CLIENTE_CANAL para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                        || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         RAISE Le_ExceptionServicios;
                     END IF;
                 END IF; --FIN Lc_GetPersonaEmpresaRol.PERSONA_EMPRESA_ROL_ID IS NOT NULL
@@ -7420,6 +7548,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 
                     Lv_ObservacionIsnt := Lc_Parametros.VALOR1;
                     Ln_PorcentajeInst  := Lc_Parametros.VALOR2;
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Error en MIGRACION_TECNOLOGIA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                    || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     RAISE Le_ExceptionServicios;
                 END IF;
 
@@ -7438,6 +7572,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
                     Lv_ObservacionIsnt := Lc_Parametros.VALOR1; 
                     Ln_PorcentajeInst  := Lc_Parametros.VALOR2;
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Error en EXISTE_FACTURA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                    || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     RAISE Le_ExceptionServicios;
                 END IF;
 
@@ -7446,7 +7586,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
             Lb_OtorgoPromoCliente := FALSE;
 
             La_TiposPromocionesProcesar.DELETE();
-            
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'Antes del cosnumo del proceso P_GET_PROMOCIONES_SECT para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+            || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa || ' - Ld_FechaEvalua: ' || Ld_FechaEvalua,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
             DB_COMERCIAL.CMKG_PROMOCIONES.P_GET_PROMOCIONES_SECT(Pd_FeEvaluaVigencia     => Ld_FechaEvalua,
                                                                  Pn_IdPunto              => Pn_IdPunto,
                                                                  Pn_IdPromocion          => Lc_GetIdPromocion.ID_GRUPO_PROMOCION,
@@ -7456,9 +7601,21 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                  Pv_TipoEvaluacion       => 'PROM_TENTATIVA',
                                                                  Pa_PromocionesPrioridad => La_GruposPromocionesProcesar,
                                                                  Pa_TiposPromoPrioridad  => La_TiposPromocionesProcesar);
-
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'Despues del cosnumo del proceso P_GET_PROMOCIONES_SECT para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+            || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa || ' - Ld_FechaEvalua: ' || Ld_FechaEvalua,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
             IF La_TiposPromocionesProcesar.COUNT = 0 THEN
                 Lv_CodMensaje := 'COD_PROM_GRUPOS';
+                Ln_PorcentajeInst  := Lc_Parametros.VALOR2;
+                --
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                'Error en COD_PROM_GRUPOS para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                --
                 RAISE Le_ExceptionServicios;
             END IF;
 
@@ -7484,7 +7641,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                         ELSE 
                             Ln_IdServicioEval := NULL;                                         
                         END IF;
-
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'Antes del cosnumo del proceso P_OBTIENE_SERVICIOS_PUNTO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                        || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioEval: ' || Ln_IdServicioEval || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                        || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                        || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_OBTIENE_SERVICIOS_PUNTO(Pn_IdPunto              => Pn_IdPunto,
                                                                                      Pv_CodEmpresa           => Pv_CodEmpresa,
                                                                                      Pv_EsCodigo             => Pv_EsCodigo,
@@ -7493,32 +7657,94 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                                      Pv_CaractCodProm        => Lv_Caracteristica,
                                                                                      Pn_IdServicio           => Ln_IdServicioEval,
                                                                                      Pa_ServiciosProcesar    => La_Servicios);
-
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'Antes del cosnumo del proceso P_GET_SERV_PROMO_PLAN_PROD para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                        || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioEval: ' || Ln_IdServicioEval || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                        || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                        || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         DB_COMERCIAL.CMKG_PROMOCIONES.P_GET_SERV_PROMO_PLAN_PROD(La_Servicios, 
                                                                                  Lr_TiposPromociones.CODIGO_TIPO_PROMOCION,
                                                                                  La_TipoPromoPlanProdProcesar, 
                                                                                  Lb_CumplePlaProd,
                                                                                  La_ServiciosCumplePromo);
+                        IF Lb_CumplePlaProd THEN 
+                          --
+                          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                          'Despues del cosnumo del proceso P_GET_SERV_PROMO_PLAN_PROD para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                          || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioEval: ' || Ln_IdServicioEval || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                          || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                          || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                          'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                          --
+                        END IF;
                     END IF;
 
                     Lb_CumpleFormPag := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_FORMA_PAGO(Fn_IntIdPromocion => Lr_TiposPromociones.ID_GRUPO_PROMOCION,
-                                                                                               Fn_IdPunto        => Pn_IdPunto); 
-
+                                                                                               Fn_IdPunto        => Pn_IdPunto);
+                    --
+                    IF Lb_CumpleFormPag THEN 
+                      --
+                      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                      'Despues del cosnumo del proceso F_VALIDA_FORMA_PAGO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                      || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                      || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                      || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                      'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                      --
+                    END IF;
+                    --
                     IF Pv_CodigoGrupoPromocion = 'PROM_INS' THEN
                         Lb_CumpleUltMilla := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_ULTIMA_MILLA(Lr_TiposPromociones.ID_GRUPO_PROMOCION,
                                                                                                       Ln_IdServicio);
-
+                        --
+                        IF Lb_CumpleUltMilla THEN 
+                          --
+                          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                          'Despues del cosnumo del proceso F_VALIDA_ULTIMA_MILLA para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                          || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                          || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                          || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION,
+                          'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                          --
+                        END IF;
+                        --
                         Lb_CumpleTipoNeg  := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_TIPO_NEGOCIO(Fn_IntIdPromocion => Lr_TiposPromociones.ID_GRUPO_PROMOCION,
                                                                                                       Fn_IdServicio     => Ln_IdServicio,
                                                                                                       Fv_CodEmpresa     => Pv_CodEmpresa);
+                        --
+                        IF Lb_CumpleTipoNeg THEN 
+                          --
+                          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                          'Despues del cosnumo del proceso F_VALIDA_TIPO_NEGOCIO para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                          || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                          || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                          || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION,
+                          'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                          --
+                        END IF;
+                        --
                     END IF;
 
                     IF Lb_CumpleFormPag AND ((Pv_CodigoGrupoPromocion = 'PROM_MENS' AND Lb_CumplePlaProd) OR (
                         Pv_CodigoGrupoPromocion = 'PROM_INS' AND Lb_CumpleUltMilla AND Lb_CumpleTipoNeg)) AND 
                         ((UPPER(TRIM(Pv_EsCodigo)) = 'N') OR  (UPPER(TRIM(Pv_EsCodigo)) = 'S' AND  
                         Lr_TiposPromociones.ID_TIPO_PROMOCION = Lc_GetIdPromocion.ID_TIPO_PROMOCION))THEN
-
                             Lb_OtorgoPromoCliente := TRUE;
+                            --
+                            IF Lb_OtorgoPromoCliente THEN 
+                              --
+                              DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                              'Otorga promocion al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                              || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa 
+                              || ' - Pv_EsCodigo: ' || Pv_EsCodigo || ' - Lr_TiposPromociones.CODIGO_TIPO_PROMOCION : ' 
+                              || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION,
+                              'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                              --
+                            END IF;
+                            --
                             Ln_IdPromocion        := Lr_TiposPromociones.ID_GRUPO_PROMOCION;
                             Ln_IdTipoPromocion    := Lr_TiposPromociones.ID_TIPO_PROMOCION;
                     END IF;
@@ -7553,7 +7779,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 WHILE (Ln_ServiciosCumplePromo IS NOT NULL)   
                 LOOP
                     Ln_IdServicioCumple := La_ServiciosCumplePromo(Ln_ServiciosCumplePromo).ID_SERVICIO;
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Cumple promocion el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion 
+                    || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     Lv_Descuento      := '';
                     Lc_Datos          := NULL;
                     Lr_TipoPromoRegla := DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_PROMO_TIPO_REGLA(Ln_IdTipoPromocion);
@@ -7592,7 +7823,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     OPEN C_ObtieneMsjPorCodigo(Lv_NombreParamCab,Lv_DescripDetCodMsj,Lv_EstadoActivo,Pv_CodEmpresa,Lv_CodMensaje);
                     FETCH C_ObtieneMsjPorCodigo INTO Lc_Mensaje;
                     CLOSE C_ObtieneMsjPorCodigo; 
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'ANTES INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     Lr_InfoServicioHistorial                       := NULL;
                     Lr_InfoServicioHistorial.ID_SERVICIO_HISTORIAL := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL;
                     Lr_InfoServicioHistorial.SERVICIO_ID           := Ln_IdServicioCumple;
@@ -7603,8 +7839,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     Lr_InfoServicioHistorial.OBSERVACION           := REPLACE(Lc_Mensaje.VALOR2,'NombreGrupo',Lr_TipoPromoRegla.NOMBRE_GRUPO);
 
                     DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_SERVICIO_HISTO(Lr_InfoServicioHistorial, Lv_MsjResultado);
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'DESPUES INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     IF TRIM(Lv_MsjResultado) IS NOT NULL THEN
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'ERROR INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                        || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         Lv_MsjException := Lv_MsjResultado;
                         RAISE Le_Exception;
                     END IF;
@@ -7622,6 +7869,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     Lv_Periodo     := Lc_Datos.PERIODOS;
 
                     --Se inserta registro en la tabla de tentativa
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'ANTES INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     Lr_InfoEvaluaTentativa                        := NULL; 
                     Lr_InfoEvaluaTentativa.ID_TENTATIVA           := DB_COMERCIAL.SEQ_INFO_EVALUA_TENTATIVA.NEXTVAL ;
                     Lr_InfoEvaluaTentativa.PUNTO_ID               := Pn_IdPunto;
@@ -7640,8 +7893,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     Lr_InfoEvaluaTentativa.ESTADO                 := 'Activo';
 
                     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_INSERT_INFO_EVALUA_TENTATIVA(Lr_InfoEvaluaTentativa, Lv_MsjResultado);
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'DESPUES INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     IF Lv_MsjResultado IS NOT NULL THEN
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'ERROR INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                        || Pv_CodigoGrupoPromocion || ' - Ln_IdServicioCumple: ' || Ln_IdServicioCumple || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         Lv_MsjException := Lv_MsjResultado;
                         RAISE Le_Exception;
                     END IF;
@@ -7654,12 +7918,23 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 IF UPPER(TRIM(Pv_EsCodigo)) != 'S' THEN 
                     Lv_CodMensaje := 'COD_PROM_REGLAS_NO_CUMPLE';
                     Lc_Mensaje    := NULL;
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'Error en COD_PROM_REGLAS_NO_CUMPLE para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '|| Pv_CodigoGrupoPromocion
+                    || ' - Ln_IdServicio: ' || Ln_IdServicio,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     OPEN C_ObtieneMsjPorCodigo(Lv_NombreParamCab,Lv_DescripDetCodMsj,Lv_EstadoActivo,Pv_CodEmpresa,Lv_CodMensaje);
                     FETCH C_ObtieneMsjPorCodigo INTO Lc_Mensaje;
                     CLOSE C_ObtieneMsjPorCodigo;  
 
                     --Se inserta historial del servicio
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'ANTES INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     Lr_InfoServicioHistorial                       := NULL; 
                     Lr_InfoServicioHistorial.ID_SERVICIO_HISTORIAL := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL ;
                     Lr_InfoServicioHistorial.SERVICIO_ID           := Ln_IdServicio;
@@ -7671,8 +7946,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
                     DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_SERVICIO_HISTO(Pr_InfoServicioHisto => Lr_InfoServicioHistorial, 
                                                                                Pv_MsjResultado      => Lv_MsjResultado);
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'DESPUES INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     IF Lv_MsjResultado IS NOT NULL THEN
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'ERROR INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                        || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         Lv_MsjException := Lv_MsjResultado;
                         RAISE Le_Exception;
                     END IF;  
@@ -7680,7 +7966,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     Lv_Descuento   := Lc_Mensaje.VALOR3;
                     Lv_Periodo     := Lc_Mensaje.VALOR4;
                     Lv_Observacion := REPLACE(Lc_Mensaje.VALOR2,'Lv_DescTipoPromocion',Lv_DescTipoPromocion); 
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'ANTES INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     --Se inserta registro en la tabla de tentativa
                     Lr_InfoEvaluaTentativa                        := NULL; 
                     Lr_InfoEvaluaTentativa.ID_TENTATIVA           := DB_COMERCIAL.SEQ_INFO_EVALUA_TENTATIVA.NEXTVAL ;
@@ -7700,8 +7991,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     Lr_InfoEvaluaTentativa.ESTADO                 := 'Activo';
 
                     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_INSERT_INFO_EVALUA_TENTATIVA(Lr_InfoEvaluaTentativa, Lv_MsjResultado);
-
+                    --
+                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                    'DESPUES INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                    || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                    --
                     IF Lv_MsjResultado IS NOT NULL THEN
+                        --
+                        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                        'ERROR INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                        || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                        'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                        --
                         Lv_MsjException := Lv_MsjResultado;
                         RAISE Le_Exception;
                     END IF;
@@ -7709,7 +8011,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 END IF;
 
             END IF; 
-
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'FIN de evaluacion pare el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+            || Pv_CodigoGrupoPromocion || ' - Pv_Status: ' || Pv_Status || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa
+            || ' - Lv_MsjResultado: ' || Lv_MsjResultado,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
             Pv_Status      := 'OK';
             Pv_Mensaje     := Lv_MsjResultado;
             Pv_CodMensaje  := '';
@@ -7725,7 +8033,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 OPEN C_ObtieneMsjPorCodigo(Lv_NombreParamCab,Lv_DescripDetCodMsj,Lv_EstadoActivo,Pv_CodEmpresa,Lv_CodMensaje);
                 FETCH C_ObtieneMsjPorCodigo INTO Lc_Mensaje;
                 CLOSE C_ObtieneMsjPorCodigo; 
-
+                --
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                'ANTES INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                --
                 Lr_InfoServicioHistorial                       := NULL;  
                 Lr_InfoServicioHistorial.ID_SERVICIO_HISTORIAL := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL ;
                 Lr_InfoServicioHistorial.SERVICIO_ID           := Ln_IdServicio;
@@ -7752,7 +8065,17 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                  
                 DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_SERVICIO_HISTO(Pr_InfoServicioHisto => Lr_InfoServicioHistorial, 
                                                                            Pv_MsjResultado      => Lv_MsjResultado);   
-
+                --
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                'DESPUES INSERT INFO_SERVICIO_HISTORIAL al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                --
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                'ANTES INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                --
                 --Se inserta registro en la tabla de tentativa
                 Lr_InfoEvaluaTentativa                        := NULL; 
                 Lr_InfoEvaluaTentativa.ID_TENTATIVA           := DB_COMERCIAL.SEQ_INFO_EVALUA_TENTATIVA.NEXTVAL ;
@@ -7772,13 +8095,24 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 Lr_InfoEvaluaTentativa.ESTADO                 := 'Activo';
 
                 DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_INSERT_INFO_EVALUA_TENTATIVA(Lr_InfoEvaluaTentativa, Lv_MsjResultado);
-
+                --
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+                'DESPUES INSERT INFO_EVALUA_TENTATIVA al idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+                || Pv_CodigoGrupoPromocion || ' - Ln_IdServicio: ' || Ln_IdServicio || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa,
+                'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+                --
             END IF; 
 
             Pv_Status     := 'OK';
             Pv_Mensaje    := Lv_MsjResultado; 
             Pv_CodMensaje := ''; 
-
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'FIN de evaluacion por Le_ExceptionServicios para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+            || Pv_CodigoGrupoPromocion || ' - Pv_Status: ' || Pv_Status || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa
+            || ' - Lv_MsjResultado: ' || Lv_MsjResultado,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
         WHEN Le_Exception THEN
             Lv_MsjResultado := Lv_MsjException; 
 
@@ -7791,8 +8125,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
             Pv_Status     := 'OK';
             Pv_Mensaje    := Lv_MsjResultado;                                     
-            Pv_CodMensaje := ''; 
-
+            Pv_CodMensaje := '';
+            --
+            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+            'FIN de evaluacion por Le_Exception para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+            || Pv_CodigoGrupoPromocion || ' - Pv_Status: ' || Pv_Status || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa
+            || ' - Lv_MsjResultado: ' || Lv_MsjResultado,
+            'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+            --
         END;
         --
 
@@ -7815,7 +8155,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     Pv_Status     := 'ERROR';
     Pv_Mensaje    := Lv_MsjResultado;                                     
     Pv_CodMensaje := Lv_CodMensaje;
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'FIN de evaluacion por Le_ExceptionProceso para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+    || Pv_CodigoGrupoPromocion || ' - Pv_Status: ' || Pv_Status || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa
+    || ' - Lv_MsjResultado: ' || Lv_MsjResultado,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
   WHEN OTHERS THEN
     ROLLBACK;
 
@@ -7834,7 +8180,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     Pv_Status     := 'ERROR';
     Pv_Mensaje    := Lv_MsjResultado;                                     
     Pv_CodMensaje := Lv_CodMensaje;
-
+    --
+    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
+    'FIN de evaluacion por ' || Lv_CodMensaje || ' para el idPunto: '|| Pn_IdPunto ||'- Pv_CodigoGrupoPromocion: '
+    || Pv_CodigoGrupoPromocion || ' - Pv_Status: ' || Pv_Status || ' - Pv_CodEmpresa: ' || Pv_CodEmpresa
+    || ' - Lv_MsjResultado: ' || Lv_MsjResultado,
+    'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
+    --
   END P_PROMOCION_EVALUA_TENTATIVA;
   --
 
