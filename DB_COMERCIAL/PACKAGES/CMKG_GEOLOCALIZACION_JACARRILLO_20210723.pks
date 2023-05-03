@@ -62,132 +62,196 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GEOLOCALIZACION AS
 	    Lv_Latitud  VARCHAR2(1000); 
 	    Lv_Longitud   VARCHAR2(1000); 
 	   
- 	    CURSOR C_Canton (Cv_NombreCanton VARCHAR2 , Cv_IdProvincia NUMBER ) IS 
-        SELECT id_canton , nombre_canton FROM DB_GENERAL.ADMI_CANTON 
-        WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
-		AND  PROVINCIA_ID  = Cv_IdProvincia
-		AND(
-			F_ESTANDARIZAR(nombre_canton)  LIKE ''||F_ESTANDARIZAR(Cv_NombreCanton)||'%'  
-            OR F_ESTANDARIZAR(nombre_canton)   IN 
+		CURSOR C_Canton (Cv_NombreCanton VARCHAR2 , Cv_IdProvincia NUMBER ) IS 
+			SELECT id_canton , nombre_canton FROM DB_GENERAL.ADMI_CANTON 
+			WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+			AND PROVINCIA_ID  = Cv_IdProvincia
+			AND F_ESTANDARIZAR(nombre_canton)  LIKE ''||Cv_NombreCanton||'%'   
+			ORDER BY id_canton ASC; 
+
+		CURSOR C_CantonAll (Cv_NombreCanton VARCHAR2 , Cv_IdProvincia NUMBER ) IS 
+			SELECT id_canton , nombre_canton FROM DB_GENERAL.ADMI_CANTON 
+			WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+			AND  PROVINCIA_ID  = Cv_IdProvincia
+			AND  F_ESTANDARIZAR(nombre_canton)   IN 
 			(
-			select regexp_substr(F_ESTANDARIZAR(Cv_NombreCanton),'[^ ]+', 1, level)
-			from dual 
-			connect BY regexp_substr(F_ESTANDARIZAR(Cv_NombreCanton), '[^ ]+', 1, level)
+			select regexp_substr(Cv_NombreCanton,'[^ ]+', 1, level)	from dual 
+			connect BY regexp_substr(Cv_NombreCanton, '[^ ]+', 1, level)
 			is not null
-			) 
-		 )
-	 
-        ORDER BY id_canton ASC; 
-       
-        CURSOR C_Pais (Cv_NombrePais VARCHAR2) IS 
-        SELECT id_pais , nombre_pais FROM DB_GENERAL.ADMI_PAIS WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND  F_ESTANDARIZAR(nombre_pais)  LIKE F_ESTANDARIZAR(Cv_NombrePais)||'%'  ORDER BY id_pais ASC; 
-	   
-        CURSOR C_Provincia (Cv_NombreProvincia VARCHAR2) IS 
-        SELECT id_provincia , nombre_provincia FROM DB_GENERAL.ADMI_PROVINCIA WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') AND F_ESTANDARIZAR(nombre_provincia)  LIKE F_ESTANDARIZAR(Cv_NombreProvincia)||'%'  ORDER BY id_provincia ASC; 
-	   
-        CURSOR C_Parroquia (Cv_NombreParroquia VARCHAR2, Cv_IdCanton NUMBER) IS 
-        SELECT id_parroquia , nombre_parroquia FROM DB_GENERAL.ADMI_PARROQUIA WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO')  AND F_ESTANDARIZAR(nombre_parroquia)  LIKE F_ESTANDARIZAR(Cv_NombreParroquia)||'%'  AND CANTON_ID = Cv_IdCanton ORDER BY id_parroquia ASC; 
-       
-        CURSOR C_Sector (Cv_NombreSector VARCHAR2, Cv_IdParroquia NUMBER ) IS 
-        SELECT id_sector , nombre_sector FROM DB_GENERAL.ADMI_SECTOR
-		WHERE  F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
-        AND F_ESTANDARIZAR(nombre_sector) IN (       
-        select F_ESTANDARIZAR( regexp_substr( Cv_NombreSector,'[^,]+', 1, level)) from dual
-        connect by regexp_substr( Cv_NombreSector, '[^,]+', 1, level) is not null
-        ) AND PARROQUIA_ID = Cv_IdParroquia  AND  EMPRESA_COD = Ln_IdEmpresa  ORDER BY id_sector ASC;        
-        
-       CURSOR C_PuntoCobertura (Cn_IdEmpresa NUMBER, Cn_IdCanton NUMBER) IS 
-        SELECT  J.ID_JURISDICCION, J.NOMBRE_JURISDICCION  FROM DB_GENERAL.ADMI_JURISDICCION J
-		INNER JOIN DB_GENERAL.INFO_OFICINA_GRUPO O
-		ON  J.OFICINA_ID  = O.ID_OFICINA
-		INNER JOIN DB_GENERAL.ADMI_CANTON_JURISDICCION JC
-		ON J.ID_JURISDICCION =JC.JURISDICCION_ID	  
-		WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  
-		AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    
-		AND  F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
-		AND O.EMPRESA_ID = Cn_IdEmpresa	
-		AND JC.CANTON_ID = Cn_IdCanton
-		GROUP  BY J.ID_JURISDICCION , J.NOMBRE_JURISDICCION
-		ORDER BY NOMBRE_JURISDICCION ASC; 
+			)  
+			ORDER BY id_canton DESC; 
+
+		CURSOR C_Pais (Cv_NombrePais VARCHAR2) IS 
+			SELECT id_pais , nombre_pais FROM DB_GENERAL.ADMI_PAIS 
+			WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+			AND  F_ESTANDARIZAR(nombre_pais) LIKE Cv_NombrePais||'%' 
+			ORDER BY id_pais ASC; 
+
+		CURSOR C_Provincia (Cv_NombreProvincia VARCHAR2) IS 
+			SELECT id_provincia , nombre_provincia FROM DB_GENERAL.ADMI_PROVINCIA 
+			WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+			AND   F_ESTANDARIZAR(nombre_provincia)  LIKE  Cv_NombreProvincia||'%'  
+			ORDER BY id_provincia ASC; 
+
+		CURSOR C_Parroquia (Cv_NombreParroquia VARCHAR2, Cv_IdCanton NUMBER) IS 
+	    	SELECT id_parroquia , nombre_parroquia FROM DB_GENERAL.ADMI_PARROQUIA
+			WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO')  
+			AND CANTON_ID = Cv_IdCanton 
+			AND F_ESTANDARIZAR(nombre_parroquia)  LIKE Cv_NombreParroquia||'%' 
+			ORDER BY id_parroquia ASC; 
+ 
+		CURSOR C_ParroquiaAll (Cv_NombreParroquia VARCHAR2, Cv_IdCanton NUMBER) IS 
+			SELECT id_parroquia , nombre_parroquia FROM DB_GENERAL.ADMI_PARROQUIA 
+			WHERE F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO')  
+			AND CANTON_ID = Cv_IdCanton 
+			AND F_ESTANDARIZAR(nombre_parroquia)  IN
+			(       
+			select  regexp_substr(Cv_NombreParroquia ,'[^,]+', 1, level) from dual
+			connect by regexp_substr( Cv_NombreParroquia ,'[^,]+', 1, level) is not null
+			)
+			ORDER BY id_parroquia DESC; 
+
+		CURSOR C_Sector (Cv_NombreSector VARCHAR2, Cv_IdParroquia NUMBER ) IS 
+			SELECT id_sector , nombre_sector FROM DB_GENERAL.ADMI_SECTOR
+			WHERE  F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+			AND PARROQUIA_ID = Cv_IdParroquia  
+			AND EMPRESA_COD  = Ln_IdEmpresa 
+		    AND F_ESTANDARIZAR(nombre_sector)  LIKE Cv_NombreSector||'%'   
+			ORDER BY id_sector ASC;   
+
+		CURSOR C_SectorAll (Cv_NombreSector VARCHAR2, Cv_IdParroquia NUMBER ) IS 
+			SELECT id_sector , nombre_sector FROM DB_GENERAL.ADMI_SECTOR
+			WHERE  F_ESTANDARIZAR(ESTADO) IN ('ACTIVO','MODIFICADO') 
+			AND PARROQUIA_ID = Cv_IdParroquia 
+			AND EMPRESA_COD  = Ln_IdEmpresa 
+			AND F_ESTANDARIZAR(nombre_sector) IN 
+			(       
+			select regexp_substr( Cv_NombreSector,'[^,]+', 1,level) from dual
+			connect by regexp_substr( Cv_NombreSector, '[^,]+', 1, level) is not null
+			)
+			ORDER BY id_sector DESC;        
+
+
+	        
+
+		CURSOR C_PuntoCobertura (Cn_IdEmpresa NUMBER, Cn_IdCanton NUMBER) IS 
+			SELECT  J.ID_JURISDICCION, J.NOMBRE_JURISDICCION  FROM DB_GENERAL.ADMI_JURISDICCION J
+			INNER JOIN DB_GENERAL.INFO_OFICINA_GRUPO O
+			ON  J.OFICINA_ID  = O.ID_OFICINA
+			INNER JOIN DB_GENERAL.ADMI_CANTON_JURISDICCION JC
+			ON J.ID_JURISDICCION =JC.JURISDICCION_ID	  
+			WHERE F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  
+			AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    
+			AND F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
+			AND O.EMPRESA_ID = Cn_IdEmpresa	
+			AND JC.CANTON_ID = Cn_IdCanton
+			GROUP  BY J.ID_JURISDICCION , J.NOMBRE_JURISDICCION
+			ORDER BY NOMBRE_JURISDICCION ASC; 
 	
-	   CURSOR C_CountPuntoCobertura (Cn_IdEmpresa NUMBER, Cn_IdCanton NUMBER) IS 
-        SELECT  COUNT(*) FROM DB_GENERAL.ADMI_JURISDICCION J
-		INNER JOIN DB_GENERAL.INFO_OFICINA_GRUPO O
-		ON  J.OFICINA_ID  = O.ID_OFICINA
-		INNER JOIN DB_GENERAL.ADMI_CANTON_JURISDICCION JC
-		ON J.ID_JURISDICCION =JC.JURISDICCION_ID	  
-		WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  
-		AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    
-		AND  F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
-		AND O.EMPRESA_ID = Cn_IdEmpresa	
-		AND JC.CANTON_ID = Cn_IdCanton 
-		ORDER BY NOMBRE_JURISDICCION ASC; 
+		CURSOR C_CountPuntoCobertura (Cn_IdEmpresa NUMBER, Cn_IdCanton NUMBER) IS 
+			SELECT  COUNT(*) FROM DB_GENERAL.ADMI_JURISDICCION J
+			INNER JOIN DB_GENERAL.INFO_OFICINA_GRUPO O
+			ON  J.OFICINA_ID  = O.ID_OFICINA
+			INNER JOIN DB_GENERAL.ADMI_CANTON_JURISDICCION JC
+			ON J.ID_JURISDICCION =JC.JURISDICCION_ID	  
+			WHERE  F_ESTANDARIZAR(J.ESTADO ) IN ('ACTIVO','MODIFICADO')  
+			AND F_ESTANDARIZAR(O.ESTADO ) IN ('ACTIVO','MODIFICADO')    
+			AND F_ESTANDARIZAR(JC.ESTADO ) IN ('ACTIVO','MODIFICADO') 
+			AND O.EMPRESA_ID = Cn_IdEmpresa	
+			AND JC.CANTON_ID = Cn_IdCanton 
+			ORDER BY NOMBRE_JURISDICCION ASC; 
 
      
       
        BEGIN  
 		APEX_JSON.PARSE(Pcl_Request);		
-	    Ln_IdEmpresa := APEX_JSON.GET_VARCHAR2(p_path => 'idEmpresa');
-	    Lv_UsrCreacion := APEX_JSON.GET_VARCHAR2(p_path => 'usrCreacion');
-	    Lv_NombrePais := APEX_JSON.GET_VARCHAR2(p_path => 'nombrePais');
+	    Ln_IdEmpresa       := APEX_JSON.GET_VARCHAR2(p_path => 'idEmpresa');
+	    Lv_UsrCreacion     := APEX_JSON.GET_VARCHAR2(p_path => 'usrCreacion');
+	    Lv_NombrePais      := F_ESTANDARIZAR(APEX_JSON.GET_VARCHAR2(p_path => 'nombrePais'));
         Lv_NombreProvincia := F_ESTANDARIZAR( APEX_JSON.GET_VARCHAR2(p_path => 'nombreProvincia'));
-        Lv_NombreCanton := F_ESTANDARIZAR(  APEX_JSON.GET_VARCHAR2(p_path => 'nombreCanton'));
-		Lv_NombreParroquia := APEX_JSON.GET_VARCHAR2(p_path => 'nombreParroquia');
-	    Lv_NombreSector := APEX_JSON.GET_VARCHAR2(p_path => 'nombreSector');
-	    Lv_CodigoPostal := APEX_JSON.GET_VARCHAR2(p_path => 'codigoPostal');
-	    Lv_CallePrincipal := APEX_JSON.GET_VARCHAR2(p_path => 'callePrincipal');
-	    Lv_PuntoInteres := APEX_JSON.GET_VARCHAR2(p_path => 'puntoInteres');
-	    Lv_Latitud := APEX_JSON.GET_VARCHAR2(p_path => 'latitud');
-	    Lv_Longitud := APEX_JSON.GET_VARCHAR2(p_path => 'longitud');
+        Lv_NombreCanton    := F_ESTANDARIZAR(  APEX_JSON.GET_VARCHAR2(p_path => 'nombreCanton'));
+		Lv_NombreParroquia := F_ESTANDARIZAR(APEX_JSON.GET_VARCHAR2(p_path => 'nombreParroquia'));
+	    Lv_NombreSector    := F_ESTANDARIZAR( APEX_JSON.GET_VARCHAR2(p_path => 'nombreSector'));
+	    Lv_CodigoPostal    := APEX_JSON.GET_VARCHAR2(p_path => 'codigoPostal');
+	    Lv_CallePrincipal  := APEX_JSON.GET_VARCHAR2(p_path => 'callePrincipal');
+	    Lv_PuntoInteres    := APEX_JSON.GET_VARCHAR2(p_path => 'puntoInteres');
+	    Lv_Latitud         := APEX_JSON.GET_VARCHAR2(p_path => 'latitud');
+	    Lv_Longitud        := APEX_JSON.GET_VARCHAR2(p_path => 'longitud');
         Ln_ContDataPuntoCobertura:= 0;
  
-  		OPEN C_Pais(Lv_NombrePais); 
-	    FETCH C_Pais INTO Ln_IdPais , Lv_NombrePais; 
-	    dbms_output.put_line('Pais '||Lv_NombrePais||'->'||Ln_IdPais);    
-	    CLOSE C_Pais;
+			OPEN C_Pais(Lv_NombrePais); 
+			FETCH C_Pais INTO Ln_IdPais , Lv_NombrePais; 
+			dbms_output.put_line('Pais '||Lv_NombrePais||'->'||Ln_IdPais);    
+			CLOSE C_Pais;
 	   
 	   
         IF  Lv_NombreProvincia IS NOT NULL AND Ln_IdPais IS NOT NULL THEN
-	   	OPEN C_Provincia(Lv_NombreProvincia); 
-	    FETCH C_Provincia INTO Ln_IdProvincia , Lv_NombreProvincia; 
-	    dbms_output.put_line('Provincia '||Lv_NombreProvincia||'->'||Ln_IdProvincia);    
-	    CLOSE C_Provincia;
+			OPEN C_Provincia(Lv_NombreProvincia); 
+			FETCH C_Provincia INTO Ln_IdProvincia , Lv_NombreProvincia; 
+			dbms_output.put_line('Provincia '||Lv_NombreProvincia||'->'||Ln_IdProvincia);    
+			CLOSE C_Provincia;
 	    END IF; 
 	   
 	    IF Lv_NombreCanton IS NOT NULL AND  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) THEN
-	    OPEN C_Canton(Lv_NombreCanton, Ln_IdProvincia ); 
-	    FETCH C_Canton INTO Ln_IdCanton , Lv_NombreCanton; 
-	    dbms_output.put_line('Canton '||Lv_NombreCanton||'->'||Ln_IdCanton);    
-	    CLOSE C_Canton;
+			OPEN C_Canton(Lv_NombreCanton, Ln_IdProvincia ); 
+			FETCH C_Canton INTO Ln_IdCanton , Lv_NombreCanton; 
+			CLOSE C_Canton;
+
+			IF Ln_IdCanton IS NULL THEN 
+				OPEN C_CantonAll(Lv_NombreCanton, Ln_IdProvincia ); 
+				FETCH C_CantonAll INTO Ln_IdCanton , Lv_NombreCanton;   
+				CLOSE C_CantonAll;
+			END IF; 
+
+			dbms_output.put_line('Canton '||Lv_NombreCanton||'->'||Ln_IdCanton);  
 	    END IF; 
 
+
+	
+
 	    IF  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) THEN       
-	    OPEN C_PuntoCobertura (Ln_IdEmpresa , Ln_IdCanton); 
-	    FETCH C_PuntoCobertura  INTO Ln_IdPuntoCobertura , Lv_NombrePuntoCobertura;        
-        dbms_output.put_line('Punto Cobertura '||Lv_NombrePuntoCobertura||'->'||Ln_IdPuntoCobertura);    
-        CLOSE C_PuntoCobertura ; 
-       
-        OPEN C_CountPuntoCobertura (Ln_IdEmpresa , Ln_IdCanton); 
-	    FETCH C_CountPuntoCobertura  INTO  Ln_ContDataPuntoCobertura;     
-        CLOSE C_CountPuntoCobertura ; 
+
+			OPEN C_PuntoCobertura (Ln_IdEmpresa , Ln_IdCanton); 
+			FETCH C_PuntoCobertura  INTO Ln_IdPuntoCobertura , Lv_NombrePuntoCobertura;  			
+			dbms_output.put_line('Punto Cobertura '||Lv_NombrePuntoCobertura||'->'||Ln_IdPuntoCobertura);        
+			CLOSE C_PuntoCobertura ; 
+		
+			OPEN C_CountPuntoCobertura (Ln_IdEmpresa , Ln_IdCanton); 
+			FETCH C_CountPuntoCobertura  INTO  Ln_ContDataPuntoCobertura;     
+			CLOSE C_CountPuntoCobertura ; 
+
        
 		END IF;  
 	
      	   
 	    IF Lv_NombreParroquia IS NOT NULL AND  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) THEN
-       	OPEN C_Parroquia(Lv_NombreParroquia, Ln_IdCanton); 
-	    FETCH C_Parroquia INTO Ln_IdParroquia , Lv_NombreParroquia; 
-	    dbms_output.put_line('Parroquia '||Lv_NombreParroquia||'->'||Ln_IdParroquia);    
-	    CLOSE C_Parroquia;
+			OPEN C_Parroquia(Lv_NombreParroquia, Ln_IdCanton); 
+			FETCH C_Parroquia INTO Ln_IdParroquia , Lv_NombreParroquia;   
+			CLOSE C_Parroquia;
+
+			IF Ln_IdParroquia IS NULL THEN
+				OPEN C_ParroquiaAll(Lv_NombreParroquia, Ln_IdCanton); 
+				FETCH C_ParroquiaAll INTO Ln_IdParroquia , Lv_NombreParroquia; 
+				CLOSE C_ParroquiaAll;
+		    END IF;  
+
+			dbms_output.put_line('Parroquia '||Lv_NombreParroquia||'->'||Ln_IdParroquia);    
+
 	    END IF; 
 	   
 	    IF Lv_NombreSector IS NOT NULL AND  (Ln_IdPais IS NOT NULL ) AND (Ln_IdProvincia IS NOT NULL) AND (Ln_IdCanton IS NOT NULL) AND (Ln_IdParroquia IS NOT NULL) THEN
-    	OPEN C_Sector(Lv_NombreSector, Ln_IdParroquia ); 
-	    FETCH C_Sector INTO Ln_IdSector , Lv_NombreSector; 
-	    dbms_output.put_line('Sector '||Lv_NombreSector||'->'||Ln_IdSector);    
-	    CLOSE C_Sector;   
+			OPEN  C_Sector(Lv_NombreSector, Ln_IdParroquia ); 
+			FETCH C_Sector INTO Ln_IdSector , Lv_NombreSector; 
+			CLOSE C_Sector;   
+			IF Ln_IdSector IS NULL THEN 
+				OPEN  C_SectorAll(Lv_NombreSector, Ln_IdParroquia ); 
+				FETCH C_SectorAll INTO Ln_IdSector , Lv_NombreSector;  
+				CLOSE C_SectorAll;   
+			END IF;  
+			dbms_output.put_line('Sector '||Lv_NombreSector||'->'||Ln_IdSector);    
 	    END IF; 
-	   
+
+ 
 	    --NUEVA VALIDACION SI NO HAY PUNTO DE COBERTURA QUITAR ID EN DATA DE GEO
 	    IF ( Ln_ContDataPuntoCobertura <> 1 ) THEN
 	    Pv_Mensaje :='Punto de Cobertura del Canton: '||Lv_NombreCanton ||'=>'||Ln_IdCanton || ' regularizar con soporte de dato.'; 
