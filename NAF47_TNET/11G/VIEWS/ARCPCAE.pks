@@ -1,0 +1,11 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCPCAE" ("NO_CIA", "NO_DOCU", "TIPO_DOC", "NO_PROVE", "COD_ESTADO_NUE", "FECHA_DIGITACION", "FECHA", "USUARIO", "COD_ESTADO") AS 
+  SELECT "NO_CIA",
+           "NO_DOCU",
+           "TIPO_DOC",
+           "NO_PROVE",
+           "COD_ESTADO_NUE",
+           "FECHA_DIGITACION",
+           "FECHA",
+           "USUARIO",
+           "COD_ESTADO"
+      FROM NAF47_TNET.ARCPCAE@GPOETNET;

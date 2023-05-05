@@ -1,0 +1,20 @@
+CREATE  FORCE VIEW "NAF47_TNET"."V_ROLES_HISTORICOS" ("CODIGO", "NO_CIA", "CODPLA", "DESCRI", "ANO", "MES", "NO_EMPLE", "CEDULA", "NOMBRE", "F_INGRESO", "TIPO_EMP", "SAL_BAS", "PUESTO", "CANTIDAD", "MONTO", "DESCRIPCION", "TIPO_M", "OBSERVACION") AS 
+  SELECT "CODIGO",
+           "NO_CIA",
+           "CODPLA",
+           "DESCRI",
+           "ANO",
+           "MES",
+           "NO_EMPLE",
+           "CEDULA",
+           "NOMBRE",
+           "F_INGRESO",
+           "TIPO_EMP",
+           "SAL_BAS",
+           "PUESTO",
+           "CANTIDAD",
+           "MONTO",
+           "DESCRIPCION",
+           "TIPO_M",
+           "OBSERVACION"
+      FROM NAF47_TNET.V_ROLES_HISTORICOS@GPOETNET;

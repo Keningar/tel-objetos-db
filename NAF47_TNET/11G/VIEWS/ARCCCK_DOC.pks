@@ -1,0 +1,14 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCCCK_DOC" ("NO_CIA", "NO_DOCU_CHEQUE", "NO_LINEA", "NO_CHEQUE", "NO_CLIENTE", "SUB_CLIENTE", "NO_FISICO", "SERIE_FISICO", "NO_DOCU", "MONTO", "FECHA_CREACION", "USUARIO_CREA") AS 
+  SELECT "NO_CIA",
+           "NO_DOCU_CHEQUE",
+           "NO_LINEA",
+           "NO_CHEQUE",
+           "NO_CLIENTE",
+           "SUB_CLIENTE",
+           "NO_FISICO",
+           "SERIE_FISICO",
+           "NO_DOCU",
+           "MONTO",
+           "FECHA_CREACION",
+           "USUARIO_CREA"
+      FROM NAF47_TNET.ARCCCK_DOC@GPOETNET;

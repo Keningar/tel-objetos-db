@@ -1,0 +1,20 @@
+CREATE  FORCE VIEW "NAF47_TNET"."TMP_ARCKCL" ("NO_CIA", "NO_SECUENCIA", "TIPO_DOCU", "COD_CONT", "CENTRO_COSTO", "CODIGO_TERCERO", "TIPO_MOV", "MONTO", "MONTO_DOL", "MONEDA", "NO_ASIENTO", "TIPO_CAMBIO", "MODIFICABLE", "IND_CON", "ANO", "MES", "MONTO_DC", "GLOSA") AS 
+  SELECT "NO_CIA",
+           "NO_SECUENCIA",
+           "TIPO_DOCU",
+           "COD_CONT",
+           "CENTRO_COSTO",
+           "CODIGO_TERCERO",
+           "TIPO_MOV",
+           "MONTO",
+           "MONTO_DOL",
+           "MONEDA",
+           "NO_ASIENTO",
+           "TIPO_CAMBIO",
+           "MODIFICABLE",
+           "IND_CON",
+           "ANO",
+           "MES",
+           "MONTO_DC",
+           "GLOSA"
+      FROM NAF47_TNET.TMP_ARCKCL@GPOETNET;

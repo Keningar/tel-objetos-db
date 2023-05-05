@@ -1,0 +1,546 @@
+CREATE OR REPLACE package MIG_LEE_CAMPOS_LOB is
+
+
+  FUNCTION F_ARPLME_FOTO ( Pv_NoEmple IN VARCHAR2,
+                           Pv_NoCia   IN VARCHAR2) RETURN CLOB;
+
+  FUNCTION F_INFO_LOGGER_INFORMATION (Pn_LoggerId IN NUMBER) RETURN CLOB;
+
+  FUNCTION F_INFO_LOGGER_OBSERVATION (Pn_LoggerId IN NUMBER) RETURN CLOB;
+  
+  FUNCTION F_ARCKLOG_DOC_PROCESADO ( Pv_NoCia     IN VARCHAR2,
+                                     Pn_Secuencia IN NUMBER) RETURN CLOB;
+
+  FUNCTION F_ARCPMD_ARCHIVO_XML ( Pv_NoCia  IN VARCHAR2,
+                                  Pv_NoDocu IN VARCHAR2) RETURN CLOB;
+
+  FUNCTION F_CO_DOCUMENTO_ORDEN_ARCHIVO ( Pv_NoCia  IN VARCHAR2,
+                                          Pv_NoOrden IN VARCHAR2) RETURN BLOB;
+  
+  FUNCTION F_INFO_ARCHIVO_CARGADO_XML (Pn_SecuenciaCargaId IN NUMBER) RETURN CLOB;                                        
+  
+  FUNCTION F_SRI_COMPANIA_ATS (Pv_NoCia  IN VARCHAR2) RETURN CLOB;
+
+  FUNCTION F_XMLBLOG(Fv_ComprobanteElectronico SYS.XMLTYPE) RETURN BLOB;
+
+  FUNCTION F_IMAGEN_LOGO_EMPRESA (Pv_NoCia  IN VARCHAR2) RETURN BLOB;
+  
+  PROCEDURE P_INSERT_INFO_DOCUMENTO( Prf_InfoDocumento IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_InfoDocumento,
+                                     Pv_MsnError       OUT VARCHAR2);
+
+  Procedure  P_Update_Info_Documento_NAF (Prf_InfoDocumento IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_InfoDocumento,
+                                          Pv_MsnError OUT VARCHAR2 );
+
+
+
+
+
+end MIG_LEE_CAMPOS_LOB;
+
+/
+
+
+CREATE OR REPLACE package body MIG_LEE_CAMPOS_LOB is
+
+
+  FUNCTION F_ARPLME_FOTO (Pv_NoEmple IN VARCHAR2,
+                          Pv_NoCia   IN VARCHAR2) RETURN CLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(FOTO,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.ARPLME WHERE NO_EMPLE = '||CHR(39)||Pv_NoEmple||CHR(39);
+      Lv_ConsultaSql := Lv_ConsultaSql ||' AND NO_CIA = '||CHR(39)||Pv_NoCia||CHR(39);
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_ARPLME_FOTO;
+  --
+  --
+  FUNCTION F_INFO_LOGGER_INFORMATION (Pn_LoggerId IN NUMBER) RETURN CLOB IS
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(INFORMATION,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.INFO_LOGGER WHERE ID_LOGGER = '||Pn_LoggerId;
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_INFO_LOGGER_INFORMATION;
+  --
+  --
+  FUNCTION F_INFO_LOGGER_OBSERVATION (Pn_LoggerId IN NUMBER) RETURN CLOB IS
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(OBSERVATION,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.INFO_LOGGER WHERE ID_LOGGER = '||Pn_LoggerId;
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_INFO_LOGGER_OBSERVATION;
+  --
+  --
+  FUNCTION F_ARCKLOG_DOC_PROCESADO ( Pv_NoCia     IN VARCHAR2,
+                                     Pn_Secuencia IN NUMBER) RETURN CLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(DOC_PROCESADOS,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.ARCK_LOG WHERE SECUENCIA  = '||Pn_Secuencia;
+      Lv_ConsultaSql := Lv_ConsultaSql ||' AND NO_CIA  = '||CHR(39)||Pv_NoCia||CHR(39);
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_ARCKLOG_DOC_PROCESADO;
+  --
+  --
+  FUNCTION F_ARCPMD_ARCHIVO_XML ( Pv_NoCia  IN VARCHAR2,
+                                  Pv_NoDocu IN VARCHAR2) RETURN CLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(ARCHIVO_XML_TMP,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.ARCPMD WHERE NO_DOCU  = '||CHR(39)||Pv_NoDocu||CHR(39);
+      Lv_ConsultaSql := Lv_ConsultaSql ||' AND NO_CIA  = '||CHR(39)||Pv_NoCia||CHR(39);
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_ARCPMD_ARCHIVO_XML;
+  --
+  --
+  FUNCTION F_CO_DOCUMENTO_ORDEN_ARCHIVO ( Pv_NoCia  IN VARCHAR2,
+                                          Pv_NoOrden IN VARCHAR2) RETURN BLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob BLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(ARCHIVO_XML_TMP,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.CO_DOCUMENTO_ORDEN WHERE NO_ORDEN  = '||CHR(39)||Pv_NoOrden||CHR(39);
+      Lv_ConsultaSql := Lv_ConsultaSql ||' AND NO_CIA  = '||CHR(39)||Pv_NoCia||CHR(39);
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, utl_raw.cast_to_raw (Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_CO_DOCUMENTO_ORDEN_ARCHIVO;
+  --
+  --
+  FUNCTION F_INFO_ARCHIVO_CARGADO_XML (Pn_SecuenciaCargaId IN NUMBER) RETURN CLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(XML_DATA,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.INFO_ARCHIVOS_CARGADOS WHERE SECUENCIA_CARGA_ID  = '||Pn_SecuenciaCargaId;
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_INFO_ARCHIVO_CARGADO_XML;
+  --
+  --
+  FUNCTION F_SRI_COMPANIA_ATS (Pv_NoCia  IN VARCHAR2) RETURN CLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob CLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(ARCHIVO_XML_TMP,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.SRI_COMPANIA WHERE NO_CIA  = '||CHR(39)||Pv_NoCia||CHR(39);
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, to_clob(Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_SRI_COMPANIA_ATS;
+  --
+  --
+  FUNCTION F_XMLBLOG(Fv_ComprobanteElectronico SYS.XMLTYPE) RETURN BLOB IS 
+    Ln_DestOffset  NUMBER := 1;
+    Ln_SrcOffset   NUMBER := 1;
+    Ln_LangContext NUMBER := dbms_lob.default_lang_ctx;
+    Ln_Warning      NUMBER;
+    Lclob          clob := 'xml';  
+    Lv_XmlOriginal DB_COMPROBANTES.INFO_DOCUMENTO.XML_ORIGINAL%TYPE;
+  BEGIN
+
+   SYS.DBMS_LOB.FREETEMPORARY(Lclob);
+
+   SYS.DBMS_LOB.CREATETEMPORARY(Lclob, TRUE);
+
+   SYS.DBMS_LOB.APPEND(Lclob,Fv_ComprobanteElectronico.getclobval() );
+   SYS.DBMS_LOB.CREATETEMPORARY(Lv_XmlOriginal, TRUE);
+   SYS.DBMS_LOB.CONVERTTOBLOB(dest_lob     => Lv_XmlOriginal,
+                              src_clob     => Lclob,
+                              amount        => dbms_lob.lobmaxsize,
+                              dest_offset   => Ln_DestOffset,
+                              src_offset    => Ln_SrcOffset,
+                              blob_csid     => nls_charset_id('AL32UTF8'),
+                              lang_context  => Ln_LangContext,
+                              warning       => Ln_Warning);
+    RETURN Lv_XmlOriginal;                     
+      --
+  EXCEPTION
+  WHEN OTHERS THEN
+      DB_FINANCIERO.FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('FACTURACION ELECTRONICA', 'FNCK_COM_ELECTRONICO.F_XMLBLOG', SQLERRM);
+  END F_XMLBLOG;
+  --
+  --
+  FUNCTION F_IMAGEN_LOGO_EMPRESA (Pv_NoCia  IN VARCHAR2) RETURN BLOB IS
+    --
+    Lv_ConsultaSql  VARCHAR2(4000);
+    Lv_ResultadoLob BLOB;
+    --
+    Lv_Hilera  VARCHAR2 (32767);
+    Ln_Inicio   PLS_INTEGER := 1;
+    Ln_Buffer  PLS_INTEGER := 32767;
+    --
+  BEGIN
+    --
+    dbms_lob.createtemporary(Lv_ResultadoLob,true);
+    --
+    LOOP
+      --
+      Lv_ConsultaSql := 'SELECT UTL_RAW.CAST_TO_VARCHAR2(UTL_RAW.CONVERT(DBMS_LOB.SUBSTR(IMAGEN,'||Ln_Buffer||','||Ln_Inicio||'),';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||',';
+      Lv_ConsultaSql := Lv_ConsultaSql ||CHR(39)||'AMERICAN_THE NETHERLANDS.UTF8'||CHR(39)||'))';
+      Lv_ConsultaSql := Lv_ConsultaSql ||' FROM NAF47_TNET.GE_LOGO_EMPRESA WHERE NO_CIA  = '||CHR(39)||Pv_NoCia||CHR(39);
+      --
+      BEGIN 
+        Lv_Hilera:= NAF47_TNET.MIG_F_CONVIERTE_LOB_STRING@GPOETNET(Lv_ConsultaSql); 
+      EXCEPTION
+        WHEN OTHERS THEN
+          Lv_Hilera:= NULL;
+      END;
+      --
+      IF Lv_Hilera IS NOT NULL THEN
+        Ln_Inicio:= Ln_Inicio+ Ln_Buffer;
+        dbms_lob.append(Lv_ResultadoLob, utl_raw.cast_to_raw (Lv_Hilera));
+      END IF;
+      EXIT WHEN Lv_Hilera IS NULL;
+    END LOOP;
+    --
+    RETURN Lv_ResultadoLob;
+    --
+  END F_IMAGEN_LOGO_EMPRESA;
+  --
+  --
+  PROCEDURE P_INSERT_INFO_DOCUMENTO( Prf_InfoDocumento IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_InfoDocumento,
+                                     Pv_MsnError       OUT VARCHAR2) IS
+  BEGIN
+    --
+    INSERT INTO DB_COMPROBANTES.INFO_DOCUMENTO
+    (
+    ID_DOCUMENTO,
+    TIPO_DOC_ID,
+    FORMATO_ID,
+    EMPRESA_ID,
+    NOMBRE, 
+    FE_CREACION,
+    USR_CREACION,
+    FE_ULT_MOD,
+    USR_ULT_MOD,
+    IP_CREACION,
+    ESTABLECIMIENTO,
+    PUNTO_EMISION,
+    VALOR,
+    ESTADO_DOC_ID,  
+    VERSION,
+    SECUENCIAL,
+    FE_RECIBIDO,    
+    TIPO_IDENTIFICACION_ID,
+    IDENTIFICACION,
+    TIPO_EMISION_ID,
+    USUARIO_ID,
+    LOTEMASIVO_ID,    
+    XML_ORIGINAL,
+    AMBIENTE_ID,
+    FE_EMISION,
+    INTENTO_RECEPCION,  
+    INTENTO_CONSULTA,  
+    ORIGEN_DOCUMENTO,
+    DOCUMENTO_ID_FINAN,
+    CLAVE_ACCESO
+    ) 
+    VALUES
+    (
+    Prf_InfoDocumento.ID_DOCUMENTO,
+    Prf_InfoDocumento.TIPO_DOC_ID,
+    Prf_InfoDocumento.FORMATO_ID,
+    Prf_InfoDocumento.EMPRESA_ID,
+    Prf_InfoDocumento.NOMBRE,  
+    Prf_InfoDocumento.FE_CREACION,
+    Prf_InfoDocumento.USR_CREACION,
+    Prf_InfoDocumento.FE_ULT_MOD,
+    Prf_InfoDocumento.USR_ULT_MOD,
+    Prf_InfoDocumento.IP_CREACION,
+    Prf_InfoDocumento.ESTABLECIMIENTO,
+    Prf_InfoDocumento.PUNTO_EMISION,
+    Prf_InfoDocumento.VALOR,
+    Prf_InfoDocumento.ESTADO_DOC_ID,
+    Prf_InfoDocumento.VERSION,
+    Prf_InfoDocumento.SECUENCIAL,
+    Prf_InfoDocumento.FE_RECIBIDO,
+    Prf_InfoDocumento.TIPO_IDENTIFICACION_ID,
+    Prf_InfoDocumento.IDENTIFICACION,
+    Prf_InfoDocumento.TIPO_EMISION_ID,
+    Prf_InfoDocumento.USUARIO_ID,
+    Prf_InfoDocumento.LOTEMASIVO_ID,
+    Prf_InfoDocumento.XML_ORIGINAL,  
+    Prf_InfoDocumento.AMBIENTE_ID,
+    Prf_InfoDocumento.FE_EMISION,
+    Prf_InfoDocumento.INTENTO_RECEPCION,
+    Prf_InfoDocumento.INTENTO_CONSULTA,
+    Prf_InfoDocumento.ORIGEN_DOCUMENTO,
+    Prf_InfoDocumento.DOCUMENTO_ID_FINAN,
+    Prf_InfoDocumento.CLAVE_ACCESO
+    );
+    --
+  EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    Pv_MsnError := 'Error en P_INSERT_INFO_DOCUMENTO - ' || SQLERRM;
+    --
+  END P_INSERT_INFO_DOCUMENTO;
+  --
+  --
+  Procedure  P_Update_Info_Documento_NAF (Prf_InfoDocumento IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_InfoDocumento,
+                                          Pv_MsnError OUT VARCHAR2 )  IS
+  BEGIN
+    UPDATE DB_COMPROBANTES.INFO_DOCUMENTO
+    SET
+       TIPO_DOC_ID            = Prf_InfoDocumento.TIPO_DOC_ID,
+       EMPRESA_ID             = Prf_InfoDocumento.EMPRESA_ID,
+       NOMBRE                 = Prf_InfoDocumento.NOMBRE,
+       FE_ULT_MOD             = Prf_InfoDocumento.FE_ULT_MOD,
+       USR_ULT_MOD            = Prf_InfoDocumento.USR_ULT_MOD,
+       ESTABLECIMIENTO        = Prf_InfoDocumento.ESTABLECIMIENTO,
+       PUNTO_EMISION          = Prf_InfoDocumento.PUNTO_EMISION,
+       VALOR                  = Prf_InfoDocumento.VALOR,
+       ESTADO_DOC_ID          = Prf_InfoDocumento.ESTADO_DOC_ID,
+       SECUENCIAL             = Prf_InfoDocumento.SECUENCIAL,
+       TIPO_IDENTIFICACION_ID = Prf_InfoDocumento.TIPO_IDENTIFICACION_ID,
+       IDENTIFICACION         = Prf_InfoDocumento.IDENTIFICACION,
+       USUARIO_ID             = Prf_InfoDocumento.USUARIO_ID,
+       XML_ORIGINAL           = Prf_InfoDocumento.XML_ORIGINAL,
+       FE_EMISION             = Prf_InfoDocumento.FE_EMISION,
+       ORIGEN_DOCUMENTO       = Prf_InfoDocumento.ORIGEN_DOCUMENTO
+     WHERE ID_DOCUMENTO = Prf_InfoDocumento.ID_DOCUMENTO;
+
+  EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    DB_FINANCIERO.FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('FACTURACION ELECTRONICA', ' Error en FNCK_COM_ELECTRONICO_TRAN.P_Update_Info_Documento_NAF', '' || SQLERRM);
+    --
+  END P_Update_Info_Documento_NAF; 
+  --
+  --
+end MIG_LEE_CAMPOS_LOB;
+
+/

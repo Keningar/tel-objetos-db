@@ -1,0 +1,16 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCCAUTCLI" ("NO_CIA", "SECUENCIA", "TIPO_DOC", "SERIE", "AUTORIZACION", "INICIO_BLOQUE", "FIN_BLOQUE", "FECHA_DESDE", "FECHA_HASTA", "ESTADO", "USUARIO", "FECHA_INGRESO", "TIPO_DOC_CXC", "FORMULARIO") AS 
+  SELECT "NO_CIA",
+           "SECUENCIA",
+           "TIPO_DOC",
+           "SERIE",
+           "AUTORIZACION",
+           "INICIO_BLOQUE",
+           "FIN_BLOQUE",
+           "FECHA_DESDE",
+           "FECHA_HASTA",
+           "ESTADO",
+           "USUARIO",
+           "FECHA_INGRESO",
+           "TIPO_DOC_CXC",
+           "FORMULARIO"
+      FROM NAF47_TNET.ARCCAUTCLI@GPOETNET;

@@ -1,0 +1,13 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFAFLC_LOTE" ("NO_CIA", "CENTROD", "NO_FACTU", "BODEGA", "NO_ARTI", "NO_LINEA", "NO_LOTE", "UNIDADES", "FECHA_VENCE", "UBICACION", "UNIDADES_SISTEMA") AS 
+  SELECT "NO_CIA",
+           "CENTROD",
+           "NO_FACTU",
+           "BODEGA",
+           "NO_ARTI",
+           "NO_LINEA",
+           "NO_LOTE",
+           "UNIDADES",
+           "FECHA_VENCE",
+           "UBICACION",
+           "UNIDADES_SISTEMA"
+      FROM NAF47_TNET.ARFAFLC_LOTE@GPOETNET;

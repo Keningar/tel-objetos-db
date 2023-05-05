@@ -1,0 +1,22 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCGGRL" ("REP", "LINEA", "COL_MONTO", "DESCRIP", "TOTAL", "CAMPO", "SIGNO", "VN", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9", "M10", "M11", "M12") AS 
+  SELECT "REP",
+           "LINEA",
+           "COL_MONTO",
+           "DESCRIP",
+           "TOTAL",
+           "CAMPO",
+           "SIGNO",
+           "VN",
+           "M1",
+           "M2",
+           "M3",
+           "M4",
+           "M5",
+           "M6",
+           "M7",
+           "M8",
+           "M9",
+           "M10",
+           "M11",
+           "M12"
+      FROM NAF47_TNET.ARCGGRL@GPOETNET;

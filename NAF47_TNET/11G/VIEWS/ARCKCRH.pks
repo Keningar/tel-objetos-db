@@ -1,0 +1,22 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCKCRH" ("NO_CIA", "NO_CTA", "ANO", "MES", "ACT_CIA", "ACT_BCO", "CHE_TR", "DEP_TR", "SAL_BANCO", "CRE_TR", "DEB_TR", "CRE_PR", "DEB_PR", "CHE_PR", "DEP_PR", "ADEB", "ACRE", "DIFE", "SAL_CIA", "OBSERV") AS 
+  SELECT "NO_CIA",
+           "NO_CTA",
+           "ANO",
+           "MES",
+           "ACT_CIA",
+           "ACT_BCO",
+           "CHE_TR",
+           "DEP_TR",
+           "SAL_BANCO",
+           "CRE_TR",
+           "DEB_TR",
+           "CRE_PR",
+           "DEB_PR",
+           "CHE_PR",
+           "DEP_PR",
+           "ADEB",
+           "ACRE",
+           "DIFE",
+           "SAL_CIA",
+           "OBSERV"
+      FROM NAF47_TNET.ARCKCRH@GPOETNET;

@@ -1,0 +1,12 @@
+
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARINMA_REPROCESO" ("NO_CIA", "BODEGA", "NO_ARTI", "STOCK", "MONTO", "COSTO_UNI", "COSTO2", "MONTO2") AS 
+  SELECT "NO_CIA",
+           "BODEGA",
+           "NO_ARTI",
+           "STOCK",
+           "MONTO",
+           "COSTO_UNI",
+           "COSTO2",
+           "MONTO2"
+      FROM NAF47_TNET.ARINMA_REPROCESO@GPOETNE

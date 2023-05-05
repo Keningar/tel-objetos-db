@@ -1,0 +1,10 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFADIVIDENDOS" ("NO_CIA", "CENTROD", "TIPO_DOC", "NO_FACTU", "DIVIDENDO", "VALOR", "FECHA_VENCE", "TSTAMP") AS 
+  SELECT "NO_CIA",
+           "CENTROD",
+           "TIPO_DOC",
+           "NO_FACTU",
+           "DIVIDENDO",
+           "VALOR",
+           "FECHA_VENCE",
+           "TSTAMP"
+      FROM NAF47_TNET.ARFADIVIDENDOS@GPOETNET;

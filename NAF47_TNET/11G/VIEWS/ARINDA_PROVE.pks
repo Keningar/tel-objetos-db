@@ -1,0 +1,14 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINDA_PROVE" ("NO_CIA", "NO_ARTI", "NO_PROVE", "FACTOR", "UNIDAD_PROV", "DESC_ARTI_PROVE", "COD_ART_PROV", "IND_PROVE_PRINCIPAL", "PRECIO", "FECHA_RIGE", "PRECIO_NUEVO", "MONEDA") AS 
+  SELECT "NO_CIA",
+           "NO_ARTI",
+           "NO_PROVE",
+           "FACTOR",
+           "UNIDAD_PROV",
+           "DESC_ARTI_PROVE",
+           "COD_ART_PROV",
+           "IND_PROVE_PRINCIPAL",
+           "PRECIO",
+           "FECHA_RIGE",
+           "PRECIO_NUEVO",
+           "MONEDA"
+      FROM NAF47_TNET.ARINDA_PROVE@GPOETNET;

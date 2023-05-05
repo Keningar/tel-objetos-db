@@ -1,0 +1,20 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARAFMC" ("NO_CIA", "DESCRI", "ANO", "MES", "CTASRE", "CTAPER", "CTAGAN", "CLASE_CAMBIO", "COD_DIARIO", "COD_DIARIO_DEP", "ULT_ANO_CIERRE", "ULT_MES_CIERRE", "IND_CALCULO_DEP", "IND_DEPRE_GENERADA", "SECUENCIA", "SECUENCIA_PARTE", "METODO_DEP", "IND_GENERA_ASIENTO") AS 
+  SELECT "NO_CIA",
+           "DESCRI",
+           "ANO",
+           "MES",
+           "CTASRE",
+           "CTAPER",
+           "CTAGAN",
+           "CLASE_CAMBIO",
+           "COD_DIARIO",
+           "COD_DIARIO_DEP",
+           "ULT_ANO_CIERRE",
+           "ULT_MES_CIERRE",
+           "IND_CALCULO_DEP",
+           "IND_DEPRE_GENERADA",
+           "SECUENCIA",
+           "SECUENCIA_PARTE",
+           "METODO_DEP",
+           "IND_GENERA_ASIENTO"
+      FROM NAF47_TNET.ARAFMC@GPOETNET;

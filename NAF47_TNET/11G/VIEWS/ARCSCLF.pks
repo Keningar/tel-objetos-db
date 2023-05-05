@@ -1,0 +1,12 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCSCLF" ("NO_CIA", "TIPO_ASIENTO", "COD_ASIENTO", "NO_LINEA", "POSICION", "CIA_HIJA", "CUENTA_HIJA", "CEN_COS_HIJA", "FACTOR", "OPERADOR") AS 
+  SELECT "NO_CIA",
+           "TIPO_ASIENTO",
+           "COD_ASIENTO",
+           "NO_LINEA",
+           "POSICION",
+           "CIA_HIJA",
+           "CUENTA_HIJA",
+           "CEN_COS_HIJA",
+           "FACTOR",
+           "OPERADOR"
+      FROM NAF47_TNET.ARCSCLF@GPOETNET;

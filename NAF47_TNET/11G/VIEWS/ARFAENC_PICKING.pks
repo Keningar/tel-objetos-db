@@ -1,0 +1,14 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFAENC_PICKING" ("NO_CIA", "CENTROD", "NO_DOCU", "NO_PICKING", "TIPO_DESPACHO", "FECHA", "ESTADO", "CENTRO_FACT", "TSTAMP", "USUARIO", "FECHA_REPROCESO", "NO_DOCU_TRANSFE") AS 
+  SELECT "NO_CIA",
+           "CENTROD",
+           "NO_DOCU",
+           "NO_PICKING",
+           "TIPO_DESPACHO",
+           "FECHA",
+           "ESTADO",
+           "CENTRO_FACT",
+           "TSTAMP",
+           "USUARIO",
+           "FECHA_REPROCESO",
+           "NO_DOCU_TRANSFE"
+      FROM NAF47_TNET.ARFAENC_PICKING@GPOETNET;

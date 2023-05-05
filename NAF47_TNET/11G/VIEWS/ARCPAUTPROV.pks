@@ -1,0 +1,15 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCPAUTPROV" ("NO_CIA", "SECUENCIA", "NO_PROVE", "TIPO_DOC", "SERIE", "AUTORIZACION", "INICIO_BLOQUE", "FIN_BLOQUE", "FECHA_DESDE", "FECHA_HASTA", "ESTADO", "USUARIO", "FECHA_INGRESO") AS 
+  SELECT "NO_CIA",
+           "SECUENCIA",
+           "NO_PROVE",
+           "TIPO_DOC",
+           "SERIE",
+           "AUTORIZACION",
+           "INICIO_BLOQUE",
+           "FIN_BLOQUE",
+           "FECHA_DESDE",
+           "FECHA_HASTA",
+           "ESTADO",
+           "USUARIO",
+           "FECHA_INGRESO"
+      FROM NAF47_TNET.ARCPAUTPROV@GPOETNET;

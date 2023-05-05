@@ -1,0 +1,12 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINTP_HISTORICO" ("NO_CIA", "TIPO", "NO_ARTI", "PRECIO_ANTERIOR", "PRECIO_NUEVO", "USUARIO", "FECHA", "NUEVO", "APRECIOS", "ZEBRA") AS 
+  SELECT "NO_CIA",
+           "TIPO",
+           "NO_ARTI",
+           "PRECIO_ANTERIOR",
+           "PRECIO_NUEVO",
+           "USUARIO",
+           "FECHA",
+           "NUEVO",
+           "APRECIOS",
+           "ZEBRA"
+      FROM NAF47_TNET.ARINTP_HISTORICO@GPOETNET;

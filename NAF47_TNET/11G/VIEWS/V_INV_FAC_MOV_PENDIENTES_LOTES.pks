@@ -1,0 +1,10 @@
+CREATE  FORCE VIEW "NAF47_TNET"."V_INV_FAC_MOV_PENDIENTES_LOTES" ("NO_CIA", "BODEGA", "NO_ARTI", "CANTIDAD", "TIPO_DOC", "NO_FISICO", "FECHA", "NO_LOTE") AS 
+  SELECT "NO_CIA",
+           "BODEGA",
+           "NO_ARTI",
+           "CANTIDAD",
+           "TIPO_DOC",
+           "NO_FISICO",
+           "FECHA",
+           "NO_LOTE"
+      FROM NAF47_TNET.V_INV_FAC_MOV_PENDIENTES_LOTES@GPOETNET;

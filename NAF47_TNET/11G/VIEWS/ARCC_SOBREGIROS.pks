@@ -1,0 +1,12 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCC_SOBREGIROS" ("NO_CIA", "CENTRO", "NO_CLIENTE", "NO_FACTU", "VALOR", "FECHA", "USUARIO", "OBSERVACION", "TSTAMP", "FECHA_CREACION") AS 
+  SELECT "NO_CIA",
+           "CENTRO",
+           "NO_CLIENTE",
+           "NO_FACTU",
+           "VALOR",
+           "FECHA",
+           "USUARIO",
+           "OBSERVACION",
+           "TSTAMP",
+           "FECHA_CREACION"
+      FROM NAF47_TNET.ARCC_SOBREGIROS@GPOETNET;

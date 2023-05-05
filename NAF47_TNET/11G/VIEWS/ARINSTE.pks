@@ -1,0 +1,22 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINSTE" ("NO_CIA", "CENTRO", "BOD_ORIG", "BOD_DEST", "PERIODO", "NO_DOCU", "FECHA", "OBSERV1", "ESTADO", "NO_PROVE", "TIPO_NO_FISICO", "NO_FISICO", "DESCU", "IMP", "PROCESADO", "PAR_IMPRIME", "DESCUENTO", "PAR_ARCHIVO", "USUARIO", "SECUENCIA_SUGERIDO_POS") AS 
+  SELECT "NO_CIA",
+           "CENTRO",
+           "BOD_ORIG",
+           "BOD_DEST",
+           "PERIODO",
+           "NO_DOCU",
+           "FECHA",
+           "OBSERV1",
+           "ESTADO",
+           "NO_PROVE",
+           "TIPO_NO_FISICO",
+           "NO_FISICO",
+           "DESCU",
+           "IMP",
+           "PROCESADO",
+           "PAR_IMPRIME",
+           "DESCUENTO",
+           "PAR_ARCHIVO",
+           "USUARIO",
+           "SECUENCIA_SUGERIDO_POS"
+      FROM NAF47_TNET.ARINSTE@GPOETNET;

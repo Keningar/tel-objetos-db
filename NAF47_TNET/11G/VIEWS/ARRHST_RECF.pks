@@ -1,0 +1,12 @@
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARRHST_RECF" ("NO_CIA", "NO_SOLIC", "PARENTESCO", "NOMBRE", "DIRECCION", "EDAD", "EMPLEADO_EN", "OCUPACION", "TELEFONO") AS 
+  SELECT "NO_CIA",
+           "NO_SOLIC",
+           "PARENTESCO",
+           "NOMBRE",
+           "DIRECCION",
+           "EDAD",
+           "EMPLEADO_EN",
+           "OCUPACION",
+           "TELEFONO"
+      FROM NAF47_TNET.ARRHST_RECF@GPOETNET;

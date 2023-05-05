@@ -1,0 +1,16 @@
+
+CREATE  FORCE VIEW "NAF47_TNET"."ADMI_PROYECTO" ("ID_PROYECTO", "NOMBRE", "RESPONSABLE_ID", "TIPO_CONTABILIDAD", "NO_CIA", "CUENTA_ID", "FE_INICIO", "FE_FIN", "ESTADO", "FE_CREACION", "USR_CREACION", "FE_ULT_MOD", "USR_ULT_MOD") AS 
+  SELECT "ID_PROYECTO",
+           "NOMBRE",
+           "RESPONSABLE_ID",
+           "TIPO_CONTABILIDAD",
+           "NO_CIA",
+           "CUENTA_ID",
+           "FE_INICIO",
+           "FE_FIN",
+           "ESTADO",
+           "FE_CREACION",
+           "USR_CREACION",
+           "FE_ULT_MOD",
+           "USR_ULT_MOD"
+      FROM NAF47_TNET.ADMI_PROYECTO@GPOETNET;

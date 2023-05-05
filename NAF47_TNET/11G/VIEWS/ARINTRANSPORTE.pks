@@ -1,0 +1,14 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINTRANSPORTE" ("NO_CIA", "NO_TRANSPORTE", "TIPO_ID_TRIBUTARIO", "RUC", "NOMBRE", "REPRESENTANTE", "DIRECCION", "TELEFONO", "FAX", "MAIL", "NO_PROVE", "TSTAMP") AS 
+  SELECT "NO_CIA",
+           "NO_TRANSPORTE",
+           "TIPO_ID_TRIBUTARIO",
+           "RUC",
+           "NOMBRE",
+           "REPRESENTANTE",
+           "DIRECCION",
+           "TELEFONO",
+           "FAX",
+           "MAIL",
+           "NO_PROVE",
+           "TSTAMP"
+      FROM NAF47_TNET.ARINTRANSPORTE@GPOETNET;

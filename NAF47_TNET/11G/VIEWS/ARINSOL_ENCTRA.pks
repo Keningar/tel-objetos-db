@@ -1,0 +1,16 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINSOL_ENCTRA" ("NO_CIA", "NO_DOCU", "BOD_ORIG", "BOD_DEST", "NO_SOLICITANTE", "DIVISION", "MOTIVO", "FECHA", "FECHA_INSERT", "USUARIO_INSERT", "FECHA_UPDATE", "USUARIO_UPDATE", "ESTADO", "CANTIDAD") AS 
+  SELECT "NO_CIA",
+           "NO_DOCU",
+           "BOD_ORIG",
+           "BOD_DEST",
+           "NO_SOLICITANTE",
+           "DIVISION",
+           "MOTIVO",
+           "FECHA",
+           "FECHA_INSERT",
+           "USUARIO_INSERT",
+           "FECHA_UPDATE",
+           "USUARIO_UPDATE",
+           "ESTADO",
+           "CANTIDAD"
+      FROM NAF47_TNET.ARINSOL_ENCTRA@GPOETNET;

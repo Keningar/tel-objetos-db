@@ -1,0 +1,31 @@
+
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARIMCALCULO" ("NO_CIA", "NO_EMBARQUE", "TIPO_CAMBIO", "NO_ARTI", "ARTI_PROVE", "DESCRIPCION", "CANTIDAD", "PRECIO", "CUBICAJE", "PESO", "TIPO_GASTO", "FACTOR", "MONTO", "IMPUESTO", "COSTO_CIF", "TARIFA", "PESO_GASTO", "CUBI_GASTO", "FACTOR_PESO", "NUM_FACO", "FACTOR_USADO", "NO_LINEA", "FACTOR_1", "FACTOR_2", "COSTO_CIF2", "CANT_PARCIAL", "SECUENCIA") AS 
+  SELECT "NO_CIA",
+           "NO_EMBARQUE",
+           "TIPO_CAMBIO",
+           "NO_ARTI",
+           "ARTI_PROVE",
+           "DESCRIPCION",
+           "CANTIDAD",
+           "PRECIO",
+           "CUBICAJE",
+           "PESO",
+           "TIPO_GASTO",
+           "FACTOR",
+           "MONTO",
+           "IMPUESTO",
+           "COSTO_CIF",
+           "TARIFA",
+           "PESO_GASTO",
+           "CUBI_GASTO",
+           "FACTOR_PESO",
+           "NUM_FACO",
+           "FACTOR_USADO",
+           "NO_LINEA",
+           "FACTOR_1",
+           "FACTOR_2",
+           "COSTO_CIF2",
+           "CANT_PARCIAL",
+           "SECUENCIA"
+      FROM NAF47_TNET.ARIMCALCULO@GPOETNET;

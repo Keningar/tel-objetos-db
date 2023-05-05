@@ -1,0 +1,22 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFA_AUX_DET_PICKING" ("NO_CIA", "CENTROD", "NUM_CTRL", "NO_FACTU", "LINEA_CAB", "LINEA_DET", "BODEGA", "NO_ARTICULO", "IND_LOTE", "CANT_PEDIDO", "CANT_PICKING", "TOTAL_LINEA", "TIPO_PRECIO", "PRECIO", "LINEA_ART_PROMOCION", "SOLICITA_TRANSFERENCIA", "PORC_DESC", "DESCUENTO", "IND_PROCESA", "CATEGORIA") AS 
+  SELECT "NO_CIA",
+           "CENTROD",
+           "NUM_CTRL",
+           "NO_FACTU",
+           "LINEA_CAB",
+           "LINEA_DET",
+           "BODEGA",
+           "NO_ARTICULO",
+           "IND_LOTE",
+           "CANT_PEDIDO",
+           "CANT_PICKING",
+           "TOTAL_LINEA",
+           "TIPO_PRECIO",
+           "PRECIO",
+           "LINEA_ART_PROMOCION",
+           "SOLICITA_TRANSFERENCIA",
+           "PORC_DESC",
+           "DESCUENTO",
+           "IND_PROCESA",
+           "CATEGORIA"
+      FROM NAF47_TNET.ARFA_AUX_DET_PICKING@GPOETNET;

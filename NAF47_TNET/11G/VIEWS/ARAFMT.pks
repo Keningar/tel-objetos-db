@@ -1,0 +1,16 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARAFMT" ("NO_CIA", "TIPO", "DESCRI", "CTAVO", "CTARE", "CTADAVO", "CTADARE", "CTAGAVO", "CTAGARE", "IND_DEPRECIACION", "IND_REVALORIZA", "VIDA_UTIL", "IND_CTAGAVO_PUENTE", "PORCENTAJE_DESECHO") AS 
+  SELECT "NO_CIA",
+           "TIPO",
+           "DESCRI",
+           "CTAVO",
+           "CTARE",
+           "CTADAVO",
+           "CTADARE",
+           "CTAGAVO",
+           "CTAGARE",
+           "IND_DEPRECIACION",
+           "IND_REVALORIZA",
+           "VIDA_UTIL",
+           "IND_CTAGAVO_PUENTE",
+           "PORCENTAJE_DESECHO"
+      FROM NAF47_TNET.ARAFMT@GPOETNET;

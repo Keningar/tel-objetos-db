@@ -1,0 +1,20 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFALOTE_SOLICDEVOLUCION" ("NO_CIA", "CENTRO", "TIPO_DOC", "PERIODO", "RUTA", "NO_FACTU", "NO_ARTI", "NO_LINEA", "NO_LOTE", "UNIDADES", "MONTO", "DESCUENTO_L", "IMP_VENTAS_L", "UBICACION", "FECHA_VENCE", "ARTI_BUENAS", "ARTI_MALAS", "BODEGA") AS 
+  SELECT "NO_CIA",
+           "CENTRO",
+           "TIPO_DOC",
+           "PERIODO",
+           "RUTA",
+           "NO_FACTU",
+           "NO_ARTI",
+           "NO_LINEA",
+           "NO_LOTE",
+           "UNIDADES",
+           "MONTO",
+           "DESCUENTO_L",
+           "IMP_VENTAS_L",
+           "UBICACION",
+           "FECHA_VENCE",
+           "ARTI_BUENAS",
+           "ARTI_MALAS",
+           "BODEGA"
+      FROM NAF47_TNET.ARFALOTE_SOLICDEVOLUCION@GPOETNET;

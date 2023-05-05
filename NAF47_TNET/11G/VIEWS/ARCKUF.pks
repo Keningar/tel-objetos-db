@@ -1,0 +1,11 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCKUF" ("NO_CIA", "NO_CTA", "TIPO_DOC", "CHEQUE", "FECHA_UBIC", "UBICACION", "OBSERVACION", "USUARIO", "NO_SECUENCIA") AS 
+  SELECT "NO_CIA",
+           "NO_CTA",
+           "TIPO_DOC",
+           "CHEQUE",
+           "FECHA_UBIC",
+           "UBICACION",
+           "OBSERVACION",
+           "USUARIO",
+           "NO_SECUENCIA"
+      FROM NAF47_TNET.ARCKUF@GPOETNET;

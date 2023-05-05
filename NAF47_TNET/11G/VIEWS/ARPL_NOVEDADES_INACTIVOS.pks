@@ -1,0 +1,14 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARPL_NOVEDADES_INACTIVOS" ("NO_CIA", "NO_EMPLE", "ANIO", "MES", "COD_PLA", "TIPO_M", "CODIGO", "MONTO", "CANTIDAD", "OBSERVACION", "USUARIO_INACTIVA", "FECHA_INACTIVA") AS 
+  SELECT "NO_CIA",
+           "NO_EMPLE",
+           "ANIO",
+           "MES",
+           "COD_PLA",
+           "TIPO_M",
+           "CODIGO",
+           "MONTO",
+           "CANTIDAD",
+           "OBSERVACION",
+           "USUARIO_INACTIVA",
+           "FECHA_INACTIVA"
+      FROM NAF47_TNET.ARPL_NOVEDADES_INACTIVOS@GPOETNET;

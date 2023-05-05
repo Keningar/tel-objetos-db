@@ -1,0 +1,8 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ACO_PROV" ("IDENT", "NOMBRE", "DIRECCION", "NOM_CALLE", "CIUDAD", "TIPO_DOC") AS 
+  SELECT "IDENT",
+           "NOMBRE",
+           "DIRECCION",
+           "NOM_CALLE",
+           "CIUDAD",
+           "TIPO_DOC"
+      FROM NAF47_TNET.ACO_PROV@GPOETNET;

@@ -1,0 +1,9 @@
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARCPMS" ("NO_CIA", "NO_PROVE", "MONEDA", "SALDO_MAX", "FECHA_MAX", "SALDO_ACTUAL") AS 
+  SELECT "NO_CIA",
+           "NO_PROVE",
+           "MONEDA",
+           "SALDO_MAX",
+           "FECHA_MAX",
+           "SALDO_ACTUAL"
+      FROM NAF47_TNET.ARCPMS@GPOETNET;

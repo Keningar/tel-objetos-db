@@ -1,0 +1,20 @@
+CREATE  FORCE VIEW "NAF47_TNET"."PVFORMA_PAGO" ("NO_CIA", "NO_TRANSA_CAJA", "FORMA_PAGO", "MONEDA", "MONTO", "BANCO", "CUENTA", "NO_FISICO_DOC", "FECHA_FISICO_DOC", "NO_TRANSA_CREDITO", "TSTAMP", "NO_LINEA", "MONTO_IVA", "COD_PLAZO", "NO_CLIENTE_BANCO", "PORC_TARJETA", "PORC_RETENCION", "AUTORIZA_CHEQUE") AS 
+  SELECT "NO_CIA",
+           "NO_TRANSA_CAJA",
+           "FORMA_PAGO",
+           "MONEDA",
+           "MONTO",
+           "BANCO",
+           "CUENTA",
+           "NO_FISICO_DOC",
+           "FECHA_FISICO_DOC",
+           "NO_TRANSA_CREDITO",
+           "TSTAMP",
+           "NO_LINEA",
+           "MONTO_IVA",
+           "COD_PLAZO",
+           "NO_CLIENTE_BANCO",
+           "PORC_TARJETA",
+           "PORC_RETENCION",
+           "AUTORIZA_CHEQUE"
+      FROM NAF47_TNET.PVFORMA_PAGO@GPOETNET;

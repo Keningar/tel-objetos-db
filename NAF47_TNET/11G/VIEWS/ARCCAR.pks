@@ -1,0 +1,8 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCCAR" ("NO_CIA", "RUTA", "GRUPO", "NO_CLIENTE", "DIAVISITA", "SECUENCIA") AS 
+  SELECT "NO_CIA",
+           "RUTA",
+           "GRUPO",
+           "NO_CLIENTE",
+           "DIAVISITA",
+           "SECUENCIA"
+      FROM NAF47_TNET.ARCCAR@GPOETNET;

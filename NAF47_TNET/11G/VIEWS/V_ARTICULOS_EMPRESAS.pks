@@ -1,0 +1,17 @@
+CREATE  FORCE VIEW "NAF47_TNET"."V_ARTICULOS_EMPRESAS" ("NO_CIA", "NO_ARTI", "DESCRIPCION", "SUBGRUPO", "UNIDAD", "NOM", "CODIGO", "COSTO_UNITARIO", "ULTIMO_COSTO", "COSTO2_UNITARIO", "ULTIMO_COSTO2", "MODELO", "MARCA", "NOMBRE_MARCA", "PRECIO_BASE") AS 
+  SELECT "NO_CIA",
+           "NO_ARTI",
+           "DESCRIPCION",
+           "SUBGRUPO",
+           "UNIDAD",
+           "NOM",
+           "CODIGO",
+           "COSTO_UNITARIO",
+           "ULTIMO_COSTO",
+           "COSTO2_UNITARIO",
+           "ULTIMO_COSTO2",
+           "MODELO",
+           "MARCA",
+           "NOMBRE_MARCA",
+           "PRECIO_BASE"
+      FROM NAF47_TNET.V_ARTICULOS_EMPRESAS@GPOETNET;

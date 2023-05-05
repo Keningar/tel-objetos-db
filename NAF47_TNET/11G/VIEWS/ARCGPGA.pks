@@ -1,0 +1,8 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCGPGA" ("NO_CIA", "ANO", "MES", "CUENTA", "MTO_DEBITO", "MTO_CREDITO") AS 
+  SELECT "NO_CIA",
+           "ANO",
+           "MES",
+           "CUENTA",
+           "MTO_DEBITO",
+           "MTO_CREDITO"
+      FROM NAF47_TNET.ARCGPGA@GPOETNET;

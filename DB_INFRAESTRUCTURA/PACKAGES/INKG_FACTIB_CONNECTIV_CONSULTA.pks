@@ -1,9 +1,9 @@
-CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA
+CREATE EDITIONABLE PACKAGE                    INKG_FACTIB_CONNECTIV_CONSULTA
 AS
   /*
-  * Documentación para TYPE 'Lr_InfoCajaConector'.
+  * Documentaci�n para TYPE 'Lr_InfoCajaConector'.
   *
-  * Tipo de datos para el retorno de la información correspondiente a la cobertura
+  * Tipo de datos para el retorno de la informaci�n correspondiente a la cobertura
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 02-07-2021
@@ -23,9 +23,9 @@ AS
   );
 
   /*
-  * Documentación para TYPE 'Lt_InfoCajaConector'.
+  * Documentaci�n para TYPE 'Lt_InfoCajaConector'.
   *
-  * Tabla para almacenar la data enviada con la información correspondiente a la cobertura
+  * Tabla para almacenar la data enviada con la informaci�n correspondiente a la cobertura
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 02-07-2021
@@ -35,9 +35,9 @@ AS
     TABLE OF Lr_InfoCajaConector INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentación para TYPE 'Lr_InfoCajaConectorFact'.
+  * Documentaci�n para TYPE 'Lr_InfoCajaConectorFact'.
   *
-  * Tipo de datos para el retorno de la información correspondiente a la cobertura
+  * Tipo de datos para el retorno de la informaci�n correspondiente a la cobertura
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 05-08-2022
@@ -60,9 +60,9 @@ AS
   );
 
   /*
-  * Documentación para TYPE 'Lt_InfoCajaConectorFact'.
+  * Documentaci�n para TYPE 'Lt_InfoCajaConectorFact'.
   *
-  * Tabla para almacenar la data enviada con la información correspondiente a la cobertura
+  * Tabla para almacenar la data enviada con la informaci�n correspondiente a la cobertura
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 05-08-2022
@@ -75,7 +75,7 @@ AS
   /**
    * F_CALCULA_DISTANCIA
    *
-   * Función que permite obtener distancia entre 2 coordenadas
+   * Funci�n que permite obtener distancia entre 2 coordenadas
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 29-06-2021
@@ -97,9 +97,9 @@ AS
 
   /**
    * P_OBTIENE_LISTADO_COBERTURA
-   * Función que obtiene la información de cobertura de acuerdo a los parámetros enviados en el json
+   * Funci�n que obtiene la informaci�n de cobertura de acuerdo a los par�metros enviados en el json
    *
-   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
    * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Prf_Registros      OUT SYS_REFCURSOR Cursor con los registros de la consulta
@@ -118,7 +118,7 @@ AS
    * P_OBTIENE_INFO_PREFACTIBILIDAD
    * Procedimiento que obtiene la respuesta en formato json de la consulta de prefactibilidad
    *
-   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
    * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
@@ -137,7 +137,7 @@ AS
    * P_OBTIENE_DATOS_FACTIBILIDAD
    * Procedimiento que obtiene la respuesta en formato json de la consulta de factibilidad
    *
-   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
    * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
@@ -153,7 +153,7 @@ AS
    *
    * @author Antonio Ayala <afayala@telconet.ec>
    * @version 1.3 30-01-2023  Se valida que si no hay respuesta del servidor de Arcgis
-   *                          debe ir a la función de la factibilidad lineal
+   *                          debe ir a la funci�n de la factibilidad lineal
    *
    * @author Emmanuel Martillo <emartillo@telconet.ec>
    * @version 1.4 13-02-2023  Se agrega bandera de Prefijo Empresa EN para Ecuanet.
@@ -171,9 +171,9 @@ AS
 
   /**
    * P_OBTIENE_LISTADO_FACTIBILIDAD
-   * Función que obtiene la información de cobertura de acuerdo a los parámetros enviados en el json
+   * Funci�n que obtiene la informaci�n de cobertura de acuerdo a los par�metros enviados en el json
    *
-   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
    * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Prf_Registros      OUT SYS_REFCURSOR Cursor con los registros de la consulta
@@ -200,8 +200,8 @@ AS
    * Procedimiento que obtiene la respuesta en formato json de la consulta de factibilidad
    *
    * @param  Pt_TRegsCajasConectoresFactib   IN DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA.Lt_InfoCajaConectorFact
-   *                                                   Parámetros por los cuáles se realizará la consulta
-   * @param  Pn_IndxCajasConectoresFactib    IN NUMBER Parámetros por los cuáles se realizará la consulta
+   *                                                   Par�metros por los cu�les se realizar� la consulta
+   * @param  Pn_IndxCajasConectoresFactib    IN NUMBER Par�metros por los cu�les se realizar� la consulta
    * @param  Pv_PrefijoEmpresa               IN VARCHAR2 Prefijo de la empresa
    * @param  Pv_Status                       OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_Mensaje                      OUT VARCHAR2 Mensaje de error del procedimiento
@@ -224,10 +224,9 @@ AS
     Pcl_JsonReturn                  OUT CLOB);
 
 END INKG_FACTIB_CONNECTIV_CONSULTA;
-
 /
 
-create or replace PACKAGE BODY DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA
+CREATE EDITIONABLE PACKAGE BODY                    INKG_FACTIB_CONNECTIV_CONSULTA
 AS
   FUNCTION F_CALCULA_DISTANCIA(
     Fn_LatitudPunto1    IN NUMBER, 
@@ -248,7 +247,7 @@ AS
     Ln_Distancia                NUMBER;
 
   BEGIN
-    --Para la conversión de grados a radianes, se toma en cuenta que 180 grados es equivalente a PI radianes.
+    --Para la conversi�n de grados a radianes, se toma en cuenta que 180 grados es equivalente a PI radianes.
     Ln_LatitudPunto1Radianes    := Fn_LatitudPunto1 * Ln_ValorConstantePi/180;
     Ln_LongitudPunto1Radianes   := Fn_LongitudPunto1 * Ln_ValorConstantePi/180;
     Ln_LatitudPunto2Radianes    := Fn_LatitudPunto2 * Ln_ValorConstantePi/180;
@@ -258,9 +257,9 @@ AS
     Ln_LongitudDelta            := Ln_LongitudPunto1Radianes - Ln_LongitudPunto2Radianes;
 
     /**
-     * Para el cálculo de la distancia, se aplica la fórmula de Haversine expresada en arcotangente y no en arcoseno como se la usa en Telcos+,
+     * Para el c�lculo de la distancia, se aplica la f�rmula de Haversine expresada en arcotangente y no en arcoseno como se la usa en Telcos+,
      * ya que al ser usada la de Telcos+ desde un query de factibilidad, provoca que la respuesta demore aproximadamente 7 minutos, mientras que al
-     * usar la implementada en esta función demora 25 segundos aproximadamente. Cabe mencionar que ambas funciones mencionadas son equivalentes.
+     * usar la implementada en esta funci�n demora 25 segundos aproximadamente. Cabe mencionar que ambas funciones mencionadas son equivalentes.
      * Referencia Web: https://www.movable-type.co.uk/scripts/latlong.html
      */
     Ln_ValorCalculadoSqrt       :=  POWER(SIN(Ln_LatitudDelta/2),2) 
@@ -352,7 +351,7 @@ AS
     Ln_DistanciaMaxCobertura    := TRIM(APEX_JSON.GET_NUMBER(p_path => 'distanciaMaxCobertura'));
 
     IF Lv_PrefijoEmpresa IS NULL OR Lv_CodEmpresa IS NULL THEN
-      Lv_Mensaje := 'No se han enviado los parámetros obligatorios referentes a la empresa';
+      Lv_Mensaje := 'No se han enviado los par�metros obligatorios referentes a la empresa';
       RAISE Le_Exception;
     END IF;
 
@@ -366,7 +365,7 @@ AS
     CLOSE Lc_GetInfoParams;
 
     IF (Lv_TipoElementoConector IS NULL OR Ln_DistanciaMaxCobertura IS NULL) THEN
-      Lv_Mensaje := 'No existe la configuración general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
+      Lv_Mensaje := 'No existe la configuraci�n general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
       RAISE Le_Exception;
     END IF;
 
@@ -578,7 +577,7 @@ AS
     Lv_PrefijoEmpresa           := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'prefijoEmpresa'));
 
     IF Lv_PrefijoEmpresa IS NULL OR Lv_CodEmpresa IS NULL THEN
-      Lv_Mensaje := 'No se han enviado los parámetros obligatorios referentes a la empresa';
+      Lv_Mensaje := 'No se han enviado los par�metros obligatorios referentes a la empresa';
       RAISE Le_Exception;
     END IF;
 
@@ -594,7 +593,7 @@ AS
 
     IF (Ln_DistanciaMaxCobertura IS NULL OR Ln_DistanciaMaxFactibilidad IS NULL 
         OR Ln_NumMaxCajasConectoresCobert IS NULL OR Ln_NumMaxCajasConectoresFactib IS NULL) THEN
-      Lv_Mensaje := 'No existe la configuración general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
+      Lv_Mensaje := 'No existe la configuraci�n general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
       RAISE Le_Exception;
     END IF;
 
@@ -872,7 +871,7 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     DBMS_OUTPUT.PUT_LINE(Lv_Valor1InfoDetParam  || '-'|| Lv_Valor2InfoDetParam ||'-'|| Lv_Valor3InfoDetParam);
     DBMS_OUTPUT.PUT_LINE(Ln_Latitud  || Ln_Longitud || Lv_DependeDeEdificio || Lv_CodEmpresa || Lv_PrefijoEmpresa || Lv_Login);
     IF Lv_PrefijoEmpresa IS NULL OR Lv_CodEmpresa IS NULL THEN
-      Lv_Mensaje := 'No se han enviado los parámetros obligatorios referentes a la empresa';
+      Lv_Mensaje := 'No se han enviado los par�metros obligatorios referentes a la empresa';
       RAISE Le_Exception;
     END IF;
 
@@ -888,7 +887,7 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
 
     IF (Ln_DistanciaMaxCobertura IS NULL OR Ln_DistanciaMaxFactibilidad IS NULL 
         OR Ln_NumMaxCajasConectoresCobert IS NULL) THEN
-      Lv_Mensaje := 'No existe la configuración general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
+      Lv_Mensaje := 'No existe la configuraci�n general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
       RAISE Le_Exception;
     END IF;
 
@@ -1260,7 +1259,7 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     Ln_DistanciaMaxCobertura    := TRIM(APEX_JSON.GET_NUMBER(p_path => 'distanciaMaxCobertura'));
     DBMS_OUTPUT.PUT_LINE(Pcl_JsonRequest);
     IF Lv_PrefijoEmpresa IS NULL OR Lv_CodEmpresa IS NULL THEN
-      Lv_Mensaje := 'No se han enviado los parámetros obligatorios referentes a la empresa';
+      Lv_Mensaje := 'No se han enviado los par�metros obligatorios referentes a la empresa';
       RAISE Le_Exception;
     END IF;
 
@@ -1274,7 +1273,7 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     CLOSE Lc_GetInfoParams;
     DBMS_OUTPUT.PUT_LINE('paso 2');
     IF (Lv_TipoElementoConector IS NULL OR Ln_DistanciaMaxCobertura IS NULL) THEN
-      Lv_Mensaje := 'No existe la configuración general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
+      Lv_Mensaje := 'No existe la configuraci�n general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
       RAISE Le_Exception;
     END IF;
     DBMS_OUTPUT.PUT_LINE(Lv_Mensaje);

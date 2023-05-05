@@ -1,0 +1,21 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARIMARANCEL_TMP" ("NO_CIA", "COD_ARANCEL", "POR_ARANCEL", "DESCRIPCION", "DIGITO", "SALVAG", "FODINFA", "UFIS", "COD_RES", "COD_ORES", "CONDIC", "PORC_IVA", "TEXTOIVA", "SIINEN", "INEN", "ESTADO", "PORC_IVA_2", "APLICA_ICE", "PORC_ICE") AS 
+  SELECT "NO_CIA",
+           "COD_ARANCEL",
+           "POR_ARANCEL",
+           "DESCRIPCION",
+           "DIGITO",
+           "SALVAG",
+           "FODINFA",
+           "UFIS",
+           "COD_RES",
+           "COD_ORES",
+           "CONDIC",
+           "PORC_IVA",
+           "TEXTOIVA",
+           "SIINEN",
+           "INEN",
+           "ESTADO",
+           "PORC_IVA_2",
+           "APLICA_ICE",
+           "PORC_ICE"
+      FROM NAF47_TNET.ARIMARANCEL_TMP@GPOETNET;

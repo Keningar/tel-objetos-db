@@ -1,0 +1,14 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINCOSTOGLOBAL" ("NO_CIA", "CENTRO", "NO_DOCU", "FECHA", "TIPO_DOCUMENTO", "STOCK_GLOBAL", "COSTO_GLOBAL", "COMP_UNI", "COMP_COS_UNI", "COSTO_UNI", "ULT_COSTO", "NO_ARTI") AS 
+  SELECT "NO_CIA",
+           "CENTRO",
+           "NO_DOCU",
+           "FECHA",
+           "TIPO_DOCUMENTO",
+           "STOCK_GLOBAL",
+           "COSTO_GLOBAL",
+           "COMP_UNI",
+           "COMP_COS_UNI",
+           "COSTO_UNI",
+           "ULT_COSTO",
+           "NO_ARTI"
+      FROM NAF47_TNET.ARINCOSTOGLOBAL@GPOETNET;

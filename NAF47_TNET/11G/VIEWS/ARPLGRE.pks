@@ -1,0 +1,15 @@
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARPLGRE" ("NO_CIA", "NO_REP", "TITULO", "TIPO_TOT_GEN", "FORMATO", "SOLOCON_MONTO", "SEPARADOR", "LG_SEPARADOR", "AGRUPACION", "IMPRIME_ENCAB", "REP_ESPECIAL", "NOM_REPORTE") AS 
+  SELECT "NO_CIA",
+           "NO_REP",
+           "TITULO",
+           "TIPO_TOT_GEN",
+           "FORMATO",
+           "SOLOCON_MONTO",
+           "SEPARADOR",
+           "LG_SEPARADOR",
+           "AGRUPACION",
+           "IMPRIME_ENCAB",
+           "REP_ESPECIAL",
+           "NOM_REPORTE"
+      FROM NAF47_TNET.ARPLGRE@GPOETNET;

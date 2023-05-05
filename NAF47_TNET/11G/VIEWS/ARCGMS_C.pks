@@ -1,0 +1,21 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCGMS_C" ("NO_CIA", "CUENTA", "CC_1", "CC_2", "CC_3", "TIPO", "CLASE", "MONETARIA", "AJUSTABLE", "MONEDA", "SALDO_PER_ANT", "SALDO_MES_ANT", "DEBITOS", "CREDITOS", "SALDO_PER_ANT_DOL", "SALDO_MES_ANT_DOL", "DEBITOS_DOL", "CREDITOS_DOL", "NIVEL") AS 
+  SELECT "NO_CIA",
+           "CUENTA",
+           "CC_1",
+           "CC_2",
+           "CC_3",
+           "TIPO",
+           "CLASE",
+           "MONETARIA",
+           "AJUSTABLE",
+           "MONEDA",
+           "SALDO_PER_ANT",
+           "SALDO_MES_ANT",
+           "DEBITOS",
+           "CREDITOS",
+           "SALDO_PER_ANT_DOL",
+           "SALDO_MES_ANT_DOL",
+           "DEBITOS_DOL",
+           "CREDITOS_DOL",
+           "NIVEL"
+      FROM NAF47_TNET.ARCGMS_C@GPOETNET;

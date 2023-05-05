@@ -1,0 +1,10 @@
+
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARCGATE" ("NO_CIA", "COD_ATIPO", "TIPO", "DESCRI", "GLOSA", "MONTO_DISTRIBUIR") AS 
+  SELECT "NO_CIA",
+           "COD_ATIPO",
+           "TIPO",
+           "DESCRI",
+           "GLOSA",
+           "MONTO_DISTRIBUIR"
+      FROM NAF47_TNET.ARCGATE@GPOETNET;

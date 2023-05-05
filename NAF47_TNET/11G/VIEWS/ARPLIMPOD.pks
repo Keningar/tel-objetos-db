@@ -1,0 +1,8 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARPLIMPOD" ("TIPO_M", "CODIGO", "TIPO_ITEM", "DESC_EXTRA", "INICIO", "LARGO") AS 
+  SELECT "TIPO_M",
+           "CODIGO",
+           "TIPO_ITEM",
+           "DESC_EXTRA",
+           "INICIO",
+           "LARGO"
+      FROM NAF47_TNET.ARPLIMPOD@GPOETNET;

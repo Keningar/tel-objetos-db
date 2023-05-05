@@ -1,0 +1,21 @@
+CREATE  FORCE VIEW "NAF47_TNET"."DVWCGMOV_P_M" ("NO_CIA", "ANO", "MES", "FECHA", "NO_ASIENTO", "COD_DIARIO", "TIPO_COMPROBANTE", "NO_COMPROBANTE", "NO_LINEA", "CUENTA", "CC_1", "CC_2", "CC_3", "DESCRI", "TIPO", "MONTO", "ESTADO", "NO_DOCU", "CENTRO") AS 
+  SELECT "NO_CIA",
+           "ANO",
+           "MES",
+           "FECHA",
+           "NO_ASIENTO",
+           "COD_DIARIO",
+           "TIPO_COMPROBANTE",
+           "NO_COMPROBANTE",
+           "NO_LINEA",
+           "CUENTA",
+           "CC_1",
+           "CC_2",
+           "CC_3",
+           "DESCRI",
+           "TIPO",
+           "MONTO",
+           "ESTADO",
+           "NO_DOCU",
+           "CENTRO"
+      FROM NAF47_TNET.DVWCGMOV_P_M@GPOETNET;

@@ -1,0 +1,37 @@
+create or replace function get_devolucion_empleados(FV_USR_ASIGNADO_TIPO DB_GENERAL.ADMI_TIPO_ROL.DESCRIPCION_TIPO_ROL%TYPE,
+                                                    FV_EMPRESA DB_GENERAL.INFO_EMPRESA_ROL.EMPRESA_COD%TYPE,
+                                                    FV_USR_ASIGNADO   VARCHAR2) return varchar2  is
+  CURSOR C_EMPLEADO IS
+      SELECT IPER.ID_PERSONA_ROL
+      FROM DB_GENERAL.INFO_PERSONA             P,
+           DB_GENERAL.INFO_PERSONA_EMPRESA_ROL IPER,
+           DB_GENERAL.INFO_EMPRESA_ROL         IER,
+           DB_GENERAL.ADMI_ROL                 AR,
+           DB_GENERAL.ADMI_TIPO_ROL            ATR
+      WHERE P.LOGIN = FV_USR_ASIGNADO
+      AND ATR.DESCRIPCION_TIPO_ROL = FV_USR_ASIGNADO_TIPO--GEK_VAR.Gr_TipoPersona.EMPLEADO
+      AND IER.EMPRESA_COD = FV_EMPRESA
+      AND IPER.ESTADO = 'Activo'--Lc_Estado
+      AND P.ID_PERSONA = IPER.PERSONA_ID
+      AND IPER.EMPRESA_ROL_ID = IER.ID_EMPRESA_ROL
+      AND IER.ROL_ID = AR.ID_ROL
+      AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL;
+      
+      LV_PERSONA_EMPRESA_ROL_ID varchar2(30);
+
+begin
+      IF FV_USR_ASIGNADO_TIPO = 'Empleado' THEN
+    IF C_EMPLEADO%ISOPEN THEN
+      CLOSE C_EMPLEADO;
+    END IF;
+    OPEN C_EMPLEADO;
+    FETCH C_EMPLEADO INTO LV_PERSONA_EMPRESA_ROL_ID;
+    IF C_EMPLEADO%NOTFOUND THEN
+      LV_PERSONA_EMPRESA_ROL_ID := NULL;
+    END IF;
+    CLOSE C_EMPLEADO;
+    --
+  END IF;
+  
+  return(LV_PERSONA_EMPRESA_ROL_ID);
+end get_devolucion_empleados;

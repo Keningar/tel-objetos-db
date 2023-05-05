@@ -1,0 +1,11 @@
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARPLPC_SIC" ("NO_CIA", "TIPO_EMP", "LIMITEINF", "LIMITESUP", "DIAS", "FECHA_INI", "FECHA_FIN", "APLICA_ANO") AS 
+  SELECT "NO_CIA",
+           "TIPO_EMP",
+           "LIMITEINF",
+           "LIMITESUP",
+           "DIAS",
+           "FECHA_INI",
+           "FECHA_FIN",
+           "APLICA_ANO"
+      FROM NAF47_TNET.ARPLPC_SIC@GPOETNET;

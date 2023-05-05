@@ -1,0 +1,9 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARPLCB" ("NO_CIA", "ID_CTA", "BANCO", "NO_CTA", "CODIGO_ASIGNADO", "RUTA_DEPOSITO", "FORMA_PAGO") AS 
+  SELECT "NO_CIA",
+           "ID_CTA",
+           "BANCO",
+           "NO_CTA",
+           "CODIGO_ASIGNADO",
+           "RUTA_DEPOSITO",
+           "FORMA_PAGO"
+      FROM NAF47_TNET.ARPLCB@GPOETNET;

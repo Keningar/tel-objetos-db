@@ -1,0 +1,10 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARIM_NEGOCIAC_ARANCEL" ("NO_CIA", "PARTIDA", "ABREV", "TIPO", "CTIPO", "LIBERA", "OBSCORTO", "ESTADO") AS 
+  SELECT "NO_CIA",
+           "PARTIDA",
+           "ABREV",
+           "TIPO",
+           "CTIPO",
+           "LIBERA",
+           "OBSCORTO",
+           "ESTADO"
+      FROM NAF47_TNET.ARIM_NEGOCIAC_ARANCEL@GPOETNET;

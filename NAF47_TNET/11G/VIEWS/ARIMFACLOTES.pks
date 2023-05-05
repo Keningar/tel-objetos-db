@@ -1,0 +1,11 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARIMFACLOTES" ("NO_CIA", "TIPO_DOC", "NUM_FAC", "LINEA", "NO_LOTE", "UNIDADES", "MONTO", "FECHA_VENCE", "UBICACION") AS 
+  SELECT "NO_CIA",
+           "TIPO_DOC",
+           "NUM_FAC",
+           "LINEA",
+           "NO_LOTE",
+           "UNIDADES",
+           "MONTO",
+           "FECHA_VENCE",
+           "UBICACION"
+      FROM NAF47_TNET.ARIMFACLOTES@GPOETNET;

@@ -1,0 +1,13 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARPLCARGA_EXCEL_KPI" ("NO_CIA", "COD_PLA", "ANIO", "MES", "NO_EMPLE", "OBSERVACION", "USUARIO_CREA", "FECHA_CREA", "TIPO_MOVIMIENTO", "CODIGO", "ORIGEN") AS 
+  SELECT "NO_CIA",
+           "COD_PLA",
+           "ANIO",
+           "MES",
+           "NO_EMPLE",
+           "OBSERVACION",
+           "USUARIO_CREA",
+           "FECHA_CREA",
+           "TIPO_MOVIMIENTO",
+           "CODIGO",
+           "ORIGEN"
+      FROM NAF47_TNET.ARPLCARGA_EXCEL_KPI@GPOETNET;

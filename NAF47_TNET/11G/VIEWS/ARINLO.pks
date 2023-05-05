@@ -1,0 +1,21 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINLO" ("NO_CIA", "BODEGA", "NO_ARTI", "NO_LOTE", "UBICACION", "SALDO_UNIDAD", "SALDO_CONTABLE", "SALDO_MONTO", "SALIDA_PEND", "COSTO_LOTE", "FECHA_ENTRADA", "FECHA_VENCE", "FECHA_FIN_CUARENTENA", "PROCESO_TOMA", "EXIST_PREP", "COSTO_PREP", "COSTO2", "CODIGO_LOTE", "PEDIDOS_PEND") AS 
+  SELECT "NO_CIA",
+           "BODEGA",
+           "NO_ARTI",
+           "NO_LOTE",
+           "UBICACION",
+           "SALDO_UNIDAD",
+           "SALDO_CONTABLE",
+           "SALDO_MONTO",
+           "SALIDA_PEND",
+           "COSTO_LOTE",
+           "FECHA_ENTRADA",
+           "FECHA_VENCE",
+           "FECHA_FIN_CUARENTENA",
+           "PROCESO_TOMA",
+           "EXIST_PREP",
+           "COSTO_PREP",
+           "COSTO2",
+           "CODIGO_LOTE",
+           "PEDIDOS_PEND"
+      FROM NAF47_TNET.ARINLO@GPOETNET;

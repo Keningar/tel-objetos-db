@@ -1,0 +1,22 @@
+CREATE  FORCE VIEW "NAF47_TNET"."TAPORDED" ("NO_CIA", "NO_ORDEN", "NO_LINEA", "NO_ARTI", "DESCRIPCION", "MEDIDA", "COD_ART_PROV", "CANTIDAD", "COSTO_UNI", "RECIBIDO", "COSTO_BASE", "DESCUENTO", "SECUENCIA_INICIAL", "SECUENCIA_FINAL", "FECHA_CADUCIDAD", "NO_FISICO", "SERIE_FISICO", "CODIGO_NI", "IMPUESTOS", "ID_PEDIDO_DETALLE") AS 
+  SELECT "NO_CIA",
+           "NO_ORDEN",
+           "NO_LINEA",
+           "NO_ARTI",
+           "DESCRIPCION",
+           "MEDIDA",
+           "COD_ART_PROV",
+           "CANTIDAD",
+           "COSTO_UNI",
+           "RECIBIDO",
+           "COSTO_BASE",
+           "DESCUENTO",
+           "SECUENCIA_INICIAL",
+           "SECUENCIA_FINAL",
+           "FECHA_CADUCIDAD",
+           "NO_FISICO",
+           "SERIE_FISICO",
+           "CODIGO_NI",
+           "IMPUESTOS",
+           "ID_PEDIDO_DETALLE"
+      FROM NAF47_TNET.TAPORDED@GPOETNET;

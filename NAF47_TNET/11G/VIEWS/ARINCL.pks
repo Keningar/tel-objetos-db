@@ -1,0 +1,9 @@
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARINCL" ("NO_CIA", "NO_ARTI", "TIPO_CLASIF", "COD_CLASIF", "TSTAMP", "PRINCIPAL") AS 
+  SELECT "NO_CIA",
+           "NO_ARTI",
+           "TIPO_CLASIF",
+           "COD_CLASIF",
+           "TSTAMP",
+           "PRINCIPAL"
+      FROM NAF47_TNET.ARINCL@GPOETNET;

@@ -1,0 +1,8 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCCZG" ("NO_CIA", "ZONA", "DESCRIPCION", "CENTRO", "TSTAMP", "SUBZONA") AS 
+  SELECT "NO_CIA",
+           "ZONA",
+           "DESCRIPCION",
+           "CENTRO",
+           "TSTAMP",
+           "SUBZONA"
+      FROM NAF47_TNET.ARCCZG@GPOETNET;

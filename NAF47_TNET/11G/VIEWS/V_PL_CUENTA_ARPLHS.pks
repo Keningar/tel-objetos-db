@@ -1,0 +1,8 @@
+CREATE  FORCE VIEW "NAF47_TNET"."V_PL_CUENTA_ARPLHS" ("CUENTA_CONTABLE", "NO_CIA", "ANO", "MES", "COD_PLA", "TOTAL") AS 
+  SELECT "CUENTA_CONTABLE",
+           "NO_CIA",
+           "ANO",
+           "MES",
+           "COD_PLA",
+           "TOTAL"
+      FROM NAF47_TNET.V_PL_CUENTA_ARPLHS@GPOETNET;

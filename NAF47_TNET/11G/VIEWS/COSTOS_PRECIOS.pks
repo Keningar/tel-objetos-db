@@ -1,0 +1,21 @@
+CREATE  FORCE VIEW "NAF47_TNET"."COSTOS_PRECIOS" ("CODIGO_ANTERIOR", "DESC_LARGA", "DESC_CORTA", "UNIDAD", "MEDIDA", "LINEA", "RUBRO", "SUBRUBRO", "MARCA", "PROVEEDOR", "COSTO_ULT", "COSTO_PROMEDIO", "COSTO_2", "EXISTENCIA", "VAL_EXISTENCA", "PVP", "PARTIDA", "PART_DESC", "PRECIO_COMPRA") AS 
+  SELECT "CODIGO_ANTERIOR",
+           "DESC_LARGA",
+           "DESC_CORTA",
+           "UNIDAD",
+           "MEDIDA",
+           "LINEA",
+           "RUBRO",
+           "SUBRUBRO",
+           "MARCA",
+           "PROVEEDOR",
+           "COSTO_ULT",
+           "COSTO_PROMEDIO",
+           "COSTO_2",
+           "EXISTENCIA",
+           "VAL_EXISTENCA",
+           "PVP",
+           "PARTIDA",
+           "PART_DESC",
+           "PRECIO_COMPRA"
+      FROM NAF47_TNET.COSTOS_PRECIOS@GPOETNET;

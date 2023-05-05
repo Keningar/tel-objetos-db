@@ -1,0 +1,10 @@
+
+
+CREATE  FORCE VIEW "NAF47_TNET"."ARCCCR" ("NO_CIA", "NO_TALONARIO", "NO_RECIBO", "FECHA", "ESTADO", "SERIE") AS 
+  SELECT "NO_CIA",
+           "NO_TALONARIO",
+           "NO_RECIBO",
+           "FECHA",
+           "ESTADO",
+           "SERIE"
+      FROM NAF47_TNET.ARCCCR@GPOETNET;

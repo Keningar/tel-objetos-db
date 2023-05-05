@@ -1,0 +1,49 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFADETPROFORM" ("NO_CIA", "CENTROD", "NO_PROFORMA", "NO_LINEA", "BODEGA", "CLASE", "CATEGORIA", "NO_ARTI", "CANTIDAD", "PRECIO", "DESCUENTO", "TOTAL", "I_VEN", "I_VEN_N", "TIPO_PRECIO", "TIPO_OFERTA", "ARTI_OFE", "CANT_OFE", "PROT_OFE", "IMP_INCLUIDO", "IMP_ESPECIAL", "PORC_DESC", "COSTO2", "LINEA_ART_PROMOCION", "MARGEN_VALOR_PROF", "MARGEN_MINIMO", "MARGEN_OBJETIVO", "MARGEN_PORC_PROF", "SECUENCIA_POLITICA", "LINEA_POLITICA", "DIVISION", "SUBDIVISION", "DESCUENTO_ADICIONAL", "CANTIDAD_ADICIONAL", "IND_ADICIONAL") AS 
+
+
+
+
+
+
+
+
+
+
+
+
+  SELECT "NO_CIA",
+           "CENTROD",
+           "NO_PROFORMA",
+           "NO_LINEA",
+           "BODEGA",
+           "CLASE",
+           "CATEGORIA",
+           "NO_ARTI",
+           "CANTIDAD",
+           "PRECIO",
+           "DESCUENTO",
+           "TOTAL",
+           "I_VEN",
+           "I_VEN_N",
+           "TIPO_PRECIO",
+           "TIPO_OFERTA",
+           "ARTI_OFE",
+           "CANT_OFE",
+           "PROT_OFE",
+           "IMP_INCLUIDO",
+           "IMP_ESPECIAL",
+           "PORC_DESC",
+           "COSTO2",
+           "LINEA_ART_PROMOCION",
+           "MARGEN_VALOR_PROF",
+           "MARGEN_MINIMO",
+           "MARGEN_OBJETIVO",
+           "MARGEN_PORC_PROF",
+           "SECUENCIA_POLITICA",
+           "LINEA_POLITICA",
+           "DIVISION",
+           "SUBDIVISION",
+           "DESCUENTO_ADICIONAL",
+           "CANTIDAD_ADICIONAL",
+           "IND_ADICIONAL"
+      FROM NAF47_TNET.ARFADETPROFORM@GPOETNET;

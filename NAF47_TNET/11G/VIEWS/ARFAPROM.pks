@@ -1,0 +1,21 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARFAPROM" ("NO_CIA", "CODIGO", "TIPO_PROM", "TIPO_CLIENTE", "GRUPO", "NO_CLIENTE", "NO_ARTI", "FIX_PLAT", "MIN_QTY", "MAX_QTY", "CENTSOFF", "B_F_QTY", "PROMO_PROT", "ALT_PCODE", "BEG_DATE", "END_DATE", "PSI_ITEM", "PROMO", "IND_UNIDAD_FACTURADA") AS 
+  SELECT "NO_CIA",
+           "CODIGO",
+           "TIPO_PROM",
+           "TIPO_CLIENTE",
+           "GRUPO",
+           "NO_CLIENTE",
+           "NO_ARTI",
+           "FIX_PLAT",
+           "MIN_QTY",
+           "MAX_QTY",
+           "CENTSOFF",
+           "B_F_QTY",
+           "PROMO_PROT",
+           "ALT_PCODE",
+           "BEG_DATE",
+           "END_DATE",
+           "PSI_ITEM",
+           "PROMO",
+           "IND_UNIDAD_FACTURADA"
+      FROM NAF47_TNET.ARFAPROM@GPOETNET;

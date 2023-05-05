@@ -1,0 +1,11 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARCCDETFPAGOS" ("NO_CIA", "NO_DOCU", "ID_FORMA_PAGO", "LINEA_REFE", "NO_REFE", "NO_DIV", "VALOR_APLICADO", "USUARIO_CREA", "TSTAMP") AS 
+  SELECT "NO_CIA",
+           "NO_DOCU",
+           "ID_FORMA_PAGO",
+           "LINEA_REFE",
+           "NO_REFE",
+           "NO_DIV",
+           "VALOR_APLICADO",
+           "USUARIO_CREA",
+           "TSTAMP"
+      FROM NAF47_TNET.ARCCDETFPAGOS@GPOETNET;

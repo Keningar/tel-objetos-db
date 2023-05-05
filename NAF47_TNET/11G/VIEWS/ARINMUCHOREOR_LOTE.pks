@@ -1,0 +1,13 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARINMUCHOREOR_LOTE" ("NO_CIA", "CENTRO", "NO_DOCU", "ORDEN_TRABAJO", "SECUENCIA", "BODEGA", "NO_ARTI", "NO_LOTE", "UBICACION", "CANTIDAD", "FECHA_VENCE") AS 
+  SELECT "NO_CIA",
+           "CENTRO",
+           "NO_DOCU",
+           "ORDEN_TRABAJO",
+           "SECUENCIA",
+           "BODEGA",
+           "NO_ARTI",
+           "NO_LOTE",
+           "UBICACION",
+           "CANTIDAD",
+           "FECHA_VENCE"
+      FROM NAF47_TNET.ARINMUCHOREOR_LOTE@GPOETNE

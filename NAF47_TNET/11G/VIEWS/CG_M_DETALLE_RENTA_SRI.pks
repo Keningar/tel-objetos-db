@@ -1,0 +1,17 @@
+CREATE  FORCE VIEW "NAF47_TNET"."CG_M_DETALLE_RENTA_SRI" ("CODEMP", "CODREN", "NUMDOC", "CODCOM", "CODPRO", "TIPCOM", "NUMSECCOM", "CONRETFUEAIR", "BASIMREN", "CODPORRETREN", "MONRETREN", "FECCREREG", "REGCREPOR", "FECACTREG", "REGACTPOR") AS 
+  SELECT "CODEMP",
+           "CODREN",
+           "NUMDOC",
+           "CODCOM",
+           "CODPRO",
+           "TIPCOM",
+           "NUMSECCOM",
+           "CONRETFUEAIR",
+           "BASIMREN",
+           "CODPORRETREN",
+           "MONRETREN",
+           "FECCREREG",
+           "REGCREPOR",
+           "FECACTREG",
+           "REGACTPOR"
+      FROM NAF47_TNET.CG_M_DETALLE_RENTA_SRI@GPOETNET;

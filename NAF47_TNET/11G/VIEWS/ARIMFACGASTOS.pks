@@ -1,0 +1,13 @@
+CREATE  FORCE VIEW "NAF47_TNET"."ARIMFACGASTOS" ("NO_CIA", "NUM_FAC", "CODIGO", "TIPO_PRODUCTO", "DISTRIBUIR_POR", "APLICA_A", "MONTO", "MONEDA", "PORCENTAJE", "MONTO_OM", "IND") AS 
+  SELECT "NO_CIA",
+           "NUM_FAC",
+           "CODIGO",
+           "TIPO_PRODUCTO",
+           "DISTRIBUIR_POR",
+           "APLICA_A",
+           "MONTO",
+           "MONEDA",
+           "PORCENTAJE",
+           "MONTO_OM",
+           "IND"
+      FROM NAF47_TNET.ARIMFACGASTOS@GPOETNET;
