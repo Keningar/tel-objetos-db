@@ -162,6 +162,12 @@ AS
    * @version 1.5 31-03-2023  Se agrega variable para verificar que el proceso pasa por
    *                          Nuevo Algoritmo Factiblidad o Factbilidad Lineal
    *
+   * @author Steven Ruano <sruano@telconet.ec>
+   * @version 1.6 03-05-2023  1.- Se agrega cursor para bandera de obtener Canton_Id y se envia al procedimiento
+   *                          DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA.P_OBTENER_LISTADO_FACTIBLIDAD
+   *                          el valor de la bandera y el id_servicio.
+   *                          2.- Quitar el while de la respuesta para que sea mas rapida y bajando el costo de ejecucion
+   *                          del paquete.
    */
   PROCEDURE P_OBTIENE_DATOS_FACTIBILIDAD(
     Pcl_JsonRequest     IN CLOB,
@@ -187,6 +193,10 @@ AS
    * @author Emmanuel Martillo <emartillo@telconet.ec>
    * @version 1.2 13-02-2023  Se agrega Prefijo Empresa EN para Ecuanet y validacion para
    *                          obtener el listado de factibilidad de Megadatos.
+   *
+   * @author Steven Ruano <sruano@telconet.ec>
+   * @version 1.3 20-12-2022  Se agrega validacion por canton id para agilizar la respuesta de factbilidad
+   *                          y reducir los costos.
    *
    */
   PROCEDURE P_OBTIENE_LISTADO_FACTIBILIDAD(
@@ -751,9 +761,11 @@ AS
     Lv_ValidacionOkRegistro         VARCHAR2(5);
     Ln_IdElementoOltNoOperativo     DB_INFRAESTRUCTURA.INFO_ELEMENTO.ID_ELEMENTO%TYPE;
     Lv_NombreParamCalculo           VARCHAR2(22) := 'URL_CALCULO_DISTANCIA';
+    Lv_ParamValidaCanton            VARCHAR2(40) := 'VALIDACION_CANTON_ID_CAJAS';
     Lv_Valor1InfoDetParam           VARCHAR2(300);
     Lv_Valor2InfoDetParam           VARCHAR2(100);
     Lv_Valor3InfoDetParam           VARCHAR2(100);
+    Lv_ValidaCantonValor            VARCHAR2(200);
     
     CURSOR Lc_GetInfoParamsConfigResponse(  Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE, 
                                             Cv_Valor1 DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE, 
@@ -784,9 +796,19 @@ AS
       AND DET_OLT_OPERATIVO.DETALLE_DESCRIPCION = Lv_DetDescripcionOltOperativo
       AND DET_OLT_OPERATIVO.DETALLE_VALOR = Lv_DetValorOltOperativo;
       
-CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE)
+    CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE)
     IS
       SELECT DET.VALOR1, DET.VALOR2,DET.VALOR3
+      FROM DB_GENERAL.ADMI_PARAMETRO_CAB CAB
+      INNER JOIN DB_GENERAL.ADMI_PARAMETRO_DET DET  
+      ON CAB.ID_PARAMETRO = DET.PARAMETRO_ID
+      WHERE CAB.NOMBRE_PARAMETRO = Cv_NombreParametro
+      AND CAB.ESTADO             = Lv_EstadoActivo
+      AND DET.ESTADO             = Lv_EstadoActivo;
+
+    CURSOR Lc_GetInfoDetParamCanton(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE)
+    IS
+      SELECT DET.VALOR1
       FROM DB_GENERAL.ADMI_PARAMETRO_CAB CAB
       INNER JOIN DB_GENERAL.ADMI_PARAMETRO_DET DET  
       ON CAB.ID_PARAMETRO = DET.PARAMETRO_ID
@@ -850,10 +872,23 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     Lb_booleanTipoRedGpon           BOOLEAN;
     Lv_IpCreacion                   VARCHAR2(9) := '127.0.0.1';
     Ln_IdServicio                   NUMBER;
+    Ln_IdCajaFinal                  NUMBER;  
+    Lv_EstadoCaja                   VARCHAR2(20);
+    Ln_IdConector                   NUMBER;
+    Lv_NombreConector               VARCHAR2(4000);
+    Lv_EstadoConector               VARCHAR2(20);
+    Ln_IdInterfaceElemento          NUMBER;
+    Lv_NombreInterfaceElemento      VARCHAR2(4000);
+    Lv_EstadoCajaFinal              VARCHAR2(20);
+    Ln_IdConectorFinal              NUMBER;
+    Lv_NombreConectorFinal          VARCHAR2(4000);
+    Lv_EstadoConectorFinal          VARCHAR2(20);              
+    Ln_IdServicioFinal              NUMBER;
+    Ln_IdInterfaceElementoFinal     NUMBER;
+    Lv_NombreInterfaceElemFinal     VARCHAR2(5000);
 
   BEGIN
     Lcl_JsonFiltrosBusqueda := Pcl_JsonRequest;
-    DBMS_OUTPUT.PUT_LINE(Pcl_JsonRequest);
     APEX_JSON.PARSE(Lcl_JsonFiltrosBusqueda);
     Ln_Latitud                  := TRIM(APEX_JSON.GET_NUMBER(p_path => 'latitud'));
     Ln_Longitud                 := TRIM(APEX_JSON.GET_NUMBER(p_path => 'longitud'));
@@ -865,12 +900,11 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     Ln_IdServicio               := TRIM(APEX_JSON.GET_NUMBER(p_path => 'intIdServicio'));
     Ln_IdCaja                   := 0;
     Ln_DistanciaCaja            := 0;
-    DBMS_OUTPUT.ENABLE (buffer_size => NULL);
+    
     OPEN Lc_GetInfoDetParam(Lv_NombreParamCalculo);
     FETCH Lc_GetInfoDetParam INTO Lv_Valor1InfoDetParam, Lv_Valor2InfoDetParam, Lv_Valor3InfoDetParam;
     CLOSE Lc_GetInfoDetParam;
-    DBMS_OUTPUT.PUT_LINE(Lv_Valor1InfoDetParam  || '-'|| Lv_Valor2InfoDetParam ||'-'|| Lv_Valor3InfoDetParam);
-    DBMS_OUTPUT.PUT_LINE(Ln_Latitud  || Ln_Longitud || Lv_DependeDeEdificio || Lv_CodEmpresa || Lv_PrefijoEmpresa || Lv_Login);
+
     IF Lv_PrefijoEmpresa IS NULL OR Lv_CodEmpresa IS NULL THEN
       Lv_Mensaje := 'No se han enviado los parámetros obligatorios referentes a la empresa';
       RAISE Le_Exception;
@@ -885,6 +919,10 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     FETCH Lc_GetInfoParamsConfigResponse INTO Ln_DistanciaMaxCobertura, Ln_DistanciaMaxFactibilidad, 
                                               Ln_NumMaxCajasConectoresCobert, Ln_NumMaxCajasConectoresFactib;
     CLOSE Lc_GetInfoParamsConfigResponse;
+
+    OPEN Lc_GetInfoDetParamCanton(Lv_ParamValidaCanton);
+    FETCH Lc_GetInfoDetParamCanton INTO Lv_ValidaCantonValor;
+    CLOSE Lc_GetInfoDetParamCanton;    
 
     IF (Ln_DistanciaMaxCobertura IS NULL OR Ln_DistanciaMaxFactibilidad IS NULL 
         OR Ln_NumMaxCajasConectoresCobert IS NULL) THEN
@@ -901,17 +939,17 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     APEX_JSON.write('prefijoEmpresa', Lv_PrefijoEmpresa);
     APEX_JSON.write('distanciaMaxCobertura', Ln_DistanciaMaxCobertura);
     APEX_JSON.write('booleanTipoRedGpon', Lb_booleanTipoRedGpon);
+    APEX_JSON.write('validarCanton', Lv_ValidaCantonValor);
+    APEX_JSON.write('idServicio', Ln_IdServicio);
     APEX_JSON.close_object; -- }
     Lcl_JsonFiltrosCobertura    := APEX_JSON.get_clob_output;
     APEX_JSON.free_output;
---    DBMS_OUTPUT.PUT_LINE('pasa');
     APEX_JSON.initialize_clob_output;
     APEX_JSON.open_object; -- {
     DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA.P_OBTIENE_LISTADO_FACTIBILIDAD(  Lcl_JsonFiltrosCobertura,
                                                                                    Lv_Status,
                                                                                     Lv_Mensaje,
                                                                                    Lrf_RegistrosListadoCobertura);
-    --DBMS_OUTPUT.PUT_LINE('Mensaje: ' ||Lv_Mensaje);
     IF Lv_Status = 'OK' THEN
       Ln_ContCajasConectoresCobert  := 0;
       Ln_ContCajasConectoresFactib  := 0;
@@ -970,21 +1008,27 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
         WHILE (Ln_IndxCajasConectoresFactib IS NOT NULL)
         LOOP
           Lr_RegCajasConectoresFactib   := Lt_TRegsCajasConectoresFactib(Ln_IndxCajasConectoresFactib);
+
+          Lv_NombreCaja              := Lr_RegCajasConectoresFactib.NOMBRE_CAJA;
+          Ln_Longitud_login          := Ln_Longitud;
+          Ln_Latitud_login           := Ln_Latitud;
+          Ln_Longitud_caja           := Lr_RegCajasConectoresFactib.LONGITUD_CAJA;
+          Ln_Latitud_caja            := Lr_RegCajasConectoresFactib.LATITUD_CAJA;
+          Ln_IdCajaFinal             := Lr_RegCajasConectoresFactib.ID_CAJA; 
+          Lv_EstadoCaja              := Lr_RegCajasConectoresFactib.ESTADO_CAJA;
+          Ln_IdConector              := Lr_RegCajasConectoresFactib.ID_CONECTOR;
+          Lv_NombreConector          := Lr_RegCajasConectoresFactib.NOMBRE_CONECTOR;
+          Lv_EstadoConector          := Lr_RegCajasConectoresFactib.ESTADO_CONECTOR;
+          Ln_IdInterfaceElemento     := Lr_RegCajasConectoresFactib.ID_INTERFACE_ELEMENTO;
+          Lv_NombreInterfaceElemento := Lr_RegCajasConectoresFactib.NOMBRE_INTERFACE_ELEMENTO;
+
           APEX_JSON.open_object; -- {
           APEX_JSON.write('nombreCaja', Lr_RegCajasConectoresFactib.NOMBRE_CAJA);
           APEX_JSON.write('longitud', Lr_RegCajasConectoresFactib.LONGITUD_CAJA);
           APEX_JSON.write('latitud', Lr_RegCajasConectoresFactib.LATITUD_CAJA);
           APEX_JSON.close_object; -- } infoCajaConectorFactibilidad
-          
-          Lv_NombreCaja       := Lr_RegCajasConectoresFactib.NOMBRE_CAJA;
-          Ln_Longitud_login   := Ln_Longitud;
-          Ln_Latitud_login    := Ln_Latitud;
-          Ln_Longitud_caja    := Lr_RegCajasConectoresFactib.LONGITUD_CAJA;
-          Ln_Latitud_caja     := Lr_RegCajasConectoresFactib.LATITUD_CAJA;
-          
-          Lv_url := Lv_Valor1InfoDetParam || Lv_Valor2InfoDetParam || Lv_Valor3InfoDetParam || REPLACE( Ln_Longitud_login, ',', '.') || ',' || REPLACE( Ln_Latitud_login , ',', '.') || ';' || REPLACE(Ln_Longitud_caja, ',', '.') || ',' || REPLACE(Ln_Latitud_caja, ',', '.');
-          
-          DBMS_OUTPUT.PUT_LINE('url: '|| Lv_url);  
+        
+          Lv_url := Lv_Valor1InfoDetParam || Lv_Valor2InfoDetParam || Lv_Valor3InfoDetParam || REPLACE( Ln_Longitud_login, ',', '.') || ',' || REPLACE( Ln_Latitud_login , ',', '.') || ';' || REPLACE(Ln_Longitud_caja, ',', '.') || ',' || REPLACE(Ln_Latitud_caja, ',', '.');  
           
           Lv_req := UTL_HTTP.BEGIN_REQUEST(Lv_url, 'GET', 'HTTP/1.1'); 
           UTL_HTTP.SET_HEADER(Lv_req, 'user-agent', 'mozilla/4.0');
@@ -994,26 +1038,38 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
           UTL_HTTP.READ_TEXT(Lv_res, Lv_response); 
           
           UTL_HTTP.END_RESPONSE(Lv_res);
-          
-          DBMS_OUTPUT.PUT_LINE(Lv_response);  
-          
+             
           APEX_JSON.PARSE(Lv_response);
         
           Ln_DistanciaMetrosCaja   := APEX_JSON.GET_NUMBER(p_path=>'routes.features[%d].attributes.Total_Length',p0=> 1);
              
           IF Ln_DistanciaInicial = 0  THEN
-            Ln_DistanciaInicial := Ln_DistanciaMetrosCaja;
-            Ln_DistanciaFinal   := Ln_DistanciaInicial;
-            Lv_NombreCajaFinal  := Lv_NombreCaja;  
+            Ln_DistanciaInicial              := Ln_DistanciaMetrosCaja;
+            Ln_DistanciaFinal                := Ln_DistanciaInicial;
+            Lv_NombreCajaFinal               := Lv_NombreCaja;
+            Ln_IdCajaFinal                   := Ln_IdCaja; 
+            Lv_EstadoCajaFinal               := Lv_EstadoCaja;
+            Ln_IdConectorFinal               := Ln_IdConector;
+            Lv_NombreConectorFinal           := Lv_NombreConector;
+            Lv_EstadoConectorFinal           := Lv_EstadoConector;
+            Ln_IdInterfaceElementoFinal      := Ln_IdInterfaceElemento;
+            Lv_NombreInterfaceElemFinal      := Lv_NombreInterfaceElemento;
+            Ln_IdServicioFinal               := Ln_IdServicio; 
           ELSE
             IF Ln_DistanciaMetrosCaja < Ln_DistanciaFinal THEN
-              Ln_DistanciaFinal := Ln_DistanciaMetrosCaja;
-              Lv_NombreCajaFinal  := Lv_NombreCaja;
+              Ln_IdCajaFinal                   := Ln_IdCaja; 
+              Lv_EstadoCajaFinal               := Lv_EstadoCaja;
+              Ln_IdConectorFinal               := Ln_IdConector;
+              Lv_NombreConectorFinal           := Lv_NombreConector;
+              Lv_EstadoConectorFinal           := Lv_EstadoConector;
+              Ln_IdInterfaceElementoFinal      := Ln_IdInterfaceElemento;
+              Lv_NombreInterfaceElemFinal      := Lv_NombreInterfaceElemento;
+              Ln_IdServicioFinal               := Ln_IdServicio;
+              Ln_DistanciaFinal                := Ln_DistanciaMetrosCaja;
+              Lv_NombreCajaFinal               := Lv_NombreCaja;
             END IF;
           END IF;
-          
-          DBMS_OUTPUT.PUT_LINE(Ln_DistanciaFinal || '-' || Lv_NombreCajaFinal );  
-          
+                  
           Ln_IndxCajasConectoresFactib  := Lt_TRegsCajasConectoresFactib.NEXT(Ln_IndxCajasConectoresFactib);
 
         END LOOP;
@@ -1022,18 +1078,25 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
         WHILE (Ln_IndxCajasConectoresCobert IS NOT NULL)
         LOOP
           Lr_RegCajasConectoresCobert   := Lt_TRegsCajasConectoresCobert(Ln_IndxCajasConectoresCobert);
+
+          Lv_NombreCaja                 := Lr_RegCajasConectoresCobert.NOMBRE_CAJA;
+          Ln_IdCaja                     := Lr_RegCajasConectoresCobert.ID_CAJA; 
+          Lv_EstadoCaja                 := Lr_RegCajasConectoresCobert.ESTADO_CAJA;
+          Ln_IdConector                 := Lr_RegCajasConectoresCobert.ID_CONECTOR;
+          Lv_NombreConector             := Lr_RegCajasConectoresCobert.NOMBRE_CONECTOR;
+          Lv_EstadoConector             := Lr_RegCajasConectoresCobert.ESTADO_CONECTOR;
+          Ln_IdInterfaceElemento        := Lr_RegCajasConectoresCobert.ID_INTERFACE_ELEMENTO;
+          Lv_NombreInterfaceElemento    := Lr_RegCajasConectoresCobert.NOMBRE_INTERFACE_ELEMENTO;
+          Ln_Longitud_login             := Ln_Longitud;
+          Ln_Latitud_login              := Ln_Latitud;
+          Ln_Longitud_caja              := Lr_RegCajasConectoresCobert.LONGITUD_CAJA;
+          Ln_Latitud_caja               := Lr_RegCajasConectoresCobert.LATITUD_CAJA;
+
           APEX_JSON.open_object; -- {
           APEX_JSON.write('nombreCaja', Lr_RegCajasConectoresCobert.NOMBRE_CAJA);
           APEX_JSON.write('longitud', Lr_RegCajasConectoresCobert.LONGITUD_CAJA);
           APEX_JSON.write('latitud', Lr_RegCajasConectoresCobert.LATITUD_CAJA);
           APEX_JSON.close_object; -- } infoCajaConectorFactibilidad
-          
-                    
-          Lv_NombreCaja      := Lr_RegCajasConectoresCobert.NOMBRE_CAJA;
-          Ln_Longitud_login  := Ln_Longitud;
-          Ln_Latitud_login   := Ln_Latitud;
-          Ln_Longitud_caja   := Lr_RegCajasConectoresCobert.LONGITUD_CAJA;
-          Ln_Latitud_caja    := Lr_RegCajasConectoresCobert.LATITUD_CAJA;
           
           Lv_url := Lv_Valor1InfoDetParam || Lv_Valor2InfoDetParam || Lv_Valor3InfoDetParam || REPLACE( Ln_Longitud, ',', '.') || ',' || REPLACE( Ln_Latitud , ',', '.') || ';' || REPLACE(Ln_Longitud_caja, ',', '.') || ',' || REPLACE(Ln_Latitud_caja, ',', '.');
           
@@ -1045,28 +1108,39 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
       
           UTL_HTTP.read_text(Lv_res, Lv_response);
           
-          UTL_HTTP.END_RESPONSE(Lv_res); 
-        
-          DBMS_OUTPUT.PUT_LINE(Lv_response);  
-          
-          DBMS_OUTPUT.PUT_LINE(Lv_response);
+          UTL_HTTP.END_RESPONSE(Lv_res);
           
           APEX_JSON.PARSE(Lv_response);
         
           Ln_DistanciaMetrosCaja   := APEX_JSON.GET_NUMBER(p_path=>'routes.features[%d].attributes.Total_Length',p0=> 1);
           
-          IF Ln_DistanciaInicial = 0  THEN
-            Ln_DistanciaInicial := Ln_DistanciaMetrosCaja;
-            Ln_DistanciaFinal   := Ln_DistanciaInicial;
-            Lv_NombreCajaFinal  := Lv_NombreCaja;  
+         IF Ln_DistanciaInicial = 0  THEN
+            Ln_DistanciaInicial              := Ln_DistanciaMetrosCaja;
+            Ln_DistanciaFinal                := Ln_DistanciaInicial;
+            Lv_NombreCajaFinal               := Lv_NombreCaja;
+            Ln_IdCajaFinal                   := Ln_IdCaja; 
+            Lv_EstadoCajaFinal               := Lv_EstadoCaja;
+            Ln_IdConectorFinal               := Ln_IdConector;
+            Lv_NombreConectorFinal           := Lv_NombreConector;
+            Lv_EstadoConectorFinal           := Lv_EstadoConector;
+            Ln_IdInterfaceElementoFinal      := Ln_IdInterfaceElemento;
+            Lv_NombreInterfaceElemFinal      := Lv_NombreInterfaceElemento;
+            Ln_IdServicioFinal               := Ln_IdServicio;
+             
           ELSE
             IF Ln_DistanciaMetrosCaja < Ln_DistanciaFinal THEN
-              Ln_DistanciaFinal := Ln_DistanciaMetrosCaja;
-              Lv_NombreCajaFinal  := Lv_NombreCaja;
+              Ln_IdCajaFinal                   := Ln_IdCaja; 
+              Lv_EstadoCajaFinal               := Lv_EstadoCaja;
+              Ln_IdConectorFinal               := Ln_IdConector;
+              Lv_NombreConectorFinal           := Lv_NombreConector;
+              Lv_EstadoConectorFinal           := Lv_EstadoConector;
+              Ln_IdInterfaceElementoFinal      := Ln_IdInterfaceElemento;
+              Lv_NombreInterfaceElemFinal      := Lv_NombreInterfaceElemento;
+              Ln_IdServicioFinal               := Ln_IdServicio;
+              Ln_DistanciaFinal                := Ln_DistanciaMetrosCaja;
+              Lv_NombreCajaFinal               := Lv_NombreCaja;
             END IF;
           END IF;
-          
-          DBMS_OUTPUT.PUT_LINE(Ln_DistanciaFinal || '-' || Lv_NombreCajaFinal ); 
           
           Ln_IndxCajasConectoresCobert  := Lt_TRegsCajasConectoresCobert.NEXT(Ln_IndxCajasConectoresCobert);
         END LOOP;
@@ -1104,28 +1178,17 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
       -- Si existe respuesta por el webservice de ARCGIS se envia los datos de la caja seleccionada
       APEX_JSON.initialize_clob_output;
       APEX_JSON.open_object; -- {
-      Ln_IndxCajasConectoresFactib :=  Lt_TRegsCajasConectoresFactib.FIRST;
-      WHILE (Ln_IndxCajasConectoresFactib IS NOT NULL)
-        LOOP
-          Lr_RegCajasConectoresFactib   := Lt_TRegsCajasConectoresFactib(Ln_IndxCajasConectoresFactib);
-          IF Lr_RegCajasConectoresFactib.NOMBRE_CAJA = Lv_NombreCajaFinal THEN
-            -- Lleno el arreglo de respuesta para Telcos
-            APEX_JSON.write('idCaja', Lr_RegCajasConectoresFactib.ID_CAJA);
-            APEX_JSON.write('nombreCaja', Lr_RegCajasConectoresFactib.NOMBRE_CAJA);
-            APEX_JSON.write('estadoCaja', Lr_RegCajasConectoresFactib.ESTADO_CAJA);
-            APEX_JSON.write('idElementoConector', Lr_RegCajasConectoresFactib.ID_CONECTOR);
-            APEX_JSON.write('nombreElementoConector', Lr_RegCajasConectoresFactib.NOMBRE_CONECTOR);
-            APEX_JSON.write('estadoElementoConector', Lr_RegCajasConectoresFactib.ESTADO_CONECTOR);
-            APEX_JSON.write('idInterfaceElementoConector', Lr_RegCajasConectoresFactib.ID_INTERFACE_ELEMENTO);
-            APEX_JSON.write('idServicio', Ln_IdServicio);
-            APEX_JSON.write('nombreInterfaceElementoConector', Lr_RegCajasConectoresFactib.NOMBRE_INTERFACE_ELEMENTO);
-            APEX_JSON.write('distancia', Ln_DistanciaFinal);
-            APEX_JSON.write('pasaNuevoAlgoritmo', 'SI');
-            EXIT;
-          END IF;
-      DBMS_OUTPUT.PUT_LINE(Pcl_JsonResponse);
-          Ln_IndxCajasConectoresFactib  := Lt_TRegsCajasConectoresFactib.NEXT(Ln_IndxCajasConectoresFactib);
-      END LOOP;
+      APEX_JSON.write('idCaja', Ln_IdCajaFinal);
+      APEX_JSON.write('nombreCaja', Lv_NombreCajaFinal);
+      APEX_JSON.write('estadoCaja', Lv_EstadoCajaFinal);
+      APEX_JSON.write('idElementoConector', Ln_IdConectorFinal);
+      APEX_JSON.write('nombreElementoConector', Lv_NombreConectorFinal);
+      APEX_JSON.write('estadoElementoConector', Lv_EstadoConectorFinal);
+      APEX_JSON.write('idInterfaceElementoConector', Ln_IdInterfaceElementoFinal);
+      APEX_JSON.write('idServicio', Ln_IdServicioFinal);
+      APEX_JSON.write('nombreInterfaceElementoConector', Lv_NombreInterfaceElemFinal);
+      APEX_JSON.write('distancia', Ln_DistanciaFinal);
+      APEX_JSON.write('pasaNuevoAlgoritmo', 'SI');
       APEX_JSON.close_object; -- }
       Lcl_JsonReturn    := apex_json.get_clob_output;
       APEX_JSON.free_output;
@@ -1135,7 +1198,6 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
       END IF;
 
       Pcl_JsonResponse    := Lcl_JsonReturn;
-      DBMS_OUTPUT.PUT_LINE(Pcl_JsonResponse);
 
   EXCEPTION
   WHEN Le_Exception THEN
@@ -1180,7 +1242,7 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     Pcl_JsonResponse    := Lcl_JsonReturn;
     Pv_Status           := Lv_Status;
     Pv_Mensaje          := Lv_Mensaje;  
-    DBMS_OUTPUT.PUT_LINE(Lv_Mensaje);
+
   END P_OBTIENE_DATOS_FACTIBILIDAD;
 
   PROCEDURE P_OBTIENE_LISTADO_FACTIBILIDAD(
@@ -1217,6 +1279,21 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
       AND DET.VALOR2             = Cv_Valor2
       AND CAB.ESTADO             = Lv_EstadoActivo
       AND DET.ESTADO             = Lv_EstadoActivo;
+
+    CURSOR Lc_GetCantonId(Cv_ServicioId DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE)
+    IS
+      SELECT CANTON.ID_CANTON
+      FROM DB_COMERCIAL.INFO_PUNTO PUNTO
+      INNER JOIN DB_GENERAL.ADMI_SECTOR SECTOR
+      ON SECTOR.ID_SECTOR = PUNTO.SECTOR_ID
+      INNER JOIN DB_GENERAL.ADMI_PARROQUIA PARROQUIA
+      ON PARROQUIA.ID_PARROQUIA = SECTOR.PARROQUIA_ID
+      INNER JOIN DB_COMERCIAL.INFO_SERVICIO SERVICIO
+      ON PUNTO.ID_PUNTO =SERVICIO.PUNTO_ID
+      INNER JOIN DB_GENERAL.ADMI_CANTON CANTON
+      ON CANTON.ID_CANTON = PARROQUIA.CANTON_ID
+      WHERE ID_SERVICIO   = Cv_ServicioId;
+
     Lv_NombreParamGeneral           VARCHAR2(40) := 'PARAMETROS_ASOCIADOS_A_SERVICIOS_';
     Lv_ProcesoFactibilidad          VARCHAR2(24) := 'PROCESO_FACTIBILIDAD';
     Lv_ParamsConsulta               VARCHAR2(16) := 'PARAMS_CONSULTA';
@@ -1247,6 +1324,9 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     Lv_PrefijoEmpresa               VARCHAR2(5);
     Ln_DistanciaMaxCobertura        NUMBER;
     Lb_booleanTipoRedGpon           BOOLEAN;
+    Ln_IdCanton                     NUMBER;
+    Ln_ServicioId                   NUMBER;
+    Lv_ValidacionCanton             VARCHAR2(200);
 
   BEGIN
     Lcl_JsonFiltrosBusqueda := Pcl_JsonRequest;
@@ -1258,7 +1338,9 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     Lv_CodEmpresa               := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'idEmpresa'));
     Lv_PrefijoEmpresa           := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'prefijoEmpresa'));
     Ln_DistanciaMaxCobertura    := TRIM(APEX_JSON.GET_NUMBER(p_path => 'distanciaMaxCobertura'));
-    DBMS_OUTPUT.PUT_LINE(Pcl_JsonRequest);
+    Lv_ValidacionCanton         := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'validarCanton'));
+    Ln_ServicioId               := TRIM(APEX_JSON.GET_NUMBER(p_path => 'idServicio'));
+
     IF Lv_PrefijoEmpresa IS NULL OR Lv_CodEmpresa IS NULL THEN
       Lv_Mensaje := 'No se han enviado los parámetros obligatorios referentes a la empresa';
       RAISE Le_Exception;
@@ -1272,12 +1354,16 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     OPEN Lc_GetInfoParams(Lv_NombreParamGeneral, Lv_ProcesoFactibilidad, Lv_ParamsConsulta, Lv_CodEmpresa);
     FETCH Lc_GetInfoParams INTO Lv_TipoElementoConector, Lv_Valor4ParamsConsulta, Lv_Valor5ParamsConsulta;
     CLOSE Lc_GetInfoParams;
-    DBMS_OUTPUT.PUT_LINE('paso 2');
+
+    OPEN Lc_GetCantonId(Ln_ServicioId);
+    FETCH Lc_GetCantonId INTO Ln_IdCanton;
+    CLOSE Lc_GetCantonId;
+
     IF (Lv_TipoElementoConector IS NULL OR Ln_DistanciaMaxCobertura IS NULL) THEN
       Lv_Mensaje := 'No existe la configuración general para realizar la consulta con el prefijo empresa ' || Lv_PrefijoEmpresa;
       RAISE Le_Exception;
     END IF;
-    DBMS_OUTPUT.PUT_LINE(Lv_Mensaje);
+
     IF Lc_GetValorEarthRadius%ISOPEN THEN
     CLOSE Lc_GetValorEarthRadius;
     END IF;
@@ -1322,28 +1408,33 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
                             AND INTERFACE_CONECTOR.NOMBRE_INTERFACE_ELEMENTO NOT LIKE ''' || Lv_ValorInterfaceNotLikeIn || ''' 
                             AND ROWNUM = 1) AS ID_INTERFACE_ELEMENTO ';
     Lcl_From        := 'FROM DB_INFRAESTRUCTURA.INFO_RELACION_ELEMENTO REL_CAJA_CONECTOR
-                        INNER JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO CAJA
+                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO CAJA
                         ON REL_CAJA_CONECTOR.ELEMENTO_ID_A = CAJA.ID_ELEMENTO
-                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_CAJA
+                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_CAJA
                         ON MODELO_CAJA.ID_MODELO_ELEMENTO = CAJA.MODELO_ELEMENTO_ID
-                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_CAJA
+                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_CAJA
                         ON TIPO_CAJA.ID_TIPO_ELEMENTO = MODELO_CAJA.TIPO_ELEMENTO_ID
-                        INNER JOIN DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA EMPRESA_CAJA_UBICA
+                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA EMPRESA_CAJA_UBICA
                         ON EMPRESA_CAJA_UBICA.ELEMENTO_ID = CAJA.ID_ELEMENTO
-                        INNER JOIN DB_INFRAESTRUCTURA.INFO_UBICACION UBICACION_CAJA
+                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_UBICACION UBICACION_CAJA
                         ON UBICACION_CAJA.ID_UBICACION = EMPRESA_CAJA_UBICA.UBICACION_ID
-                        INNER JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO CONECTOR
+                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO CONECTOR
                         ON CONECTOR.ID_ELEMENTO = REL_CAJA_CONECTOR.ELEMENTO_ID_B
-                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_CONECTOR
+                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_CONECTOR
                         ON MODELO_CONECTOR.ID_MODELO_ELEMENTO = CONECTOR.MODELO_ELEMENTO_ID
-                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_CONECTOR
+                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_CONECTOR
                         ON MODELO_CONECTOR.TIPO_ELEMENTO_ID = TIPO_CONECTOR.ID_TIPO_ELEMENTO ';
     Lcl_Where       := 'WHERE TIPO_CAJA.NOMBRE_TIPO_ELEMENTO = ''' || Lv_ValorCajaDispersion || ''' 
                         AND REL_CAJA_CONECTOR.ESTADO IN (''' || Lv_EstadoActivo || ''', ''' || Lv_ValorRestringido || ''' ) 
                         AND TIPO_CONECTOR.NOMBRE_TIPO_ELEMENTO = ''' || Lv_TipoElementoConector || ''' ';
 
+    IF Lv_ValidacionCanton IS NOT NULL AND Lv_ValidacionCanton = 'SI' THEN
+        Lcl_From := Lcl_From || ' LEFT JOIN DB_INFRAESTRUCTURA.ADMI_PARROQUIA PARROQUIA ON PARROQUIA.ID_PARROQUIA = UBICACION_CAJA.PARROQUIA_ID ';
+        Lcl_Where := Lcl_Where || ' AND PARROQUIA.CANTON_ID = ' || Ln_IdCanton || ' ';--SETEAR ID CANTON DEL PUNTO
+    END IF;
+
     IF Lv_PrefijoEmpresa = 'MD' OR Lv_PrefijoEmpresa = 'EN' THEN 
-      Lcl_Join      := 'INNER JOIN DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO DETALLE_NIVEL_CAJA
+      Lcl_Join      := 'LEFT JOIN DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO DETALLE_NIVEL_CAJA
                         ON DETALLE_NIVEL_CAJA.ELEMENTO_ID = CAJA.ID_ELEMENTO ';
       Lcl_Where     := Lcl_Where || 'AND CONECTOR.ESTADO <> ''' || Lv_ValorRestringido || ''' 
                                      AND EMPRESA_CAJA_UBICA.EMPRESA_COD = ''' || Lv_CodEmpresa || ''' 
@@ -1354,23 +1445,23 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
                                      (
                                         SELECT CAJA_EDIFICIO.ID_ELEMENTO
                                         FROM DB_INFRAESTRUCTURA.INFO_RELACION_ELEMENTO REL_EDIFICACION_CAJA
-                                        INNER JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO CAJA_EDIFICIO
+                                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO CAJA_EDIFICIO
                                         ON CAJA_EDIFICIO.ID_ELEMENTO = REL_EDIFICACION_CAJA.ELEMENTO_ID_B
-                                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_CAJA_EDIFICIO
+                                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_CAJA_EDIFICIO
                                         ON MODELO_CAJA_EDIFICIO.ID_MODELO_ELEMENTO = CAJA_EDIFICIO.MODELO_ELEMENTO_ID
-                                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_CAJA_EDIFICIO
+                                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_CAJA_EDIFICIO
                                         ON MODELO_CAJA_EDIFICIO.TIPO_ELEMENTO_ID = TIPO_CAJA_EDIFICIO.ID_TIPO_ELEMENTO
-                                        INNER JOIN DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA EMPRESA_CAJA_EDIFICIO_UBICA
+                                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA EMPRESA_CAJA_EDIFICIO_UBICA
                                         ON EMPRESA_CAJA_EDIFICIO_UBICA.ELEMENTO_ID = CAJA_EDIFICIO.ID_ELEMENTO
-                                        INNER JOIN DB_INFRAESTRUCTURA.INFO_UBICACION UBICACION_CAJA_EDIFICIO
+                                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_UBICACION UBICACION_CAJA_EDIFICIO
                                         ON UBICACION_CAJA_EDIFICIO.ID_UBICACION = EMPRESA_CAJA_EDIFICIO_UBICA.UBICACION_ID
-                                        INNER JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO EDIFICACION
+                                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_ELEMENTO EDIFICACION
                                         ON EDIFICACION.ID_ELEMENTO = REL_EDIFICACION_CAJA.ELEMENTO_ID_A
-                                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_EDIFICACION
+                                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO MODELO_EDIFICACION
                                         ON MODELO_EDIFICACION.ID_MODELO_ELEMENTO = EDIFICACION.MODELO_ELEMENTO_ID
-                                        INNER JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_EDIFICACION
+                                        LEFT JOIN DB_INFRAESTRUCTURA.ADMI_TIPO_ELEMENTO TIPO_EDIFICACION
                                         ON TIPO_EDIFICACION.ID_TIPO_ELEMENTO = MODELO_EDIFICACION.TIPO_ELEMENTO_ID
-                                        INNER JOIN DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO DETALLE_NIVEL_CAJA_EDIFICACION
+                                        LEFT JOIN DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO DETALLE_NIVEL_CAJA_EDIFICACION
                                         ON DETALLE_NIVEL_CAJA_EDIFICACION.ELEMENTO_ID = CAJA_EDIFICIO.ID_ELEMENTO
                                         WHERE TIPO_CAJA_EDIFICIO.NOMBRE_TIPO_ELEMENTO = ''' || Lv_ValorCajaDispersion || ''' 
                                         AND EMPRESA_CAJA_EDIFICIO_UBICA.EMPRESA_COD = ''' || Lv_CodEmpresa || ''' 
@@ -1385,19 +1476,29 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
     END IF;
 
     Lcl_ConsultaPrincipal := 'SELECT *
-                              FROM (' || Lcl_Select || Lcl_From || Lcl_Join || Lcl_Where || ')
-                              WHERE ' || Ln_DistanciaMaxCobertura || ' >= DISTANCIA ';
+                              FROM (' || Lcl_Select || Lcl_From || Lcl_Join || Lcl_Where || ')';
+    
+    Lcl_ConsultaPrincipal:= 'SELECT  DISTINCT TBL.ID_CAJA ,
+                                              TBL.NOMBRE_CAJA,
+                                              TBL.ESTADO_CAJA,
+                                              TBL.ID_CONECTOR ,
+                                              TBL.NOMBRE_CONECTOR,
+                                              TBL.ESTADO_CONECTOR,
+                                              TBL.LATITUD_CAJA,
+                                              TBL.LONGITUD_CAJA,
+                                              TBL.DISTANCIA,
+                                              TBL.NUM_PUERTOS_DISPONIBLES,
+                                              TBL.NOMBRE_INTERFACE_ELEMENTO,
+                                              TBL.ID_INTERFACE_ELEMENTO FROM ( ' || Lcl_ConsultaPrincipal || ' ) TBL WHERE TBL.NUM_PUERTOS_DISPONIBLES > 0';
+
     
     IF (Lv_PrefijoEmpresa = 'MD' OR Lv_PrefijoEmpresa = 'EN') AND Lb_booleanTipoRedGpon THEN  
-        DBMS_OUTPUT.PUT_LINE('entra en if'); 
-        Lcl_ConsultaPrincipal := 'SELECT * FROM ( ' || Lcl_ConsultaPrincipal || ' ) WHERE EXISTS (
+        Lcl_ConsultaPrincipal := Lcl_ConsultaPrincipal || ' AND EXISTS (
             SELECT 1
             FROM DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO INTERFACE_CONECTOR
-            WHERE INTERFACE_CONECTOR.ELEMENTO_ID = ID_CONECTOR
-            AND INTERFACE_CONECTOR.ESTADO = ''' || Lv_ValorNotConnect || ''' 
-            AND INTERFACE_CONECTOR.NOMBRE_INTERFACE_ELEMENTO NOT LIKE ''' || Lv_ValorInterfaceNotLikeIn || ''' 
-            AND INTERFACE_CONECTOR.ID_INTERFACE_ELEMENTO = DB_INFRAESTRUCTURA.INFRK_DML.GET_ELEMENTO_FILTER_DETALLE(
-                                                                INTERFACE_CONECTOR.ID_INTERFACE_ELEMENTO,
+            WHERE
+            INTERFACE_CONECTOR.ID_INTERFACE_ELEMENTO = DB_INFRAESTRUCTURA.INFRK_DML.GET_ELEMENTO_FILTER_DETALLE(
+                                                                TBL.ID_INTERFACE_ELEMENTO,
                                                                 ''MISMO_ID'',
                                                                 ''MULTIPLATAFORMA'',
                                                                 ''SI'')
@@ -1405,12 +1506,22 @@ CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBR
         )';
     END IF;
     
-    Lcl_ConsultaPrincipal := Lcl_ConsultaPrincipal || ' ORDER BY DISTANCIA ASC ';
-    
-    DBMS_OUTPUT.PUT_LINE(Lcl_ConsultaPrincipal);                          
+    Lcl_ConsultaPrincipal := Lcl_ConsultaPrincipal || ' GROUP BY TBL.ID_CAJA,
+                                                                 TBL.DISTANCIA,
+                                                                 TBL.NOMBRE_CAJA,
+                                                                 TBL.ESTADO_CAJA,
+                                                                 TBL.ID_CONECTOR,
+                                                                 TBL.NOMBRE_CONECTOR,
+                                                                 TBL.ESTADO_CONECTOR,
+                                                                 TBL.LATITUD_CAJA,
+                                                                 TBL.LONGITUD_CAJA,
+                                                                 TBL.NUM_PUERTOS_DISPONIBLES,
+                                                                 TBL.NOMBRE_INTERFACE_ELEMENTO,
+                                                                 TBL.ID_INTERFACE_ELEMENTO
+                                                                 HAVING TBL.DISTANCIA <= '|| Ln_DistanciaMaxCobertura ||
+                                                                ' order by TBL.DISTANCIA ASC';
 
-    OPEN Prf_Registros FOR Lcl_ConsultaPrincipal;
-    DBMS_OUTPUT.PUT_LINE('entro en open');                          
+    OPEN Prf_Registros FOR Lcl_ConsultaPrincipal;                         
     Pv_Status   := 'OK';
     Pv_Mensaje  := '';
   EXCEPTION
