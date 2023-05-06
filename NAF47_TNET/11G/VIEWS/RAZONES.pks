@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."RAZONES" ("NO_CIA", "TIPO_DOC", "RAZON", "DESCRIPCION", "USUARIO", "FECHA") AS 
-  SELECT "NO_CIA",
-           "TIPO_DOC",
-           "RAZON",
-           "DESCRIPCION",
-           "USUARIO",
-           "FECHA"
-      FROM NAF47_TNET.RAZONES@GPOETNET;

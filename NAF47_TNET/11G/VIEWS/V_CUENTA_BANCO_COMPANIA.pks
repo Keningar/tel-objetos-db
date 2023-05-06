@@ -1,9 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."V_CUENTA_BANCO_COMPANIA" ("NO_CIA", "NO_CTA", "BANCO", "DESCRIP", "NO_CUENTA", "MES_PROC", "ANO_PROC") AS 
-  SELECT "NO_CIA",
-           "NO_CTA",
-           "BANCO",
-           "DESCRIP",
-           "NO_CUENTA",
-           "MES_PROC",
-           "ANO_PROC"
-      FROM NAF47_TNET.V_CUENTA_BANCO_COMPANIA@GPOETNET;

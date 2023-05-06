@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."CIUDAD_TEMP" ("CODCIUD", "CODEMP", "NOMCIUD", "OBS", "CODPRO", "CODSER") AS 
-  SELECT "CODCIUD",
-           "CODEMP",
-           "NOMCIUD",
-           "OBS",
-           "CODPRO",
-           "CODSER"
-      FROM NAF47_TNET.CIUDAD_TEMP@GPOETNET;

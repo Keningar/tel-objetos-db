@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARINHP" ("NO_CIA", "CENTRO", "PERIODO", "NO_ARTI", "UNIDADES", "MONTO") AS 
-  SELECT "NO_CIA",
-           "CENTRO",
-           "PERIODO",
-           "NO_ARTI",
-           "UNIDADES",
-           "MONTO"
-      FROM NAF47_TNET.ARINHP@GPOETNET;

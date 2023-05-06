@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."MIGRA_SALDOING" ("NO_CIA", "DOCUM", "CODIGO", "CANT", "COSTUNI", "COSTUNI2") AS 
-  SELECT "NO_CIA",
-           "DOCUM",
-           "CODIGO",
-           "CANT",
-           "COSTUNI",
-           "COSTUNI2"
-      FROM NAF47_TNET.MIGRA_SALDOING@GPOETNET;

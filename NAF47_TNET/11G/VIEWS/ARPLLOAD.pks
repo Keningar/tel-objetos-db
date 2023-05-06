@@ -1,9 +1,0 @@
-
-CREATE  FORCE VIEW "NAF47_TNET"."ARPLLOAD" ("PROCESO", "FECHA", "IND_ACT", "MOTIVO", "LINEA", "DETALLE") AS 
-  SELECT "PROCESO",
-           "FECHA",
-           "IND_ACT",
-           "MOTIVO",
-           "LINEA",
-           "DETALLE"
-      FROM NAF47_TNET.ARPLLOAD@GPOETNET;

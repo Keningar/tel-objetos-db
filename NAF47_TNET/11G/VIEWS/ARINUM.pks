@@ -1,9 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARINUM" ("NO_CIA", "UNIDAD", "NOM", "TIPO", "IND_FACT_CANTIDAD", "ABREVIATURA", "ACTIVO") AS 
-  SELECT "NO_CIA",
-           "UNIDAD",
-           "NOM",
-           "TIPO",
-           "IND_FACT_CANTIDAD",
-           "ABREVIATURA",
-           "ACTIVO"
-      FROM NAF47_TNET.ARINUM@GPOETNET;

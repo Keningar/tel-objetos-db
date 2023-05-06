@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARPLPC" ("NO_CIA", "TIPO_EMP", "PREOCES", "LIMITEINF", "LIMITESUP", "DIAS") AS 
-  SELECT "NO_CIA",
-           "TIPO_EMP",
-           "PREOCES",
-           "LIMITEINF",
-           "LIMITESUP",
-           "DIAS"
-      FROM NAF47_TNET.ARPLPC@GPOETNET;

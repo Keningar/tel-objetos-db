@@ -1,7 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARRHCL" ("NO_CLASE", "DESCRIP", "DESC1", "DESC2", "DESC3") AS 
-  SELECT "NO_CLASE",
-           "DESCRIP",
-           "DESC1",
-           "DESC2",
-           "DESC3"
-      FROM NAF47_TNET.ARRHCL@GPOETNET;

@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARRHEED" ("NO_CIA", "NO_EMPLE", "FECHA", "COD_FAC", "RESULTADO", "VALOR") AS 
-  SELECT "NO_CIA",
-           "NO_EMPLE",
-           "FECHA",
-           "COD_FAC",
-           "RESULTADO",
-           "VALOR"
-      FROM NAF47_TNET.ARRHEED@GPOETNET;

@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARPLDF" ("NO_CIA", "FECHA", "TIPO", "MOTIVO", "H_SALIDA", "EXTRAS_APARTIR") AS 
-  SELECT "NO_CIA",
-           "FECHA",
-           "TIPO",
-           "MOTIVO",
-           "H_SALIDA",
-           "EXTRAS_APARTIR"
-      FROM NAF47_TNET.ARPLDF@GPOETNET;

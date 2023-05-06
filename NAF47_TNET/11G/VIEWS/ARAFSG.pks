@@ -1,7 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARAFSG" ("NO_CIA", "TIPO", "GRUPO", "SUBGRUPO", "DESCRI") AS 
-  SELECT "NO_CIA",
-           "TIPO",
-           "GRUPO",
-           "SUBGRUPO",
-           "DESCRI"
-      FROM NAF47_TNET.ARAFSG@GPOETNET;

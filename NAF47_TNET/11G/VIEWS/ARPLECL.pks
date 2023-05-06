@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARPLECL" ("NO_CIA", "NO_EMPLE", "COD_EXCLUYENTE", "CLASE_EMP", "VALOR", "C_COSTO") AS 
-  SELECT "NO_CIA",
-           "NO_EMPLE",
-           "COD_EXCLUYENTE",
-           "CLASE_EMP",
-           "VALOR",
-           "C_COSTO"
-      FROM NAF47_TNET.ARPLECL@GPOETNET;

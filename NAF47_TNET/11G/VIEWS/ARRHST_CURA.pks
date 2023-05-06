@@ -1,8 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."ARRHST_CURA" ("NO_CIA", "NO_SOLIC", "CLASE_CURSO", "DURACION", "FECHA", "TITULO") AS 
-  SELECT "NO_CIA",
-           "NO_SOLIC",
-           "CLASE_CURSO",
-           "DURACION",
-           "FECHA",
-           "TITULO"
-      FROM NAF47_TNET.ARRHST_CURA@GPOETNET;

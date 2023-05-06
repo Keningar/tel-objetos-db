@@ -1,6 +1,0 @@
-CREATE  FORCE VIEW "NAF47_TNET"."FOTOS" ("NO_CIA", "NO_EMPLE", "FOTO", "PATH") AS 
-  SELECT "NO_CIA",
-           "NO_EMPLE",
-           "FOTO",
-           "PATH"
-      FROM NAF47_TNET.FOTOS@GPOETNET;

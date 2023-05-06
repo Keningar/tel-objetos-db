@@ -1,9 +1,0 @@
-
-CREATE  FORCE VIEW "NAF47_TNET"."ARRHST_SOLT" ("NO_CIA", "NO_SOLIC", "LUGAR", "FECHA", "ACEPTADO", "RAZON") AS 
-  SELECT "NO_CIA",
-           "NO_SOLIC",
-           "LUGAR",
-           "FECHA",
-           "ACEPTADO",
-           "RAZON"
-      FROM NAF47_TNET.ARRHST_SOLT@GPOETNET;
