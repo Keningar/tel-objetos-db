@@ -12,8 +12,6 @@ create or replace PACKAGE              DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
     *
     * @author Pedro Velez <psvelez@telconet.ec>
     * @version 1.0 14-09-2022
-    * @author Liseth Chunga <lchunga@telconet.ec>
-    * @version 2.0 02-05-2023
     */
     PROCEDURE P_GUARDAR_FOTO_EMPLEADO(Pv_CedulaEmpleado IN  VARCHAR2, 
                                       Pv_CodEmpresa     IN  VARCHAR2,
@@ -51,7 +49,7 @@ end CMKG_ARCHIVOS_EMPLEADOS;
 
 /
 
-create or replace PACKAGE BODY                       DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
+create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
 
     PROCEDURE P_GUARDAR_FOTO_EMPLEADO(Pv_CedulaEmpleado IN  VARCHAR2, 
                                       Pv_CodEmpresa     IN  VARCHAR2,
@@ -76,26 +74,12 @@ create or replace PACKAGE BODY                       DB_COMERCIAL.CMKG_ARCHIVOS_
       
     BEGIN
        begin
-            SELECT S.Id_Persona_Rol, Me.Foto
-            INTO Ln_IdPersonaEmpresaRol, Lcl_Foto
-            FROM Db_Comercial.Info_Persona_Empresa_Rol S,
-            Db_Comercial.Info_Empresa_Rol Ipr,
-            Db_Comercial.Info_Persona P,
-            Naf47_Tnet.Arplme Me,
-            DB_GENERAL.ADMI_PARAMETRO_DET pd
-            WHERE P.Identificacion_Cliente = Pv_CedulaEmpleado
-            AND S.Persona_Id               = P.Id_Persona
-            AND P.Identificacion_Cliente   = Me.Cedula
-            AND Ipr.Id_Empresa_Rol         = S.Empresa_Rol_Id
-            AND Ipr.Empresa_Cod            = Me.No_Cia
-            AND Ipr.Empresa_Cod            = Pv_CodEmpresa
-            AND Me.Foto                    IS NOT NULL
-            AND Me.Estado                  = 'A'
-            AND S.Estado                   = 'Activo'
-            AND PD.DESCRIPCION             = 'DPTO_GUARDAR_FOTO_NFS'
-            AND PD.VALOR1                  = S.Departamento_Id
-            AND Pd.empresa_Cod             = Ipr.Empresa_Cod
-            AND PD.Estado                  = 'Activo';
+           SELECT Me.Foto
+             into Lcl_Foto
+             FROM NAF47_TNET.ARPLME me 
+            where Me.Cedula = Pv_CedulaEmpleado 
+              and me.no_cia = Pv_CodEmpresa
+              and Me.Estado = 'A'; 
        exception
         when others then
            Ln_CodRespuesta := -1;
@@ -141,10 +125,31 @@ create or replace PACKAGE BODY                       DB_COMERCIAL.CMKG_ARCHIVOS_
                
                Lv_RutaFoto     := APEX_JSON.GET_VARCHAR2(p_path => 'data[%d].pathFile',p0=> 1);
                
-                              
+               begin
+                select IPER.ID_PERSONA_ROL
+                  into Ln_IdPersonaEmpresaRol
+                  from DB_COMERCIAL.INFO_PERSONA ip,
+                       DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL iper,
+                       DB_COMERCIAL.INFO_EMPRESA_ROL ipr,
+                       DB_GENERAL.ADMI_ROL ar
+                 where IP.ID_PERSONA = IPER.PERSONA_ID
+                   and IPER.EMPRESA_ROL_ID = IPR.ID_EMPRESA_ROL
+                   and AR.ID_ROL = IPR.ROL_ID
+                   and AR.TIPO_ROL_ID = 1
+                   and IP.IDENTIFICACION_CLIENTE = Pv_CedulaEmpleado
+                   and IPR.EMPRESA_COD = Pv_CodEmpresa
+                   and IP.ESTADO = 'Activo'
+                   and IPER.ESTADO = 'Activo';
+               exception
+                when others then
+                   Ln_CodRespuesta := -1;
+                   Lv_MsjRespuesta := 'No se pudo obtener idPersonaEmpresaRol';
+                   RAISE Le_Error;
+               end;
+               
                begin
                 select T.Valor 
-                into Lv_urlFotoTecnico
+                  into Lv_urlFotoTecnico
                   from DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC t 
                  where T.PERSONA_EMPRESA_ROL_ID = Ln_IdPersonaEmpresaRol 
                    and T.Caracteristica_Id = (select S.Id_Caracteristica 
