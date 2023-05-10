@@ -1,4 +1,4 @@
-create or replace PACKAGE              DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
+create or replace PACKAGE          DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
     /**
     * Documentación para el procedimiento P_GUARDAR_FOTO_EMPLEADO
     *
@@ -12,6 +12,9 @@ create or replace PACKAGE              DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
     *
     * @author Pedro Velez <psvelez@telconet.ec>
     * @version 1.0 14-09-2022
+    *
+    * @author Liseth Chunga <lchunga@telconet.ec>
+    * @version 2.0 26-04-2023
     */
     PROCEDURE P_GUARDAR_FOTO_EMPLEADO(Pv_CedulaEmpleado IN  VARCHAR2, 
                                       Pv_CodEmpresa     IN  VARCHAR2,
@@ -35,6 +38,9 @@ create or replace PACKAGE              DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
     *
     * @author Pedro Velez <psvelez@telconet.ec>
     * @version 1.0 14-09-2022
+    *
+    * @author Liseth Chunga <lchunga@telconet.ec>
+    * @version 2.0 26-04-2023
     */
     PROCEDURE P_GUARDAR_ARCHIVO_NFS(  Pcl_Archivo      IN CLOB,
                                       Pn_CodigoApp     IN NUMBER,
@@ -45,11 +51,34 @@ create or replace PACKAGE              DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
                                       Pcl_Response     OUT CLOB,
                                       Pn_CodRespuesta  OUT NUMBER,
                                       Pv_MsjRespuesta  OUT VARCHAR2);
+                                     
+        /**
+  * Documentacion para el procedimiento P_METODO_POST
+  *
+  * Método encargado del consumo de webservice P_METODO_POST
+  *
+  * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
+  * @param Pcl_Content        IN  CLOB     Recibe un json request
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
+  * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
+  *
+  * @author Liseth Chunga <lchunga@telconet.ec>
+  * @version 2.0 09-05-2023
+  */                 
+  PROCEDURE P_METODO_POST(Pv_Url      IN  VARCHAR2,
+                   Pcl_Headers IN  CLOB,
+                   Pcl_Content IN  CLOB,
+                   Pn_Code     OUT NUMBER,
+                   Pv_Mensaje  OUT VARCHAR2,
+                   Pcl_Data    OUT CLOB);
+                  
 end CMKG_ARCHIVOS_EMPLEADOS;
 
 /
 
-create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
+create or replace PACKAGE BODY      DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
 
     PROCEDURE P_GUARDAR_FOTO_EMPLEADO(Pv_CedulaEmpleado IN  VARCHAR2, 
                                       Pv_CodEmpresa     IN  VARCHAR2,
@@ -73,13 +102,28 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
       Le_Error        EXCEPTION;
       
     BEGIN
+
        begin
-           SELECT Me.Foto
-             into Lcl_Foto
-             FROM NAF47_TNET.ARPLME me 
-            where Me.Cedula = Pv_CedulaEmpleado 
-              and me.no_cia = Pv_CodEmpresa
-              and Me.Estado = 'A'; 
+            SELECT S.Id_Persona_Rol, Me.Foto
+            INTO Ln_IdPersonaEmpresaRol, Lcl_Foto
+            FROM Db_Comercial.Info_Persona_Empresa_Rol S,
+            Db_Comercial.Info_Empresa_Rol Ipr,
+            Db_Comercial.Info_Persona P,
+            Naf47_Tnet.Arplme Me,
+            DB_GENERAL.ADMI_PARAMETRO_DET pd
+            WHERE P.Identificacion_Cliente = Pv_CedulaEmpleado
+            AND S.Persona_Id               = P.Id_Persona
+            AND P.Identificacion_Cliente   = Me.Cedula
+            AND Ipr.Id_Empresa_Rol         = S.Empresa_Rol_Id
+            AND Ipr.Empresa_Cod            = Me.No_Cia
+            AND Ipr.Empresa_Cod            = Pv_CodEmpresa
+            AND Me.Foto                    IS NOT NULL
+            AND Me.Estado                  = 'A'
+            AND S.Estado                   = 'Activo'
+            AND PD.DESCRIPCION             = 'DPTO_GUARDAR_FOTO_NFS'
+            AND PD.VALOR1                  = S.Departamento_Id
+            AND Pd.empresa_Cod             = Ipr.Empresa_Cod
+            AND PD.Estado                  = 'Activo';
        exception
         when others then
            Ln_CodRespuesta := -1;
@@ -125,31 +169,10 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
                
                Lv_RutaFoto     := APEX_JSON.GET_VARCHAR2(p_path => 'data[%d].pathFile',p0=> 1);
                
-               begin
-                select IPER.ID_PERSONA_ROL
-                  into Ln_IdPersonaEmpresaRol
-                  from DB_COMERCIAL.INFO_PERSONA ip,
-                       DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL iper,
-                       DB_COMERCIAL.INFO_EMPRESA_ROL ipr,
-                       DB_GENERAL.ADMI_ROL ar
-                 where IP.ID_PERSONA = IPER.PERSONA_ID
-                   and IPER.EMPRESA_ROL_ID = IPR.ID_EMPRESA_ROL
-                   and AR.ID_ROL = IPR.ROL_ID
-                   and AR.TIPO_ROL_ID = 1
-                   and IP.IDENTIFICACION_CLIENTE = Pv_CedulaEmpleado
-                   and IPR.EMPRESA_COD = Pv_CodEmpresa
-                   and IP.ESTADO = 'Activo'
-                   and IPER.ESTADO = 'Activo';
-               exception
-                when others then
-                   Ln_CodRespuesta := -1;
-                   Lv_MsjRespuesta := 'No se pudo obtener idPersonaEmpresaRol';
-                   RAISE Le_Error;
-               end;
-               
+                              
                begin
                 select T.Valor 
-                  into Lv_urlFotoTecnico
+                into Lv_urlFotoTecnico
                   from DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC t 
                  where T.PERSONA_EMPRESA_ROL_ID = Ln_IdPersonaEmpresaRol 
                    and T.Caracteristica_Id = (select S.Id_Caracteristica 
@@ -273,21 +296,35 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
         APEX_JSON.OPEN_OBJECT;
         APEX_JSON.OPEN_OBJECT('headers');
         APEX_JSON.WRITE('Content-Type', Lv_Aplicacion);
-        APEX_JSON.WRITE('Accept', Lv_Aplicacion);
+        APEX_JSON.WRITE('Accept', '*/*');
         APEX_JSON.CLOSE_OBJECT;
         APEX_JSON.CLOSE_OBJECT;
         Lcl_Headers := APEX_JSON.GET_CLOB_OUTPUT;     
         
-        DBMS_LOB.CREATETEMPORARY(Lcl_Request, TRUE); 
-        DBMS_LOB.APPEND(Lcl_Request,'{"data":[{"codigoApp": '||Pn_CodigoApp||',"codigoPath": '|| Pn_CodigoPath);
-        DBMS_LOB.APPEND(Lcl_Request,',"nombreArchivo": "'|| Pv_NombreArchivo||'","fileBase64": "');
-        DBMS_LOB.APPEND(Lcl_Request,Pcl_Archivo);
-        DBMS_LOB.APPEND(Lcl_Request,'", "pathAdicional":'||Pv_PathAdicional||'}],"op": "guardarArchivo"');
-        DBMS_LOB.APPEND(Lcl_Request,',"user": "'||Pv_Usuario ||'"}');        
+        APEX_JSON.INITIALIZE_CLOB_OUTPUT;
+        APEX_JSON.OPEN_OBJECT;       
+        APEX_JSON.OPEN_ARRAY('data');
+        APEX_JSON.OPEN_OBJECT();
+        APEX_JSON.WRITE('codigoApp', Pn_CodigoApp);
+        APEX_JSON.WRITE('codigoPath', Pn_CodigoPath);
+        APEX_JSON.WRITE('nombreArchivo', Pv_NombreArchivo);
+        APEX_JSON.WRITE('fileBase64', Pcl_Archivo );
+        APEX_JSON.OPEN_ARRAY('pathAdicional');
+   	    APEX_JSON.CLOSE_ARRAY;
+        APEX_JSON.CLOSE_OBJECT;
+   	    APEX_JSON.CLOSE_ARRAY; 
+        APEX_JSON.WRITE('op', 'guardarArchivo');
+        APEX_JSON.WRITE('user', Pv_Usuario);
+        APEX_JSON.CLOSE_OBJECT;
+        Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
         
-        DB_GENERAL.GNKG_WEB_SERVICE.P_POST(Lv_Url,Lcl_Headers,Lcl_Request,Ln_CodeRequest,Lv_MsgResult,Lcl_Response);    
-        
-        Pcl_Response := Lcl_Response;
+        DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS.P_METODO_POST(Lv_Url,
+                                                           Lcl_Headers,
+                                                           Lcl_Request,
+                                                           Ln_CodeRequest,
+                                                           Lv_MsgResult,
+                                                           Lcl_Response);    
+        Pcl_Response := Lcl_Response;       
         Pn_CodRespuesta := Ln_CodeRequest;
         Pv_MsjRespuesta := Lv_MsgResult;        
       
@@ -306,6 +343,124 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
                                           SYSDATE,
                                           '127.0.0.1');
     END P_GUARDAR_ARCHIVO_NFS;  
+   
+    PROCEDURE P_METODO_POST(Pv_Url      IN  VARCHAR2,
+		                   Pcl_Headers IN  CLOB,
+		                   Pcl_Content IN  CLOB,
+		                   Pn_Code     OUT NUMBER,
+		                   Pv_Mensaje  OUT VARCHAR2,
+		                   Pcl_Data    OUT CLOB)
+   AS
+   Lv_Req           UTL_HTTP.req;
+   Lv_Resp          UTL_HTTP.resp;
+   Lv_Error         VARCHAR2(1000);
+   Ln_CountHeaders  NUMBER;
+   Lv_NameHeader    VARCHAR2(250);
+   Lv_ValorHeader   VARCHAR2(1500);
+   Lv_ValueHeader   VARCHAR2(1500);
+   Lcl_Response     CLOB;
+   Lcl_Respuesta    CLOB;
+   Le_Data          EXCEPTION;
+   Le_Headers       EXCEPTION;
+   Ln_LongitudRequest   NUMBER;
+   Ln_LongitudIdeal     NUMBER          := 32767;
+   Ln_Offset            NUMBER          := 1;
+   Ln_Buffer            VARCHAR2(2000);
+   Ln_Amount            NUMBER          := 2000;
+  BEGIN
+    -- VALIDACIONES
+    IF Pv_Url IS NULL THEN
+      Lv_Error := 'El campo Pv_Url es obligatorio';
+      RAISE Le_Data;
+    END IF;
+    IF Pcl_Headers = empty_clob() THEN
+      Lv_Error := 'El campo Pcl_Headers es obligatorio';
+      RAISE Le_Data;
+    END IF;
+    -- CONEXION PERSISTENTE
+    IF Pcl_Content IS NOT NULL THEN
+      Ln_LongitudRequest := DBMS_LOB.getlength(Pcl_Content);      
+      IF Ln_LongitudRequest <= Ln_LongitudIdeal THEN
+         UTL_HTTP.set_persistent_conn_support(TRUE);
+      ELSE
+      	 UTL_HTTP.set_persistent_conn_support(FALSE);
+      END IF;
+    END IF;
+    -- TIME OUT
+    UTL_HTTP.set_transfer_timeout(180);
+    -- URL
+    Lv_Req := UTL_HTTP.begin_request(Pv_Url, 'POST');
+    -- HEADERS
+    APEX_JSON.PARSE(Pcl_Headers);
+    Ln_CountHeaders := APEX_JSON.GET_COUNT(P_PATH => 'headers');
+    IF Ln_CountHeaders IS NULL THEN
+      Lv_Error := 'No se ha encontrado la cabecera headers';
+      RAISE Le_Headers;
+    END IF;
+    FOR I IN 1 .. Ln_CountHeaders LOOP
+      Lv_NameHeader := APEX_JSON.get_members(P_PATH => 'headers')(I);
+      Lv_ValorHeader := 'headers.' || Lv_NameHeader;
+      Lv_ValueHeader := APEX_JSON.get_varchar2(P_PATH => Lv_ValorHeader);
+      UTL_HTTP.set_header(Lv_Req, replace(Lv_NameHeader, '"', ''), Lv_ValueHeader);
+    END LOOP;
+    IF Pcl_Content IS NOT NULL THEN        
+        Ln_LongitudRequest := DBMS_LOB.getlength(Pcl_Content);
+        IF Ln_LongitudRequest <= Ln_LongitudIdeal THEN            
+            UTL_HTTP.set_header(Lv_Req, 'Content-Length', LENGTH(Pcl_Content));            
+            UTL_HTTP.write_text(Lv_Req, Pcl_Content);            
+        ELSE
+            UTL_HTTP.SET_HEADER(Lv_Req, 'Transfer-Encoding', 'chunked');            
+            WHILE (Ln_Offset < Ln_LongitudRequest)
+            LOOP
+                DBMS_LOB.READ(Pcl_Content, Ln_Amount, Ln_Offset, Ln_Buffer);
+                UTL_HTTP.WRITE_TEXT(Lv_Req, Ln_Buffer);
+                Ln_Offset := Ln_Offset + Ln_Amount;
+            END LOOP;
+        END IF;
+    END IF;
+    Lv_Resp := UTL_HTTP.get_response(Lv_Req);
+    -- OBTENER LA RESPUESTA.
+    BEGIN
+      LOOP
+        UTL_HTTP.READ_LINE(Lv_Resp, Lcl_Response);
+        Lcl_Respuesta := Lcl_Respuesta || Lcl_Response;
+      END LOOP;
+      UTL_HTTP.END_RESPONSE(Lv_Resp);
+    EXCEPTION
+      WHEN UTL_HTTP.END_OF_BODY THEN UTL_HTTP.END_RESPONSE(Lv_Resp);
+    END;
+    Pn_Code    := 0;
+    Pv_Mensaje := 'Ok';
+    Pcl_Data   := Lcl_Respuesta;
+  EXCEPTION
+    WHEN Le_Data THEN 
+      Pn_Code    := 1;
+      Pv_Mensaje := Lv_Error;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONSUMO WEB SERVICE', 
+                                           'CMKG_ARCHIVOS_EMPLEADOS.P_METODO_POST',
+                                           Pv_Mensaje,
+                                           NVL(SYS_CONTEXT( 'USERENV','HOST'), 'DB_GENERAL'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+    WHEN Le_Headers THEN 
+      Pn_Code    := 2;
+      Pv_Mensaje := Lv_Error;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONSUMO WEB SERVICE', 
+                                           'CMKG_ARCHIVOS_EMPLEADOS.P_METODO_POST',
+                                           Pv_Mensaje,
+                                           NVL(SYS_CONTEXT( 'USERENV','HOST'), 'DB_GENERAL'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+    WHEN OTHERS THEN 
+      Pn_Code    := 99;
+      Pv_Mensaje := SQLERRM;
+      DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CONSUMO WEB SERVICE', 
+                                           'CMKG_ARCHIVOS_EMPLEADOS.P_METODO_POST',
+                                           Pv_Mensaje,
+                                           NVL(SYS_CONTEXT( 'USERENV','HOST'), 'DB_GENERAL'),
+                                           SYSDATE,
+                                           NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'));
+  END P_METODO_POST; 
                                         
  END CMKG_ARCHIVOS_EMPLEADOS;
 
