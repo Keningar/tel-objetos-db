@@ -2186,10 +2186,10 @@ create or replace package body DB_COMERCIAL.CMKG_CONSULTA is
                           FETCH C_OBTENER_LOGIN INTO Lv_LoginCRS,Lv_NombresCliente;
                           CLOSE C_OBTENER_LOGIN; 
 
-                          Lv_ObservacionContrato := Lv_ParametroMensajeCRS || 
-                                                    ' ' || Lv_LoginCRS ||
-                                                    ' CLIENTE ORIGEN: ' || Lv_NombresCliente ||
-                                                    ' <br>' || 'Aplica Condiciones ;Dec. Inst.'||Ln_DescuentoIns ||'% ;Desc. Fact. Mensual 0 % ; #Meses Desc. 0 ;Aplica Condiciones <br>' ;
+                          Lv_ObservacionContrato :=' <br> ' || Lv_ParametroMensajeCRS || 
+                                                    '  ' || Lv_LoginCRS ||
+                                                    ' <br>  CLIENTE ORIGEN: ' || Lv_NombresCliente ||
+                                                    ' <br>' || 'Aplica Condiciones ;Dec. Inst.'||Ln_DescuentoIns ||'% ;Desc. Fact. Mensual 0 % ; <br>  #Meses Desc. 0 ;Aplica Condiciones <br>' ;
 
                           Ln_CantPeriodoIns  := 0;
                           Ln_DescuentoMens   := NULL;
