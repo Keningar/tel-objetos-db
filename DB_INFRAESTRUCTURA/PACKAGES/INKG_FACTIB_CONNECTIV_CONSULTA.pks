@@ -168,6 +168,11 @@ AS
    *                          el valor de la bandera y el id_servicio.
    *                          2.- Quitar el while de la respuesta para que sea mas rapida y bajando el costo de ejecucion
    *                          del paquete.
+   *
+   * @author Steven Ruano <sruano@telconet.ec>
+   * @version 1.7 19-05-2023  Se corrige el error del id de la caja incorrecta al generar la respuesta
+   *                          de los datos de factibilidad.    
+   *
    */
   PROCEDURE P_OBTIENE_DATOS_FACTIBILIDAD(
     Pcl_JsonRequest     IN CLOB,
@@ -195,7 +200,7 @@ AS
    *                          obtener el listado de factibilidad de Megadatos.
    *
    * @author Steven Ruano <sruano@telconet.ec>
-   * @version 1.3 20-12-2022  Se agrega validacion por canton id para agilizar la respuesta de factbilidad
+   * @version 1.3 03-05-2023  Se agrega validacion por canton id para agilizar la respuesta de factbilidad
    *                          y reducir los costos.
    *
    */
@@ -872,7 +877,8 @@ AS
     Lb_booleanTipoRedGpon           BOOLEAN;
     Lv_IpCreacion                   VARCHAR2(9) := '127.0.0.1';
     Ln_IdServicio                   NUMBER;
-    Ln_IdCajaFinal                  NUMBER;  
+    Ln_IdCajaFinal                  NUMBER;
+    Ln_IdCajaInicial                NUMBER;  
     Lv_EstadoCaja                   VARCHAR2(20);
     Ln_IdConector                   NUMBER;
     Lv_NombreConector               VARCHAR2(4000);
@@ -1014,7 +1020,7 @@ AS
           Ln_Latitud_login           := Ln_Latitud;
           Ln_Longitud_caja           := Lr_RegCajasConectoresFactib.LONGITUD_CAJA;
           Ln_Latitud_caja            := Lr_RegCajasConectoresFactib.LATITUD_CAJA;
-          Ln_IdCajaFinal             := Lr_RegCajasConectoresFactib.ID_CAJA; 
+          Ln_IdCajaInicial           := Lr_RegCajasConectoresFactib.ID_CAJA; 
           Lv_EstadoCaja              := Lr_RegCajasConectoresFactib.ESTADO_CAJA;
           Ln_IdConector              := Lr_RegCajasConectoresFactib.ID_CONECTOR;
           Lv_NombreConector          := Lr_RegCajasConectoresFactib.NOMBRE_CONECTOR;
@@ -1047,7 +1053,7 @@ AS
             Ln_DistanciaInicial              := Ln_DistanciaMetrosCaja;
             Ln_DistanciaFinal                := Ln_DistanciaInicial;
             Lv_NombreCajaFinal               := Lv_NombreCaja;
-            Ln_IdCajaFinal                   := Ln_IdCaja; 
+            Ln_IdCajaFinal                   := Ln_IdCajaInicial; 
             Lv_EstadoCajaFinal               := Lv_EstadoCaja;
             Ln_IdConectorFinal               := Ln_IdConector;
             Lv_NombreConectorFinal           := Lv_NombreConector;
@@ -1057,7 +1063,7 @@ AS
             Ln_IdServicioFinal               := Ln_IdServicio; 
           ELSE
             IF Ln_DistanciaMetrosCaja < Ln_DistanciaFinal THEN
-              Ln_IdCajaFinal                   := Ln_IdCaja; 
+              Ln_IdCajaFinal                   := Ln_IdCajaInicial; 
               Lv_EstadoCajaFinal               := Lv_EstadoCaja;
               Ln_IdConectorFinal               := Ln_IdConector;
               Lv_NombreConectorFinal           := Lv_NombreConector;
@@ -1080,7 +1086,7 @@ AS
           Lr_RegCajasConectoresCobert   := Lt_TRegsCajasConectoresCobert(Ln_IndxCajasConectoresCobert);
 
           Lv_NombreCaja                 := Lr_RegCajasConectoresCobert.NOMBRE_CAJA;
-          Ln_IdCaja                     := Lr_RegCajasConectoresCobert.ID_CAJA; 
+          Ln_IdCajaInicial              := Lr_RegCajasConectoresCobert.ID_CAJA; 
           Lv_EstadoCaja                 := Lr_RegCajasConectoresCobert.ESTADO_CAJA;
           Ln_IdConector                 := Lr_RegCajasConectoresCobert.ID_CONECTOR;
           Lv_NombreConector             := Lr_RegCajasConectoresCobert.NOMBRE_CONECTOR;
@@ -1118,7 +1124,7 @@ AS
             Ln_DistanciaInicial              := Ln_DistanciaMetrosCaja;
             Ln_DistanciaFinal                := Ln_DistanciaInicial;
             Lv_NombreCajaFinal               := Lv_NombreCaja;
-            Ln_IdCajaFinal                   := Ln_IdCaja; 
+            Ln_IdCajaFinal                   := Ln_IdCajaInicial; 
             Lv_EstadoCajaFinal               := Lv_EstadoCaja;
             Ln_IdConectorFinal               := Ln_IdConector;
             Lv_NombreConectorFinal           := Lv_NombreConector;
@@ -1129,7 +1135,7 @@ AS
              
           ELSE
             IF Ln_DistanciaMetrosCaja < Ln_DistanciaFinal THEN
-              Ln_IdCajaFinal                   := Ln_IdCaja; 
+              Ln_IdCajaFinal                   := Ln_IdCajaInicial; 
               Lv_EstadoCajaFinal               := Lv_EstadoCaja;
               Ln_IdConectorFinal               := Ln_IdConector;
               Lv_NombreConectorFinal           := Lv_NombreConector;
