@@ -24,6 +24,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PRECLIENTE_TRANSACCION AS
     *         Pcl_Response      -  Respuesta
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.0 20/08/2021
+    *
+    *
+    * @author Jefferson Carrillo <jacarrillo@telconet.ec>
+    * @version 1.0 15/05/2023
+    * Se agrega consumo de validación de formato de identificación
+    *
     */
     PROCEDURE P_CREAR_PRECLIENTE(Pcl_Request IN CLOB, Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response  OUT SYS_REFCURSOR);
 
@@ -338,6 +344,21 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
         RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
     END IF;   
    
+
+
+    --VALIDAMOS FORMATO DE IDENTIFICACION DE PERSONA
+    DB_COMERCIAL.VALIDA_IDENTIFICACION.VALIDA(  
+             Pcl_DatosForm.Lv_TipoIdentificacion, 
+             Pcl_DatosForm.Lv_Identificacion,  
+             Lv_CodEmpresa,    
+             Pcl_DatosForm.Lv_TipoTributario,  
+             Pv_Mensaje );        
+
+    IF  Pv_Mensaje IS NOT NULL THEN  
+        dbms_output.put_line( Pv_Mensaje);  
+        RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje );
+    END IF; 
+
     IF  Lv_OrigenWeb IS  NULL THEN 
         Lv_Revertir := 'N';
         Pv_Mensaje := 'Parametro origenWeb es requerido.';
