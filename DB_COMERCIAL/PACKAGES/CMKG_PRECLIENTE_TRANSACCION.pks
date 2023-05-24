@@ -1,4 +1,3 @@
-SET DEFINE OFF;  
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PRECLIENTE_TRANSACCION AS
  
    /**
@@ -42,19 +41,19 @@ PROCEDURE  P_SET_CARACTERISTICAS(Pv_Caracteristica IN VARCHAR2  ,  Pv_Valor IN C
       Pv_Mensaje CLOB;
       Pcl_AdmiCaracteristica DB_COMERCIAL.ADMI_CARACTERISTICA%ROWTYPE;
       Pcl_InfoPersonaEmpresaRolCarac DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC%ROWTYPE; 
-  
+
       CURSOR C_GetCaracteristica(Cv_Descripcion VARCHAR2) IS 
            SELECT  ac.* FROM  DB_COMERCIAL.ADMI_CARACTERISTICA ac WHERE ac.DESCRIPCION_CARACTERISTICA = Cv_Descripcion AND ac.ESTADO ='Activo';
-      
+
       CURSOR C_GetListPersEmpRolCarac(Cn_IdCaracteristica NUMBER , Cn_IdPersonaEmpresRol NUMBER) IS                      
            SELECT  iperc.* FROM  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC iperc WHERE iperc.CARACTERISTICA_ID = Cn_IdCaracteristica  AND iperc.PERSONA_EMPRESA_ROL_ID =Cn_IdPersonaEmpresRol  AND iperc.ESTADO ='Activo'; 
 
    BEGIN 
-       
+
        OPEN  C_GetCaracteristica(Pv_Caracteristica); 
        FETCH C_GetCaracteristica INTO  Pcl_AdmiCaracteristica ;  
        CLOSE C_GetCaracteristica ;  
-       
+
        IF  Pcl_AdmiCaracteristica.ID_CARACTERISTICA IS NULL THEN
            Pv_Mensaje := 'No se ha definido la característica '|| Pv_Caracteristica;
            dbms_output.put_line( Pv_Mensaje );  
@@ -65,10 +64,10 @@ PROCEDURE  P_SET_CARACTERISTICAS(Pv_Caracteristica IN VARCHAR2  ,  Pv_Valor IN C
        OPEN C_GetListPersEmpRolCarac(Pcl_AdmiCaracteristica.ID_CARACTERISTICA , Pn_IdPersonaRol); 
        FETCH C_GetListPersEmpRolCarac INTO  Pcl_InfoPersonaEmpresaRolCarac  ;  
        CLOSE C_GetListPersEmpRolCarac;  
-      
+
        Pcl_InfoPersonaEmpresaRolCarac.VALOR := Pv_Valor ; 
        Pcl_InfoPersonaEmpresaRolCarac.ESTADO := 'Activo';                     
-  
+
        IF  Pcl_InfoPersonaEmpresaRolCarac.ID_PERSONA_EMPRESA_ROL_CARACT  IS  NULL THEN
            Pcl_InfoPersonaEmpresaRolCarac.ID_PERSONA_EMPRESA_ROL_CARACT:=  DB_COMERCIAL.SEQ_INFO_PERSONA_EMP_ROL_CARAC.NEXTVAL;
            Pcl_InfoPersonaEmpresaRolCarac.PERSONA_EMPRESA_ROL_ID:=         Pn_IdPersonaRol;  
@@ -112,7 +111,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
        day VARCHAR2(100),
        year VARCHAR2(100)
     ); 
-   
+
    TYPE Lcl_DatosForm IS RECORD(
        Lv_Identificacion VARCHAR2(100),  
        Lv_TipoTributario VARCHAR2(100), 
@@ -176,7 +175,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
 
   CURSOR C_GetPersona(Cn_Id NUMBER) IS
        SELECT  ip.* FROM DB_COMERCIAL.INFO_PERSONA ip WHERE ip.ID_PERSONA  = Cn_Id;
-   
+
   CURSOR C_GetTipoRolPorEmpresa(Cv_NombreTipoRol VARCHAR2 , Cv_CodigoEmpresa VARCHAR2 ) IS
        SELECT ier.ID_EMPRESA_ROL
        FROM DB_COMERCIAL.INFO_EMPRESA_ROL ier,
@@ -187,7 +186,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
        AND ier.EMPRESA_COD          = Cv_CodigoEmpresa
        AND atr.DESCRIPCION_TIPO_ROL = Cv_NombreTipoRol
        AND ar.DESCRIPCION_ROL       = Cv_NombreTipoRol;
-  
+
   CURSOR C_GetClienteIdent(Cv_Identificacion VARCHAR2 , Cv_DescRol VARCHAR2,  Cv_CodEmpresa VARCHAR2, Cv_Estado VARCHAR2 ) IS
        SELECT   ip.ID_PERSONA ,  per.ID_PERSONA_ROL ,  er.ID_EMPRESA_ROL , rol.ID_ROL ,  trol.ID_TIPO_ROL
        FROM
@@ -211,7 +210,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
        select  regexp_substr(Cv_Estado,'[^,]+', 1, level) from dual
        connect by regexp_substr(Cv_Estado, '[^,]+', 1, level) is not null
        ) ORDER BY per.ESTADO DESC;
-   
+
    CURSOR C_GetPersEmpRolHisto(Cv_Identificacion VARCHAR2 , Cv_DescRol VARCHAR2,  Cv_CodEmpresa VARCHAR2, Cv_Estado VARCHAR2 ) IS 
        SELECT * FROM (SELECT 
        perh.ID_PERSONA_EMPRESA_ROL_HISTO , 
@@ -259,19 +258,19 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
 
   CURSOR C_GetPersonaEmpresaRol(Cn_Id NUMBER) IS 
        SELECT  iper.* FROM  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL iper WHERE iper.ID_PERSONA_ROL  = Cn_Id ; 
- 
+
   CURSOR C_GetCaracteristica(Cv_Descripcion VARCHAR2) IS 
        SELECT  ac.* FROM  DB_COMERCIAL.ADMI_CARACTERISTICA ac WHERE ac.DESCRIPCION_CARACTERISTICA = Cv_Descripcion AND ac.ESTADO ='Activo';
-  
+
   CURSOR C_GetListPersEmpRolCarac(Cn_IdCaracteristica NUMBER , Cn_IdPersonaEmpresRol NUMBER) IS                      
        SELECT  iperc.* FROM  INFO_PERSONA_EMPRESA_ROL_CARAC iperc WHERE iperc.CARACTERISTICA_ID = Cn_IdCaracteristica  AND iperc.PERSONA_EMPRESA_ROL_ID =Cn_IdPersonaEmpresRol  AND iperc.ESTADO ='Activo'; 
 
   CURSOR C_GetCiclo(Cv_CodigoEmpresa VARCHAR2) IS 
        SELECT  c.* FROM  DB_COMERCIAL.ADMI_CICLO c  WHERE c.EMPRESA_COD  = Cv_CodigoEmpresa AND c.ESTADO ='Activo';
-                       
+
   CURSOR C_GetListFormaPago(Cn_Id NUMBER) IS   
       SELECT   afp.* FROM DB_GENERAL.ADMI_FORMA_PAGO afp WHERE afp.ID_FORMA_PAGO = Cn_Id; 
- 
+
   CURSOR C_GetFormaContacto(Cn_Id VARCHAR2 , Cv_Descripcion VARCHAR2) IS   
       SELECT afc.ID_FORMA_CONTACTO FROM  DB_COMERCIAL.ADMI_FORMA_CONTACTO afc 
       WHERE afc.ID_FORMA_CONTACTO = Cn_Id   OR afc.DESCRIPCION_FORMA_CONTACTO = Cv_Descripcion ;
@@ -327,15 +326,15 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
    Pcl_DatosForm.Lv_EsDistribuidor := APEX_JSON.get_varchar2(p_path => 'datosForm.es_distribuidor'); 
    Lv_Revertir := 'S'; 
    Lv_ExistePreCliente := 'N'; 
-    
+
     LV_PARAMETROCAB 	      := 'PARAM_FLUJO_PROSPECTO' ;      
     PCL_LIMITE_RECOMENDACION    := DB_COMERCIAL.CMKG_TRANSF_SECURITY_DATA.F_DATA_PARAMETRO(LV_PARAMETROCAB , 'LIMITE_RECOMENDACION');
-    
+
     dbms_output.put_line( Lv_Recomendacion );  
     IF  LENGTH(Lv_Recomendacion) >=   PCL_LIMITE_RECOMENDACION.VALOR1 THEN 
         Lv_Recomendacion := PCL_LIMITE_RECOMENDACION.VALOR2;         
     END IF;  
-   
+
     --VALIDACIONES GENERALES   
     IF  Pcl_DatosForm.Lv_TipoIdentificacion IS  NULL THEN 
         Lv_Revertir := 'N'; 
@@ -343,7 +342,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
         dbms_output.put_line( Pv_Mensaje );  
         RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
     END IF;   
-   
+
 
 
     --VALIDAMOS FORMATO DE IDENTIFICACION DE PERSONA
@@ -365,7 +364,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
         dbms_output.put_line( Pv_Mensaje );  
         RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
     END IF;  
-  
+
    IF LENGTH( Pcl_DatosForm.Lv_DireccionTributaria ) >200 THEN 
         Lv_Revertir := 'N';
         Pv_Mensaje := 'La dirección ingresada es muy larga, tamaño permitido 200 caracteres.';
@@ -378,19 +377,19 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            OPEN  C_GetCaracteristica('CICLO_FACTURACION'); 
            FETCH C_GetCaracteristica INTO  Pcl_AdmiCaracteristica ;  
            CLOSE C_GetCaracteristica ;  
-           
+
            IF  Pcl_AdmiCaracteristica.ID_CARACTERISTICA IS NULL THEN
                Lv_Revertir := 'N';
                Pv_Mensaje := 'No existe Caracteristica CICLO_FACTURACION - No se pudo Ingresar el Prospecto.';
                dbms_output.put_line( Pv_Mensaje );  
                RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);     
            END IF ; 
-   
+
            --OBTENGO EL CICLO DE FACTURACION ACTIVO POR EMPRESA EN SESION  
            OPEN  C_GetCiclo(Lv_CodEmpresa); 
            FETCH C_GetCiclo INTO  Pcl_AdmiCiclo ;  
            CLOSE C_GetCiclo ;
-           
+
            IF  Pcl_AdmiCiclo.ID_CICLO IS NULL THEN
                Lv_Revertir := 'N';
                Pv_Mensaje := 'No existe Ciclo de Facturación Activo - No se pudo Ingresar el Prospecto.';
@@ -406,7 +405,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
      FETCH C_GetClienteIdent  INTO  Pcl_ClienteGlobal;  
      dbms_output.put_line('Cliente Activo IdPersona =>'||Pcl_ClienteGlobal.Ln_IdPersona);    
    CLOSE C_GetClienteIdent;        
-      
+
    IF  Pcl_ClienteGlobal.Ln_IdPersona IS NOT NULL THEN 
         Lv_Revertir := 'N';
         Pv_Mensaje := 'Identificacion ya existente como un Cliente, Por favor ingrese otra Identificacion.';
@@ -433,7 +432,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            FETCH C_GetClienteIdent INTO  Pcl_ClienteGlobal;  
            dbms_output.put_line('Per-Cliente Inactivo IdPersona =>'||Pcl_ClienteGlobal.Ln_IdPersona);    
            CLOSE C_GetClienteIdent;   
-          
+
            --BUSCAR CLIENTE CANCELADO
            Lv_DescRoles := 'Cliente';
            Lv_Estados   := 'Cancelado';    
@@ -441,20 +440,20 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            FETCH C_GetClienteIdent INTO Pcl_ClienteCancelado; 
            dbms_output.put_line('Cliente Cancelado IdPersona =>'||  Pcl_ClienteCancelado.Ln_IdPersona );    
            CLOSE C_GetClienteIdent;   
-          
+
            IF (Pcl_ClienteGlobal.Ln_IdPersona IS NOT NULL ) THEN 
             Pcl_DatosForm.Ln_Id := Pcl_ClienteGlobal.Ln_IdPersona; 
           dbms_output.put_line('Data INACTIVO : IdPersona->'||Pcl_ClienteGlobal.Ln_IdPersona||', IdPersonaRol->'|| Pcl_ClienteGlobal.Ln_IdPersonaRol||', IdEmpresaRol-> '|| Pcl_ClienteGlobal.Ln_IdEmpresaRol||', IdRol-> '|| Pcl_ClienteGlobal.Ln_IdRol||', IdTipoRol-> '|| Pcl_ClienteGlobal.Ln_IdTipoRol); 
-       
+
            END IF;    
-        
+
            IF (Pcl_ClienteCancelado.Ln_IdPersona  IS NOT NULL )  THEN 
              Pcl_ClienteGlobal := Pcl_ClienteCancelado; 
              Pcl_DatosForm.Ln_Id := Pcl_ClienteGlobal.Ln_IdPersona; 
             dbms_output.put_line('Data CANCELADO : IdPersona->'||Pcl_ClienteGlobal.Ln_IdPersona||', IdPersonaRol->'|| Pcl_ClienteGlobal.Ln_IdPersonaRol||', IdEmpresaRol-> '|| Pcl_ClienteGlobal.Ln_IdEmpresaRol||', IdRol-> '|| Pcl_ClienteGlobal.Ln_IdRol||', IdTipoRol-> '|| Pcl_ClienteGlobal.Ln_IdTipoRol); 
-            
+
            END IF;    
-        
+
            IF (Pcl_DatosForm.Ln_Id IS NOT NULL ) THEN 
               Lv_ExistePreCliente := 'S';  
                --GENERO REGISTRO EN EL HISTORIAL DEL PRE-CLIENTE EN ESTADO CANCELADO                        
@@ -486,11 +485,11 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
               dbms_output.put_line('Formas de pago de Pre-cliente canceladas'); 
               COMMIT;
            END IF;               
-      
+
            OPEN C_GetPersona(Pcl_DatosForm.Ln_Id); 
            FETCH C_GetPersona INTO  Pcl_InfoPersona;  
            CLOSE C_GetPersona;   
-          
+
            IF (Pcl_InfoPersona.ID_PERSONA IS NULL)  THEN 
                Pcl_DatosForm.Lv_YaExiste := 'N';
                Pcl_InfoPersona.ID_PERSONA:= DB_COMERCIAL.SEQ_INFO_PERSONA.NEXTVAL ;       
@@ -499,7 +498,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                Pcl_DatosForm.Lv_YaExiste := 'S';
                dbms_output.put_line('SE ACTUALIZARA DATA DE ID_PERSONA =>'||Pcl_InfoPersona.ID_PERSONA);  
            END IF; 
-      
+
            Pcl_InfoPersona.IDENTIFICACION_CLIENTE  := Pcl_DatosForm.Lv_Identificacion;
            Pcl_InfoPersona.TIPO_EMPRESA            := Pcl_DatosForm.Lv_TipoEmpresa;
            Pcl_InfoPersona.TIPO_TRIBUTARIO         := Pcl_DatosForm.Lv_TipoTributario;
@@ -508,7 +507,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            Pcl_InfoPersona.NACIONALIDAD            := Pcl_DatosForm.Lv_Nacionalidad; 
            Pcl_InfoPersona.DIRECCION_TRIBUTARIA    := Pcl_DatosForm.Lv_DireccionTributaria ; 
            Pcl_InfoPersona.DIRECCION               := Pcl_DatosForm.Lv_DireccionTributaria ;
-                 
+
            IF Lv_PrefijoEmpresa = 'TN' THEN
                Pcl_InfoPersona.CONTRIBUYENTE_ESPECIAL:=  Pcl_DatosForm.Lv_ContribuyenteEspecial ;
                Pcl_InfoPersona.PAGA_IVA:= Pcl_DatosForm.Lv_PagaIva ;
@@ -516,7 +515,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
            ELSE
                Pcl_InfoPersona.PAGA_IVA:= 'S' ; 
            END IF;
-       
+
            IF (Pcl_DatosForm.Lv_FechaNacimiento.year IS NOT NULL)
            AND (Pcl_DatosForm.Lv_FechaNacimiento.month IS NOT NULL)
            AND (Pcl_DatosForm.Lv_FechaNacimiento.day IS NOT NULL)      
@@ -524,19 +523,19 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                --LA VALIDACION DE EDAD DE NACIMIENTO ESTA EN MS
                Pcl_InfoPersona.FECHA_NACIMIENTO:=  TO_DATE( Pcl_DatosForm.Lv_FechaNacimiento.year||'-' ||Pcl_DatosForm.Lv_FechaNacimiento.month||'-'|| Pcl_DatosForm.Lv_FechaNacimiento.day,'YYYY-MM-DD');
            END IF;
-   
+
            Pcl_InfoPersona.NOMBRES:= Pcl_DatosForm.Lv_Nombres;
            Pcl_InfoPersona.APELLIDOS:= Pcl_DatosForm.Lv_Apellidos; 
-           
+
            IF Pcl_DatosForm.Ln_IdTitulo IS NOT NULL THEN 
               Pcl_InfoPersona.TITULO_ID :=  Pcl_DatosForm.Ln_IdTitulo;
            END IF;    
-  
+
           Pcl_InfoPersona.GENERO:= Pcl_DatosForm.Lv_Genero; 
           Pcl_InfoPersona.ESTADO_CIVIL:= SUBSTR(Pcl_DatosForm.Lv_EstadoCivil,1,1) ; 
           Pcl_InfoPersona.ORIGEN_INGRESOS:= Pcl_DatosForm.Lv_OrigenIngresos; 
           Pcl_InfoPersona.ORIGEN_PROSPECTO:= 'N'; 
-       
+
           IF ((Lv_OrigenWeb= 'S') OR (Lv_OrigenWeb= 'N')OR (Lv_OrigenWeb= 'M'))  THEN
               Pcl_InfoPersona.ORIGEN_WEB := Lv_OrigenWeb;
           END IF;     
@@ -544,7 +543,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
           Pcl_InfoPersona.ESTADO:= 'Pendiente';    
           Pcl_InfoPersona.PAIS_ID:= Ln_IdPais;  
 
- 
+
           IF (Pcl_DatosForm.Lv_YaExiste = 'N')  THEN
                --LA VALIDACION DE TIPO IDENTIFICACION ESTA EN MS         
                Pcl_InfoPersona.FE_CREACION:= SYSDATE;
@@ -585,7 +584,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                WHERE ip.ID_PERSONA = Pcl_InfoPersona.ID_PERSONA ;  
                dbms_output.put_line('PERSONA ACTUALIZADA ID_PERSONA=>'||Pcl_InfoPersona.ID_PERSONA);
           END IF;
-        
+
 
          COMMIT;
          --ASIGNA ROL DE PRE-CLIENTE A LA PERSONA
@@ -594,14 +593,14 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                FETCH C_GetPersonaEmpresaRol INTO  Pcl_InfoPersonaEmpresaRol;  
                CLOSE C_GetPersonaEmpresaRol;   
            END IF;   
-  
+
           Pcl_InfoPersonaEmpresaRol.PERSONA_ID := Pcl_InfoPersona.ID_PERSONA;   
-          
+
            OPEN  C_GetTipoRolPorEmpresa('Pre-cliente', Lv_CodEmpresa ); 
            FETCH C_GetTipoRolPorEmpresa INTO  Pcl_InfoPersonaEmpresaRol.EMPRESA_ROL_ID;  
            CLOSE C_GetTipoRolPorEmpresa ; 
            dbms_output.put_line('EMPRESA_ROL_ID =>'||Pcl_InfoPersonaEmpresaRol.EMPRESA_ROL_ID);
-   
+
            IF Lv_PrefijoEmpresa = 'TN' THEN    
                 IF Pcl_DatosForm.Lv_IdOficinaFacturacion IS NOT NULL THEN 
                     Pcl_InfoPersonaEmpresaRol.OFICINA_ID := Pcl_DatosForm.Lv_IdOficinaFacturacion; 
@@ -612,16 +611,16 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                     Pcl_InfoPersonaEmpresaRol.OFICINA_ID := Ln_OficinaId ; 
                 END IF;
                 Pcl_InfoPersonaEmpresaRol.ES_PREPAGO := 'S';
-                      
+
             END IF;
-  
+
 
            Pcl_InfoPersonaEmpresaRol.FE_CREACION  := SYSDATE;
            Pcl_InfoPersonaEmpresaRol.USR_CREACION := Lv_UsrCreacion; 
            Pcl_InfoPersonaEmpresaRol.FE_ULT_MOD   := SYSDATE;
            Pcl_InfoPersonaEmpresaRol.USR_ULT_MOD  := Lv_UsrCreacion;
            Pcl_InfoPersonaEmpresaRol.ESTADO       :='Pendiente' ; 
-      
+
            IF Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL IS NULL THEN 
                Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL := DB_COMERCIAL.SEQ_INFO_PERSONA_EMPRESA_ROL.NEXTVAL ;
                INSERT  INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL VALUES   Pcl_InfoPersonaEmpresaRol;  
@@ -638,12 +637,12 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                iper.USR_ULT_MOD          = Pcl_InfoPersonaEmpresaRol.USR_ULT_MOD,
                iper.FE_ULT_MOD           = Pcl_InfoPersonaEmpresaRol.FE_ULT_MOD ,
                iper.IP_CREACION          = Pcl_InfoPersonaEmpresaRol.IP_CREACION,
-               
+
                iper.CUADRILLA_ID                   = Pcl_InfoPersonaEmpresaRol.CUADRILLA_ID,
                iper.PERSONA_EMPRESA_ROL_ID         = Pcl_InfoPersonaEmpresaRol.PERSONA_EMPRESA_ROL_ID,
                iper.PERSONA_EMPRESA_ROL_ID_TTCO    = Pcl_InfoPersonaEmpresaRol.PERSONA_EMPRESA_ROL_ID_TTCO,
                iper.REPORTA_PERSONA_EMPRESA_ROL_ID = Pcl_InfoPersonaEmpresaRol.REPORTA_PERSONA_EMPRESA_ROL_ID
-                     
+
                WHERE iper.ID_PERSONA_ROL = Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL;
                dbms_output.put_line('PERSONA_EMPRESA_ROL ACTUALIZADO ID_PERSONA_ROL=>'||Pcl_InfoPersonaEmpresaRol.ID_PERSONA_ROL);                    
            END IF;        
@@ -657,13 +656,13 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
             dbms_output.put_line( Pv_Mensaje );  
             RAISE_APPLICATION_ERROR(-20101,Pv_Mensaje);
         else    
-         
+
             Lcl_RepresentanteLegal := TRIM( Pcl_Request);  
             Lcl_RepresentanteLegal := SUBSTR(Lcl_RepresentanteLegal , 0, length(Lcl_RepresentanteLegal)-1); 
             Lcl_RepresentanteLegal := Lcl_RepresentanteLegal  || ',"tipoIdentificacion":"'||   Pcl_DatosForm.Lv_TipoIdentificacion ||'"';
             Lcl_RepresentanteLegal := Lcl_RepresentanteLegal  || ',"identificacion":    "'||   Pcl_DatosForm.Lv_Identificacion||'"';
             Lcl_RepresentanteLegal := Lcl_RepresentanteLegal  ||  '}'; 
-           
+
             dbms_output.put_line( 'INGRESANDO REPRESENTANTE LEGAL' ); 
             DB_COMERCIAL.CMKG_REPRES_LEGAL_TRANSACCION.P_ACTUALIZAR(Lcl_RepresentanteLegal, Pv_Mensaje, Pv_Status,Pcl_Response);  
              if  Pv_Status = 'ERROR' then
@@ -674,12 +673,12 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                 APEX_JSON.PARSE(Pcl_Request);    
                 dbms_output.put_line('Representante Legal => ' || Pv_Mensaje ); 
              end if;
- 
+
         end if;         
 
      END IF;  
 
-       
+
             IF Lv_PrefijoEmpresa <>'TN' THEN  
 
               --SE BUSCA SI EL PRECLIENTE TIENE UN CICLO ASIGNADO ANTERIORMENTE YA SEA POR RECONTRATACIÓN O INCONSISTENCIA DE MIGRACIÓN.
@@ -713,7 +712,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                        dbms_output.put_line( 'Historial registrado');                
                        COMMIT;
                 END LOOP;     
-                   
+
                    --INSERTO CARACTERISTICA DE CICLO_FACTURACION EN EL PRE_CLIENTE           
                        INSERT INTO  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_CARAC(
                        ID_PERSONA_EMPRESA_ROL_CARACT,
@@ -755,10 +754,10 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                        ); 
                        dbms_output.put_line( 'Historial registrado');  
                        COMMIT;  
-         
+
             END IF;   
 
-       
+
             IF (Lv_PrefijoEmpresa = 'MD' or Lv_PrefijoEmpresa = 'EN')  THEN  
                 --INSERTAR FORMA DE PAGO
                 Pcl_InfoPersonaEmpFormaPago.ID_DATOS_PAGO:=            DB_COMERCIAL.SEQ_INFO_PERSONA_EMP_FORMA_PAG.NEXTVAL; 
@@ -802,7 +801,7 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                 INSERT  INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO VALUES  Pcl_InfoPersonaEmpresaRolHisto; 
                 dbms_output.put_line( 'PERSONA EMPRES ROL HISTORIAL  INSERTADA ID_PERSONA_EMPRESA_ROL_HISTO =>'|| Pcl_InfoPersonaEmpresaRolHisto.ID_PERSONA_EMPRESA_ROL_HISTO);                    
                 COMMIT;
-             
+
 
             IF (Pcl_DatosForm.Lv_YaExiste = 'S')  THEN
                 --PONE ESTADO INACTIVO A TODOS LAS FORMAS DE CONTACTO DE LA PERSONA QUE tengan estado ACTIVO          
@@ -891,13 +890,13 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                 );   
             END IF ;  
 
-          
+
       END IF;
-      
+
    END IF;
 
 
-   
+
    OPEN Pcl_Response FOR  
    SELECT  
    Pcl_InfoPersona.ID_PERSONA AS idPersona,
@@ -919,9 +918,9 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
        'telcos',
        SYSDATE,
        '127.0.0.1');
-               
+
      IF  Lv_Revertir = 'S'  THEN 
-     
+
           IF  Pcl_InfoPersona.ID_PERSONA  IS NOT NULL  THEN  
                UPDATE DB_COMERCIAL.INFO_PERSONA  
                SET  IDENTIFICACION_CLIENTE = NULL , ESTADO = 'Eliminado'
@@ -941,11 +940,10 @@ PROCEDURE  P_CREAR_PRECLIENTE(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Sta
                     INSERT  INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO VALUES  Pcl_InfoPersonaEmpresaRolHisto; 
                     COMMIT; 
             END IF;  
-         
+
      dbms_output.put_line( 'SE REALIZO EL REVERSO');       
      END IF;
 
 END P_CREAR_PRECLIENTE;   
-END CMKG_PRECLIENTE_TRANSACCION; 
- 
+END CMKG_PRECLIENTE_TRANSACCION;
 /

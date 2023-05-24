@@ -1,5 +1,5 @@
 SET DEFINE OFF;
-create or replace package                                                   DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
+create or replace package DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
 
    /**
   * Documentación para el procedimiento P_GUARDAR_HORASEXTRA

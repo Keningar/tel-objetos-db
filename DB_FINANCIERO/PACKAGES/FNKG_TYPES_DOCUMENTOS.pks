@@ -37,7 +37,7 @@ AS
      *
      */
     TYPE Ltr_DocFinancieroCab IS TABLE OF Lr_DocFinancieroCab INDEX BY binary_integer;
-    
+
     /*
      * Documentacion para TYPE 'Lr_DocFinAnticPago'.
      * Record que me permite obtener el registro de un anticipo o pago asociado a un documento financiero
@@ -65,7 +65,7 @@ AS
       Numero_Cuenta_Banco   Info_Pago_Det.Numero_Cuenta_Banco%TYPE,
       Referencia_Id         Info_Pago_Det.Referencia_Id%TYPE,
       Comentario            Info_Pago_Det.Comentario%TYPE);
-      
+
     /*
      * Documentacion para TYPE 'Ltr_DocFinAnticPago'.
      * Record que me permite obtener los registros de los anticipos o pagos asociados a documentos financieros
@@ -75,7 +75,7 @@ AS
      *
      */
     TYPE Ltr_DocFinAnticPago IS TABLE OF Lr_DocFinAnticPago INDEX BY binary_integer;
-    
+
     /*
      * Documentacion para TYPE 'Lr_DocFinancieroOg'.
      * Record que me permite obtener el registro de un documento financiero en OG
@@ -99,7 +99,7 @@ AS
       Numero_Referencia     Info_Pago_Det.Numero_Referencia%TYPE,
       Numero_Cuenta_Banco   Info_Pago_Det.Numero_Cuenta_Banco%TYPE,
       Referencia_Id         Info_Pago_Det.Referencia_Id%TYPE);
-      
+
     /*
      * Documentacion para TYPE 'Ltr_DocFinancieroOg'.
      * Record que me permite obtener los registros de los documentos financieros en OG
@@ -109,7 +109,7 @@ AS
      *
      */
     TYPE Ltr_DocFinancieroOg IS TABLE OF Lr_DocFinancieroOg INDEX BY binary_integer;
-    
+
     /*
      * Documentacion para TYPE 'Lr_AnticipoPago'.
      * Record que me permite obtener el registro de un anticipo o pago
@@ -129,7 +129,7 @@ AS
       Punto_Id              Info_Pago_Cab.Punto_Id%TYPE,
       Oficina_Id            Info_Pago_Cab.Oficina_Id%TYPE,
       Id_Recaudacion        Info_Recaudacion.Id_Recaudacion%TYPE);
-      
+
     /*
      * Documentacion para TYPE 'Ltr_AnticipoPago'.
      * Record que me permite obtener los registros de anticipos o pagos
@@ -139,7 +139,7 @@ AS
      *
      */
     TYPE Ltr_AnticipoPago IS TABLE OF Lr_AnticipoPago INDEX BY binary_integer;
-    
+
     /*
      * Documentacion para TYPE 'Ltr_InfoDocRelacionado'.
      * Record que me permite obtener los registros de documentos relacionados
@@ -177,7 +177,7 @@ AS
       Movimiento            Admi_Tipo_Documento_Financiero.Movimiento%TYPE,
       Pago_Tiene_Depend     VARCHAR2(3),
       Saldo_Actual_Doc      NUMBER);
-      
+
     /*
      * Documentacion para TYPE 'Ltr_EstadoCuenta'.
      * Record que me permite obtener los registros del estado de cuenta
@@ -187,7 +187,7 @@ AS
      *
      */
     TYPE Ltr_EstadoCuenta IS TABLE OF Lr_EstadoCuenta INDEX BY binary_integer; 
-    
+
     /*
      * Documentacion para TYPE 'Lr_AnticNoAplic'.
      * Record que me permite obtener el registro del anticipo no aplicado o pendiente
@@ -207,7 +207,7 @@ AS
       Descripcion_Contable  DB_GENERAL.Admi_Banco.Descripcion_Banco%TYPE,
       Codigo_Tipo_Documento Admi_Tipo_Documento_Financiero.Codigo_Tipo_Documento%TYPE,
       Codigo_Forma_Pago     Estado_Cuenta_Cliente.Codigo_Forma_Pago%TYPE);
-    
+
     /*
      * Documentacion para TYPE 'Ltr_AnticNoAplic'.
      * Record que me permite obtener los registros de anticipos no aplicados o pendientes
@@ -217,7 +217,7 @@ AS
      *
      */
     TYPE Ltr_AnticNoAplic IS TABLE OF Lr_AnticNoAplic INDEX BY binary_integer; 
-    
+
     /*
      * Documentacion para TYPE 'Lr_AnticGenerado'.
      * Record que me permite obtener el registro del anticipo generado
@@ -238,7 +238,7 @@ AS
       Descripcion_Contable  DB_GENERAL.Admi_Banco.Descripcion_Banco%TYPE,
       Id_Pago_Det           Info_Pago_Det.Id_Pago_Det%TYPE
       );
-    
+
     /*
      * Documentacion para TYPE 'Ltr_AnticGenerado'.
      * Record que me permite obtener los registros de anticipos generados
@@ -248,7 +248,7 @@ AS
      *
      */
     TYPE Ltr_AnticGenerado IS TABLE OF Lr_AnticGenerado INDEX BY binary_integer;
-    
+
     /*
      * Documentacion para TYPE 'Lr_DocEstadoCuenta'.
      * Record que me permite obtener el registro de un documento para estado de cuenta
@@ -282,7 +282,7 @@ AS
       Movimiento            Admi_Tipo_Documento_Financiero.Movimiento%TYPE,
       Pago_Tiene_Depend     VARCHAR2(3),
       Saldo_Actual_Doc      NUMBER);
-      
+
     /*
      * Documentacion para TYPE 'Ltr_DocEstadoCuenta'.
      * Record que me permite obtener los registros de documentos para estado de cuenta
@@ -292,7 +292,7 @@ AS
      *
      */
     TYPE Ltr_DocEstadoCuenta IS TABLE OF Lr_DocEstadoCuenta INDEX BY binary_integer;
-    
+
     /*
      * Documentacion para TYPE 'Lr_DocumentoCabecera'.
      * Record que me permite obtener el registro de un documento cabecera
@@ -344,7 +344,7 @@ AS
       Anio_Consumo            Info_Documento_Financiero_Cab.Anio_Consumo%TYPE, 
       Fe_Creacion             Info_Documento_Financiero_Cab.Fe_Creacion%TYPE, 
       Usr_Creacion            Info_Documento_Financiero_Cab.Usr_Creacion%TYPE);
-      
+
     /*
      * Documentacion para TYPE 'Ltr_DocumentoDetalle'.
      * Record que me permite obtener los registros de documentos cabecera
@@ -357,3 +357,4 @@ AS
 
 END FNKG_TYPES_DOCUMENTOS;
 /
+

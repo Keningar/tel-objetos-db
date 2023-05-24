@@ -1,12 +1,12 @@
-create or replace trigger BEFORE_IN_PERSONA_EMPRESA_ROL
+CREATE OR REPLACE TRIGGER DB_COMERCIAL.BEFORE_IN_PERSONA_EMPRESA_ROL
    BEFORE INSERT
-   ON DB_COMERCIAL.info_persona_empresa_rol
+   ON DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL
    FOR EACH ROW 
      /**
-   * Documentación para el trigger BEFORE_IN_PERSONA_EMPRESA_ROL'.
+   * Documentaci�n para el trigger BEFORE_IN_PERSONA_EMPRESA_ROL'.
    * Trigger que valida los nuevos insert en la tabla info_persona_empresa_rol
    *  si el empleado ya tiene un ROl.
-   * @versión 1.0 17-03-2022
+   * @versi�n 1.0 17-03-2022
    *
    * Se agrego el estado pendiente para validar si ya existe el rol en el cliente.
    * @author Jefferson Carrillo <jacarrillo@telconet.ec>

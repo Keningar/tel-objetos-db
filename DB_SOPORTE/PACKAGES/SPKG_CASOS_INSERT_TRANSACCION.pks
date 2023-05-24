@@ -1,25 +1,25 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS 
 
    /**
-   * Documentación para proceso 'P_REINICIAR_SECUENCIAS_CASOS'
+   * Documentaci�n para proceso 'P_REINICIAR_SECUENCIAS_CASOS'
    *
-   * Procedimiento encargado de reiniciar las secuencias que permiten obtener el número respectivo según el tipo de caso
+   * Procedimiento encargado de reiniciar las secuencias que permiten obtener el n�mero respectivo seg�n el tipo de caso
    *
-   * @author   Jorge Gómez <jigomez@telconet.ec>
+   * @author   Jorge G�mez <jigomez@telconet.ec>
    * @version  1.0
    * @since    20-01-2023
    */
    PROCEDURE P_REINICIAR_SECUENCIAS_CASOS;
   
   /**
-   * Documentación para proceso 'P_OBTENER_NUMERO_CASO'
+   * Documentaci�n para proceso 'P_OBTENER_NUMERO_CASO'
    *
-   * Procedimiento encargado de obtener el número de caso correspondiente
+   * Procedimiento encargado de obtener el n�mero de caso correspondiente
    *
    * @param Pv_TipoCaso   IN ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE Recibe el nombre del tipo de caso
-   * @param Pv_NumeroCaso OUT VARCHAR2 Retorna el número del caso generado
+   * @param Pv_NumeroCaso OUT VARCHAR2 Retorna el n�mero del caso generado
    *
-   * @author   Jorge Gómez <jigomez@telconet.ec>
+   * @author   Jorge G�mez <jigomez@telconet.ec>
    * @version  1.0
    * @since    22-01-2023
    */
@@ -28,14 +28,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
                                   Pv_Status     OUT VARCHAR2,
                                   Pv_Mensaje    OUT VARCHAR2);
   /**
-   * Documentación para proceso 'P_GENERAR_CASO'
+   * Documentaci�n para proceso 'P_GENERAR_CASO'
    *
    * Procedimiento encargado de generar el caso
    *
    * @param Pr_InfoCaso   IN INFO_CASO%ROWTYPE Recibe el registro para crear el caso
    * @param Pv_TipoCaso   IN ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE Recibe el nombre del tipo de caso
    * @param Pn_Contador   IN OUT INTEGER Recibe y Retorna el contador del intento de generacion de caso
-   * @param Pv_NumeroCaso IN OUT VARCHAR2 Recibe y Retorna el número del caso generado
+   * @param Pv_NumeroCaso IN OUT VARCHAR2 Recibe y Retorna el n�mero del caso generado
    * @param Pn_IdCaso     OUT INFO_CASO.ID_CASO%TYPE Retorna el id del caso generado
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
@@ -49,21 +49,21 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
                            Pn_IdCaso     OUT INFO_CASO.ID_CASO%TYPE);                          
 
   /**
-   * Documentación para proceso 'P_INSERT_CASO_HISTORIAL'
+   * Documentaci�n para proceso 'P_INSERT_CASO_HISTORIAL'
    *
    * Procedimiento encargado de generar un historial de caso
    *
    * @param Pcl_Request         IN  CLOB Recibe json request
    * [
    *  idCaso        Id del caso,
-   *  observacion   Observación para el historial conforme al caso,
+   *  observacion   Observaci�n para el historial conforme al caso,
    *  estado        Estado con el que se crea el historial del caso,
    *  usuario       Usuario quien general el historial del caso,
    *  ip            Ip desde donde se genera el historial del caso
    * ]
    * @param Pn_IdCasoHistorial  OUT INFO_CASO_HISTORIAL.ID_CASO_HISTORIAL%TYPE Retorna id del historal del caso
-   * @param Pv_Status           OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status           OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -75,7 +75,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
                                     Pv_Mensaje          OUT VARCHAR2);
 
   /**
-   * Documentación para proceso 'P_INSERT_DETALLE_HIPOTESIS'
+   * Documentaci�n para proceso 'P_INSERT_DETALLE_HIPOTESIS'
    *
    * Procedimiento encargado de generar un detalle de hipotesis
    *
@@ -83,14 +83,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
    * [
    *  idCaso        Id del caso,
    *  idSintoma     Id del sintoma con que se apertura el caso,
-   *  observacion   Observación para el detalle de hipotesis conforme al caso,
+   *  observacion   Observaci�n para el detalle de hipotesis conforme al caso,
    *  estado        Estado con el que se crea el detalle de hipotesis del caso,
    *  usuario       Usuario quien genera el detalle de hipotesis del caso,
    *  ip            Ip desde donde se genera el detalle de hipotesis del caso
    * ]
    * @param Pn_IdDetalleHipotesis OUT INFO_DETALLE_HIPOTESIS.ID_DETALLE_HIPOTESIS%TYPE Retorna id del detalle de hipotesis
-   * @param Pv_Status             OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje            OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status             OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje            OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -102,7 +102,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
                                        Pv_Mensaje            OUT VARCHAR2);
   
   /**
-   * Documentación para proceso 'P_INSERT_CASO_ASIGNACION'
+   * Documentaci�n para proceso 'P_INSERT_CASO_ASIGNACION'
    *
    * Procedimiento encargado de generar un caso asignacion
    *
@@ -113,14 +113,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
    *  nombreAsignado      Nombre del asignado al caso (nombre del departamento),
    *  refIdAsignado       Referencia del id del asignado al caso (id persona),
    *  refNombreAsignado   Referencia del nombre del asignado al caso (nombre de persona),
-   *  motivo              Motivo de la asignación del caso,
+   *  motivo              Motivo de la asignaci�n del caso,
    *  idPersonaEmpresaRol Id persona empresa rol del asignado al caso,
-   *  usuario             Usuario quien genera la asignación del caso,
-   *  ip                  Ip desde donde se genera la asignación del caso
+   *  usuario             Usuario quien genera la asignaci�n del caso,
+   *  ip                  Ip desde donde se genera la asignaci�n del caso
    * ]
    * @param Pn_IdCasoAsignacion OUT INFO_CASO_ASIGNACION.ID_CASO_ASIGNACION%TYPE Retorna id del caso asignacion
-   * @param Pv_Status           OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status           OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -132,10 +132,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
                                      Pv_Mensaje           OUT VARCHAR2);                                  
 
 END SPKG_CASOS_INSERT_TRANSACCION;
-
 /
-
-
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
 
 
@@ -218,7 +215,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
                                               NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
         Pv_NumeroCaso := '';
         Pv_Status :=  'ERROR';
-        Pv_Mensaje := 'Error general al obtener el número de caso';
+        Pv_Mensaje := 'Error general al obtener el n�mero de caso';
   END P_OBTENER_NUMERO_CASO;
 
 
@@ -373,5 +370,4 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_INSERT_TRANSACCION AS
   END P_INSERT_CASO_ASIGNACION;
   
 END SPKG_CASOS_INSERT_TRANSACCION;
-
 /

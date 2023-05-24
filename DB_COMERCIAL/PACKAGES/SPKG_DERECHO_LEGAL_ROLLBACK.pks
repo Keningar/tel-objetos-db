@@ -6,7 +6,7 @@
  */
 
 SET DEFINE OFF;
-create or replace package                                          DB_COMERCIAL.SPKG_DERECHO_LEGAL is
+create or replace package DB_COMERCIAL.SPKG_DERECHO_LEGAL is
 
   
   

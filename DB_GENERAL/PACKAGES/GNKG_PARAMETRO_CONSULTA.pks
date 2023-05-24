@@ -1,37 +1,37 @@
-create or replace package DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
+CREATE OR REPLACE package  DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
   /**
-  * Documentación para el procedimiento P_DETALLE_POR_PARAMETRO
+  * Documentaci�n para el procedimiento P_DETALLE_POR_PARAMETRO
   *
-  * Método encargado de retornar la lista de detalles de un parametro.
+  * M�todo encargado de retornar la lista de detalles de un parametro.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
-  *   empresaCod          := Código empresa Default '10',
+  *   empresaCod          := C�digo empresa Default '10',
   *   estado              := Estado Default 'Activo',
   *   parametroId         := Id del parametro
   *   nombreParametro     := Nombre del parametro
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_DETALLE_POR_PARAMETRO(Pcl_Request  IN  CLOB,
                                     Pv_Status    OUT VARCHAR2,
                                     Pv_Mensaje   OUT VARCHAR2,
                                     Pcl_Response OUT SYS_REFCURSOR);
-                                    
+
   /**
-  * Documentación para proceso 'P_GET_DETALLE_PARAMETRO'
+  * Documentaci�n para proceso 'P_GET_DETALLE_PARAMETRO'
   * 
-  * Permite consultar el detalle de un parámetro de acuerdo a la información ingresada
+  * Permite consultar el detalle de un par�metro de acuerdo a la informaci�n ingresada
   *
-  * @param  Pv_NombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE Recibe nombre del parámetro de la tabla cabecera
-  * @param  Pv_Descripcion      IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE Recibe descripcion del parámetro de la tabla detalle
+  * @param  Pv_NombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE Recibe nombre del par�metro de la tabla cabecera
+  * @param  Pv_Descripcion      IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE Recibe descripcion del par�metro de la tabla detalle
   * @param  Pv_Empresa_Cod      IN DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE Recibe el identificador de la empresa
-  * @param  Pr_AdmiParametroDet OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Retorna Registro del detalle del parámetro
+  * @param  Pr_AdmiParametroDet OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Retorna Registro del detalle del par�metro
   * @param  Pv_Status           OUT VARCHAR2 Retorna estatus de la consulta
   * @param  Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la consulta
   *
@@ -45,10 +45,11 @@ create or replace package DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
                                     Pr_AdmiParametroDet  OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE,
                                     Pv_Status            OUT VARCHAR2,
                                     Pv_Mensaje           OUT VARCHAR2);   
-                                    
+
 end GNKG_PARAMETRO_CONSULTA;
 /
-create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
+
+CREATE OR REPLACE package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
   PROCEDURE P_DETALLE_POR_PARAMETRO(Pcl_Request  IN  CLOB,
                                     Pv_Status    OUT VARCHAR2,
                                     Pv_Mensaje   OUT VARCHAR2,
@@ -71,10 +72,10 @@ create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
     Lv_Estado          := APEX_JSON.get_varchar2(p_path => 'estado');
     Ln_ParametroId     := APEX_JSON.get_number(p_path => 'parametroId');
     Lv_NombreParametro := APEX_JSON.get_varchar2(p_path => 'nombreParametro');
-    
+
     -- VALIDACIONES
     IF Ln_ParametroId IS NULL AND Lv_NombreParametro IS NULL THEN
-      Pv_Mensaje := 'El parámetro parametroId o nombreParametro esta vacío';
+      Pv_Mensaje := 'El par�metro parametroId o nombreParametro esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_EmpresaCod IS NULL THEN
@@ -83,7 +84,7 @@ create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
     IF Lv_Estado IS NULL THEN
       Lv_Estado := 'Activo';
     END IF;
-    
+
     Lcl_Select       := '
               SELECT APD.*';
     Lcl_From         := '
@@ -101,13 +102,13 @@ create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
       Lcl_WhereAndJoin := Lcl_WhereAndJoin || ' AND APC.NOMBRE_PARAMETRO = '''||Lv_NombreParametro||'''';
     END IF;
     Lcl_OrderAnGroup := '';
-    
+
     Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-    
+
     OPEN Pcl_Response FOR Lcl_Query;
-    
+
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -115,7 +116,7 @@ create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_DETALLE_POR_PARAMETRO;
-  
+
   PROCEDURE P_GET_DETALLE_PARAMETRO(Pv_NombreParametro   IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE,
                                     Pv_Descripcion       IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE,
                                     Pv_Empresa_Cod       IN DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE,
@@ -170,7 +171,6 @@ create or replace package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
         Pv_Status := 'ERROR';
         Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_GET_DETALLE_PARAMETRO;  
-  
+
 end GNKG_PARAMETRO_CONSULTA;
 /
-

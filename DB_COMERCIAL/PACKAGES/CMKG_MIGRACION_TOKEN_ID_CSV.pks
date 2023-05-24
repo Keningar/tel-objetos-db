@@ -1,9 +1,9 @@
-create or replace PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
+CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
 
    /**
-    * Documentación para el procedimiento valida_cadena
+    * Documentaci�n para el procedimiento valida_cadena
     *
-    * Método encargado para validar la cadena del archivo
+    * M�todo encargado para validar la cadena del archivo
     *
     * @param pv_cadena_parametros    IN  VARCHAR2 cadena a validar
     * @param pv_separador            IN  VARCHAR2 separador de campos
@@ -14,9 +14,9 @@ create or replace PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
   FUNCTION valida_cadena(pv_cadena_parametros IN VARCHAR2,
                          pv_separador         IN VARCHAR2) RETURN VARCHAR2 ;
                             /**
-    * Documentación para el procedimiento P_MIGRAR_TOKEN_ID_CSV
+    * Documentaci�n para el procedimiento P_MIGRAR_TOKEN_ID_CSV
     *
-    * Método encargado para validar la cadena del archivo
+    * M�todo encargado para validar la cadena del archivo
     *
     * @param pv_cadena_parametros    IN  VARCHAR2 cadena de parametros
     * @param pv_separador            IN  VARCHAR2 deparador de campos
@@ -30,13 +30,13 @@ create or replace PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
                                pn_pos_campo         IN NUMBER) RETURN VARCHAR2 ;
 
    /**
-    * Documentación para el procedimiento P_MIGRAR_TOKEN_ID_CSV
+    * Documentaci�n para el procedimiento P_MIGRAR_TOKEN_ID_CSV
     *
-    * Método encargado de leer un archivo .CSV y extraer el campo TOKEN e insertarlos
+    * M�todo encargado de leer un archivo .CSV y extraer el campo TOKEN e insertarlos
     * en la tabla INFO_PERSONA_EMPRESA_ROL_CARAC
     *
     * @param Pv_FileName    IN  VARCHAR2 ruta y nombre del archivo cvs
-    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
     *
     * @author Pedro Velez <psvelez@telconet.ec>
     * @version 1.0 24-04-2022
@@ -46,11 +46,9 @@ create or replace PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
 	    Pv_Mensaje   OUT VARCHAR2);
 
 END CMKG_MIGRACION_TOKEN_ID_CSV;
-
 /
 
-
-create or replace PACKAGE BODY DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
+CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
 
 /* Valida si existe el separado al inicio y fin de la trama */
   FUNCTION valida_cadena(pv_cadena_parametros IN VARCHAR2,

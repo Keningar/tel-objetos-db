@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REGULARIZACION_MASIVA_DOC AS
     /**
-    * Documentación para la función P_GUARDAR_CONTRATO
+    * Documentaci�n para la funci�n P_GUARDAR_CONTRATO
     * Procedimiento que guarda el contrato
     *
     * @param  Pcl_Request       -  Json,
@@ -17,7 +17,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REGULARIZACION_MASIVA_DOC AS
                                   Pcl_Response      OUT CLOB) ;
 
     /**
-    * Documentación para F_ESTANDARIZAR
+    * Documentaci�n para F_ESTANDARIZAR
     * Funcion para eliminar tildes y cambiar texto a mayuscula
     *
     * @param  Pcl_Request       -  Json,
@@ -29,7 +29,6 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REGULARIZACION_MASIVA_DOC AS
     */
     FUNCTION  F_ES_CRS(p_puntoId IN NUMBER) RETURN  VARCHAR2;
 END CMKG_REGULARIZACION_MASIVA_DOC;
-
 /
 
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REGULARIZACION_MASIVA_DOC AS
@@ -74,7 +73,7 @@ END P_OBTENER_CLIENTES_REG;
 
 FUNCTION  F_ES_CRS(p_puntoId IN NUMBER) RETURN  VARCHAR2
 IS
--- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZÓN SOCIAL TRADICIONAL
+-- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZ�N SOCIAL TRADICIONAL
     CURSOR C_TIENE_CRS_TRADICIONAL(Cn_PuntoId NUMBER) IS
     SELECT
     DISTINCT(1) 
@@ -90,7 +89,7 @@ IS
             and iper.empresa_rol_id = 813
             and inpt.id_punto = Cn_PuntoId);
     
-    -- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZÓN SOCIAL POR PUNTO.
+    -- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZ�N SOCIAL POR PUNTO.
     CURSOR C_TIENE_CRS_POR_PUNTO(Cn_PuntoId NUMBER) IS
     SELECT
         1 
@@ -130,3 +129,4 @@ IS
 END F_ES_CRS;
 
 END CMKG_REGULARIZACION_MASIVA_DOC;
+/

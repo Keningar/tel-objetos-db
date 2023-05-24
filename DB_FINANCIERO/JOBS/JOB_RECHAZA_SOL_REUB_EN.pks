@@ -1,0 +1,16 @@
+BEGIN 
+dbms_scheduler.create_job('"JOB_RECHAZA_SOL_REUB_EN"',
+job_type=>'PLSQL_BLOCK', job_action=>
+'BEGIN DB_FINANCIERO.FNCK_TRANSACTION.P_RECHAZA_SOLICITUDES_REUB(PV_EMPRESACOD => ''33'', PV_USRCREACION => ''telcos_reubica''); END;'
+, number_of_arguments=>0,
+start_date=>TO_TIMESTAMP_TZ('02-APR-2023 03.57.55.434518000 AM AMERICA/GUAYAQUIL','DD-MON-RRRR HH.MI.SSXFF AM TZR','NLS_DATE_LANGUAGE=english'), repeat_interval=> 
+'FREQ=DAILY;BYHOUR=0;BYMINUTE=00;BYSECOND=0'
+, end_date=>NULL,
+job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
+'Job que ejecuta el procedimiento P_RECHAZA_SOLICITUDES_REUB para actualizar el estado de las solicitudes de Fact y NC cuando una tarea de reubicaci�n es "Anulada", "Rechazada", "Cancelada".'
+);
+sys.dbms_scheduler.set_attribute('"JOB_RECHAZA_SOL_REUB_EN"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY=''�'' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY=''�'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
+dbms_scheduler.enable('"JOB_RECHAZA_SOL_REUB_EN"');
+COMMIT; 
+END; 
+/ 

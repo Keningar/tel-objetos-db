@@ -8,7 +8,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
    * @since   23-11-2021
    */                           
   PROCEDURE P_GET_ESTADO_CUENTA_POR_PUNTO(Pcl_Request IN CLOB, Pv_Status OUT VARCHAR2,Pv_Mensaje OUT VARCHAR2,Pcl_Response OUT CLOB); 
-                                          
+
   /**
    * Documentacion para P_GET_ESTADO_CUENTA_CLIENTE
    * Procedimiento para consultar el estado de cuenta por Cliente
@@ -17,10 +17,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
    * @since   23-11-2021
    */                           
   PROCEDURE P_GET_ESTADO_CUENTA_CLIENTE(Pcl_Request  IN CLOB, Pv_Status OUT VARCHAR2, Pv_Mensaje OUT VARCHAR2, Pcl_Response OUT CLOB);                                                                        
-                      
+
 END FNKG_ESTADOS_CUENTA_C;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
   
@@ -28,46 +27,46 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
   
     CURSOR C_GetDocumentoFinancieroCab(Cn_IdDocumento NUMBER) IS
       SELECT Idfc.* FROM Info_Documento_Financiero_Cab Idfc WHERE Idfc.Id_Documento = Cn_IdDocumento;
-        
+
     CURSOR C_GetRefDocFinancieroCab(Cn_RefIdDocumento NUMBER, 
                                     Cv_EstadoImprFact VARCHAR2, 
                                     Cv_NumFacturaSri VARCHAR2) IS
       SELECT Idfc.* FROM Info_Documento_Financiero_Cab Idfc
       WHERE Idfc.Referencia_Documento_Id = Cn_RefIdDocumento
       AND Idfc.estado_Impresion_Fact = Cv_EstadoImprFact AND Idfc.Numero_Factura_Sri = Cv_NumFacturaSri;        
-        
+
     CURSOR C_GetDocumentoFinancieroDet(Cn_IdDocumento NUMBER) IS
       SELECT Idfd.* FROM Info_Documento_Financiero_Det Idfd WHERE Idfd.Documento_Id = Cn_IdDocumento;
-        
+
     CURSOR C_GetDocumentoCaracteristica(Cv_Tipo VARCHAR2, Cv_Caracteristica VARCHAR2, Cn_IdDocumento NUMBER) IS
     SELECT Idc.*
     FROM Db_Comercial.Admi_Caracteristica Ac INNER JOIN Info_Documento_Caracteristica Idc ON Ac.Id_Caracteristica = Idc.Caracteristica_Id
     WHERE Ac.Tipo = Cv_Tipo AND Ac.Estado = 'Activo' AND Ac.Descripcion_Caracteristica = Cv_Caracteristica AND Idc.Documento_Id = Cn_IdDocumento;
-      
+
     CURSOR C_GetAnticipoPorCruce(Cn_IdDetPago NUMBER, Cv_CodTipoDocumento VARCHAR2, Cv_Estado VARCHAR2) IS
       SELECT Pc.* FROM Info_Pago_Cab Pc,Info_Pago_Det Pd,Info_Pago_Cab Ac,Admi_Tipo_Documento_Financiero Td
       WHERE Ac.Id_Pago = Pd.Pago_Id AND Pd.Id_Pago_Det = Cn_IdDetPago AND Pc.Anticipo_Id = Ac.Id_Pago AND Pc.Tipo_Documento_Id = Td.Id_Tipo_Documento
         AND Td.Codigo_Tipo_Documento = Cv_CodTipoDocumento AND Ac.Estado_Pago = Cv_Estado;
-        
+
     CURSOR C_GetPagoDet(Cn_IdPagoDet NUMBER) IS
       SELECT Ipd.* FROM Info_Pago_Det Ipd WHERE Ipd.Id_Pago_Det = Cn_IdPagoDet;
-        
+
     CURSOR C_GetHistorialPago(Cn_IdPago NUMBER) IS
       SELECT Iph.Observacion, Iph.Estado FROM Info_Pago_Cab Ipc, Info_Pago_Historial Iph
       WHERE Ipc.Id_Pago = Iph.Pago_Id AND Ipc.Id_Pago = Cn_IdPago ORDER BY Iph.Id_Pago_Historial ASC;
-        
+
     CURSOR C_GetPunto(Cn_IdPunto NUMBER) IS
       SELECT Ipu.* FROM DB_COMERCIAL.Info_Punto Ipu WHERE Ipu.Id_Punto = Cn_IdPunto; 
-        
+
     CURSOR C_GetOficinaGrupo(Cn_IdOficina NUMBER) IS
       SELECT Iog.* FROM DB_COMERCIAL.Info_Oficina_Grupo Iog WHERE Iog.Id_Oficina = Cn_IdOficina;  
-  
+
     CURSOR C_GetInfoCliente(Cv_IdentificacionCliente VARCHAR2, Cv_CodEmpresa VARCHAR2) IS
       SELECT Ipe.Direccion,Ipe.Id_Persona,Ipe.Razon_Social,Ipe.Nombres,Ipe.Apellidos,Ipe.Direccion_Tributaria,Iog.Nombre_Oficina
       FROM Db_Comercial.Info_Persona Ipe,Db_Comercial.Info_Persona_Empresa_Rol Iper,Db_Comercial.Info_Empresa_Rol Ier,Info_Oficina_Grupo Iog
       WHERE Ipe.Identificacion_Cliente = Cv_IdentificacionCliente AND Ipe.Id_Persona = Iper.Persona_Id AND Iper.estado = 'Activo'
         AND Iper.Empresa_Rol_Id = Ier.Id_Empresa_Rol AND Ier.Empresa_Cod = Cv_CodEmpresa AND Iper.Oficina_Id = Iog.Id_Oficina;
-  
+
     Lrf_DocFinancierosCab SYS_REFCURSOR; Lrf_DocFinAnticPagos  SYS_REFCURSOR; Lrf_DocFinancierosOg  SYS_REFCURSOR; Lrf_AnticiposPagos SYS_REFCURSOR; 
     Lrf_DocRelacionados   SYS_REFCURSOR; Lrf_AnticiposNoAplic  SYS_REFCURSOR; Lrf_AnticGenerado     SYS_REFCURSOR;
     Lr_DocFinancieroCab   FNKG_TYPES_DOCUMENTOS.Ltr_DocFinancieroCab;
@@ -99,14 +98,14 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     Lb_ContinuaFlujo BOOLEAN; Lb_SumaValorTotal BOOLEAN;
     Li_Cont PLS_INTEGER; Li_ContRel PLS_INTEGER; Li_ContAnt PLS_INTEGER; Li_ContAntGen PLS_INTEGER;    
   BEGIN
-  
+
     APEX_JSON.PARSE(Pcl_Request);
     Lv_IdentifCliente := APEX_JSON.get_varchar2('identificacionCliente');
     Lv_CodEmpresa := APEX_JSON.get_varchar2('codEmpresa');
     Ln_IdPunto := APEX_JSON.get_number('idPunto');
     Lv_FechaEmisionDesde := APEX_JSON.get_varchar2('fechaEmisionDesde');
     Lv_FechaEmisionHasta := APEX_JSON.get_varchar2('fechaEmisionHasta');
-    
+
     IF Lv_FechaEmisionDesde IS NULL THEN
       Lv_FechaEmisionDesde := TO_CHAR(SYSDATE,'RRRR')||'-01-01';
     END IF;    
@@ -117,7 +116,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     OPEN C_GetInfoCliente(Lv_IdentifCliente,Lv_CodEmpresa);
     FETCH C_GetInfoCliente INTO Lc_InfoCliente;
     CLOSE C_GetInfoCliente;
-    
+
     --Json para consultar las cabeceras de documentos financieros
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
@@ -128,9 +127,9 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     APEX_JSON.CLOSE_OBJECT;
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C.P_GET_DOC_FINANCIEROS_CAB(Lcl_Request,Lv_Status,Lv_Mensaje,Lrf_DocFinancierosCab);
-                                                                
+
     --Json para consultar los anticipos o pagos relacionados a documentos financieros
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
@@ -142,9 +141,9 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     APEX_JSON.CLOSE_OBJECT;
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C.P_GET_DOC_FIN_ANTIC_PAGOS(Lcl_Request,Lv_Status,Lv_Mensaje,Lrf_DocFinAnticPagos);
-                              
+
     --Json para consultar los documentos financieros de OG
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
@@ -154,9 +153,9 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     APEX_JSON.CLOSE_OBJECT;
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C.P_GET_DOC_FINANCIEROS_OG(Lcl_Request,Lv_Status,Lv_Mensaje,Lrf_DocFinancierosOg);
-                             
+
     --Json para consultar los anticipos o pagos relacionados a documentos financieros
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
@@ -168,9 +167,9 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     APEX_JSON.CLOSE_OBJECT;
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C.P_GET_ANTICIPOS_PAGOS(Lcl_Request,Lv_Status,Lv_Mensaje,Lrf_AnticiposPagos);
-    
+
     LOOP
       FETCH Lrf_DocFinancierosOg BULK COLLECT INTO Lr_DocFinancieroOg LIMIT 10;
       Li_Cont := Lr_DocFinancieroOg.FIRST;
@@ -222,7 +221,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
       END LOOP;
       EXIT WHEN Lrf_DocFinancierosOg%NOTFOUND;
     END LOOP;
-    
+
     Ln_SumaTotalMigracion := Ln_SumaValorTotal;            
     Ln_Id := Ln_Id + 1; Lr_EstadoCuenta(Ln_Id).Id_Documento := 'MOVIMIENTOS';
     Lr_EstadoCuenta(Ln_Id).Valor_Ingreso := NULL; Lr_EstadoCuenta(Ln_Id).Valor_Egreso := NULL; Lr_EstadoCuenta(Ln_Id).Valor_Acumulado := NULL;
@@ -231,7 +230,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
     Lr_EstadoCuenta(Ln_Id).Referencia := NULL; Lr_EstadoCuenta(Ln_Id).Codigo_Forma_Pago := NULL; Lr_EstadoCuenta(Ln_Id).Numero := NULL;
     Lr_EstadoCuenta(Ln_Id).Observacion := NULL; Lr_EstadoCuenta(Ln_Id).Es_Suma_Valor_Total := 'S';    
     Ln_ValorIngreso := 0; Ln_ValorEgreso := 0; Ln_SumaValorTotal := 0;
-    
+
     LOOP
       FETCH Lrf_DocFinancierosCab BULK COLLECT INTO Lr_DocFinancieroCab LIMIT 10;
       Li_Cont := Lr_DocFinancieroCab.FIRST;
@@ -381,7 +380,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
                 Lr_EstadoCuenta(Ln_Id).Numero := NULL;
                 Lr_EstadoCuenta(Ln_Id).Observacion := Lcl_ObsDetalleFact;
                 Lr_EstadoCuenta(Ln_Id).Es_Suma_Valor_Total := 'S';
-        
+
                 DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C.P_GET_DET_NOT_DEBITOS(Pn_IdDocumento        => Lr_DocRelacionado(Li_ContRel).Id_Pago_Det,
                                                                                   Pv_Login              => Lc_Punto.Login,
                                                                                   Pv_NombreOficinaGrupo => Lc_OficinaGrupo.Nombre_Oficina,
@@ -393,16 +392,16 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
                                                                                   Pn_ValorEgresoDoc     => Ln_ValorEgresoDoc,
                                                                                   Pn_ValorEgreso        => Ln_ValorEgreso);
               END IF;
-              
+
               IF Lr_DocRelacionado(Li_ContRel).Codigo_Tipo_Documento IN ('NC','NCI') THEN
                 Ln_SumaValorTotal := Ln_SumaValorTotal - ROUND(Lr_DocRelacionado(Li_ContRel).Valor_Pago,2);
                 Ln_ValorEgreso := Ln_ValorEgreso + ROUND(Lr_DocRelacionado(Li_ContRel).Valor_Pago,2);
                 Ln_ValorEgresoDoc := Ln_ValorEgresoDoc + ROUND(Lr_DocRelacionado(Li_ContRel).Valor_Pago,2);
-                
+
                 OPEN C_GetRefDocFinancieroCab(Lr_DocFinancieroCab(Li_Cont).Id_Documento, 'Activo', Lr_DocRelacionado(Li_ContRel).Numero_Pago);
                 FETCH C_GetRefDocFinancieroCab INTO Lc_RefDocFinCab;
                 CLOSE C_GetRefDocFinancieroCab;
-                
+
                 Lcl_ObsDetalleFact := Lc_RefDocFinCab.Observacion;                
                 Ln_Id := Ln_Id + 1;        
                 Lr_EstadoCuenta(Ln_Id).Id_Documento := Lr_DocRelacionado(Li_ContRel).Numero_Pago;
@@ -423,7 +422,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
               END IF;              
               Li_ContRel:= Lr_DocRelacionado.NEXT(Li_ContRel);                                            
             END LOOP;              
-            
+
             Ln_Id := Ln_Id + 1;        
             Lr_EstadoCuenta(Ln_Id).Id_Documento := 'Total:';
             Lr_EstadoCuenta(Ln_Id).Valor_Ingreso := ROUND(Ln_ValorIngresoDoc,2);
@@ -448,21 +447,21 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
       END LOOP;
       EXIT WHEN Lrf_DocFinancierosCab%NOTFOUND;
     END LOOP;
-    
+
     LOOP
       FETCH Lrf_DocFinAnticPagos BULK COLLECT INTO Lr_DocFinAnticPago LIMIT 500;
       Li_Cont := Lr_DocFinAnticPago.FIRST;    
       Ln_SumaPagoAnticPend := 0; Ln_ValorAnticPago  := 0;
-      
+
       Ln_Id := Ln_Id + 1; Lr_EstadoCuenta(Ln_Id).Id_Documento := 'Anticipos no aplicados';
       Lr_EstadoCuenta(Ln_Id).Valor_Ingreso := NULL; Lr_EstadoCuenta(Ln_Id).Valor_Egreso := NULL; Lr_EstadoCuenta(Ln_Id).Valor_Acumulado := NULL;
       Lr_EstadoCuenta(Ln_Id).Fecha_Creacion := NULL; Lr_EstadoCuenta(Ln_Id).Fecha_Emision := NULL; Lr_EstadoCuenta(Ln_Id).Fecha_Autorizacion := NULL;
       Lr_EstadoCuenta(Ln_Id).Codigo_Tipo_Documento := NULL; Lr_EstadoCuenta(Ln_Id).Login := NULL; Lr_EstadoCuenta(Ln_Id).Nombre_Oficina := NULL;
       Lr_EstadoCuenta(Ln_Id).Referencia := NULL; Lr_EstadoCuenta(Ln_Id).Codigo_Forma_Pago := NULL; Lr_EstadoCuenta(Ln_Id).Numero := NULL;
       Lr_EstadoCuenta(Ln_Id).Observacion := NULL; Lr_EstadoCuenta(Ln_Id).Es_Suma_Valor_Total := 'S';
-      
+
       Ln_TotalAnticPagoPend := 0; Ln_ValorIngresoDoc := 0; Ln_ValorEgresoDoc := 0;     
-      
+
       WHILE (Li_Cont IS NOT NULL) LOOP    
         OPEN C_GetPunto(Lr_DocFinAnticPago(Li_Cont).Punto_Id);
         FETCH C_GetPunto INTO Lc_Punto;
@@ -488,11 +487,11 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
         CLOSE C_GetOficinaGrupo;        
         Lv_NumeroRefCtaBanco := NULL;
         Ln_ValorEgresoDoc := Ln_ValorEgresoDoc + Ln_ValorAnticPago;
-       
+
         IF Lr_DocFinAnticPago(Li_Cont).Codigo_Forma_Pago = 'REC' THEN 
           DBMS_LOB.APPEND(Lr_DocFinAnticPago(Li_Cont).Comentario,', fecha: '||TO_CHAR(Lr_DocFinAnticPago(Li_Cont).Fe_Creacion,'rrrr-mm-dd hh24:mi:ss'));
         END IF;
-        
+
         Ln_Id := Ln_Id + 1;        
         Lr_EstadoCuenta(Ln_Id).Id_Documento := Lr_DocFinAnticPago(Li_Cont).Numero_Factura_Sri;
         Lr_EstadoCuenta(Ln_Id).Valor_Ingreso := 0;
@@ -740,7 +739,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
       Pv_Status := 'ERROR';
       Pv_Mensaje := 'Error: ' || Sqlerrm;
   END P_GET_ESTADO_CUENTA_POR_PUNTO;
-  
+
   PROCEDURE P_GET_ESTADO_CUENTA_CLIENTE(Pcl_Request  IN CLOB,
                                         Pv_Status    OUT VARCHAR2,
                                         Pv_Mensaje   OUT VARCHAR2,
@@ -748,15 +747,15 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
 
     CURSOR C_GetPunto(Cn_IdPunto NUMBER) IS
       SELECT Ipu.* FROM DB_COMERCIAL.Info_Punto Ipu WHERE Ipu.Id_Punto = Cn_IdPunto;
-        
+
     CURSOR C_GetOficinaGrupo(Cn_IdOficina NUMBER) IS
       SELECT Iog.* FROM DB_COMERCIAL.Info_Oficina_Grupo Iog WHERE Iog.Id_Oficina = Cn_IdOficina;            
-    
+
     CURSOR C_GetAnticipoPorCruce(Cn_IdDetPago NUMBER, Cv_CodTipoDocumento VARCHAR2, Cv_Estado VARCHAR2) IS
       SELECT Pc.* FROM Info_Pago_Cab Pc,Info_Pago_Det Pd, Info_Pago_Cab Ac, Admi_Tipo_Documento_Financiero Td
       WHERE Ac.Id_Pago = Pd.Pago_Id AND Pd.Id_Pago_Det = Cn_IdDetPago AND Pc.Anticipo_Id = Ac.Id_Pago AND Pc.Tipo_Documento_Id = Td.Id_Tipo_Documento 
       AND Td.Codigo_Tipo_Documento = Cv_CodTipoDocumento AND Ac.Estado_Pago = Cv_Estado;
-        
+
     CURSOR C_GetDocRelacionado(Cn_IdDocumento NUMBER) IS
       SELECT ipc.numero_Pago FROM Info_Documento_Financiero_Det idfd, Info_Pago_Det ipd, Info_Pago_Cab ipc
       WHERE idfd.documento_Id = Cn_IdDocumento AND ipd.id_pago_det = idfd.pago_Det_Id AND ipc.id_pago = ipd.pago_Id;
@@ -767,16 +766,16 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
 
     CURSOR C_GetDocumentoFinancieroCab(Cn_IdDocumento NUMBER) IS
       SELECT Idfc.* FROM Info_Documento_Financiero_Cab Idfc WHERE Idfc.Id_Documento = Cn_IdDocumento;
-        
+
     CURSOR C_GetPagoCab(Cn_IdPago NUMBER) IS
       SELECT Ipc.* FROM Info_Pago_Cab Ipc WHERE Ipc.Id_Pago = Cn_IdPago; 
-        
+
     CURSOR C_GetInfoCliente(Cv_IdentificacionCliente VARCHAR2, Cv_CodEmpresa VARCHAR2) IS
       SELECT Ipe.Direccion, Ipe.Id_Persona, Ipe.Razon_Social, Ipe.Nombres,Ipe.Apellidos,Ipe.Direccion_Tributaria, Iog.Nombre_Oficina
       FROM Db_Comercial.Info_Persona Ipe,Db_Comercial.Info_Persona_Empresa_Rol Iper,Db_Comercial.Info_Empresa_Rol Ier,Info_Oficina_Grupo Iog
       WHERE Ipe.Identificacion_Cliente = Cv_IdentificacionCliente AND Ipe.Id_Persona = Iper.Persona_Id AND Iper.estado = 'Activo'
         AND Iper.Empresa_Rol_Id = Ier.Id_Empresa_Rol AND Ier.Empresa_Cod = Cv_CodEmpresa AND Iper.Oficina_Id = Iog.Id_Oficina;
-                                        
+
     Lv_IdentifCliente     DB_COMERCIAL.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE;
     Lv_CodEmpresa         DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE;
     Lc_Punto              C_GetPunto%ROWTYPE;
@@ -865,7 +864,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_ESTADOS_CUENTA_C AS
             Lv_NumeroFactPagada := Lc_DocRelacionado.Numero_Pago;  
           ELSE
             IF Lr_DocEstadoCuenta(Li_Cont).Codigo_Tipo_Documento = 'NDI' THEN
-              
+
               FOR i in C_GetDocumentoCaracteristica('FINANCIERO','ID_REFERENCIA_NCI',Lr_DocEstadoCuenta(Li_Cont).Id_Documento) LOOP                
                 OPEN C_GetDocumentoFinancieroCab(i.Valor);
                 FETCH C_GetDocumentoFinancieroCab INTO Lc_DocFinancieroCab;

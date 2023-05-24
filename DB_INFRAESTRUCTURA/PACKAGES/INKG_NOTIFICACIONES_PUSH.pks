@@ -1,12 +1,10 @@
-SET DEFINE OFF;
-
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_NOTIFICACIONES_PUSH
 AS
 
   /**
-   * Documentación para el procedimiento 'P_GRABAR_INFO_NOTIFICACION'.
+   * Documentaci�n para el procedimiento 'P_GRABAR_INFO_NOTIFICACION'.
    *
-   * Método encargado de guradar informacion necesaria para notificaciones push 
+   * M�todo encargado de guradar informacion necesaria para notificaciones push 
    * por casos backbone de fallas masivas
    *
    * @param P_CASO_ID      IN  NUMBER Recibe codigo del caso.
@@ -14,7 +12,7 @@ AS
    * @param P_TIPO_PROCESO IN  VARCHAR2 Recibe tipo de proceso.
    * @param P_USR_CREACION IN  VARCHAR2 Recibe usuario de creacion.
    * @param p_IP_CREACION  IN  VARCHAR2 Recibe ip creacion.
-   * @param P_ERROR        OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param P_ERROR        OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    * @param P_COD_ERROR    OUT NUMBER Retorna codigo de error
    *
    * @author Pedro Velez <psvelez@telconet.ec>
@@ -28,7 +26,6 @@ AS
                                        P_ERROR        OUT VARCHAR2,
                                        P_COD_ERROR    OUT NUMBER);
 END INKG_NOTIFICACIONES_PUSH;
-
 /
 
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_NOTIFICACIONES_PUSH
@@ -169,5 +166,4 @@ AS
 	END P_GRABAR_INFO_NOTIFICACION; 
 
 END INKG_NOTIFICACIONES_PUSH;
-
 /

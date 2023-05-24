@@ -1,5 +1,5 @@
 SET DEFINE OFF;
-create or replace package                                      DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
+create or replace package DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
 
    /**
   * Documentación para el procedimiento P_CONSULTA_HORASEXTRA
@@ -380,7 +380,7 @@ create or replace package                                      DB_HORAS_EXTRAS.H
 
 END HEKG_HORASEXTRAS_CONSULTA;
 /
-create or replace package body                                DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
+create or replace package body DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_CONSULTA is
 
   PROCEDURE P_CONSULTA_HORASEXTRA(Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,

@@ -1,13 +1,11 @@
-
---CREAR TRIGGER 
-create or replace TRIGGER DB_SOPORTE.BEFORE_DETALLE_ASIGNACION_BI
+CREATE OR REPLACE TRIGGER DB_SOPORTE.BEFORE_DETALLE_ASIGNACION_BI
   BEFORE UPDATE ON DB_SOPORTE.INFO_DETALLE_ASIGNACION
   REFERENCING NEW AS NEW OLD AS OLD 
   FOR EACH ROW
     /**
-    * Documentación para trigger DB_SOPORTE.BEFORE_DETALLE_ASIGNACION_BI
+    * Documentaci�n para trigger DB_SOPORTE.BEFORE_DETALLE_ASIGNACION_BI
     * Trigger que valida los update en la tabla INFO_DETALLE_ASIGNACION y almacena fechas de update en INFO_DETALLE_ASIGNACION_BI
-    * @author Mónica Moreta <mmoreta@telconet.ec>
+    * @author M�nica Moreta <mmoreta@telconet.ec>
     * @version 2.0 24-08-2022
     */
  
@@ -26,7 +24,5 @@ BEGIN
     WHEN OTHERS THEN
     NULL; 
 
-END; 
-
-
+END;
 /

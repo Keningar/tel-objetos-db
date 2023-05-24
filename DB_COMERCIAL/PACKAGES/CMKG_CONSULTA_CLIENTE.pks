@@ -1,12 +1,12 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONSULTA_CLIENTE AS
     -- Author  : David De La Cruz <ddelacruz@telconet.ec>
     -- Created : 21/10/2022
-    -- Purpose : Paquete general de consultas sobre información de clientes
+    -- Purpose : Paquete general de consultas sobre informaci�n de clientes
 
    /**
-    * Documentación para el procedimiento P_CONSULTA_VENDEDOR_CLIENTE
+    * Documentaci�n para el procedimiento P_CONSULTA_VENDEDOR_CLIENTE
     *
-    * Método encargado de retornar el vendedor asignado a un cliente
+    * M�todo encargado de retornar el vendedor asignado a un cliente
     *
     * @param Pcl_Request    IN   CLOB Recibe json request
     * [
@@ -14,9 +14,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONSULTA_CLIENTE AS
     *   codEmpresa          := Codigo de empresa Defaul '10',
     *   idPersonaEmpresRol  := Id persona empresa rol del cliente
     * ]
-    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-    * @param Pcl_Response   OUT  CLOB Retorna datos de la transacción
+    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+    * @param Pcl_Response   OUT  CLOB Retorna datos de la transacci�n
     *
     * @author David De La Cruz <ddelacruz@telconet.ec>
     * @version 1.0 21-10-2022
@@ -88,19 +88,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONSULTA_CLIENTE AS
     Lv_CodEmpresa := Apex_Json.Get_Varchar2(P_Path => 'codEmpresa');
     Ln_IdPersona := Apex_Json.Get_Number(P_Path => 'idPersona');
     Lv_Estado := Apex_Json.Get_Varchar2(P_Path => 'estado');
-    
+
     IF Lv_CodEmpresa IS NULL THEN
       Lv_CodEmpresa := '10';
     END IF;
-    
+
     IF Lv_Estado IS NULL THEN
       Lv_Estado := 'Activo';
     END IF;
-    
+
     OPEN C_Vendedor_Cliente(Ln_IdPersona, Lv_CodEmpresa, Lv_Estado);
     FETCH C_Vendedor_Cliente INTO Lc_VendedorCliente;
     CLOSE C_Vendedor_Cliente;    
-    
+
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('idPersonaEmpresaRol',Lc_VendedorCliente.Id_Persona_Rol);
@@ -111,14 +111,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONSULTA_CLIENTE AS
     APEX_JSON.CLOSE_OBJECT;
     Pcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Consulta exitosa';
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status := 'ERROR';
       Pv_Mensaje := 'Error al consultar vendedor del cliente';
-    
+
   END P_CONSULTA_VENDEDOR_CLIENTE;
 
 END CMKG_CONSULTA_CLIENTE;

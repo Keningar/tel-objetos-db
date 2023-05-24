@@ -11,7 +11,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
     LOGIN            VARCHAR2(200),
     MENSAJE          CLOB
    );
-  
+
     TYPE Ltr_Datos_Cliente IS TABLE OF Lr_Datos_Cliente INDEX BY varchar2(20);
 
   /*
@@ -38,7 +38,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
   TYPE Ltr_Token IS TABLE OF Lr_Token INDEX BY binary_integer;
 
   /**
-   * Documentación para el procedimiento P_GET_CONTACTO_CLIENTE
+   * Documentaci�n para el procedimiento P_GET_CONTACTO_CLIENTE
    *
    * Metodo encargado de obtener contactData del cleinete para diferentes canales de notificaciones
    *
@@ -62,7 +62,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT CLOB);
       /**
-   * Documentación para el procedimiento P_TOKEN_NOTIFICACION_PUSH
+   * Documentaci�n para el procedimiento P_TOKEN_NOTIFICACION_PUSH
    *
    * Metodo encargado de obtener contactData del cliente para canal push
    *
@@ -81,7 +81,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
                                           Pcl_Response OUT CLOB);
 
  /**
-   * Documentación para el procedimiento P_LOTES_CLIENTES_NOTI_PUSH
+   * Documentaci�n para el procedimiento P_LOTES_CLIENTES_NOTI_PUSH
    *
    * Metodo encargado de obtener urls de nfs para envio clientes masivos
    *
@@ -99,9 +99,10 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
                                           Pv_Status    OUT VARCHAR2,
                                           Pv_Mensaje   OUT VARCHAR2,
                                           Pcl_Response OUT CLOB);                                        
- 
+
 END GNKG_NOTIFICACIONES;
 /
+
 CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
 
  PROCEDURE P_GET_CONTACTO_CLIENTE(Pcl_Request  IN CLOB,
@@ -119,7 +120,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
  BEGIN 
 	 APEX_JSON.PARSE(Pcl_Request);
 	 Lv_Canal          :=  APEX_JSON.get_varchar2(p_path => 'channel');
-	 
+
 	 IF Lv_Canal = 'PUSH_NOTIFICATION' THEN
 		P_TOKEN_NOTIFICACION_PUSH(Pcl_Request,Lv_Status,Lv_Mensaje,Lcl_Response);	    
 	 ELSIF Lv_Canal = 'SMS_NOTIFICATION' THEN
@@ -130,11 +131,11 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
 		  Lv_Error:= 'No esta configurado canal '||Lv_Canal||' para notificaciones';
 		  raise Le_Error;
 	 END IF;
-	
+
      Pv_Status := Lv_Status;
      Pv_Mensaje := Lv_Mensaje;
      Pcl_Response := Lcl_Response;
-	
+
  EXCEPTION
     WHEN Le_Error THEN
      Pv_Status := 'ERROR';
@@ -148,7 +149,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
                                           Pv_Status    OUT VARCHAR2,
                                           Pv_Mensaje   OUT VARCHAR2,
                                           Pcl_Response OUT CLOB ) AS 
-  
+
 	 Lc_Identificacions CLOB;
 	 Ln_Count_Identification NUMBER:=0;
 	 Lcl_Response       CLOB;
@@ -166,7 +167,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
      Lv_Identificacion  varchar2(20);
 
  BEGIN 
-	 
+
 	APEX_JSON.PARSE(Pcl_Request);
 	Ln_Count_Identification :=  APEX_JSON.get_count(p_path => 'clientData');
 
@@ -184,9 +185,9 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
 		 END IF;	
 		Lr_Datos_Cliente(Lv_Identificacion).LOGIN   :=APEX_JSON.get_varchar2('clientData[%d].login',ln_countList);
 		Lr_Datos_Cliente(Lv_Identificacion).MENSAJE :=APEX_JSON.get_CLOB('clientData[%d].message',ln_countList); 
-	  
+
 	    IF Ln_count = 5 OR ln_countList = Ln_Count_Identification THEN 
-		  
+
 		    Lv_Query := 'SELECT S.VALOR TOKEN,IP.IDENTIFICACION_CLIENTE 
 						   FROM DB_COMERCIAL.INFO_PERSONA IP , 
 					            DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
@@ -207,7 +208,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
 											AND ar.descripcion_rol= ''Cliente''
 				                            AND ier.ESTADO =''Activo''
 				                            AND ar.estado=''Activo'')';
-              
+
 			DBMS_LOB.APPEND(Lcl_QuerySelect,REPLACE(Lv_Query, ':Lv_identificacion', Lc_Identificacions));
 
 			OPEN Lrf_Token FOR Lcl_QuerySelect;
@@ -230,22 +231,22 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
 			DBMS_LOB.CREATETEMPORARY(Lc_Identificacions, TRUE); 
 		    DBMS_LOB.CREATETEMPORARY(Lcl_QuerySelect, TRUE);
 		  END IF;
-		 
+
 	   Ln_count:= Ln_count+1;
 	   ln_countList:= ln_countList+1;
 	  Lv_Identificacion:='';
-	    
+
 	END LOOP;
 
 	APEX_JSON.CLOSE_ARRAY;
     Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-	   
+
    Pv_Status := 'OK';
    Pv_Mensaje := 'Consulta exitosa';
    Pcl_Response := Lcl_Response;
-	
-	
+
+
  EXCEPTION 
   WHEN Le_Error THEN
     Pv_Status  := 'ERROR';
@@ -288,7 +289,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
  Lv_PathArchivo                  VARCHAR2(4000);
  Lcl_Response                    CLOB;
 
-    
+
  CURSOR Lc_GetValoresParamsGeneral(Cv_NombreParametro IN VARCHAR2)
     IS
       SELECT DET.VALOR1, DET.VALOR2
@@ -298,7 +299,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
       WHERE CAB.NOMBRE_PARAMETRO = Cv_NombreParametro
       AND CAB.ESTADO = Lv_EstadoActivo
       AND DET.ESTADO = Lv_EstadoActivo;  
-    
+
  CURSOR Lc_GetConfigNfsNotiPush 
     IS
       SELECT TO_CHAR(CODIGO_APP) AS CODIGO_APP, TO_CHAR(CODIGO_PATH) AS CODIGO_PATH 
@@ -306,7 +307,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
       WHERE APLICACION ='TelcosWeb' 
       AND SUBMODULO = Lv_SubModuloNotificaciones
       AND EMPRESA ='MD';
-      
+
  CURSOR LcGetClientes 
  IS    
     SELECT DISTINCT s.valor,ip.identificacion_cliente       
@@ -328,12 +329,12 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
                                AND ar.descripcion_rol= 'Cliente'
                                AND ier.ESTADO ='Activo'
 				               AND ar.estado='Activo');                                                        
-      
+
   Lr_RegGetValoresParamsGeneral   Lc_GetValoresParamsGeneral%ROWTYPE;
   Lr_RegGetConfigNfs   Lc_GetConfigNfsNotiPush%ROWTYPE;
- 
+
  BEGIN 
- 
+
     OPEN Lc_GetValoresParamsGeneral(Lv_NombreParamDirBdArchivosTmp);
     FETCH Lc_GetValoresParamsGeneral INTO Lr_RegGetValoresParamsGeneral;
     CLOSE Lc_GetValoresParamsGeneral;
@@ -351,31 +352,31 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
     OPEN Lc_GetValoresParamsGeneral(Lv_NombreParamUrlMicroNfs);
     FETCH Lc_GetValoresParamsGeneral INTO Lr_RegGetValoresParamsGeneral;
     CLOSE Lc_GetValoresParamsGeneral;
-    
+
     Lv_UrlMicroServicioNfs  := Lr_RegGetValoresParamsGeneral.VALOR1;
     IF Lv_UrlMicroServicioNfs IS NULL THEN
       Lv_MsjError := 'No se ha podido obtener la URL del NFS';
       RAISE Le_Exception;
     END IF;
-  
+
     OPEN Lc_GetConfigNfsNotiPush;
     FETCH Lc_GetConfigNfsNotiPush INTO Lr_RegGetConfigNfs;
     CLOSE Lc_GetConfigNfsNotiPush;
     Lv_CodigoApp      := Lr_RegGetConfigNfs.CODIGO_APP;
     Lv_CodigoPath     := Lr_RegGetConfigNfs.CODIGO_PATH;
     IF Lv_CodigoApp  IS NULL OR Lv_CodigoPath IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+      Lv_MsjError := 'No se ha podido obtener la configuraci�n de la ruta NFS';
       RAISE Le_Exception;
     END IF;
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_ARRAY();
-    
+
      OPEN LcGetClientes;
 		    LOOP
                 Ln_NumeracionCsv := Ln_NumeracionCsv + 1;
                 Lv_NombreArchivo  := Lv_PrefijoNombreArchivo || Lv_FechaArchivo || '_' || Lv_TextLote || Ln_NumeracionCsv || '.csv';
                 Lf_ArchivoRespuesta := UTL_FILE.FOPEN(Lv_DirectorioBaseDatos, Lv_NombreArchivo, 'w', 32767);
-               
+
 			    FETCH LcGetClientes BULK COLLECT INTO Lr_Token LIMIT Ln_Limit;
                     Li_Cont := Lr_Token.FIRST;
                     WHILE Li_Cont IS NOT NULL LOOP
@@ -384,7 +385,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
                                                     '' || LCv_Delimitador ||  Lr_Token(Li_Cont).TOKEN);
                          Li_Cont:= Lr_Token.NEXT(Li_Cont);
                     END LOOP;
-                     
+
                     UTL_FILE.FCLOSE(Lf_ArchivoRespuesta);
                 EXIT WHEN Lr_Token.count =0;	
                Lv_RespuestaGuardarArchivo  := DB_GENERAL.GNRLPCK_UTIL.F_GUARDAR_ARCHIVO_NFS(Lv_UrlMicroServicioNfs,
@@ -399,48 +400,48 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
                 END IF;
                 APEX_JSON.PARSE(Lv_RespuestaGuardarArchivo);
                 Ln_CodeResWsNFS   := APEX_JSON.GET_NUMBER('code');
-                
+
                 IF Ln_CodeResWsNFS IS NULL OR Ln_CodeResWsNFS <> 200 THEN
-                  Lv_MsjError := 'Ha ocurrido alg¿n error al generar el archivo. Por favor consulte al Dep. de Sistemas!';
+                  Lv_MsjError := 'Ha ocurrido alg�n error al generar el archivo. Por favor consulte al Dep. de Sistemas!';
                   RAISE Le_Exception;
                 END IF;
-            
+
                 Ln_CountArchivos := APEX_JSON.GET_COUNT(p_path => 'data');
                 IF Ln_CountArchivos IS NULL THEN
                   Lv_MsjError := 'No se ha generado correctamente la ruta del archivo. Por favor consulte al Dep. de Sistemas!';
                   RAISE Le_Exception;
                 END IF;
-            
+
                 IF Ln_CountArchivos <> 1 THEN
                   Lv_MsjError := 'Ha ocurrido un error inesperado al generar el archivo. Por favor consulte al Dep. de Sistemas!';
                   RAISE Le_Exception;
                 END IF;
-                
+
                 FOR i IN 1 .. Ln_CountArchivos LOOP
                 Lv_PathArchivo := APEX_JSON.GET_VARCHAR2(p_path => 'data[%d].pathFile', p0 => i);
                 END LOOP;
-            
+
                 IF Lv_PathArchivo IS NULL THEN
                   Lv_MsjError := 'No se ha podido obtener la ruta en la que se encuentra el archivo generado. Por favor consulte al Dep. de Sistemas!';
                   RAISE Le_Exception;
                 END IF;
-                                 
+
                 APEX_JSON.OPEN_OBJECT;
                 APEX_JSON.WRITE('urlNfs', Lv_PathArchivo);
                 APEX_JSON.CLOSE_OBJECT; 
-                
+
                 UTL_FILE.FREMOVE(Lv_DirectorioBaseDatos, Lv_NombreArchivo);
 		    END LOOP;
       CLOSE LcGetClientes;
     APEX_JSON.CLOSE_ARRAY;
     Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-	   
+
    Pv_Status := 'OK';
    Pv_Mensaje := 'Proceso realizado satisfactoriamente';
    Pcl_Response := Lcl_Response;
-        
-    
+
+
  EXCEPTION 
   WHEN Le_Exception THEN
     Pv_Status  := 'ERROR';

@@ -1,14 +1,14 @@
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_RELACION_ELEMENTO'
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_RELACION_ELEMENTO'
    *
-   * Método encargado de actualizar un registro en la 'INFO_RELACION_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de actualizar un registro en la 'INFO_RELACION_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request
-   * @param Pv_Status   OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status   OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 06-07-2020
    */
   PROCEDURE P_ACTUALIZAR_RELACION_ELEMENTO(Pcl_Request IN  CLOB,
@@ -16,16 +16,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                            Pv_Status   OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_ELEMENTO'
+   * Documentaci�n para el procedimiento 'P_GUARDAR_ELEMENTO'
    *
-   * Método encargado de guardar un registro en la 'INFO_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de guardar un registro en la 'INFO_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request      IN  CLOB Recibe json request
    * @param Pn_IdElemento    OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status        OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje       OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status        OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje       OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_GUARDAR_ELEMENTO(Pcl_Request      IN  CLOB,
@@ -34,16 +34,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                Pv_Mensaje       OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_DETALLE_ELEMENTO'
+   * Documentaci�n para el procedimiento 'P_GUARDAR_DETALLE_ELEMENTO'
    *
-   * Método encargado de guardar un registro en la 'INFO_DETALLE_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de guardar un registro en la 'INFO_DETALLE_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request             IN  CLOB Recibe json request
    * @param Pn_IdDetalleElemento    OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status               OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje              OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status               OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje              OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_GUARDAR_DETALLE_ELEMENTO(Pcl_Request             IN  CLOB,
@@ -52,15 +52,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                        Pv_Mensaje              OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_ELEMENTO'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_ELEMENTO'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de actualizar un registro en la 'INFO_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_ACTUALIZAR_ELEMENTO(Pcl_Request IN  CLOB,
@@ -68,16 +68,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                   Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_RELACION_ELEMENTO'
+   * Documentaci�n para el procedimiento 'P_GUARDAR_RELACION_ELEMENTO'
    *
-   * Método encargado de guardar un registro en la 'INFO_RELACION_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de guardar un registro en la 'INFO_RELACION_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request             IN  CLOB Recibe json request
    * @param Pn_IdRelacionElemento   OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status               OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje              OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status               OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje              OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_GUARDAR_RELACION_ELEMENTO(Pcl_Request             IN  CLOB,
@@ -86,15 +86,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                        Pv_Mensaje              OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_DETALLE_ELEMENTO'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_DETALLE_ELEMENTO'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_DETALLE_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de actualizar un registro en la 'INFO_DETALLE_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_ACTUALIZAR_DETALLE_ELEMENTO(Pcl_Request IN  CLOB,
@@ -102,16 +102,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                           Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_ELEMENTO'
+   * Documentaci�n para el procedimiento 'P_GUARDAR_ELEMENTO'
    *
-   * Método encargado de guardar un registro en la 'INFO_EMPRESA_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de guardar un registro en la 'INFO_EMPRESA_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request             IN  CLOB Recibe json request
    * @param Pn_IdEmpresaElemento    OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status               OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje              OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status               OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje              OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_GUARDAR_EMPRESA_ELEMENTO(Pcl_Request      IN  CLOB,
@@ -120,15 +120,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                Pv_Mensaje       OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_EMPRESA_ELEMENTO'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_EMPRESA_ELEMENTO'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_EMPRESA_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de actualizar un registro en la 'INFO_EMPRESA_ELEMENTO' del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_ACTUALIZAR_EMPRESA_ELEMENTO(Pcl_Request IN  CLOB,
@@ -136,63 +136,63 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                           Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_ELEMENTO_UBICA'
+   * Documentaci�n para el procedimiento 'P_GUARDAR_ELEMENTO_UBICA'
    *
-   * Método encargado de guardar un registro en la 'INFO_EMPRESA_ELEMENTO'UBICA del esquema 'DB_INFRAESTRUCTURA'.
+   * M�todo encargado de guardar un registro en la 'INFO_EMPRESA_ELEMENTO'UBICA del esquema 'DB_INFRAESTRUCTURA'.
    *
    * @param Pcl_Request                   IN  CLOB Recibe json request
    * @param Pn_IdEmpresaElemento_Ubica    OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status                     OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje                    OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status                     OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje                    OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_GUARDAR_EMPRESA_ELEMENTO_UBI(Pcl_Request                IN  CLOB,
                                              Pn_IdEmpresaElementoUbica  OUT NUMBER,
                                              Pv_Status                  OUT VARCHAR2,
                                              Pv_Mensaje                 OUT VARCHAR2);
-                                             
+
   /**
-  * Documentación para el procedimiento P_ASIGNAR_UBICACION_ELEM
+  * Documentaci�n para el procedimiento P_ASIGNAR_UBICACION_ELEM
   *
-  * Método encargado de asignar una ubicación o filial a un elemento.
+  * M�todo encargado de asignar una ubicaci�n o filial a un elemento.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
-  *   empresaCod          := Código de empresa
+  *   empresaCod          := C�digo de empresa
   *   elementoId          := Id elemento
   *   oficinaId           := Id oficina (filial)
-  *   usrCreacion         := Usuario de creación
-  *   ipCreacion          := Ip de creación
+  *   usrCreacion         := Usuario de creaci�n
+  *   ipCreacion          := Ip de creaci�n
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 04-08-2020
   */                       
   PROCEDURE P_ASIGNAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
                                      Pv_Status    OUT VARCHAR2,
                                      Pv_Mensaje   OUT VARCHAR2);
-                                     
+
   /**
-  * Documentación para el procedimiento P_MODIFICAR_UBICACION_ELEM
+  * Documentaci�n para el procedimiento P_MODIFICAR_UBICACION_ELEM
   *
-  * Método encargado de modificar una ubicación o filial de un elemento.
+  * M�todo encargado de modificar una ubicaci�n o filial de un elemento.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
-  *   empresaCod          := Código de empresa
+  *   empresaCod          := C�digo de empresa
   *   elementoId          := Id elemento
   *   oficinaId           := Id oficina (filial)
-  *   usrCreacion         := Usuario de creación
-  *   ipCreacion          := Ip de creación
+  *   usrCreacion         := Usuario de creaci�n
+  *   ipCreacion          := Ip de creaci�n
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 04-08-2020
   */                       
   PROCEDURE P_MODIFICAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
@@ -200,6 +200,7 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
                                        Pv_Mensaje   OUT VARCHAR2);
 END INKG_ELEMENTO_TRANSACCION;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
   PROCEDURE P_ACTUALIZAR_RELACION_ELEMENTO(Pcl_Request IN  CLOB,
                                            Pv_Mensaje  OUT VARCHAR2,
@@ -230,7 +231,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       OR  (ELEMENTO_ID_A = Ln_elementoIdA AND ELEMENTO_ID_B = Ln_elementoIdB);
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN OTHERS THEN
@@ -261,7 +262,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
      APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')           IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')      IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')       IS NULL THEN
-    Lv_Mensaje := 'Ningún valor puede ir nulo (modeloElementoId,nombreElemento,estado,usrCreacion,ipCreacion)';
+    Lv_Mensaje := 'Ning�n valor puede ir nulo (modeloElementoId,nombreElemento,estado,usrCreacion,ipCreacion)';
     RAISE Le_Exception;
   END IF;
 
@@ -311,7 +312,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
   --Respuesta Exitosa.
   Pv_Status         := 'OK';
-  Pv_Mensaje        := 'Transación exitosa';
+  Pv_Mensaje        := 'Transaci�n exitosa';
   Pn_IdElemento     :=  Ln_idElemento;
 
   EXCEPTION
@@ -355,7 +356,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
     Ln_IdElemento := APEX_JSON.GET_NUMBER(P_PATH => 'idElemento');
 
     IF Ln_IdElemento IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idElemento)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idElemento)';
       RAISE Le_Exception;
     END IF;
 
@@ -379,7 +380,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -415,7 +416,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
      APEX_JSON.GET_VARCHAR2(P_PATH => 'detalleDescripcion') IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')             IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')        IS NULL THEN
-    Lv_Mensaje := 'Ningún valor puede ir nulo (elementoId,detalleNombre,detalleValor,detalleDescripcion,estado,usrCreacion)';
+    Lv_Mensaje := 'Ning�n valor puede ir nulo (elementoId,detalleNombre,detalleValor,detalleDescripcion,estado,usrCreacion)';
     RAISE Le_Exception;
   END IF;
 
@@ -432,7 +433,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
   Lr_InfoDetalleElemento.ESTADO                   := APEX_JSON.GET_VARCHAR2(P_PATH => 'estado');
   INFRK_DML.INFRP_INSERT_DETALLE_ELEMENTO(Lr_InfoDetalleElemento, Lv_Result);
   Pv_Status             := 'OK';
-  Pv_Mensaje            := 'Transación exitosa';
+  Pv_Mensaje            := 'Transaci�n exitosa';
   Pn_IdDetalleElemento  :=  Ln_IdDetalleElemento;
 
   EXCEPTION
@@ -482,7 +483,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
     IF Ln_IdDetalleElemento IS NULL AND
        Ln_ElementoId        IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idDetalleElemento, elementoId)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idDetalleElemento, elementoId)';
       RAISE Le_Exception;
     END IF;
 
@@ -508,7 +509,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -543,7 +544,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
      APEX_JSON.GET_VARCHAR2(P_PATH => 'tipoRelacion')      IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')            IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')       IS NULL THEN
-    Lv_Mensaje := 'Ningún valor puede ir nulo (elementoIdA,elementoIdB,tipoRelacion,estado,usrCreacion)';
+    Lv_Mensaje := 'Ning�n valor puede ir nulo (elementoIdA,elementoIdB,tipoRelacion,estado,usrCreacion)';
     RAISE Le_Exception;
   END IF;
 
@@ -562,7 +563,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
   INFRK_DML.INFRP_INSERT_RELACION_ELEMENTO(Lr_InfoRelacionElemento, Lv_Result);
   Pv_Status             := 'OK';
-  Pv_Mensaje            := 'Transación exitosa';
+  Pv_Mensaje            := 'Transaci�n exitosa';
   Pn_IdRelacionElemento :=  Ln_IdRelacionElemento;
 
   EXCEPTION
@@ -598,7 +599,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
      APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')             IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')         IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')        IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (elementoId,usrCreacion,ipCreacion,estado)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (elementoId,usrCreacion,ipCreacion,estado)';
     RAISE Le_Exception;
   END IF;
 
@@ -614,7 +615,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
   Lr_InfoEmpresaElemento.ESTADO                   := APEX_JSON.GET_VARCHAR2(P_PATH => 'estado');
   INFRK_DML.INFRP_INSERT_EMPRESA_ELEMENTO(Lr_InfoEmpresaElemento, Lv_Result);
   Pv_Status             := 'OK';
-  Pv_Mensaje            := 'Transación exitosa';
+  Pv_Mensaje            := 'Transaci�n exitosa';
   Pn_IdEmpresaElemento  :=  Ln_IdEmpresaElemento;
 
   EXCEPTION
@@ -658,7 +659,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
     Ln_IdEmpresaElemento := APEX_JSON.GET_NUMBER(P_PATH => 'idEmpresaElemento');
 
     IF Ln_IdEmpresaElemento IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idEmpresaElemento)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idEmpresaElemento)';
       RAISE Le_Exception;
     END IF;
 
@@ -680,7 +681,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -715,7 +716,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
      APEX_JSON.GET_NUMBER(P_PATH   => 'ubicacionId')        IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')         IS NULL OR
      APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')        IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (elementoId,empresaCod,ubicacionId,usrCreacion,ipCreacion)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (elementoId,empresaCod,ubicacionId,usrCreacion,ipCreacion)';
     RAISE Le_Exception;
   END IF;
 
@@ -730,7 +731,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
   Lr_InfoEmpresaElementoUbica.IP_CREACION                        := APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion');
   INFRK_DML.INFRP_INSERT_EMPR_ELEMENT_UBIC(Lr_InfoEmpresaElementoUbica, Lv_Result);
   Pv_Status             := 'OK';
-  Pv_Mensaje            := 'Transación exitosa';
+  Pv_Mensaje            := 'Transaci�n exitosa';
   Pn_IdEmpresaElementoUbica  :=  Ln_IdEmpresaElementoUbica;
 
   EXCEPTION
@@ -744,7 +745,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       Pn_IdEmpresaElementoUbica :=  0;
 
   END P_GUARDAR_EMPRESA_ELEMENTO_UBI;
-  
+
   PROCEDURE P_ASIGNAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
                                      Pv_Status    OUT VARCHAR2,
                                      Pv_Mensaje   OUT VARCHAR2)
@@ -755,27 +756,27 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       SELECT IE.*
       FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO IE
       WHERE IE.ID_ELEMENTO = Cn_IdElemento;
-      
+
     CURSOR C_EXISTE_OFICINA(Cn_IdOficina NUMBER) 
     IS
       SELECT IOG.* 
       FROM DB_COMERCIAL.INFO_OFICINA_GRUPO IOG
       WHERE IOG.ID_OFICINA = Cn_IdOficina
         AND IOG.ESTADO = 'Activo';
-        
+
     CURSOR C_EXISTE_PARROQUIA(Cn_IdParroquia NUMBER) 
     IS
       SELECT AP.* 
       FROM DB_GENERAL.ADMI_PARROQUIA AP
       WHERE AP.ID_PARROQUIA = Cn_IdParroquia
         AND AP.ESTADO = 'Activo';
-        
+
     CURSOR C_VALIDAR_UBICACION_ELEM(Cn_IdElemento NUMBER) 
     IS
       SELECT IEUU.* 
       FROM DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEUU
       WHERE IEUU.ELEMENTO_ID = Cn_IdElemento;
-  
+
     Lv_EmpresaCod     VARCHAR2(100);
     Ln_ElementoId     NUMBER;
     Ln_OficinaId      NUMBER;
@@ -809,11 +810,11 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
     -- VALIDACIONES
     IF Lv_EmpresaCod IS NULL THEN
-      Pv_Mensaje := 'El parámetro empresaCod está vacío';
+      Pv_Mensaje := 'El par�metro empresaCod est� vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_ElementoId IS NULL THEN
-      Pv_Mensaje := 'El parámetro elementoId está vacío';
+      Pv_Mensaje := 'El par�metro elementoId est� vac�o';
       RAISE Le_Errors;
     END IF;
     OPEN  C_EXISTE_ELEMENTO(Ln_ElementoId);
@@ -827,11 +828,11 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
     FETCH C_VALIDAR_UBICACION_ELEM INTO Lc_ValUbicaElem;
     CLOSE C_VALIDAR_UBICACION_ELEM;
     IF Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion IS NOT NULL THEN
-      Pv_Mensaje := 'Ya existe la ubicación '||Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion||' del elemento '||Ln_ElementoId;
+      Pv_Mensaje := 'Ya existe la ubicaci�n '||Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion||' del elemento '||Ln_ElementoId;
       RAISE Le_Errors;
     END IF;
     IF Ln_OficinaId IS NULL THEN
-      Pv_Mensaje := 'El parámetro oficinaId está vacío';
+      Pv_Mensaje := 'El par�metro oficinaId est� vac�o';
       RAISE Le_Errors;
     END IF;
     OPEN  C_EXISTE_OFICINA(Ln_OficinaId);
@@ -856,7 +857,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
         RAISE Le_Errors;
       END IF;
     END IF;
-    
+
     -- CREAR NUEVO DATO EN INFO_UBICACION CON DATOS POR DEFECTO
     Ln_IdUbicacion := DB_INFRAESTRUCTURA.SEQ_INFO_UBICACION.NEXTVAL;
     INSERT INTO DB_INFRAESTRUCTURA.INFO_UBICACION(
@@ -882,7 +883,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
         Lv_IpCreacion,
         Lc_Oficina.Id_Oficina
     );
-    
+
     -- ASIGNAR LA UBICACION AL ELEMENTO
     Ln_IdEmpElemUbic := DB_INFRAESTRUCTURA.SEQ_INFO_EMPRESA_ELEMENTO_UBI.NEXTVAL;
     INSERT INTO DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA(
@@ -902,9 +903,9 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
         SYSDATE,
         Lv_IpCreacion
     );
-    
+
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Asignación de ubicación al elemento '||Ln_ElementoId||' exitosa';
+    Pv_Mensaje    := 'Asignaci�n de ubicaci�n al elemento '||Ln_ElementoId||' exitosa';
     COMMIT;
   EXCEPTION
     WHEN Le_Errors THEN
@@ -915,7 +916,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       Pv_Status  := 'ERROR';
       Pv_Mensaje := SQLERRM;
   END P_ASIGNAR_UBICACION_ELEM;
-  
+
   PROCEDURE P_MODIFICAR_UBICACION_ELEM(Pcl_Request  IN  CLOB,
                                        Pv_Status    OUT VARCHAR2,
                                        Pv_Mensaje   OUT VARCHAR2)
@@ -926,33 +927,33 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       SELECT IE.*
       FROM DB_INFRAESTRUCTURA.INFO_ELEMENTO IE
       WHERE IE.ID_ELEMENTO = Cn_IdElemento;
-      
+
     CURSOR C_EXISTE_OFICINA(Cn_IdOficina NUMBER) 
     IS
       SELECT IOG.* 
       FROM DB_COMERCIAL.INFO_OFICINA_GRUPO IOG
       WHERE IOG.ID_OFICINA = Cn_IdOficina
         AND IOG.ESTADO = 'Activo';
-        
+
     CURSOR C_EXISTE_PARROQUIA(Cn_IdParroquia NUMBER) 
     IS
       SELECT AP.* 
       FROM DB_GENERAL.ADMI_PARROQUIA AP
       WHERE AP.ID_PARROQUIA = Cn_IdParroquia
         AND AP.ESTADO = 'Activo';
-        
+
     CURSOR C_VALIDAR_UBICACION_ELEM(Cn_IdElemento NUMBER) 
     IS
       SELECT IEUU.* 
       FROM DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEUU
       WHERE IEUU.ELEMENTO_ID = Cn_IdElemento;
-      
+
     CURSOR C_EXISTE_UBICACION(Cn_IdUbicacion NUMBER) 
     IS
       SELECT IU.*
       FROM DB_INFRAESTRUCTURA.INFO_UBICACION IU
       WHERE IU.ID_UBICACION = Cn_IdUbicacion;
-  
+
     Lv_EmpresaCod     VARCHAR2(100);
     Ln_ElementoId     NUMBER;
     Ln_OficinaId      NUMBER;
@@ -981,7 +982,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
 
     -- VALIDACIONES
     IF Ln_ElementoId IS NULL THEN
-      Pv_Mensaje := 'El parámetro elementoId está vacío';
+      Pv_Mensaje := 'El par�metro elementoId est� vac�o';
       RAISE Le_Errors;
     END IF;
     OPEN  C_EXISTE_ELEMENTO(Ln_ElementoId);
@@ -995,11 +996,11 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
     FETCH C_VALIDAR_UBICACION_ELEM INTO Lc_ValUbicaElem;
     CLOSE C_VALIDAR_UBICACION_ELEM;
     IF Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion IS NULL THEN
-      Pv_Mensaje := 'La ubicación del elemento '||Ln_ElementoId||' no existe';
+      Pv_Mensaje := 'La ubicaci�n del elemento '||Ln_ElementoId||' no existe';
       RAISE Le_Errors;
     END IF;
     IF Ln_OficinaId IS NULL THEN
-      Pv_Mensaje := 'El parámetro oficinaId está vacío';
+      Pv_Mensaje := 'El par�metro oficinaId est� vac�o';
       RAISE Le_Errors;
     END IF;
     OPEN  C_EXISTE_OFICINA(Ln_OficinaId);
@@ -1018,7 +1019,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
         RAISE Le_Errors;
       END IF;
     END IF;
-    
+
     OPEN  C_EXISTE_UBICACION(Lc_ValUbicaElem.Ubicacion_Id);
     FETCH C_EXISTE_UBICACION INTO Lc_Ubicacion;
     CLOSE C_EXISTE_UBICACION;
@@ -1031,15 +1032,15 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
       IU.ALTURA_SNM = NVL(Ln_AlturaSNM, Lc_Ubicacion.Altura_Snm),
       IU.OFICINA_ID = NVL(Lc_Oficina.Id_Oficina, Lc_Ubicacion.Oficina_Id)
     WHERE IU.ID_UBICACION = Lc_Ubicacion.Id_Ubicacion;
-    
+
     IF Lv_EmpresaCod IS NOT NULL THEN
       UPDATE DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEEU SET
         IEEU.EMPRESA_COD = Lv_EmpresaCod
       WHERE IEEU.ID_EMPRESA_ELEMENTO_UBICACION = Lc_ValUbicaElem.Id_Empresa_Elemento_Ubicacion;
     END IF;
-    
+
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Modificación de la ubicación al elemento '||Ln_ElementoId||' exitosa';
+    Pv_Mensaje    := 'Modificaci�n de la ubicaci�n al elemento '||Ln_ElementoId||' exitosa';
     COMMIT;
   EXCEPTION
     WHEN Le_Errors THEN
@@ -1052,4 +1053,3 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION AS
   END P_MODIFICAR_UBICACION_ELEM;
 END INKG_ELEMENTO_TRANSACCION;
 /
-

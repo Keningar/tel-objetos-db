@@ -1,0 +1,129 @@
+
+CREATE OR REPLACE FUNCTION  DB_INFRAESTRUCTURA.GET_ELEMENTOS_EN_ANILLO(
+    idParametroIngreso  IN NUMBER, -- id elemento PE ( Router )   
+    tipoAnillo          IN NUMBER)
+  RETURN VARCHAR2
+IS
+  banderaSalir                 VARCHAR2(2) :='NO';
+  idInterfaceFinMiniEnlace     NUMBER;
+  idIntarfeInicioMiniEnlace    NUMBER;
+  idElementoSwitch             NUMBER;  
+  idElementosRetornar          VARCHAR2(2000) := '';  
+  tipoElemento                 VARCHAR2(10);      
+    
+BEGIN  
+  
+  -- SE OBTIENE LOS SWITCHES CONECTADOS DIRECTAMENTE AL PE ENVIADO COMO REFERENCIA Y LA INTERFACE DE INICIO
+  -- DEL PRIMER SWITCH POR ANILLO 0 O POR ANILLO N
+    FOR ENLACEDIRECTO IN
+    (
+      SELECT 
+        ELEMENTO_SWS.ID_ELEMENTO,
+        ELEMENTO_SWS.NOMBRE_ELEMENTO  
+      FROM 
+        INFO_INTERFACE_ELEMENTO INTERFACE_AGG,
+        INFO_INTERFACE_ELEMENTO INTERFACE_SW,
+        INFO_ENLACE ENLACE_AGG_SW,
+        INFO_ELEMENTO ELEMENTO_SWS,
+        ADMI_MODELO_ELEMENTO MODELO_SW,
+        ADMI_TIPO_ELEMENTO TIPO_SW ,
+        INFO_DETALLE_ELEMENTO DETALLE
+      WHERE INTERFACE_AGG.ELEMENTO_ID IN
+        (SELECT ELEMENTO_AGG.ID_ELEMENTO
+        FROM INFO_ELEMENTO ELEMENTO_PE,
+          INFO_INTERFACE_ELEMENTO INTERFAZE_PE,
+          INFO_ENLACE ENLACE,
+          INFO_INTERFACE_ELEMENTO INTERFAZE_AGG,
+          INFO_ELEMENTO ELEMENTO_AGG,
+          ADMI_MODELO_ELEMENTO MODELO_AGG,
+          ADMI_TIPO_ELEMENTO TIPO_AGG
+        WHERE ELEMENTO_PE.ID_ELEMENTO        = idParametroIngreso
+        AND ELEMENTO_PE.ID_ELEMENTO          = INTERFAZE_PE.ELEMENTO_ID
+        AND ENLACE.INTERFACE_ELEMENTO_INI_ID = INTERFAZE_PE.ID_INTERFACE_ELEMENTO
+        AND ENLACE.INTERFACE_ELEMENTO_FIN_ID = INTERFAZE_AGG.ID_INTERFACE_ELEMENTO
+        AND ENLACE.ESTADO                    = 'Activo'
+        AND ENLACE.TIPO_ENLACE               = 'PRINCIPAL'
+        AND INTERFAZE_PE.ESTADO              = 'connected'
+        AND INTERFAZE_AGG.ELEMENTO_ID        = ELEMENTO_AGG.ID_ELEMENTO
+        AND ELEMENTO_AGG.MODELO_ELEMENTO_ID  = MODELO_AGG.ID_MODELO_ELEMENTO
+        AND MODELO_AGG.TIPO_ELEMENTO_ID      = TIPO_AGG.ID_TIPO_ELEMENTO
+        AND TIPO_AGG.NOMBRE_TIPO_ELEMENTO    = 'SWITCH'
+        )
+      AND ENLACE_AGG_SW.INTERFACE_ELEMENTO_INI_ID = INTERFACE_AGG.ID_INTERFACE_ELEMENTO
+      AND ENLACE_AGG_SW.INTERFACE_ELEMENTO_FIN_ID = INTERFACE_SW.ID_INTERFACE_ELEMENTO
+      AND ELEMENTO_SWS.ID_ELEMENTO                = INTERFACE_SW.ELEMENTO_ID
+      AND ELEMENTO_SWS.MODELO_ELEMENTO_ID         = MODELO_SW.ID_MODELO_ELEMENTO
+      AND MODELO_SW.TIPO_ELEMENTO_ID              = TIPO_SW.ID_TIPO_ELEMENTO
+      AND TIPO_SW.NOMBRE_TIPO_ELEMENTO            = 'SWITCH'
+      AND ENLACE_AGG_SW.ESTADO                    = 'Activo'
+      AND ENLACE_AGG_SW.TIPO_ENLACE               = 'PRINCIPAL'
+      AND INTERFACE_AGG.ESTADO                    = 'connected'
+      AND INTERFACE_SW.ESTADO                     = 'connected'
+      AND ELEMENTO_SWS.ID_ELEMENTO                = DETALLE.ELEMENTO_ID
+      AND DETALLE.DETALLE_NOMBRE                  = 'ANILLO'
+      AND DETALLE.DETALLE_VALOR                   = NVL(tipoAnillo,DETALLE.DETALLE_VALOR) 
+    )
+    LOOP
+    
+       idElementoSwitch:= ENLACEDIRECTO.ID_ELEMENTO; -- ID DEL ELEMENTO CON CONEXION DIRECTA CON EL AGG ( SWITCH )      
+      
+       banderaSalir := 'NO';
+                
+       WHILE banderaSalir = 'NO'
+       LOOP
+       
+          idElementosRetornar := idElementosRetornar ||'|'||idElementoSwitch;              
+          
+          DBMS_OUTPUT.PUT_LINE(idElementosRetornar);                
+          
+            SELECT NVL(
+            (SELECT ELEMENTO.ID_ELEMENTO
+            FROM INFO_INTERFACE_ELEMENTO INTERFACE,
+              INFO_INTERFACE_ELEMENTO INTERFACE2,
+              INFO_ENLACE ENLACE,
+              INFO_ELEMENTO ELEMENTO,
+              ADMI_MODELO_ELEMENTO MODELO,
+              ADMI_TIPO_ELEMENTO TIPO,
+              INFO_DETALLE_ELEMENTO DETALLE
+            WHERE INTERFACE.ELEMENTO_ID          = idElementoSwitch
+            AND INTERFACE.ID_INTERFACE_ELEMENTO  = ENLACE.INTERFACE_ELEMENTO_INI_ID
+            AND INTERFACE2.ID_INTERFACE_ELEMENTO = ENLACE.INTERFACE_ELEMENTO_FIN_ID
+            AND ELEMENTO.ID_ELEMENTO             = INTERFACE2.ELEMENTO_ID
+            AND INTERFACE2.ESTADO                = 'connected'
+            AND INTERFACE.ESTADO                 = 'connected'
+            AND ENLACE.ESTADO                    = 'Activo'
+            AND ENLACE.TIPO_ENLACE               = 'PRINCIPAL'
+            AND ELEMENTO.MODELO_ELEMENTO_ID      = MODELO.ID_MODELO_ELEMENTO
+            AND MODELO.TIPO_ELEMENTO_ID          = TIPO.ID_TIPO_ELEMENTO
+            AND ELEMENTO.ID_ELEMENTO             = DETALLE.ELEMENTO_ID
+            AND DETALLE.DETALLE_NOMBRE           = 'ANILLO'
+            AND DETALLE.ID_DETALLE_ELEMENTO      =
+              (SELECT MAX(ID_DETALLE_ELEMENTO)
+              FROM INFO_DETALLE_ELEMENTO
+              WHERE ELEMENTO_ID          = ELEMENTO.ID_ELEMENTO
+              AND DETALLE.DETALLE_NOMBRE = 'ANILLO'
+              )
+            AND TIPO.NOMBRE_TIPO_ELEMENTO = 'SWITCH'
+            ),0)
+          INTO idElementoSwitch
+          FROM DUAL;
+          
+          --SI YA NO EXISTEN MAS ENLACES TERMINA EL RECORRIDO
+          IF idElementoSwitch = 0 THEN 
+            
+            banderaSalir := 'SI'; 
+          
+          END IF;            
+                  
+        END LOOP;
+    
+    END LOOP;
+     
+  RETURN SUBSTR(idElementosRetornar,2,LENGTH(idElementosRetornar));  
+  
+EXCEPTION
+WHEN OTHERS THEN
+  idElementosRetornar:=NULL;
+  tipoElemento      :='';
+END GET_ELEMENTOS_EN_ANILLO;
+/

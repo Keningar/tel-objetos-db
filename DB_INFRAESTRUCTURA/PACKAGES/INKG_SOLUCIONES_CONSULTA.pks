@@ -1,17 +1,16 @@
-SET DEFINE OFF;
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
 
   /**
-   * Documentación para el procedimiento 'P_OBTENER_SERVIDOR_POR_SOLUC'.
+   * Documentaci�n para el procedimiento 'P_OBTENER_SERVIDOR_POR_SOLUC'.
    *
-   * Método encargado de retornar lista servidores por solución.
+   * M�todo encargado de retornar lista servidores por soluci�n.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 07-05-2020
    */
   PROCEDURE P_OBTENER_SERVIDOR_POR_SOLUC(Pcl_Request  IN  CLOB,
@@ -20,16 +19,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
                                       Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-   * Documentación para el procedimiento 'P_OBTENER_DISCO_POR_SERVICIO'.
+   * Documentaci�n para el procedimiento 'P_OBTENER_DISCO_POR_SERVICIO'.
    *
-   * Método encargado de retornar lista de discos contratados por servicio.
+   * M�todo encargado de retornar lista de discos contratados por servicio.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 07-05-2020
    */
   PROCEDURE P_OBTENER_DISCO_POR_SERVICIO(Pcl_Request  IN  CLOB,
@@ -38,16 +37,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
                                       Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-   * Documentación para el procedimiento 'P_OBTENER_LICENCIA_POR_SOLUC'.
+   * Documentaci�n para el procedimiento 'P_OBTENER_LICENCIA_POR_SOLUC'.
    *
-   * Método encargado de retornar lista licencias por solución.
+   * M�todo encargado de retornar lista licencias por soluci�n.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
    *
-   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
+   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
    * @version 1.0 07-05-2020
    */
   PROCEDURE P_OBTENER_LICENCIA_POR_SOLUC(Pcl_Request  IN  CLOB,
@@ -56,8 +55,8 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
                                          Pcl_Response OUT SYS_REFCURSOR);
 
 END INKG_SOLUCIONES_CONSULTA;
-
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
 
  PROCEDURE P_OBTENER_SERVIDOR_POR_SOLUC(Pcl_Request  IN  CLOB,
@@ -83,7 +82,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
 
     -- VALIDACIONES
     IF Ln_ServicioId IS NULL THEN
-      Lv_Mensaje := 'El parámetro servicioId esta vacío';
+      Lv_Mensaje := 'El par�metro servicioId esta vac�o';
       RAISE Le_Exception;
     END IF;
 
@@ -118,7 +117,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -154,7 +153,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
 
     -- VALIDACIONES
     IF Ln_ServicioId IS NULL THEN
-      Lv_Mensaje := 'El parámetro servicioId esta vacío';
+      Lv_Mensaje := 'El par�metro servicioId esta vac�o';
       RAISE Le_Exception;
     END IF;
 
@@ -177,7 +176,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -213,7 +212,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
 
     -- VALIDACIONES
     IF Ln_ServicioId IS NULL THEN
-      Lv_Mensaje := 'El parámetro servicioId esta vacío';
+      Lv_Mensaje := 'El par�metro servicioId esta vac�o';
       RAISE Le_Exception;
     END IF;
 
@@ -247,7 +246,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -260,5 +259,4 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_CONSULTA AS
   END P_OBTENER_LICENCIA_POR_SOLUC;
 
 END INKG_SOLUCIONES_CONSULTA;
-
 /

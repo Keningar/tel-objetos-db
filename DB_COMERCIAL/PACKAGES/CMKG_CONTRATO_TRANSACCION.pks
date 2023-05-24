@@ -3,7 +3,7 @@ AS
 
 
    /**
-    * Documentación para la función P_AUTORIZAR_CONTRATO
+    * Documentaci�n para la funci�n P_AUTORIZAR_CONTRATO
     * Procedimiento para autorizar un contrato o adendum
     *
     * @param  Pcl_Request       -  Datos para autorizar contrato/adendum,
@@ -23,14 +23,14 @@ AS
                                    Pn_SeAutorizo   OUT NUMBER);
 
    /**
-    * Documentación para la función P_GUARDAR_CONTRATO
+    * Documentaci�n para la funci�n P_GUARDAR_CONTRATO
     * Procedimiento que guarda el contrato
     *
     * @param  Pcl_Request       -  Json,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pcl_Response      -  Respuesta
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 04-06-2019
     */
 
@@ -42,14 +42,14 @@ AS
 
 
    /**
-    * Documentación para la función P_VALIDAR_NUMERO_TARJETA
-    * Procedimiento validar número de tarjeta
+    * Documentaci�n para la funci�n P_VALIDAR_NUMERO_TARJETA
+    * Procedimiento validar n�mero de tarjeta
     *
     * @param  Pv_DatosTarjeta   -  Datos de la tarjeta,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_Respuesta      -  Data Respuesta
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019
     */
 
@@ -60,14 +60,14 @@ AS
                                   Pv_Respuesta      OUT VARCHAR2);
 
     /**
-    * Documentación para la función P_RECHAZAR_CONTRATO_ERROR
+    * Documentaci�n para la funci�n P_RECHAZAR_CONTRATO_ERROR
     * Procedimiento rechazar contrato por error
     *
     * @param  Pcl_Request       -  Datos del contrato,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_Respuesta      -  Data Respuesta
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019
     */
 
@@ -78,17 +78,17 @@ AS
                                   Pcl_Response      OUT SYS_REFCURSOR);
 
    /**
-    * Documentación para la función P_GENERAR_SECUENCIA
+    * Documentaci�n para la funci�n P_GENERAR_SECUENCIA
     * Procedimiento que genera secuencia contrato/adendum
     *
     * @param  Pv_DatosPago      -  Datos de secuencia,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_Respuesta      -  Data Respuesta
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019
     *
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.1 22-06-2021 - Se le realiza el update a la secuencia en este proceso
     * @since 1.0
     */
@@ -102,14 +102,14 @@ AS
                                   Pn_IdNumeracion   OUT INTEGER) ;
 
     /**
-    * Documentación para la función P_GUARDAR_FORMA_PAGO
+    * Documentaci�n para la funci�n P_GUARDAR_FORMA_PAGO
     * Procedimiento que guarda la forma de pago
     *
     * @param  Pv_DatosFormaPago -  Datos de forma de pago,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_Respuesta      -  Data Respuesta
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019 
     *
     * @author Nestor Naula <nnaulal@telconet.ec>
@@ -124,14 +124,14 @@ AS
                                   Pcl_Response      OUT SYS_REFCURSOR) ;
 
   /**
-    * Documentación para la función P_CREAR_ADENDUM
+    * Documentaci�n para la funci�n P_CREAR_ADENDUM
     * Procedimiento para crear Adendum
     *
     * @param  Pcl_Request       -  Datos del contrato,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_Respuesta      -  Data Respuesta
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 02-10-2019
     */
 
@@ -144,7 +144,7 @@ AS
 
                                
      /**
-    * Documentación para la función P_VALIDAR_TARJETA_BANCARIA
+    * Documentaci�n para la funci�n P_VALIDAR_TARJETA_BANCARIA
     * Procedimiento para validar tarjeta bancaria
     *
     * @param  Pcl_Request       -  Datos del contrato,
@@ -159,7 +159,7 @@ AS
                                   Pv_Status         OUT VARCHAR2);
 
     /**
-     * Documentación para la función P_EXISTE_PERSONA_CONTRATO
+     * Documentaci�n para la funci�n P_EXISTE_PERSONA_CONTRATO
      * Procedimiento que valida si una persona tiene un contrato
      *
      * @param  Pcl_Request       -  Json,
@@ -174,7 +174,6 @@ AS
                                   Pv_Status         OUT VARCHAR2);
 
 END CMKG_CONTRATO_TRANSACCION;
-
 /
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONTRATO_TRANSACCION
 AS
@@ -474,43 +473,43 @@ AS
     Ln_Descuento            :=0;
     -- VALIDACIONES
     IF Lv_IpCreacion IS NULL THEN
-      Pv_Mensaje := 'El parámetro ipCreacion esta vacío';
+      Pv_Mensaje := 'El par�metro ipCreacion esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_CodEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro codEmpresa esta vacío';
+      Pv_Mensaje := 'El par�metro codEmpresa esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_PrefijoEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro prefijoEmpresa esta vacío';
+      Pv_Mensaje := 'El par�metro prefijoEmpresa esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_UsrCreacion IS NULL THEN
-      Pv_Mensaje := 'El parámetro usrCreacion esta vacío';
+      Pv_Mensaje := 'El par�metro usrCreacion esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Origen IS NULL THEN
-      Pv_Mensaje := 'El parámetro origen esta vacío';
+      Pv_Mensaje := 'El par�metro origen esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Tipo IS NULL THEN
-      Pv_Mensaje := 'El parámetro tipo esta vacío';
+      Pv_Mensaje := 'El par�metro tipo esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Tipo != 'C' AND Lv_NumeroAdendum  IS NULL THEN
-      Pv_Mensaje := 'El parámetro numeroAdendum esta vacío';
+      Pv_Mensaje := 'El par�metro numeroAdendum esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_PersonaEmpresaRolId IS NULL THEN
-      Pv_Mensaje := 'El parámetro personaEmpresaRolId esta vacío';
+      Pv_Mensaje := 'El par�metro personaEmpresaRolId esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_ContratoId IS NULL THEN
-      Pv_Mensaje := 'El parámetro contratoId esta vacío';
+      Pv_Mensaje := 'El par�metro contratoId esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_PuntoId IS NULL THEN
-      Pv_Mensaje := 'El parámetro puntoId esta vacío';
+      Pv_Mensaje := 'El par�metro puntoId esta vac�o';
       RAISE Le_Errors;
     END IF;
 
@@ -852,7 +851,7 @@ AS
                       Ln_CaracteristicaId,
                       '',
                       'Activo',
-                      'Se crea característica para facturación por punto adicional',
+                      'Se crea caracter�stica para facturaci�n por punto adicional',
                       Lv_UsrCreacion,
                       Lv_IpCreacion,
                       SYSDATE
@@ -1164,7 +1163,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Lv_DescripClausula         VARCHAR2(400);
     Lv_Origen                  VARCHAR2(400);
 
-    --Tamaño de arreglos
+    --Tama�o de arreglos
     Ln_CountClausulas          INTEGER :=0;
     Ln_CountServicios          INTEGER :=0;
     Ln_CountAdendumsRS         INTEGER :=0;
@@ -1257,7 +1256,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Lv_MesVencimiento     := APEX_JSON.get_varchar2(p_path => 'contrato.mesVencimiento');
         Lv_TitularCuenta      := APEX_JSON.get_varchar2(p_path => 'contrato.titularCuenta');
 
-        --Tamaños de arreglo clausula
+        --Tama�os de arreglo clausula
         Ln_CountClausulas   := APEX_JSON.GET_COUNT(p_path => 'contrato.clausula');
         Ln_CountServicios   := APEX_JSON.GET_COUNT(p_path => 'contrato.servicios');
         Ln_CountAdendumsRS  := APEX_JSON.GET_COUNT(p_path => 'contrato.adendumsRazonSocial');
@@ -1577,7 +1576,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                     SYSDATE,
                     Lv_ClienteIp,
                     Lc_ServicioPromoMix.Estado,
-                    'Se eliminan los códigos promocionales en estado activo, para priorizar códigos promociones de tipo mix.'
+                    'Se eliminan los c�digos promocionales en estado activo, para priorizar c�digos promociones de tipo mix.'
                   );
                  COMMIT;
                 END IF;
@@ -1681,7 +1680,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                     SYSDATE,
                     Lv_ClienteIp,
                     Lc_ServicioPromoMens.Estado,
-                    'Se eliminan los códigos promocionales en estado activo, para priorizar códigos promociones de tipo mens.'
+                    'Se eliminan los c�digos promocionales en estado activo, para priorizar c�digos promociones de tipo mens.'
                   );
                 COMMIT;
                 END IF;
@@ -1785,7 +1784,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                     SYSDATE,
                     Lv_ClienteIp,
                     Lc_ServicioPromoIns.Estado,
-                    'Se eliminan los códigos promocionales en estado activo, para priorizar códigos promociones de tipo ins.'
+                    'Se eliminan los c�digos promocionales en estado activo, para priorizar c�digos promociones de tipo ins.'
                   );
                   COMMIT;
                 END IF;
@@ -1889,7 +1888,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
                     SYSDATE,
                     Lv_ClienteIp,
                     Lc_ServicioPromoBw.Estado,
-                    'Se eliminan los códigos promocionales en estado activo, para priorizar códigos promociones de tipo bw.'
+                    'Se eliminan los c�digos promocionales en estado activo, para priorizar c�digos promociones de tipo bw.'
                   );
                   COMMIT;
                 END IF;
@@ -2015,7 +2014,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
     Lv_NoValido     INTEGER := 0;
     Ln_idCountBin   INTEGER;
 
-    --Parámetros de validación de cuenta
+    --Par�metros de validaci�n de cuenta
     Ln_TotalCaracteres             INTEGER;
     Ln_TotalCaracteresMinimo       INTEGER;
     Ln_Valor1Parametro             VARCHAR2(400);
@@ -2108,7 +2107,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         IF Lv_DescripcionCuenta IS NOT NULL AND Lv_DescripcionCuenta != 'AHORRO' AND Lv_DescripcionCuenta != 'CORRIENTE'
            AND Pv_DatosTarjeta.Pv_NumeroCuentaTarj IS NOT NULL
         THEN
-            --Validación del BIN
+            --Validaci�n del BIN
             OPEN C_GET_PARAMETRO(Lv_NombreParametro,Pv_DatosTarjeta.Pn_CodigoEmpresa);
             FETCH C_GET_PARAMETRO INTO Ln_Valor1Parametro;
             CLOSE C_GET_PARAMETRO;
@@ -2123,7 +2122,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
                 IF Ln_idCountBin IS NULL OR Ln_idCountBin = 0
                 THEN
-                    Pv_Respuesta := 'Bin no valido [6 primeros digitos de N° Tarjeta]. Favor comunicarse con departamento de Cobranzas';
+                    Pv_Respuesta := 'Bin no valido [6 primeros digitos de N� Tarjeta]. Favor comunicarse con departamento de Cobranzas';
                 END IF;
             END IF;
         END IF;
@@ -2360,7 +2359,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
 
         IF Pn_Secuencia IS NOT NULL AND Lv_NumeracionUno IS NOT NULL AND Lv_NumeracionDos IS NOT NULL
         THEN
-            --Actualización de la númeracion
+            --Actualizaci�n de la n�meracion
             Lv_SecuenciaAsig  := LPAD(Pn_Secuencia,7,'0');
             Pn_Secuencia      := Pn_Secuencia + 1;
             UPDATE DB_COMERCIAL.ADMI_NUMERACION SET SECUENCIA = Pn_Secuencia WHERE ID_NUMERACION = Pn_IdNumeracion;
@@ -2877,7 +2876,7 @@ PROCEDURE P_GUARDAR_CONTRATO(
         Lv_CodigoVerificacion := APEX_JSON.get_varchar2(p_path => 'codigoVerificacion');
 
        
-        Pv_Mensaje   := 'Proceso de validación correcto';
+        Pv_Mensaje   := 'Proceso de validaci�n correcto';
         Pv_Status    := 'OK';
        
         
@@ -2962,6 +2961,4 @@ PROCEDURE P_GUARDAR_CONTRATO(
                                             '127.0.0.1');
   END P_EXISTE_PERSONA_CONTRATO;
 END CMKG_CONTRATO_TRANSACCION;
-
-
 /

@@ -89,7 +89,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_INACT_CORREOS_PERSONALES AS
 					-- Si el correo no es de TN o MD
 					IF (NOT F_esCorporativo(Lv_correo)) THEN
 										
-						-- Si es un empleado sin correo corporativo, no se inactivará su correo personal
+						-- Si es un empleado sin correo corporativo, no se inactivar� su correo personal
 						IF NOT F_tieneCorreosCorporativos(Lv_id_persona) THEN
 							CONTINUE;
 						END IF;				

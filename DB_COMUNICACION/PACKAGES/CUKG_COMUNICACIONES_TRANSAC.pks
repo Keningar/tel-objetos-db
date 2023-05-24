@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS 
 
   /**
-   * Documentación para el proceso 'P_INSERT_COMUNICACION'
+   * Documentaci�n para el proceso 'P_INSERT_COMUNICACION'
    *
-   * Metodo encargado de generar una comunicación
+   * Metodo encargado de generar una comunicaci�n
    *
    * @param Pcl_Request       IN   CLOB Recibe json request con informacion de la comunicacion
    * [
@@ -13,15 +13,15 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
    *  idDetalle               Id del detalle,
    *  idRemitente             Id del remitente,
    *  nombreRemitente         Nombre del remitente,
-   *  claseComunicacion       Clase de comunicación,
-   *  fechaComunicacion       Fecha de la comunicación,
-   *  descripcionComunicacion Descripción de la comunicación,
-   *  estado                  Estado de la comunicación,
+   *  claseComunicacion       Clase de comunicaci�n,
+   *  fechaComunicacion       Fecha de la comunicaci�n,
+   *  descripcionComunicacion Descripci�n de la comunicaci�n,
+   *  estado                  Estado de la comunicaci�n,
    *  idPunto                 Id del punto,
-   *  codEmpresa              Código de empresa,
-   *  fechaCreacion           Fecha de creación de la comunicación,
-   *  usuario                 Usuario quien genera la comunicación,
-   *  ip                      Ip de donde se origina la comunicación
+   *  codEmpresa              C�digo de empresa,
+   *  fechaCreacion           Fecha de creaci�n de la comunicaci�n,
+   *  usuario                 Usuario quien genera la comunicaci�n,
+   *  ip                      Ip de donde se origina la comunicaci�n
    * ]
    * @param Pn_IdComunicacion OUT  INFO_COMUNICACION.ID_COMUNICACION%TYPE Retorna el id de la Comunicacion
    * @param Pv_Status         OUT  VARCHAR2 Retorna estatus de la transaccion
@@ -35,9 +35,9 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
                                   Pn_IdComunicacion OUT INFO_COMUNICACION.ID_COMUNICACION%TYPE,
                                   Pv_Status    OUT VARCHAR2,
                                   Pv_Mensaje   OUT VARCHAR2);
-  
+
   /**
-   * Documentación para el proceso 'P_INSERT_DOCUMENTO'
+   * Documentaci�n para el proceso 'P_INSERT_DOCUMENTO'
    *
    * Metodo encargado de generar un documento
    *
@@ -47,8 +47,8 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
    *  idTipoDocumento             Id del tipo de documento,
    *  idClaseDocumento            Id de la clase de documento,           
    *  nombreDocumento             Nombre del documento,
-   *  ubicacionLogicaDocumento    Ubicación lógica del documento,
-   *  ubicacionFisicaDocumento    Ubicación física del documento,
+   *  ubicacionLogicaDocumento    Ubicaci�n l�gica del documento,
+   *  ubicacionFisicaDocumento    Ubicaci�n f�sica del documento,
    *  fechaDocumento              Fecha del documento,
    *  idModeloElemento            Id del modelo del elemento,
    *  idElemento                  Id del elemento,
@@ -56,15 +56,15 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
    *  idDocumentoFinanciero       Id del documento financiero,
    *  idTareaInterfaceModeloTra   Id de tarea, interface, modelo,
    *  estado                      Estado del documento,
-   *  codEmpresa                  Código de empresa,
+   *  codEmpresa                  C�digo de empresa,
    *  idTipoDocumentoGeneral      Id del tipo documento general,
    *  fechaDesde                  Fecha desde para el documento,
    *  fechaHasta                  Fecha hasta para el documento,
-   *  latitud                     Latitud de ubicación del documento,
-   *  longitud                    Longitud de ubicación del documento,
+   *  latitud                     Latitud de ubicaci�n del documento,
+   *  longitud                    Longitud de ubicaci�n del documento,
    *  etiquetaDocumento           Etiqueta del documento,
    *  idCuadrillaHistorial        Id Cuadrilla para historial,
-   *  fechaCreacion               Fecha de creación del documento,
+   *  fechaCreacion               Fecha de creaci�n del documento,
    *  mensaje                     Mensaje del documento
    *  usuario                     Usuario quien genera el documento,
    *  ip                          Ip de donde se origina el documento
@@ -81,20 +81,20 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
                                 Pn_IdDocumento  OUT INFO_DOCUMENTO.ID_DOCUMENTO%TYPE,
                                 Pv_Status       OUT VARCHAR2,
                                 Pv_Mensaje      OUT VARCHAR2);
-  
+
   /**
-   * Documentación para el proceso 'P_INSERT_DOC_COMUNICACION'
+   * Documentaci�n para el proceso 'P_INSERT_DOC_COMUNICACION'
    *
-   * Metodo encargado de generar la relación entre el documento y la comunicación
+   * Metodo encargado de generar la relaci�n entre el documento y la comunicaci�n
    *
-   * @param Pcl_Request           IN   CLOB Recibe json request con información del documento y comunicación
+   * @param Pcl_Request           IN   CLOB Recibe json request con informaci�n del documento y comunicaci�n
    * [
    *  idDocumento     Id del documento,
-   *  idComunicacion  Id de la comunicación,
-   *  estado          Estado de la relación entre documento y comunicación,           
-   *  fechaCreacion   Fecha de creación,
-   *  usuario         Usuario quien genera la relación entre documento y comunicación,
-   *  ip              Ip de donde se origina la relación entre documento y comunicación
+   *  idComunicacion  Id de la comunicaci�n,
+   *  estado          Estado de la relaci�n entre documento y comunicaci�n,           
+   *  fechaCreacion   Fecha de creaci�n,
+   *  usuario         Usuario quien genera la relaci�n entre documento y comunicaci�n,
+   *  ip              Ip de donde se origina la relaci�n entre documento y comunicaci�n
    * ]
    * @param Pn_IdDocComunicacion  OUT INFO_DOCUMENTO_COMUNICACION.ID_DOCUMENTO_COMUNICACION%TYPE Retorna el id de la relacion del documento y comunicacion
    * @param Pv_Status             OUT  VARCHAR2 Retorna estatus de la transaccion
@@ -108,16 +108,16 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
                                        Pn_IdDocComunicacion OUT INFO_DOCUMENTO_COMUNICACION.ID_DOCUMENTO_COMUNICACION%TYPE,
                                        Pv_Status            OUT VARCHAR2,
                                        Pv_Mensaje           OUT VARCHAR2);
-  
+
   /**
-   * Documentación para el proceso 'P_INSERT_DOCUMENTO_RELACION'
+   * Documentaci�n para el proceso 'P_INSERT_DOCUMENTO_RELACION'
    *
-   * Metodo encargado de generar la relación entre el documento y la transacción (caso, tarea, etc)
+   * Metodo encargado de generar la relaci�n entre el documento y la transacci�n (caso, tarea, etc)
    *
-   * @param Pcl_Request           IN   CLOB Recibe json request con información del documento y relación
+   * @param Pcl_Request           IN   CLOB Recibe json request con informaci�n del documento y relaci�n
    * [
    *  idDocumento               Id del documento,
-   *  modulo                    Modulo de la transacción (SOPORTE, TECNICO, etc),
+   *  modulo                    Modulo de la transacci�n (SOPORTE, TECNICO, etc),
    *  idEncuesta                Id de la encuesta,
    *  idServicio                Id del servicio,
    *  idPunto                   Id del punto,
@@ -132,19 +132,19 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
    *  idDetalle                 Id del detalle,
    *  idOrdenTrabajo            Id de la orden de trabajo,
    *  idMantenimientoElemento   Id del mantenimiento del elemento,
-   *  estadoEvaluacion          Estado de la evaluación,
-   *  evaluacionTrabajo         Evaluación del trabajo,
-   *  fechaInicioEvaluacion     Fecha de inicio de evaluación,
-   *  usuarioEvaluacion         Usuario de evaluación,
-   *  porcentajeEvaluacionBase  Porcentaje de la evaluación base,
+   *  estadoEvaluacion          Estado de la evaluaci�n,
+   *  evaluacionTrabajo         Evaluaci�n del trabajo,
+   *  fechaInicioEvaluacion     Fecha de inicio de evaluaci�n,
+   *  usuarioEvaluacion         Usuario de evaluaci�n,
+   *  porcentajeEvaluacionBase  Porcentaje de la evaluaci�n base,
    *  porcentajeEvaluado        Porcentaje evaluado,
-   *  numeroAdendum             Número del adendum,
+   *  numeroAdendum             N�mero del adendum,
    *  idPagoDatos               Id del pago de datos,
-   *  estado                    Estado de la relación con documento,           
-   *  fechaCreacion             Fecha de creación,
-   *  usuario                   Usuario quien genera la relación con el documento
+   *  estado                    Estado de la relaci�n con documento,           
+   *  fechaCreacion             Fecha de creaci�n,
+   *  usuario                   Usuario quien genera la relaci�n con el documento
    * ]
-   * @param Pn_IdDocRelacion  OUT  INFO_DOCUMENTO_RELACION.ID_DOCUMENTO_RELACION%TYPE Retorna el id de la relacion del documento y relación
+   * @param Pn_IdDocRelacion  OUT  INFO_DOCUMENTO_RELACION.ID_DOCUMENTO_RELACION%TYPE Retorna el id de la relacion del documento y relaci�n
    * @param Pv_Status         OUT  VARCHAR2 Retorna estatus de la transaccion
    * @param Pv_Mensaje        OUT  VARCHAR2 Retorna mensaje de la transaccion
    *
@@ -156,10 +156,9 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
                                          Pn_IdDocRelacion OUT INFO_DOCUMENTO_RELACION.ID_DOCUMENTO_RELACION%TYPE,
                                          Pv_Status        OUT VARCHAR2,
                                          Pv_Mensaje       OUT VARCHAR2);                                       
-                                  
+
 END CUKG_COMUNICACIONES_TRANSAC;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
 
@@ -169,10 +168,10 @@ CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
                                   Pv_Mensaje   OUT VARCHAR2) AS
   
   BEGIN 
-  
+
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdComunicacion := SEQ_INFO_COMUNICACION.NEXTVAL;
-    
+
     INSERT INTO DB_COMUNICACION.INFO_COMUNICACION
       (Id_Comunicacion,
       Forma_Contacto_Id,
@@ -207,21 +206,21 @@ CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
       TO_DATE(APEX_JSON.get_varchar2('fechaCreacion'),'rrrr-mm-dd hh24:mi:ss'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Comunicacion creada correctamente';
-    
+
   EXCEPTION 
     WHEN OTHERS THEN  
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_COMUNICACION;
-  
+
   PROCEDURE P_INSERT_DOCUMENTO (Pcl_Request     IN  CLOB,
                                 Pn_IdDocumento  OUT INFO_DOCUMENTO.ID_DOCUMENTO%TYPE,
                                 Pv_Status       OUT VARCHAR2,
                                 Pv_Mensaje      OUT VARCHAR2) AS
-  
+
     Lcl_Documento clob;
     Lbl_Documento blob;
     Li_DestOffset integer;
@@ -236,12 +235,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
     APEX_JSON.PARSE(Pcl_Request);
     Lcl_Documento := APEX_JSON.get_clob('documento');
     Pn_IdDocumento := SEQ_INFO_DOCUMENTO.NEXTVAL;
-    
+
     IF Lcl_Documento IS NOT NULL THEN
       DBMS_LOB.CreateTemporary(Lbl_Documento, true);
       DBMS_LOB.ConvertToBlob(Lbl_Documento, Lcl_Documento, length(Lcl_Documento), Li_DestOffset, Li_SrcOffset, 0, Li_LangContext, Li_Warning);
     END IF;
-    
+
     INSERT INTO DB_COMUNICACION.INFO_DOCUMENTO
       (Id_Documento,
       Tipo_Documento_Id,
@@ -296,25 +295,25 @@ CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
       TO_DATE(APEX_JSON.get_varchar2('fechaCreacion'),'rrrr-mm-dd hh24:mi:ss'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Documento creado correctamente';
-    
+
   EXCEPTION 
     WHEN OTHERS THEN  
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_DOCUMENTO;
-  
+
   PROCEDURE P_INSERT_DOC_COMUNICACION (Pcl_Request          IN  CLOB,
                                        Pn_IdDocComunicacion OUT INFO_DOCUMENTO_COMUNICACION.ID_DOCUMENTO_COMUNICACION%TYPE,
                                        Pv_Status            OUT VARCHAR2,
                                        Pv_Mensaje           OUT VARCHAR2) AS
-  
+
   BEGIN 
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdDocComunicacion := SEQ_DOCUMENTO_COMUNICACION.NEXTVAL;
-    
+
     INSERT INTO DB_COMUNICACION.INFO_DOCUMENTO_COMUNICACION
       (Id_Documento_Comunicacion,
       Documento_Id,
@@ -331,25 +330,25 @@ CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
       TO_DATE(APEX_JSON.get_varchar2('fechaCreacion'),'rrrr-mm-dd hh24:mi:ss'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Documento Comunicacion creado correctamente';
-    
+
   EXCEPTION 
     WHEN OTHERS THEN  
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_DOC_COMUNICACION;
-  
+
   PROCEDURE P_INSERT_DOCUMENTO_RELACION (Pcl_Request      IN  CLOB,
                                          Pn_IdDocRelacion OUT INFO_DOCUMENTO_RELACION.ID_DOCUMENTO_RELACION%TYPE,
                                          Pv_Status        OUT VARCHAR2,
                                          Pv_Mensaje       OUT VARCHAR2) AS
-  
+
   BEGIN 
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdDocRelacion := SEQ_INFO_DOCUMENTO_RELACION.NEXTVAL;
-    
+
     INSERT INTO DB_COMUNICACION.INFO_DOCUMENTO_RELACION
       (Id_Documento_Relacion,
       Documento_Id,
@@ -409,10 +408,10 @@ CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC AS
       APEX_JSON.get_varchar2('estado'),
       SYSDATE,
       APEX_JSON.get_varchar2('usuario'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Documento Relacion creado correctamente';
-    
+
   EXCEPTION 
     WHEN OTHERS THEN  
       Pv_Status :=  'ERROR';

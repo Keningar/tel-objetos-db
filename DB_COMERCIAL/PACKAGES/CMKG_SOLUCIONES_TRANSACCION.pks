@@ -1,16 +1,15 @@
-SET DEFINE OFF;
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
   /**
-   * Documentación para el procedimiento 'P_ELIMINAR_SERVICIOS_SOLUCION'.
+   * Documentaci�n para el procedimiento 'P_ELIMINAR_SERVICIOS_SOLUCION'.
    *
-   * Método encargado de eliminar los servicios de una solución.
+   * M�todo encargado de eliminar los servicios de una soluci�n.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 08-07-2020
    */
   PROCEDURE P_ELIMINAR_SERVICIOS_SOLUCION(Pcl_Request IN  CLOB,
@@ -18,17 +17,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                           Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_SOLUCION_CAB'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_SOLUCION_CAB'.
    *
-   * Método encargado de guardar un registro en la 'INFO_SOLUCION_CAB' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de guardar un registro en la 'INFO_SOLUCION_CAB' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request       IN  CLOB Recibe json request.
    * @param Pn_IdSolucionCab  OUT NUMBER Retorna el id del registro creado.
-   * @param Pn_NumeroSolucion OUT NUMBER Retorna el numero de solución.
-   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pn_NumeroSolucion OUT NUMBER Retorna el numero de soluci�n.
+   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_SOLUCION_CAB(Pcl_Request       IN  CLOB,
@@ -38,15 +37,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                    Pv_Mensaje        OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_SOLUCION_CAB'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_SOLUCION_CAB'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_SOLUCION_CAB' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de actualizar un registro en la 'INFO_SOLUCION_CAB' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_ACTUALIZAR_SOLUCION_CAB(Pcl_Request IN  CLOB,
@@ -54,16 +53,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                       Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_SOLUCION_DET'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_SOLUCION_DET'.
    *
-   * Método encargado de guardar un registro en la 'INFO_SOLUCION_DET' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de guardar un registro en la 'INFO_SOLUCION_DET' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request      IN  CLOB Recibe json request.
    * @param Pn_IdSolucionDet OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status        OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje       OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status        OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje       OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_SOLUCION_DET(Pcl_Request      IN  CLOB,
@@ -72,15 +71,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                    Pv_Mensaje       OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_SOLUCION_DET'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_SOLUCION_DET'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_SOLUCION_DET' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de actualizar un registro en la 'INFO_SOLUCION_DET' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_ACTUALIZAR_SOLUCION_DET(Pcl_Request IN  CLOB,
@@ -88,16 +87,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                       Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_SOLUCION_REF'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_SOLUCION_REF'.
    *
-   * Método encargado de guardar un registro en la 'INFO_SOLUCION_REFERENCIA' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de guardar un registro en la 'INFO_SOLUCION_REFERENCIA' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request      IN  CLOB Recibe json request.
    * @param Pn_IdSolucionRef OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status        OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje       OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status        OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje       OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_SOLUCION_REF(Pcl_Request      IN  CLOB,
@@ -106,15 +105,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                    Pv_Mensaje       OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_SOLUCION_REF'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_SOLUCION_REF'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_SOLUCION_REFERENCIA' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de actualizar un registro en la 'INFO_SOLUCION_REFERENCIA' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_ACTUALIZAR_SOLUCION_REF(Pcl_Request IN  CLOB,
@@ -122,16 +121,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                       Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_RECURSO_CAB'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_RECURSO_CAB'.
    *
-   * Método encargado de guardar un registro en la 'INFO_SERVICIO_RECURSO_CAB' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de guardar un registro en la 'INFO_SERVICIO_RECURSO_CAB' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request     IN  CLOB Recibe json request.
    * @param Pn_IdRecursoCab OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status       OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje      OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status       OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje      OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_RECURSO_CAB(Pcl_Request     IN  CLOB,
@@ -140,15 +139,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                   Pv_Mensaje      OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_RECURSO_CAB'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_RECURSO_CAB'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_SERVICIO_RECURSO_CAB' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de actualizar un registro en la 'INFO_SERVICIO_RECURSO_CAB' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_ACTUALIZAR_RECURSO_CAB(Pcl_Request IN  CLOB,
@@ -156,16 +155,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                      Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_RECURSO_DET'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_RECURSO_DET'.
    *
-   * Método encargado de guardar un registro en la 'INFO_SERVICIO_RECURSO_DET' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de guardar un registro en la 'INFO_SERVICIO_RECURSO_DET' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request     IN  CLOB Recibe json request.
    * @param Pn_IdRecursoDet OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status       OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje      OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status       OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje      OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_RECURSO_DET(Pcl_Request     IN  CLOB,
@@ -174,15 +173,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
                                   Pv_Mensaje      OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_ACTUALIZAR_RECURSO_DET'.
+   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_RECURSO_DET'.
    *
-   * Método encargado de actualizar un registro en la 'INFO_SERVICIO_RECURSO_DET' del esquema 'DB_COMERCIAL'.
+   * M�todo encargado de actualizar un registro en la 'INFO_SERVICIO_RECURSO_DET' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_ACTUALIZAR_RECURSO_DET(Pcl_Request IN  CLOB,
@@ -191,6 +190,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
 END CMKG_SOLUCIONES_TRANSACCION;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 ----
 ----
@@ -278,7 +278,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
         FETCH C_ObtenerServicioSolucion INTO Lc_ObtenerServicioSolucion;
       CLOSE C_ObtenerServicioSolucion;
 
-      --Eliminamos el detalle de la solución.
+      --Eliminamos el detalle de la soluci�n.
       UPDATE DB_COMERCIAL.INFO_SOLUCION_DET
         SET ESTADO      = Lv_Estado,
             IP_ULT_MOD  = Lv_IpUltMod,
@@ -286,7 +286,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
             FEC_ULT_MOD = SYSDATE
       WHERE SERVICIO_ID = Ln_IdServicio;
 
-      --Eliminamos la referencia de la solución.
+      --Eliminamos la referencia de la soluci�n.
       IF Lc_ObtenerServicioSolucion.ES_PREFERENCIAL = 'SI' THEN
         UPDATE DB_COMERCIAL.INFO_SOLUCION_REFERENCIA
           SET ESTADO      = Lv_Estado,
@@ -327,7 +327,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
       FETCH C_TotalServiciosSolucion INTO Ln_TotalServicios;
     CLOSE C_TotalServiciosSolucion;
 
-    --Si no se encuentra ningún servicio Activo en la solución
+    --Si no se encuentra ning�n servicio Activo en la soluci�n
     --procedemos a eliminar la cabecera.
     IF Ln_TotalServicios < 1 THEN
       UPDATE DB_COMERCIAL.INFO_SOLUCION_CAB
@@ -343,7 +343,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -376,19 +376,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validación.
+    --Validaci�n.
     IF APEX_JSON.GET_NUMBER(P_PATH   => 'puntoId')        IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'nombreSolucion') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')         IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')    IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')     IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (puntoId,nombreSolucion,estado,usrCreacion,ipCreacion)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (puntoId,nombreSolucion,estado,usrCreacion,ipCreacion)';
       RAISE Le_Exception;
     END IF;
 
     --Obtenemos el secuencial.
     Ln_IdSolucionCab  := DB_COMERCIAL.SEQ_INFO_SOLUCION_CAB.NEXTVAL;
-    --Número de solución
+    --N�mero de soluci�n
     Ln_NumeroSolucion := DB_COMERCIAL.SEQ_GRUPO_PRODUCTO.NEXTVAL;
 
     --Insert de la tabla.
@@ -414,7 +414,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status         := 'OK';
-    Pv_Mensaje        := 'Transación exitosa';
+    Pv_Mensaje        := 'Transaci�n exitosa';
     Pn_IdSolucionCab  :=  Ln_IdSolucionCab;
     Pn_NumeroSolucion :=  Ln_NumeroSolucion;
 
@@ -461,11 +461,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     APEX_JSON.PARSE(Pcl_Request);
     Ln_IdSolucionCab := APEX_JSON.GET_NUMBER(P_PATH => 'idSolucionCab');
 
-    --Validación.
+    --Validaci�n.
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')  IS NULL OR
        Ln_IdSolucionCab IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idSolucionCab,usrUltMod,ipUltMod)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idSolucionCab,usrUltMod,ipUltMod)';
       RAISE Le_Exception;
     END IF;
 
@@ -474,7 +474,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     CLOSE C_ExisteSolucionCab;
 
     IF Ln_ExisteSolucionCab < 1 THEN
-      Lv_Mensaje := 'No existe la solución con el id('||Ln_IdSolucionCab||')';
+      Lv_Mensaje := 'No existe la soluci�n con el id('||Ln_IdSolucionCab||')';
       RAISE Le_Exception;
     END IF;
 
@@ -489,7 +489,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     WHERE ID_SOLUCION_CAB = Ln_IdSolucionCab;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -518,13 +518,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validación.
+    --Validaci�n.
     IF APEX_JSON.GET_NUMBER(P_PATH   => 'solucionCabId') IS NULL OR
        APEX_JSON.GET_NUMBER(P_PATH   => 'servicioId')    IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')        IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')   IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')    IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (solucionCabId,servicioId,estado,usrCreacion,ipCreacion)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (solucionCabId,servicioId,estado,usrCreacion,ipCreacion)';
       RAISE Le_Exception;
     END IF;
 
@@ -559,7 +559,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     );
 
     Pv_Status        := 'OK';
-    Pv_Mensaje       := 'Transación exitosa';
+    Pv_Mensaje       := 'Transaci�n exitosa';
     Pn_IdSolucionDet :=  Ln_IdSolucionDet;
 
   EXCEPTION
@@ -605,7 +605,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')  IS NULL OR
        Ln_IdSolucionDet IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idSolucionDet,usrUltMod,ipUltMod)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idSolucionDet,usrUltMod,ipUltMod)';
       RAISE Le_Exception;
     END IF;
 
@@ -614,7 +614,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     CLOSE C_ExisteSolucionDet;
 
     IF Ln_ExisteSolucionDet < 1 THEN
-      Lv_Mensaje := 'No existe el detalle de solución para el id('||Ln_IdSolucionDet||')';
+      Lv_Mensaje := 'No existe el detalle de soluci�n para el id('||Ln_IdSolucionDet||')';
       RAISE Le_Exception;
     END IF;
 
@@ -632,7 +632,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     WHERE ID_SOLUCION_DET = Ln_IdSolucionDet;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -661,13 +661,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validación.
+    --Validaci�n.
     IF APEX_JSON.GET_NUMBER(P_PATH   => 'solucionDetIdA') IS NULL OR
        APEX_JSON.GET_NUMBER(P_PATH   => 'solucionDetIdB') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')         IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')    IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')     IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (solucionDetIdA,solucionDetIdB,estado,usrCreacion,ipCreacion)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (solucionDetIdA,solucionDetIdB,estado,usrCreacion,ipCreacion)';
       RAISE Le_Exception;
     END IF;
 
@@ -695,7 +695,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status        := 'OK';
-    Pv_Mensaje       := 'Transación exitosa';
+    Pv_Mensaje       := 'Transaci�n exitosa';
     Pn_IdSolucionRef :=  Ln_IdSolucionRef;
 
   EXCEPTION
@@ -742,7 +742,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')  IS NULL OR
        Ln_IdSolucionRef IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idSolucionReferencia,usrUltMod,ipUltMod)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idSolucionReferencia,usrUltMod,ipUltMod)';
       RAISE Le_Exception;
     END IF;
 
@@ -751,7 +751,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     CLOSE C_ExisteSolucionRef;
 
     IF Ln_ExisteSolucionRef < 1 THEN
-      Lv_Mensaje := 'No existe la referencia de solución para el id('||Ln_IdSolucionRef||')';
+      Lv_Mensaje := 'No existe la referencia de soluci�n para el id('||Ln_IdSolucionRef||')';
       RAISE Le_Exception;
     END IF;
 
@@ -765,7 +765,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     WHERE ID_SOLUCION_REFERENCIA = Ln_IdSolucionRef;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -794,7 +794,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validación.
+    --Validaci�n.
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'tipoRecurso')        IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'descripcionRecurso') IS NULL OR
        APEX_JSON.GET_NUMBER(P_PATH   => 'servicioId')         IS NULL OR
@@ -802,7 +802,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
        APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')             IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')        IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')         IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (tipoRecurso,descripcionRecurso,servicioId,cantidad,'||
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (tipoRecurso,descripcionRecurso,servicioId,cantidad,'||
                                                 'estado,usrCreacion,ipCreacion)';
       RAISE Le_Exception;
     END IF;
@@ -837,7 +837,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status       := 'OK';
-    Pv_Mensaje      := 'Transación exitosa';
+    Pv_Mensaje      := 'Transaci�n exitosa';
     Pn_IdRecursoCab :=  Ln_IdRecursoCab;
 
   EXCEPTION
@@ -884,7 +884,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')  IS NULL OR
        Ln_IdRecursoCab IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (idServicioRecursoCab,usrUltMod,ipUltMod)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (idServicioRecursoCab,usrUltMod,ipUltMod)';
       RAISE Le_Exception;
     END IF;
 
@@ -911,7 +911,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -940,12 +940,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validación.
+    --Validaci�n.
     IF APEX_JSON.GET_NUMBER(P_PATH   => 'servicioRecursoCabId') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')               IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion')          IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')           IS NULL THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo (servicioRecursoCabId,estado,usrCreacion,ipCreacion)';
+      Lv_Mensaje := 'Ning�n valor puede ir nulo (servicioRecursoCabId,estado,usrCreacion,ipCreacion)';
       RAISE Le_Exception;
     END IF;
 
@@ -979,7 +979,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status       := 'OK';
-    Pv_Mensaje      := 'Transación exitosa';
+    Pv_Mensaje      := 'Transaci�n exitosa';
     Pn_IdRecursoDet :=  Ln_IdRecursoDet;
 
   EXCEPTION
@@ -1035,7 +1035,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')  IS NULL OR
        (Ln_IdRecursoDet IS NULL AND Ln_IdRecursoCab IS NULL AND Ln_IdElemento IS NULL) THEN
-      Lv_Mensaje := 'Ningún valor puede ir nulo [(idServicioRecursoDet o servicioRecursoCabId o elementoId),usrUltMod,ipUltMod)'||Pcl_Request;
+      Lv_Mensaje := 'Ning�n valor puede ir nulo [(idServicioRecursoDet o servicioRecursoCabId o elementoId),usrUltMod,ipUltMod)'||Pcl_Request;
       RAISE Le_Exception;
     END IF;
 
@@ -1066,7 +1066,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 
       --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -1081,4 +1081,3 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION AS
 ----
 END CMKG_SOLUCIONES_TRANSACCION;
 /
-

@@ -19,7 +19,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REGULARIZACIONES AS
                                        Pcl_Response      OUT SYS_REFCURSOR);
 
 
-                                          
+
     /**
     * Documentación para la función P_DOCUMENTOS_FIRMAR
     * Procedimiento para regularizar documentos que no tienen firma
@@ -37,10 +37,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REGULARIZACIONES AS
                                        Pv_Status         OUT VARCHAR2,
                                        Pcl_Response      OUT SYS_REFCURSOR);
 
-                                       
+
 
 END CMKG_REGULARIZACIONES;
-
 /
 
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REGULARIZACIONES AS
@@ -70,12 +69,12 @@ PROCEDURE P_ROLES_ENUNCIADOS(      Pcl_Request       CLOB,
     Lv_Identificacion             VARCHAR2(100); 
     Lv_UsrModificacion            VARCHAR2(100) :='MovilRegula';
 
-   
+
 BEGIN
     APEX_JSON.PARSE(Pcl_Request); 
-    
+
     Ln_dias       := APEX_JSON.get_number(p_path => 'dias');
-   
+
      IF Ln_dias IS NULL THEN
         RAISE_APPLICATION_ERROR(-20101, 'El campo dias es obligatorio');
     END IF;
@@ -83,41 +82,41 @@ BEGIN
 
    ----Recorro las personas que tienen mas de un rol
    FOR persona IN C_PERSONAS_REGULARIZAR('Activo',Ln_dias) LOOP
-   
+
 	    Ln_IdDocumentoEnunciado:= NULL; 
-	  
-	  
-	  
+
+
+
         BEGIN
-            
+
             SELECT IDENTIFICACION_CLIENTE
             INTO  Lv_Identificacion
             FROM DB_COMERCIAL.INFO_PERSONA
             WHERE ID_PERSONA    = persona.ID_PERSONA;
-                
-                
-          
+
+
+
             SELECT max(DOCUMENTO_RELACION_ID) 
             INTO  Ln_IdDocumentoEnunciado
             FROM DB_DOCUMENTO.INFO_DOCUMENTO_CARAC idc WHERE  DOC_REFERENCIA_ID =1 AND
             VALOR =Lv_Identificacion
             ORDER BY FECHA_CREACION DESC;
-              
+
         EXCEPTION
         WHEN NO_DATA_FOUND THEN
              Ln_IdDocumentoEnunciado := NULL;
         END;
-      
-      
-      	
+
+
+
 
         IF Ln_IdDocumentoEnunciado IS NULL THEN
             CONTINUE;
         END IF;	   
-       
-       
-     
-	
+
+
+
+
 		UPDATE    
         DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL iper
         SET iper.ESTADO='Eliminado',
@@ -133,8 +132,8 @@ BEGIN
             EMPRESA_ROL_ID= IFR.ID_EMPRESA_ROL and
             AR.DESCRIPCION_ROL IN('blanca','negra') AND iper.ESTADO='Activo'  
         );
-				
-		
+
+
 	    UPDATE 
 	    DB_COMERCIAL.INFO_PERSONA_EMP_ROL_ENUNCIADO ipere
 		SET ESTADO='Eliminado',
@@ -149,20 +148,20 @@ BEGIN
 		IFR.ROL_ID=AR.ID_ROL and
 		EMPRESA_ROL_ID= IFR.ID_EMPRESA_ROL and
 		AR.DESCRIPCION_ROL IN('blanca','negra'));	
-	
+
 	    COMMIT;
- 
+
         Lv_Request  := '{"identificacion":"'||Lv_Identificacion||'","contactos":[ ],"idDocumentoRelacion":"'||Ln_IdDocumentoEnunciado||'","usrCreacion":"'||Lv_UsrModificacion||'","ipCreacion":"127.0.0.1" }';       
         DB_COMERCIAL.CMKG_LISTA_PERSONA.P_AGREGAR_PERSONA_LISTA(
                                   Lv_Request,
                                   Pv_Mensaje ,   
                                   Pv_Status ,
                                   Pcl_Response) ;          
-                              
+
        dbms_output.put_line(Pv_Status);
        dbms_output.put_line(Pv_Mensaje);                     
        DBMS_OUTPUT.PUT_LINE (persona.ID_PERSONA||' - '||Ln_IdDocumentoEnunciado);
-             
+
    END LOOP;
 
 
@@ -201,7 +200,7 @@ PROCEDURE P_DOCUMENTOS_FIRMAR(     Pcl_Request       CLOB,
     Lcl_WhereAndJoin            CLOB; 
     Lcl_OrderAnGroup            CLOB;  
     Lcl_FiltroDocumentos        CLOB;
-    
+
     Lv_Request                    VARCHAR2(5000);  
     Lv_usrCreacion                VARCHAR2(100); 
     Lv_Estado                     VARCHAR2(100); 
@@ -209,10 +208,10 @@ PROCEDURE P_DOCUMENTOS_FIRMAR(     Pcl_Request       CLOB,
     Lv_ParametroCab             VARCHAR2(100);
     Lv_ParamDetFirma            VARCHAR2(100);
     Lv_ParamDetCambio           VARCHAR2(100);
-    
+
     Pcl_ParamDetFirma        DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
     Pcl_ParamDetCambio       DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;  
-    
+
    CURSOR C_LISTA_TIPO_DOC IS
     SELECT pdet.DESCRIPCION FROM DB_GENERAL.ADMI_PARAMETRO_DET pdet
     INNER JOIN DB_GENERAL.ADMI_PARAMETRO_CAB pcab
@@ -220,12 +219,12 @@ PROCEDURE P_DOCUMENTOS_FIRMAR(     Pcl_Request       CLOB,
     WHERE pcab.NOMBRE_PARAMETRO='FIRMAS_CONTRATO'
     AND pdet.ESTADO = 'Activo'; 
 
-   
+
 BEGIN
         APEX_JSON.PARSE(Pcl_Request);  
 
-   
-    
+
+
       Lv_ParametroCab	      :=  'PARAM_REGULARIZACION_DOCUMENTO_FIRMA' ;   
       Lv_ParamDetFirma	      :=  'FILTROS_DOCUMENTO_FIRMA';     
       DB_GENERAL.GNKG_PARAMETRO_CONSULTA.P_GET_DETALLE_PARAMETRO(Pv_NombreParametro    => Lv_ParametroCab	,
@@ -252,9 +251,9 @@ BEGIN
         END IF;
     Lv_Estado         := Pcl_ParamDetCambio.VALOR1;
     Lv_usrCreacion    := Pcl_ParamDetCambio.VALOR2;
-      
+
     IF Pcl_ParamDetFirma.VALOR1 = 'S' THEN
- 
+
            Lcl_Select       :=  '
                                 SELECT  
                                 ipe.identificacion_cliente       cedula,                                  
@@ -281,9 +280,9 @@ BEGIN
                                 ON indr.contrato_id = ico.id_contrato AND indr.documento_id = indo.id_documento  
                                 INNER JOIN db_general.admi_tipo_documento_general atdg 
                                 ON  atdg.id_tipo_documento  = indo.tipo_documento_general_id 
-                                
+
                                 ';
- 
+
 
             Lcl_WhereAndJoin := '
                                 WHERE  indo.empresa_cod in  ('''|| REPLACE(Pcl_ParamDetFirma.VALOR5, ',', ''',''') ||''') 
@@ -291,7 +290,7 @@ BEGIN
                                 AND (TRUNC(ico.fe_creacion)   BETWEEN to_date( '''|| Pcl_ParamDetFirma.VALOR3||''',''dd/mm/rrrr'') AND to_date('''|| Pcl_ParamDetFirma.VALOR4||''',''dd/mm/rrrr''))
                                 AND ico.estado in ('''|| REPLACE(Pcl_ParamDetFirma.VALOR2, ',', ''',''') ||''') 
                                 AND ((indo.USR_ULT_MOD  <> '''||Lv_usrCreacion||''' AND indo.ESTADO <> '''||  Lv_Estado ||''') OR indo.USR_CREACION  <>  '''||Lv_usrCreacion||''' )
-                              
+
 
                                 ';
 
@@ -302,13 +301,13 @@ BEGIN
             Lcl_FiltroDocumentos  :=  Lcl_FiltroDocumentos || ' (INSTR(indo.UBICACION_LOGICA_DOCUMENTO ,''' ||i.DESCRIPCION||''' ) > 0) OR';              
         END LOOP;
 
-    
+
         IF Lcl_FiltroDocumentos IS NOT NULL THEN 
         Lcl_FiltroDocumentos :=  SUBSTR(Lcl_FiltroDocumentos , 0, length(Lcl_FiltroDocumentos)-2); 
         Lcl_WhereAndJoin     :=  Lcl_WhereAndJoin||' AND ( '|| Lcl_FiltroDocumentos ||' ) '; 
         END IF; 
 
-                            
+
         Lcl_OrderAnGroup := '';
 
         Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
@@ -342,3 +341,4 @@ END P_DOCUMENTOS_FIRMAR;
 
 
 END CMKG_REGULARIZACIONES;
+/

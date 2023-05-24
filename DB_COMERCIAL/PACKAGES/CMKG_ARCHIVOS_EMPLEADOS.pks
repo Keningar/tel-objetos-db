@@ -1,6 +1,6 @@
-create or replace PACKAGE          DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
+CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
     /**
-    * Documentación para el procedimiento P_GUARDAR_FOTO_EMPLEADO
+    * Documentaci�n para el procedimiento P_GUARDAR_FOTO_EMPLEADO
     *
     * Proceso encargado de detectar guardar foto de empleados en servidor nfs
     *
@@ -22,7 +22,7 @@ create or replace PACKAGE          DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
                                       Pn_CodRespuesta   OUT NUMBER,
                                       Pv_MsjRespuesta   OUT VARCHAR2);
         /**
-    * Documentación para el procedimiento P_GUARDAR_ARCHIVO_NFS
+    * Documentaci�n para el procedimiento P_GUARDAR_ARCHIVO_NFS
     *
     * Proceso encargado de detectar guardar foto de empleados en servidor nfs
     *
@@ -55,13 +55,13 @@ create or replace PACKAGE          DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
         /**
   * Documentacion para el procedimiento P_METODO_POST
   *
-  * Método encargado del consumo de webservice P_METODO_POST
+  * M�todo encargado del consumo de webservice P_METODO_POST
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
   * @param Pcl_Content        IN  CLOB     Recibe un json request
-  * @param Pn_Code            OUT NUMBER   Retorna código de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
+  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
   * @author Liseth Chunga <lchunga@telconet.ec>
@@ -75,10 +75,9 @@ create or replace PACKAGE          DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
                    Pcl_Data    OUT CLOB);
                   
 end CMKG_ARCHIVOS_EMPLEADOS;
-
 /
 
-create or replace PACKAGE BODY      DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
+CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
 
     PROCEDURE P_GUARDAR_FOTO_EMPLEADO(Pv_CedulaEmpleado IN  VARCHAR2, 
                                       Pv_CodEmpresa     IN  VARCHAR2,
@@ -463,7 +462,4 @@ create or replace PACKAGE BODY      DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
   END P_METODO_POST; 
                                         
  END CMKG_ARCHIVOS_EMPLEADOS;
-
 /
-
-

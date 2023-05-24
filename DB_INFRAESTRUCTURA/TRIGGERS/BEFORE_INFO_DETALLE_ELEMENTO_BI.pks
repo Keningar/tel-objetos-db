@@ -1,12 +1,11 @@
-
-create or replace TRIGGER DB_INFRAESTRUCTURA.BEFORE_DETALLE_ELEMENTO_BI
+CREATE OR REPLACE TRIGGER DB_INFRAESTRUCTURA.BEFORE_DETALLE_ELEMENTO_BI
   BEFORE UPDATE ON DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
   REFERENCING NEW AS NEW OLD AS OLD 
   FOR EACH ROW
     /**
-    * Documentación para trigger DB_INFRAESTRUCTURA.BEFORE_DETALLE_ELEMENTO_BI
+    * Documentaci�n para trigger DB_INFRAESTRUCTURA.BEFORE_DETALLE_ELEMENTO_BI
     * Trigger que valida los update en la tabla DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO y almacena fechas de update en DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO_BI
-    * @author Mónica Moreta <mmoreta@telconet.ec>
+    * @author M�nica Moreta <mmoreta@telconet.ec>
     * @version 2.0 24-08-2022
     */
  
@@ -25,9 +24,5 @@ BEGIN
     WHEN OTHERS THEN
     NULL; 
 
-END; 
-
-
-
-
+END;
 /

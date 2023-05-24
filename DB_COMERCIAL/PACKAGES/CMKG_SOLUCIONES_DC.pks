@@ -1,12 +1,11 @@
-SET DEFINE OFF;
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 
   /**
-   * Documentación para el TYPE RECORD 'Gr_RecordElemento'.
+   * Documentaci�n para el TYPE RECORD 'Gr_RecordElemento'.
    *
-   * Record encargado de obtener los datos de la asignación de la factibilidad dada a un cliente.
+   * Record encargado de obtener los datos de la asignaci�n de la factibilidad dada a un cliente.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
    */
   TYPE Gr_RecordElemento IS RECORD (
@@ -20,15 +19,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
   );
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_FACTIBILIDAD_COM'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_FACTIBILIDAD_COM'.
    *
-   * Método encargado de guardar la factibilidad de comunicación de una solución DC.
+   * M�todo encargado de guardar la factibilidad de comunicaci�n de una soluci�n DC.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
    */
   PROCEDURE P_GUARDAR_FACTIBILIDAD_COM(Pcl_Request IN  CLOB,
@@ -36,15 +35,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
                                        Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_FACTIBILIDAD_PAC'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_FACTIBILIDAD_PAC'.
    *
-   * Método encargado de guardar la factibilidad Pac de una solución DC.
+   * M�todo encargado de guardar la factibilidad Pac de una soluci�n DC.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
    */
   PROCEDURE P_GUARDAR_FACTIBILIDAD_PAC(Pcl_Request IN  CLOB,
@@ -52,15 +51,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
                                        Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_GUARDAR_FACTIBILIDAD_HOUS'.
+   * Documentaci�n para el procedimiento 'P_GUARDAR_FACTIBILIDAD_HOUS'.
    *
-   * Método encargado de guardar la factibilidad Housing de una solución DC.
+   * M�todo encargado de guardar la factibilidad Housing de una soluci�n DC.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
    */
   PROCEDURE P_GUARDAR_FACTIBILIDAD_HOUS(Pcl_Request IN  CLOB,
@@ -68,15 +67,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
                                         Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_REVERSAR_FACTIBILIDAD_HOUS'.
+   * Documentaci�n para el procedimiento 'P_REVERSAR_FACTIBILIDAD_HOUS'.
    *
-   * Método encargado de reversar la factibilidad Housing de una solución DC.
+   * M�todo encargado de reversar la factibilidad Housing de una soluci�n DC.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 06-07-2020
    */
   PROCEDURE P_REVERSAR_FACTIBILIDAD_HOUS(Pcl_Request IN  CLOB,
@@ -84,20 +83,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
                                          Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_CREAR_SOLUCION'.
+   * Documentaci�n para el procedimiento 'P_CREAR_SOLUCION'.
    *
-   * Método encargado de crear una solución DC.
+   * M�todo encargado de crear una soluci�n DC.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pn_Solucion OUT NUMBER   Retorna el id de la solución creada.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pn_Solucion OUT NUMBER   Retorna el id de la soluci�n creada.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
-   * @version 1.1 12-08-2020 - Se modifica el método en la parte de crear los recursos para
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @version 1.1 12-08-2020 - Se modifica el m�todo en la parte de crear los recursos para
    *                           almacenar los datos solo si el atributo de 'dataRecurso.recursos'
    *                           no se encuentra vacio.
    */
@@ -107,15 +106,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
                              Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentación para el procedimiento 'P_CREAR_RECURSOS'.
+   * Documentaci�n para el procedimiento 'P_CREAR_RECURSOS'.
    *
-   * Método encargado de crear los recursos de la solución DC.
+   * M�todo encargado de crear los recursos de la soluci�n DC.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
    *
-   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-05-2020
    */
   PROCEDURE P_CREAR_RECURSOS(Pcl_Request IN  CLOB,
@@ -124,6 +123,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 
 END CMKG_SOLUCIONES_DC;
 /
+
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 ----
 ----
@@ -348,7 +349,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -386,7 +387,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       Lb_HabilitaCommit := FALSE;
     END IF;
 
-    --Json para crear la información técnica del servicio.
+    --Json para crear la informaci�n t�cnica del servicio.
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('servicioId' , APEX_JSON.GET_NUMBER(P_PATH => 'servicioId' , P_VALUES => Lt_JsonIndex));
@@ -411,14 +412,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
 
-    --Creamos la característica del servicio.
+    --Creamos la caracter�stica del servicio.
     DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION.P_GUARDAR_SERVICIO_TECNICO(Lcl_Request,Ln_IdServicioTecn,Lv_Status,Lv_Mensaje);
     IF Lv_Status = 'ERROR' THEN
-      Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la información técnica del servicio.');
+      Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la informaci�n t�cnica del servicio.');
       RAISE Le_Exception;
     END IF;
 
-    --Llamada al método que parsea y actualiza la solicitud.
+    --Llamada al m�todo que parsea y actualiza la solicitud.
     DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_PARSEO_JSON_SOLICITUD(Pcl_Request,Lv_Status,Lv_Mensaje);
     IF Lv_Status = 'ERROR' THEN
       Lv_Mensaje := NVL(Lv_Mensaje,'Error al actualizar la solicitud.');
@@ -430,7 +431,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -501,7 +502,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       FETCH C_ObtenerProductoCaract INTO Lc_ObtenerProductoCaract;
     CLOSE C_ObtenerProductoCaract;
 
-    --Json para crear la característica del servicio.
+    --Json para crear la caracter�stica del servicio.
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('servicioId'  , Ln_IdServicio);
@@ -515,14 +516,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
 
-    --Creamos la característica del servicio.
+    --Creamos la caracter�stica del servicio.
     DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION.P_GUARDAR_SERVICIO_PROD_CARACT(Lcl_Request,Ln_IdServicioCaract,Lv_Status,Lv_Mensaje);
     IF Lv_Status = 'ERROR' THEN
-      Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la característica del servicio.');
+      Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la caracter�stica del servicio.');
       RAISE Le_Exception;
     END IF;
 
-    --Llamada al método que parsea y actualiza la solicitud.
+    --Llamada al m�todo que parsea y actualiza la solicitud.
     DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_PARSEO_JSON_SOLICITUD(Pcl_Request,Lv_Status,Lv_Mensaje);
     IF Lv_Status = 'ERROR' THEN
       Lv_Mensaje := NVL(Lv_Mensaje,'Error al actualizar la solicitud.');
@@ -534,7 +535,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -619,7 +620,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     Lb_ActualizarFila     BOOLEAN;
     Lrf_ElementoRecurso   SYS_REFCURSOR;
     Lr_RecordElemento     Gr_RecordElemento;
-    Lv_Observacion        VARCHAR2(1500) := 'Se generó Factibilidad con las siguientes Descripciones:<br/>';
+    Lv_Observacion        VARCHAR2(1500) := 'Se gener� Factibilidad con las siguientes Descripciones:<br/>';
     Lc_TipoElemento       C_ObtenerTipoElemento%ROWTYPE;
     Lc_ElementoFact       C_ObtenerElementoFact%ROWTYPE;
     Lv_EstadoSolicitud    VARCHAR2(50);
@@ -769,7 +770,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 
       DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_GUARDAR_RECURSO_DET(Lcl_Request,Ln_IdRecursoDet,Lv_Status,Lv_Mensaje);
       IF Lv_Status = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear el detalle de los recursos de la solución.');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear el detalle de los recursos de la soluci�n.');
         RAISE Le_Exception;
       END IF;
 
@@ -817,7 +818,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 
     CLOSE Lrf_ElementoRecurso;
 
-    --Llamada al método que parsea y actualiza la solicitud.
+    --Llamada al m�todo que parsea y actualiza la solicitud.
     DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_PARSEO_JSON_SOLICITUD(Pcl_Request,Lv_Status,Lv_Mensaje);
     IF Lv_Status = 'ERROR' THEN
       Lv_Mensaje := NVL(Lv_Mensaje,'Error al actualizar la solicitud.');
@@ -829,7 +830,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       FETCH C_ObtenerSolicitudFact INTO Ln_IdDetalleSol;
     CLOSE C_ObtenerSolicitudFact;
 
-    --Insertamos la observación en los Historiales.
+    --Insertamos la observaci�n en los Historiales.
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('detalleSolicitudId', Ln_IdDetalleSol);
@@ -859,7 +860,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -949,7 +950,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_GUARDAR_RECURSO_CAB(Lcl_Request,Ln_IdRecursoCab,Lv_Status,Lv_Mensaje);
 
       IF Lv_Status = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la cabecera del recurso de la solución.');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la cabecera del recurso de la soluci�n.');
         RAISE Le_Exception;
       END IF;
 
@@ -982,7 +983,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
           DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_GUARDAR_RECURSO_DET(Lcl_Request,Ln_IdRecursoDet,Lv_Status,Lv_Mensaje);
 
           IF Lv_Status = 'ERROR' THEN
-            Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear el detalle de los recursos de la solución.');
+            Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear el detalle de los recursos de la soluci�n.');
             RAISE Le_Exception;
           END IF;
 
@@ -997,7 +998,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transación exitosa';
+    Pv_Mensaje := 'Transaci�n exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -1121,7 +1122,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 
     --Validamos que el detalle no se encuentre vacio.
     IF Ln_Total < 1 OR Ln_Total IS NULL THEN
-      Lv_Mensaje := 'El atributo detalle de la solución se encuentra vacio o no existe en el Json.';
+      Lv_Mensaje := 'El atributo detalle de la soluci�n se encuentra vacio o no existe en el Json.';
       RAISE Le_Exception;
     END IF;
 
@@ -1131,7 +1132,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     Lv_IpCreacion      := APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion'     , P_VALUES => Lt_JsonIndex);
     Lv_Estado          := APEX_JSON.GET_VARCHAR2(P_PATH => 'estado'         , P_VALUES => Lt_JsonIndex);
 
-    --Obtenemos los datos principales de la cabecera de la solución.
+    --Obtenemos los datos principales de la cabecera de la soluci�n.
     Ln_NumeroSolucion  := APEX_JSON.GET_NUMBER(P_PATH   => 'solucion.numeroSolucion' , P_VALUES => Lt_JsonIndex);
     Lv_NombreSolucion  := APEX_JSON.GET_VARCHAR2(P_PATH => 'solucion.nombreSolucion' , P_VALUES => Lt_JsonIndex);
     Ln_PuntoId         := APEX_JSON.GET_NUMBER(P_PATH   => 'solucion.puntoId'        , P_VALUES => Lt_JsonIndex);
@@ -1150,7 +1151,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
 
     ELSE
 
-      --Json para crear la cabecera de la solución.
+      --Json para crear la cabecera de la soluci�n.
       APEX_JSON.INITIALIZE_CLOB_OUTPUT;
       APEX_JSON.OPEN_OBJECT;
       APEX_JSON.WRITE('nombreSolucion' , Lv_NombreSolucion);
@@ -1169,16 +1170,16 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
                                                                       Lv_Mensaje);
 
       IF Lv_Status = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la solución.');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la soluci�n.');
         RAISE Le_Exception;
       END IF;
 
     END IF;
 
-    --Recorremos el detalle de la solución.
+    --Recorremos el detalle de la soluci�n.
     FOR i in 1..Ln_Total LOOP
 
-      --Json para crear el detalle de la solución.
+      --Json para crear el detalle de la soluci�n.
       APEX_JSON.INITIALIZE_CLOB_OUTPUT;
       APEX_JSON.OPEN_OBJECT;
       APEX_JSON.WRITE('solucionCabId'  , Ln_IdSolucionCab);
@@ -1202,7 +1203,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_GUARDAR_SOLUCION_DET(Lcl_Request,Ln_IdSolucionDet,Lv_Status,Lv_Mensaje);
 
       IF Lv_Status = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear el detalle de la solución.');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear el detalle de la soluci�n.');
         RAISE Le_Exception;
       END IF;
 
@@ -1243,7 +1244,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
             INTO Lc_ObtenerRefSolucion;
           CLOSE C_ObtenerRefSolucion;
 
-          --Json para crear la referencia de la solución.
+          --Json para crear la referencia de la soluci�n.
           APEX_JSON.INITIALIZE_CLOB_OUTPUT;
           APEX_JSON.OPEN_OBJECT;
           APEX_JSON.WRITE('solucionDetIdA' , Lc_ObtenerRefSolucion.SOLUCIONDETIDA);
@@ -1258,7 +1259,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
           DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_GUARDAR_SOLUCION_REF(Lcl_Request,Ln_IdSolucionRef,Lv_Status,Lv_Mensaje);
 
           IF Lv_Status = 'ERROR' THEN
-            Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la referencia de la solución.');
+            Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear la referencia de la soluci�n.');
             RAISE Le_Exception;
           END IF;
 
@@ -1269,7 +1270,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     /*
-     * Creamos los recursos de la solución.
+     * Creamos los recursos de la soluci�n.
      */
     Ln_Total := APEX_JSON.GET_COUNT(P_PATH => 'dataRecurso.recursos', P_VALUES => Lt_JsonIndex);
 
@@ -1336,14 +1337,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
       DB_COMERCIAL.CMKG_SOLUCIONES_DC.P_CREAR_RECURSOS(Lcl_Request,Lv_Status,Lv_Mensaje);
 
       IF Lv_Status = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear los recursos de la solución.');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear los recursos de la soluci�n.');
         RAISE Le_Exception;
       END IF;
 
     END IF;
 
     /*
-     * Creación de las maquinas virtuales.
+     * Creaci�n de las maquinas virtuales.
     */
     Ln_Total := APEX_JSON.GET_COUNT(P_PATH => 'maquinasVirtuales', P_VALUES => Lt_JsonIndex);
 
@@ -1440,7 +1441,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_DC AS
     END IF;
 
     Pv_Status   := 'OK';
-    Pv_Mensaje  := 'Solución Creada.';
+    Pv_Mensaje  := 'Soluci�n Creada.';
     Pn_Solucion :=  Ln_IdSolucionCab;
 
   EXCEPTION

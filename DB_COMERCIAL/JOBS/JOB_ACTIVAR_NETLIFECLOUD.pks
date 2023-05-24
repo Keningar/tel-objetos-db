@@ -1,42 +1,17 @@
-/**
- * Documentación para 'JOB_ACTIVAR_NETLIFECLOUD'
- * Job que sirve para Activar los servicios con productos
- * Netlife Assistance Pro, NetlifeCloud y ECOMMERCE BASIC que se encuentren en estado Pendiente.
- * Adicional se envia la notificación de Activación al web-service de konibit.
- *
- * @author Germán Valezuela <gvalenzuela@telconet.ec>
- * @version 1.0 24-06-2021
- */
-SET SERVEROUTPUT ON;
-SET DEFINE OFF;
-BEGIN
 
-  BEGIN
-    DBMS_SCHEDULER.DROP_JOB(JOB_NAME => '"DB_COMERCIAL"."JOB_ACTIVAR_NETLIFECLOUD"',
-                            DEFER    => FALSE,
-                            FORCE    => TRUE);
-  EXCEPTION
-    WHEN OTHERS THEN
-      DBMS_OUTPUT.PUT_LINE('El job aún no ha sido creado...');
-  END;
-
-  DBMS_SCHEDULER.CREATE_JOB (
-     JOB_NAME             => '"DB_COMERCIAL"."JOB_ACTIVAR_NETLIFECLOUD"',
-     JOB_TYPE             => 'PLSQL_BLOCK',
-     JOB_ACTION           => 'BEGIN DB_COMERCIAL.CMKG_ACTIVAR_KONIBIT.P_ACTIVAR_NETLIFECLOUD; END;',
-     NUMBER_OF_ARGUMENTS  =>  0,
-     START_DATE           =>  NULL,
-     REPEAT_INTERVAL      => 'FREQ=DAILY;BYHOUR=22;BYMINUTE=00;BYSECOND=00',
-     END_DATE             =>  NULL,
-     ENABLED              =>  FALSE,
-     AUTO_DROP            =>  FALSE,
-     COMMENTS             => 'Los productos Netlife Assistance Pro y NetlifeCloud en estado Pendiente se activan y se registra en el historial del servicio');
-
-  DBMS_SCHEDULER.SET_ATTRIBUTE(NAME      => '"DB_COMERCIAL"."JOB_ACTIVAR_NETLIFECLOUD"',
-                               ATTRIBUTE => 'logging_level',
-                               VALUE     =>  DBMS_SCHEDULER.LOGGING_OFF);
-
-  DBMS_SCHEDULER.ENABLE(NAME => '"DB_COMERCIAL"."JOB_ACTIVAR_NETLIFECLOUD"');
-
-END;
-/
+BEGIN 
+dbms_scheduler.create_job('"JOB_ACTIVAR_NETLIFECLOUD"',
+job_type=>'PLSQL_BLOCK', job_action=>
+'BEGIN DB_COMERCIAL.CMKG_ACTIVAR_KONIBIT.P_ACTIVAR_NETLIFECLOUD; END;'
+, number_of_arguments=>0,
+start_date=>TO_TIMESTAMP_TZ('14-MAY-2023 02.04.17.784796000 AM AMERICA/GUAYAQUIL','DD-MON-RRRR HH.MI.SSXFF AM TZR','NLS_DATE_LANGUAGE=english'), repeat_interval=> 
+'FREQ=DAILY;BYHOUR=22;BYMINUTE=00;BYSECOND=00'
+, end_date=>NULL,
+job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
+'Los productos Netlife Assistance Pro y NetlifeCloud en estado Pendiente se activan y se registra en el historial del servicio'
+);
+sys.dbms_scheduler.set_attribute('"JOB_ACTIVAR_NETLIFECLOUD"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY=''�'' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY=''�'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
+dbms_scheduler.enable('"JOB_ACTIVAR_NETLIFECLOUD"');
+COMMIT; 
+END; 
+/ 

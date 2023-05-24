@@ -1,7 +1,6 @@
-  
- CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
+CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
   /**
-    * Documentación para P_REVERSAR_CRS
+    * Documentaci�n para P_REVERSAR_CRS
     * se creo un reverso de la siguiente funcion 
     * ruta :src/telconet/comercialBundle/Controller/ClienteController.php 
     * funcion base :cambiarRazonSocialAction
@@ -23,8 +22,7 @@
 END CMKG_CRS_TRANSACCION;
 
 /
- 
-create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
+CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 
     PROCEDURE   P_REVERSAR_CRS(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response OUT SYS_REFCURSOR)AS 
        Lv_CodEmpresa VARCHAR2(100);
@@ -164,7 +162,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
         ON  is2.ID_SERVICIO = ids.SERVICIO_ID 
         WHERE is2.PUNTO_ID = Cn_IdPunto
         AND  idsc.CARACTERISTICA_ID = Cn_IdCaracteristica;   
-         
+
 
     CURSOR C_GetRepresentanteLegal(Cn_PersonaId NUMBER) IS
        SELECT
@@ -267,7 +265,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
           INSERT INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO VALUES Pcl_PersonaEmpRolHisto; 
           dbms_output.put_line('INFO_PERSONA_EMPRESA_ROL_HISTO   EN DESTINO  CREADO ID_PERSONA_EMPRESA_ROL_HISTO=>' || Pcl_PersonaEmpRolHisto.ID_PERSONA_EMPRESA_ROL_HISTO );
           COMMIT;  
-           
+
        ELSE 
            UPDATE DB_COMERCIAL.INFO_PERSONA ip SET 
            ip.ESTADO = Lv_EstadoActivo  
@@ -286,7 +284,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
           INSERT INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO VALUES Pcl_PersonaEmpRolHisto; 
           dbms_output.put_line('INFO_PERSONA_EMPRESA_ROL_HISTO  EN DESTINO CREADO ID_PERSONA_EMPRESA_ROL_HISTO=>' || Pcl_PersonaEmpRolHisto.ID_PERSONA_EMPRESA_ROL_HISTO );
           COMMIT;  
-           
+
 
        END IF ; 
 
@@ -538,7 +536,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 
                                     FOR Pcl_ServicioComisionDestino IN  C_GetServicioComisionCaract(Pcl_ServicioDestino.ID_SERVICIO) LOOP
 
-                                     
+
                                          UPDATE DB_COMERCIAL.INFO_SERVICIO_COMISION isc SET
                                          isc.ESTADO        = Lv_EstadoEliminado,
                                          isc.FE_ULT_MOD    = SYSDATE ,
@@ -550,7 +548,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                                          COMMIT ;
                                          dbms_output.put_line('INFO_SERVICIO_COMISION  EN DESTINO ELIMINADA ID_SERVICIO_COMISION=>' || Pcl_ServicioComisionDestino.ID_SERVICIO_COMISION);
 
-                                       
+
                                          Pcl_ServiComiHisto                            := NULL; 
                                          Pcl_ServiComiHisto.ID_SERVICIO_COMISION_HISTO := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL;
                                          Pcl_ServiComiHisto.SERVICIO_COMISION_ID       := Pcl_ServicioComisionDestino.ID_SERVICIO_COMISION ; 
@@ -567,7 +565,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                                          INSERT INTO   DB_COMERCIAL.INFO_SERVICIO_COMISION_HISTO  VALUES Pcl_ServiComiHisto;
                                          COMMIT ;
                                          dbms_output.put_line('INFO_SERVICIO_COMISION_HISTO CREO EN DESTINO ID_SERVICIO_COMISION_HISTO =>' || Pcl_ServiComiHisto.ID_SERVICIO_COMISION_HISTO);
-                                      
+
 
                                          UPDATE DB_COMERCIAL.INFO_SERVICIO_COMISION isc SET
                                          isc.ESTADO        = Pcl_ServicioComisionDestino.ESTADO,
@@ -581,7 +579,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                                          AND   isc.PERSONA_EMPRESA_ROL_ID  = Pcl_ClienteOrigen.ID_PERSONA_ROL;
                                          COMMIT ;
                                          dbms_output.put_line('INFO_SERVICIO_COMISION  EN ORIGEN  '||Pcl_ServicioComisionDestino.ESTADO||'ID_SERVICIO=>' ||  Pcl_ServicioOrigen.ID_SERVICIO);
- 
+
                                          Pcl_ServiComiHisto                            := NULL; 
                                          Pcl_ServiComiHisto.ID_SERVICIO_COMISION_HISTO := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL;
                                          Pcl_ServiComiHisto.SERVICIO_COMISION_ID       := Pcl_ServicioComisionDestino.ID_SERVICIO_COMISION ; 
@@ -598,7 +596,7 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
                                          INSERT INTO   DB_COMERCIAL.INFO_SERVICIO_COMISION_HISTO  VALUES Pcl_ServiComiHisto;
                                          COMMIT ;
                                          dbms_output.put_line('INFO_SERVICIO_COMISION_HISTO CREO EN Origen ID_SERVICIO_COMISION_HISTO =>' || Pcl_ServiComiHisto.ID_SERVICIO_COMISION_HISTO);
-                                         
+
 
                                     END LOOP; 
 
@@ -620,20 +618,20 @@ create or replace PACKAGE BODY  DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 
 
                                              FOR Pcl_SolicitudOrigen IN  C_GetSolicitudesCompare(Pcl_PuntoOrigen.ID_PUNTO,  Pcl_SolicitudDestino.CARACTERISTICA_ID) LOOP          
-  
+
                                                  UPDATE  DB_COMERCIAL.INFO_DETALLE_SOLICITUD ids SET
                                                  ids.ESTADO  = Pcl_SolicitudDestino.ESTADO_CAB
                                                  WHERE         ids.ID_DETALLE_SOLICITUD  =  Pcl_SolicitudOrigen.ID_DETALLE_SOLICITUD;
                                                  dbms_output.put_line('INFO_DETALLE_SOLICITUD EN ORIGEN ELIMINADA  ID_DETALLE_SOLICITUD> '|| Pcl_SolicitudOrigen.ID_DETALLE_SOLICITUD );
- 
-                                                
+
+
                                                  UPDATE DB_COMERCIAL.INFO_DETALLE_SOL_CARACT idsc SET  
                                                  idsc.ESTADO      = Pcl_SolicitudDestino.ESTADO_DET,
                                                  idsc.USR_ULT_MOD = Lv_UsrCreacion,  
                                                  idsc.FE_ULT_MOD  = SYSDATE
                                                  WHERE idsc.ID_SOLICITUD_CARACTERISTICA =  Pcl_SolicitudOrigen.ID_SOLICITUD_CARACTERISTICA;
                                                  dbms_output.put_line('INFO_DETALLE_SOL_CARACT EN ORIGEN '||Pcl_SolicitudDestino.ESTADO_DET||'  ID_SOLICITUD_CARACTERISTICA=> '||Pcl_SolicitudOrigen.ID_SOLICITUD_CARACTERISTICA);
-               
+
                                            END LOOP;           
                                       END LOOP;      
 

@@ -1,11 +1,11 @@
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD
 AS
   /*
-  * Documentación para TYPE 'Lr_InfoServiciosMigracion'.
+  * Documentaci�n para TYPE 'Lr_InfoServiciosMigracion'.
   *
-  * Tipo de datos para el retorno de la información correspondiente a los servicios a migrar
+  * Tipo de datos para el retorno de la informaci�n correspondiente a los servicios a migrar
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LR_INFOSERVICIOSMIGRACION
@@ -40,22 +40,22 @@ IS
     SPID DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
     LINEPROFILENAME DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE );
   /*
-  * Documentación para TYPE 'Lt_InfoServiciosMigracion'.
+  * Documentaci�n para TYPE 'Lt_InfoServiciosMigracion'.
   *
-  * Tabla para almacenar la data enviada con la información correspondiente a las cabeceras de migración
+  * Tabla para almacenar la data enviada con la informaci�n correspondiente a las cabeceras de migraci�n
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LT_INFOSERVICIOSMIGRACION
 IS
   TABLE OF LR_INFOSERVICIOSMIGRACION INDEX BY PLS_INTEGER;
   /*
-  * Documentación para TYPE 'Lr_ElementosMigraOlt'.
+  * Documentaci�n para TYPE 'Lr_ElementosMigraOlt'.
   *
-  * Tipo de datos para el retorno de la información correspondiente a los elementos a migrar
+  * Tipo de datos para el retorno de la informaci�n correspondiente a los elementos a migrar
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LR_ELEMENTOSMIGRAOLT
@@ -65,22 +65,22 @@ IS
     IDELEMENTOA DB_INFRAESTRUCTURA.INFO_ELEMENTO.ID_ELEMENTO%TYPE,
     IDELEMENTOB DB_INFRAESTRUCTURA.INFO_ELEMENTO.ID_ELEMENTO%TYPE );
   /*
-  * Documentación para TYPE 'Lt_ElementosMigraOlt'.
+  * Documentaci�n para TYPE 'Lt_ElementosMigraOlt'.
   *
-  * Tabla para almacenar la data enviada con la información correspondiente a los elementos a migrar
+  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los elementos a migrar
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LT_ELEMENTOSMIGRAOLT
 IS
   TABLE OF LR_ELEMENTOSMIGRAOLT INDEX BY PLS_INTEGER;
   /*
-  * Documentación para TYPE 'Lr_InfoCabeceraMigracion'.
+  * Documentaci�n para TYPE 'Lr_InfoCabeceraMigracion'.
   *
-  * Tipo de datos para el retorno de la información correspondiente a las cabeceras de migración
+  * Tipo de datos para el retorno de la informaci�n correspondiente a las cabeceras de migraci�n
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LR_INFOCABECERAMIGRACION
@@ -90,22 +90,22 @@ IS
     IDMIGRACIONCAB DB_INFRAESTRUCTURA.INFO_MIGRA_AD_CAB.ID_MIGRACION_CAB%TYPE,
     ESTADO DB_INFRAESTRUCTURA.INFO_MIGRA_AD_CAB.ESTADO%TYPE );
   /*
-  * Documentación para TYPE 'Lt_InfoCabeceraMigracion'.
+  * Documentaci�n para TYPE 'Lt_InfoCabeceraMigracion'.
   *
-  * Tabla para almacenar la data enviada con la información correspondiente a las cabeceras de migración
+  * Tabla para almacenar la data enviada con la informaci�n correspondiente a las cabeceras de migraci�n
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LT_INFOCABECERAMIGRACION
 IS
   TABLE OF LR_INFOCABECERAMIGRACION INDEX BY PLS_INTEGER;
   /*
-  * Documentación para TYPE 'Lr_InfoDetalleMigracion'.
+  * Documentaci�n para TYPE 'Lr_InfoDetalleMigracion'.
   *
-  * Tipo de datos para el retorno de la información correspondiente a los detalles de migración
+  * Tipo de datos para el retorno de la informaci�n correspondiente a los detalles de migraci�n
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LR_INFODETALLEMIGRACION
@@ -133,38 +133,38 @@ IS
     USRULTMOD DB_INFRAESTRUCTURA.INFO_MIGRA_AD_DET.USR_ULT_MOD%TYPE,
     FEULTMOD DB_INFRAESTRUCTURA.INFO_MIGRA_AD_DET.FE_ULT_MOD%TYPE);
   /*
-  * Documentación para TYPE 'Lt_InfoDetalleMigracion'.
+  * Documentaci�n para TYPE 'Lt_InfoDetalleMigracion'.
   *
-  * Tabla para almacenar la data enviada con la información correspondiente a los detalles de migración
+  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los detalles de migraci�n
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   */
 TYPE LT_INFODETALLEMIGRACION
 IS
   TABLE OF LR_INFODETALLEMIGRACION INDEX BY PLS_INTEGER;
-  
+
 /**
   * Documentacion para el procedimiento P_WEB_SERVICE_BR
   *
-  * Método encargado del consumo de webservice con request y response de gran tamaño (BIG REQUEST), se creo este
-  * método para evitar alguna afectación con procesos que usaban el método anterior existente
+  * M�todo encargado del consumo de webservice con request y response de gran tama�o (BIG REQUEST), se creo este
+  * m�todo para evitar alguna afectaci�n con procesos que usaban el m�todo anterior existente
   *
   * @param Pv_Url             IN  NUMBER   Recibe la url del webservice
   * @param Pcl_Mensaje        IN  VARCHAR2 Recibe el mensaje en formato JSON,XML,ETC
   * @param Pv_Application     IN  VARCHAR2 Recibe el content type por ejemplo (application/json)
   * @param Pv_Charset         IN  VARCHAR2 Recibe el charset en el que se envia el mensaje
   * @param Pv_UrlFileDigital  IN  VARCHAR2 Ruta del certificado digital
-  * @param Pv_PassFileDigital IN  VARCHAR2 contraseña para acceder al certificado digital
+  * @param Pv_PassFileDigital IN  VARCHAR2 contrase�a para acceder al certificado digital
   * @param Pn_TimeOut         IN  NUMBER   Timeout de proceso
   * @param Pv_Respuesta       OUT VARCHAR2 Retorna la respuesta del webservice
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 10-11-2022
   * 
-  * @author Jesús Bozada
-  * @version 1.1 13-12-2022  Se quita lína con "UTL_HTTP.set_persistent_conn_support" ya que causa problemas al
+  * @author Jes�s Bozada
+  * @version 1.1 13-12-2022  Se quita l�na con "UTL_HTTP.set_persistent_conn_support" ya que causa problemas al
   *                          comunicarnos con WS GDA y utilizar el header  'Transfer-Encoding', 'chunked'
   */ 
   PROCEDURE P_WEB_SERVICE_BR(
@@ -185,7 +185,7 @@ IS
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   * @param  Prf_Registros      OUT SYS_REFCURSOR  Respuesta en formato json de la consulta
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 31-01-2023
   *
   */
@@ -219,7 +219,7 @@ IS
       PV_ESTADO_DATA     VARCHAR2 );
   /**
   * P_ACTUALIZAR_DETALLES
-  * Procedimiento que actualiza los detalles de migración a procesar en estado enviado por parámetro
+  * Procedimiento que actualiza los detalles de migraci�n a procesar en estado enviado por par�metro
   *
   * @param  Pn_IdMigracionCab  IN  NUMBER         Id de cabecera del proceso
   * @param  Pv_TipoRegistro    IN  VARCHAR2       Tipo registro
@@ -228,7 +228,7 @@ IS
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 31-01-2023
   *
   */
@@ -241,7 +241,7 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_ACTUALIZAR_DETALLE
-  * Procedimiento que actualiza el detalle de migración a procesar en estado enviado por parámetro
+  * Procedimiento que actualiza el detalle de migraci�n a procesar en estado enviado por par�metro
   *
   * @param  Pn_IdMigracionDet  IN  NUMBER         Id de cabecera del proceso
   * @param  Pv_TipoRegistro    IN  VARCHAR2       Tipo registro
@@ -249,7 +249,7 @@ IS
   * @param  Pv_EstadoNuevo     IN  VARCHAR2       Estado Nuevo
   * @param  Pv_Observacion     IN  VARCHAR2       Observacion a registrar
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 31-01-2023
   *
   */
@@ -261,13 +261,13 @@ IS
       PV_OBSERVACION    IN VARCHAR2);
   /**
   * P_OBTENER_CARACT_MW
-  * Procedimiento que obtiene perfiles de WS GDA con información de perfiles ZTE
+  * Procedimiento que obtiene perfiles de WS GDA con informaci�n de perfiles ZTE
   *
   * @param  Pv_Status          OUT  VARCHAR2    Estado de proceso
   * @param  Pv_Mensaje         OUT  VARCHAR2    Mensaje de proceso
   * @param  Pcl_JsonResponse   OUT  CLOB        Json con respuesta de proceso
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 31-01-2023
   *
   */
@@ -283,7 +283,7 @@ IS
   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
   * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 31-01-2023
   *
   */
@@ -293,15 +293,15 @@ IS
       PCL_JSONRESPONSE OUT CLOB);
   /**
   * P_ACTUALIZAR_CABECERA
-  * Procedimiento que actualiza las cabeceras de migración a procesar en estado enviado por parámetro
+  * Procedimiento que actualiza las cabeceras de migraci�n a procesar en estado enviado por par�metro
   *
   * @param  Pn_IdMigracionCab  IN NUMBER          Id de cabecera
   * @param  Pv_EstadoNuevo     IN  VARCHAR2       Estado nuevo a registrar
-  * @param  Pv_Observacion     IN  VARCHAR2       Observación a registrar
+  * @param  Pv_Observacion     IN  VARCHAR2       Observaci�n a registrar
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -313,16 +313,16 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_INFO_AGRUPAMIENTO
-  * Procedimiento que actualiza las cabeceras de migración a procesar en estado enviado por parámetro
+  * Procedimiento que actualiza las cabeceras de migraci�n a procesar en estado enviado por par�metro
   *
-  * @param  Pv_TipoRegistro         IN  VARCHAR2    Tipo registro a recuperar información
+  * @param  Pv_TipoRegistro         IN  VARCHAR2    Tipo registro a recuperar informaci�n
   * @param  Pn_CantidadAgrupamiento OUT NUMBER      Mensaje de error del procedimiento
   * @param  Pv_CampoHilos           OUT VARCHAR2    Nombre de campo a registrar en json de respuesta
   * @param  Pv_EstadoNuevo          OUT VARCHAR2    Nuevo estado a colocar en detalle
   * @param  Pv_EstadoActual         OUT VARCHAR2    Estado actual a colocar en detalle
   * @param  Pv_EstadoError          OUT VARCHAR2    Estado error a colocar en detalle
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -335,14 +335,14 @@ IS
       PV_ESTADOERROR OUT VARCHAR2);
   /**
   * P_AGRUPAR_DETALLES
-  * Procedimiento que agrupa los detalles de migración a procesar en estado enviado por parámetro
+  * Procedimiento que agrupa los detalles de migraci�n a procesar en estado enviado por par�metro
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -353,13 +353,13 @@ IS
       PCL_JSONRESPONSE OUT CLOB);
   /**
   * P_PROCESAR_OLTS
-  * Procedimiento que actualiza las cabeceras de migración a procesar en estado enviado por parámetro
+  * Procedimiento que actualiza las cabeceras de migraci�n a procesar en estado enviado por par�metro
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -369,13 +369,13 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_REVERSAR_CAB_MIGRACION
-  * Procedimiento que reversa la cabecera de migración enviada por parámetro
+  * Procedimiento que reversa la cabecera de migraci�n enviada por par�metro
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará e
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� e
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -385,13 +385,13 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_PROCESAR_SPLITTERS
-  * Procedimiento que actualiza los detalles de migración a procesar
+  * Procedimiento que actualiza los detalles de migraci�n a procesar
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -401,9 +401,9 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_PROCESAR_SCOPES
-  * Procedimiento que actualiza los detalles de migración a procesar
+  * Procedimiento que actualiza los detalles de migraci�n a procesar
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
@@ -417,18 +417,18 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_PROCESAR_ENLACES
-  * Procedimiento que actualiza los detalles de migración a procesar
+  * Procedimiento que actualiza los detalles de migraci�n a procesar
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
-  * @version 1.1 17-03-2023   Se agrega condición IF al momento de actualizar estado de interface fin
-  *                           en la eliminación de un enlace existen dentro del proceso de migración de enlace
+  * @author Jes�s Bozada <jbozada@telconet.ec>
+  * @version 1.1 17-03-2023   Se agrega condici�n IF al momento de actualizar estado de interface fin
+  *                           en la eliminaci�n de un enlace existen dentro del proceso de migraci�n de enlace
   *
   */
   PROCEDURE P_PROCESAR_ENLACES(
@@ -437,13 +437,13 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_PROCESAR_CLIENTES
-  * Procedimiento que actualiza los detalles de migración a procesar
+  * Procedimiento que actualiza los detalles de migraci�n a procesar
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 08-02-2023
   *
   */
@@ -453,13 +453,13 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_REVERSAR_CLIENTES
-  * Procedimiento que actualiza los detalles de migración a reversar
+  * Procedimiento que actualiza los detalles de migraci�n a reversar
   *
-  * @param  Pn_IdMigracion     IN  NUMBER         Id de cabecera de migración a reversar
+  * @param  Pn_IdMigracion     IN  NUMBER         Id de cabecera de migraci�n a reversar
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 08-02-2023
   *
   */
@@ -469,13 +469,13 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_REVERSAR_ENLACES
-  * Procedimiento que actualiza los detalles de migración a reversar
+  * Procedimiento que actualiza los detalles de migraci�n a reversar
   *
-  * @param  Pn_IdMigracion     IN  NUMBER         Id de cabecera de migración a reversar
+  * @param  Pn_IdMigracion     IN  NUMBER         Id de cabecera de migraci�n a reversar
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 08-02-2023
   *
   */
@@ -494,7 +494,7 @@ IS
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   * @param  Prf_Registros      OUT SYS_REFCURSOR  Respuesta en formato json de la consulta
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 05-09-2022
   *
   */
@@ -515,7 +515,7 @@ IS
   * @param  Pv_MensaError                  OUT VARCHAR2       Mensaje de error del procedimiento
   * @param  Prf_Result                     OUT SYS_REFCURSOR  Respuesta con clientes encontrados
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 09-09-2022
   *
   */
@@ -532,11 +532,11 @@ IS
   * @param  Pn_IdServicio          IN  NUMBER         Id Servicio
   * @param  Pv_NombreMarcaElemento IN  VARCHAR2       Nombre marca elemento
   * @param  Pv_EstadoServicio      IN  VARCHAR2       Estado Servicio
-  * @param  Pn_ValorNumerico       IN  NUMBER         Valor numérico a usar para calcular el nuevo SPID en HW, para ZTE se usan parametrizaciones
+  * @param  Pn_ValorNumerico       IN  NUMBER         Valor num�rico a usar para calcular el nuevo SPID en HW, para ZTE se usan parametrizaciones
   * @param  Pv_Status              OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje             OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 09-09-2022
   *
   */
@@ -559,7 +559,7 @@ IS
   * @param  Pv_Status              OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje             OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 09-09-2022
   *
   */
@@ -580,7 +580,7 @@ IS
   * @param  Pv_Status              OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje             OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 09-09-2022
   *
   */
@@ -598,7 +598,7 @@ IS
   * @param  Pv_Status              OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje             OUT VARCHAR2       Mensaje de error del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 09-09-2022
   *
   */
@@ -609,13 +609,13 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_INSERTAR_DATA
-  * Procedimiento que inserta registro en tabla DATA de migración Alta Densidad
+  * Procedimiento que inserta registro en tabla DATA de migraci�n Alta Densidad
   *
-  * @param  Pr_InfoBufferHilo              IN  DB_INFRAESTRUCTURA.INFO_MIGRA_AD_DATA%ROWTYPE    Objecto con información a ingresar
+  * @param  Pr_InfoBufferHilo              IN  DB_INFRAESTRUCTURA.INFO_MIGRA_AD_DATA%ROWTYPE    Objecto con informaci�n a ingresar
   * @param  Pv_Status                      OUT VARCHAR2                                         Mensaje de error del procedimiento
   * @param  Pv_Mensaje                     OUT VARCHAR2                                         Respuesta del procedimiento
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 09-09-2022
   *
   */
@@ -625,14 +625,14 @@ IS
       PV_MENSAJE OUT VARCHAR2);
   /**
   * P_VALIDAR_CAB_MIGRACION
-  * Procedimiento que valida los detalles de una cabecera que está en proceso de migración
+  * Procedimiento que valida los detalles de una cabecera que est� en proceso de migraci�n
   *
-  * @param  Pcl_JsonRequest    IN  CLOB           Parámetros por los cuáles se realizará la consulta
+  * @param  Pcl_JsonRequest    IN  CLOB           Par�metros por los cu�les se realizar� la consulta
   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
   * @param  Pcl_JsonResponse   OUT CLOB           Respuesta en formato json de la consulta
   *
-  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @author Jes�s Bozada <jbozada@telconet.ec>
   * @version 1.0 03-02-2023
   *
   */
@@ -914,14 +914,14 @@ IS
   * @param  PV_MENSAJE            OUT VARCHAR2  Mensaje del proceso
   *
   * @author Jonathan Burgos
-  * @version 1.0 - 14-02-2023 - Version inicial
+  * @version 1.0 - 14-02-2023 - Version inicialEND INFRK_DML
   *
   */
   PROCEDURE P_REVERSAR_OLTS(
       PN_MIGRACION_CAB_ID IN NUMBER,
       PV_ERROR OUT VARCHAR2,
       PV_MENSAJE OUT VARCHAR2);
-      
+
   /**
   *
   * Procedimiento para realizar el cosumo de los WS de NW durante la migracion de los OLTs
@@ -936,7 +936,6 @@ IS
 END INKG_MIGRACION_ALTA_DENSIDAD;
 
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD
 AS
@@ -1006,7 +1005,7 @@ AS
                                            SYSDATE,
                                            NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1') );
   END P_WEB_SERVICE_BR;
-  
+
   PROCEDURE P_OBTENER_SERVICIOS(
       PN_ELEMENTOBUSQUEDAID          IN NUMBER,
       PN_INTERFACEELEMENTOBUSQUEDAID IN NUMBER,
@@ -1176,7 +1175,7 @@ AND estado            =''Activo''
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
     LV_MENSAJE := 'Error inesperado ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
-    PV_MENSAJE := 'No se han podido actualizar correctamente las cabeceras de migración. Por favor consultar con Sistemas!';
+    PV_MENSAJE := 'No se han podido actualizar correctamente las cabeceras de migraci�n. Por favor consultar con Sistemas!';
     ROLLBACK;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA', LV_MENSAJE, 'migracion', SYSDATE, NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   END P_ACTUALIZAR_CABECERA;
@@ -1211,7 +1210,7 @@ AND estado            =''Activo''
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
     LV_MENSAJE := 'Error inesperado ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
-    PV_MENSAJE := 'No se han podido actualizar correctamente los detalles de migración. Por favor consultar con Sistemas!';
+    PV_MENSAJE := 'No se han podido actualizar correctamente los detalles de migraci�n. Por favor consultar con Sistemas!';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLES', LV_MENSAJE, 'migracion', SYSDATE, NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   END P_ACTUALIZAR_DETALLES;
   PROCEDURE P_ACTUALIZAR_DETALLE(
@@ -1259,7 +1258,7 @@ ORDER BY CAB.FE_CREACION ASC ';
   WHEN OTHERS THEN
     PV_STATUS     := 'ERROR';
     LV_MENSAJE    := 'Error inesperado ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
-    PV_MENSAJE    := 'No se ha podido realizar correctamente la consulta de cabeceras de migración. Por favor consultar con Sistemas!';
+    PV_MENSAJE    := 'No se ha podido realizar correctamente la consulta de cabeceras de migraci�n. Por favor consultar con Sistemas!';
     PRF_REGISTROS := NULL;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_OBTENER_CABECERAS', LV_MENSAJE, 'migracion', SYSDATE, NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   END P_OBTENER_CABECERAS;
@@ -1459,9 +1458,9 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                 EXCEPTION
                 WHEN OTHERS THEN
                   IF SQLCODE = -1422 THEN
-                    LV_MENSAJEEX  := 'Existe más de un registro';
+                    LV_MENSAJEEX  := 'Existe m�s de un registro';
                   ELSIF SQLCODE = 100 THEN
-                    LV_MENSAJEEX  := 'No existe información';
+                    LV_MENSAJEEX  := 'No existe informaci�n';
                   ELSE
                     LV_MENSAJEEX  := 'Existe un error';
                   END IF;
@@ -1517,9 +1516,9 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                 EXCEPTION
                 WHEN OTHERS THEN
                   IF SQLCODE = -1422 THEN
-                    LV_MENSAJEEX  := 'Existe más de un registro';
+                    LV_MENSAJEEX  := 'Existe m�s de un registro';
                   ELSIF SQLCODE = 100 THEN
-                    LV_MENSAJEEX  := 'No existe información';
+                    LV_MENSAJEEX  := 'No existe informaci�n';
                   ELSE
                     LV_MENSAJEEX  := 'Existe un error';
                   END IF;
@@ -1587,7 +1586,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                 DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LR_REGINFODETALLEMIGRACION.IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDODET, LV_ESTADOERROROLTSDET, LV_MENSAJEEX);
                 COMMIT;
               WHEN OTHERS THEN
-                LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de olt: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+                LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de olt: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
                 ROLLBACK;
                 LB_EXISTIOERROR := TRUE;
                 DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LR_REGINFODETALLEMIGRACION.IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDODET, LV_ESTADOERROROLTSDET, LV_MENSAJEEX);
@@ -1635,20 +1634,20 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             END IF;
           END IF;
         ELSE
-          DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOFALLOOLTS, SUBSTR('Se presentó un error al actualizar los detalles de Olts: '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
+          DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOFALLOOLTS, SUBSTR('Se present� un error al actualizar los detalles de Olts: '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
         END IF;
       ELSE
-        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOFALLOOLTS, SUBSTR('Se presentó un error al obtener los detalles de Olts: '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
+        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOFALLOOLTS, SUBSTR('Se present� un error al obtener los detalles de Olts: '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
       END IF;
     ELSE
       DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOFALLOOLTS, 'Ocurrio un error al procesar la cabecera: '|| LV_MENSAJE, LV_STATUS, LV_MENSAJE);
     END IF;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOERROROLTS, 'Ocurrio un error al procesar la cabecera: '|| LV_MENSAJE, LV_STATUS, LV_MENSAJE);
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_OLTS', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_PROCESAR_OLTS;
@@ -1803,13 +1802,13 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, PV_STATUS , 'Ocurrio un error al reversar la cabecera: '|| LV_MENSAJEEX, LV_STATUS, LV_MENSAJE);
     ELSE
       PV_STATUS := 'Reversado';
-      DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, PV_STATUS, 'Se reversó correctamente la cabecera.', LV_STATUS, LV_MENSAJE);
+      DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, PV_STATUS, 'Se revers� correctamente la cabecera.', LV_STATUS, LV_MENSAJE);
     END IF;
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS    := 'ReversadoConErrores';
-    PV_MENSAJE   := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE   := 'Ocurri� un error no controlado en la ejecuci�n';
     LV_MENSAJEEX := SUBSTR(LV_MENSAJEEX || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000);
     DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, PV_STATUS, 'Ocurrio un error al procesar la cabecera: '|| LV_MENSAJEEX, LV_STATUS, LV_MENSAJE);
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_CAB_MIGRACION', LV_MENSAJEEX , LV_USRCREACION, SYSDATE, LV_IPCREACION);
@@ -1963,8 +1962,8 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
               COMMIT;
             WHEN OTHERS THEN
               LB_EXISTIOERROR := TRUE;
-              DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_CLIENTES', SUBSTR('Se presentó un error al migrar cliente:  IdServicio : '||LR_REGINFOSERVICIOSMIGRA.IDSERVICIO||' '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
-              LV_MENSAJEMIGRACION := SUBSTR('Se presentó un error al migrar cliente:  - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+              DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_CLIENTES', SUBSTR('Se present� un error al migrar cliente:  IdServicio : '||LR_REGINFOSERVICIOSMIGRA.IDSERVICIO||' '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
+              LV_MENSAJEMIGRACION := SUBSTR('Se present� un error al migrar cliente:  - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
               ROLLBACK;
               LR_INFOMIGRAADDATA                  := NULL;
               LR_INFOMIGRAADDATA.MIGRACION_CAB_ID := LN_IDMIGRACIONCAB;
@@ -1991,8 +1990,8 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         COMMIT;
       EXCEPTION
       WHEN OTHERS THEN
-        LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de clientes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
-        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_CLIENTES', SUBSTR('Se presentó un error al migrar cliente. - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
+        LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de clientes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+        DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_CLIENTES', SUBSTR('Se present� un error al migrar cliente. - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
         ROLLBACK;
         DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, LV_MENSAJEEX);
         COMMIT;
@@ -2000,7 +1999,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
     END LOOP;
     IF LB_EXISTIOERROR THEN
       PV_STATUS  := 'ERROR';
-      PV_MENSAJE := 'Ocurrieron errores durante la ejecución.';
+      PV_MENSAJE := 'Ocurrieron errores durante la ejecuci�n.';
     ELSE
       PV_STATUS  := 'OK';
       PV_MENSAJE := 'Proceso Ejecutado correctamente.';
@@ -2008,7 +2007,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_CLIENTES', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_REVERSAR_CLIENTES;
   PROCEDURE P_REVERSAR_ENLACES
@@ -2048,10 +2047,10 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
           SET ESTADO      = LC_GET_REVERSO_ENLACES.ESTADO
           WHERE ID_ENLACE = LC_GET_REVERSO_ENLACES.IDENTIFICADOR;
         END IF;
-        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE(LC_GET_REVERSO_ENLACES.MIGRACION_DET_ID, 'ENLACE', 'OK', 'ReversoOk', 'Se reversó el enlace correctamente.');
+        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE(LC_GET_REVERSO_ENLACES.MIGRACION_DET_ID, 'ENLACE', 'OK', 'ReversoOk', 'Se revers� el enlace correctamente.');
       EXCEPTION
       WHEN OTHERS THEN
-        LV_MENSAJEEX := SUBSTR('Se presentó un error al reversar el detalle de enlaces: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+        LV_MENSAJEEX := SUBSTR('Se present� un error al reversar el detalle de enlaces: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_ENLACES', LV_MENSAJEEX, LV_USRCREACION, SYSDATE, LV_IPCREACION);
         ROLLBACK;
         DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE(LC_GET_REVERSO_ENLACES.MIGRACION_DET_ID, 'ENLACE', 'OK', 'ReversoError', LV_MENSAJEEX);
@@ -2063,7 +2062,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_REVERSAR_ENLACES', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_REVERSAR_ENLACES;
   PROCEDURE P_INFO_AGRUPAMIENTO(
@@ -2274,7 +2273,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END IF;
     END IF;
     IF LV_ESTADOREQUEST != LV_ESTADOACTUAL THEN
-      DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOACTUAL, 'Se actualiza el estado de la cabecera por finalización de procesamiento.', LV_STATUS, LV_MENSAJE);
+      DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOACTUAL, 'Se actualiza el estado de la cabecera por finalizaci�n de procesamiento.', LV_STATUS, LV_MENSAJE);
       IF LV_ESTADOACTUAL = 'Migrado' OR LV_ESTADOACTUAL = 'MigradoConErrores' THEN
         FOR R_OLT IN C_GETOLTSMIGRAR(LN_IDMIGRACIONCAB)
         LOOP
@@ -2357,7 +2356,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END IF;
     END IF;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
     APEX_JSON.WRITE('estado', LV_ESTADOACTUAL, TRUE);
     APEX_JSON.CLOSE_OBJECT;
     PCL_JSONRESPONSE := APEX_JSON.GET_CLOB_OUTPUT;
@@ -2371,7 +2370,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
     PCL_JSONRESPONSE := '{}';
     PV_STATUS        := 'ERROR';
     LV_MENSAJE       := 'Error inesperado ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
-    PV_MENSAJE       := 'No se ha podido realizar correctamente la validación.';
+    PV_MENSAJE       := 'No se ha podido realizar correctamente la validaci�n.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_VALIDAR_CAB_MIGRACION', LV_MENSAJE, 'migracion', SYSDATE, NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   END P_VALIDAR_CAB_MIGRACION;
   PROCEDURE P_AGRUPAR_DETALLES
@@ -2449,16 +2448,16 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             LN_CANTIDADITEMS := 0;
           END IF;
         ELSE
-          DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOERROR, SUBSTR('Se presentó un error al actualizar los detalles, '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
+          DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOERROR, SUBSTR('Se present� un error al actualizar los detalles, '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
         END IF;
       ELSE
-        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOERROR, SUBSTR('Se presentó un error al obtener los detalles: '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
+        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOERROR, SUBSTR('Se present� un error al obtener los detalles: '||LV_MENSAJE,0,4000), LV_STATUS, LV_MENSAJE);
       END IF;
     ELSE
       DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_CABECERA( LN_IDMIGRACIONCAB, LV_ESTADOERROR, 'Ocurrio un error al procesar la cabecera: '|| LV_MENSAJE, LV_STATUS, LV_MENSAJE);
     END IF;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
     APEX_JSON.CLOSE_ARRAY;
     APEX_JSON.CLOSE_OBJECT;
     PV_STATUS        := LV_STATUS;
@@ -2556,7 +2555,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                 LN_IDELEMENTO,
                 'Activo',
                 NULL,
-                'Se actualizó el nombre el elemento correctamente. Nombre anterior: '
+                'Se actualiz� el nombre el elemento correctamente. Nombre anterior: '
                 || LR_INFOMIGRACIONDET.ELEMENTO_A
                 || ', Nombre Nuevo: '
                 || LR_INFOMIGRACIONDET.ELEMENTO_B,
@@ -2571,7 +2570,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
           COMMIT;
         EXCEPTION
         WHEN OTHERS THEN
-          LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de splitter: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+          LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de splitter: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
           ROLLBACK;
           DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERRORDET, LV_MENSAJEEX);
           COMMIT;
@@ -2579,11 +2578,11 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END LOOP;
     END LOOP;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_SPLITTERS', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_PROCESAR_SPLITTERS;
   PROCEDURE P_PROCESAR_SCOPES
@@ -3113,17 +3112,17 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOOK, 'Scope procesado correctamente');
             COMMIT;
           ELSE
-            P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, 'Se presentó un error al actualizar el detalle de scopes: No se encontraron olt asociados con el elmento scope '||LV_SCOPE_A ||' en la info_detalle_elemento.');
+            P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, 'Se present� un error al actualizar el detalle de scopes: No se encontraron olt asociados con el elmento scope '||LV_SCOPE_A ||' en la info_detalle_elemento.');
             COMMIT;
           END IF;
         EXCEPTION
         WHEN LE_EXCEPTION_REG THEN
-          LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de scopes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+          LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de scopes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
           ROLLBACK;
           P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, LV_MENSAJEEX);
           COMMIT;
         WHEN OTHERS THEN
-          LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de scopes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+          LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de scopes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
           ROLLBACK;
           P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, LV_MENSAJEEX);
           COMMIT;
@@ -3131,11 +3130,11 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END LOOP;
     END LOOP;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_SCOPES', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_PROCESAR_SCOPES;
   PROCEDURE P_PROCESAR_ENLACES(
@@ -3288,7 +3287,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                 LR_INFOMIGRAADDATA.TIPO_PROCESO     := 'ENLACE_INTERFACE';
                 LR_INFOMIGRAADDATA.IDENTIFICADOR    := LR_INFOENLACEINI.INTERFACE_ELEMENTO_FIN_ID;
                 LR_INFOMIGRAADDATA.ESTADO           := LV_ESTADOCONNECTED;
-                LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a not connect. Se utilizará en caso de reverso.';
+                LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a not connect. Se utilizar� en caso de reverso.';
                 DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
               END IF;
               UPDATE DB_INFRAESTRUCTURA.INFO_ENLACE
@@ -3300,7 +3299,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
               LR_INFOMIGRAADDATA.TIPO_PROCESO     := 'ENLACE_ENLACE';
               LR_INFOMIGRAADDATA.IDENTIFICADOR    := LR_INFOENLACEINI.ID_ENLACE;
               LR_INFOMIGRAADDATA.ESTADO           := LV_ESTADOACTIVO;
-              LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a Migrado. Se utilizará en caso de reverso.';
+              LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a Migrado. Se utilizar� en caso de reverso.';
               DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
               LB_CREARENLACE := TRUE;
             END IF;
@@ -3315,7 +3314,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             LR_INFOMIGRAADDATA.TIPO_PROCESO     := 'ENLACE_INTERFACE';
             LR_INFOMIGRAADDATA.IDENTIFICADOR    := LR_INFOINFERFACEINI.ID_INTERFACE_ELEMENTO;
             LR_INFOMIGRAADDATA.ESTADO           := LR_INFOINFERFACEINI.ESTADO;
-            LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a connected. Se utilizará en caso de reverso.';
+            LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a connected. Se utilizar� en caso de reverso.';
             DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
             UPDATE DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO
             SET ESTADO                  = LV_ESTADOCONNECTED
@@ -3328,7 +3327,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             LR_INFOMIGRAADDATA.TIPO_PROCESO     := 'ENLACE_INTERFACE';
             LR_INFOMIGRAADDATA.IDENTIFICADOR    := LR_INFOINFERFACEFIN.ID_INTERFACE_ELEMENTO;
             LR_INFOMIGRAADDATA.ESTADO           := LR_INFOINFERFACEFIN.ESTADO;
-            LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a connected. Se utilizará en caso de reverso.';
+            LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a connected. Se utilizar� en caso de reverso.';
             DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
             UPDATE DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO
             SET ESTADO                  = LV_ESTADOCONNECTED
@@ -3347,7 +3346,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
               LR_INFOMIGRAADDATA.TIPO_PROCESO     := 'ENLACE_ENLACE';
               LR_INFOMIGRAADDATA.IDENTIFICADOR    := LR_INFOENLACEFIN.ID_ENLACE;
               LR_INFOMIGRAADDATA.ESTADO           := LV_ESTADOACTIVO;
-              LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a Migrado. Se utilizará en caso de reverso.';
+              LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro actualizado a Migrado. Se utilizar� en caso de reverso.';
               DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
             END IF;
             CLOSE C_GETENLACEFIN;
@@ -3401,14 +3400,14 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             LR_INFOMIGRAADDATA.TIPO_PROCESO     := 'ENLACE_ENLACE';
             LR_INFOMIGRAADDATA.IDENTIFICADOR    := LN_IDENLACENUEVO;
             LR_INFOMIGRAADDATA.ESTADO           := LV_ESTADOMIGRADO;
-            LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro creado en Activo. Se utilizará en caso de reverso.';
+            LR_INFOMIGRAADDATA.OBSERVACION      := 'Registro creado en Activo. Se utilizar� en caso de reverso.';
             DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
           END IF;
           DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE(LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOOK, 'Enlace procesado correctamente');
           COMMIT;
         EXCEPTION
         WHEN OTHERS THEN
-          LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de enlaces: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+          LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de enlaces: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
           ROLLBACK;
           DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, LV_MENSAJEEX);
           COMMIT;
@@ -3416,11 +3415,11 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END LOOP;
     END LOOP;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_ENLACES', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_PROCESAR_ENLACES;
   PROCEDURE P_OBTENER_CARACT_MW
@@ -3618,7 +3617,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
           IF LR_INFOINFERFACEFIN.NOMBRE_MARCA_ELEMENTO = 'ZTE' AND LCL_JSONZTE IS NULL OR LCL_JSONZTE = '{}' THEN
               DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_OBTENER_CARACT_MW ( LV_STATUS, LV_MENSAJE, LCL_JSONZTE);
               IF LCL_JSONZTE        IS NULL OR LCL_JSONZTE = '{}' THEN
-                LV_MENSAJEMIGRACION := 'WS GDA no devolvió información. '||LV_MENSAJE;
+                LV_MENSAJEMIGRACION := 'WS GDA no devolvi� informaci�n. '||LV_MENSAJE;
                 RAISE LE_EXCEPTIONPON;
               END IF;
               DB_GENERAL.GNRLPCK_UTIL.P_INSERT_LOG('18',
@@ -3629,7 +3628,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                          'Ejecutando procedure P_PROCESAR_CLIENTES',
                          'DataZte',
                          LCL_JSONZTE,
-                         'Sin parámetros',
+                         'Sin par�metros',
                          LV_USRCREACION
                         );  
           END IF;
@@ -3725,10 +3724,10 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
                 DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA( LR_INFOMIGRAADDATA, LV_STATUS, LV_MENSAJE);
                 COMMIT;
               WHEN OTHERS THEN
-                LV_MENSAJEEX := SUBSTR('Se presentó un error al migrar cliente:  - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+                LV_MENSAJEEX := SUBSTR('Se present� un error al migrar cliente:  - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
                 ROLLBACK;
                 LB_EXISTIOERROR := TRUE;
-                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_CLIENTES', SUBSTR('Se presentó un error al migrar cliente:  IdServicio : '||LR_REGINFOSERVICIOSMIGRA.IDSERVICIO||' '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
+                DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_CLIENTES', SUBSTR('Se present� un error al migrar cliente:  IdServicio : '||LR_REGINFOSERVICIOSMIGRA.IDSERVICIO||' '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
                 LV_MENSAJEMIGRACION                 := LV_MENSAJEEX;
                 LR_INFOMIGRAADDATA                  := NULL;
                 LR_INFOMIGRAADDATA.MIGRACION_CAB_ID := LN_IDMIGRACIONCAB;
@@ -3767,8 +3766,8 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
             DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE(LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, LV_MENSAJEMIGRACION);
             COMMIT;
         WHEN OTHERS THEN
-          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_CLIENTES', SUBSTR('Se presentó un error al migrar cliente. - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
-          LV_MENSAJEEX := SUBSTR('Se presentó un error al actualizar el detalle de clientes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
+          DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_CLIENTES', SUBSTR('Se present� un error al migrar cliente. - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
+          LV_MENSAJEEX := SUBSTR('Se present� un error al actualizar el detalle de clientes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000);
           ROLLBACK;
           DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOPROCESANDO, LV_ESTADOERROR, LV_MENSAJEEX);
           COMMIT;
@@ -3776,11 +3775,11 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END LOOP;
     END LOOP;
     PV_STATUS  := 'OK';
-    PV_MENSAJE := 'Proceso terminó de ejecutarse';
+    PV_MENSAJE := 'Proceso termin� de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
-    PV_MENSAJE := 'Ocurrió un error no controlado en la ejecución';
+    PV_MENSAJE := 'Ocurri� un error no controlado en la ejecuci�n';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_PROCESAR_CLIENTES', SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), LV_USRCREACION, SYSDATE, LV_IPCREACION);
   END P_PROCESAR_CLIENTES;
   PROCEDURE P_ACTUALIZA_SPID
@@ -3837,7 +3836,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'SPID';
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas con la característica SPID Activa en el cliente, favor regularizar. ';
+      LV_MENSAJEEX := 'Existieron problemas con la caracter�stica SPID Activa en el cliente, favor regularizar. ';
       RAISE LE_EXCEPTION_REG;
     END;
     BEGIN
@@ -3858,7 +3857,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'INDICE CLIENTE';
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas con la característica ONT ID Activa en el cliente, favor regularizar. ';
+      LV_MENSAJEEX := 'Existieron problemas con la caracter�stica ONT ID Activa en el cliente, favor regularizar. ';
       RAISE LE_EXCEPTION_REG;
     END;
     UPDATE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT ISPC
@@ -3905,7 +3904,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         'Activo',
         NULL
       );
-    LV_MENSAJEHISTORIAL := 'Migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>SPID Anterior</b>: ';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || LR_SERVICIOPRODCARACT.VALOR || '<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>SPID Nuevo</b>: ';
@@ -3982,7 +3981,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'INDICE CLIENTE';
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas con la característica ONT ID Activa en el cliente, favor regularizar. ';
+      LV_MENSAJEEX := 'Existieron problemas con la caracter�stica ONT ID Activa en el cliente, favor regularizar. ';
       RAISE LE_EXCEPTION_REG;
     END;
     IF LR_SERVICIOPRODCARACTONT.VALOR = '100' THEN
@@ -4028,7 +4027,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'SPID'
       AND ROWNUM                          <=1
       );
-    LV_MENSAJEHISTORIAL := 'Reverso de migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Reverso de migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>SPID Anterior</b>: ';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || LR_SERVICIOPRODCARACT.VALOR || '<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>SPID Nuevo</b>: ';
@@ -4106,7 +4105,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'PACKAGE ID'
       AND ROWNUM                          <=1
       );
-    LV_MENSAJEHISTORIAL := 'Reverso de migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Reverso de migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>PACKAGE ID Reversado</b>. ';
     INSERT
     INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
@@ -4149,7 +4148,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'CLIENT CLASS'
       AND ROWNUM                          <=1
       );
-    LV_MENSAJEHISTORIAL := 'Reverso de migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Reverso de migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>CLIENT CLASS Reversado</b>. ';
     INSERT
     INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
@@ -4192,7 +4191,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'CAPACIDAD1'
       AND ROWNUM                          <=1
       );
-    LV_MENSAJEHISTORIAL := 'Reverso de migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Reverso de migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>CAPACIDAD1 Reversada</b>. ';
     INSERT
     INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
@@ -4235,7 +4234,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AC.DESCRIPCION_CARACTERISTICA    = 'CAPACIDAD2'
       AND ROWNUM                          <=1
       );
-    LV_MENSAJEHISTORIAL := 'Reverso de migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Reverso de migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>CAPACIDAD2 Reversada</b>. ';
     INSERT
     INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
@@ -4276,7 +4275,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND ISERV.ID_SERVICIO                = PN_IDSERVICIO
       AND AC.DESCRIPCION_CARACTERISTICA    = 'CAPACIDAD1'
       );
-    
+
     UPDATE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT
     SET ESTADO = 'Activo'
     WHERE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ID_SERVICIO_PROD_CARACT in
@@ -4360,7 +4359,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       END IF;
     END LOOP;
     IF LV_PACKDID IS NULL OR LV_CLIENTECLASS IS NULL THEN
-      LV_MENSAJEEX := 'No se encontró información de line_profile del cliente en información devuelta por WS.';
+      LV_MENSAJEEX := 'No se encontr� informaci�n de line_profile del cliente en informaci�n devuelta por WS.';
       RAISE LE_EXCEPTION_REG;
     END IF;
     IF PV_ESPLAN      = 'SI' THEN
@@ -4384,7 +4383,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AP.ID_PRODUCTO                = LN_ID_PRODUCTO;
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas al recuperar característica PACKAGE ID.';
+      LV_MENSAJEEX := 'Existieron problemas al recuperar caracter�stica PACKAGE ID.';
       RAISE LE_EXCEPTION_REG;
     END;
     BEGIN
@@ -4400,7 +4399,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AP.ID_PRODUCTO                       = LN_ID_PRODUCTO;
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas al recuperar característica CLIENT CLASS.';
+      LV_MENSAJEEX := 'Existieron problemas al recuperar caracter�stica CLIENT CLASS.';
       RAISE LE_EXCEPTION_REG;
     END;
     BEGIN
@@ -4416,7 +4415,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AP.ID_PRODUCTO                       = LN_ID_PRODUCTO;
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas al recuperar característica CAPACIDAD1.';
+      LV_MENSAJEEX := 'Existieron problemas al recuperar caracter�stica CAPACIDAD1.';
       RAISE LE_EXCEPTION_REG;
     END;
     BEGIN
@@ -4432,28 +4431,28 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND AP.ID_PRODUCTO                       = LN_ID_PRODUCTO;
     EXCEPTION
     WHEN OTHERS THEN
-      LV_MENSAJEEX := 'Existieron problemas al recuperar característica CAPACIDAD2.';
+      LV_MENSAJEEX := 'Existieron problemas al recuperar caracter�stica CAPACIDAD2.';
       RAISE LE_EXCEPTION_REG;
     END;
     IF LR_PCPCK.ID_PRODUCTO_CARACTERISITICA IS NULL OR LR_PCCLIENTE.ID_PRODUCTO_CARACTERISITICA IS NULL OR
     LR_PCCAPA1.ID_PRODUCTO_CARACTERISITICA IS NULL OR LR_PCCAPA2.ID_PRODUCTO_CARACTERISITICA IS NULL THEN
       LV_MENSAJEEX := 'No se han podido actualizar las caracteristicas correctamente. '||
-                      'No tiene PACKAGE ID ó CLIENT CLASS ó CAPACIDAD1 ó CAPACIDAD2.';
+                      'No tiene PACKAGE ID � CLIENT CLASS � CAPACIDAD1 � CAPACIDAD2.';
       RAISE LE_EXCEPTION_REG;
     END IF;
-    
+
     UPDATE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT
     SET ESTADO = 'Migrado'
     WHERE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.SERVICIO_ID = PN_IDSERVICIO AND
     DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.PRODUCTO_CARACTERISITICA_ID = LR_PCCAPA1.ID_PRODUCTO_CARACTERISITICA AND
     ESTADO = 'Activo';
-    
+
     UPDATE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT
     SET ESTADO = 'Migrado'
     WHERE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.SERVICIO_ID = PN_IDSERVICIO AND
     DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.PRODUCTO_CARACTERISITICA_ID = LR_PCCAPA2.ID_PRODUCTO_CARACTERISITICA AND
     ESTADO = 'Activo';
-    
+
     IF PV_ESPLAN      = 'SI' THEN
       BEGIN
         SELECT DB_COMERCIAL.INFO_PLAN_PRODUCTO_CARACT.VALOR
@@ -4468,7 +4467,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO                             = PN_IDSERVICIO;
       EXCEPTION
       WHEN OTHERS THEN
-        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de característica CAPACIDAD1.';
+        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de caracter�stica CAPACIDAD1.';
         RAISE LE_EXCEPTION_REG;
       END;
       BEGIN
@@ -4484,11 +4483,11 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
       AND DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO                             = PN_IDSERVICIO;
       EXCEPTION
       WHEN OTHERS THEN
-        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de característica CAPACIDAD2.';
+        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de caracter�stica CAPACIDAD2.';
         RAISE LE_EXCEPTION_REG;
       END;
       IF LV_CAPACIDAD1 IS NULL OR LV_CAPACIDAD2 IS NULL THEN
-        LV_MENSAJEEX := 'No se encontró información de CAPACIDAD1 ó CAPACIDAD2 del plan del cliente en información de Telcos.';
+        LV_MENSAJEEX := 'No se encontr� informaci�n de CAPACIDAD1 � CAPACIDAD2 del plan del cliente en informaci�n de Telcos.';
         RAISE LE_EXCEPTION_REG;
       END IF;
     ELSE
@@ -4514,7 +4513,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         AND DET_PLANES_TN_EQUIV_PERFIL.VALOR3 = PV_LINEPROFILE;
       EXCEPTION
       WHEN OTHERS THEN
-        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de característica CAPACIDAD1.';
+        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de caracter�stica CAPACIDAD1.';
         RAISE LE_EXCEPTION_REG;
       END;
       BEGIN
@@ -4539,11 +4538,11 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         AND DET_PLANES_TN_EQUIV_PERFIL.VALOR3 = PV_LINEPROFILE;
       EXCEPTION
       WHEN OTHERS THEN
-        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de característica CAPACIDAD2.';
+        LV_MENSAJEEX := 'Existieron problemas al recuperar el valor de caracter�stica CAPACIDAD2.';
         RAISE LE_EXCEPTION_REG;
       END;
       IF LV_CAPACIDAD1 IS NULL OR LV_CAPACIDAD2 IS NULL THEN
-        LV_MENSAJEEX := 'No se encontró información de CAPACIDAD1 ó CAPACIDAD2 del producto del cliente en información de Telcos.';
+        LV_MENSAJEEX := 'No se encontr� informaci�n de CAPACIDAD1 � CAPACIDAD2 del producto del cliente en informaci�n de Telcos.';
         RAISE LE_EXCEPTION_REG;
       END IF;
     END IF;
@@ -4574,7 +4573,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         'Activo',
         NULL
       );
-    LV_MENSAJEHISTORIAL := 'Migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>CAPACIDAD1 Nueva</b>: ';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || LV_CAPACIDAD1 || '<br>';
     INSERT
@@ -4625,7 +4624,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         'Activo',
         NULL
       );
-    LV_MENSAJEHISTORIAL := 'Migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>CAPACIDAD2 Nueva</b>: ';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || LV_CAPACIDAD2 || '<br>';
     INSERT
@@ -4676,7 +4675,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         'Activo',
         NULL
       );
-    LV_MENSAJEHISTORIAL := 'Migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>PACKAGE ID Nuevo</b>: ';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || LV_PACKDID || '<br>';
     INSERT
@@ -4727,7 +4726,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
         'Activo',
         NULL
       );
-    LV_MENSAJEHISTORIAL := 'Migración de Data<br>';
+    LV_MENSAJEHISTORIAL := 'Migraci�n de Data<br>';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || '<b>CLIENT CLASS Nuevo</b>: ';
     LV_MENSAJEHISTORIAL := LV_MENSAJEHISTORIAL || LV_CLIENTECLASS || '<br>';
     INSERT
@@ -4821,7 +4820,7 @@ ORDER BY DET.ID_MIGRACION_DET ASC ';
   WHEN OTHERS THEN
     PV_STATUS  := 'ERROR';
     LV_MENSAJE := 'Error inesperado ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
-    PV_MENSAJE := 'No se han podido insertar correctamente la información en tabla de datos.';
+    PV_MENSAJE := 'No se han podido insertar correctamente la informaci�n en tabla de datos.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_INSERTAR_DATA', LV_MENSAJE, LV_USRCREACION, SYSDATE, LV_IPULTMOD );
   END P_INSERTAR_DATA;
   PROCEDURE P_MIGRACION_OLT_SAFECITY
@@ -5848,7 +5847,7 @@ BEGIN
   LV_CODIGOAPPCORTEMASIVO    := LR_GETCONFIGNFSMIGRAAD.CODIGO_APP;
   LV_CODIGOPATHCORTEMASIVO   := LR_GETCONFIGNFSMIGRAAD.CODIGO_PATH;
   IF LV_CODIGOAPPCORTEMASIVO IS NULL OR LV_CODIGOPATHCORTEMASIVO IS NULL THEN
-    LV_MENSAJE               := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+    LV_MENSAJE               := 'No se ha podido obtener la configuraci�n de la ruta NFS';
     RAISE LE_EXCEPTION;
   END IF;
   FOR LC_GET_ARCHIVOS_CARGADOS IN C_GET_ARCHIVOS_CARGADOS
@@ -6326,7 +6325,7 @@ BEGIN
       APEX_JSON.PARSE(LV_RESPUESTAGUARDARARCHIVO);
       LN_CODEGUARDARARCHIVO    := APEX_JSON.GET_NUMBER('code');
       IF LN_CODEGUARDARARCHIVO IS NULL OR LN_CODEGUARDARARCHIVO <> 200 THEN
-        LV_MENSAJE             := 'Ha ocurrido alg¿n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
+        LV_MENSAJE             := 'Ha ocurrido alg�n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
         RAISE LE_EXCEPTION_NFS;
       END IF;
       LN_COUNTARCHIVOSGUARDADOS    := APEX_JSON.GET_COUNT(P_PATH => 'data');
@@ -6577,7 +6576,7 @@ WHEN LE_EXCEPTION THEN
   END IF;
 WHEN OTHERS THEN
   PV_STATUS  := 'ERROR';
-  PV_MENSAJE := 'Se han encontrado errores al validar los archivos de migracion, se notificará por correo electrónico el detalle de los mismos.';
+  PV_MENSAJE := 'Se han encontrado errores al validar los archivos de migracion, se notificar� por correo electr�nico el detalle de los mismos.';
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 'INKG_MIGRACION_ALTA_DENSIDAD.P_UPLOAD_CSV_MIGRACION_OLT', SUBSTR(SQLCODE || ' -ERROR- ' || PV_MENSAJE || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,0,4000), LV_USR_CREACION, SYSDATE, '127.0.0.0');
   IF LN_MIGRACION_CAB IS NOT NULL THEN
     UPDATE DB_INFRAESTRUCTURA.INFO_MIGRA_AD_CAB
@@ -6854,7 +6853,7 @@ IS
     LV_CODIGOAPPCORTEMASIVO    := LR_GETCONFIGNFSMIGRAAD.CODIGO_APP;
     LV_CODIGOPATHCORTEMASIVO   := LR_GETCONFIGNFSMIGRAAD.CODIGO_PATH;
     IF LV_CODIGOAPPCORTEMASIVO IS NULL OR LV_CODIGOPATHCORTEMASIVO IS NULL THEN
-      LV_MENSAJE               := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+      LV_MENSAJE               := 'No se ha podido obtener la configuraci�n de la ruta NFS';
       RAISE LE_EXCEPTION;
     END IF;
     LV_NOMBREARCHIVOCORREO  := 'REPORTE_ENLACE_PREVIO_'||TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')||'.csv';
@@ -6958,7 +6957,7 @@ IS
       APEX_JSON.PARSE(LV_RESPUESTAGUARDARARCHIVO);
       LN_CODEGUARDARARCHIVO    := APEX_JSON.GET_NUMBER('code');
       IF LN_CODEGUARDARARCHIVO IS NULL OR LN_CODEGUARDARARCHIVO <> 200 THEN
-        LV_MENSAJE             := 'Ha ocurrido alg¿n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
+        LV_MENSAJE             := 'Ha ocurrido alg�n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
         RAISE LE_EXCEPTION_NFS;
       END IF;
       LN_COUNTARCHIVOSGUARDADOS    := APEX_JSON.GET_COUNT(P_PATH => 'data');
@@ -7363,7 +7362,7 @@ IS
     LV_CODIGOAPPCORTEMASIVO    := LR_GETCONFIGNFSMIGRAAD.CODIGO_APP;
     LV_CODIGOPATHCORTEMASIVO   := LR_GETCONFIGNFSMIGRAAD.CODIGO_PATH;
     IF LV_CODIGOAPPCORTEMASIVO IS NULL OR LV_CODIGOPATHCORTEMASIVO IS NULL THEN
-      LV_MSJERROR              := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+      LV_MSJERROR              := 'No se ha podido obtener la configuraci�n de la ruta NFS';
       RAISE LE_EXCEPTION;
     END IF;
     OPEN C_GET_REMITENTE_ASUNTO(LV_NOTI_PARAMETRO);
@@ -7420,7 +7419,7 @@ IS
       APEX_JSON.PARSE(LV_RESPUESTAGUARDARARCHIVO);
       LN_CODEGUARDARARCHIVO    := APEX_JSON.GET_NUMBER('code');
       IF LN_CODEGUARDARARCHIVO IS NULL OR LN_CODEGUARDARARCHIVO <> 200 THEN
-        LV_MSJERROR            := 'Ha ocurrido alg¿n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
+        LV_MSJERROR            := 'Ha ocurrido alg�n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
         RAISE LE_EXCEPTION_NFS;
       END IF;
       LN_COUNTARCHIVOSGUARDADOS    := APEX_JSON.GET_COUNT(P_PATH => 'data');
@@ -7998,7 +7997,7 @@ IS
       EXCEPTION
       WHEN OTHERS THEN
         ROLLBACK;
-        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOOK, LV_ESTADOERROR, SUBSTR('Se presentó un error al realizar el reverso de scopes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000));
+        DB_INFRAESTRUCTURA.INKG_MIGRACION_ALTA_DENSIDAD.P_ACTUALIZAR_DETALLE( LN_IDMIGRACIONDET, LV_TIPOREGISTRO, LV_ESTADOOK, LV_ESTADOERROR, SUBSTR('Se present� un error al realizar el reverso de scopes: '||LV_MENSAJE || ' - '||SQLCODE || ' - ERROR - ' || SQLERRM,0,4000));
         COMMIT;
       END;
     END LOOP;
@@ -8312,7 +8311,7 @@ IS
     PV_ERROR   := 'ERROR';
     PV_MENSAJE := 'ERROR: '||SQLERRM;
   END P_REVERSAR_SPLITTERS;
-  
+
   PROCEDURE P_WS_NETWORKING(
       PN_IDOLTANTERIOR IN NUMBER )
     AS

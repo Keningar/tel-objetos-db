@@ -1,18 +1,18 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION
 AS
 /**
-    * Documentación para la función P_APROBAR_CONTRATO
+    * Documentaci�n para la funci�n P_APROBAR_CONTRATO
     * Procedimiento para obtener los datos del cliente
     *
     * @param  Pcl_Request       -  Datos de aprobar adendum,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_SeAutorizo     -  Se autoriza
-    * @author Ariel Bailón <abailon@telconet.ec>
+    * @author Ariel Bail�n <abailon@telconet.ec>
     * @version 1.0 27-10-2020
     *
     * @author Walther Joao Gaibor C. <wgaibor@telconet.ec>
-    * @version 1.1 25-01-2022 - Se solicita que no se duplique la información 
+    * @version 1.1 25-01-2022 - Se solicita que no se duplique la informaci�n 
     *                           de la info_persona_empresa_rol.
     */
     PROCEDURE P_APROBAR_CONTRATO(Pcl_Request       IN  DB_COMERCIAL.DATOS_APROBAR_CONTRATO_TYPE,
@@ -20,13 +20,13 @@ AS
                                  Pv_Status         OUT VARCHAR2);
 
    /**
-    * Documentación para la función P_GENERAR_OT_SERVADIC
+    * Documentaci�n para la funci�n P_GENERAR_OT_SERVADIC
     * Procedimiento para obtener los datos del cliente
     *
     * @param  Pcl_Request       -  Datos setear datos contrato,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
-    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @author N�stor Naula <nnaulal@telconet.ec>
     * @version 1.0 27-10-2020
     */
     PROCEDURE P_GENERAR_OT_SERVADIC(
@@ -35,13 +35,13 @@ AS
                                   Pv_Status         OUT VARCHAR2);
 
        /**
-    * Documentación para la función P_SETEAR_DATOS_CONTRATO
+    * Documentaci�n para la funci�n P_SETEAR_DATOS_CONTRATO
     * Procedimiento para obtener los datos del cliente
     *
     * @param  Pcl_Request       -  Datos setear datos contrato,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
-    * @author Ariel Bailón <abailon@telconet.ec>
+    * @author Ariel Bail�n <abailon@telconet.ec>
     * @version 1.0 27-10-2020
     */
     PROCEDURE P_SETEAR_DATOS_CONTRATO(
@@ -50,14 +50,14 @@ AS
                                   Pv_Status         OUT VARCHAR2);      
 
    /**
-    * Documentación para la función P_APROBAR_ADENDUM
+    * Documentaci�n para la funci�n P_APROBAR_ADENDUM
     * Procedimiento para obtener los datos del cliente
     *
     * @param  Pcl_Request       -  Datos de aprobar adendum,
     *         Pv_Mensaje        -  Mensaje,
     *         Pv_Status         -  Estado,
     *         Pv_SeAutorizo     -  Se autoriza
-    * @author Ariel Bailón <abailon@telconet.ec>
+    * @author Ariel Bail�n <abailon@telconet.ec>
     * @version 1.0 27-10-2020
     */
     PROCEDURE P_APROBAR_ADENDUM(
@@ -67,7 +67,6 @@ AS
 
 
 END CMKG_CONTRATO_AUTORIZACION;
-
 /
 
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CONTRATO_AUTORIZACION
@@ -426,7 +425,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
     BEGIN
       -- VALIDACIONES
       IF Pcl_Request.Pn_FormaPagoId IS NULL THEN
-        Pv_Mensaje := 'Información incompleta, no se está enviando la forma de pago del contrato';
+        Pv_Mensaje := 'Informaci�n incompleta, no se est� enviando la forma de pago del contrato';
         RAISE Le_Errors;
       END IF;
 
@@ -467,7 +466,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
       CLOSE C_CLIENTE_POR_IDEN;
 
       IF Lc_Cliente.Id_Persona IS NULL THEN
-        Pv_Mensaje := 'No se encontro la información del cliente, Favor Revisar!';
+        Pv_Mensaje := 'No se encontro la informaci�n del cliente, Favor Revisar!';
         RAISE Le_Errors;
       END IF;
 
@@ -630,7 +629,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
                                             VALUES(
                                                 DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL,
                                                 Lc_Servicio.Id_Servicio,
-                                                'Se confirmó el servicio',
+                                                'Se confirm� el servicio',
                                                 Pcl_Request.Pv_IpCreacion,
                                                 Pcl_Request.Pv_UsrCreacion,
                                                 SYSDATE,
@@ -795,7 +794,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
                  Pcl_Request.Pv_UsrCreacion,
                  SYSDATE,
                  Pcl_Request.Pv_IpCreacion,
-                 'Actualización de rol precliente a cliente')
+                 'Actualizaci�n de rol precliente a cliente')
           RETURNING ID_PERSONA_REPRESENTANTE INTO Ln_IdPersonaRepresenanteNew;
          COMMIT;
           UPDATE DB_COMERCIAL.INFO_PERSONA_REPRESENTANTE IPR
@@ -814,7 +813,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
         FETCH C_CARAT_CICLO_FACTURACION INTO Lv_NombreCiclo, Ln_IdPersonaEmpresaRolCaract, Ln_PersonaEmpresaRolIdFact, Ln_CaracteristicaId, Lv_Valor, Lv_EstadoFact;
         CLOSE C_CARAT_CICLO_FACTURACION;
         IF Ln_IdPersonaEmpresaRolCaract IS NULL THEN
-          Pv_Mensaje := 'No fue posible aprobar el contrato - El Pre-Cliente no posee Ciclo de Facturación asignado';
+          Pv_Mensaje := 'No fue posible aprobar el contrato - El Pre-Cliente no posee Ciclo de Facturaci�n asignado';
           RAISE Le_Errors;
         ELSE
           OPEN C_CARACTERISTICA_PARAMS(Ln_CaracteristicaId);
@@ -885,7 +884,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
                  Pcl_Request.Pv_IpCreacion,
                  'Activo',
                  Ln_IdPersonaEmpresaRolCliente,
-                 'Se creo Cliente con Ciclo de Facturación: ' || Lv_NombreCiclo);
+                 'Se creo Cliente con Ciclo de Facturaci�n: ' || Lv_NombreCiclo);
           COMMIT;
         END IF;
       END IF;
@@ -1001,9 +1000,9 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
         END IF;
 
         IF Lv_ContribucionSolidaria = 'S' THEN
-          Lv_ObervacionPerEmpRolHisTemp := 'El cliente se marcó como CONTRIBUCION_SOLIDARIA en Si';
+          Lv_ObervacionPerEmpRolHisTemp := 'El cliente se marc� como CONTRIBUCION_SOLIDARIA en Si';
         ELSE
-          Lv_ObervacionPerEmpRolHisTemp := 'El cliente se marcó como CONTRIBUCION_SOLIDARIA en No';
+          Lv_ObervacionPerEmpRolHisTemp := 'El cliente se marc� como CONTRIBUCION_SOLIDARIA en No';
         END IF;
 
         INSERT INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO IPERH (
@@ -1136,7 +1135,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
          DBMS_OUTPUT.PUT_LINE('Cupos Moviles -> getCuposMobil');
       END IF;
 
-      Pv_Mensaje := 'Proceso realizado con éxito';
+      Pv_Mensaje := 'Proceso realizado con �xito';
       Pv_Status  := 'OK';
     EXCEPTION
     WHEN Le_Errors THEN
@@ -1972,7 +1971,7 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
     END IF;
 
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Proceso realizado con éxito';
+    Pv_Mensaje    := 'Proceso realizado con �xito';
     EXCEPTION
             WHEN OTHERS THEN
             ROLLBACK;
@@ -1989,4 +1988,3 @@ CURSOR C_CONTRATO_PARAMS(Cn_ContratoId NUMBER)
 
 END CMKG_CONTRATO_AUTORIZACION;
 /
-

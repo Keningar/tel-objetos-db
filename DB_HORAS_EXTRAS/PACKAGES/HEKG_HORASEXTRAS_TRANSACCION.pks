@@ -1,4 +1,4 @@
-CREATE OR REPLACE package                                                                   DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
+CREATE OR REPLACE package DB_HORAS_EXTRAS.HEKG_HORASEXTRAS_TRANSACCION is
 
    /**
   * Documentación para el procedimiento P_GUARDAR_HORASEXTRA

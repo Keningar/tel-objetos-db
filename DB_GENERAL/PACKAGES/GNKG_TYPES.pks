@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_TYPES AS
 
   /**
   * Documentacion para el PKG GNKG_TYPES
-  * El PKG GNKG_TYPES contendrá las variables que sean necesarias a usar en los PKG de consultas o transacciones
+  * El PKG GNKG_TYPES contendr� las variables que sean necesarias a usar en los PKG de consultas o transacciones
   * separando procedimientos y funciones de las declaraciones de variables
   * @author David De La Cruz <ddelacruz@telconet.ec>
   * @version 1.0 
@@ -29,7 +29,7 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_TYPES AS
     EMAIL_DEPARTAMENTO  ADMI_DEPARTAMENTO.EMAIL_DEPARTAMENTO%TYPE,
     NOMBRE_AREA         ADMI_AREA.NOMBRE_AREA%TYPE
   );
-  
+
   TYPE Ltr_Departamento IS TABLE OF Lr_Departamento INDEX BY binary_integer;
 
 END GNKG_TYPES;

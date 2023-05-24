@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS 
 
   /**
-   * Documentación para proceso 'P_INSERT_DETALLE'
+   * Documentaci�n para proceso 'P_INSERT_DETALLE'
    *
    * Procedimiento encargado de generar un detalle
    *
@@ -18,7 +18,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
    *  valorNoFacturado      Valor no facturado,
    *  fechaHoraSolicitada   Fecha y Hora en que se genera el detalle,
    *  observacion           Observacion para generar el detalle,
-   *  esSolucion            Indica si es solución,
+   *  esSolucion            Indica si es soluci�n,
    *  idDetalleSolicitud    Id del detalle de solicitud,
    *  idDetalleHipotesis    Id del detalle de hipotesis,
    *  idDetalleRelacionado  Id del detalle relacionado,
@@ -27,8 +27,8 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
    *  ip                    Ip desde donde se genera el detalle
    * ]
    * @param Pn_IdDetalle  OUT INFO_DETALLE.ID_DETALLE%TYPE Retorna id del detalle
-   * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -40,7 +40,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
                              Pv_Mensaje   OUT VARCHAR2);
 
   /**
-   * Documentación para proceso 'P_INSERT_CRITERIO_AFECTADO'
+   * Documentaci�n para proceso 'P_INSERT_CRITERIO_AFECTADO'
    *
    * Procedimiento encargado de generar un criterio afectado
    *
@@ -53,8 +53,8 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
    *  ip         Ip desde donde se genera el criterio del afectado
    * ]
    * Pn_IdCriterioAfectado  OUT INFO_CRITERIO_AFECTADO.ID_CRITERIO_AFECTADO%TYPE Retorna id del criterio afectado
-   * @param Pv_Status       OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje      OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status       OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje      OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -66,7 +66,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
                                        Pv_Mensaje            OUT VARCHAR2);
 
   /**
-   * Documentación para proceso 'P_INSERT_PARTE_AFECTADA'
+   * Documentaci�n para proceso 'P_INSERT_PARTE_AFECTADA'
    *
    * Procedimiento encargado de generar una parte afectada
    *
@@ -77,14 +77,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
    *  idAfectado            Id del afectado,
    *  tipoAfectado          Tipo de afectado,
    *  nombreAfectado        Nombre de afectado,
-   *  descripcionAfectado   Descripción de afectado,
+   *  descripcionAfectado   Descripci�n de afectado,
    *  fechaInicioIncidencia Fecha y hora del inicio de la incidencia,
    *  usuario               Usuario quien general la parte afectada,
    *  ip                    Ip desde donde se genera la parte afectada
    * ]
    * Pn_IdParteAfectada OUT INFO_PARTE_AFECTADA.ID_PARTE_AFECTADA%TYPE Retorna id de la parte afectada
-   * @param Pv_Status   OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status   OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -96,7 +96,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
                                     Pv_Mensaje         OUT VARCHAR2);
 
   /**
-   * Documentación para proceso 'P_INSERT_DETALLE_ASIGNACION'
+   * Documentaci�n para proceso 'P_INSERT_DETALLE_ASIGNACION'
    *
    * Procedimiento encargado de generar un detalle de asignacion
    *
@@ -107,18 +107,18 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
    *  nombreAsignado        Nombre del asignado,
    *  refIdAsignado         Referencia del id del asignado,
    *  refNombreAsignado     Referencia del nombre del asignado
-   *  motivo                Motivo por el cual se genera el detalle de asignación,
+   *  motivo                Motivo por el cual se genera el detalle de asignaci�n,
    *  idPersonaEmpresaRol   Id persona empresa rol del asignado,
    *  tipoAsignado          Tipo del asignado,
    *  idDepartamento        Id del departamento al que pertenece el asignado,
-   *  idCanton              Id del cantón al que pertenece el asignado,
-   *  fechaAsignacion       Fecha y hora de la asignación,
-   *  usuario               Usuario quien general la asignación
-   *  ip                    Ip desde donde se genera la asignación
+   *  idCanton              Id del cant�n al que pertenece el asignado,
+   *  fechaAsignacion       Fecha y hora de la asignaci�n,
+   *  usuario               Usuario quien general la asignaci�n
+   *  ip                    Ip desde donde se genera la asignaci�n
    * ]
    * Pn_IdDetalleAsignacion   OUT INFO_DETALLE_ASIGNACION.ID_DETALLE_ASIGNACION%TYPE Retorna id del detalle asignacion
-   * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -130,7 +130,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
                                         Pv_Mensaje              OUT VARCHAR2);
 
   /**
-   * Documentación para proceso 'P_INSERT_DETALLE_HISTORIAL'
+   * Documentaci�n para proceso 'P_INSERT_DETALLE_HISTORIAL'
    *
    * Procedimiento encargado de generar un historial del detalle
    *
@@ -139,23 +139,23 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
    *  idDetalle             Id del detalle,
    *  observacion           Observacion para generar el historial de detalle,
    *  estado                Estado para generar el historial de detalle,
-   *  motivo                Motivo por el cual se generará el historial de detalle,
+   *  motivo                Motivo por el cual se generar� el historial de detalle,
    *  idAsignado            Id del asignado
    *  idPersonaEmpresaRol   Id persona empresa rol del asignado,
    *  idDepartamentoOrigen  Id del departamento origien del asignado,
    *  idDepartamentoDestino Id del departamento destino del asignado,
-   *  accion                Acción con el que se genará el historial de detalle,
+   *  accion                Acci�n con el que se genar� el historial de detalle,
    *  idTarea               Id de la tarea,
-   *  esSolucion            Indica si es solución,
+   *  esSolucion            Indica si es soluci�n,
    *  idMotivo              Id del motivo,
    *  motivoFinTarea        Motivo del fin de la tarea
-   *  fechaHistorial        Fecha y hora de la generación del historial de detalle,
+   *  fechaHistorial        Fecha y hora de la generaci�n del historial de detalle,
    *  usuario               Usuario quien general el historial del detalle
    *  ip                    Ip desde donde se genera el historial del detalle
    * ]
    * Pn_IdDetalleHistorial  OUT INFO_DETALLE_HISTORIAL.ID_DETALLE_HISTORIAL%TYPE Retorna id del detalle historial
-   * @param Pv_Status       OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje      OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status       OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje      OUT VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -168,8 +168,6 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
 
 END SPKG_DETALLES_TRANSACCION;
 /
-
-
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
 
   PROCEDURE P_INSERT_DETALLE(Pcl_Request  IN  CLOB,
@@ -178,10 +176,10 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
                              Pv_Mensaje   OUT VARCHAR2) AS
   
   BEGIN 
-  
+
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdDetalle := SEQ_INFO_DETALLE.NEXTVAL;
-    
+
     INSERT INTO DB_SOPORTE.INFO_DETALLE
       (ID_DETALLE,
       TAREA_ID,
@@ -224,16 +222,16 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       SYSDATE,
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Detalle creado correctamente';
-    
+
   EXCEPTION 
     WHEN OTHERS THEN  
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_DETALLE;
-  
+
   PROCEDURE P_INSERT_CRITERIO_AFECTADO(Pcl_Request           IN  CLOB,
                                        Pn_IdCriterioAfectado IN OUT INFO_CRITERIO_AFECTADO.ID_CRITERIO_AFECTADO%TYPE,
                                        Pv_Status             OUT VARCHAR2,
@@ -243,7 +241,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
     If Pn_IdCriterioAfectado IS NULL THEN
       Pn_IdCriterioAfectado := SEQ_INFO_CRITERIO_AFECTADO.NEXTVAL;
     END IF;
-    
+
     INSERT INTO DB_SOPORTE.INFO_CRITERIO_AFECTADO
       (ID_CRITERIO_AFECTADO,
       DETALLE_ID,
@@ -258,7 +256,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       APEX_JSON.get_varchar2('opcion'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Criterio del afectado creado correctamente';
   EXCEPTION 
@@ -266,7 +264,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_CRITERIO_AFECTADO;
-  
+
   PROCEDURE P_INSERT_PARTE_AFECTADA(Pcl_Request        IN  CLOB,
                                     Pn_IdParteAfectada OUT INFO_PARTE_AFECTADA.ID_PARTE_AFECTADA%TYPE,
                                     Pv_Status          OUT VARCHAR2,
@@ -274,7 +272,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
   BEGIN    
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdParteAfectada := SEQ_INFO_PARTE_AFECTADA.NEXTVAL;
-    
+
     INSERT INTO DB_SOPORTE.INFO_PARTE_AFECTADA
       (ID_PARTE_AFECTADA,
       CRITERIO_AFECTADO_ID,
@@ -297,7 +295,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       To_date(APEX_JSON.get_varchar2('fechaInicioIncidencia'),'rrrr-mm-dd hh24:mi:ss'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Parte afectada creada correctamente';
   EXCEPTION 
@@ -305,7 +303,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_PARTE_AFECTADA;
-  
+
   PROCEDURE P_INSERT_DETALLE_ASIGNACION(Pcl_Request             IN  CLOB,
                                         Pn_IdDetalleAsignacion  OUT INFO_DETALLE_ASIGNACION.ID_DETALLE_ASIGNACION%TYPE,
                                         Pv_Status               OUT VARCHAR2,
@@ -313,7 +311,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
   BEGIN    
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdDetalleAsignacion := SEQ_INFO_DETALLE_ASIGNACION.NEXTVAL;
-    
+
     INSERT INTO DB_SOPORTE.INFO_DETALLE_ASIGNACION
       (ID_DETALLE_ASIGNACION,
       DETALLE_ID,
@@ -344,7 +342,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       To_date(APEX_JSON.get_varchar2('fechaAsignacion'),'rrrr-mm-dd hh24:mi:ss'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Detalle asignacion creado correctamente';
   EXCEPTION 
@@ -352,7 +350,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_DETALLE_ASIGNACION;
-  
+
   PROCEDURE P_INSERT_DETALLE_HISTORIAL(Pcl_Request            IN  CLOB,
                                        Pn_IdDetalleHistorial  OUT INFO_DETALLE_HISTORIAL.ID_DETALLE_HISTORIAL%TYPE,
                                        Pv_Status              OUT VARCHAR2,
@@ -360,7 +358,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
   BEGIN    
     APEX_JSON.PARSE(Pcl_Request);
     Pn_IdDetalleHistorial := SEQ_INFO_DETALLE_HISTORIAL.NEXTVAL;
-    
+
     INSERT INTO DB_SOPORTE.INFO_DETALLE_HISTORIAL
       (ID_DETALLE_HISTORIAL,
       DETALLE_ID,
@@ -397,7 +395,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_DETALLES_TRANSACCION AS
       To_date(APEX_JSON.get_varchar2('fechaHistorial'),'rrrr-mm-dd hh24:mi:ss'),
       APEX_JSON.get_varchar2('usuario'),
       APEX_JSON.get_varchar2('ip'));
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Detalle historial creado correctamente';
   EXCEPTION 

@@ -49,15 +49,15 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_CONSULTA AS
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
    * [
-   *  codEmpresa          Código empresa,
+   *  codEmpresa          C�digo empresa,
    *  fechaAperturaDesde  Fecha de apertura inicial para consultar por rango,
    *  fechaAperturaHasta  Fecha de apertura final para consultar por rango,
    *  fechaCierreDesde    Fecha de cierre inicial para consultar por rango,
    *  fechaCierreHasta    Fecha de cierre final para consultar por rango,
    *  estado              Estado del caso,
-   *  nombreAfectado      Nombre del afectado por el cual se creó el caso,
+   *  nombreAfectado      Nombre del afectado por el cual se cre� el caso,
    *  idCaso              Id del caso,
-   *  numeroCaso          Número del caso
+   *  numeroCaso          N�mero del caso
    * ]
    * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la consulta
    * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la consulta
@@ -71,11 +71,11 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_CONSULTA AS
                         Pv_Status    OUT VARCHAR2,
                         Pv_Mensaje   OUT VARCHAR2,
                         Pcl_Response OUT CLOB);
-                        
+
   /**
    * Documentacion para proceso 'P_GET_CANT_CASOS_SEGUN_TAREAS'
    *
-   * Procedimiento para consultar cantidad de casos según criterio de tareas
+   * Procedimiento para consultar cantidad de casos seg�n criterio de tareas
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
    * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la consulta
@@ -94,8 +94,6 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_CONSULTA AS
 END SPKG_CASOS_CONSULTA;
 
 /
-
-
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
 
   PROCEDURE P_GET_ADMI_TIPO_CASO(Pv_NombreTipoCaso IN  ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE,
@@ -198,7 +196,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
                         Pv_Status    OUT VARCHAR2,
                         Pv_Mensaje   OUT VARCHAR2,
                         Pcl_Response OUT CLOB) AS
-    
+
     /**
      * C_GetHistorialCaso, obtiene el historial de un caso
      * @author  David De La Cruz <ddelacruz@telconet.ec>
@@ -216,9 +214,9 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
       GROUP BY
         Ich.Estado
       ORDER BY Fe_Cambio_Estado ASC;
-    
+
     /**
-     * C_GetAsignacionCaso, obtiene información de asignación del caso
+     * C_GetAsignacionCaso, obtiene informaci�n de asignaci�n del caso
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   6, cardinalidad 1
@@ -231,9 +229,9 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
         INNER JOIN Info_Caso_Asignacion Ica ON Idh.Id_Detalle_Hipotesis = Ica.Detalle_Hipotesis_Id
       WHERE
         Idh.Caso_Id = Cn_IdCaso;
-    
+
     /**
-     * C_GetAfectadosCaso, obtiene información de afectados del caso
+     * C_GetAfectadosCaso, obtiene informaci�n de afectados del caso
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   29, cardinalidad 1
@@ -255,9 +253,9 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
           Ic.Id_Caso = Cn_IdCaso
         AND Initcap(Ipa.Tipo_Afectado) = Cv_TipoAfectado
         AND Ipa.Afectado_Nombre = NVL(Cv_NombreAfectado,Ipa.Afectado_Nombre);
-        
+
     /**
-     * C_GetAfectadosCasoCliente, obtiene información de afectados del caso por cliente
+     * C_GetAfectadosCasoCliente, obtiene informaci�n de afectados del caso por cliente
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   24, cardinalidad 1
@@ -283,9 +281,9 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
         AND Initcap(Ipa.Tipo_Afectado) = Cv_TipoAfectado
         AND Ipa.Afectado_Nombre = NVL(Cv_NombreAfectado,Ipa.Afectado_Nombre)
         AND Ipe.Identificacion_Cliente = Cv_IdentCliente;        
-    
+
     /**
-     * C_GetInfoPunto, obtiene información del punto afectado
+     * C_GetInfoPunto, obtiene informaci�n del punto afectado
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   3, cardinalidad 1
@@ -297,7 +295,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
         Db_Comercial.Info_Punto Ipu
       WHERE
         Ipu.Id_Punto = Cn_IdPunto;
-    
+
     Lc_AsignacionCaso   C_GetAsignacionCaso%ROWTYPE;
     Lc_InfoPunto        C_GetInfoPunto%ROWTYPE;
     Lr_AdmiParametroDet DB_GENERAL.Admi_Parametro_Det%ROWTYPE;
@@ -485,7 +483,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
                                 INNER JOIN Db_Soporte.Info_Parte_Afectada    Ipaf ON Ide.Id_Detalle = Ipaf.Detalle_Id ');
        DBMS_LOB.APPEND(Lcl_Query,'WHERE Ipaf.Afectado_Nombre = '''||Lv_NombreAfectado||''' ');
     END IF;   
-    
+
 
     IF Lv_Estado IS NOT NULL THEN
       IF Lv_NombreAfectado IS NULL AND Lv_IdentCliente IS NULL THEN
@@ -495,9 +493,9 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
       END IF;      
     END IF;
     DBMS_LOB.APPEND(Lcl_Query,'ORDER BY tab.Fe_Apertura DESC');
-    
+
     OPEN Lrf_Casos FOR Lcl_Query;
-    
+
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_ARRAY();
     LOOP
@@ -530,13 +528,13 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
           APEX_JSON.WRITE('tipoBackbone', Lr_Caso(Li_Cont).Tipo_Backbone); 
           APEX_JSON.WRITE('origen', Lr_Caso(Li_Cont).Origen); 
           APEX_JSON.WRITE('estado', Lr_Caso(Li_Cont).Estado);
-          
+
           APEX_JSON.OPEN_ARRAY('historial');
           FOR i in C_GetHistorialCaso(Lr_Caso(Li_Cont).Id_Caso) LOOP
             APEX_JSON.OPEN_OBJECT;
             APEX_JSON.WRITE('fechaCambioEstado', i.Fe_Cambio_Estado);
             APEX_JSON.WRITE('estado', i.Estado);
-            
+
             IF i.Estado = 'Asignado' THEN
               APEX_JSON.OPEN_OBJECT('detalleAsignacion');
               OPEN C_GetAsignacionCaso(Lr_Caso(Li_Cont).Id_Caso);
@@ -550,11 +548,11 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
               APEX_JSON.WRITE('motivo', Lc_AsignacionCaso.Motivo);              
               APEX_JSON.CLOSE_OBJECT;
             END IF;
-            
+
             APEX_JSON.CLOSE_OBJECT;
           END LOOP;
           APEX_JSON.CLOSE_ARRAY;
-          
+
           APEX_JSON.OPEN_ARRAY('afectados');
           IF Lv_IdentCLiente IS NULL THEN
             FOR i in C_GetAfectadosCaso(Lr_Caso(Li_Cont).Id_Caso,'Cliente',Lv_NombreAfectado) LOOP
@@ -600,15 +598,15 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
             END LOOP;
           END IF;
           APEX_JSON.CLOSE_ARRAY;
-          
+
           Lr_DocRelacion.Caso_Id := Lr_Caso(Li_Cont).Id_Caso;
           Lr_DocRelacion.Estado := 'Activo';
-          
+
           DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA.P_GET_DOCUMENTOS_RELACIONADOS(Pr_DocumentoRelacion => Lr_DocRelacion,
                                                                                      Pv_Status            => Lv_Status,
                                                                                      Pv_Mensaje           => Lv_Mensaje,
                                                                                      Prf_Response         => Lrf_Documentos);
-          
+
           APEX_JSON.OPEN_ARRAY('documentos');
           LOOP
             FETCH Lrf_Documentos BULK COLLECT INTO Lr_Documento LIMIT 100;
@@ -624,7 +622,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
             EXIT WHEN Lrf_Documentos%NOTFOUND;
           END LOOP;              
           APEX_JSON.CLOSE_ARRAY;
-          
+
           APEX_JSON.CLOSE_OBJECT;
           Li_Cont:= Lr_Caso.NEXT(Li_Cont);
         END LOOP;
@@ -633,7 +631,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
     APEX_JSON.CLOSE_ARRAY;
     Lcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Consulta exitosa';
     Pcl_Response := Lcl_Response;
@@ -643,12 +641,12 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
       Pv_Status := 'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_GET_CASOS;
-  
+
   PROCEDURE P_GET_CANT_CASOS_SEGUN_TAREAS(Pcl_Request  IN  CLOB,
                                           Pv_Status    OUT VARCHAR2,
                                           Pv_Mensaje   OUT VARCHAR2,
                                           Pcl_Response OUT CLOB) AS
-  
+
     /**
      * C_GetCantCasosPorOrigen, obtiene la cantidad de casos segun tareas, 
      * filtrado por codigo de Forma de contacto y origen del caso
@@ -717,14 +715,14 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
       ) Cant_Casos_Sintareas
     FROM
         Dual;
-        
+
     Lv_CodEmpresa       DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE;
     Lv_Origen           DB_SOPORTE.INFO_CASO.ORIGEN%TYPE;
     Lv_CodFormaContacto DB_COMERCIAL.ADMI_FORMA_CONTACTO.CODIGO%TYPE;
     Lc_CantCasos        C_GetCantCasosPorOrigen%ROWTYPE;
-  
+
   BEGIN   
-    
+
     APEX_JSON.PARSE(Pcl_Request);
     BEGIN
       Lv_CodEmpresa := APEX_JSON.get_varchar2('codEmpresa');
@@ -733,14 +731,14 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
     EXCEPTION
       WHEN OTHERS THEN
         Pv_Status := 'ERROR';
-        Pv_Mensaje := 'Al menos un parámetro no tiene el valor correcto, por favor verificar.';
+        Pv_Mensaje := 'Al menos un par�metro no tiene el valor correcto, por favor verificar.';
         RETURN;
     END;
-    
+
     OPEN C_GetCantCasosPorOrigen(Lv_CodEmpresa,Lv_Origen,Lv_CodFormaContacto);
     FETCH C_GetCantCasosPorOrigen INTO Lc_CantCasos;
     CLOSE C_GetCantCasosPorOrigen;
-    
+
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('casosSinTareas',Lc_CantCasos.Cant_Casos_Sintareas);
@@ -748,10 +746,10 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
     APEX_JSON.CLOSE_OBJECT;
     Pcl_Response := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Consulta exitosa';
-          
+
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status := 'ERROR';

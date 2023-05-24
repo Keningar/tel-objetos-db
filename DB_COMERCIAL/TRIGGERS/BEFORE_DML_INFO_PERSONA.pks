@@ -3,14 +3,14 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.BEFORE_DML_INFO_PERSONA
   FOR EACH ROW
   
     /**
-    * Documentación para trigger BEFORE_DML_INFO_PERSONA
+    * Documentaci�n para trigger BEFORE_DML_INFO_PERSONA
     * Al momento de guardar los datos de una persona, se depura los caracteres especiales en los campos NOMBRES, 
-    * APELLIDOS y RAZON SOCIAL. Para la identicacion se realiza la conversión a mayúsculas.
+    * APELLIDOS y RAZON SOCIAL. Para la identicacion se realiza la conversi�n a may�sculas.
     * @author Gernan Valenzuela <gvalenzuela@telconet.ec>
     * @version 1.0 28-08-2017
     *
     * @author Alex Arreaga <atarreaga@telconet.ec>
-    * @version 1.1 14-05-2021 - Se agrega adicional la función F_GET_VARCHAR_CLEAN para depurar otros caracteres  
+    * @version 1.1 14-05-2021 - Se agrega adicional la funci�n F_GET_VARCHAR_CLEAN para depurar otros caracteres  
     *                           especiales a los campos NOMBRES, APELLIDOS, RAZON_SOCIAL.
     *
     * Se agrego el validacion que restringe la creacion de un cliente repetido.
@@ -26,7 +26,7 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.BEFORE_DML_INFO_PERSONA
         FROM DB_COMERCIAL.INFO_PERSONA
       where IDENTIFICACION_CLIENTE=:new.IDENTIFICACION_CLIENTE;
       IF(v_persona_id>=1) THEN
-        RAISE_APPLICATION_ERROR(-20000, 'La identificación ya existe en el Sistema');
+        RAISE_APPLICATION_ERROR(-20000, 'La identificaci�n ya existe en el Sistema');
       END IF;
     END IF;
 

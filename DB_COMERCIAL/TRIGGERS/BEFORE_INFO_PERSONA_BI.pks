@@ -1,12 +1,11 @@
---CREAR TRIGGER 
-create or replace TRIGGER DB_COMERCIAL.BEFORE_INFO_PERSONA_BI
+CREATE OR REPLACE TRIGGER DB_COMERCIAL.BEFORE_INFO_PERSONA_BI
   BEFORE UPDATE ON DB_COMERCIAL.INFO_PERSONA 
   REFERENCING NEW AS NEW OLD AS OLD 
   FOR EACH ROW
     /**
-    * Documentación para trigger DB_COMERCIAL.BEFORE_INFO_PERSONA_BI
+    * Documentaci�n para trigger DB_COMERCIAL.BEFORE_INFO_PERSONA_BI
     * Trigger que valida los update en la tabla INFO_PERSONA y almacena fechas de update en INFO_PERSONA_BI
-    * @author Mónica Moreta <mmoreta@telconet.ec>
+    * @author M�nica Moreta <mmoreta@telconet.ec>
     * @version 2.0 24-08-2022
     */
 
@@ -25,7 +24,5 @@ BEGIN
     WHEN OTHERS THEN
     NULL; 
     
-END; 
-
-
+END;
 /

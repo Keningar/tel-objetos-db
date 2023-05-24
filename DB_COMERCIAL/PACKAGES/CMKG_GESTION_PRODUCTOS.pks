@@ -1,4 +1,3 @@
-SET DEFINE OFF;
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
 
   /**
@@ -23,6 +22,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
 
 END CMKG_GESTION_PRODUCTOS;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
 
         
@@ -39,22 +39,22 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
                         Lv_JasonAux       CLOB := NULL;
                         Lv_RegJSon        CLOB := NULL;
                         ln_id_apu         NUMBER;
-                        
-                        
+
+
                         lv_id_producto    VARCHAR2(10);
                         lv_companyCode    VARCHAR2(2);
                         lv_technicalName  VARCHAR2(40);
                         lv_group          VARCHAR2(50);
                         lv_descripcion          VARCHAR2(50);
                         lv_status          VARCHAR2(50);
-                        
+
                         ln_check_id     number := 0;
                         ln_check_companyCode     number := 0;
                         ln_check_technicalName   number := 0;
                         ln_check_group           number := 0;
                         ln_check_status          number := 0;
                         ln_check_description     number := 0;
-                        
+
                         lv_cod number;
                         CURSOR C_PRODUCT_LIST(lv_status VARCHAR2,
                                               lv_descripcion VARCHAR2,
@@ -79,26 +79,26 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
                                         and (admprod.descripcion_producto LIKE '%'||lv_descripcion||'%' OR 1 = ln_check_description)
                                         and (admprod.grupo LIKE '%'||lv_group||'%' OR 1 = ln_check_group)
                                         and (admprod.id_producto = lv_id_producto OR 1 = ln_check_id);
-                        
-                        
+
+
                      BEGIN
                         Pv_Status     := 'OK';
                         Pv_Mensaje    := 'Transaccion exitosa';
                         Pd_response := NULL;
-                        
+
                         APEX_JSON.PARSE(Pd_request);
-    
+
                         lv_id_producto  := APEX_JSON.get_varchar2(p_path => 'id');
                         lv_companyCode := APEX_JSON.get_varchar2(p_path => 'companyCode');
                         lv_technicalName := APEX_JSON.get_varchar2(p_path => 'technicalName');
                         lv_group := APEX_JSON.get_varchar2(p_path => 'group');
                         lv_descripcion := APEX_JSON.get_varchar2(p_path => 'description');
-                       
+
                         IF lv_descripcion IS NULL
                         THEN
                             ln_check_description := 1;
                         END IF;
-                         
+
                         IF lv_id_producto IS NULL
                         THEN
                             ln_check_id := 1;
@@ -107,31 +107,31 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
                         THEN
                             ln_check_companyCode := 1;
                         END IF;
-                        
+
                         IF lv_technicalName is null
                         THEN
                             ln_check_technicalName := 1;
                         END IF;
-                        
+
                         IF lv_group is null
                         THEN
                             ln_check_group := 1;
                         END IF;
- 
+
                         IF lv_status is null
                         THEN
                             lv_status:= 'Activo';
                         END IF;
-                        
+
                          Ln_Linea    := 0;
                          lv_Jason := '[';
-                         
+
                         FOR Lr_Datos in C_PRODUCT_LIST(lv_status,
                                                        lv_descripcion,
                                                        lv_group,
                                                        lv_technicalName,
                                                        lv_companyCode) LOOP
-    
+
                                    IF Ln_Linea > 0 THEN
                                          Lv_JasonAux := Lv_JasonAux||',';
                                    END IF;            
@@ -158,9 +158,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GESTION_PRODUCTOS AS
                         Pd_response   :=  Lv_Jason;                        
                         Pv_Status     := 'OK';
                         Pv_Mensaje    := 'Transaccion exitosa';
-                        
+
     END;
 END CMKG_GESTION_PRODUCTOS;
 /
-
-

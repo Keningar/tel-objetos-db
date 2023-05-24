@@ -1,14 +1,14 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS 
 
   /** 
-   * Documentación para el proceso 'P_CREAR_TAREA'
+   * Documentaci�n para el proceso 'P_CREAR_TAREA'
    *
    * Procedimiento encargado de registrar una tarea en sus diferentes estructuras
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
-   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -20,13 +20,13 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                            Prf_Response OUT SYS_REFCURSOR);
 
   /** 
-   * Documentación para el proceso 'P_ASIGNAR_RESPONSABLE_TAREA'
+   * Documentaci�n para el proceso 'P_ASIGNAR_RESPONSABLE_TAREA'
    *
    * Procedimiento encargado de asignar a el/los responsable(s) a la tarea, segun la informacion recibida 
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
-   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -37,14 +37,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                                          Pv_Mensaje   OUT VARCHAR2);
 
   /** 
-   * Documentación para el proceso 'P_INSERT_TAREA_SEGUIMIENTO'
+   * Documentaci�n para el proceso 'P_INSERT_TAREA_SEGUIMIENTO'
    *
-   * Procedimiento encargado de registrar la información del seguimiento de la tarea
+   * Procedimiento encargado de registrar la informaci�n del seguimiento de la tarea
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
-   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -56,14 +56,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                                        Pv_Mensaje       OUT VARCHAR2);                        
 
   /**
-   * Documentación para proceso 'P_ADJUNTAR_DOCUMENTOS_TAREA'
+   * Documentaci�n para proceso 'P_ADJUNTAR_DOCUMENTOS_TAREA'
    *
    * Procedimiento encargado de adjuntar uno o varios documentos a la tarea
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
-   * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la transacción
-   * @param Prf_Response  OUT SYS_REFCURSOR Retorna cursor de la transacción
+   * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la transacci�n
+   * @param Prf_Response  OUT SYS_REFCURSOR Retorna cursor de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -73,16 +73,16 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                                         Pv_Status    OUT VARCHAR2,
                                         Pv_Mensaje   OUT VARCHAR2,
                                         Prf_Response OUT SYS_REFCURSOR);
-  
+
   /** 
-   * Documentación para el proceso 'P_INSERT_TAREA_CARACTERISTICA'
+   * Documentaci�n para el proceso 'P_INSERT_TAREA_CARACTERISTICA'
    *
    * Procedimiento encargado de relacionar una tarea (actividad) con una caracteristica
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
    * @param Pn_IdTareaCaracteristica  OUT INFO_TAREA_CARACTERISTICA.ID_TAREA_CARACTERISTICA%TYPE
-   * @param Pv_Status                 OUT  VARCHAR2 Retorna estatus de la transacción
-   * @param Pv_Mensaje                OUT  VARCHAR2 Retorna mensaje de la transacción
+   * @param Pv_Status                 OUT  VARCHAR2 Retorna estatus de la transacci�n
+   * @param Pv_Mensaje                OUT  VARCHAR2 Retorna mensaje de la transacci�n
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -96,8 +96,6 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
 END SPKG_TAREAS_TRANSACCION;
 
 /
-
-
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
 
   PROCEDURE P_CREAR_TAREA (Pcl_Request  IN CLOB,
@@ -220,12 +218,12 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       END LOOP;
       EXIT WHEN Lrf_Procesos%NOTFOUND;
     END LOOP;
-    
+
     IF Lb_NoExisteProceso THEN
       Pv_Mensaje := 'El proceso no existe';
       RAISE Le_Error;
     END IF;
-    
+
     LOOP
       FETCH Lrf_Tareas BULK COLLECT INTO Lr_AdmiTarea LIMIT 10;
       Li_Cont := Lr_AdmiTarea.FIRST;
@@ -235,7 +233,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       END LOOP;
     EXIT WHEN Lrf_Tareas%NOTFOUND;
     END LOOP;
-    
+
     IF Lb_NoExisteTarea THEN
       Pv_Mensaje := 'La tarea no existe';
       RAISE Le_Error;
@@ -359,7 +357,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
     END IF;
 
     IF Lb_AsignarTarea THEN
-      
+
       IF Lv_TipoAsignado IS NULL THEN
         Pv_Mensaje := 'Si asignarTarea es true, debe ingresar tipoAsignado';
           RAISE le_Error;
@@ -393,7 +391,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
         APEX_JSON.PARSE(Lcl_VendedorCliente);
         Ln_IdAsignado := APEX_JSON.get_varchar2(p_path => 'idPersonaEmpresaRol');
       END IF;
-      
+
       IF Ln_IdAsignado IS NULL THEN
         Pv_Mensaje := 'Si asignarTarea es true, debe ingresar idAsignado';
         RAISE le_Error;
@@ -425,7 +423,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
         RAISE le_Error;
       END IF;                                    
     END IF;
-    
+
     --Json para crer caracteristica a la tarea con la persona que solicita 
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
@@ -436,7 +434,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
     APEX_JSON.WRITE('estado', 'Activo');
     APEX_JSON.WRITE('usuario', Lr_InfoTarea.Usr_Creacion);
     APEX_JSON.WRITE('ip', Lr_InfoTarea.Ip_Creacion);
-    
+
     APEX_JSON.CLOSE_OBJECT;
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
     APEX_JSON.FREE_OUTPUT;
@@ -558,12 +556,12 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
         Pv_Mensaje := 'El departamento no existe';
         RAISE Le_Error;
       END IF;
-      
+
       LOOP
         FETCH Lrf_Departamento BULK COLLECT INTO Lr_Departamento LIMIT 10;
       EXIT WHEN Lrf_Departamento%NOTFOUND;
       END LOOP;
-      
+
       DB_COMERCIAL.CMKG_INFO_EMPRESA_ROL_C.P_GET_INFO_OFICINA_GRUPO (Pn_IdOficina         => Lr_InfoPersonaEmpresaRol.Oficina_Id,
                                                                      Pv_Estado            => 'Activo',
                                                                      Pr_InfoOficinaGrupo  => Lr_InfoOficinaGrupo,
@@ -584,7 +582,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       APEX_JSON.CLOSE_OBJECT;
       Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
       APEX_JSON.FREE_OUTPUT;
-      
+
       DB_COMERCIAL.CMKG_PERSONA_CONSULTA.P_PERSONA_POR_EMPRESA(Pcl_Request  => Lcl_Request,
                                                                Pv_Status    => Lv_Status,
                                                                Pv_Mensaje   => Lv_Mensaje,
@@ -594,12 +592,12 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
         Pv_Mensaje := 'La persona no existe';
         RAISE Le_Error;
       END IF;
-      
+
       LOOP
         FETCH Lrf_Persona BULK COLLECT INTO Lr_InfoPersona LIMIT 10;
       EXIT WHEN Lrf_Persona%NOTFOUND;
       END LOOP;
-       
+
       Lr_InfoDetalleAsignacion.Detalle_Id := Ln_IdDetalle;
       Lr_InfoDetalleAsignacion.Asignado_Id := Lr_Departamento(1).Id_Departamento;
       Lr_InfoDetalleAsignacion.Asignado_Nombre := Lr_Departamento(1).Nombre_Departamento;
@@ -802,12 +800,12 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       Pv_Status :=  'ERROR';
       Pv_Mensaje := 'Error: ' || SQLERRM;
   END P_INSERT_TAREA_SEGUIMIENTO;
-  
+
   PROCEDURE P_ADJUNTAR_DOCUMENTOS_TAREA(Pcl_Request  IN CLOB,
                                         Pv_Status    OUT VARCHAR2,
                                         Pv_Mensaje   OUT VARCHAR2,
                                         Prf_Response OUT SYS_REFCURSOR) AS
-  
+
     Ln_CantDocumentos NUMBER;
     Lcl_Request       CLOB;
     Lv_Status         VARCHAR2(25);
@@ -820,14 +818,14 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
     Ln_IdDocumento    DB_COMUNICACION.INFO_DOCUMENTO.ID_DOCUMENTO%TYPE;
     Ln_IdDocRelacion  DB_COMUNICACION.INFO_DOCUMENTO_RELACION.ID_DOCUMENTO_RELACION%TYPE;
   BEGIN
-  
+
     APEX_JSON.PARSE(Pcl_Request);
     Lv_CodEmpresa := APEX_JSON.get_varchar2('codEmpresa');
     Ln_IdDetalle := APEX_JSON.get_number('idDetalle');
     Ln_CantDocumentos := APEX_JSON.get_count('documentos');
     Lv_Usuario := APEX_JSON.get_varchar2('usuario');
     Lv_Ip := APEX_JSON.get_varchar2('ip');
-    
+
     FOR i IN 1..Ln_CantDocumentos LOOP
       --Json para crear el documento
       APEX_JSON.INITIALIZE_CLOB_OUTPUT;
@@ -845,18 +843,18 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       APEX_JSON.CLOSE_OBJECT;
       Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
       APEX_JSON.FREE_OUTPUT;
-  
+
       DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC.P_INSERT_DOCUMENTO(Pcl_Request    => Lcl_Request,
                                                                      Pn_IdDocumento => Ln_IdDocumento,
                                                                      Pv_Status      => Lv_Status,
                                                                      Pv_Mensaje     => Lv_Mensaje);
-  
+
       IF Lv_Status != 'OK' THEN
         Pv_Mensaje := 'No es posible crear el documento: '|| Lv_Mensaje;
         RAISE Le_Error;
       END IF;    
-      
-       --Json para crear el documento y la relación con el caso
+
+       --Json para crear el documento y la relaci�n con el caso
       APEX_JSON.INITIALIZE_CLOB_OUTPUT;
       APEX_JSON.OPEN_OBJECT;
       APEX_JSON.WRITE('modulo','SOPORTE'); 
@@ -867,21 +865,21 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       APEX_JSON.CLOSE_OBJECT;
       Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;
       APEX_JSON.FREE_OUTPUT;
-  
+
       DB_COMUNICACION.CUKG_COMUNICACIONES_TRANSAC.P_INSERT_DOCUMENTO_RELACION(Pcl_Request       => Lcl_Request,
                                                                               Pn_IdDocRelacion  => Ln_IdDocRelacion,
                                                                               Pv_Status         => Lv_Status,
                                                                               Pv_Mensaje        => Lv_Mensaje);
-  
+
       IF Lv_Status != 'OK' THEN
         Pv_Mensaje := 'No es posible relacionar el documento con la tarea: '|| Lv_Mensaje;
         RAISE Le_Error;
       END IF;      
       APEX_JSON.PARSE(Pcl_Request);
     END LOOP;
-    
+
     COMMIT;
-    
+
     OPEN Prf_Response FOR
       SELECT Ido.Id_Documento AS idDocumento, 
         Ido.Ubicacion_Logica_Documento AS nombreDocumento,
@@ -892,7 +890,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
         AND Idr.Detalle_Id = Ln_IdDetalle
         AND Ido.estado = 'Activo'
       ORDER BY Ido.fe_creacion DESC;
-    
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Documento(s) adjunto(s) correctamente';
   EXCEPTION
@@ -904,12 +902,12 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       Pv_Mensaje := 'Error: ' || SQLERRM;
       ROLLBACK;
   END P_ADJUNTAR_DOCUMENTOS_TAREA;
-  
+
   PROCEDURE P_INSERT_TAREA_CARACTERISTICA(Pcl_Request               IN CLOB,
                                           Pn_IdTareaCaracteristica  OUT INFO_TAREA_CARACTERISTICA.ID_TAREA_CARACTERISTICA%TYPE,
                                           Pv_Status                 OUT VARCHAR2,
                                           Pv_Mensaje                OUT VARCHAR2) AS
-    
+
   CURSOR C_GetAdmiCaracteristica(Cv_Caracteristica DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE) IS 
     SELECT ID_CARACTERISTICA
       FROM DB_COMERCIAL.ADMI_CARACTERISTICA 
@@ -917,21 +915,21 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       DESCRIPCION_CARACTERISTICA = Cv_Caracteristica
       AND TIPO = 'SOPORTE'
       AND ESTADO                 = 'Activo';
-    
+
     Ln_IdCaracteristica DB_COMERCIAL.ADMI_CARACTERISTICA.ID_CARACTERISTICA%TYPE; 
     Le_Error            EXCEPTION;
   BEGIN    
     APEX_JSON.PARSE(Pcl_Request);
-    
+
     OPEN C_GetAdmiCaracteristica(APEX_JSON.get_varchar2('caracteristica'));
     FETCH C_GetAdmiCaracteristica INTO Ln_IdCaracteristica;
     ClOSE C_GetAdmiCaracteristica;
-    
+
     IF Ln_IdCaracteristica IS NULL THEN
       Pv_Mensaje := 'Caracteristica no encontrada';
       RAISE Le_Error;
     END IF;
-    
+
     Pn_IdTareaCaracteristica := SEQ_INFO_TAREA_CARACTERISTICA.NEXTVAL;
 
     INSERT INTO DB_SOPORTE.INFO_TAREA_CARACTERISTICA 
@@ -940,7 +938,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
       (Pn_IdTareaCaracteristica,APEX_JSON.get_number('idTarea'),APEX_JSON.get_number('idDetalle'),Ln_IdCaracteristica,
       APEX_JSON.get_varchar2('valor'),APEX_JSON.get_varchar2('estado'),SYSDATE,substr(APEX_JSON.get_varchar2('usuario'),1,20),
       APEX_JSON.get_varchar2('ip'));
-      
+
     Pv_Status := 'OK';
     Pv_Mensaje := 'Info Tarea Caracteristica creada correctamente';
   EXCEPTION

@@ -1,10 +1,9 @@
-SET DEFINE OFF;
-create or replace PACKAGE                       DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL
+CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL
 AS
     /**
-      * Documentación para el procedimiento P_PROGRAMAR_SOLICITUD
+      * Documentaci�n para el procedimiento P_PROGRAMAR_SOLICITUD
       *
-      * Método que se encarga de realizar la programación de solicitudes
+      * M�todo que se encarga de realizar la programaci�n de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -18,9 +17,9 @@ AS
 
 
      /**
-      * Documentación para el procedimiento P_CONFIRMAR_PLANIFICACION
+      * Documentaci�n para el procedimiento P_CONFIRMAR_PLANIFICACION
       *
-      * Método que se encarga de asignar responsables de solicitudes
+      * M�todo que se encarga de asignar responsables de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -34,9 +33,9 @@ AS
                                          Pcl_Response OUT SYS_REFCURSOR); 
 
      /**
-      * Documentación para el procedimiento P_EJECUTA_GESTION_SIMULTANEA
+      * Documentaci�n para el procedimiento P_EJECUTA_GESTION_SIMULTANEA
       *
-      * Método que se encarga de ejecutar la gestion simultanea de solicitudes
+      * M�todo que se encarga de ejecutar la gestion simultanea de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -53,7 +52,7 @@ AS
 
 END SPKG_PLANIFICACION_COMERCIAL;
 /
-create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
+CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
   PROCEDURE P_PROGRAMAR_SOLICITUD (Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
                                    Pv_Mensaje   OUT VARCHAR2,
@@ -244,7 +243,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     OPEN C_GET_DETALLE_SOLICITUD(Ln_IdFactibilidad);
     FETCH C_GET_DETALLE_SOLICITUD INTO Ln_IdServicio, Ln_IdProducto, Ln_IdPunto, Ln_IdJurisdiccion, Ln_Cupo, Lv_EstadoServicio;
     IF C_GET_DETALLE_SOLICITUD%NOTFOUND THEN
-      Pv_Mensaje := 'No Existe Solicitud de Planificación!';
+      Pv_Mensaje := 'No Existe Solicitud de Planificaci�n!';
       CLOSE C_GET_DETALLE_SOLICITUD; 
       RAISE Le_Errors;
     END IF;
@@ -257,7 +256,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
       FETCH C_GET_MOTIVO INTO Lv_NombreMotivo;
       CLOSE C_GET_MOTIVO;
 
-      Lv_ObservacionServicio  := 'Se graba la planificación comercial sin horario. Motivo:' || Lv_NombreMotivo;
+      Lv_ObservacionServicio  := 'Se graba la planificaci�n comercial sin horario. Motivo:' || Lv_NombreMotivo;
 
       INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, USR_CREACION, FE_CREACION, IP_CREACION, ESTADO, MOTIVO_ID, OBSERVACION)
       VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_UsrCreacion, sysdate, Lv_IpCreacion, Lv_EstadoServicio, Ln_IdMotivo, Lv_ObservacionServicio);
@@ -303,7 +302,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
       END IF;
     END IF;  
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       DBMS_OUTPUT.PUT_LINE('le_error programar' || Pv_Mensaje);     
@@ -722,7 +721,7 @@ create or replace PACKAGE BODY            DB_SOPORTE.SPKG_PLANIFICACION_COMERCIA
     ELSE
 
         INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
-        VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificación comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
+        VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificaci�n comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
     END IF;
     DB_SOPORTE.SPKG_INFO_TAREA.P_CREA_INFO_TAREA(Ln_IdDetalle,
                                                  Lv_UsrCreacion,

@@ -1,8 +1,7 @@
-  
- CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
+CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
  
   /**
-  * Documentación para P_VALIDA_SALDO
+  * Documentaci�n para P_VALIDA_SALDO
   * Procedimiento para validar el saldo de la persona.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
@@ -10,20 +9,20 @@
   *   idEmpresa           := Id de Empresa,
   *   idPersona           := Id de persona
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 09/11/2021
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 16/12/2022 - Se modifica la forma de obtener el saldo mediante la llamada a función 'F_GET_SALDO_CLIENTE'.
-  *                           Se agrega parámetro de tipo de proceso para validación.
+  * @version 1.1 16/12/2022 - Se modifica la forma de obtener el saldo mediante la llamada a funci�n 'F_GET_SALDO_CLIENTE'.
+  *                           Se agrega par�metro de tipo de proceso para validaci�n.
   */
   PROCEDURE  P_VALIDA_SALDO(Pcl_Request IN CLOB, Pv_Mensaje OUT VARCHAR2, Pv_Status OUT VARCHAR2);
    
   /**
-  * Documentación para P_VALIDA_FACTURAS
+  * Documentaci�n para P_VALIDA_FACTURAS
   * Procedimiento para validar facturas recurrentes de la persona.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
@@ -31,23 +30,23 @@
   *   idEmpresa           := Id de Empresa,
   *   idPersona           := Id de persona
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 12/11/2021
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 20/04/2022 - Se modifica validación para que la cantidad de facturas del cliente sea ">=" 
+  * @version 1.1 20/04/2022 - Se modifica validaci�n para que la cantidad de facturas del cliente sea ">=" 
   *                           al valor de cantidad de facturas parametrizada. 
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.2 16/12/2022 - Se agrega parámetro de tipo de proceso para validación.
+  * @version 1.2 16/12/2022 - Se agrega par�metro de tipo de proceso para validaci�n.
   */
   PROCEDURE  P_VALIDA_FACTURAS(Pcl_Request IN CLOB, Pv_Mensaje OUT VARCHAR2, Pv_Status OUT VARCHAR2);
 
   /**
-  * Documentación para F_VALIDA_CLIENTE.
+  * Documentaci�n para F_VALIDA_CLIENTE.
   * Procedimiento encargado de validar mediante el IdPersona si es un cliente.
   *
   * Costo query C_GetPersEmpRol: 6
@@ -64,7 +63,7 @@
   RETURN NUMBER; 
   
   /**
-  * Documentación para F_GET_SALDO_CLIENTE.
+  * Documentaci�n para F_GET_SALDO_CLIENTE.
   * Procedimiento encargado de obtener el saldo por cliente.
   *
   * Costo query C_GetSaldoCliente: 99
@@ -79,7 +78,7 @@
   RETURN NUMBER; 
   
   /**
-  * Documentación para P_GET_CANT_FACT_VENCIDAS.
+  * Documentaci�n para P_GET_CANT_FACT_VENCIDAS.
   * Procedimiento encargado de validar y obtener las facturas vencidas por cliente.
   *
   * Costo query C_GetCantFactCliente: 11
@@ -101,9 +100,9 @@
                                      Pn_CantFacturas OUT NUMBER);
           
   /**
-  * Documentación para P_VALIDA_PRODUCTO_ADICIONAL.
-  * Procedimiento encargado de la validación de contratación por producto adicional.
-  * Se valida el saldo del cliente, y facturas vencidas por cliente mediante la fecha de su ciclo de facturación.
+  * Documentaci�n para P_VALIDA_PRODUCTO_ADICIONAL.
+  * Procedimiento encargado de la validaci�n de contrataci�n por producto adicional.
+  * Se valida el saldo del cliente, y facturas vencidas por cliente mediante la fecha de su ciclo de facturaci�n.
   *
   * Costo query C_GetServicioInternet: 10
   * Costo query C_GetContratoPorPersEmpRol: 6
@@ -127,9 +126,9 @@
                                         Pv_Mensaje  OUT VARCHAR2);  
   
   /**
-  * Documentación para P_VALIDA_CAMBIO_PLAN_UP.
-  * Procedimiento encargado de la validación de contratación por cambio de plan upgrade.
-  * Se valida el saldo del cliente, y facturas vencidas por cliente mediante la fecha de su ciclo de facturación.
+  * Documentaci�n para P_VALIDA_CAMBIO_PLAN_UP.
+  * Procedimiento encargado de la validaci�n de contrataci�n por cambio de plan upgrade.
+  * Se valida el saldo del cliente, y facturas vencidas por cliente mediante la fecha de su ciclo de facturaci�n.
   *
   * Costo query C_GetDetParametro: 3
   * Costo query C_GetValorCambioPlanF: 3
@@ -154,10 +153,10 @@
 
 
   /**
-  * Documentación para PROCEDURE 'P_VALIDA_PERFIL_POR_USUARIO'.
+  * Documentaci�n para PROCEDURE 'P_VALIDA_PERFIL_POR_USUARIO'.
   *
-  * Procedimiento que permite validar que el usrCreacion (login) posea algún perfil de los parametrizados para el proceso Punto Adicional.
-  * Se devuelve como mensaje el valor de "SI" en caso de existir algún perfil, caso contrario se devuelve como mensaje el valor "NO".
+  * Procedimiento que permite validar que el usrCreacion (login) posea alg�n perfil de los parametrizados para el proceso Punto Adicional.
+  * Se devuelve como mensaje el valor de "SI" en caso de existir alg�n perfil, caso contrario se devuelve como mensaje el valor "NO".
   *
   * Costo query C_GetPerfilPorUsr: 7
   *
@@ -167,7 +166,7 @@
   * @param Pcl_Request IN CLOB Recibe json request
   * [
   *   idEmpresa    := Id de Empresa
-  *   usrCreacion  := usuario de creación (login)
+  *   usrCreacion  := usuario de creaci�n (login)
   *   tipoProceso  := tipo de proceso
   * ]
   * @param Pv_Status   OUT VARCHAR2
@@ -178,8 +177,8 @@
                                         Pv_Mensaje  OUT VARCHAR2);   
 
   /**
-  * Documentación para la función F_GET_VALOR_PLAN_POR_EMPRESA.
-  * Función que retorna el valor de un plan.
+  * Documentaci�n para la funci�n F_GET_VALOR_PLAN_POR_EMPRESA.
+  * Funci�n que retorna el valor de un plan.
   *
   * Costo del Query C_getValorPlan: 4
   *
@@ -197,7 +196,6 @@
 
 END FNCK_VALIDACIONES_FORMA_PAGO;
 /
-
 CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
 
 
@@ -256,17 +254,17 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     Lv_TipoProceso := APEX_JSON.get_varchar2(p_path => 'tipoProceso');
     
     IF Lv_CodEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_CodEmpresa esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_CodEmpresa esta vac�o';
       RAISE Le_Errors;
     END IF;
     
     IF Ln_IdPersona IS NULL THEN
-      Pv_Mensaje := 'El parámetro Ln_IdPersona esta vacío';
+      Pv_Mensaje := 'El par�metro Ln_IdPersona esta vac�o';
       RAISE Le_Errors;
     END IF;
 
     IF Lv_TipoProceso IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_TipoProceso esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_TipoProceso esta vac�o';
       RAISE Le_Errors;
     END IF;
     
@@ -296,7 +294,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     END IF; 
     
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacción exitosa.';
+    Pv_Mensaje := 'Transacci�n exitosa.';
 
   EXCEPTION
       WHEN Le_Errors THEN
@@ -335,7 +333,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
       AND IC.ESTADO             = Cv_EstadoContrato
       AND IPER.ID_PERSONA_ROL   = Cv_IdPersonaRol ; 
 
-    --Cursor que obtiene parámetro forma de pago que se excluyen en la validación en facturas. 
+    --Cursor que obtiene par�metro forma de pago que se excluyen en la validaci�n en facturas. 
     --Costo query 6    
     CURSOR C_GetParamDetExcluyeFP(Cv_NombreParametro     DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE,
                                   Cv_DescripcionDetParam DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE,
@@ -487,17 +485,17 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     Lv_TipoProceso := APEX_JSON.get_varchar2(p_path => 'tipoProceso');
     
     IF Lv_CodEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_CodEmpresa esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_CodEmpresa esta vac�o';
       RAISE Le_Errors;
     END IF;
     
     IF Ln_IdPersona IS NULL THEN
-      Pv_Mensaje := 'El parámetro Ln_IdPersona esta vacío';
+      Pv_Mensaje := 'El par�metro Ln_IdPersona esta vac�o';
       RAISE Le_Errors;
     END IF;
 
     IF Lv_TipoProceso IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_TipoProceso esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_TipoProceso esta vac�o';
       RAISE Le_Errors;
     END IF;
     
@@ -554,9 +552,9 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
 
         IF Lc_GetParamDetExcluyeFP.VALOR2 IS NOT NULL THEN 
             Pv_Status    := 'OK';
-            Pv_Mensaje   := 'Transacción exitosa';
+            Pv_Mensaje   := 'Transacci�n exitosa';
         ELSE 
-          --Se obtiene la cantidad parametrizada de validación facturas recurrentes. 
+          --Se obtiene la cantidad parametrizada de validaci�n facturas recurrentes. 
           OPEN  C_GetParametroDet(Lv_NombreParamCabCliente, Lv_DesDetParamValidaFact, Lv_EstadoActivo, Lv_CodEmpresa, Lv_TipoProceso); 
           FETCH C_GetParametroDet INTO Lc_ValidacionFactura;  
           CLOSE C_GetParametroDet;   
@@ -578,7 +576,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     
                     IF Pagos.FORMA_PAGO_ID = Lc_GetContratoPorPersEmpRol.FORMA_PAGO_ID THEN
                         Pv_Status    := 'OK';
-                        Pv_Mensaje   := 'Transacción exitosa';
+                        Pv_Mensaje   := 'Transacci�n exitosa';
                         EXIT;     
                     END IF;
     
@@ -595,7 +593,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
 
           ELSE
               Pv_Status    := 'OK';
-              Pv_Mensaje   := 'Transacción exitosa';      
+              Pv_Mensaje   := 'Transacci�n exitosa';      
           END IF; 
           
         END IF;
@@ -943,22 +941,22 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     Lv_TipoProceso := APEX_JSON.get_varchar2(p_path => 'tipoProceso');
     
     IF Lv_CodEmpresa IS NULL THEN
-        Pv_Mensaje := 'El parámetro Lv_CodEmpresa esta vacío';
+        Pv_Mensaje := 'El par�metro Lv_CodEmpresa esta vac�o';
         RAISE Le_Errors;
     END IF;
     
     IF Ln_IdPersona IS NULL THEN
-        Pv_Mensaje := 'El parámetro Ln_IdPersona esta vacío';
+        Pv_Mensaje := 'El par�metro Ln_IdPersona esta vac�o';
         RAISE Le_Errors;
     END IF;
     
     IF Ln_IdPunto IS NULL THEN
-        Pv_Mensaje := 'El parámetro Ln_IdPunto esta vacío';
+        Pv_Mensaje := 'El par�metro Ln_IdPunto esta vac�o';
         RAISE Le_Errors;
     END IF;
 
     IF Lv_TipoProceso IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_TipoProceso esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_TipoProceso esta vac�o';
       RAISE Le_Errors;
     END IF;
     --
@@ -1037,7 +1035,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
                                                                           Ln_CantFactVencidasCliente); 
       
       /* Se valida que el cliente posea deuda mayor al valor parametrizado de deuda.
-        Se valida la cantidad de facturas vencidas del cliente con la cantidad límite de facturas parametrizada */
+        Se valida la cantidad de facturas vencidas del cliente con la cantidad l�mite de facturas parametrizada */
       IF Ln_Saldo > Lc_ValorDeuda.VALOR1 AND (Ln_CantFactVencidasCliente > Lc_CantLimiteFactVencidas.VALOR1) THEN
           Pv_Mensaje := Lc_MsjValidaProd.VALOR1
                         ||' '||REPLACE(Lc_MsjValidaProd.VALOR2,'SALDO',Ln_Saldo)
@@ -1048,7 +1046,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     END IF;
     
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacción exitosa';
+    Pv_Mensaje := 'Transacci�n exitosa';
     
   EXCEPTION
   WHEN Le_Errors THEN
@@ -1139,27 +1137,27 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     Lv_TipoProceso     := APEX_JSON.get_varchar2(p_path => 'tipoProceso');
     
     IF Lv_CodEmpresa IS NULL THEN
-        Pv_Mensaje := 'El parámetro Lv_CodEmpresa esta vacío';
+        Pv_Mensaje := 'El par�metro Lv_CodEmpresa esta vac�o';
         RAISE Le_Errors;
     END IF;
     
     IF Ln_IdPersona IS NULL THEN
-        Pv_Mensaje := 'El parámetro Ln_IdPersona esta vacío';
+        Pv_Mensaje := 'El par�metro Ln_IdPersona esta vac�o';
         RAISE Le_Errors;
     END IF;
     
     IF Ln_ValorPlanActual IS NULL THEN
-        Pv_Mensaje := 'El parámetro Ln_ValorPlanActual esta vacío';
+        Pv_Mensaje := 'El par�metro Ln_ValorPlanActual esta vac�o';
         RAISE Le_Errors;
     END IF;
     
     IF Ln_IdPlanCabNuevo IS NULL THEN
-        Pv_Mensaje := 'El parámetro Ln_IdPlanCabNuevo esta vacío';
+        Pv_Mensaje := 'El par�metro Ln_IdPlanCabNuevo esta vac�o';
         RAISE Le_Errors;
     END IF;
 
     IF Lv_TipoProceso IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_TipoProceso esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_TipoProceso esta vac�o';
       RAISE Le_Errors;
     END IF;
     --
@@ -1179,7 +1177,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     
     Ln_ValorPlanNuevo := DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO.F_GET_VALOR_PLAN_POR_EMPRESA(Ln_IdPlanCabNuevo, Lv_CodEmpresa);
     
-    --Se valida plan nuevo, plan actual y valor de definición upgrade para determinar si cumple como cambio de plan upgrade
+    --Se valida plan nuevo, plan actual y valor de definici�n upgrade para determinar si cumple como cambio de plan upgrade
     IF (Ln_ValorPlanNuevo - Ln_ValorPlanActual) >= Lc_ValorParamCambioPlanUp.VALOR1 THEN 
         Lv_AplicaValidacionPlanUp := 'SI';
     END IF;
@@ -1209,7 +1207,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
                                                                               Ln_CantFactVencidasCliente); 
 
           /* Se valida que el cliente posea deuda mayor al valor parametrizado de deuda.
-            Se valida la cantidad de facturas vencidas del cliente con la cantidad límite de facturas parametrizada */
+            Se valida la cantidad de facturas vencidas del cliente con la cantidad l�mite de facturas parametrizada */
           IF Ln_Saldo > Lc_ValorDeuda.VALOR1 AND (Ln_CantFactVencidasCliente > Lc_CantLimiteFactVencidas.VALOR1) THEN
               Pv_Mensaje := Lc_MsjValidaCambioPlan.VALOR1
                             ||' '||REPLACE(Lc_MsjValidaCambioPlan.VALOR2,'SALDO',Ln_Saldo)
@@ -1222,7 +1220,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     END IF;
     
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacción exitosa';
+    Pv_Mensaje := 'Transacci�n exitosa';
     
   EXCEPTION
   WHEN Le_Errors THEN
@@ -1291,17 +1289,17 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
     Lv_TipoProceso := APEX_JSON.get_varchar2(p_path => 'tipoProceso');
     
     IF Lv_CodEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_CodEmpresa esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_CodEmpresa esta vac�o';
       RAISE Le_Errors;
     END IF;
     
     IF Lv_Login IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_Login esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_Login esta vac�o';
       RAISE Le_Errors;
     END IF;
 
     IF Lv_TipoProceso IS NULL THEN
-      Pv_Mensaje := 'El parámetro Lv_TipoProceso esta vacío';
+      Pv_Mensaje := 'El par�metro Lv_TipoProceso esta vac�o';
       RAISE Le_Errors;
     END IF;
     --
@@ -1378,7 +1376,6 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_VALIDACIONES_FORMA_PAGO AS
   END F_GET_VALOR_PLAN_POR_EMPRESA;
   --
 
-END FNCK_VALIDACIONES_FORMA_PAGO; 
- 
+END FNCK_VALIDACIONES_FORMA_PAGO;
 /
 

@@ -239,10 +239,9 @@ AS
     Pcl_JsonReturn                  OUT CLOB);
 
 END INKG_FACTIB_CONNECTIV_CONSULTA;
-
 /
 
-create or replace PACKAGE BODY DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA
+CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_FACTIB_CONNECTIV_CONSULTA
 AS
   FUNCTION F_CALCULA_DISTANCIA(
     Fn_LatitudPunto1    IN NUMBER, 
@@ -771,7 +770,7 @@ AS
     Lv_Valor2InfoDetParam           VARCHAR2(100);
     Lv_Valor3InfoDetParam           VARCHAR2(100);
     Lv_ValidaCantonValor            VARCHAR2(200);
-    
+
     CURSOR Lc_GetInfoParamsConfigResponse(  Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE, 
                                             Cv_Valor1 DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE, 
                                             Cv_Valor2 DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE,
@@ -800,7 +799,7 @@ AS
       WHERE INTERFACE_OLT.ID_INTERFACE_ELEMENTO = DB_INFRAESTRUCTURA.GET_ELEMENTO_PADRE(Cn_IdElementoSplitter, Lv_Elemento, Lv_Olt)
       AND DET_OLT_OPERATIVO.DETALLE_DESCRIPCION = Lv_DetDescripcionOltOperativo
       AND DET_OLT_OPERATIVO.DETALLE_VALOR = Lv_DetValorOltOperativo;
-      
+
     CURSOR Lc_GetInfoDetParam(Cv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE)
     IS
       SELECT DET.VALOR1, DET.VALOR2,DET.VALOR3
@@ -906,7 +905,7 @@ AS
     Ln_IdServicio               := TRIM(APEX_JSON.GET_NUMBER(p_path => 'intIdServicio'));
     Ln_IdCaja                   := 0;
     Ln_DistanciaCaja            := 0;
-    
+
     OPEN Lc_GetInfoDetParam(Lv_NombreParamCalculo);
     FETCH Lc_GetInfoDetParam INTO Lv_Valor1InfoDetParam, Lv_Valor2InfoDetParam, Lv_Valor3InfoDetParam;
     CLOSE Lc_GetInfoDetParam;
@@ -973,7 +972,7 @@ AS
           END IF;
           Lv_ValidacionOkRegistro       := '';
           Ln_IdElementoOltNoOperativo   := NULL;
-          
+
           IF (Lr_RegListadoCobertura.DISTANCIA IS NOT NULL AND Lr_RegListadoCobertura.DISTANCIA <= Ln_DistanciaMaxFactibilidad
               AND Lr_RegListadoCobertura.NUM_PUERTOS_DISPONIBLES > 0) THEN
           IF Lv_PrefijoEmpresa = 'MD'   OR Lv_PrefijoEmpresa = 'EN' THEN
@@ -1033,22 +1032,22 @@ AS
           APEX_JSON.write('longitud', Lr_RegCajasConectoresFactib.LONGITUD_CAJA);
           APEX_JSON.write('latitud', Lr_RegCajasConectoresFactib.LATITUD_CAJA);
           APEX_JSON.close_object; -- } infoCajaConectorFactibilidad
-        
+
           Lv_url := Lv_Valor1InfoDetParam || Lv_Valor2InfoDetParam || Lv_Valor3InfoDetParam || REPLACE( Ln_Longitud_login, ',', '.') || ',' || REPLACE( Ln_Latitud_login , ',', '.') || ';' || REPLACE(Ln_Longitud_caja, ',', '.') || ',' || REPLACE(Ln_Latitud_caja, ',', '.');  
-          
+
           Lv_req := UTL_HTTP.BEGIN_REQUEST(Lv_url, 'GET', 'HTTP/1.1'); 
           UTL_HTTP.SET_HEADER(Lv_req, 'user-agent', 'mozilla/4.0');
           UTL_HTTP.SET_HEADER(Lv_req, 'content-type', 'application/json');
           Lv_res := UTL_HTTP.GET_RESPONSE(Lv_req);
-      
+
           UTL_HTTP.READ_TEXT(Lv_res, Lv_response); 
-          
+
           UTL_HTTP.END_RESPONSE(Lv_res);
-             
+
           APEX_JSON.PARSE(Lv_response);
-        
+
           Ln_DistanciaMetrosCaja   := APEX_JSON.GET_NUMBER(p_path=>'routes.features[%d].attributes.Total_Length',p0=> 1);
-             
+
           IF Ln_DistanciaInicial = 0  THEN
             Ln_DistanciaInicial              := Ln_DistanciaMetrosCaja;
             Ln_DistanciaFinal                := Ln_DistanciaInicial;
@@ -1075,7 +1074,7 @@ AS
               Lv_NombreCajaFinal               := Lv_NombreCaja;
             END IF;
           END IF;
-                  
+
           Ln_IndxCajasConectoresFactib  := Lt_TRegsCajasConectoresFactib.NEXT(Ln_IndxCajasConectoresFactib);
 
         END LOOP;
@@ -1103,23 +1102,23 @@ AS
           APEX_JSON.write('longitud', Lr_RegCajasConectoresCobert.LONGITUD_CAJA);
           APEX_JSON.write('latitud', Lr_RegCajasConectoresCobert.LATITUD_CAJA);
           APEX_JSON.close_object; -- } infoCajaConectorFactibilidad
-          
+
           Lv_url := Lv_Valor1InfoDetParam || Lv_Valor2InfoDetParam || Lv_Valor3InfoDetParam || REPLACE( Ln_Longitud, ',', '.') || ',' || REPLACE( Ln_Latitud , ',', '.') || ';' || REPLACE(Ln_Longitud_caja, ',', '.') || ',' || REPLACE(Ln_Latitud_caja, ',', '.');
-          
-          
+
+
           Lv_req := utl_http.begin_request(Lv_url, 'GET', 'HTTP/1.1'); 
           utl_http.set_header(Lv_req, 'user-agent', 'mozilla/4.0');
           utl_http.set_header(Lv_req, 'content-type', 'application/json');
           Lv_res := utl_http.get_response(Lv_req);
-      
+
           UTL_HTTP.read_text(Lv_res, Lv_response);
-          
+
           UTL_HTTP.END_RESPONSE(Lv_res);
-          
+
           APEX_JSON.PARSE(Lv_response);
-        
+
           Ln_DistanciaMetrosCaja   := APEX_JSON.GET_NUMBER(p_path=>'routes.features[%d].attributes.Total_Length',p0=> 1);
-          
+
          IF Ln_DistanciaInicial = 0  THEN
             Ln_DistanciaInicial              := Ln_DistanciaMetrosCaja;
             Ln_DistanciaFinal                := Ln_DistanciaInicial;
@@ -1132,7 +1131,7 @@ AS
             Ln_IdInterfaceElementoFinal      := Ln_IdInterfaceElemento;
             Lv_NombreInterfaceElemFinal      := Lv_NombreInterfaceElemento;
             Ln_IdServicioFinal               := Ln_IdServicio;
-             
+
           ELSE
             IF Ln_DistanciaMetrosCaja < Ln_DistanciaFinal THEN
               Ln_IdCajaFinal                   := Ln_IdCajaInicial; 
@@ -1147,7 +1146,7 @@ AS
               Lv_NombreCajaFinal               := Lv_NombreCaja;
             END IF;
           END IF;
-          
+
           Ln_IndxCajasConectoresCobert  := Lt_TRegsCajasConectoresCobert.NEXT(Ln_IndxCajasConectoresCobert);
         END LOOP;
       END IF;
@@ -1163,16 +1162,16 @@ AS
       APEX_JSON.close_object; -- }
     END IF;
     APEX_JSON.close_object; -- }
-    
+
     Lcl_JsonResponse    := apex_json.get_clob_output;
-    
+
     APEX_JSON.free_output;
-    
+
     -- CONVERITR EN JSON EL CLOB OUTPUT Y OBTENER LAS LONGITUDES Y LATITUDES DE LAS CAJAS PARA EL CALCULO DE LA FACTIBILIDAD
     APEX_JSON.PARSE(Lcl_JsonResponse);
 
     Ln_ContCajasConectoresFactib := APEX_JSON.GET_COUNT(p_path => 'data.infoCajasConectores');
-       
+
     Pv_Status           := Lv_Status;
     Pv_Mensaje          := Lv_Mensaje;
 
@@ -1180,7 +1179,7 @@ AS
       IF Ln_DistanciaFinal = 0 OR Ln_DistanciaFinal IS NULL THEN
         RAISE Le_FactLineal;
       END IF;
-      
+
       -- Si existe respuesta por el webservice de ARCGIS se envia los datos de la caja seleccionada
       APEX_JSON.initialize_clob_output;
       APEX_JSON.open_object; -- {
@@ -1198,7 +1197,7 @@ AS
       APEX_JSON.close_object; -- }
       Lcl_JsonReturn    := apex_json.get_clob_output;
       APEX_JSON.free_output;
-      
+
       IF Lv_Mensaje IS NOT NULL THEN
           RAISE Le_Exception;
       END IF;
@@ -1376,7 +1375,7 @@ AS
     OPEN Lc_GetValorEarthRadius;
     FETCH Lc_GetValorEarthRadius INTO Ln_EarthRadius;
     CLOSE Lc_GetValorEarthRadius;
-    
+
     IF Lv_PrefijoEmpresa = 'EN' THEN
       Lv_CodEmpresa:= 18;
     END IF;
@@ -1483,7 +1482,7 @@ AS
 
     Lcl_ConsultaPrincipal := 'SELECT *
                               FROM (' || Lcl_Select || Lcl_From || Lcl_Join || Lcl_Where || ')';
-    
+
     Lcl_ConsultaPrincipal:= 'SELECT  DISTINCT TBL.ID_CAJA ,
                                               TBL.NOMBRE_CAJA,
                                               TBL.ESTADO_CAJA,
@@ -1497,7 +1496,7 @@ AS
                                               TBL.NOMBRE_INTERFACE_ELEMENTO,
                                               TBL.ID_INTERFACE_ELEMENTO FROM ( ' || Lcl_ConsultaPrincipal || ' ) TBL WHERE TBL.NUM_PUERTOS_DISPONIBLES > 0';
 
-    
+
     IF (Lv_PrefijoEmpresa = 'MD' OR Lv_PrefijoEmpresa = 'EN') AND Lb_booleanTipoRedGpon THEN  
         Lcl_ConsultaPrincipal := Lcl_ConsultaPrincipal || ' AND EXISTS (
             SELECT 1
@@ -1511,7 +1510,7 @@ AS
             AND ROWNUM = 1
         )';
     END IF;
-    
+
     Lcl_ConsultaPrincipal := Lcl_ConsultaPrincipal || ' GROUP BY TBL.ID_CAJA,
                                                                  TBL.DISTANCIA,
                                                                  TBL.NOMBRE_CAJA,

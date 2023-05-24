@@ -1,8 +1,8 @@
-create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
+CREATE OR REPLACE package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   /**
-  * Documentación para el procedimiento P_PERSONA_POR_REGION
+  * Documentaci�n para el procedimiento P_PERSONA_POR_REGION
   *
-  * Método encargado de retornar lista de persona por region
+  * M�todo encargado de retornar lista de persona por region
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -10,14 +10,14 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   estado              := Estado Default 'Activo',
   *   idPersona           := Id de persona,
   *   empresaId           := Id de empresa Defaul '10',
-  *   identificacion      := Identificación,
+  *   identificacion      := Identificaci�n,
   *   login               := Login,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_PERSONA_POR_REGION(Pcl_Request  IN  CLOB,
@@ -26,9 +26,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                 Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-  * Documentación para el procedimiento P_PERSONA_POR_EMPRESA
+  * Documentaci�n para el procedimiento P_PERSONA_POR_EMPRESA
   *
-  * Método encargado de retornar lista de persona por empresa (COD o Prefijo)
+  * M�todo encargado de retornar lista de persona por empresa (COD o Prefijo)
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -36,14 +36,14 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   estado              := Estado Default 'Activo',
   *   idPersona           := Id de persona,
   *   empresaId           := Id de empresa Defaul '10',
-  *   identificacion      := Identificación,
+  *   identificacion      := Identificaci�n,
   *   login               := Login,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_PERSONA_POR_EMPRESA(Pcl_Request  IN  CLOB,
@@ -52,9 +52,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                  Pcl_Response OUT SYS_REFCURSOR);
                                
   /**
-  * Documentación para el procedimiento P_PERSONA_POR_ROL
+  * Documentaci�n para el procedimiento P_PERSONA_POR_ROL
   *
-  * Método encargado de retornar lista de persona por rol.
+  * M�todo encargado de retornar lista de persona por rol.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -65,14 +65,14 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   estado              := Estado Default 'Activo',
   *   idPersona           := Id de persona,
   *   empresaId           := Id de empresa Defaul '10',
-  *   identificacion      := Identificación,
+  *   identificacion      := Identificaci�n,
   *   login               := Login,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_PERSONA_POR_ROL(Pcl_Request  IN  CLOB,
@@ -81,9 +81,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                              Pcl_Response OUT SYS_REFCURSOR);
                              
   /**
-  * Documentación para el procedimiento P_PERSONA_POR_DEPARTAMENTO
+  * Documentaci�n para el procedimiento P_PERSONA_POR_DEPARTAMENTO
   *
-  * Método encargado de retornar lista de persona por departamento.
+  * M�todo encargado de retornar lista de persona por departamento.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -92,14 +92,14 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   estado              := Estado Default 'Activo',
   *   idPersona           := Id de persona,
   *   empresaId           := Id de empresa Defaul '10',
-  *   identificacion      := Identificación,
+  *   identificacion      := Identificaci�n,
   *   login               := Login,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_PERSONA_POR_DEPARTAMENTO(Pcl_Request  IN  CLOB,
@@ -108,9 +108,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                       Pcl_Response OUT SYS_REFCURSOR);
                                       
   /**
-  * Documentación para el procedimiento P_HIS_SERVICIO_POR_FECHA
+  * Documentaci�n para el procedimiento P_HIS_SERVICIO_POR_FECHA
   *
-  * Método encargado de retornar el historial de un servicio por un rango de fecha
+  * M�todo encargado de retornar el historial de un servicio por un rango de fecha
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -118,11 +118,11 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   fechaInicio        := Fecha inicio,
   *   fechaFin           := Fecha fin
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_HIS_SERVICIO_POR_FECHA(Pcl_Request  IN  CLOB,
@@ -131,9 +131,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                     Pcl_Response OUT SYS_REFCURSOR);
                                     
   /**
-  * Documentación para el procedimiento P_INFO_USUARIO_PERSONA
+  * Documentaci�n para el procedimiento P_INFO_USUARIO_PERSONA
   *
-  * Método encargado de retornar la información adicional de una persona.
+  * M�todo encargado de retornar la informaci�n adicional de una persona.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -141,11 +141,11 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   empresaId           := Id de empresa,
   *   login               := Login,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
-  * @author Marlon Plúas <mpluas@telconet.ec>
+  * @author Marlon Pl�as <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_INFO_USUARIO_PERSONA(Pcl_Request  IN  CLOB,
@@ -154,18 +154,18 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                    Pcl_Response OUT SYS_REFCURSOR);
                                   
   /**
-  * Documentación para el procedimiento P_PERSONA_EMPRESA_ROL_POR_EMPRESA_ACTIVO
+  * Documentaci�n para el procedimiento P_PERSONA_EMPRESA_ROL_POR_EMPRESA_ACTIVO
   *
-  * Método encargado de retornar la información de la persona empresaRol.
+  * M�todo encargado de retornar la informaci�n de la persona empresaRol.
   * por empresa Activo
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   identificacion       := Id de persona,
   *   empresaCod           := Id de empresa,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
   * @author Carlos Caguana <ccaguana@telconet.ec>
   * @version 1.0 12-08-2021
@@ -177,18 +177,18 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                   
   
   /**
-  * Documentación para el procedimiento P_INFO_PERSONA_REFERIDO
+  * Documentaci�n para el procedimiento P_INFO_PERSONA_REFERIDO
   *
-  * Método encargado de retornar la información de la INFO_PERSONA_REFERIDO
-  * por medio de su identificación
+  * M�todo encargado de retornar la informaci�n de la INFO_PERSONA_REFERIDO
+  * por medio de su identificaci�n
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   identificacion       := Id de persona,
   *   empresaCod           := codigo de empresa,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
   * @author Carlos Caguana <ccaguana@telconet.ec>
   * @version 1.0 12-08-2021
@@ -200,18 +200,18 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   
                                   
    /**
-  * Documentación para el procedimiento P_FORMA_PAGO_PERSONA_EMPROL
+  * Documentaci�n para el procedimiento P_FORMA_PAGO_PERSONA_EMPROL
   *
-  * Método encargado de retornar la información de la INFO_PERSONA_EMP_FORMA_PAGO
-  * por medio de su identificación
+  * M�todo encargado de retornar la informaci�n de la INFO_PERSONA_EMP_FORMA_PAGO
+  * por medio de su identificaci�n
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   identificacion       := Id de persona,
   *   empresaCod           := codigo de empresa,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
   * @author Carlos Caguana <ccaguana@telconet.ec>
   * @version 1.0 12-08-2021
@@ -223,7 +223,7 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                   
   
   /**
-  * Documentación para el procedimiento P_IDENTIFICACION_EMPRESTADOS
+  * Documentaci�n para el procedimiento P_IDENTIFICACION_EMPRESTADOS
   *
   * Busca un persona empresa rol por identificacion, descripcionTipoRol, codEmpresa y estados de persona empresa rol 
   * @param Pcl_Request    IN   CLOB Recibe json request
@@ -233,9 +233,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   listEstado           := lista de estados,
   *   listDescripcionRol   := lista de descripcion de Role,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
   * @author Carlos Caguana <ccaguana@telconet.ec>
   * @version 1.0 12-08-2021
@@ -246,9 +246,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                    Pcl_Response OUT SYS_REFCURSOR);   
                                    
   /**
-  * Documentación para el procedimiento P_PERSONA_POR_CARACT
+  * Documentaci�n para el procedimiento P_PERSONA_POR_CARACT
   *
-  * Método encargado de retornar lista de persona por caracteristica.
+  * M�todo encargado de retornar lista de persona por caracteristica.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -257,12 +257,12 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   estado              		:= Estado Default 'Activo',
   *   idPersona           		:= Id de persona,
   *   empresaId           		:= Id de empresa Defaul '10',
-  *   identificacion      		:= Identificación,
+  *   identificacion      		:= Identificaci�n,
   *   login               		:= Login,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
   * @author Wilson Quinto <wquinto@telconet.ec>
   * @version 1.0 19-11-2021
@@ -275,7 +275,7 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
 
 
   /**
-  * Documentación para el procedimiento P_VALIDA_PERFIL_PERSON
+  * Documentaci�n para el procedimiento P_VALIDA_PERFIL_PERSON
   *
   * Busca un el perfil de una persona por nombrePerfil,personaEmpresaRolId 
   * @param Pcl_Request    IN   CLOB Recibe json request
@@ -283,9 +283,9 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   *   nombrePerfil        := nombrePerfil,
   *   personaEmpresaRolId := personaEmpresaRolId,
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
   *
   * @author Carlos Caguana <ccaguana@telconet.ec>
   * @version 1.0 12-08-2021
@@ -297,10 +297,8 @@ create or replace package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                                                            
                                                                                               
 end CMKG_PERSONA_CONSULTA;
-
 /
-
-create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
+CREATE OR REPLACE package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   PROCEDURE P_PERSONA_POR_REGION(Pcl_Request  IN  CLOB,
                                 Pv_Status    OUT VARCHAR2,
                                 Pv_Mensaje   OUT VARCHAR2,
@@ -330,7 +328,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Region IS NULL THEN
-      Pv_Mensaje := 'El parámetro region esta vacío';
+      Pv_Mensaje := 'El par�metro region esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -377,7 +375,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -415,7 +413,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Ln_EmpresaId IS NULL AND Lv_PrefijoEmpresa IS NULL THEN
-      Pv_Mensaje := 'El parámetro empresaId o prefijoEmpresa esta vacío';
+      Pv_Mensaje := 'El par�metro empresaId o prefijoEmpresa esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -461,7 +459,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -510,7 +508,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
 
     -- VALIDACIONES
     IF Ln_RolId IS NULL AND Lv_DescripcionRol IS NULL AND Ln_TipoRolId IS NULL AND Lv_DescripcionTipoRol IS NULL THEN
-      Pv_Mensaje := 'El parámetro rolId o descripcionRol para rol y tipoRolId o descripcionTipoRol para tipo de rol está vacío';
+      Pv_Mensaje := 'El par�metro rolId o descripcionRol para rol y tipoRolId o descripcionTipoRol para tipo de rol est� vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_CountListEstado IS NOT NULL THEN
@@ -579,7 +577,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -619,7 +617,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Ln_DepartamentoId IS NULL AND Lv_NombreDepartamento IS NULL THEN
-      Pv_Mensaje := 'El parámetro departamentoId o nombreDepartamento esta vacío';
+      Pv_Mensaje := 'El par�metro departamentoId o nombreDepartamento esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -666,7 +664,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -698,15 +696,15 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_FechaInicio IS NULL THEN
-      Pv_Mensaje := 'El parámetro fechaInicio esta vacío';
+      Pv_Mensaje := 'El par�metro fechaInicio esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_FechaFin IS NULL THEN
-      Pv_Mensaje := 'El parámetro fechaFin esta vacío';
+      Pv_Mensaje := 'El par�metro fechaFin esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_ServicioId IS NULL THEN
-      Pv_Mensaje := 'El parámetro servicioId esta vacío';
+      Pv_Mensaje := 'El par�metro servicioId esta vac�o';
       RAISE Le_Errors;
     END IF;
     
@@ -729,7 +727,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -761,7 +759,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Login IS NULL THEN
-      Pv_Mensaje := 'El parámetro login esta vacío';
+      Pv_Mensaje := 'El par�metro login esta vac�o';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -798,7 +796,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -831,12 +829,12 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Identificacion IS NULL THEN
-      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      Pv_Mensaje := 'El par�metro identificacion esta vac�o';
       RAISE Le_Errors;
     END IF;
    
     IF Ln_EmpresaCod IS NULL THEN
-     Pv_Mensaje := 'El parámetro empresaCod esta vacío';
+     Pv_Mensaje := 'El par�metro empresaCod esta vac�o';
       RAISE Le_Errors;
     END IF;
    
@@ -875,7 +873,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -907,7 +905,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Identificacion IS NULL THEN
-      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      Pv_Mensaje := 'El par�metro identificacion esta vac�o';
       RAISE Le_Errors;
     END IF;
       
@@ -933,7 +931,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -967,12 +965,12 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_Identificacion IS NULL THEN
-      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      Pv_Mensaje := 'El par�metro identificacion esta vac�o';
       RAISE Le_Errors;
     END IF;
    
     IF Ln_EmpresaCod IS NULL THEN
-     Pv_Mensaje := 'El parámetro empresaCod esta vacío';
+     Pv_Mensaje := 'El par�metro empresaCod esta vac�o';
       RAISE Le_Errors;
     END IF;
    
@@ -1013,7 +1011,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -1061,23 +1059,23 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
   
      -- VALIDACIONES
     IF Lv_Identificacion IS NULL THEN
-      Pv_Mensaje := 'El parámetro identificacion esta vacío';
+      Pv_Mensaje := 'El par�metro identificacion esta vac�o';
       RAISE Le_Errors;
     END IF;
    
     IF Ln_EmpresaCod IS NULL THEN
-     Pv_Mensaje := 'El parámetro empresaCod esta vacío';
+     Pv_Mensaje := 'El par�metro empresaCod esta vac�o';
       RAISE Le_Errors;
     END IF;
    
     IF Ln_CountListEstado IS NULL THEN
-     Pv_Mensaje := 'El parámetro listEstado esta vacío';
+     Pv_Mensaje := 'El par�metro listEstado esta vac�o';
       RAISE Le_Errors;
     END IF;
    
    
     IF Ln_CountListDescripcionRol IS NULL THEN
-     Pv_Mensaje := 'El parámetro listDescripcionRol esta vacío';
+     Pv_Mensaje := 'El par�metro listDescripcionRol esta vac�o';
       RAISE Le_Errors;
     END IF;
      
@@ -1145,7 +1143,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;  
    
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
    
   EXCEPTION
     WHEN Le_Errors THEN
@@ -1192,7 +1190,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
 
     -- VALIDACIONES
     IF Ln_CaracteristicaId IS NULL AND Lv_DescripcionCaracteristica IS NULL THEN
-      Pv_Mensaje := 'El parámetro caracteristicaId o descripcionCaracteristica está vacío';
+      Pv_Mensaje := 'El par�metro caracteristicaId o descripcionCaracteristica est� vac�o';
       RAISE Le_Errors;
     END IF;
     IF Ln_CountListEstado IS NOT NULL THEN
@@ -1256,7 +1254,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -1289,12 +1287,12 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     
     -- VALIDACIONES
     IF Lv_NombrePerfil IS NULL THEN
-      Pv_Mensaje := 'El parámetro nombrePerfil esta vacío';
+      Pv_Mensaje := 'El par�metro nombrePerfil esta vac�o';
       RAISE Le_Errors;
     END IF;
    
     IF Ln_EmpresaRolID IS NULL THEN
-     Pv_Mensaje := 'El parámetro personaEmpresaRolId esta vacío';
+     Pv_Mensaje := 'El par�metro personaEmpresaRolId esta vac�o';
       RAISE Le_Errors;
     END IF;
    
@@ -1320,7 +1318,7 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
     
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacción exitosa';
+    Pv_Mensaje    := 'Transacci�n exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';
@@ -1332,3 +1330,4 @@ create or replace package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
  	  
 end CMKG_PERSONA_CONSULTA;
 /
+
