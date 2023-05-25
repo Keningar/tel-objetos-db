@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
 
   /*
-  * Documentaci�n para TYPE 'Gr_Tareas_numera'.
+  * Documentación para TYPE 'Gr_Tareas_numera'.
   * Type para tareas
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   TYPE Gr_Tareas IS RECORD (
@@ -76,9 +76,9 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_Tareas_numera'.
+  * Documentación para TYPE 'Gr_Tareas_numera'.
   * Type para migrar tareas
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   TYPE Gr_Tareas_migra IS RECORD (
@@ -125,9 +125,9 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_Tareas_numera'.
+  * Documentación para TYPE 'Gr_Tareas_numera'.
   * Type para numerar tareas
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   TYPE Gr_Tareas_numera IS RECORD (
@@ -137,14 +137,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
   );
 
   /*
-  * Documentaci�n para PROCEDURE 'P_CREA_INFO_TAREA'.
-  * Procedimiento que ingresa una tarea en INFO_TAREA seg�n id detalle
+  * Documentación para PROCEDURE 'P_CREA_INFO_TAREA'.
+  * Procedimiento que ingresa una tarea en INFO_TAREA según id detalle
   * PARAMETROS:
   * @Param NUMBER           Pn_id_detalle   ->   id detalle de la tarea
-  * @Param VARCHAR2         Pv_usr_ult_mod  ->   usuario �ltima modificaci�n
-  * @Param VARCHAR2 OUT     Pv_Status       ->  estado de ejecuci�n
+  * @Param VARCHAR2         Pv_usr_ult_mod  ->   usuario última modificación
+  * @Param VARCHAR2 OUT     Pv_Status       ->  estado de ejecución
   * @Param VARCHAR2 OUT     Pv_Message      ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_CREA_INFO_TAREA(
@@ -154,14 +154,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
                              Pv_Message  OUT VARCHAR2);
 
   /*
-  * Documentaci�n para PROCEDURE 'P_UPDATE_TAREA'.
-  * Procedimiento que actualiza una tarea en INFO_TAREA seg�n id detalle
+  * Documentación para PROCEDURE 'P_UPDATE_TAREA'.
+  * Procedimiento que actualiza una tarea en INFO_TAREA según id detalle
   * PARAMETROS:
   * @Param NUMBER           Pn_id_detalle   ->   id detalle de la tarea
-  * @Param VARCHAR2         Pv_usr_ult_mod  ->   usuario �ltima modificaci�n
-  * @Param VARCHAR2 OUT     Pv_Status       ->  estado de ejecuci�n
+  * @Param VARCHAR2         Pv_usr_ult_mod  ->   usuario última modificación
+  * @Param VARCHAR2 OUT     Pv_Status       ->  estado de ejecución
   * @Param VARCHAR2 OUT     Pv_Message      ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_UPDATE_TAREA( Pn_id_detalle IN DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE,
@@ -170,24 +170,24 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
                             Pv_Message  OUT VARCHAR2);
 
   /*
-  * Actualizaci�n: Se realiza correcci�n para incluir comillas dobles en la observaci�n:
-  *                En el string de observaci�n las comillas dobles '"' se reemplazan por '*fff'
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * Actualización: Se realiza corrección para incluir comillas dobles en la observación:
+  *                En el string de observación las comillas dobles '"' se reemplazan por '*fff'
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.1 27-07-2020
   *
-  * Documentaci�n para PROCEDURE 'P_REPORTE_TAREAS'.
-  * Procedimiento que obtiene las tareas seg�n los par�metros recibidos
+  * Documentación para PROCEDURE 'P_REPORTE_TAREAS'.
+  * Procedimiento que obtiene las tareas según los parámetros recibidos
   *
   * PARAMETROS:
   * @Param VARCHAR2 IN  Pcl_Json          -> parametros enviados por json
   * @Param VARCHAR2 OUT Pcl_JsonRespuesta -> respuesta de registros en formato json
   * @Param VARCHAR2 OUT Pn_Total          -> total de registros
-  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecuci�n
+  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecución
   * @Param VARCHAR2 OUT Pv_Message        -> mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.1 02-02-2021 - Se modifica el filtro por cliente, para evitar la consulta a la info_comunicacion.
   */
   PROCEDURE P_REPORTE_TAREAS(Pcl_Json          IN  CLOB,
@@ -197,28 +197,28 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
                              Pv_Message        OUT VARCHAR2);
 
   /*
-  * Actualizaci�n: Se realiza optimizaci�n para generar numeraci�n con la secuencia DB_SOPORTE.SEQ_NUMERACION_INFO_TAREA 
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * Actualización: Se realiza optimización para generar numeración con la secuencia DB_SOPORTE.SEQ_NUMERACION_INFO_TAREA 
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.1 25-01-2021
   *
-  * Documentaci�n para PROCEDURE 'P_SYNC_TAREAS_NUEVAS_DIA'.
-  * Procedimiento que registra tareas del d�a
+  * Documentación para PROCEDURE 'P_SYNC_TAREAS_NUEVAS_DIA'.
+  * Procedimiento que registra tareas del día
   *
   * PARAMETROS:
   * @Param VARCHAR2 OUT     pv_mensaje_respuesta   ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_SYNC_TAREAS_NUEVAS_DIA(pv_mensaje_respuesta OUT VARCHAR2);
 
   /*
-  * Documentaci�n para PROCEDURE 'P_SYNC_TAREAS_EXISTENTES'.
-  * Procedimiento que registra tareas del d�a
+  * Documentación para PROCEDURE 'P_SYNC_TAREAS_EXISTENTES'.
+  * Procedimiento que registra tareas del día
   *
   * PARAMETROS:
-  * @Param NUMBER IN        pn_dias_actualiza      ->  cantidad de d�as hacia atras que se desea actualizar
+  * @Param NUMBER IN        pn_dias_actualiza      ->  cantidad de días hacia atras que se desea actualizar
   * @Param VARCHAR2 OUT     pv_mensaje_respuesta   ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_SYNC_TAREAS_EXISTENTES(pn_dias_actualiza IN NUMBER, 
@@ -227,14 +227,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_MIGRAR_TAREAS'.
-  * Procedimiento que registra tareas seg�n el a�o desde enviado por par�metro
+  * Documentación para PROCEDURE 'P_MIGRAR_TAREAS'.
+  * Procedimiento que registra tareas según el año desde enviado por parámetro
   *
   * PARAMETROS:
   * @Param NUMBER           pn_anio_desde          ->   anio desde para numerar tareas
   * @Param VARCHAR2         pv_por_estado          ->   estado de tareas a migrar
   * @Param VARCHAR2 OUT     pv_mensaje_respuesta   ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_MIGRAR_TAREAS(pn_anio_desde NUMBER, 
@@ -242,63 +242,63 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
                             pv_mensaje_respuesta OUT VARCHAR2);
 
   /*
-  * Actualizaci�n: Se realiza optimizaci�n para generar numeraci�n con la secuencia DB_SOPORTE.SEQ_NUMERACION_INFO_TAREA 
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * Actualización: Se realiza optimización para generar numeración con la secuencia DB_SOPORTE.SEQ_NUMERACION_INFO_TAREA 
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.1 25-01-2021
   *
-  * Documentaci�n para PROCEDURE 'P_NUMERAR_INFO_TAREA'.
+  * Documentación para PROCEDURE 'P_NUMERAR_INFO_TAREA'.
   * Procedimiento que registra una tarea si no existe o actualiza registro en INFO_TAREA
   *
   * PARAMETROS:
-  * @Param NUMBER           pn_anio                ->   a�o desde para numerar tareas
+  * @Param NUMBER           pn_anio                ->   año desde para numerar tareas
   * @Param VARCHAR2 OUT     pv_mensaje_respuesta   ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_NUMERAR_INFO_TAREA(pn_anio NUMBER, 
                                  pv_mensaje_respuesta OUT VARCHAR2);
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REGISTRA_EN_INFO_TAREA'.
+  * Documentación para PROCEDURE 'P_REGISTRA_EN_INFO_TAREA'.
   * Procedimiento que registra una tarea si no existe o actualiza registro en INFO_TAREA
   *
   * PARAMETROS:
   * @Param Gr_Tareas_migra  pg_tareas               ->  type de tareas
   * @Param VARCHAR2         pv_valida_existe        ->  bandera que indica si valida que existe registro
   * @Param VARCHAR2 OUT     pv_mensaje_respuesta    ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_REGISTRA_EN_INFO_TAREA(pg_tareas Gr_Tareas_migra, 
                                      pv_valida_existe VARCHAR2, 
                                      pv_mensaje_respuesta OUT VARCHAR2);
   /*
-  * Documentaci�n para PROCEDURE 'P_ACTUALIZA_EN_INFO_TAREA'.
+  * Documentación para PROCEDURE 'P_ACTUALIZA_EN_INFO_TAREA'.
   * Procedimiento que actualiza en INFO_TAREA la tarea enviada por parametro
   *
   * PARAMETROS:
   * @Param Gr_Tareas_migra  pg_tareas               ->  type de tareas
   * @Param VARCHAR2 OUT     pv_mensaje_respuesta    ->  mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   */
   PROCEDURE P_ACTUALIZA_EN_INFO_TAREA(pg_tareas Gr_Tareas_migra, 
                                       pv_mensaje_respuesta OUT VARCHAR2);
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_REENVIAR_SYSCLOUD'.
-  * Funci�n que verifca si se reenvia a syscloud
+  * Documentación para FUNCIÓN 'F_GET_REENVIAR_SYSCLOUD'.
+  * Función que verifca si se reenvia a syscloud
   *
   * PARAMETROS:
-  * @Param VARCHAR2  Pv_numero_tarea            ->  n�mero de la tarea
-  * @Param VARCHAR2  Pv_Usr_creacion_detalle    ->  usuario creaci�n detalle
+  * @Param VARCHAR2  Pv_numero_tarea            ->  número de la tarea
+  * @Param VARCHAR2  Pv_Usr_creacion_detalle    ->  usuario creación detalle
   * @Param NUMBER  Pn_Departamento_asignado     ->  departamento asignado
-  * @Param VARCHAR2  Pv_Id_departamento_sesion  ->  departamento en sesi�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param VARCHAR2  Pv_Id_departamento_sesion  ->  departamento en sesión
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_REENVIAR_SYSCLOUD(
                                       Pv_numero_tarea VARCHAR2,
@@ -308,18 +308,18 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
   RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_NOMB_ACTUALIZADO_POR'.
-  * Funci�n que obtiene el nombre de usuario que actualiza
+  * Documentación para FUNCIÓN 'F_GET_NOMB_ACTUALIZADO_POR'.
+  * Función que obtiene el nombre de usuario que actualiza
   *
   * PARAMETROS:
-  * @Param CLOB  Pv_obs_historial              ->  observaci�n de historial
-  * @Param VARCHAR2  Pv_Usr_creacion_historial ->  usuario creaci�n historial
+  * @Param CLOB  Pv_obs_historial              ->  observación de historial
+  * @Param VARCHAR2  Pv_Usr_creacion_historial ->  usuario creación historial
   * @Param CLOB  Pv_msg_reasigna_aut_camb_dep  ->  mensaje reasignar cambio departamento
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_NOMB_ACTUALIZADO_POR(
                                        Pv_obs_historial CLOB,
@@ -328,88 +328,88 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
   RETURN VARCHAR2;
 
    /*
-  * Documentaci�n para FUNCI�N 'F_GET_SI_MUESTRA_COORD_MANGA'.
-  * Funci�n que verifica si muestra la coordenada manga
+  * Documentación para FUNCIÓN 'F_GET_SI_MUESTRA_COORD_MANGA'.
+  * Función que verifica si muestra la coordenada manga
   * PARAMETROS:
   * @Param NUMBER  Pn_Id_tarea ->  id de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_SI_MUESTRA_COORD_MANGA(Pn_Id_tarea NUMBER)
     RETURN VARCHAR2;
 
    /*
-  * Documentaci�n para FUNCI�N 'F_GET_EMPRESA_DE_TAREA'.
-  * Funci�n que obtiene la empresa de la tarea
+  * Documentación para FUNCIÓN 'F_GET_EMPRESA_DE_TAREA'.
+  * Función que obtiene la empresa de la tarea
   * PARAMETROS:
-  * @Param NUMBER  Pn_numero_tarea ->  n�mero de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param NUMBER  Pn_numero_tarea ->  número de la tarea
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_EMPRESA_DE_TAREA(Pn_numero_tarea NUMBER)
     RETURN VARCHAR2;
 
    /*
-  * Documentaci�n para FUNCI�N 'F_GET_CERRAR_TAREA'.
-  * Funci�n que verifica si se permite cerrar tarea
+  * Documentación para FUNCIÓN 'F_GET_CERRAR_TAREA'.
+  * Función que verifica si se permite cerrar tarea
   * PARAMETROS:
   * @Param NUMBER  Pn_Id_detalle ->  detalle id relacionado de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_CERRAR_TAREA(Pn_Id_detalle NUMBER)
     RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_TAREA_PADRE'.
-  * Funci�n que obtiene la tarea padre de la tarea
+  * Documentación para FUNCIÓN 'F_GET_TAREA_PADRE'.
+  * Función que obtiene la tarea padre de la tarea
   * PARAMETROS:
   * @Param NUMBER  Pn_Detalle_id_relacionado ->  detalle id relacionado de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_TAREA_PADRE(Pn_Detalle_id_relacionado NUMBER)
     RETURN NUMBER;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_PERMITE_SEGUIMIENTO'.
-  * Funci�n que verifica si se permite ingresar seguimientos
+  * Documentación para FUNCIÓN 'F_GET_PERMITE_SEGUIMIENTO'.
+  * Función que verifica si se permite ingresar seguimientos
   * PARAMETROS:
-  * @Param VARCHAR2  Pv_Id_departamento_sesion ->  id departamento sesi�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param VARCHAR2  Pv_Id_departamento_sesion ->  id departamento sesión
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_PERMITE_SEGUIMIENTO(Pv_Id_departamento_sesion VARCHAR2) 
     RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_PERMITE_ANULAR'.
-  * Funci�n que verifica si permite anular tarea
+  * Documentación para FUNCIÓN 'F_GET_PERMITE_ANULAR'.
+  * Función que verifica si permite anular tarea
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_Id_detalle              ->  detalle id de la tarea
   * @Param VARCHAR2  Pv_Estado             ->  estado de la tarea
-  * @Param VARCHAR2  Pv_Id_usuario  ->  id de usuario sesi�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param VARCHAR2  Pv_Id_usuario  ->  id de usuario sesión
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_PERMITE_ANULAR(
                                 Pn_Id_detalle NUMBER,
@@ -418,58 +418,58 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
     RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_ES_HAL'.
-  * Funci�n que verifica si la tarea pertenece a HAL
+  * Documentación para FUNCIÓN 'F_GET_ES_HAL'.
+  * Función que verifica si la tarea pertenece a HAL
   * PARAMETROS:
-  * @Param NUMBER  Pn_numero_tarea  ->  n�mero de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param NUMBER  Pn_numero_tarea  ->  número de la tarea
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_ES_HAL(Pn_numero_tarea NUMBER)
      RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_ATENDER_ANTES'.
-  * Funci�n que verifica si se debe atender antes la tarea
+  * Documentación para FUNCIÓN 'F_GET_ATENDER_ANTES'.
+  * Función que verifica si se debe atender antes la tarea
   * PARAMETROS:
   * @Param NUMBER  Pn_id_tarea  ->  id de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_MUESTRA_PESTANA_HAL(Pn_id_tarea NUMBER)
      RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_ATENDER_ANTES'.
-  * Funci�n que verifica si se debe atender antes la tarea
+  * Documentación para FUNCIÓN 'F_GET_ATENDER_ANTES'.
+  * Función que verifica si se debe atender antes la tarea
   * PARAMETROS:
-  * @Param  NUMBER Pn_numero_tarea  ->  n�mero de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param  NUMBER Pn_numero_tarea  ->  número de la tarea
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_ATENDER_ANTES(Pn_numero_tarea NUMBER)
      RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_MUESTRA_REPROGRAMAR'.
-  * Funci�n que verifica si se muestra bot�n de reprogramar tarea
+  * Documentación para FUNCIÓN 'F_GET_MUESTRA_REPROGRAMAR'.
+  * Función que verifica si se muestra botón de reprogramar tarea
   * PARAMETROS:
   * @Param VARCHAR2  Pv_estado                 ->  estado de la tarea
-  * @Param VARCHAR2  Pv_Id_departamento_sesion ->  id departamento sesi�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param VARCHAR2  Pv_Id_departamento_sesion ->  id departamento sesión
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_MUESTRA_REPROGRAMAR(
                                      Pv_estado VARCHAR2, 
@@ -477,18 +477,18 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
      RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_PERMITE_FINALIZAR_INFORM'.
-  * Funci�n que verifica si permite finalizar informe
+  * Documentación para FUNCIÓN 'F_GET_PERMITE_FINALIZAR_INFORM'.
+  * Función que verifica si permite finalizar informe
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id              ->  detalle id de la tarea
   * @Param VARCHAR2  Pv_nombreTarea             ->  nombre de la tarea
-  * @Param VARCHAR2  Pv_Id_departamento_sesion  ->  id departamento sesi�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param VARCHAR2  Pv_Id_departamento_sesion  ->  id departamento sesión
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_PERMITE_FINALIZAR_INFORM(
                                           Pn_detalle_id NUMBER,
@@ -497,21 +497,21 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
      RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_ES_DEPARTAMENTO'.
-  * Funci�n que verifica si la tarea es asignada a departamento en sesi�n
+  * Documentación para FUNCIÓN 'F_GET_ES_DEPARTAMENTO'.
+  * Función que verifica si la tarea es asignada a departamento en sesión
   *
   * PARAMETROS:
   * @Param varchar2  Pv_Tipo_asignado           ->  tipo de asignado en la tarea
   * @Param number  Pn_Asignado_id             ->  id del departamento asignado
   * @Param number  Pn_Persona_empresa_rol_id  ->  persona empresa rol id de la tarea
   * @Param varchar2  Pv_VerTodasLasTareas       -> bandera ver todas las tareas
-  * @Param varchar2  Pv_Dptos_empleado          ->  departamentos del empleado en sesi�n
-  * @Param varchar2  Pv_Id_departamento_sesion  ->  Fecha de creaci�n del detalle de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param varchar2  Pv_Dptos_empleado          ->  departamentos del empleado en sesión
+  * @Param varchar2  Pv_Id_departamento_sesion  ->  Fecha de creación del detalle de la tarea
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_ES_DEPARTAMENTO(Pv_Tipo_asignado VARCHAR2,
                                  Pn_Asignado_id NUMBER,
@@ -522,27 +522,27 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
      RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_NUMERACION_INFO_TAREA'.
-  * Funci�n que permite generar numeraci�n para nuevos registros en la tabla INFO_TAREA
+  * Documentación para FUNCIÓN 'F_GET_NUMERACION_INFO_TAREA'.
+  * Función que permite generar numeración para nuevos registros en la tabla INFO_TAREA
   *
   * PARAMETROS:
-  * @Param timestamp  pd_fe_creacion_detalle  ->  Fecha de creaci�n del detalle de la tarea
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param timestamp  pd_fe_creacion_detalle  ->  Fecha de creación del detalle de la tarea
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 08-07-2020
   *
-  * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepci�n.
+  * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 02-02-2021 - Se retorna el valor por defecto en la excepción.
   */
   FUNCTION F_GET_NUMERACION_INFO_TAREA(pd_fe_creacion_detalle  DB_SOPORTE.INFO_TAREA.FE_CREACION_DETALLE%TYPE)
       RETURN VARCHAR2;
   /*
-  * Documentaci�n para Procedimiento 'P_GET_FIBRA_TAREA'.
-  * Funci�n que permite obtener informacion de fibra de una tarea por su idComunicacion o idDetalle
+  * Documentación para Procedimiento 'P_GET_FIBRA_TAREA'.
+  * Función que permite obtener informacion de fibra de una tarea por su idComunicacion o idDetalle
   *
   * PARAMETROS:
-  * @Param Number Pn_IdComunicacion -->Id de comunicaci�n
+  * @Param Number Pn_IdComunicacion -->Id de comunicación
   * @Param Number Pn_IdDetalle -->Id de detalle
-  * @Param Clob Pv_Retorno -->Variable que lleva el json con la informaci�n obtenida
+  * @Param Clob Pv_Retorno -->Variable que lleva el json con la información obtenida
   * @author Edgar Pin Villavicencio <epin@telconet.ec>
   * @version 1.0 28-11-2020
   */      
@@ -552,31 +552,31 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
                              Pv_Error          OUT VARCHAR2 ) ;     
 
   /*
-  * Documentaci�n para Procedimiento 'P_REINICIAR_NUMERACION'.
-  * Funci�n que permite reiniciar la numeraci�n de la tabla info_tarea
+  * Documentación para Procedimiento 'P_REINICIAR_NUMERACION'.
+  * Función que permite reiniciar la numeración de la tabla info_tarea
   *
   * PARAMETROS:
   * @Param VARCHAR2 pv_mensaje_respuesta --> Retorna respuesta si proceso fue exitoso o no
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 25-01-2021
   */      
   PROCEDURE P_REINICIAR_NUMERACION(pv_mensaje_respuesta OUT VARCHAR2);
 
   /**
-   * Documentaci�n para Procedimiento 'P_CREA_ACTIVIDAD_AUTOMATICA'.
-   * Procedimiento que permite crear una actividad de manera autom�tica
+   * Documentación para Procedimiento 'P_CREA_ACTIVIDAD_AUTOMATICA'.
+   * Procedimiento que permite crear una actividad de manera automática
    *
-   * @param Pr_RegInfoCreaActividad IN DB_SOPORTE.SPKG_TYPES.Lr_InfoCreaActividad Tipo de dato que almacena la informaci�n para crear una actividad
+   * @param Pr_RegInfoCreaActividad IN DB_SOPORTE.SPKG_TYPES.Lr_InfoCreaActividad Tipo de dato que almacena la información para crear una actividad
    * @param Pv_Status               OUT VARCHAR2 Status de procedimiento
    * @param Pv_MsjError             OUT VARCHAR2 Mensaje de error
-   * @param Pn_IdComunicacionTarea  OUT DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE Id comunicaci�n de la tarea creada
+   * @param Pn_IdComunicacionTarea  OUT DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE Id comunicación de la tarea creada
    * @param Pn_IdDetalleTarea       OUT DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE Id detalle de la tarea creada
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 30-09-2021
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 01-12-2021 Se modifica el valor del c�digo empresa asociado al departamento para que �ste sea de acuerdo a la empresa del 
+   * @version 1.1 01-12-2021 Se modifica el valor del código empresa asociado al departamento para que éste sea de acuerdo a la empresa del 
    *                         empleado asignado
    */   
   PROCEDURE P_CREA_ACTIVIDAD_AUTOMATICA(
@@ -587,17 +587,17 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
     Pn_IdDetalleTarea       OUT DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE);
 
   /**
-   * Documentaci�n para Procedimiento 'P_CREA_ACTIVIDAD_PARAMETRIZADA'.
-   * Procedimiento que permite crear una actividad de manera autom�tica de acuerdo a los par�metros enviados
+   * Documentación para Procedimiento 'P_CREA_ACTIVIDAD_PARAMETRIZADA'.
+   * Procedimiento que permite crear una actividad de manera automática de acuerdo a los parámetros enviados
    *
-   * @param Pv_ParamCabNombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE Nombre de par�metro con la informaci�n de la tarea
+   * @param Pv_ParamCabNombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE Nombre de parámetro con la información de la tarea
    * @param Pv_ParamDetValor1Proceso    IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE Valor del proceso a ejecutar
-   * @param Pv_ParamCreacionTarea       IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE Nombre de par�metro para la creaci�n de la tarea
-   * @param Pv_ParamAsignacionTarea     IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR3%TYPE Nombre de par�metro para la asignaci�n de la tarea
-   * @param Pv_ObservAdicionalTarea     IN VARCHAR2 Observaci�n adicional
+   * @param Pv_ParamCreacionTarea       IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE Nombre de parámetro para la creación de la tarea
+   * @param Pv_ParamAsignacionTarea     IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR3%TYPE Nombre de parámetro para la asignación de la tarea
+   * @param Pv_ObservAdicionalTarea     IN VARCHAR2 Observación adicional
    * @param Pv_Status                   OUT VARCHAR2 Status de procedimiento
    * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error
-   * @param Pn_IdComunicacionTarea      OUT DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE Id comunicaci�n de la tarea creada
+   * @param Pn_IdComunicacionTarea      OUT DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE Id comunicación de la tarea creada
    * @param Pn_IdDetalleTarea           OUT DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE Id detalle de la tarea creada
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -614,8 +614,8 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
     Pn_IdComunicacionTarea      OUT DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE,
     Pn_IdDetalleTarea           OUT DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE);
 /*
-  * Documentaci�n para Procedimiento 'P_INFO_TAREA_INDISPONIBILIDAD'.
-  * Procedimiento que permite reiniciar la numeraci�n de la tabla info_tarea
+  * Documentación para Procedimiento 'P_INFO_TAREA_INDISPONIBILIDAD'.
+  * Procedimiento que permite reiniciar la numeración de la tabla info_tarea
   *
   * PARAMETROS:
   * @Param VARCHAR2 pv_mensaje_respuesta --> Retorna respuesta si proceso fue exitoso o no
@@ -635,6 +635,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_TAREA AS
 
 END SPKG_INFO_TAREA;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
   --
 
@@ -762,7 +763,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                              Pv_Status         OUT VARCHAR2,
                              Pv_Message        OUT VARCHAR2) IS
 
-      --Cursor para obtener el n�mero de caso
+      --Cursor para obtener el número de caso
       CURSOR C_ObtenerCaso(Cn_IdDetalle NUMBER) IS
           SELECT  ICA.ID_CASO,
                   ICA.NUMERO_CASO
@@ -871,7 +872,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
           WHERE NVEE.LOGIN_EMPLE   = Cv_Login
             AND UPPER(NVEE.ESTADO) = UPPER(Cv_Estado);
 
-      --Cursor para obtener el valor de configuraci�n
+      --Cursor para obtener el valor de configuración
       CURSOR C_ParametrosConfiguracion(Cv_NombreParametro VARCHAR2,
                                       Cv_Modulo          VARCHAR2,
                                       Cv_Descripcion     VARCHAR2) IS
@@ -885,7 +886,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
         AND APCAB.MODULO           = Cv_Modulo
         AND APCDET.DESCRIPCION     = Cv_Descripcion;
 
-      --Variables para el query din�mico
+      --Variables para el query dinámico
       Lrf_ReporteTareas       SYS_REFCURSOR;
       Lrf_JsonTareas          SYS_REFCURSOR;
       Lv_QuerySelect          CLOB;
@@ -912,7 +913,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
       Lcl_AfectadoDireccion   CLOB;
       Lcl_FormaContacto       CLOB;
 
-      -- Variables de configuraci�n
+      -- Variables de configuración
       Lv_NombreArchivo             VARCHAR2(100) := 'ReporteTareas_'||to_char(SYSDATE,'RRRRMMDDHH24MISS')||'.csv';
       Lv_NombreParametro           VARCHAR2(25)  := 'PARAMETROS_REPORTE_TAREAS';
       Lv_Modulo                    VARCHAR2(7)   := 'SOPORTE';
@@ -1035,7 +1036,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
       END IF;
 
       apex_json.parse(Pcl_Json);
-      Lv_UsuarioSolicita := apex_json.get_varchar2('strUsuarioSolicita');--Obtenemos el usuario quien realiza la petici�n
+      Lv_UsuarioSolicita := apex_json.get_varchar2('strUsuarioSolicita');--Obtenemos el usuario quien realiza la petición
       Lv_EsConsulta      := apex_json.get_varchar2('esConsulta');
       Lv_Start           := apex_json.get_varchar2('start');
       Lv_Limit           := apex_json.get_varchar2('limit');
@@ -1135,7 +1136,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
       Lv_ObsTareaIniMovil		:= apex_json.get_varchar2('obsTareaIniMovil');
       Lv_IdTareaInstalacion		:= apex_json.get_varchar2('idTareaInstalacion');
       Lv_IdTareasNoReqActivo    := apex_json.get_varchar2('idTareasNoReqActivo');
-      --Creaci�n del Query.
+      --Creación del Query.
        
       Lv_QueryNewCampos1 := 'SELECT  T.*, SPKG_INFO_ADICIONAL_TAREA.F_GET_TAREA_TIEMPO_PARCIAL(T.ID_DETALLE,T.ESTADO,T.IDCASO) AS FECHA_TIEMPO_PARCIAL_CASO, ' ||
      						' SPKG_INFO_ADICIONAL_TAREA.F_GET_INFO_CASO(T.IDCASO) AS  DATA_CASO, ' ||
@@ -1748,7 +1749,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                                               REPLACE(
                                                 REPLACE(
                                                   REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(Lr_JsonTareas.OBSERVACION,'"','*fff'),
-                                                    '^[^A-Z|^a-z|^0-9|^<]|[?|�|\|"]|[)]+$', ' '),'[^A-Za-z0-9������������&()-_ ]' ,' ')
+                                                    '^[^A-Z|^a-z|^0-9|^<]|[?|¿|\|"]|[)]+$', ' '),'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
                                                   , Chr(9), ' ')
                                                 , Chr(10), ' ')
                                               , Chr(13), ' ')
@@ -1761,7 +1762,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                                             REPLACE(
                                               REPLACE(
                                                 REGEXP_REPLACE(REGEXP_REPLACE(Lr_JsonTareas.OBSERVACION_HISTORIAL,
-                                                  '^[^A-Z|^a-z|^0-9]|[?|�|\|"]|[)]+$', ' '),'[^A-Za-z0-9������������&()-_ ]' ,' ')
+                                                  '^[^A-Z|^a-z|^0-9]|[?|¿|\|"]|[)]+$', ' '),'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
                                                 , Chr(9), ' ')
                                               , Chr(10), ' ')
                                             , Chr(13), ' ')
@@ -2022,7 +2023,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
           --Cierre del Archivo
           UTL_FILE.FCLOSE(Lf_Archivo);
 
-          --Ejecuci�n del comando para crear el archivo comprimido
+          --Ejecución del comando para crear el archivo comprimido
           DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND(Lt_ComandoReporte||' '||Lt_RutaDirectorio||Lv_NombreArchivo));
 
           --Envio del archivo por correo
@@ -2033,7 +2034,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                                                     Lt_NombreDirectorio,
                                                     Lv_NombreArchivo||Lt_ExtensionReporte);
 
-          --Eliminaci�n del archivo
+          --Eliminación del archivo
           BEGIN
               UTL_FILE.FREMOVE(Lt_NombreDirectorio,Lv_NombreArchivo||Lt_ExtensionReporte);
           EXCEPTION
@@ -2054,7 +2055,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
       Pv_Status  := 'ok';
       Pv_Message := 'Proceso ejecutado correctamente';
 
-      --Insertamos la ejecuci�n por ok del reporte.
+      --Insertamos la ejecución por ok del reporte.
       IF Lt_InsertaOk IS NULL OR UPPER(Lt_InsertaOk) = 'S' THEN
 
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('SPKG_INFO_TAREA',
@@ -2075,7 +2076,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
 
           IF Lv_EsConsulta IS NULL OR UPPER(Lv_EsConsulta) <> 'S' THEN
 
-              --Eliminaci�n del archivo
+              --Eliminación del archivo
               BEGIN
 
                   IF Lt_NombreDirectorio IS NOT NULL AND Lv_NombreArchivo IS NOT NULL THEN
@@ -2125,7 +2126,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                   Lt_PlantillaError := REPLACE(Lt_PlantillaError,'[[diaReporte]]', TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS'));
               ELSE
                   Lt_PlantillaError := 'Estimado usuario '||Lv_UsuarioSolicita
-                      ||', el reporte generado el d�a '||TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS')
+                      ||', el reporte generado el día '||TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS')
                       ||' no se pudo generar. Por favor comunicar a Sistemas';
               END IF;
 
@@ -2580,7 +2581,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                                           );
   END P_NUMERAR_INFO_TAREA;
   /*
-  * Documentaci�n para TYPE 'P_SYNC_TAREAS_EXISTENTES'.
+  * Documentación para TYPE 'P_SYNC_TAREAS_EXISTENTES'.
   * Mejora para disminuir el costo de query Antes: 271373 Ahora: 36718
   * @author Jose Guaman <jaguamanp@telconet.ec>
   * @version 1.0 18-10-2022
@@ -2731,7 +2732,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
       EXCEPTION
       WHEN NO_DATA_FOUND THEN
         Pv_Status  := 'error';
-        Pv_Message := 'No se pudo actualizar registro en INFO_TAREA porque no se encontr� tarea con id_detalle:' || Pn_id_detalle;
+        Pv_Message := 'No se pudo actualizar registro en INFO_TAREA porque no se encontró tarea con id_detalle:' || Pn_id_detalle;
         db_general.gnrlpck_util.insert_error('Telcos +',
                                               'SPKG_INFO_TAREA.P_UPDATE_TAREA',
                                               Pv_Message,
@@ -3076,7 +3077,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
                    Pv_obs_historial IS NOT NULL  AND
                    Pv_msg_reasigna_aut_camb_dep = Pv_obs_historial
                 THEN
-                  Lv_camp_retorna := Lv_Nombre_persona || ' (Proceso Autom�tico por cambio de departamento)';
+                  Lv_camp_retorna := Lv_Nombre_persona || ' (Proceso Automático por cambio de departamento)';
                 END IF;
 
             END IF;
@@ -3893,7 +3894,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
              DBMS_LOB.APPEND(Pv_Retorno, '"bobina": "",');
              DBMS_LOB.APPEND(Pv_Retorno, '"cantidad": 0,');
              DBMS_LOB.APPEND(Pv_Retorno, '"tecnico": "",');
-             DBMS_LOB.APPEND(Pv_Retorno, '"observacion": "No se obtuvo informaci�n en NAF"},');          
+             DBMS_LOB.APPEND(Pv_Retorno, '"observacion": "No se obtuvo información en NAF"},');          
           END IF;
           IF (l_registro(Ln_Indice).ID_COMUNICACION = Pn_IdComunicacion) THEN
              Lv_ContieneIdCom := 'S';
@@ -3935,7 +3936,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
              DBMS_LOB.APPEND(Pv_Retorno, '"bobina": "",');
              DBMS_LOB.APPEND(Pv_Retorno, '"cantidad": 0,');
              DBMS_LOB.APPEND(Pv_Retorno, '"tecnico": "",');
-             DBMS_LOB.APPEND(Pv_Retorno, '"observacion": "No se obtuvo informaci�n en NAF"},');          
+             DBMS_LOB.APPEND(Pv_Retorno, '"observacion": "No se obtuvo información en NAF"},');          
           END IF;
           Ln_Indice := Ln_Indice + 1;
        END LOOP;
@@ -4212,7 +4213,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     CLOSE Lc_GetInfoGeneralTarea;
     Ln_IdTarea  := Lr_RegGetInfoGeneralTarea.ID_TAREA;
     IF Ln_IdTarea IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n de la tarea a crear';
+      Lv_MsjError := 'No se ha podido obtener la información de la tarea a crear';
       RAISE Le_Exception;
     END IF;
 
@@ -4220,7 +4221,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetInfoDepartamento INTO Lr_RegGetDepartamentoCreaTarea;
     CLOSE Lc_GetInfoDepartamento;
     IF Lr_RegGetDepartamentoCreaTarea.ID_DEPARTAMENTO IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n del departamento origen que crear� la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información del departamento origen que creará la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4228,7 +4229,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetInfoCanton INTO Lr_RegGetCantonCreaTarea;
     CLOSE Lc_GetInfoCanton;
     IF Lr_RegGetCantonCreaTarea.ID_CANTON IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n del cant�n origen que crear� la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información del cantón origen que creará la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4236,7 +4237,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetInfoEmpleado INTO Lr_RegGetInfoEmpleadoAsignado;
     CLOSE Lc_GetInfoEmpleado;
     IF Lr_RegGetInfoEmpleadoAsignado.ID_PERSONA_ROL IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n del empleado al que se le asignar� la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información del empleado al que se le asignará la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4244,7 +4245,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetInfoClaseDocumento INTO Lr_RegGetInfoClaseDocumento;
     CLOSE Lc_GetInfoClaseDocumento;
     IF Lr_RegGetInfoClaseDocumento.ID_CLASE_DOCUMENTO IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n de la clase de documento asociada a la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información de la clase de documento asociada a la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4252,7 +4253,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetInfoFormaContacto INTO Lr_RegGetInfoFormaContacto;
     CLOSE Lc_GetInfoFormaContacto;
     IF Lr_RegGetInfoFormaContacto.ID_FORMA_CONTACTO IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n de la clase de documento asociada a la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información de la clase de documento asociada a la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4424,7 +4425,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     Lv_MsjError := SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'SPKG_INFO_TAREA.P_CREA_ACTIVIDAD_AUTOMATICA', 
-                                            'Ocurri� un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
+                                            'Ocurrió un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_SOPORTE'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1'));
@@ -4518,7 +4519,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetValorParamServicios INTO Lr_RegGetParamsCreacionTarea;
     CLOSE Lc_GetValorParamServicios;
     IF Lr_RegGetParamsCreacionTarea.ID_PARAMETRO_DET IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener los par�metros configurados para la creaci�n de la tarea';
+      Lv_MsjError := 'No se ha podido obtener los parámetros configurados para la creación de la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4526,7 +4527,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetValorParamServicios INTO Lr_RegGetParamsAsignacionTarea;
     CLOSE Lc_GetValorParamServicios;
     IF Lr_RegGetParamsAsignacionTarea.ID_PARAMETRO_DET IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener los par�metros configurados para la asignaci�n de la tarea';
+      Lv_MsjError := 'No se ha podido obtener los parámetros configurados para la asignación de la tarea';
       RAISE Le_Exception;
     END IF;
   
@@ -4573,7 +4574,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     CLOSE Lc_GetPlantilla;
     Lv_PlantillaTareaCorreo := Lr_RegGetPlantillaTareaCorreo.PLANTILLA;
     IF Lv_PlantillaTareaCorreo IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la plantilla para la asignaci�n de la tarea';
+      Lv_MsjError := 'No se ha podido obtener la plantilla para la asignación de la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4582,7 +4583,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     FETCH Lc_GetInfoAsignacionTarea INTO Lr_RegGetInfoAsignacionTarea;
     CLOSE Lc_GetInfoAsignacionTarea;
     IF Lr_RegGetInfoAsignacionTarea.ID_DETALLE IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n de la asignaci�n de la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información de la asignación de la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -4638,7 +4639,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_TAREA AS
     Lv_MsjError := SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'SPKG_INFO_TAREA.P_CREA_ACTIVIDAD_PARAMETRIZADA', 
-                                            'Ocurri� un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
+                                            'Ocurrió un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_SOPORTE'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1'));

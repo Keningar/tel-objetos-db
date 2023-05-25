@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
 
   /*
-  * Documentaci�n para TYPE 'Gr_Solicitud'.
+  * Documentación para TYPE 'Gr_Solicitud'.
   * Type para solicitudes
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
   TYPE Gr_Solicitud IS RECORD (
@@ -41,14 +41,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_AsignadosSolicitud'.
+  * Documentación para TYPE 'Gr_AsignadosSolicitud'.
   * Type para asignados de solicitudes
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 02-12-2021
 
-  * Documentaci�n para TYPE 'Gr_AsignadosSolicitud'.
+  * Documentación para TYPE 'Gr_AsignadosSolicitud'.
   * Se agrego el campo observacion
-  * @author Andr�s Montero H. <lardila@telconet.ec>
+  * @author Andrés Montero H. <lardila@telconet.ec>
   * @version 1.1 20-10-2022
   */
 
@@ -70,9 +70,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_InfoDetalleSolicitud'.
+  * Documentación para TYPE 'Gr_InfoDetalleSolicitud'.
   * Type para solicitud
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 02-12-2021
   */
   TYPE Gr_InfoDetalleSolicitud IS RECORD (
@@ -98,9 +98,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_PlanificacionesSolicitud'.
+  * Documentación para TYPE 'Gr_PlanificacionesSolicitud'.
   * Type para inspecciones de solicitud
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 28-04-2022
   */
   TYPE Gr_PlanificacionesSolicitud IS RECORD (
@@ -117,9 +117,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_CaracteristicasSolicitud'.
-  * Type para caracteristicas de solicitud de inspecci�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * Documentación para TYPE 'Gr_CaracteristicasSolicitud'.
+  * Type para caracteristicas de solicitud de inspección
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 29-04-2022
   */
   TYPE Gr_CaracteristicasSolicitud IS RECORD (
@@ -133,9 +133,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_SolicitudInspeccionHist'.
-  * Type para historial de solicitud de inspecci�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * Documentación para TYPE 'Gr_SolicitudInspeccionHist'.
+  * Type para historial de solicitud de inspección
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 17-01-2021
   */
   TYPE Gr_SolicitudInspeccionHist IS RECORD (
@@ -149,9 +149,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_Items'.
+  * Documentación para TYPE 'Gr_Items'.
   * Type para obtener items tipo varchar2
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 06-05-2021
   */
   TYPE Gr_Items IS RECORD (
@@ -159,9 +159,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Gr_PlanificacionesAsociadas'.
+  * Documentación para TYPE 'Gr_PlanificacionesAsociadas'.
   * Type para obtener planificaciones asociadas
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 17-06-2022
   */
   TYPE Gr_PlanificacionesAsociadas IS RECORD (
@@ -174,16 +174,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
       TAREA_ESTADO DB_SOPORTE.INFO_DETALLE_HISTORIAL.ESTADO%TYPE
   );
   /*
-  * Documentaci�n para PROCEDURE 'P_GET_SOLICITUDES'.
-  * Procedimiento que obtiene las tareas seg�n los par�metros recibidos
+  * Documentación para PROCEDURE 'P_GET_SOLICITUDES'.
+  * Procedimiento que obtiene las tareas según los parámetros recibidos
   *
   * PARAMETROS:
   * @Param VARCHAR2 IN  Pcl_Json          -> parametros enviados por json
   * @Param VARCHAR2 OUT Pcl_JsonRespuesta -> respuesta de registros en formato json
   * @Param VARCHAR2 OUT Pn_Total          -> total de registros
-  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecuci�n
+  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecución
   * @Param VARCHAR2 OUT Pv_Message        -> mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
   PROCEDURE P_GET_SOLICITUDES(Pcl_Json          IN  CLOB,
@@ -192,16 +192,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Status         OUT VARCHAR2,
                              Pv_Message        OUT VARCHAR2);
  /*
-  * Documentaci�n para PROCEDURE 'P_GET_ASIGNADOS_SOL_INSPECCION'.
-  * Procedimiento que obtiene los asignados de una solicitud de inspecci�n
+  * Documentación para PROCEDURE 'P_GET_ASIGNADOS_SOL_INSPECCION'.
+  * Procedimiento que obtiene los asignados de una solicitud de inspección
   *
   * PARAMETROS:
   * @Param VARCHAR2 IN  Pcl_Json          -> parametros enviados por json
   * @Param VARCHAR2 OUT Pcl_JsonRespuesta -> respuesta de registros en formato json
   * @Param VARCHAR2 OUT Pn_Total          -> total de registros
-  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecuci�n
+  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecución
   * @Param VARCHAR2 OUT Pv_Message        -> mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
   PROCEDURE P_GET_ASIGNADOS_SOL_INSPECCION(Pcl_Json IN  CLOB,
@@ -210,16 +210,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Status         OUT VARCHAR2,
                              Pv_Message        OUT VARCHAR2);
  /*
-  * Documentaci�n para PROCEDURE 'P_GET_HISTORIAL_SOL_INSPECCION'.
-  * Procedimiento que obtiene el historial de una solicitud de inspecci�n
+  * Documentación para PROCEDURE 'P_GET_HISTORIAL_SOL_INSPECCION'.
+  * Procedimiento que obtiene el historial de una solicitud de inspección
   *
   * PARAMETROS:
   * @Param VARCHAR2 IN  Pcl_Json          -> parametros enviados por json
   * @Param VARCHAR2 OUT Pcl_JsonRespuesta -> respuesta de registros en formato json
   * @Param VARCHAR2 OUT Pn_Total          -> total de registros
-  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecuci�n
+  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecución
   * @Param VARCHAR2 OUT Pv_Message        -> mensaje de respuesta
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
   PROCEDURE P_GET_HISTORIAL_SOL_INSPECCION(Pcl_Json          IN  CLOB,
@@ -228,15 +228,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Status         OUT VARCHAR2,
                              Pv_Message        OUT VARCHAR2);
  /*
-  * Documentaci�n para PROCEDURE 'P_CONSULTAR_SOLICITUD'.
+  * Documentación para PROCEDURE 'P_CONSULTAR_SOLICITUD'.
   * Procedimiento que obtiene las inspecciones asignadas a un empleado
   *
   * PARAMETROS:
   * @Param CLOB IN  Pcl_Request          -> parametros enviados por json
-  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecuci�n
+  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecución
   * @Param VARCHAR2 OUT Pv_Message        -> mensaje de respuesta
   * @Param SYS_REFCURSOR OUT Pcl_Response -> respuesta de registros
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 29-04-2021
   */
   PROCEDURE P_CONSULTAR_SOLICITUD(Pcl_Request          IN  CLOB,
@@ -244,15 +244,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Mensaje        OUT VARCHAR2,
                              Pcl_Response OUT CLOB);
  /*
-  * Documentaci�n para PROCEDURE 'P_CONSULTAR_SOLIC_ASOCIADAS'.
+  * Documentación para PROCEDURE 'P_CONSULTAR_SOLIC_ASOCIADAS'.
   * Procedimiento que obtiene las planificaciones de una solicitud
   *
   * PARAMETROS:
   * @Param CLOB IN  Pcl_Request          -> parametros enviados por json
-  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecuci�n
+  * @Param VARCHAR2 OUT Pv_Status         -> estado de ejecución
   * @Param VARCHAR2 OUT Pv_Message        -> mensaje de respuesta
   * @Param SYS_REFCURSOR OUT Pcl_Response -> respuesta de registros
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 17-06-2022
   */
   PROCEDURE P_CONSULTAR_SOLIC_ASOCIADAS(Pcl_Request          IN  CLOB,
@@ -260,38 +260,38 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Mensaje        OUT VARCHAR2,
                              Pcl_Response OUT CLOB);
  /*
-  * Documentaci�n para FUNCTION 'F_GET_NOMBRE_ASIGNADO'.
-  * Funci�n que obtiene nombre del asignado por id y tipo de asignado
+  * Documentación para FUNCTION 'F_GET_NOMBRE_ASIGNADO'.
+  * Función que obtiene nombre del asignado por id y tipo de asignado
   *
   * PARAMETROS:
   * @Param VARCHAR2 IN  Pv_tipoAsignado          -> tipo de asignado (Cuadrilla o empleado)
   * @Param VARCHAR2 IN  Pv_idAsignado          -> id del asignado
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
   FUNCTION F_GET_NOMBRE_ASIGNADO(
       Pv_tipoAsignado DB_COMERCIAL.INFO_DETALLE_SOL_PLANIF.TIPO_ASIGNADO%TYPE,
       Pv_idAsignado NUMBER) RETURN VARCHAR2;
  /*
-  * Documentaci�n para FUNCTION 'F_GET_ID_PUNTO_SOL_INSP'.
-  * Funci�n que obtiene el id del punto asociado a una solicitud de inspecci�n
+  * Documentación para FUNCTION 'F_GET_ID_PUNTO_SOL_INSP'.
+  * Función que obtiene el id del punto asociado a una solicitud de inspección
   *
   * PARAMETROS:
   * @Param NUMBER IN  Pv_idSolicitud -> id de la solicitud
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
 FUNCTION F_GET_ID_PUNTO_SOL_INSP(
   Pv_idSolicitud NUMBER) RETURN VARCHAR2;
 
  /*
-  * Documentaci�n para FUNCTION 'F_GET_PARAMETROS_SOLICITUDES'.
-  * Funci�n que obtiene parametros de las solicitudes de inspecci�n
+  * Documentación para FUNCTION 'F_GET_PARAMETROS_SOLICITUDES'.
+  * Función que obtiene parametros de las solicitudes de inspección
   *
   * PARAMETROS:
-  * @Param VARCHAR2 IN  Pv_descripcion -> descripci�n de par�metro det
-  * @Param VARCHAR2 IN  Pv_nombreParam -> nombre de par�metro
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @Param VARCHAR2 IN  Pv_descripcion -> descripción de parámetro det
+  * @Param VARCHAR2 IN  Pv_nombreParam -> nombre de parámetro
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 18-10-2021
   */
 FUNCTION F_GET_PARAMETROS_SOLICITUDES(
@@ -299,6 +299,7 @@ FUNCTION F_GET_PARAMETROS_SOLICITUDES(
     Pv_nombreParam VARCHAR2) RETURN VARCHAR2;
 
 END CMKG_SOLICITUD_CONSULTA;
+/
 
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
 
@@ -646,9 +647,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                Lv_QueryWhereServ := REPLACE(Lv_QueryWhereServ,':paramEstadosSolPerfilesCoord',Lv_EstadosOtrasSol);
         END IF;
 
-        Lv_QueryWhereServ := Lv_QueryWhereServ ||' AND ( ';--Validaci�n 1
-        Lv_QueryWhereServ := Lv_QueryWhereServ ||'        (s.PRODUCTO_ID = prod.ID_PRODUCTO ';--Validaci�n 2
-        Lv_QueryWhereServ := Lv_QueryWhereServ ||'         AND ( ';--Validaci�n 3
+        Lv_QueryWhereServ := Lv_QueryWhereServ ||' AND ( ';--Validación 1
+        Lv_QueryWhereServ := Lv_QueryWhereServ ||'        (s.PRODUCTO_ID = prod.ID_PRODUCTO ';--Validación 2
+        Lv_QueryWhereServ := Lv_QueryWhereServ ||'         AND ( ';--Validación 3
 
         apex_json.parse('{"data":'||Lv_ArrayFiltroConsultCoor||'}');
         Ln_cantFilConsultCoor := apex_json.get_count(p_path => 'data');
@@ -676,8 +677,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
           END LOOP;
         END IF;
 
-        Lv_QueryWhereServ := Lv_QueryWhereServ ||'         ) ';--Validaci�n 3
-        Lv_QueryWhereServ := Lv_QueryWhereServ ||'        ) ';--Validaci�n 2
+        Lv_QueryWhereServ := Lv_QueryWhereServ ||'         ) ';--Validación 3
+        Lv_QueryWhereServ := Lv_QueryWhereServ ||'        ) ';--Validación 2
 
         IF (Lv_TipoSolicitudPerfilCoor IS NOT NULL) THEN
           Lv_QueryWhereServAdic := '';
@@ -719,7 +720,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
           END IF;
 
         END IF;
-        Lv_QueryWhereServ := Lv_QueryWhereServ || '     ) ';--Validaci�n 1
+        Lv_QueryWhereServ := Lv_QueryWhereServ || '     ) ';--Validación 1
 
         IF Lv_TipoSolicitud IS NOT NULL AND INSTR(Lv_TipoSolicitudes,Lv_TipoSolicitud) > 0 THEN
           Lv_QueryWhereServ := Lv_QueryWhereServ || 'AND ts.DESCRIPCION_SOLICITUD = :paramTipoSolFiltroPerfilCoord ';
@@ -1117,7 +1118,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Status         OUT VARCHAR2,
                              Pv_Message        OUT VARCHAR2) IS
 
-      --Variables para el query din�mico
+      --Variables para el query dinámico
       Lrf_ReporteTareas        SYS_REFCURSOR;
       Lrf_JsonSolicitudes      SYS_REFCURSOR;
       Lv_QuerySelect           CLOB;
@@ -1148,7 +1149,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
 
       IF Lv_IdSolPlanif IS NOT NULL THEN
 
-          --Creaci�n del Query.
+          --Creación del Query.
           Lv_QuerySelect        := ' SELECT ' ||
                                   ' asigsH.ID_DETALLE_SOL_PLANIF_HIST AS idDetalleSolPlanifHist, '||
                                   ' TO_CHAR(asigsH.FE_CREACION,''DD-MM-RRRR HH24:MI'') AS feCreacion, '||
@@ -1251,7 +1252,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLICITUD_CONSULTA AS
                              Pv_Status         OUT VARCHAR2,
                              Pv_Message        OUT VARCHAR2) IS
 
-      --Variables para el query din�mico
+      --Variables para el query dinámico
       Lrf_ReporteTareas        SYS_REFCURSOR;
       Lrf_JsonSolicitudes      SYS_REFCURSOR;
       Lv_QuerySelect           CLOB;
@@ -1665,7 +1666,7 @@ FUNCTION F_GET_PARAMETROS_SOLICITUDES(
       END IF;
 
       IF Lv_IdDetalleSolicitud IS NULL AND Lv_ServicioId IS NULL AND Lv_TipoSolicitudId IS NULL AND (Ln_cantTareasPlanif IS NULL OR Ln_cantTareasPlanif <=0 ) THEN
-          Pv_Mensaje := 'ERROR: Debe enviar al menos uno de los siguientes par�metros idDetalleSolicitud, servicioId, tareasPlanificadas y tipoSolicitudId';
+          Pv_Mensaje := 'ERROR: Debe enviar al menos uno de los siguientes parámetros idDetalleSolicitud, servicioId, tareasPlanificadas y tipoSolicitudId';
           RAISE Le_Errors;
       END IF;
 
@@ -1739,7 +1740,7 @@ FUNCTION F_GET_PARAMETROS_SOLICITUDES(
 
       Lt_Indice_sol := 1;
 
-          --Creaci�n del Query.
+          --Creación del Query.
           Lv_QuerySelect        := ' SELECT ' ||
                                    ' SOL.ID_DETALLE_SOLICITUD, '||
                                    ' SOL.SERVICIO_ID, '||
@@ -2066,7 +2067,7 @@ FUNCTION F_GET_PARAMETROS_SOLICITUDES(
       Lt_Indice_sol         := 1;
 
       IF Lv_IdDetalleSolicitud IS NULL AND Lv_TipoSolicitudId IS NULL THEN
-          Pv_Mensaje := 'ERROR: Debe enviar al menos uno de los siguientes par�metros solicitudId y tipoSolicitudId';
+          Pv_Mensaje := 'ERROR: Debe enviar al menos uno de los siguientes parámetros solicitudId y tipoSolicitudId';
           RAISE Le_Errors;
       END IF;
 

@@ -1,6 +1,3 @@
-SET DEFINE OFF;
-
-/
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRK_TRANSACCIONES
 AS
 
@@ -2035,7 +2032,7 @@ PROCEDURE P_RESERVAR_VLAN_PE(PN_PERSONA_EMP_ROL IN NUMBER,PV_VLAN IN VARCHAR2);
    * @version 1.0 01-06-2021
    * 
    * @author Antonio Ayala <afayala@telconet.ec>
-   * @version 1.1 07-06-2022 Se parametriza el mapeo de la url usada para leer el contenido de los archivos subidos en la opci�n de subida
+   * @version 1.1 07-06-2022 Se parametriza el mapeo de la url usada para leer el contenido de los archivos subidos en la opci¿n de subida
    *                         de rutas masivo, reemplazando la url en formato https a http(nosites). Este problema ocurre directamente 
    *                         en produccion.
    *
@@ -2205,7 +2202,6 @@ PROCEDURE P_RESERVAR_VLAN_PE(PN_PERSONA_EMP_ROL IN NUMBER,PV_VLAN IN VARCHAR2);
 
 END INFRK_TRANSACCIONES;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INFRK_TRANSACCIONES
 AS

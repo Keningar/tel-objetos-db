@@ -1,44 +1,44 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
  /*
-  * Documentaci�n para Funci�n 'F_OBTIENE_FECHA_EVAL_VIGENCIA'  
-  * Funci�n que obtiene la Fecha con la cual se va a evaluar el rango de fechas de Inicio y Fin de Vigencia para otorgar un grupo promocional.
+  * Documentación para Función 'F_OBTIENE_FECHA_EVAL_VIGENCIA'  
+  * Función que obtiene la Fecha con la cual se va a evaluar el rango de fechas de Inicio y Fin de Vigencia para otorgar un grupo promocional.
   * 
-  * Si el Punto corresponde a un Cliente Nuevo se tomar� la fecha de creaci�n de su contrato.
-  * Si el Punto corresponde a un Punto Adicional contratado se tomar� la fecha de creaci�n del servicio de internet del Punto adicional.
-  * Si se esta contratando un servicio adicional que no es internet se debe tomar la fecha de creaci�n menor de sus servicios adicionales contratados.
+  * Si el Punto corresponde a un Cliente Nuevo se tomará la fecha de creación de su contrato.
+  * Si el Punto corresponde a un Punto Adicional contratado se tomará la fecha de creación del servicio de internet del Punto adicional.
+  * Si se esta contratando un servicio adicional que no es internet se debe tomar la fecha de creación menor de sus servicios adicionales contratados.
   *
   * PARAMETROS:
   * @Param Fn_PuntoId              IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
   * @Param Fv_EstadoServ           IN  DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE
   * @Param Fv_CodigoGrupoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 24-10-2019  
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 05-11-2019  - Se agregan consideraciones al obtener la fecha de evaluaci�n de vigencias para el caso de Promociones de instalaci�n
-  *                            y ancho de banda se verifica diferencia en meses entre la fecha de creaci�n del contrato y la fecha de creaci�n del 
-  *                            servicio para la consideraci�n de la fecha a tomar para el proceso.
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 05-11-2019  - Se agregan consideraciones al obtener la fecha de evaluación de vigencias para el caso de Promociones de instalación
+  *                            y ancho de banda se verifica diferencia en meses entre la fecha de creación del contrato y la fecha de creación del 
+  *                            servicio para la consideración de la fecha a tomar para el proceso.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.2 13-11-2019 -Se agrega que se inserte en INFO_ERROR LOG en caso de no obtener la fecha para evaluaci�n de Vigencia por casos de 
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.2 13-11-2019 -Se agrega que se inserte en INFO_ERROR LOG en caso de no obtener la fecha para evaluación de Vigencia por casos de 
   *                          inconsistencia en data de contratos se inserta LOG de error y se continua con el proceso.
   *                          Se agrega llamada a la funcion F_ESTADO_CONTRATO que obtiene el estado actual de contrato con el cual se procesa.
   *
   * @author Katherine Yager <kyager@telconet.ec>
-  * @version 1.3 14-11-2019 - Se agrega en la funci�n que se tome para instalalci�n los estados de servicio configurados en el parmetro para 
+  * @version 1.3 14-11-2019 - Se agrega en la función que se tome para instalalción los estados de servicio configurados en el parmetro para 
   * que considere varios estados.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.4 03-01-2020 - Se mejora cursores C_GetFeCreaServInternetActivo, C_GetFeCreaServAdicionalActivo para que considere entre dos d�as la confirmaci�n
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.4 03-01-2020 - Se mejora cursores C_GetFeCreaServInternetActivo, C_GetFeCreaServAdicionalActivo para que considere entre dos días la confirmación
   *                           de los servicios en estado activo.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.5 16-07-2020 - Se agrega par�metro Fv_TipoPto ('PTO_ADICIONAL','PTO_NUEVO') a la funci�n F_ESTADO_SERVICOS que obtiene la fecha para evaluar 
-  *                           las promociones por instalaci�n.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.5 16-07-2020 - Se agrega parámetro Fv_TipoPto ('PTO_ADICIONAL','PTO_NUEVO') a la función F_ESTADO_SERVICOS que obtiene la fecha para evaluar 
+  *                           las promociones por instalación.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.6 02-03-2023 - Se agrega cursor C_GetEmpresa para obterne el codigo de la empresa por medio del idServicio,
   *                           el mismo que servira para filtar la empresa en los cursores que utilizan las tablas de parametros.
   *
@@ -49,8 +49,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN DATE;
 
  /**
-  * Documentaci�n para PROCEDURE 'P_ELIMINA_CARACT_PROMO_BW'.
-  * Proceso obtiene las caracter�sticas promocionales de un servicio para actualizar su estado a Eliminado.
+  * Documentación para PROCEDURE 'P_ELIMINA_CARACT_PROMO_BW'.
+  * Proceso obtiene las características promocionales de un servicio para actualizar su estado a Eliminado.
   *
   * Costo del Query C_ObtieneCaractPromo: 7
   *
@@ -65,8 +65,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                        Pv_MsjResultado  OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_ACTUALIZA_CARACT_PROMO_BW'.
-  * Proceso que actualiza el estado a Eliminado de las caracter�sticas promocionales de un servicio.
+  * Documentación para PROCEDURE 'P_ACTUALIZA_CARACT_PROMO_BW'.
+  * Proceso que actualiza el estado a Eliminado de las características promocionales de un servicio.
   *
   * PARAMETROS:
   * @Param Pr_InfoServicioProdCaract  IN  INFO_SERVICIO_PROD_CARACT%ROWTYPE  Recibe un record de INFO_SERVICIO_PROD_CART
@@ -79,14 +79,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                         Pv_MsjResultado            OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_ELIMINA_CARACT_BW'.
-  * Proceso que valida si debe o no eliminar las caracter�sticas promocionales de un servicio.
+  * Documentación para PROCEDURE 'P_VALIDA_ELIMINA_CARACT_BW'.
+  * Proceso que valida si debe o no eliminar las características promocionales de un servicio.
   *
   * Costo del Query C_ObtieneMaxMapeo: 2
   *
   * PARAMETROS:
   * @Param Pn_IdServicio     IN  INFO_SERVICIO.ID_SERVICIO%TYPE                   Recibe id del servicio
-  * @Param Pv_TipoPromo      IN  ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE   Recibe tipo de promoci�n
+  * @Param Pv_TipoPromo      IN  ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE   Recibe tipo de promoción
   * @Param Pb_EliminaCaract  OUT BOOLEAN                                          Devuelve TRUE/FALSE si debe o no eliminar 
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -97,22 +97,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                         Pb_EliminaCaract  OUT BOOLEAN);
 
   /**
-   * Documentaci�n para el procedimiento 'P_INSERT_ISERVICIO_PROD_CARACT'.
+   * Documentación para el procedimiento 'P_INSERT_ISERVICIO_PROD_CARACT'.
    *
-   * Proceso encargado de insertar las caracter�sticas promocionales de un servicio.
+   * Proceso encargado de insertar las características promocionales de un servicio.
    *
    * @Param Pr_InfoServProdCaract IN  ROWTYPE  : Recibe un record de la tabla 'INFO_SERVICIO_PROD_CARACT' de 'DB_COMERCIAL'.
    * @Param Pv_Mensaje            OUT VARCHAR2 : Mensaje de error en caso de existir.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-09-2019
    */
   PROCEDURE P_INSERT_ISERVICIO_PROD_CARACT(Pr_InfoServProdCaract IN  DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT%ROWTYPE,
                                            Pv_Mensaje            OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_ELIMINA_CARACT_INDV_BW'.
-   * Proceso obtiene la caracter�stica de un servicio para actualizar su estado a Eliminado.
+   * Documentación para PROCEDURE 'P_ELIMINA_CARACT_INDV_BW'.
+   * Proceso obtiene la característica de un servicio para actualizar su estado a Eliminado.
    *
    * Costo del Query C_ObtieneCaractPromo: 7
    *
@@ -121,7 +121,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Pv_NombreCaract  IN DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_CARACTERISTICA%TYPE  Nombre de caracteristica a eliminar
    * @Param Pv_MsjResultado  OUT VARCHAR2                                                   Devuelve mensaje de resultado
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
+   * @author Jesús Bozada <jbozada@telconet.ec>
    * @version 1.0 16-10-2019
    */
   PROCEDURE P_ELIMINA_CARACT_INDV_BW (Pn_IdServicio    IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -129,8 +129,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                       Pv_MsjResultado  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_ELIMINA_CARACT_INDV_BW'.
-   * Proceso registra la caracter�stica de un servicio.
+   * Documentación para PROCEDURE 'P_ELIMINA_CARACT_INDV_BW'.
+   * Proceso registra la característica de un servicio.
    *
    * PARAMETROS:
    * @Param Pn_IdServicio    IN INFO_SERVICIO.ID_SERVICIO%TYPE                               Recibe id del servicio
@@ -139,7 +139,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    *
    * Costo del Query C_AdmiProdCaract: 10
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
+   * @author Jesús Bozada <jbozada@telconet.ec>
    * @version 1.0 16-10-2019
    */
   PROCEDURE P_CREA_CARACT_INDV_BW (Pn_IdServicio    IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -148,10 +148,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                    Pv_MsjResultado  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_TIPO_NEGOCIO'.
+   * Documentación para FUNCTION 'F_VALIDA_TIPO_NEGOCIO'.
    *
-   * Funci�n que verifica que el punto del cliente entre en los tipos de negocio configurado para la promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Función que verifica que el punto del cliente entre en los tipos de negocio configurado para la promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_TipoNegocioInsABan: 18
    * Costo del Query C_TipoNegocioPto: 18
@@ -161,11 +161,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fn_IdServicio       IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
    * @Param Fv_CodEmpresa       IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 05-09-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.1 11-11-2020 Se agrega al proceso el valor de entrada Fn_IdPto para que la funci�n soporte evaluar la regla
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.1 11-11-2020 Se agrega al proceso el valor de entrada Fn_IdPto para que la función soporte evaluar la regla
    *                         tipo de negocio por el punto del cliente.
    */ 
   FUNCTION F_VALIDA_TIPO_NEGOCIO(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
@@ -175,10 +175,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_ULTIMA_MILLA'.
+   * Documentación para FUNCTION 'F_VALIDA_ULTIMA_MILLA'.
    *
-   * Funci�n que verifica que el punto del cliente entre en las �ltimas millas configurada para la promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Función que verifica que el punto del cliente entre en las últimas millas configurada para la promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_UltimaMillaInsABan: 15
    * Costo del Query C_UltimaMillaPunto: 18
@@ -187,12 +187,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fn_IntIdPromocion   IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE
    * @Param Fn_IdServicio       IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE DEFAULT NULL
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 05-09-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.1 11-11-2020 Se agrega al proceso el valor de entrada Fn_IdUltimaMilla que la funci�n evalue la regla por un
-   *                         id de �ltima milla en espec�fico.
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.1 11-11-2020 Se agrega al proceso el valor de entrada Fn_IdUltimaMilla que la función evalue la regla por un
+   *                         id de última milla en específico.
    */ 
   FUNCTION F_VALIDA_ULTIMA_MILLA(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
                                  Fn_IdServicio     IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE DEFAULT NULL,
@@ -200,10 +200,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_FORMA_PAGO'.
+   * Documentación para FUNCTION 'F_VALIDA_FORMA_PAGO'.
    *
-   * Funci�n que verifica que el punto cumpla con las forma de pago de una promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Función que verifica que el punto cumpla con las forma de pago de una promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_TipoPomocion: 2
    * Costo del Query C_FormaPagoMens: 2
@@ -216,22 +216,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fn_IntIdPromocion   IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE
    * @Param Fn_IdPunto          IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 03-06-2019
    *
-   * Se agrega l�gica para que los cursores que obtienen la forma de pago no consideren estados por los tipos de promoci�n 
-   * Instalaci�n y Ancho de Banda.
+   * Se agrega lógica para que los cursores que obtienen la forma de pago no consideren estados por los tipos de promoción 
+   * Instalación y Ancho de Banda.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 27-09-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.2 13-11-2019 - Se agrega llamada a la funcion F_ESTADO_CONTRATO que obtiene el estado actual del contrato con el cual se procesa.
    *
-   * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+   * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
    * @version 1.3 27-09-2021 - Se modifica query del cursor C_ExisteBancoTipoCta y se reemplaza uso de REGEXP_SUBSTR debido a que se detecta que la
-   *                           funci�n consume entre 8 y 9 segundos por cada iteraci�n en el proceso de mapeo de promociones lo cual afecta el
-   *                           tiempo de la ejecuci�n del proceso y posterior facturacion proporcional.
+   *                           función consume entre 8 y 9 segundos por cada iteración en el proceso de mapeo de promociones lo cual afecta el
+   *                           tiempo de la ejecución del proceso y posterior facturacion proporcional.
    */
   FUNCTION F_VALIDA_FORMA_PAGO(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
                                Fn_IdPunto        IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -239,10 +239,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_PERMANENCIA'.
+   * Documentación para FUNCTION 'F_VALIDA_PERMANENCIA'.
    *
-   * Funci�n que verifica que el punto cumpla con la permanencia m�nima configurada por tipo de promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Función que verifica que el punto cumpla con la permanencia mínima configurada por tipo de promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_FechaConfirmacion: 11
    * Costo del Query C_PermanenciaMinima: 5
@@ -252,11 +252,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fv_Tipo_Promocion   IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
    * @Param Fn_IdPunto          IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 03-06-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.1 15-09-2020 - Se cambia la forma de obtener la diferencia de meses, para que no d� problemas en el ambiente web.
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.1 15-09-2020 - Se cambia la forma de obtener la diferencia de meses, para que no dé problemas en el ambiente web.
    *
    */
   FUNCTION F_VALIDA_PERMANENCIA(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
@@ -265,10 +265,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_MORA'.
+   * Documentación para FUNCTION 'F_VALIDA_MORA'.
    *
-   * Funci�n que verifica que el punto no halla ca�do en mora en el tiempo configurado por el tipo de promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Función que verifica que el punto no halla caído en mora en el tiempo configurado por el tipo de promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_PierdeMora: 5
    * Costo del Query C_DiasMora: 5
@@ -279,7 +279,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fv_Tipo_Promocion   IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
    * @Param Fn_IdPunto          IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 03-06-2019
    */
   FUNCTION F_VALIDA_MORA(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
@@ -288,24 +288,24 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
  /**
-  * Documentaci�n para FUNCTION 'F_VALIDA_SECTORIZACION_OLT'.
-  * Funci�n que verifica que el elemento OLT cumpla con las reglas de sectorizaci�n de una promoci�n especifica,
-  * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+  * Documentación para FUNCTION 'F_VALIDA_SECTORIZACION_OLT'.
+  * Función que verifica que el elemento OLT cumpla con las reglas de sectorización de una promoción especifica,
+  * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
   *
   * Costo del Query C_SectorizacionABan: 7
   * Costo del Query C_SectorizacionElemento: 13
   * Costo del Query C_SectorizacionPunto: 21
   *
   * PARAMETROS:
-  * @Param Fn_IntIdPromocion   IN ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE  Recibe id grupo promoci�n
+  * @Param Fn_IntIdPromocion   IN ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE  Recibe id grupo promoción
   * @Param Fn_IdElemento       IN INFO_ELEMENTO.ID_ELEMENTO%TYPE                Recibe id elemento
-  * @Param Fv_CodEmpresa       IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE           Recibe c�digo de empresa
+  * @Param Fv_CodEmpresa       IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE           Recibe código de empresa
   * @Param Fn_IdPunto          IN INFO_PUNTO.ID_PUNTO%TYPE                      Recibe id del punto
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-09-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 07-03-2023 - Se agrega como filtro la empresa en los querys que incluyen las estructuras de parametros.
   */    
   FUNCTION F_VALIDA_SECTORIZACION_OLT(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
@@ -315,18 +315,18 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_ANTIGUEDAD'.
-   * Funci�n que verifica que el servicio tenga la antig�edad m�nima configurada en la promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Documentación para FUNCTION 'F_VALIDA_ANTIGUEDAD'.
+   * Función que verifica que el servicio tenga la antigüedad mínima configurada en la promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_FechaConfirmacion: 11
    * Costo del Query C_Antiguedad: 5
    *
    * PARAMETROS:
-   * @Param Fn_IntIdPromocion   IN ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE  Recibe id grupo promoci�n
+   * @Param Fn_IntIdPromocion   IN ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE  Recibe id grupo promoción
    * @Param Fn_IdPunto          IN INFO_PUNTO.ID_PUNTO%TYPE                      Recibe id del punto
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 05-09-2019
    */
   FUNCTION F_VALIDA_ANTIGUEDAD(Fn_IntIdPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
@@ -334,15 +334,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /*
-   * Documentaci�n para TYPE 'Tr_SectorizacionInsBwMens'.
+   * Documentación para TYPE 'Tr_SectorizacionInsBwMens'.
    *
-   * Record que permite almacenar los valores de sectorizaci�n.
+   * Record que permite almacenar los valores de sectorización.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 18-10-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 18-10-2019
    *
    * @author Hector Lozano <hlozano@telconet.ec>
-   * @version 1.0 27-05-2022   Se modifica el tama�o de las variables del type para la sectorizaci�n.
+   * @version 1.0 27-05-2022   Se modifica el tamaño de las variables del type para la sectorización.
    */
   TYPE Tr_SectorizacionInsBwMens IS RECORD (
     ID_SECTORIZACION VARCHAR2(4000),
@@ -355,24 +355,24 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   );
 
   /**
-   * Documentaci�n para TYPE 'Tt_SectorizacionInsBwMens'.
-   * TYPE TABLE para almacenar todos los valores de sectorizaci�n.
+   * Documentación para TYPE 'Tt_SectorizacionInsBwMens'.
+   * TYPE TABLE para almacenar todos los valores de sectorización.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 18-10-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 18-10-2019
    */
   TYPE Tt_SectorizacionInsBwMens IS TABLE OF Tr_SectorizacionInsBwMens INDEX BY PLS_INTEGER;
 
   /*
-   * Documentaci�n para TYPE 'Tr_ParametrosValidarSec'.
+   * Documentación para TYPE 'Tr_ParametrosValidarSec'.
    *
-   * Record de los par�metros necesarios para validar la sectorizaci�n de un servicio.
+   * Record de los parámetros necesarios para validar la sectorización de un servicio.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 18-10-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 18-10-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @versi�n 1.1 07-03-2023 - Se agrega EMPRESA_COD a la tabla dinamica.
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @versión 1.1 07-03-2023 - Se agrega EMPRESA_COD a la tabla dinamica.
    */
   TYPE Tr_ParametrosValidarSec IS RECORD (
     ID_GRUPO_PROMOCION NUMBER,
@@ -385,10 +385,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   );
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_SECTORIZACION'.
+   * Documentación para FUNCTION 'F_VALIDA_SECTORIZACION'.
    *
-   * Funci�n que verifica que el punto cumpla con las reglas de sectorizaci�n de una promoci�n.
-   * Devuelve como respuesta un valor de tipo Boolean 1(Uno) "Si Aplica" � 0(Cero) "No Aplica".
+   * Función que verifica que el punto cumpla con las reglas de sectorización de una promoción.
+   * Devuelve como respuesta un valor de tipo Boolean 1(Uno) "Si Aplica" ó 0(Cero) "No Aplica".
    *
    * Costo del Query C_SevicioPunto          : 13
    * Costo del Query C_SectorizacionServicio : 29
@@ -396,57 +396,57 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    *
    * @Param Pr_ParametrosValidarSec IN Tr_ParametrosValidarSec
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 18-10-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 15-11-2019 - Se modifica cursor C_SevicioPunto para considera el estado de la estructura info_servicio.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.2 10-12-2020 - Se modifica cursor C_SevicioPunto para que no considere la estructura info_servicio_historial.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.3 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
    */
   FUNCTION F_VALIDA_SECTORIZACION(Pr_ParametrosValidarSec Tr_ParametrosValidarSec)
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para Funci�n 'F_GET_CURSOR_SECTORIZACION'.
-   * Funci�n que devuelve el cursor de las sectorizaciones de una promoci�n.
+   * Documentación para Función 'F_GET_CURSOR_SECTORIZACION'.
+   * Función que devuelve el cursor de las sectorizaciones de una promoción.
    *
    * Costo del SYS_REFCURSOR: 7
    *
    * @Param Pr_ParametrosValidarSec IN RECORD - Recibe un record de tipo Tr_ParametrosValidarSec
    * @Return SYS_REFCURSOR
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 18-10-2019
    */
   FUNCTION F_GET_CURSOR_SECTORIZACION(Pr_ParametrosValidarSec Tr_ParametrosValidarSec)
     RETURN SYS_REFCURSOR;
 
   /**
-   * Documentaci�n para la Funci�n 'F_EXISTE_SOLICITUD_OLT'.
-   * M�todo que valida si existe una solicitud de cambio de OLT de un punto cliente.
+   * Documentación para la Función 'F_EXISTE_SOLICITUD_OLT'.
+   * Método que valida si existe una solicitud de cambio de OLT de un punto cliente.
    *
    * Costo del SYS_REFCURSOR: 7
    *
    * @Param Pr_ParametrosValidarSec IN RECORD - Recibe un record de tipo Tr_ParametrosValidarSec
    * @Return BOOLEAN
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 18-10-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 07-03-2023 - Se agrega empresa como filtro en los querys que hacen referencia a las estructuras de parametros.
    */
   FUNCTION F_EXISTE_SOLICITUD_OLT(Pr_ParametrosValidarSec Tr_ParametrosValidarSec)
     RETURN BOOLEAN;
 
   /**
-  * Documentaci�n para PROCESO 'P_OBTIENE_PROMO_TENTATIVAS'.
-  * Proceso encargado de obtener las promociones activas por Tipo Promoci�n y fechas de vigencias.
+  * Documentación para PROCESO 'P_OBTIENE_PROMO_TENTATIVAS'.
+  * Proceso encargado de obtener las promociones activas por Tipo Promoción y fechas de vigencias.
   *
   * Costo del Query C_GrupoPromociones: 12
   *
@@ -457,12 +457,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Pd_FechaEvalua           IN DATE DEFAULT NULL
   * @Param Prf_GruposPromociones    OUT SYS_REFCURSOR
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 29-10-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.1 16-07-2020 - Se agrega un nuevo par�metro de entrada Pd_FechaEvalua para que obtenga las promociones con la fecha
-  *                           enviada, en caso que el par�metro llego con un valor nulo se tomar� la fecha del sistema.  
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 16-07-2020 - Se agrega un nuevo parámetro de entrada Pd_FechaEvalua para que obtenga las promociones con la fecha
+  *                           enviada, en caso que el parámetro llego con un valor nulo se tomará la fecha del sistema.  
   */
   PROCEDURE P_OBTIENE_PROMO_TENTATIVAS(Pv_CodigoGrupoPromocion  IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
                                        Pv_CodEmpresa            IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -471,8 +471,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                        Prf_GruposPromociones    OUT SYS_REFCURSOR);
 
   /**
-  * Documentaci�n para PROCESO 'P_OBTIENE_SERVICIOS_PUNTO'.
-  * Proceso encargado de obtener los servicios de un punto que se encuentran en un flujo de activaci�n.
+  * Documentación para PROCESO 'P_OBTIENE_SERVICIOS_PUNTO'.
+  * Proceso encargado de obtener los servicios de un punto que se encuentran en un flujo de activación.
   *
   * Costo del Query C_ServiciosPunto: 12
   *
@@ -481,20 +481,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Pv_CodEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Pa_ServiciosProcesar    OUT DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 29-10-2019
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 19-04-2022 - Se agregan par�metros de CodigoGrupoPromocion, TipoProceso, CaractCodProm, IdServicio por default null 
+  * @version 1.1 19-04-2022 - Se agregan parámetros de CodigoGrupoPromocion, TipoProceso, CaractCodProm, IdServicio por default null 
   *                            para el proceso por tentativa. El TipoProceso para las validaciones es 'PROM_EVAL_TENTATIVA'.
-  *                           Se agrega sentencia para validaci�n mediante funci�n para obtener servicios del punto cuando 
-  *                            no est�n registrados en la tabla de tentativa o historial de servicio. 
-  *                           Se agrega sentencia para validaci�n mediante funci�n a servicios de plan de internet cuando se procese por c�digo 
-  *                            de promoci�n por PROM_INS.
-  *                           Cuando se env�e la caracter�stica de c�digo promocional valida que s�lo consulte servicios con c�digos promocionales.                        
+  *                           Se agrega sentencia para validación mediante función para obtener servicios del punto cuando 
+  *                            no estén registrados en la tabla de tentativa o historial de servicio. 
+  *                           Se agrega sentencia para validación mediante función a servicios de plan de internet cuando se procese por código 
+  *                            de promoción por PROM_INS.
+  *                           Cuando se envíe la característica de código promocional valida que sólo consulte servicios con códigos promocionales.                        
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.2 28-02-2023 - Se agrega sentencia empresa_cod en la consulta Lv_CadenaQuery para los par�metros.
+  * @version 1.2 28-02-2023 - Se agrega sentencia empresa_cod en la consulta Lv_CadenaQuery para los parámetros.
   */
   PROCEDURE P_OBTIENE_SERVICIOS_PUNTO(Pn_IdPunto              IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                                       Pv_CodEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -507,9 +507,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                       Pa_ServiciosProcesar    OUT DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar);
 
   /**
-  * Documentaci�n para FUNCTION 'F_ESTADO_CONTRATO'.
-  * Funci�n que obtiene el estado actual de contrato solo se consideran los siguinetes estados: "ACTIVO",
-  * "PENDIENTE", "PORAUTORIZAR" � NULL.
+  * Documentación para FUNCTION 'F_ESTADO_CONTRATO'.
+  * Función que obtiene el estado actual de contrato solo se consideran los siguinetes estados: "ACTIVO",
+  * "PENDIENTE", "PORAUTORIZAR" ó NULL.
   *
   * Costo del Query C_EstadosContratos: 4
   * Costo del Query C_EstadoContrato: 6
@@ -517,10 +517,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * PARAMETROS:
   * @Param Fn_IdPunto IN INFO_PUNTO.ID_PUNTO%TYPE Recibe id del punto
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 08-11-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 02-03-2023 - Se agrega cursor C_GetEmpresa para obterne el codigo de la empresa por medio del idServicio,
   *                           el mismo que servira para filtar la empresa en los cursores que utilizan las tablas de parametros.
   */                                      
@@ -528,9 +528,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para FUNCTION 'F_ESTADO_SERVICOS'.
-  * Funci�n que obtiene la fecha del servicio seg�n los estados configurados en el par�metro de Estados Servicios.
-  * Fecha_servicio � NULL.
+  * Documentación para FUNCTION 'F_ESTADO_SERVICOS'.
+  * Función que obtiene la fecha del servicio según los estados configurados en el parámetro de Estados Servicios.
+  * Fecha_servicio ó NULL.
   *
   * Costo del Query C_GetParametro: 4
   * Costo del Query C_GetFeCreacionServ: 7
@@ -540,20 +540,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   *
   * PARAMETROS:
   * @Param Fn_IdPunto IN INFO_PUNTO.ID_PUNTO%TYPE Recibe id del punto
-  * @Param Fv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE Recibe el nombre del par�metro
-  * @Param Fv_TipoPromo       DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE Recibe el tipo de promoci�n
-  * @Param Fv_EstadoActivo    VARCHAR2 Recibe el estado del par�metro
+  * @Param Fv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE Recibe el nombre del parámetro
+  * @Param Fv_TipoPromo       DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE Recibe el tipo de promoción
+  * @Param Fv_EstadoActivo    VARCHAR2 Recibe el estado del parámetro
   * @Param Fv_EmpresaCod      DB_GENERAL.ADMI_PARAMETRO_DET.EMPRESA_COD%TYPE Recibe el id de la empresa
   * @Param Fv_TipoPto         VARCHAR2 ('PTO_ADICIONAL','PTO_NUEVO')
   *
   * @author Katherine Yager <kyager@telconet.ec>
   * @version 1.0 15-11-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.1 16-07-2020 - Se agrega par�metro Fv_TipoPto ('PTO_ADICIONAL','PTO_NUEVO') para obtener la fecha para evaluar 
-  *                           las promociones por instalaci�n.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 16-07-2020 - Se agrega parámetro Fv_TipoPto ('PTO_ADICIONAL','PTO_NUEVO') para obtener la fecha para evaluar 
+  *                           las promociones por instalación.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.2 03-03-2023 - Se agrega filtro de empresa en el cursor C_GetFeCreaAdendum.
   */                                      
   FUNCTION F_ESTADO_SERVICOS(Fn_IdPunto         IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -565,8 +565,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para PROCESO 'P_MAPEO_PROM_TENTATIVA'.
-  * Proceso encargado de evaluar si un servicio cae en una de las promociones para enviar informaci�n a Contrato Digital.
+  * Documentación para PROCESO 'P_MAPEO_PROM_TENTATIVA'.
+  * Proceso encargado de evaluar si un servicio cae en una de las promociones para enviar información a Contrato Digital.
   *
   * Costo del Query C_GetEmpresa: 1
   * Costo del Query C_GetErrorRepetido: 11
@@ -586,25 +586,25 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Pn_CantPeriodo          OUT NUMBER
   * @Param Pv_Observacion          OUT VARCHAR2
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 29-10-2019 
   *
-  * @author Edgar Holgu�n <eholgu�n@telconet.ec> Se agrega a funcionalidad original par�metros correspondientes a una nueva forma de pago
+  * @author Edgar Holguín <eholguín@telconet.ec> Se agrega a funcionalidad original parámetros correspondientes a una nueva forma de pago
   * @version 1.1 16-03-2020
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.2 16-07-2020 - Se direcciona los valores que se enviaran a los par�metros del proceso P_OBTIENE_PROMO_TENTATIVAS evitando
-  *                           que crucen valores con los par�metros DEFAULT NULL.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.2 16-07-2020 - Se direcciona los valores que se enviaran a los parámetros del proceso P_OBTIENE_PROMO_TENTATIVAS evitando
+  *                           que crucen valores con los parámetros DEFAULT NULL.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.3 11-11-2020 - Se direcciona los valores que se enviaran a los par�metros a la funci�n F_VALIDA_TIPO_NEGOCIO evitando que
-  *                           crucen valores con los par�metros DEFAULT NULL.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.3 11-11-2020 - Se direcciona los valores que se enviaran a los parámetros a la función F_VALIDA_TIPO_NEGOCIO evitando que
+  *                           crucen valores con los parámetros DEFAULT NULL.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.4 06-09-2021 -Se agrega envio de parametros al procedimiento invocado  P_GET_PROMOCIONES_SECT: Pn_IdPunto y Pn_IdServicio debido a 
   *                          que el Cursor C_SectorizacionPto que obtiene los datos del servicio y punto del cliente retorna: 
-  *                          "Cursor vacio para obtener los datos de sectorizaci�n del servicio" por lo cual no se puede obtener los Grupos
-  *                           Promocionales para la evaluaci�n de reglas, devolviendo cero en la tentativa.
+  *                          "Cursor vacio para obtener los datos de sectorización del servicio" por lo cual no se puede obtener los Grupos
+  *                           Promocionales para la evaluación de reglas, devolviendo cero en la tentativa.
   */
   PROCEDURE P_PROMO_TENTATIVA(Pn_IdPunto              IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                               Pn_IdServicio           IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -618,10 +618,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                               Pv_Observacion          OUT VARCHAR2);
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_FORMA_PAGO_CFP'.
+   * Documentación para FUNCTION 'F_VALIDA_FORMA_PAGO_CFP'.
    *
-   * Funci�n que verifica que el punto cumpla con las forma de pago (enviada como par�metro) de una promoci�n,
-   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" � 0 "No Aplica".
+   * Función que verifica que el punto cumpla con las forma de pago (enviada como parámetro) de una promoción,
+   * devuelve como respuesta un valor de tipo Boolean 1 "Si Aplica" ó 0 "No Aplica".
    *
    * Costo del Query C_TipoPomocion: 2
    * Costo del Query C_FormaPagoMens: 2
@@ -635,11 +635,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fn_TipoCuentaId       IN DB_COMERCIAL.INFO_CONTRATO_FORMA_PAGO.TIPO_CUENTA_ID%TYPE
    * @Param Fn_BancoTipoCuentaId  IN DB_COMERCIAL.INFO_CONTRATO_FORMA_PAGO.BANCO_TIPO_CUENTA_ID%TYPE%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 03-06-2019
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
-   * @version 1.1 16-03-2020 Se agrega a funcionalidad original env�o de par�metros correspondientes a una nueva forma de pago.
+   * @author Edgar Holguín <eholguin@telconet.ec>
+   * @version 1.1 16-03-2020 Se agrega a funcionalidad original envío de parámetros correspondientes a una nueva forma de pago.
    */
   FUNCTION F_VALIDA_FORMA_PAGO_CFP(Fn_IntIdPromocion     IN  DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
                                    Fn_IdPunto            IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -649,10 +649,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_VALIDACIONES_PREVIAS_CODIGO'.
+   * Documentación para PROCEDURE 'P_VALIDACIONES_PREVIAS_CODIGO'.
    *
-   * Proceso que realiza una evaluaci�n de un c�digo promocional ingresado por el Usuario, se evalua c�digo existente y reglas
-   * del c�digo promocional contra la informaci�n del servicio.
+   * Proceso que realiza una evaluación de un código promocional ingresado por el Usuario, se evalua código existente y reglas
+   * del código promocional contra la información del servicio.
    *
    * Costo del Query C_CodigoPromocionMens: 17
    * Costo del Query C_CodigoPromocionInsBw: 13
@@ -671,7 +671,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * Costo del Query C_ExistePlan: 6
    *
    * PARAMETROS:
-   * @Param Pv_Trama                 IN  VARCHAR2 (Grupo Promoci�n, Tipo Promoci�n, Tipo Proceso, IdEmpresa, C�digo)
+   * @Param Pv_Trama                 IN  VARCHAR2 (Grupo Promoción, Tipo Promoción, Tipo Proceso, IdEmpresa, Código)
    * @Param Pn_IdServicio            IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE DEFAULT NULL
    * @Param Pn_IdPunto               IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE DEFAULT NULL
    * @Param Pn_IdPlan                IN  DB_COMERCIAL.INFO_SERVICIO.PLAN_ID%TYPE DEFAULT NULL
@@ -682,13 +682,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Pv_Detalle               OUT VARCHAR2
    * @Param Pv_ServiciosMix          OUT VARCHAR2
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 11-11-2020
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
-   * @version 1.1 02-03-2023 - Se agrega empresa_cod en el llamado a funci�n P_GET_RESTRIC_PLAN_INST.
+   * @version 1.1 02-03-2023 - Se agrega empresa_cod en el llamado a función P_GET_RESTRIC_PLAN_INST.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.2 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
    */
   PROCEDURE P_VALIDACIONES_PREVIAS_CODIGO(Pv_Trama                 IN  VARCHAR2,
@@ -703,10 +703,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                           Pv_ServiciosMix          OUT VARCHAR2);
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_PLAN_PROD'.
+   * Documentación para FUNCTION 'F_VALIDA_PLAN_PROD'.
    *
-   * Funci�n que realiza una evaluaci�n de la regla de planes � productos entre una promoci�n y un servicio, si el servicio
-   * cumple con los datos de planes � producto de la promoci�n la funci�n retorna un valor boolean.
+   * Función que realiza una evaluación de la regla de planes ó productos entre una promoción y un servicio, si el servicio
+   * cumple con los datos de planes ó producto de la promoción la función retorna un valor boolean.
    *
    * PARAMETROS:
    * @Param Fn_IdPlan                    IN NUMBER DEFAULT NULL
@@ -714,7 +714,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fv_CodigoTipoPromocion       IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE
    * @Param Fa_TipoPromoPlanProdProcesar IN DB_COMERCIAL.CMKG_PROMOCIONES.T_TipoPromoPlanProdProcesar
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 11-11-2020
    */
   FUNCTION F_VALIDA_PLAN_PROD(Fn_IdPlan                    IN NUMBER DEFAULT NULL,
@@ -724,7 +724,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN BOOLEAN;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_INSERT_CARACTERISTICA_SERV'.
+   * Documentación para PROCEDURE 'P_INSERT_CARACTERISTICA_SERV'.
    *
    * Procedimiento que realiza la funcionalidad de insertar datos en la estructura INFO_SERVICIO_CARACTERISTICA.
    *
@@ -732,14 +732,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Pr_InfoServicioCaracteristica  IN DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA%ROWTYPE
    * @Param Pv_MsjResultado                OUT VARCHAR2
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 11-11-2020
    */
   PROCEDURE P_INSERT_CARACTERISTICA_SERV(Pr_InfoServicioCaracteristica  IN DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA%ROWTYPE,
                                          Pv_MsjResultado                OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_UPDATE_CARACTERISTICA_SERV'.
+   * Documentación para PROCEDURE 'P_UPDATE_CARACTERISTICA_SERV'.
    *
    * Procedimiento que realiza la funcionalidad de actualizar datos en la estructura INFO_SERVICIO_CARACTERISTICA.
    *
@@ -747,16 +747,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Pr_InfoServicioCaracteristica  IN DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA%ROWTYPE
    * @Param Pv_MsjResultado                OUT VARCHAR2
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 11-11-2020
    */
   PROCEDURE P_UPDATE_CARACTERISTICA_SERV(Pr_InfoServicioCaracteristica  IN DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA%ROWTYPE,
                                          Pv_MsjResultado                OUT VARCHAR2);
 
   /**
-   * Documentaci�n para FUNCTION 'F_OBTIENE_PROMOCION_COD'.
+   * Documentación para FUNCTION 'F_OBTIENE_PROMOCION_COD'.
    *
-   * Funci�n que permite recuperar el nombre de una promoci�n por el c�digo promocional.
+   * Función que permite recuperar el nombre de una promoción por el código promocional.
    *
    * PARAMETROS:
    * @Param Fv_Codigo               IN VARCHAR2
@@ -764,7 +764,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fv_CodigoGrupoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE
    * @Param Fv_CodEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 01-12-2020
    */                                         
   FUNCTION F_OBTIENE_PROMOCION_COD(Fv_Codigo               IN VARCHAR2 DEFAULT NULL,
@@ -774,20 +774,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_PLAN_EMP_PYME'.
+   * Documentación para FUNCTION 'F_VALIDA_PLAN_EMP_PYME'.
    *
-   * Funci�n que permite validar si un plan pertenece a un empleado o pyme empresa.
+   * Función que permite validar si un plan pertenece a un empleado o pyme empresa.
    *
    * Costo del Query C_GetNombrePlan: 4
    *
    * PARAMETROS:
    * @Param Pn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 19-13-2021
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
-   * @version 1.1 02-03-2023 - Se agrega empresa_cod en el llamado a funci�n P_GET_RESTRIC_PLAN_INST.
+   * @version 1.1 02-03-2023 - Se agrega empresa_cod en el llamado a función P_GET_RESTRIC_PLAN_INST.
    *
    * Costo del Query C_GetEmpresa: 8
    *
@@ -796,19 +796,19 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_SOLICITUD_SERVICIO'.
+   * Documentación para FUNCTION 'F_VALIDA_SOLICITUD_SERVICIO'.
    *
-   * Funci�n que permite validar si un servicio cuenta ya con una solicitud de descuento.
+   * Función que permite validar si un servicio cuenta ya con una solicitud de descuento.
    *
    * Costo del Query C_GetSolicitud: 7
    *
    * PARAMETROS:
    * @Param Pn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 19-13-2021
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 02-03-2023 - Se agrega cursor C_GetEmpresa para obterne el codigo de la empresa por medio del idServicio,
    *                           el mismo que servira para filtar la empresa en los cursores que utilizan las tablas de parametros.
    */     
@@ -816,9 +816,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para FUNCTION 'F_VALIDA_ROL'.
+   * Documentación para FUNCTION 'F_VALIDA_ROL'.
    *
-   * Funci�n que permite validar si un punto pertenece a una persona con un rol Cliente � PreCliente.
+   * Función que permite validar si un punto pertenece a una persona con un rol Cliente ó PreCliente.
    *
    * Costo del Query C_RolPersona: 15
    *
@@ -826,82 +826,82 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    * @Param Fn_IdPunto    IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
    * @Param Fv_CodEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 19-13-2021
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
-   * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en par�metros para cursor C_RolPersona.
+   * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en parámetros para cursor C_RolPersona.
    */
   FUNCTION F_VALIDA_ROL(Fn_IdPunto    IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                         Fv_CodEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE)
     RETURN BOOLEAN;
 
   /**
-  *  Documentaci�n para TYPE 'Lr_SolicitudesProcesar'.
+  *  Documentación para TYPE 'Lr_SolicitudesProcesar'.
   *
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 23-03-2021
   */
   TYPE Lr_SolicitudesProcesar IS RECORD (
     ID_DETALLE_SOLICITUD  DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE);
 
   /**
-  * Documentaci�n para TYPE 'T_SolicitudesProcesar'.
+  * Documentación para TYPE 'T_SolicitudesProcesar'.
   * Record para almacenar la data enviada al BULK.
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 23-03-2021
   */
   TYPE T_SolicitudesProcesar IS TABLE OF Lr_SolicitudesProcesar INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_REGULARIZA_SOLICITUDES'.
+  * Documentación para PROCEDURE 'P_REGULARIZA_SOLICITUDES'.
   *
   * Procedimiento que regulariza las solicitudes de promociones que se encuentran encoladas a estado eliminada.
   *
   * @Param Pv_CodEmpresa    IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Pv_DescSolicitud IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE
   * 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 23-03-2021
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
   */ 
   PROCEDURE P_REGULARIZA_SOLICITUDES(Pv_CodEmpresa    IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                      Pv_DescSolicitud IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOLI'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOLI'.
   *
   * Procedimiento que actualiza registro de la solicitud en INFO_DETALLE_SOLICITUD
   *
-  * @Param Pr_InfoDetalleSolicitud  IN   DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE Recibe un registro con la informaci�n
-  * @Param Pv_MsnError              OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDetalleSolicitud  IN   DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE Recibe un registro con la información
+  * @Param Pv_MsnError              OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 23-03-2021
   */                                   
   PROCEDURE P_UPDATE_INFO_DETALLE_SOLI(Pr_InfoDetalleSolicitud IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE,
                                        Pv_MsnError             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_DETALLE_SOL_HIST'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_DETALLE_SOL_HIST'.
   *
   * Procedimiento que inserta registro de historial en la solicitud en INFO_DETALLE_SOL_HIST
   *
-  * @Param Pr_InfoDetalleSolHist  IN   DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE Recibe un registro con la informaci�n necesaria para ingresar
-  * @Param Pv_MsnError            OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDetalleSolHist  IN   DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE Recibe un registro con la información necesaria para ingresar
+  * @Param Pv_MsnError            OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 23-03-2021
   */                                      
   PROCEDURE P_INSERT_INFO_DETALLE_SOL_HIST(Pr_InfoDetalleSolHist   IN DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE,
                                            Pv_MsnError             OUT VARCHAR2);
 
   /**
-   * Documentaci�n para FUNCTION 'F_COMPARAR_PLAN_PROMO_BW'.
-   * Funci�n que compara los dos planes por la caracter�stica del line profile de las promociones de ancho de banda.
+   * Documentación para FUNCTION 'F_COMPARAR_PLAN_PROMO_BW'.
+   * Función que compara los dos planes por la característica del line profile de las promociones de ancho de banda.
    *
    * PARAMETROS:
    * @Param Fn_PlanIdUno IN NUMBER     - Id del plan uno
@@ -915,8 +915,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para FUNCTION 'F_GET_LINE_PROFILE_PROMO_BW'.
-   * Funci�n que obtiene el line profile del plan.
+   * Documentación para FUNCTION 'F_GET_LINE_PROFILE_PROMO_BW'.
+   * Función que obtiene el line profile del plan.
    *
    * PARAMETROS:
    * @Param Fn_PlanId IN NUMBER - Id del plan
@@ -928,13 +928,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_EVALUA_TENTATIVA'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_EVALUA_TENTATIVA'.
   *
   * Procedimiento que inserta registro en la tabla de tentativa INFO_EVALUA_TENTATIVA.
   *
   * PARAMETROS:
   * @Param Pr_InfoEvaluaTentativa IN DB_COMERCIAL.INFO_EVALUA_TENTATIVA%ROWTYPE
-  * @Param Pv_MsjResultado        OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado        OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 01-04-2022
@@ -943,12 +943,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                            Pv_MsjResultado        OUT VARCHAR2); 
 
   /**
-  * Documentaci�n para FUNCTION 'F_VALIDA_TENTATIVA'.
+  * Documentación para FUNCTION 'F_VALIDA_TENTATIVA'.
   *
-  * Funci�n que permite validar si existe registro de promoci�n por tentativa, devuelve como respuesta un valor
-  * de tipo VARCHAR2 "S -> Existe registro en la tabla tentativa o historial de servicio" � "N -> No existe registro".
+  * Función que permite validar si existe registro de promoción por tentativa, devuelve como respuesta un valor
+  * de tipo VARCHAR2 "S -> Existe registro en la tabla tentativa o historial de servicio" ó "N -> No existe registro".
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @Param Fn_IdServicio           IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
   * @Param Fv_CodEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Fv_CodigoGrupoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE
@@ -960,7 +960,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @version 1.0 05-04-2022
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en par�metros para cursor C_GetServTentativa.
+  * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en parámetros para cursor C_GetServTentativa.
   */                                           
   FUNCTION F_VALIDA_TENTATIVA(Fn_IdServicio           IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
                               Fv_CodEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -968,11 +968,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   RETURN VARCHAR2; 
 
   /**
-  * Documentaci�n para FUNCTION 'F_GET_FECHA_ADENDUM'.
+  * Documentación para FUNCTION 'F_GET_FECHA_ADENDUM'.
   *
-  * Funci�n que permite retornar la fecha m�nima del adendum mediante de los servicios.
+  * Función que permite retornar la fecha mínima del adendum mediante de los servicios.
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @Param Fn_IdPunto           IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
   * @Param Fv_CodEmpresa        IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Fa_ServiciosProcesar IN DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar
@@ -988,12 +988,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   RETURN DATE; 
 
   /**
-  * Documentaci�n para FUNCTION 'F_VALIDA_SERVICIO_INTD'.
+  * Documentación para FUNCTION 'F_VALIDA_SERVICIO_INTD'.
   *
-  * Funci�n que permite validar que el servicio sea de internet, devuelve como respuesta un valor de
-  * tipo VARCHAR2 "S -> Es un servicio con plan INTD" � "N -> No es un servicio con plan de internet".
+  * Función que permite validar que el servicio sea de internet, devuelve como respuesta un valor de
+  * tipo VARCHAR2 "S -> Es un servicio con plan INTD" ó "N -> No es un servicio con plan de internet".
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @Param Fn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
   * @Param Fv_CodEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   *
@@ -1007,13 +1007,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   RETURN VARCHAR2; 
 
   /**
-  * Documentaci�n para PROCEDURE 'P_PROMOCION_TENTATIVA'.
+  * Documentación para PROCEDURE 'P_PROMOCION_TENTATIVA'.
   *
-  * Nuevo proceso de promoci�n de tentativa migrado reemplaza al proceso "P_MAPEO_PROM_TENTATIVA".
-  * Proceso encargado de evaluar si el punto cae en una de las promociones para enviar informaci�n a Contrato Digital.
-  * Se eval�a adicional las promociones por mix y por producto.
+  * Nuevo proceso de promoción de tentativa migrado reemplaza al proceso "P_MAPEO_PROM_TENTATIVA".
+  * Proceso encargado de evaluar si el punto cae en una de las promociones para enviar información a Contrato Digital.
+  * Se evalúa adicional las promociones por mix y por producto.
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @Param Pn_IdPunto              IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
   * @Param Pv_CodigoGrupoPromocion IN  DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE
   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
@@ -1024,7 +1024,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 14-04-2022
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 27-04-2023 - Se agregan log para falicitar revisiones de seguimento.
   */ 
   PROCEDURE P_PROMOCION_TENTATIVA(Pn_IdPunto              IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -1035,14 +1035,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                   Pv_Mensaje              OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_PROMOCION_EVALUA_TENTATIVA'.
+  * Documentación para PROCEDURE 'P_PROMOCION_EVALUA_TENTATIVA'.
   *
-  * Nuevo proceso de promoci�n de tentativa migrado reemplaza al proceso "P_PROMOCIONES_TENTATIVA".
-  * Proceso encargado de evaluar si el punto cae en una de las promociones para enviar informaci�n a Contrato Digital.
-  * Se eval�a adicional las promociones por mix y por producto.
+  * Nuevo proceso de promoción de tentativa migrado reemplaza al proceso "P_PROMOCIONES_TENTATIVA".
+  * Proceso encargado de evaluar si el punto cae en una de las promociones para enviar información a Contrato Digital.
+  * Se evalúa adicional las promociones por mix y por producto.
   * En el proceso los mensajes se parametrizaron y se agrega cambios para el registro y validaciones con la tabla INFO_EVALUA_TENTATIVA.
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @Param Pn_IdPunto              IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
   * @Param Pv_CodigoGrupoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE
   * @Param Pv_CodEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
@@ -1055,10 +1055,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @version 1.0 19-04-2022
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en par�metros para cursor C_GetIdPromocionMens.
-  *                           Se agrega empresa_cod en el llamado a funci�n P_GET_RESTRIC_PLAN_INST.
+  * @version 1.1 28-02-2023 - Se agrega sentencia por empresa_cod en parámetros para cursor C_GetIdPromocionMens.
+  *                           Se agrega empresa_cod en el llamado a función P_GET_RESTRIC_PLAN_INST.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.2 27-04-2023 - Se agregan log para falicitar revisiones de seguimento.
   */ 
   PROCEDURE P_PROMOCION_EVALUA_TENTATIVA(Pn_IdPunto              IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -1070,9 +1070,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                          Pv_Mensaje              OUT VARCHAR2);
 
  /**
-  *  Documentaci�n para TYPE 'Lr_EvaluaTentativa'.
+  *  Documentación para TYPE 'Lr_EvaluaTentativa'.
   *  
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 28-04-2022
   */      
   TYPE Lr_EvaluaTentativa IS RECORD (
@@ -1090,31 +1090,31 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   ); 
 
   /**
-  * Documentaci�n para TYPE 'T_EvaluaTentativa'.
+  * Documentación para TYPE 'T_EvaluaTentativa'.
   * Record para almacenar la data enviada al BULK.
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 28-04-2022
   */
   TYPE T_EvaluaTentativa IS TABLE OF Lr_EvaluaTentativa INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_EVALUA_TENTATIVA'.
+  * Documentación para PROCEDURE 'P_OBTIENE_EVALUA_TENTATIVA'.
   *
   * Procedimiento que obtiene de la tabla INFO_EVALUA_TENTATIVA las promociones tentativas por instalacion y mensualidad de un punto y servicio especifico, 
   * Costo Query obtiene Promocion Tentativa:7
   *
   * PARAMETROS:
   * @Param Pv_CodigoGrupoPromocion 
-  * Tipo de Promoci�n a ejecutarse: 
+  * Tipo de Promoción a ejecutarse: 
   * PROM_MENS: Grupo de Promociones Mensual.
   *      Del Grupo Mensual se procesan 4 Tipos de Promociones:
   *      1. PROM_MIX:  Descuento en Mensualidad Mix de Planes,
   *      2. PROM_MPLA: Descuento en Mensualidad de Planes, 
   *      3. PROM_MPRO: Descuento en Mensualidad de Productos, 
   *      4. PROM_TOT:  Descuento Total en Mensualidad ,   
-  * PROM_INS:  Descuento y Diferido de Instalaci�n.
+  * PROM_INS:  Descuento y Diferido de Instalación.
   *
-  * @Param Pv_CodEmpresa         IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE, C�digo de Empresa.
+  * @Param Pv_CodEmpresa         IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE, Código de Empresa.
   * @Param Pn_IdPunto            IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
   * @Param Pn_IdServicio         IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
   * @Param Prf_PromoTentativa    OUT SYS_REFCURSOR Obtiene listado de Tipos de Promociones a Procesar.
@@ -1123,7 +1123,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @version 1.0 28-04-2022
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 28-02-2023 - Se agrega sentencia empresa_cod en la consulta Lv_Consulta para los par�metros.
+  * @version 1.1 28-02-2023 - Se agrega sentencia empresa_cod en la consulta Lv_Consulta para los parámetros.
   */  
   PROCEDURE P_OBTIENE_EVALUA_TENTATIVA(Pv_CodigoGrupoPromocion      IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
                                        Pv_CodEmpresa                IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,                                                                   
@@ -1132,21 +1132,21 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                        Prf_PromoTentativa           OUT SYS_REFCURSOR); 
 
 /**
-  * Documentaci�n para PROCEDURE 'P_OBSERVACION_TENTATIVA'.
+  * Documentación para PROCEDURE 'P_OBSERVACION_TENTATIVA'.
   *
-  * Procedimiento que permite obtener la observaci�n de la promocion tentativa en instalacion PROM_INS, y en mensualidad PROM_MENS
+  * Procedimiento que permite obtener la observación de la promocion tentativa en instalacion PROM_INS, y en mensualidad PROM_MENS
   * en base a los mensajes de observacion parametrizados por tipo de promocion y en base a las reglas promocionales y parametros enviados.
   *
   * PARAMETROS:
   * @Param Pv_CodigoGrupoPromocion 
-  * Tipo de Promoci�n a ejecutarse: 
+  * Tipo de Promoción a ejecutarse: 
   * PROM_MENS: Grupo de Promociones Mensual.
   *      Del Grupo Mensual se procesan 4 Tipos de Promociones:
   *      1. PROM_MIX:  Descuento en Mensualidad Mix de Planes,
   *      2. PROM_MPLA: Descuento en Mensualidad de Planes, 
   *      3. PROM_MPRO: Descuento en Mensualidad de Productos, 
   *      4. PROM_TOT:  Descuento Total en Mensualidad ,   
-  * PROM_INS:  Descuento y Diferido de Instalaci�n.
+  * PROM_INS:  Descuento y Diferido de Instalación.
   *
   * @Param Pn_IdPromocion           IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE,
   * @Param Pv_CodigoTipoPromocion   IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
@@ -1171,14 +1171,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                    Pv_DescripcionObserv     OUT VARCHAR2);         
 
  /**
-  * Documentaci�n para PROCEDURE 'P_MENSAJE_POR_CODIGO_ERROR'.
+  * Documentación para PROCEDURE 'P_MENSAJE_POR_CODIGO_ERROR'.
   *
   * Procedimiento que permite obtener los mensajes parametrizados por codigo de error parametro 'PARAM_EVALUA_TENTATIVA',
   * descripcion 'CODIGO_MENSAJE'
   *
   * @Param Pv_CodigoGrupoPromocion 
   *   PROM_MENS: Grupo de Promociones Mensual. 
-  *   PROM_INS:  Descuento y Diferido de Instalaci�n.
+  *   PROM_INS:  Descuento y Diferido de Instalación.
   *
   * @Param Pn_IdPunto                IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
   * @Param Pv_CodMensaje             IN VARCHAR2
@@ -1199,7 +1199,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                        Pv_VisualizarContrato    OUT VARCHAR2); 
 
 /**
-  * Documentaci�n para PROCEDURE 'P_CONSUME_EVALUA_TENTATIVA'.
+  * Documentación para PROCEDURE 'P_CONSUME_EVALUA_TENTATIVA'.
   *
   * Procedimiento que consume proceso P_OBTIENE_EVALUA_TENTATIVA para obtener las promociones tentativas por instalacion y mensualidad de un punto y servicio especifico,   
   *
@@ -1207,16 +1207,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Pn_IdPunto            IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
   * @Param Pn_IdServicio         IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE  
   * @Param Pv_CodigoGrupoPromocion 
-  * Tipo de Promoci�n a ejecutarse: 
+  * Tipo de Promoción a ejecutarse: 
   * PROM_MENS: Grupo de Promociones Mensual.
   *      Del Grupo Mensual se procesan 4 Tipos de Promociones:
   *      1. PROM_MIX:  Descuento en Mensualidad Mix de Planes,
   *      2. PROM_MPLA: Descuento en Mensualidad de Planes, 
   *      3. PROM_MPRO: Descuento en Mensualidad de Productos, 
   *      4. PROM_TOT:  Descuento Total en Mensualidad ,   
-  * PROM_INS:  Descuento y Diferido de Instalaci�n.
+  * PROM_INS:  Descuento y Diferido de Instalación.
   *
-  * @Param Pv_CodEmpresa       IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE, C�digo de Empresa. 
+  * @Param Pv_CodEmpresa       IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE, Código de Empresa. 
   * @Param Pn_Descuento        OUT NUMBER,
   * @Param Pn_CantPeriodo      OUT NUMBER,
   * @Param Pv_Observacion      OUT VARCHAR2
@@ -1233,9 +1233,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                         Pv_Observacion             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para FUNCTION 'F_OTIENE_ESTADO_PROMOCION'.
+  * Documentación para FUNCTION 'F_OTIENE_ESTADO_PROMOCION'.
   *
-  * Funci�n que verifica el estado del �ltimo mapeo promocional vigente del servicio (Activo/Finalizado/Baja).
+  * Función que verifica el estado del último mapeo promocional vigente del servicio (Activo/Finalizado/Baja).
   *
   * Costo Query C_EstadoMapeo 3
   *
@@ -1244,10 +1244,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Fv_GrupoPromocion  IN DB_COMERCIAL.INFO_DETALLE_MAPEO_PROMO.TIPO_PROMOCION%TYPE
   * @Param Fv_CodEmpresa      IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 03-01-2023
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
   */                              
   FUNCTION F_OTIENE_ESTADO_PROMOCION(Fn_IntIdServicio  IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -1256,7 +1256,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_ACTUALIZAR_SOLICITUDES'.
+  * Documentación para PROCEDURE 'P_ACTUALIZAR_SOLICITUDES'.
   *
   * Proceso encargado de actualizar el estado de una solicitud e ingresar el historial de la misma.
   *
@@ -1271,7 +1271,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Pv_Observacion     IN DB_COMERCIAL.INFO_DETALLE_SOL_HIST.OBSERVACION%TYPE
   * @Param Pv_Mensaje         OUT VARCHAR2
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 04-01-2023
   */   
   PROCEDURE P_ACTUALIZAR_SOLICITUDES(Pa_ServiciosPromo  IN DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar,
@@ -1283,7 +1283,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                      Pv_Mensaje         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'F_POMOCIONES_VIGENTES'.
+  * Documentación para PROCEDURE 'F_POMOCIONES_VIGENTES'.
   *
   * Proceso encargado de actualizar el estado de una solicitud e ingresar el historial de la misma.
   *
@@ -1296,11 +1296,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   * @Param Fv_CodEmpresa  IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Fv_EsCodigo    IN VARCHAR2 DEFAULT NULL
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 17-03-2023
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.1 11-04-2023 - Se mejora los querys de consulta de promociones vigentes para que se valide el d�a completo.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 11-04-2023 - Se mejora los querys de consulta de promociones vigentes para que se valide el día completo.
   */ 
   FUNCTION F_POMOCIONES_VIGENTES(FV_TipoProceso IN DB_COMERCIAL.INFO_DETALLE_MAPEO_PROMO.TIPO_PROCESO%TYPE,
                                  Fv_CodEmpresa  IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -1476,7 +1476,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
       IF Fv_CodigoGrupoPromocion = 'PROM_MENS' THEN
         --
-        -- Si es Promoci�n de mensualidad obtengo la fecha de creaci�n del servicio confirmado de Internet.
+        -- Si es Promoción de mensualidad obtengo la fecha de creación del servicio confirmado de Internet.
         OPEN  C_GetFeCreaServInternetActivo(Cn_IdPunto => Fn_PuntoId, Cv_EstadoServ => Fv_EstadoServ);
         FETCH C_GetFeCreaServInternetActivo INTO Ld_FeEvaluaVigencia;
         CLOSE C_GetFeCreaServInternetActivo;
@@ -1505,13 +1505,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
       IF Fv_CodigoGrupoPromocion = 'PROM_MENS' THEN       
         --
-        -- Si es Promoci�n de mensualidad obtengo la fecha de creaci�n del servicio confirmado de Internet.
+        -- Si es Promoción de mensualidad obtengo la fecha de creación del servicio confirmado de Internet.
         OPEN  C_GetFeCreaServInternetActivo(Cn_IdPunto => Fn_PuntoId, Cv_EstadoServ => Fv_EstadoServ);
         FETCH C_GetFeCreaServInternetActivo INTO Ld_FeCreaServicio;
         CLOSE C_GetFeCreaServInternetActivo;        
         --
-        --Si el servicio confirmado es un servicio de internet debo tomar la fecha de creaci�n contrato.
-        --Si el servicio confirmado es un servicio adicional obtengo la minima fecha de creaci�n de sus servicios adicionales.
+        --Si el servicio confirmado es un servicio de internet debo tomar la fecha de creación contrato.
+        --Si el servicio confirmado es un servicio adicional obtengo la minima fecha de creación de sus servicios adicionales.
         IF Ld_FeCreaServicio IS NOT NULL THEN                        
           OPEN  C_GetFeCreacionContrato(Cn_IdPunto => Fn_PuntoId, Cv_EstadoContrato => Lv_Estado);
           FETCH C_GetFeCreacionContrato INTO Ld_FeCreaContrato;
@@ -1568,7 +1568,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       END IF;  
     --
     END IF;
-    --Si no se pudo obtener Fecha para evaluaci�n de vigencias se inserta error y se envia NULL
+    --Si no se pudo obtener Fecha para evaluación de vigencias se inserta error y se envia NULL
     IF Ld_FeEvaluaVigencia IS NULL THEN
        RAISE Le_Exception;         
     END IF; 
@@ -1576,7 +1576,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN Ld_FeEvaluaVigencia;
   EXCEPTION
     WHEN Le_Exception THEN      
-      Lv_MsjResultado := 'Ocurrio un error al obtener la fecha para evaluaci�n de vigencia de los '||
+      Lv_MsjResultado := 'Ocurrio un error al obtener la fecha para evaluación de vigencia de los '||
                          'grupos promocionales ID_PUNTO: ' || Fn_PuntoId || ' ESTADO: ' ||Fv_EstadoServ ||
                          ' CODIGO: ' || Fv_CodigoGrupoPromocion;
 
@@ -1589,7 +1589,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
       RETURN NULL;
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurrio un error al obtener la fecha para evaluaci�n de vigencia de los '||
+      Lv_MsjResultado := 'Ocurrio un error al obtener la fecha para evaluación de vigencia de los '||
                          'grupos promocionales ID_PUNTO: ' || Fn_PuntoId || ' ESTADO: ' ||Fv_EstadoServ ||
                          ' CODIGO: ' || Fv_CodigoGrupoPromocion;
 
@@ -1675,7 +1675,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     --
   EXCEPTION
   WHEN Le_Exception THEN
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso de eliminar caracter�sticas promocionales para el servicio: '
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso de eliminar características promocionales para el servicio: '
                        ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW', 
@@ -1686,7 +1686,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    Pv_MsjResultado:= Lv_MsjResultado;
    --
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso de eliminar caracter�sticas promocionales para el servicio: '
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso de eliminar características promocionales para el servicio: '
                        ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW', 
@@ -1753,7 +1753,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     --
   EXCEPTION
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso que valida si elimina las caracter�sticas promocionales para el servicio: '
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso que valida si elimina las características promocionales para el servicio: '
                        ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.P_VALIDA_ELIMINA_CARACT_BW', 
@@ -1771,7 +1771,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   IS
 
   BEGIN
-    --Actualizaci�n de las caracter�sticas promocionales de un servicio.
+    --Actualización de las características promocionales de un servicio.
     UPDATE DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT
       SET SERVICIO_ID                  = NVL(Pr_InfoServicioProdCaract.SERVICIO_ID,SERVICIO_ID),
           PRODUCTO_CARACTERISITICA_ID  = NVL(Pr_InfoServicioProdCaract.PRODUCTO_CARACTERISITICA_ID,PRODUCTO_CARACTERISITICA_ID),
@@ -1786,7 +1786,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   EXCEPTION
   WHEN OTHERS THEN
-    Pv_MsjResultado := 'M�todo: P_UPDATE_CARACTERISTICA_PROMO, Error: '||SUBSTR(SQLERRM,0,2000);
+    Pv_MsjResultado := 'Método: P_UPDATE_CARACTERISTICA_PROMO, Error: '||SUBSTR(SQLERRM,0,2000);
 
   END P_ACTUALIZA_CARACT_PROMO_BW;
   --
@@ -1816,7 +1816,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   EXCEPTION
     WHEN OTHERS THEN
-      Pv_Mensaje := 'M�todo: P_INSERT_ISERVICIO_PROD_CARACT, Error: '||SUBSTR(SQLERRM,0,2000);
+      Pv_Mensaje := 'Método: P_INSERT_ISERVICIO_PROD_CARACT, Error: '||SUBSTR(SQLERRM,0,2000);
   END P_INSERT_ISERVICIO_PROD_CARACT;
   --
   --
@@ -1865,7 +1865,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     END IF;
 
     IF Pn_IdServicio IS NULL OR Pv_NombreCaract IS NULL THEN
-      Lv_MsjResultado := 'Par�metros incompletos';
+      Lv_MsjResultado := 'Parámetros incompletos';
       RAISE Le_Exception;
     END IF;
 
@@ -1887,7 +1887,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     --
   EXCEPTION
     WHEN Le_Exception THEN
-      Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso de eliminar caracter�sticas promocionales para el servicio: '
+      Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso de eliminar características promocionales para el servicio: '
                          ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_INDV_BW', 
@@ -1898,7 +1898,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
      Pv_MsjResultado:= Lv_MsjResultado;
    --
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso de eliminar caracter�sticas promocionales para el servicio: '
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso de eliminar características promocionales para el servicio: '
                        ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_INDV_BW', 
@@ -1916,7 +1916,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                   Pv_ValorCaract  IN  DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
                                   Pv_MsjResultado OUT VARCHAR2)
   IS                                    
-    --Cursor que obtiene el producto caracter�stica.
+    --Cursor que obtiene el producto característica.
     --Costo Query: 10
     CURSOR C_AdmiProdCaract(Cv_NombreTecnico  VARCHAR2,
                             Cv_CodEmpresa     VARCHAR2,
@@ -1951,7 +1951,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     END IF;
 
     IF Pn_IdServicio IS NULL OR Pv_NombreCaract IS NULL THEN
-      Lv_MsjResultado := 'Par�metros incompletos';
+      Lv_MsjResultado := 'Parámetros incompletos';
       RAISE Le_Exception;
     END IF;
 
@@ -1961,7 +1961,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     CLOSE C_AdmiProdCaract;
 
     IF Lb_TieneDatos THEN
-      Lv_MsjResultado := 'La caracter�stica: '||Pv_NombreCaract||' no se encuentra configurada.';
+      Lv_MsjResultado := 'La característica: '||Pv_NombreCaract||' no se encuentra configurada.';
       RAISE Le_Exception;
     END IF;
 
@@ -1982,7 +1982,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     --
   EXCEPTION
     WHEN Le_Exception THEN
-      Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso de eliminar caracter�sticas promocionales para el servicio: '
+      Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso de eliminar características promocionales para el servicio: '
                          ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'CMKG_PROMOCIONES_UTIL.P_CREA_CARACT_INDV_BW', 
@@ -1993,7 +1993,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
    Pv_MsjResultado:= Lv_MsjResultado;
    --
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso de eliminar caracter�sticas promocionales para el servicio: '
+      Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso de eliminar características promocionales para el servicio: '
                          ||Pn_IdServicio || ', del Grupo Promocional: PROM_BW'; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'CMKG_PROMOCIONES_UTIL.P_CREA_CARACT_INDV_BW', 
@@ -2120,7 +2120,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Tipo de Negocio del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Tipo de Negocio del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' para el Servicio: ' || Fn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_TIPO_NEGOCIO', 
@@ -2219,7 +2219,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de �ltima Milla del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Última Milla del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' para el Servicio: ' || Fn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_ULTIMA_MILLA', 
@@ -2398,7 +2398,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       END LOOP;
       --
       IF Lv_TipoFormaPago IS NULL OR Ln_IdFormaPago IS NULL OR Ln_IdFormaPago = 0 THEN
-        Lv_MsjResultado  := 'Ocurri� un error al recuperar datos para la evaluaci�n de forma de pago -> Lv_TipoFormaPago: '||
+        Lv_MsjResultado  := 'Ocurrió un error al recuperar datos para la evaluación de forma de pago -> Lv_TipoFormaPago: '||
                             Lv_TipoFormaPago || ', Ln_IdFormaPago: '||Ln_IdFormaPago;
         RAISE Le_Exception;  
       END IF;
@@ -2565,7 +2565,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     RETURN Lb_Aplica;
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Forma de Pago del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Forma de Pago del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_FORMA_PAGO', 
@@ -2669,7 +2669,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Permanencia M�nima del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Permanencia Mínima del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' - ' || Fv_Tipo_Promocion || ' para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_PERMANENCIA', 
@@ -2792,7 +2792,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Mora del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Mora del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' - ' || Fv_Tipo_Promocion || ' para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_MORA', 
@@ -2885,7 +2885,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Antig�edad del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Antigüedad del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_ANTIGUEDAD', 
@@ -3115,7 +3115,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
     --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Sectorizaci�n por OLT del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Sectorización por OLT del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' para el Elemento: ' || Fn_IdElemento; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_BW_HEC.F_VALIDA_SECTORIZACION_OLT', 
@@ -3269,7 +3269,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       RAISE Lex_Exception;
     END IF;
 
-    --Obtenemos el cursor de la sectorizaci�n de acuerdo al tipo de promoci�n a la que se esta aplicando.
+    --Obtenemos el cursor de la sectorización de acuerdo al tipo de promoción a la que se esta aplicando.
     Lr_Sectorizaciones := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_GET_CURSOR_SECTORIZACION(Pr_ParametrosValidarSec);
 
     --Validamos que el cursor no sea nulo o no este abierto.
@@ -3382,7 +3382,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     END LOOP;
 
-    --En caso que el cursor no tenga datos, se retornar� true por motivos que la promoci�n se creo sin sectorizaci�n.
+    --En caso que el cursor no tenga datos, se retornará true por motivos que la promoción se creo sin sectorización.
     IF Lr_Sectorizaciones%ROWCOUNT = 0 THEN
       Lb_Aplica := TRUE;
     END IF;
@@ -3406,7 +3406,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     WHEN OTHERS THEN
 
-      Lv_Error := 'Ocurri� un error al obtener el cursor de solicitud: '
+      Lv_Error := 'Ocurrió un error al obtener el cursor de solicitud: '
               ||'ID_GRUPO_PROMOCION: ' || Pr_ParametrosValidarSec.ID_GRUPO_PROMOCION ||', '
               ||'ID_TIPO_PROMOCION: '  || Pr_ParametrosValidarSec.ID_TIPO_PROMOCION  ||', '
               ||'ID_SERVICIO: '        || Pr_ParametrosValidarSec.ID_SERVICIO        ||' O '
@@ -3519,7 +3519,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     WHEN OTHERS THEN
 
-      Lv_Error := 'Ocurri� un error al obtener el cursor de solicitud: '
+      Lv_Error := 'Ocurrió un error al obtener el cursor de solicitud: '
                    ||'ID_GRUPO_PROMOCION: ' || Pr_ParametrosValidarSec.ID_GRUPO_PROMOCION ||', '
                    ||'ID_TIPO_PROMOCION: '  || Pr_ParametrosValidarSec.ID_TIPO_PROMOCION  ||', '
                    ||'ID_SERVICIO: '        || Pr_ParametrosValidarSec.ID_SERVICIO        ||' O '
@@ -3632,7 +3632,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     WHEN OTHERS THEN
 
-      Lv_Error := 'Ocurri� un error al obtener el cursor de solicitud: '
+      Lv_Error := 'Ocurrió un error al obtener el cursor de solicitud: '
                    ||'ID_GRUPO_PROMOCION: ' || Pr_ParametrosValidarSec.ID_GRUPO_PROMOCION ||', '
                    ||'ID_TIPO_PROMOCION: '  || Pr_ParametrosValidarSec.ID_TIPO_PROMOCION  ||', '
                    ||'ID_SERVICIO: '        || Pr_ParametrosValidarSec.ID_SERVICIO        ||' O '
@@ -3742,7 +3742,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Prf_GruposPromociones%ISOPEN THEN
       CLOSE Prf_GruposPromociones;
     END IF;
-    Lv_MsjResultado := 'Ocurri� un error al obtener los Grupos de Promociones  del par�metro :' || Lv_NombreParametro || 
+    Lv_MsjResultado := 'Ocurrió un error al obtener los Grupos de Promociones  del parámetro :' || Lv_NombreParametro || 
                         ' para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || ' Empresa: '|| Pv_CodEmpresa; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_OBTIENE_PROMO_TENTATIVAS', 
@@ -3755,7 +3755,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Prf_GruposPromociones%ISOPEN THEN
       CLOSE Prf_GruposPromociones;
     END IF;
-     Lv_MsjResultado := 'Ocurri� un error al obtener los Grupos de Promociones  del par�metro :' || Lv_NombreParametro || 
+     Lv_MsjResultado := 'Ocurrió un error al obtener los Grupos de Promociones  del parámetro :' || Lv_NombreParametro || 
                         ' para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || ' Empresa: '|| Pv_CodEmpresa; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_OBTIENE_PROMO_TENTATIVAS', 
@@ -3868,7 +3868,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
         AND ISC.VALOR                       = '''||Pv_Codigo||''' )';
     END IF;
 
-    --Se valida existencia de servicios en la tabla de tentativa, y se eval�a servicios con c�digo promocional.
+    --Se valida existencia de servicios en la tabla de tentativa, y se evalúa servicios con código promocional.
     IF UPPER(Pv_TipoProceso) = 'PROM_EVAL_TENTATIVA' AND Pv_TipoProceso IS NOT NULL THEN
       Lv_CadenaWhere := Lv_CadenaWhere 
         ||' AND DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_TENTATIVA(ISE.ID_SERVICIO,'''||Pv_CodEmpresa||''','''||Pv_CodigoGrupoPromocion||''') = ''N'' ';
@@ -4043,7 +4043,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al obtener el estado del contrato para el ID_PUNTO: ' || Fn_IdPunto; 
+    Lv_MsjResultado := 'Ocurrió un error al obtener el estado del contrato para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_ESTADO_CONTRATO', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -4210,9 +4210,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
         Lr_InfoServicioHistorial.IP_CREACION            := Lv_IpCreacion;
         Lr_InfoServicioHistorial.ESTADO                 := Lc_GetServicioInternet.ESTADO;
         Lr_InfoServicioHistorial.MOTIVO_ID              := NULL;
-        Lr_InfoServicioHistorial.OBSERVACION            := 'No se encontr� informaci�n de Adendum para obtener la fecha'
-                                                           || ' para evaluar las promociones por Instalaci�n, caso contrario'
-                                                           || ' se obtiene la fecha de creaci�n del servicio.';
+        Lr_InfoServicioHistorial.OBSERVACION            := 'No se encontró información de Adendum para obtener la fecha'
+                                                           || ' para evaluar las promociones por Instalación, caso contrario'
+                                                           || ' se obtiene la fecha de creación del servicio.';
         Lr_InfoServicioHistorial.ACCION                 := NULL;
         --
         DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_SERVICIO_HISTO(Lr_InfoServicioHistorial, Lv_MsjResultado);
@@ -4258,7 +4258,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al obtener el estado y frecha del servicio para el ID_PUNTO: ' || Fn_IdPunto; 
+    Lv_MsjResultado := 'Ocurrió un error al obtener el estado y frecha del servicio para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_ESTADO_SERVICOS', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -4378,7 +4378,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   --
     IF TRIM(Pv_CodigoGrupoPromocion) NOT IN ('PROM_INS','PROM_MENS') THEN
     --
-      Lv_MsjExceptionProceso := 'La promoci�n solo aplica para los tipos: (PROM_INS,PROM_MENS), punto_Id - '
+      Lv_MsjExceptionProceso := 'La promoción solo aplica para los tipos: (PROM_INS,PROM_MENS), punto_Id - '
                                  || Pn_IdPunto || ' servicio_Id - ' || Pn_IdServicio;
       RAISE Le_ExceptionProceso;
     --
@@ -4412,7 +4412,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lv_CodEmpresa IS NULL THEN
     --
-      Lv_MsjExceptionProceso := 'No se encuentra definido c�digo de Empresa para el Proceso de Promociones ' 
+      Lv_MsjExceptionProceso := 'No se encuentra definido código de Empresa para el Proceso de Promociones ' 
                                  || Pv_CodigoGrupoPromocion || ' COD_EMPRESA: '||Pv_CodEmpresa ||', punto_Id - '
                                  || Pn_IdPunto || ' servicio_Id - ' || Pn_IdServicio;
       RAISE Le_ExceptionProceso;
@@ -4432,7 +4432,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                          Pa_TiposPromoPrioridad  => La_TiposPromocionesProcesar);
 
     IF La_TiposPromocionesProcesar.COUNT = 0 THEN
-      Lv_MsjExceptionProceso := 'No se pudo obtener los Grupos de Promocionales para la evaluaci�n de reglas. ';
+      Lv_MsjExceptionProceso := 'No se pudo obtener los Grupos de Promocionales para la evaluación de reglas. ';
       RAISE Le_ExceptionProceso;
     END IF;
     --  
@@ -4501,7 +4501,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
           --
         EXCEPTION
         WHEN Le_ExceptionTipoPromo THEN
-          Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso de evaluaci�n de Promociones para el Grupo de Promocional: '
+          Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso de evaluación de Promociones para el Grupo de Promocional: '
                              || Pv_CodigoGrupoPromocion|| ' - ' ||Lv_MsjExceptionTipoPromo ||', punto_Id - '
                              || Pn_IdPunto || ' servicio_Id - ' || Pn_IdServicio; 
 
@@ -4558,7 +4558,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       Lr_InfoServicioHistorial.IP_CREACION           := Lv_IpCreacion;
       Lr_InfoServicioHistorial.ESTADO                := Lc_Datos.ESTADO;
       Lr_InfoServicioHistorial.MOTIVO_ID             := NULL;
-      Lr_InfoServicioHistorial.OBSERVACION           := 'El servicio cumpli� con las reglas de los grupos promocionales, para aplicar la promoci�n '
+      Lr_InfoServicioHistorial.OBSERVACION           := 'El servicio cumplió con las reglas de los grupos promocionales, para aplicar la promoción '
                                                          || Lr_TipoPromoRegla.NOMBRE_GRUPO;
       Lr_InfoServicioHistorial.ACCION                := NULL;
       --
@@ -4594,7 +4594,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       IF Pv_CodigoGrupoPromocion = 'PROM_INS' THEN
         Lv_Observacion := 'Desct. Inst. Porcentaje: ' || Lv_Descuento ||'%, #Numero de Periodos: '||Lc_Datos.PERIODOS;
       ELSE
-        Lv_Observacion := 'Desct. Fact. Mensual: Promoci�n Indefinida: ' || NVL(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA,'NO')
+        Lv_Observacion := 'Desct. Fact. Mensual: Promoción Indefinida: ' || NVL(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA,'NO')
                           || ', Tipo Periodo: ' || UPPER(NVL(Lr_TipoPromoRegla.PROM_TIPO_PERIODO,'Unico')) || ',' || Lv_ObservacionDesc;
       END IF;
 
@@ -4606,9 +4606,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lv_Observacion IS NULL THEN
       IF Pv_CodigoGrupoPromocion = 'PROM_MENS' THEN
-        Lv_Observacion := 'No aplica Promoci�n por descuento Mensual.';
+        Lv_Observacion := 'No aplica Promoción por descuento Mensual.';
       ELSE
-        Lv_Observacion := 'No aplica Promoci�n por descuento de Instalaci�n.';
+        Lv_Observacion := 'No aplica Promoción por descuento de Instalación.';
       END IF;
       Pv_Observacion := Lv_Observacion;
     END IF;
@@ -4617,7 +4617,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   WHEN Le_ExceptionProceso THEN
     --
     ROLLBACK;
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso de evaluaci�n de Promociones' || ' - ' ||Lv_MsjExceptionProceso
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso de evaluación de Promociones' || ' - ' ||Lv_MsjExceptionProceso
                         ||', punto_Id - '|| Pn_IdPunto || ' servicio_Id - ' || Pn_IdServicio; 
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -4629,16 +4629,16 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lv_Observacion IS NULL THEN
       IF Pv_CodigoGrupoPromocion = 'PROM_MENS' THEN
-        Lv_Observacion := 'No aplica Promoci�n por descuento Mensual.';
+        Lv_Observacion := 'No aplica Promoción por descuento Mensual.';
       ELSE
-        Lv_Observacion := 'No aplica Promoci�n por descuento de Instalaci�n.';
+        Lv_Observacion := 'No aplica Promoción por descuento de Instalación.';
       END IF;
       Pv_Observacion := Lv_Observacion;
     END IF;
   WHEN OTHERS THEN
     --
     ROLLBACK;
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso de evaluaci�n de Promociones para el Grupo de Promocional: '||
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso de evaluación de Promociones para el Grupo de Promocional: '||
                         Pv_CodigoGrupoPromocion||', punto_Id - '|| Pn_IdPunto || ' servicio_Id - ' || Pn_IdServicio
                         || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM;
 
@@ -4651,9 +4651,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lv_Observacion IS NULL THEN
       IF Pv_CodigoGrupoPromocion = 'PROM_MENS' THEN
-        Lv_Observacion := 'No aplica Promoci�n por descuento Mensual.';
+        Lv_Observacion := 'No aplica Promoción por descuento Mensual.';
       ELSE
-        Lv_Observacion := 'No aplica Promoci�n por descuento de Instalaci�n.';
+        Lv_Observacion := 'No aplica Promoción por descuento de Instalación.';
       END IF;
       Pv_Observacion := Lv_Observacion;
     END IF;
@@ -4818,7 +4818,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la Regla de Forma de Pago del GRUPO_PROMOCION: '
+    Lv_MsjResultado := 'Ocurrió un error al validar la Regla de Forma de Pago del GRUPO_PROMOCION: '
                         || Fn_IntIdPromocion || ' para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_FORMA_PAGO_CFP', 
@@ -5290,13 +5290,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Lv_CodigoGrupoPromocion IS NULL OR Lv_TipoPromocion IS NULL OR Lv_Proceso IS NULL
      OR Lv_CodEmpresa IS NULL OR Lv_Codigo IS NULL THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'Ocurri� un error al recuperar datos para la evaluaci�n del c�digo ingresado.';
+      Pv_Mensaje  := 'Ocurrió un error al recuperar datos para la evaluación del código ingresado.';
       RAISE Le_Exception;  
     END IF;
 
     IF Lv_TipoPromocion = 'PROM_MIX' AND Lv_Proceso = 'NUEVO' AND (Lv_EsContrato IS NULL OR Lv_EsContrato != 'S') THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'Ocurri� un error al recuperar datos para la evaluaci�n del c�digo ingresado.';
+      Pv_Mensaje  := 'Ocurrió un error al recuperar datos para la evaluación del código ingresado.';
       RAISE Le_Exception;
     END IF;
 
@@ -5313,7 +5313,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF NOT Lb_AplicaRol THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'Los c�digos promocionales solo aplican para Personas con rol PreCliente � Cliente.';
+      Pv_Mensaje  := 'Los códigos promocionales solo aplican para Personas con rol PreCliente ó Cliente.';
       RAISE Le_Exception;
     END IF;
 
@@ -5326,7 +5326,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       CLOSE C_ExistePlan;
       IF Ln_ExistePlan > 0 THEN
         Lv_Aplica   := 'N';
-        Pv_Mensaje  := 'Debe escoger un plan diferente para poder validar el c�digo ingresado..';
+        Pv_Mensaje  := 'Debe escoger un plan diferente para poder validar el código ingresado..';
         RAISE Le_Exception;
       END IF;
     END IF;
@@ -5363,7 +5363,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lc_CodigoPromocion.EXISTE IS NULL THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'El c�digo no es v�lido � no existe para el tipo de promoci�n ingresada.';
+      Pv_Mensaje  := 'El código no es válido ó no existe para el tipo de promoción ingresada.';
       RAISE Le_Exception;
     END IF;
 
@@ -5377,7 +5377,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Ln_VigenciaPromo = 0 THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'El c�digo ingresado pertenece a una promoci�n que no est� vigente.';
+      Pv_Mensaje  := 'El código ingresado pertenece a una promoción que no está vigente.';
       RAISE Le_Exception;
     END IF;
 
@@ -5391,7 +5391,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Lc_PromoActiva.ESTADO != 'Activo' THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'El c�digo ingresado pertenece a una promoci�n en estado '||Lc_PromoActiva.ESTADO||'.';
+      Pv_Mensaje  := 'El código ingresado pertenece a una promoción en estado '||Lc_PromoActiva.ESTADO||'.';
       RAISE Le_Exception;
     END IF;
 
@@ -5412,7 +5412,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Lc_TipoServicio.EXISTE IS NULL AND (UPPER(TRIM(Lv_CodigoGrupoPromocion)) = 'PROM_MENS' OR UPPER(TRIM(Lv_CodigoGrupoPromocion)) = 'PROM_BW') THEN
 
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'El c�digo no pertenece al tipo de procesamiento ';
+      Pv_Mensaje  := 'El código no pertenece al tipo de procesamiento ';
 
       IF UPPER(TRIM(Lv_Proceso)) = 'UPGRADE' OR UPPER(TRIM(Lv_Proceso)) = 'DOWNGRADE' THEN
         Pv_Mensaje  := Pv_Mensaje || 'cambio de plan.';
@@ -5421,7 +5421,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       ELSIF UPPER(TRIM(Lv_Proceso)) = 'NUEVO' THEN
         Pv_Mensaje  := Pv_Mensaje || 'servicios nuevos.';
       ELSE
-        Pv_Mensaje  := Pv_Mensaje || 'ejm: Servicio Nuevo, Existente � Cambio de Plan.';
+        Pv_Mensaje  := Pv_Mensaje || 'ejm: Servicio Nuevo, Existente ó Cambio de Plan.';
       END IF;
 
       RAISE Le_Exception;
@@ -5465,7 +5465,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
           Lr_ParametrosValidarSec.ID_GRUPO_PROMOCION := Lc_PromoActiva.ID_GRUPO_PROMOCION;
           Lr_ParametrosValidarSec.TIPO_PROMOCION     := UPPER(TRIM(Lv_CodigoGrupoPromocion)); 
           Lr_ParametrosValidarSec.EMPRESA_COD        := Lv_CodEmpresa;
-          --Obtenemos el cursor de la sectorizaci�n de acuerdo al tipo de promoci�n a la que se esta aplicando.
+          --Obtenemos el cursor de la sectorización de acuerdo al tipo de promoción a la que se esta aplicando.
           Lr_Sectorizaciones                         := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_GET_CURSOR_SECTORIZACION(Lr_ParametrosValidarSec);
           LOOP
           FETCH Lr_Sectorizaciones BULK COLLECT INTO Lt_SectorizacionInsBwMens LIMIT 100;
@@ -5483,22 +5483,22 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
           END LOOP;
           IF Ln_ExisteOltEdificio = 0 THEN
             Lv_Aplica   := 'N';
-            Pv_Mensaje  := 'El servicio no cumple con la regla de "Sectorizaci�nn". ';
+            Pv_Mensaje  := 'El servicio no cumple con la regla de "Sectorizaciónn". ';
             RAISE Le_Exception;
           ELSE
-            Lv_MensajeOltEdificio := 'NOTA: El c�digo promocional ingresado es por Olt/Edificio por lo tanto '|| 
-                                     'su aplicaci�n se confirmar� despu�s de que el servicio este Factible. ';
+            Lv_MensajeOltEdificio := 'NOTA: El código promocional ingresado es por Olt/Edificio por lo tanto '|| 
+                                     'su aplicación se confirmará después de que el servicio este Factible. ';
           END IF;
         --
         ELSE
           Lv_Aplica   := 'N';
-          Pv_Mensaje  := 'El servicio no cumple con la regla de "Sectorizaci�nnn". ';
+          Pv_Mensaje  := 'El servicio no cumple con la regla de "Sectorizaciónnn". ';
           RAISE Le_Exception;        
         END IF;
       --  
       ELSE
         Lv_Aplica   := 'N';
-        Pv_Mensaje  := 'El servicio no cumple con la regla de "Sectorizaci�n". ';
+        Pv_Mensaje  := 'El servicio no cumple con la regla de "Sectorización". ';
         RAISE Le_Exception;
       END IF;
     END IF;
@@ -5521,7 +5521,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
       IF NOT Lb_CumpleUltMilla THEN
         Lv_Aplica   := 'N';
-        Pv_Mensaje  := 'El servicio no cumple con la regla por "�ltima Milla". ';
+        Pv_Mensaje  := 'El servicio no cumple con la regla por "Última Milla". ';
         RAISE Le_Exception;
       END IF;
 
@@ -5548,7 +5548,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF NOT Lb_CumplePermanencia THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'El servicio no cumple con la regla "Permanecia M�nima". ';
+      Pv_Mensaje  := 'El servicio no cumple con la regla "Permanecia Mínima". ';
       RAISE Le_Exception;
     END IF; 
 
@@ -5575,7 +5575,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF NOT Lb_CumpleAntiguedad THEN
       Lv_Aplica   := 'N';
-      Pv_Mensaje  := 'El servicio no cumple con la regla por "Antig�edad". ';
+      Pv_Mensaje  := 'El servicio no cumple con la regla por "Antigüedad". ';
       RAISE Le_Exception;
     END IF;
 
@@ -5590,7 +5590,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       CLOSE C_GetNombrePlan;
 
       IF Lc_GetNombrePlan.NOMBRE_PLAN IS NOT NULL THEN
-      --Si posee plan con restricci�n debo generar la Solicitud de Facturaci�n con el valor base por FO y con el Descuento obtenido
+      --Si posee plan con restricción debo generar la Solicitud de Facturación con el valor base por FO y con el Descuento obtenido
       --del parametro RESTRICCION_PLANES_X_INSTALACION
         DB_COMERCIAL.COMEK_TRANSACTION.P_GET_RESTRIC_PLAN_INST(Pv_NombrePlan           => Lc_GetNombrePlan.NOMBRE_PLAN,
                                                                Pv_EmpresaCod           => Lv_CodEmpresa,
@@ -5606,14 +5606,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     END IF;
 
     IF UPPER(TRIM(Lv_CodigoGrupoPromocion)) = 'PROM_MENS' OR UPPER(TRIM(Lv_CodigoGrupoPromocion)) = 'PROM_BW' THEN
-    --Obtengo los planes y productos por Tipo de Promoci�n, en este caso: PROM_MIX, PROM_MPLA, PROM_MPRO, PROM_BW.
+    --Obtengo los planes y productos por Tipo de Promoción, en este caso: PROM_MIX, PROM_MPLA, PROM_MPRO, PROM_BW.
       La_TipoPromoPlanProdProcesar := DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_TIPO_PROMO_PLAN_PROD(Fn_IdTipoPromocion => Lc_CodigoPromocion.ID_TIPO_PROMOCION); 
 
       IF (UPPER(TRIM(Lv_TipoPromocion)) IN ('PROM_MIX','PROM_MPLA','PROM_MPRO','PROM_BW')
           AND La_TipoPromoPlanProdProcesar.COUNT = 0) THEN  
       --
         Lv_Aplica  := 'N';
-        Pv_Mensaje := 'No se encontraron definidos Planes y/o Productos para el c�digo ingresado.';        
+        Pv_Mensaje := 'No se encontraron definidos Planes y/o Productos para el código ingresado.';        
         RAISE Le_Exception; 
       --
       END IF;
@@ -5631,7 +5631,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
         IF La_ServiciosProcesar.COUNT = 0 THEN
           Lv_Aplica  := 'N';
-          Pv_Mensaje := 'No cuenta con los servicios "Plan/Producto" necesarios para aplicar un tipo de promoci�n mix.';
+          Pv_Mensaje := 'No cuenta con los servicios "Plan/Producto" necesarios para aplicar un tipo de promoción mix.';
           RAISE Le_Exception; 
         END IF;
 
@@ -5654,7 +5654,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                  Pa_ServiciosCumplePromo      => La_ServiciosCumplePromo);                     
         IF NOT Lb_CumplePlanProd AND La_ServiciosCumplePromo.COUNT = 0 THEN                      
           Lv_Aplica   := 'N';
-          Pv_Mensaje  := 'Los servicios no cumplen con la regla "Plan/Producto" para aplicar un tipo de promoci�n mix.';
+          Pv_Mensaje  := 'Los servicios no cumplen con la regla "Plan/Producto" para aplicar un tipo de promoción mix.';
           RAISE Le_Exception;
         END IF;  
 
@@ -5717,7 +5717,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Lv_CodigoGrupoPromocion = 'PROM_INS' THEN
       Lv_Observacion := 'Desct. Inst. Porcentaje: ' || Lv_Descuento ||'%, #Numero de Periodos: '||Lc_Datos.PERIODOS;
     ELSE
-      Lv_Observacion := 'Desct. Fact. Mensual: Promoci�n Indefinida: ' || NVL(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA,'NO')
+      Lv_Observacion := 'Desct. Fact. Mensual: Promoción Indefinida: ' || NVL(Lr_TipoPromoRegla.PROM_PROMOCION_INDEFINIDA,'NO')
                         || ', Tipo Periodo: ' || UPPER(NVL(Lr_TipoPromoRegla.PROM_TIPO_PERIODO,'Unico')) || ',' || Lv_ObservacionDesc;
     END IF;
 
@@ -5728,7 +5728,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     END IF;
 
     Lv_Aplica       := 'S';
-    Pv_Mensaje      := Lv_Aplica||',El servicio cumple con los requisitos para aplicar el c�digo de la promoci�n '||
+    Pv_Mensaje      := Lv_Aplica||',El servicio cumple con los requisitos para aplicar el código de la promoción '||
                        Lc_PromoActiva.NOMBRE_GRUPO ||' ingresada.,'||Lc_PromoActiva.NOMBRE_GRUPO||','
                        ||Lc_CodigoPromocion.ID_TIPO_PROMOCION||','||Lv_MensajeOltEdificio;
     Pv_Detalle      := Lv_Promocion;
@@ -5743,7 +5743,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   WHEN OTHERS THEN
   --
     Lv_Aplica  := 'N';
-    Pv_Mensaje := Lv_Aplica||',Ocurri� un error al validar el c�digo ingresado.';
+    Pv_Mensaje := Lv_Aplica||',Ocurrió un error al validar el código ingresado.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_VALIDACIONES_PREVIAS_CODIGO', 
                                          Pv_Mensaje || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -5766,7 +5766,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   BEGIN
     --Verifico que los Planes y Productos definidos por Tipo Promocional se encuentren como servicios en el Punto para poder 
-    --otorgar la promoci�n.   
+    --otorgar la promoción.   
     IF (Fv_CodigoTipoPromocion != 'PROM_MIX' AND Fa_TipoPromoPlanProdProcesar.COUNT > 0) THEN   
     --
       Ln_Indice1 := Fa_TipoPromoPlanProdProcesar.FIRST;   
@@ -5793,7 +5793,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   EXCEPTION
   WHEN OTHERS THEN    
-    Lv_MsjResultado := 'Ocurrio un error al verificar que los Planes y Productos de la promoci�n';
+    Lv_MsjResultado := 'Ocurrio un error al verificar que los Planes y Productos de la promoción';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_PLAN_PROD', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM , 
@@ -6009,7 +6009,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   EXCEPTION
   WHEN OTHERS THEN    
-    Lv_MsjResultado := 'Ocurri� un error al obtener el nombre de la promoci�n por el c�digo promocional.';
+    Lv_MsjResultado := 'Ocurrió un error al obtener el nombre de la promoción por el código promocional.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_OBTIENE_PROMOCION_COD', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM , 
@@ -6235,7 +6235,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la el rol de la persona para el Punto: ' || Fn_IdPunto; 
+    Lv_MsjResultado := 'Ocurrió un error al validar la el rol de la persona para el Punto: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.F_VALIDA_ROL', 
                                          Lv_MsjResultado ||  ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -6351,7 +6351,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
             Lr_InfoDetalleSolHist.ESTADO                 := 'Eliminada';
             Lr_InfoDetalleSolHist.FE_INI_PLAN            := NULL;
             Lr_InfoDetalleSolHist.FE_FIN_PLAN            := NULL;
-            Lr_InfoDetalleSolHist.OBSERVACION            := 'Se procede a cambiar el estado por regualarizaci�n de '||
+            Lr_InfoDetalleSolHist.OBSERVACION            := 'Se procede a cambiar el estado por regualarización de '||
                                                              'solicitudes de promociones encoladas.';
             Lr_InfoDetalleSolHist.USR_CREACION           := 'telcos_mapeo_promo';
             Lr_InfoDetalleSolHist.FE_CREACION            := SYSDATE;
@@ -6375,7 +6375,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                  NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
           WHEN OTHERS THEN
           --
-            Lv_msj := 'Ocurri� un error al regularizar la solicitud: '|| La_SolicitudesProcesar(Ln_Indx).ID_DETALLE_SOLICITUD;
+            Lv_msj := 'Ocurrió un error al regularizar la solicitud: '|| La_SolicitudesProcesar(Ln_Indx).ID_DETALLE_SOLICITUD;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                  'CMKG_PROMOCIONES_UTIL.P_REGULARIZA_SOLICITUDES', 
                                                  Lv_msj || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -6396,7 +6396,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   EXCEPTION  
   WHEN OTHERS THEN
   --
-    Lv_msj := 'Ocurri� un error al ejecutar el proceso de regularizaci�n de solicitudes.';
+    Lv_msj := 'Ocurrió un error al ejecutar el proceso de regularización de solicitudes.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_REGULARIZA_SOLICITUDES', 
                                          Lv_msj || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -6414,7 +6414,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   BEGIN
     --
     IF (NVL(Pr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD, 0) = 0) THEN
-      Pv_MsnError := 'Error al actualizar Solicitud. Par�metro Pr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD vac�o.';
+      Pv_MsnError := 'Error al actualizar Solicitud. Parámetro Pr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD vacío.';
       RAISE Le_Exception;
     END IF;
 
@@ -6431,7 +6431,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                            SYSDATE,
                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
     WHEN OTHERS THEN         
-      Pv_MsnError := 'Error al actualizar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+      Pv_MsnError := 'Error al actualizar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            'CMKG_PROMOCIONES_UTIL.P_UPDATE_INFO_DETALLE_SOLI',
@@ -6558,7 +6558,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       RETURN Lv_Resultado;
   EXCEPTION
     WHEN OTHERS THEN
-        Lv_MsjResultado := 'Ocurri� un error al comparar los planes de las promociones de ancho de banda.';
+        Lv_MsjResultado := 'Ocurrió un error al comparar los planes de las promociones de ancho de banda.';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                             'CMKG_PROMOCIONES_UTIL.F_COMPARAR_PLAN_PROMO_BW',
                                             SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -6614,7 +6614,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
       RETURN Lv_Resultado;
   EXCEPTION
     WHEN OTHERS THEN
-        Lv_MsjResultado := 'Ocurri� un error al obtener el line profile del plan.';
+        Lv_MsjResultado := 'Ocurrió un error al obtener el line profile del plan.';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                             'CMKG_PROMOCIONES_UTIL.F_GET_LINE_PROFILE_PROMO_BW',
                                             SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -6743,7 +6743,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
         Lv_Aplica := 'S';
     END IF;
 
-    --Si no encontr� registro en la tabla INFO_EVALUA_TENTATIVA, se busca en INFO_SERVICIO_HISTORIAL. 
+    --Si no encontró registro en la tabla INFO_EVALUA_TENTATIVA, se busca en INFO_SERVICIO_HISTORIAL. 
     IF Lv_Aplica = 'N' THEN 
         Ln_Valor := 0;
 
@@ -6911,7 +6911,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
   BEGIN  
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
-    'Empieza el proceso de evaluaci�n de promociones tentativa para el idPunto: '||Pn_IdPunto,
+    'Empieza el proceso de evaluación de promociones tentativa para el idPunto: '||Pn_IdPunto,
     'telcos_log_tentativa',SYSDATE, Lv_IpCreacion);
     --
     Lv_EsCodigo := 'S';
@@ -6936,7 +6936,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     --
     La_ServiciosProcesar.DELETE();
 
-    --Se valida si existe servicios a procesar para llamar al proceso por c�digo 'N'.
+    --Se valida si existe servicios a procesar para llamar al proceso por código 'N'.
     Lv_EsCodigo := 'N';
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_TENTATIVA', 
@@ -6984,7 +6984,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   EXCEPTION 
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso de evaluaci�n de Promociones para el Grupo de Promocional: '||
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso de evaluación de Promociones para el Grupo de Promocional: '||
                         Pv_CodigoGrupoPromocion||', punto_Id - '|| Pn_IdPunto || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM;
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -7305,7 +7305,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     IF Pv_CodigoGrupoPromocion = 'PROM_INS' THEN 
         Lv_UsrCreacion       := 'telcos_prom_inst';
-        Lv_DescTipoPromocion := 'Instalaci�n';
+        Lv_DescTipoPromocion := 'Instalación';
 
         IF UPPER(TRIM(Pv_EsCodigo)) = 'S' THEN
             Lv_Caracteristica := 'PROM_COD_INST';
@@ -7451,7 +7451,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 END IF;
             END IF;
 
-            --La restricci�n COMEK_TRANSACTION.P_GET_RESTRIC_PLAN_INST debe ser unicamente invocada en el proceso de tentativa solo por instalaci�n.
+            --La restricción COMEK_TRANSACTION.P_GET_RESTRIC_PLAN_INST debe ser unicamente invocada en el proceso de tentativa solo por instalación.
             IF Pv_CodigoGrupoPromocion = 'PROM_INS' THEN 
                 Ln_PorcentajeInst  := NULL;
                 Lc_Parametros      := NULL;
@@ -7467,7 +7467,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                 CLOSE C_GetNombrePlan;
 
                 IF Lc_GetNombrePlan.NOMBRE_PLAN IS NOT NULL THEN 
-                    --Si posee plan con restricci�n debo generar la Solicitud de Facturaci�n con el valor base por FO y con el Descuento obtenido
+                    --Si posee plan con restricción debo generar la Solicitud de Facturación con el valor base por FO y con el Descuento obtenido
                     --del parametro RESTRICCION_PLANES_X_INSTALACION
                     --
                     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
@@ -7534,7 +7534,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     END IF;
                 END IF; --FIN Lc_GetPersonaEmpresaRol.PERSONA_EMPRESA_ROL_ID IS NOT NULL
 
-                --Verifica Origen del Punto, si es migraci�n de Tecnolog�a no aplica al proceso de generar Fact de Instalaci�n
+                --Verifica Origen del Punto, si es migración de Tecnología no aplica al proceso de generar Fact de Instalación
                 Lv_AplicaProceso := DB_COMERCIAL.COMEK_CONSULTAS.F_APLICA_FACT_INST_ORIGEN_PTO (Pv_EmpresaCod => Pv_CodEmpresa,
                                                                                                 Pn_PuntoId    => Pn_IdPunto);
                 IF Lv_AplicaProceso = 'N' THEN
@@ -7557,7 +7557,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                     RAISE Le_ExceptionServicios;
                 END IF;
 
-                --Verifica Si existe Factura de Instalaci�n POR_CONTRATO_DIGITAL o POR_CONTRATO_FISICO, en estado Pendiente, Activo
+                --Verifica Si existe Factura de Instalación POR_CONTRATO_DIGITAL o POR_CONTRATO_FISICO, en estado Pendiente, Activo
                 --o Cerrado y que no haya sido aplicada una NC por el valor total de la Factura.
                 Lv_AplicaProceso2 := DB_FINANCIERO.FNCK_CONSULTS.F_APLICA_CREAR_FACT_INST (Pn_PuntoId => Pn_IdPunto);
 
@@ -7763,8 +7763,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
             IF Lb_OtorgoPromoCliente THEN 
 
-                -- Si el c�digo grupo promocional es de instalaci�n (PROM_INS), se almacena el servicio que se est� procesando en la 
-                -- variable 'La_ServiciosCumplePromo' para realizar iteraci�n y su registro en la tabla tentativa y de historial
+                -- Si el código grupo promocional es de instalación (PROM_INS), se almacena el servicio que se está procesando en la 
+                -- variable 'La_ServiciosCumplePromo' para realizar iteración y su registro en la tabla tentativa y de historial
                 IF Pv_CodigoGrupoPromocion = 'PROM_INS' THEN
                     La_ServiciosCumplePromo(Ln_IndexIns).ID_SERVICIO      := Ln_IdServicio;
                     La_ServiciosCumplePromo(Ln_IndexIns).ID_PUNTO         := Pn_IdPunto;
@@ -7856,7 +7856,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                         RAISE Le_Exception;
                     END IF;
 
-                    --Se obtiene la observaci�n de la promoci�n tentativa en instalaci�n PROM_INS � mensualidad PROM_MENS.
+                    --Se obtiene la observación de la promoción tentativa en instalación PROM_INS ó mensualidad PROM_MENS.
                     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_OBSERVACION_TENTATIVA(Pv_CodigoGrupoPromocion => Pv_CodigoGrupoPromocion, 
                                                                                Pn_IdPromocion          => Ln_IdPromocion,
                                                                                Pv_CodigoTipoPromocion  => Lr_TiposPromociones.CODIGO_TIPO_PROMOCION,
@@ -8142,8 +8142,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
   EXCEPTION 
   WHEN Le_ExceptionProceso THEN
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso de evaluaci�n de Promociones. Pv_EsCodigo: '||Pv_EsCodigo
-                       ||', C�digo Mensaje: '||Lv_CodMensaje;
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso de evaluación de Promociones. Pv_EsCodigo: '||Pv_EsCodigo
+                       ||', Código Mensaje: '||Lv_CodMensaje;
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_PROMOCION_EVALUA_TENTATIVA', 
@@ -8166,8 +8166,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     ROLLBACK;
 
     Lv_CodMensaje   := 'COD_EXCEPCION';
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso de evaluaci�n de Promociones para el Grupo de Promocional: '||
-                        Pv_CodigoGrupoPromocion||', punto_Id - '|| Pn_IdPunto ||', C�digo Mensaje: '|| Lv_CodMensaje ||
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso de evaluación de Promociones para el Grupo de Promocional: '||
+                        Pv_CodigoGrupoPromocion||', punto_Id - '|| Pn_IdPunto ||', Código Mensaje: '|| Lv_CodMensaje ||
                         ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM;
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -8247,7 +8247,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Prf_PromoTentativa%ISOPEN THEN
       CLOSE Prf_PromoTentativa;
     END IF;
-    Lv_MsjResultado := 'Ocurri� un error al obtener la promocion Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
+    Lv_MsjResultado := 'Ocurrió un error al obtener la promocion Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
                        ' Empresa: '|| Pv_CodEmpresa ||
                        ' IdServicio: ' || Pn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -8261,7 +8261,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Prf_PromoTentativa%ISOPEN THEN
       CLOSE Prf_PromoTentativa;
     END IF;
-    Lv_MsjResultado := 'Ocurri� un error al obtener la promocion Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
+    Lv_MsjResultado := 'Ocurrió un error al obtener la promocion Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
                        ' Empresa: '|| Pv_CodEmpresa ||
                        ' IdServicio: ' || Pn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -8406,7 +8406,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
         END IF;
     END IF;
 
-    --Se obtiene los detalles de par�metros.
+    --Se obtiene los detalles de parámetros.
     OPEN C_ObtieneValorObsProm(Lv_NombreParamCab, Lv_DescripcionDetParam, Lv_EstadoActivo,
                                Pv_CodEmpresa, Pv_CodigoTipoPromocion, Lv_TipoPromoReglaIndef);
     FETCH C_ObtieneValorObsProm INTO Lc_Valor;
@@ -8517,7 +8517,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
         CLOSE C_MensajePorCodError;
       END IF;
 
-      --Se obtiene los detalles de par�metros.
+      --Se obtiene los detalles de parámetros.
       OPEN C_MensajePorCodError(Lv_NombreParamCab, Lv_DescripcionDetParam, Lv_EstadoActivo,
                                 Pv_CodEmpresa, Pv_CodMensaje);
       FETCH C_MensajePorCodError INTO Lc_Valor;
@@ -8575,7 +8575,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                                   Pn_IdServicio            => Pn_IdServicio,
                                                                   Prf_PromoTentativa       => Lrf_EvaluaTentativa);
     IF NOT(Lrf_EvaluaTentativa%ISOPEN) THEN              
-      Lv_MsjResultado := 'Ocurri� un error al consumir proceso de Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
+      Lv_MsjResultado := 'Ocurrió un error al consumir proceso de Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
                        ' Empresa: '|| Pv_CodEmpresa ||
                        ' IdServicio: ' || Pn_IdServicio; 
       RAISE Le_Exception;
@@ -8606,7 +8606,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Lrf_EvaluaTentativa%ISOPEN THEN
       CLOSE Lrf_EvaluaTentativa;
     END IF;
-    Lv_MsjResultado := 'Ocurri� un error al consumir proceso de Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
+    Lv_MsjResultado := 'Ocurrió un error al consumir proceso de Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
                        ' Empresa: '|| Pv_CodEmpresa ||
                        ' IdServicio: ' || Pn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -8620,7 +8620,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     IF Lrf_EvaluaTentativa%ISOPEN THEN
       CLOSE Lrf_EvaluaTentativa;
     END IF;
-    Lv_MsjResultado := 'Ocurri� un error al consumir proceso de Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
+    Lv_MsjResultado := 'Ocurrió un error al consumir proceso de Tentativa para el Grupo Promocional: '|| Pv_CodigoGrupoPromocion || 
                        ' Empresa: '|| Pv_CodEmpresa ||
                        ' IdServicio: ' || Pn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -8745,7 +8745,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
     END IF;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_ACTUALIZAR_SOLICITUDES', 
-                                         'Empieza la ejecuci�n del proceso P_ACTUALIZAR_SOLICITUDES, datos Pv_CodEmpresa: '
+                                         'Empieza la ejecución del proceso P_ACTUALIZAR_SOLICITUDES, datos Pv_CodEmpresa: '
                                          || Pv_CodEmpresa ||', Pv_TipoPromocion: '|| Pv_TipoPromocion || ', Pv_EstadoOld: '
                                          || Pv_EstadoOld || ', Pv_EstadoNew: '|| Pv_EstadoNew || ', Pv_Observacion:' || Pv_Observacion,
                                          'telcos_mapeo_promo',
@@ -8824,7 +8824,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
                                                      NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
               WHEN OTHERS THEN
               --
-                Lv_msj := 'Ocurri� un error al actualizar la solicitud: '|| La_SolicitudesProcesar(Ln_Indx).ID_DETALLE_SOLICITUD
+                Lv_msj := 'Ocurrió un error al actualizar la solicitud: '|| La_SolicitudesProcesar(Ln_Indx).ID_DETALLE_SOLICITUD
                           || ' del ID_SERVICIO: '||Pa_ServiciosPromo(Ln_Indice).ID_SERVICIO;
                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                      'CMKG_PROMOCIONES_UTIL.P_ACTUALIZAR_SOLICITUDES', 
@@ -8857,14 +8857,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_UTIL AS
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_ACTUALIZAR_SOLICITUDES', 
-                                         'Ocurri� un error el proceso no encontr� servicios a procesar.',
+                                         'Ocurrió un error el proceso no encontró servicios a procesar.',
                                          'telcos_mapeo_promo',
                                          SYSDATE,
                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
   WHEN OTHERS THEN
   --
     Pv_Mensaje := 'ERROR';
-    Lv_msj     := 'Ocurri� un error al ejecutar el proceso de actualizaci�n de solicitudes';
+    Lv_msj     := 'Ocurrió un error al ejecutar el proceso de actualización de solicitudes';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_UTIL.P_ACTUALIZAR_SOLICITUDES', 
                                          Lv_msj || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,

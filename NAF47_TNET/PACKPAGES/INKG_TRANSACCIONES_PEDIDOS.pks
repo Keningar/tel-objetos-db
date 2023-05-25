@@ -5,9 +5,9 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
   -- Purpose : Nuevo
 
   /**
-  * Documentaci�n para PROCEDURE P_INSERT_INFO_PEDIDO
+  * Documentación para PROCEDURE P_INSERT_INFO_PEDIDO
   * Paquete que inserta la cabecera de un pedido
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05-07-2021
   *
   * @author Luis Lindao <llindao@telconet.ec>
@@ -22,51 +22,51 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
                                   Pv_MensajeError IN OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE P_INSERT_INFO_PEDIDO_DETALLE
+  * Documentación para PROCEDURE P_INSERT_INFO_PEDIDO_DETALLE
   * Paquete que inserta el detalle de un pedido
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05-07-2021
       
    @param Pn_IdPedidoDetalle             IN NUMBER secuencia id pedido detalle
    @param Pn_CantidadSolicitada          IN NUMBER cantidad solicitada
-   @param Pv_DescripcionSolicitada       IN VARCHAR2 descripci�n solicitada
+   @param Pv_DescripcionSolicitada       IN VARCHAR2 descripción solicitada
    @param Pv_UsrAsignadoId               IN VARCHAR2 usuario asigando id
    @param Pv_UsrAsignado                 IN VARCHAR2 usuario asignado
-   @param Pn_CaracteristicaId            IN NUMBER caracter�sticas id
+   @param Pn_CaracteristicaId            IN NUMBER características id
    @param Pv_ProductoEmpresaId           IN VARCHAR2 producto empresa id
    @param Pv_ProductoId                  IN VARCHAR2 producto id,
-   @param Pv_Descripcion                 IN VARCHAR2 descripci�n
+   @param Pv_Descripcion                 IN VARCHAR2 descripción
    @param Pn_Cantidad                    IN NUMBER cantidad
    @param Pn_CostoProducto               IN NUMBER costo producto
    @param Pn_Subtotal                    IN NUMBER subtotal
    @param Pn_ProductoEmpresaIdReasignado IN NUMBER producto empresa id reasignado
    @param Pv_ProductoIdReasignado        IN VARCHAR2 producto id reasignado
-   @param Pv_Obervacion                  IN VARCHAR2 observaci�n
+   @param Pv_Obervacion                  IN VARCHAR2 observación
    @param Pv_EsCompra                    IN VARCHAR2 es compra
    @param Pv_ComprobanteEgreso           IN VARCHAR2 comprobante de egreso
-   @param Pd_FeCreacion                  IN DATE fecha creaci�n
+   @param Pd_FeCreacion                  IN DATE fecha creación
    @param Pv_Estado                      IN VARCHAR2 estado
    @param Pn_CantidadDespachada          IN NUMBER cantidad despachada
    @param Pv_Anular                      IN VARCHAR2 anular
-   @param Pd_FeUltMod                    IN DATE fecha �ltima modificaci�n
-   @param Pv_UsrCreacion                 IN VARCHAR2 usuario creaci�n
-   @param Pv_UsrUltMod                   IN VARCHAR2 usuario �ltima modificaci�n
-   @param Pv_IpCreacion                  IN VARCHAR2 ip creaci�n
+   @param Pd_FeUltMod                    IN DATE fecha última modificación
+   @param Pv_UsrCreacion                 IN VARCHAR2 usuario creación
+   @param Pv_UsrUltMod                   IN VARCHAR2 usuario última modificación
+   @param Pv_IpCreacion                  IN VARCHAR2 ip creación
    @param Pn_PedidoId                    IN NUMBER id pedido
    @param Pv_PedidoUsoId                 IN VARCHAR2 id pedido uso
    @param Pv_EsDescuentoRol              IN VARCHAR2 es descuento rol
-   @param Pv_UsrAprobacionId             IN VARCHAR2 usuario aprobaci�n id
-   @param Pv_UsrAprobacion               IN VARCHAR2 usuario aprobaci�n
-   @param Pv_EsAprobacion                IN VARCHAR2 es aprobaci�n
-   @param Pn_PedidoAprobacionId          IN NUMBER pedido aprobaci�n id
+   @param Pv_UsrAprobacionId             IN VARCHAR2 usuario aprobación id
+   @param Pv_UsrAprobacion               IN VARCHAR2 usuario aprobación
+   @param Pv_EsAprobacion                IN VARCHAR2 es aprobación
+   @param Pn_PedidoAprobacionId          IN NUMBER pedido aprobación id
    @param Pn_PedidoPlantillaId           IN NUMBER pedido plantilla id
    @param Pv_EsRecurrente                IN VARCHAR2 es recurrente
    @param Pn_ServicioId                  IN NUMBER servicio id
    @param Pv_NoProveedor                 IN VARCHAR2 no proveedor
-   @param Pv_CedulaProveedor             IN VARCHAR2 c�dula proveedor
+   @param Pv_CedulaProveedor             IN VARCHAR2 cédula proveedor
    @param Pv_NombreProveedor             IN VARCHAR2 nombre proveedor
    @param Pv_GeneraImpuesto              IN VARCHAR2 genera impuesto
-   @param Pv_Devolucion                  IN VARCHAR2 devoluci�n
+   @param Pv_Devolucion                  IN VARCHAR2 devolución
    @param Pn_CantidadADevolver           IN NUMBER cantidad a devolver
    @param Pn_CantidadDevuelta            IN NUMBER cantidad devuelta
    @param Pv_Placa                       IN VARCHAR2 placa
@@ -124,12 +124,12 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
                                          Pv_EsConsumible                IN VARCHAR2,
                                          Pb_Permitido                   OUT BOOLEAN);
 
-  /* Documentaci�n para funci�n F_GET_ADMI_EMPRESA
-  * Funci�n que retorna un registro, buscado por su c�digo y estado
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  /* Documentación para función F_GET_ADMI_EMPRESA
+  * Función que retorna un registro, buscado por su código y estado
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05/07/2021
   
-  @param Pv_Codigo   c�digo de empresa
+  @param Pv_Codigo   código de empresa
   @param Pv_Estado   estado
   */
 
@@ -137,13 +137,13 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     RETURN DB_COMPRAS.ADMI_EMPRESA%ROWTYPE;
 
   /**
-  * Documentaci�n para funci�n F_GET_ADMI_DEPARTAMENTO
-  * Funcion que retorna un registro del c�difo del departamento, buscado por empresa, codigo y estado
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * Documentación para función F_GET_ADMI_DEPARTAMENTO
+  * Funcion que retorna un registro del códifo del departamento, buscado por empresa, codigo y estado
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05/07/2021
   
-  @param Pv_NoCia compan�a
-  @param Pv_Codigo c�digo de departamento
+  @param Pv_NoCia companía
+  @param Pv_Codigo código de departamento
   @param Pv_Estado estado
   @param Pv_MensajeError mensaje de error
   */
@@ -155,13 +155,13 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     RETURN DB_COMPRAS.ADMI_DEPARTAMENTO%ROWTYPE;
 
   /**
-  * Documentaci�n para funci�n F_GET_USUARIO_NAF
+  * Documentación para función F_GET_USUARIO_NAF
   * Funcion que retorna  los datos de un usuario, buscado por empresa, codigo y estado
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05/07/2021
   
-    @param Pv_NoCia  compan�a
-    @param Pv_NoEmple c�digo de empleado
+    @param Pv_NoCia  companía
+    @param Pv_NoEmple código de empleado
     @param Pv_Estado estado
   */
   FUNCTION F_GET_USUARIO_NAF(Pv_NoCia        IN VARCHAR2,
@@ -171,13 +171,13 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     RETURN NAF47_TNET.V_EMPLEADOS_EMPRESAS%ROWTYPE;
 
   /**
-  * Documentaci�n para funci�n F_GET_ADMI_PARAMETRO
-  * Funcion que retorna un registro de ADMI_PARAMETRO, buscado por empresa, c�digo y estado
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * Documentación para función F_GET_ADMI_PARAMETRO
+  * Funcion que retorna un registro de ADMI_PARAMETRO, buscado por empresa, código y estado
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05/07/2021
   
-   @param Pv_EmpresaId  compan�a
-   @param Pv_Codigo c�digo de par�metro
+   @param Pv_EmpresaId  companía
+   @param Pv_Codigo código de parámetro
    @param Pv_Estado estado
   */
 
@@ -188,24 +188,24 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     RETURN DB_COMPRAS.ADMI_PARAMETRO%ROWTYPE;
 
   /**
-  * Documentaci�n para funci�n P_PEDIDO_MASIVO_INST
+  * Documentación para función P_PEDIDO_MASIVO_INST
   * Procedimiento que realiza el insert masivo diario de pedidos y detalle de pedidos
-  * de las tareas realizadas de instalaciones de �ltima milla de cada uno de los t�cnicos en Megadatos
-  * buscado por empresa, tipo_ejecuci�n.
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * de las tareas realizadas de instalaciones de última milla de cada uno de los técnicos en Megadatos
+  * buscado por empresa, tipo_ejecución.
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 05/07/2021
   *
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
-  * @version 1.1 06/02/2022 - Se modifica proceso para mejorar busquedas de data Jefe Cuadrilla, T�nicos, Pedidos generados existentes
-  *                           articulos asignados a t�nicos en control custodios. Tambien se mejora control de errores por registros tareas,
-  *                           registros plantillas y por env�o de correo electr�nico. Tambi�n se corrige generaci�nmas detallada de los errores
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
+  * @version 1.1 06/02/2022 - Se modifica proceso para mejorar busquedas de data Jefe Cuadrilla, Ténicos, Pedidos generados existentes
+  *                           articulos asignados a ténicos en control custodios. Tambien se mejora control de errores por registros tareas,
+  *                           registros plantillas y por envío de correo electrónico. También se corrige generaciónmas detallada de los errores
   *                           en log-errores-pedidos-masivos.
-  *                            Se agregan parametros de Fecha-Hora Inicio y Fecha-Hora Fin enviadas por proceso que lee configuraci�n 
-  *                           para ejecuci�n de JOB
+  *                            Se agregan parametros de Fecha-Hora Inicio y Fecha-Hora Fin enviadas por proceso que lee configuración 
+  *                           para ejecución de JOB
   *
   * @param Pd_FechaFin     IN DATE         Recibe fecha y hora inicio de tareas generadas
   * @param Pd_FechaFin     IN DATE         Recibe fecha y hora fin de tareas generadas
-  * @param Pv_Empresa      IN VARCHAR2     recibe c�digo de compan�a
+  * @param Pv_Empresa      IN VARCHAR2     recibe código de companía
   * @param Pv_MensajeError IN OUT VARCHAR2 retorna mensaje error
   *
   */
@@ -215,22 +215,22 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
                                    Pv_MensajeError OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE P_EJECUTAR_JOB
-  * Procedimiento que ejecuta 2 tareas progamadas para la ejecuci�n masiva de creaci�n de pedidos.
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * Documentación para PROCEDURE P_EJECUTAR_JOB
+  * Procedimiento que ejecuta 2 tareas progamadas para la ejecución masiva de creación de pedidos.
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 04-08-2021
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.1 06/02/2022 - Se modifica para procesar JOB mediante condiguraci�n en tabla de parametros
+  * @version 1.1 06/02/2022 - Se modifica para procesar JOB mediante condiguración en tabla de parametros
   *                           se elimina parametros.
   */
 
   PROCEDURE P_EJECUTAR_JOB;
 
   /**
-  * Documentaci�n para P_LOG_ERROR_PEDIDOS_AUT
-  * Procedimiento que inserta los l�deres que no se encuentran configurado en NAF
-  * @author Ver�nica Moreno <vmmoreno@telconet.ec>
+  * Documentación para P_LOG_ERROR_PEDIDOS_AUT
+  * Procedimiento que inserta los líderes que no se encuentran configurado en NAF
+  * @author Verónica Moreno <vmmoreno@telconet.ec>
   * @version 1.0 01-08-2021
   *
   * @author Luis Lindao <llindao@telconet.ec>
@@ -710,7 +710,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     ESTADO_PEDIDO_MASIVO           CONSTANT VARCHAR2(30) := 'ESTADO_PEDIDO_MASIVO';
     REMITENTE_CORREO_PEDIDO_MASIVO CONSTANT VARCHAR2(30) := 'REMITENTE_CORREO_PEDIDO_MASIVO';
     BODEGA_SOLICITANTE             CONSTANT VARCHAR2(2) := 'BE';
-    PEDIDO_AUTOMATICO              CONSTANT VARCHAR2(17) := 'Pedido Autom�tico';
+    PEDIDO_AUTOMATICO              CONSTANT VARCHAR2(17) := 'Pedido Automático';
     PLANTILLA_ARTICULO_DEPTO       CONSTANT VARCHAR2(24) := 'PLANTILLA-ARTICULO-DEPTO';
     --Consulta las tareas
     CURSOR C_CONSULTA_TAREA_TELCOS IS
@@ -910,7 +910,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
       GROUP BY ACC.CUSTODIO_ID,
                ACC.NO_ARTICULO; 
     
-    --Consulta Par�metro de Estado          
+    --Consulta Parámetro de Estado          
     CURSOR C_PARAMETROS( Pv_CodEmpresa VARCHAR2,
                          Cv_PedAutEstadoInicial VARCHAR2,
                          Cv_PedAutTipoProceso   VARCHAR2,
@@ -999,7 +999,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
         FROM NAF47_TNET.V_DETALLE_PEDIDOS A
        WHERE PEDIDO_ID = Cn_Pedido;
   
-    --Correo remitente para el env�o de notificaci�n
+    --Correo remitente para el envío de notificación
     CURSOR C_RemitenteCorreo(Cn_Empresa VARCHAR2) IS
       SELECT APD.VALOR1
         FROM DB_GENERAL.ADMI_PARAMETRO_DET APD,
@@ -1060,11 +1060,11 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     Le_ErrorPlantilla Exception;
     --
   BEGIN
-    -- inicializaci�n de variables
+    -- inicialización de variables
     Ln_Contador     := 0;
     Pv_MensajeError := null;
     --
-    -- cursor que recupera tareas de instalaciones generadas a los t�cnicos 
+    -- cursor que recupera tareas de instalaciones generadas a los técnicos 
     FOR Lr_ConsultaTarea IN C_CONSULTA_TAREA_TELCOS  LOOP
       --
       BEGIN
@@ -1086,7 +1086,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
           Raise Le_ErrorTarea;
         END IF;
         --
-        -- se verifica configuraci�n de jefe cuadrilla en pedidos de Instalaciones (Bodega-Solicitante)
+        -- se verifica configuración de jefe cuadrilla en pedidos de Instalaciones (Bodega-Solicitante)
         IF C_LEE_BODEGA_EMPLEADO%ISOPEN THEN
           CLOSE C_LEE_BODEGA_EMPLEADO;
         END IF;
@@ -1100,7 +1100,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
           raise Le_ErrorTarea;
         END IF;
         --
-        -- se recupera datos de T�nicos en NAF
+        -- se recupera datos de Ténicos en NAF
         IF C_DATOS_EMPLEADO_NAF%ISOPEN THEN
           CLOSE C_DATOS_EMPLEADO_NAF;
         END IF;
@@ -1110,7 +1110,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
         CLOSE C_DATOS_EMPLEADO_NAF;
         --
         IF Lr_DatosNafTecnico.No_Emple IS NULL THEN
-          Pv_MensajeError := 'No se pudo recuperar datos de empleado en NAF para T�cnico '||Lr_ConsultaTarea.Login_Tecnico||' empresa '||Lr_ConsultaTarea.Empleado_Empresa_Id;
+          Pv_MensajeError := 'No se pudo recuperar datos de empleado en NAF para Técnico '||Lr_ConsultaTarea.Login_Tecnico||' empresa '||Lr_ConsultaTarea.Empleado_Empresa_Id;
           Raise Le_ErrorTarea;
         END IF;
         --
@@ -1127,11 +1127,11 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
         CLOSE C_DATOS_CUSTODIO;
         --
         IF Lr_DatosCustodio.Depto_Instalacion_Id IS NULL THEN
-          Pv_MensajeError := 'T�cnico '||Lr_ConsultaTarea.Login_Tecnico||' se encuentra asignado al departamento '||Lr_DatosCustodio.Departamento_Id||', el cual no esta configurado como departamento de instalaci�n.';
+          Pv_MensajeError := 'Técnico '||Lr_ConsultaTarea.Login_Tecnico||' se encuentra asignado al departamento '||Lr_DatosCustodio.Departamento_Id||', el cual no esta configurado como departamento de instalación.';
           Raise Le_ErrorTarea;
         END IF;
         --
-        -- se recuperan parametros para env�o de correo electr�nico
+        -- se recuperan parametros para envío de correo electrónico
         IF NOT C_PARAMETROS%ISOPEN THEN
           OPEN C_PARAMETROS( Lr_ConsultaTarea.Empleado_Empresa_Id,
                              'PED-AUT-ESTADO-INICIAL',
@@ -1148,7 +1148,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
                                                                            NAF47_TNET.GEK_VAR.Gr_EstadoNAF.ACTIVO,-- Lv_estado,
                                                                            Pv_MensajeError);
         --
-        -- cursor que recupera datos de las plantillas de art�culos
+        -- cursor que recupera datos de las plantillas de artículos
         FOR Lr_DatosPlantilla IN C_DatosPlantilla LOOP
           --
           BEGIN  
@@ -1165,7 +1165,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
             OPEN C_DEPTO_PRODUCTO (Lr_DatosPlantilla.Empresa_Cod,
                                    Lr_DatosPlantilla.Material_Cod);
             FETCH C_DEPTO_PRODUCTO INTO Lr_DeptoProducto;
-            -- si existe configuraci�n articulo-Depto se valida que este cofigurado el departamento al que pertenece el tecnico
+            -- si existe configuración articulo-Depto se valida que este cofigurado el departamento al que pertenece el tecnico
             IF Lr_DeptoProducto.Id_Parametro_Det IS NOT NULL THEN
               LOOP
                 --
@@ -1197,25 +1197,25 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
             CLOSE C_VERIFICA_PEDIDO_MASIVO;
             --      
             IF Lr_DatosPedidoMasivo.ID_PEDIDO IS NOT NULL THEN
-              Pv_MensajeError := 'El T�cnico '|| Lr_ConsultaTarea.Login_Tecnico ||' tiene pedido en curso ' ||Lr_DatosPedidoMasivo.ID_PEDIDO||' para el art�culo '||Lr_DatosPlantilla.Material_Cod;
+              Pv_MensajeError := 'El Técnico '|| Lr_ConsultaTarea.Login_Tecnico ||' tiene pedido en curso ' ||Lr_DatosPedidoMasivo.ID_PEDIDO||' para el artículo '||Lr_DatosPlantilla.Material_Cod;
               Raise Le_ErrorPlantilla;
             END IF;
             --
             
 
-            -- se recupera la cantidad de articulos asignados al t�cnico para validar las cantidades con plantilla
+            -- se recupera la cantidad de articulos asignados al técnico para validar las cantidades con plantilla
             OPEN C_DATOS_CONTROL_CUSTODIO(Lr_DatosCustodio.Id_Persona_Rol,
                                           Lr_DatosPlantilla.MATERIAL_COD);
             FETCH C_DATOS_CONTROL_CUSTODIO INTO Lr_ControlCustodio;
             CLOSE C_DATOS_CONTROL_CUSTODIO;
             --
-            -- se realiza la conversi�n pues los pedidos se generan en base unidades de inventarios
+            -- se realiza la conversión pues los pedidos se generan en base unidades de inventarios
             Ln_Cantidad_Material := (Lr_DatosPlantilla.CANTIDAD_MATERIAL/NVL(Lr_DatosPlantilla.Cantidad_Empaque,1));
           
             Ln_Subtotal := Ln_Cantidad_Material * Lr_DatosPlantilla.COSTO_UNITARIO;
             --
             ------------------------------------------------------------------------
-            -- Si cabecera de pedido no ha sdo generado a�n, se procede a generar --
+            -- Si cabecera de pedido no ha sdo generado aún, se procede a generar --
             ------------------------------------------------------------------------
             IF (Lr_ControlCustodio.No_Articulo IS NULL OR 
                 Lr_ControlCustodio.CANTIDAD <= Lr_DatosPlantilla.VALOR_MINIMO) AND 
@@ -1236,7 +1236,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
               -- Insertamos la cabecera del pedido
               Lr_InfoPedido.Departamento_Id := Lr_DepartamentoCompras.Id_Departamento;
               Lr_InfoPedido.Usr_Creacion := Lr_ConsultaTarea.Login_Lider;
-              Lr_InfoPedido.Observacion := 'Pedido Autom�tico';
+              Lr_InfoPedido.Observacion := 'Pedido Automático';
               Lr_InfoPedido.valor_total := 0;
               Lr_InfoPedido.monto_total_aprobacion := 0;
               Lr_InfoPedido.monto_inicial_aprobacion := 0;
@@ -1273,7 +1273,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
             Lr_Empresa := INKG_TRANSACCIONES_PEDIDOS.F_GET_ADMI_EMPRESA( Lr_DatosPlantilla.Empresa_Cod, --Lr_DatosLider.No_Cia,
                                                                          NAF47_TNET.GEK_VAR.Gr_Estado.ACTIVO);-- Lv_EstadoActivo);
             --
-            --Si L�der de cuadrilla no tiene asignado el c�digo de material genera un pedido
+            --Si Líder de cuadrilla no tiene asignado el código de material genera un pedido
             IF (Lr_ControlCustodio.No_Articulo IS NULL OR 
                 Lr_ControlCustodio.CANTIDAD <= Lr_DatosPlantilla.VALOR_MINIMO) THEN
               --
@@ -1358,7 +1358,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
     --
     COMMIT;
     --
-    -- si se gener� alg�n pedido se procede a enviar notificaciones de correo.  
+    -- si se generó algún pedido se procede a enviar notificaciones de correo.  
     IF Ln_Contador >= 1 THEN
       FOR Lr_Pedido in C_CONSULTA_PEDIDO LOOP
       
@@ -1448,7 +1448,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
           WHEN OTHERS THEN
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('NAF',
                                                  'NAF47_TNET.INKG_TRANSACCION.P_PEDIDO_MASIVO_INST',
-                                                 'Error en proceso envio correos notificaci�n. '||SQLERRM || ' - ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
+                                                 'Error en proceso envio correos notificación. '||SQLERRM || ' - ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                                  GEK_CONSULTA.F_RECUPERA_LOGIN,
                                                  SYSDATE,
                                                  GEK_CONSULTA.F_RECUPERA_IP);
@@ -1594,3 +1594,4 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
 
 END INKG_TRANSACCIONES_PEDIDOS;
 /
+

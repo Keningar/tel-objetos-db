@@ -13,7 +13,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.1 06/02/2022 - Se modifica para cambiar lista de parametros por un parametro tipo registro
   *
-    * @author Elvos Mu�oz <emunoz@telconet.ec>
+    * @author Elvos Muñoz <emunoz@telconet.ec>
   * @version 1.1 15/01/2022 - Se procede a eliminar la funcion GEK_CONSULTA.F_RECUPERA_LOGIN por la senetencia LOWER(user)
   *
   * @param Pr_InfoPedido   IN DB_COMPRAS.INFO_PEDIDO%ROWTYPE recibe parametro tipo registro de tabla info_pedido
@@ -246,7 +246,6 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
 
 END INKG_TRANSACCIONES_PEDIDOS;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_TRANSACCIONES_PEDIDOS AS
   --
