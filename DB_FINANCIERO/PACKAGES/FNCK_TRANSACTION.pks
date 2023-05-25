@@ -694,6 +694,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
    * @version 1.1 06-09-2021 - Se elimina la b�squeda por estado Activo del cursor C_GetIdMotivo, 
    *                           el cual obtiene el id motivo de la solicitud de NC por Reubicaci�n.
    *
+   * @author Hector Lozano <hlozano@telconet.ec>
+   * @version 1.2 19-05-2023 - Se insertan logs, para monitorear el proceso de crear Notas de Crédito por Reubicación.
+   *
    */
   PROCEDURE P_GENERA_NC_SOLICITUDES_REUB(Pv_CodEmpresa     IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                          Pv_PrefijoEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE);
@@ -6007,6 +6010,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lv_ObservacionCreacion VARCHAR2(1000) := '';
     Lbool_Done             BOOLEAN        := FALSE;
     Lv_MsnError            VARCHAR2(1000);  
+    Lv_LogNcReub           VARCHAR2(2000);
 
     Lc_TipoDocIdNc         C_GetTipoDocIdNc%ROWTYPE;
     Lc_GetIdMotivo         C_GetIdMotivo%ROWTYPE;
@@ -6067,6 +6071,11 @@ END UPDATE_INFO_CICLO_FACTURACION;
             Lv_PorcentajeServicio := 'Y';
         END IF;
 
+        Lv_LogNcReub := 'PARAMETROS ENTRADA: ' || '-ID_FACT: ' || Lc_GetFacturasCaractNc.ID_DOCUMENTO || ' -ValorOriginal: ' || Lv_ValorOriginal
+                        || ' -PorcentajeServicio: ' || Lv_PorcentajeServicio || ' -Porcentaje: ' || Ln_Porcentaje  
+                        || ' -ProporcionalPorDias: ' || Lv_ProporcionalPorDias;
+        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub); 
+
         DB_FINANCIERO.FNCK_CONSULTS.P_CREA_NOTA_CREDITO(Lc_GetFacturasCaractNc.ID_DOCUMENTO,
                                                         Lc_TipoDocIdNc.ID_TIPO_DOCUMENTO,
                                                         Lv_Observacion,
@@ -6101,6 +6110,10 @@ END UPDATE_INFO_CICLO_FACTURACION;
         END IF;  
 
         DBMS_OUTPUT.PUT_LINE(Lv_ObservacionCreacion);
+
+        Lv_LogNcReub := 'PARAMETROS SALIDA: ' || '-ID_FACT: ' || Lc_GetFacturasCaractNc.ID_DOCUMENTO || ' -ID_NC: ' || Ln_IdDocumentoNC 
+                         || ' -ValorTotal: ' || Ln_ValorTotal || ' -ObservacionCreacionNc: ' || Lv_ObservacionCreacion;
+        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
 
      END LOOP; 
 
