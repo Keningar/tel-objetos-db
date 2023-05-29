@@ -38,7 +38,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
   TYPE Ltr_Token IS TABLE OF Lr_Token INDEX BY binary_integer;
 
   /**
-   * Documentaci�n para el procedimiento P_GET_CONTACTO_CLIENTE
+   * Documentación para el procedimiento P_GET_CONTACTO_CLIENTE
    *
    * Metodo encargado de obtener contactData del cleinete para diferentes canales de notificaciones
    *
@@ -62,7 +62,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
                                    Pv_Mensaje   OUT VARCHAR2,
                                    Pcl_Response OUT CLOB);
       /**
-   * Documentaci�n para el procedimiento P_TOKEN_NOTIFICACION_PUSH
+   * Documentación para el procedimiento P_TOKEN_NOTIFICACION_PUSH
    *
    * Metodo encargado de obtener contactData del cliente para canal push
    *
@@ -81,7 +81,7 @@ CREATE OR REPLACE package DB_GENERAL.GNKG_NOTIFICACIONES IS
                                           Pcl_Response OUT CLOB);
 
  /**
-   * Documentaci�n para el procedimiento P_LOTES_CLIENTES_NOTI_PUSH
+   * Documentación para el procedimiento P_LOTES_CLIENTES_NOTI_PUSH
    *
    * Metodo encargado de obtener urls de nfs para envio clientes masivos
    *
@@ -365,7 +365,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
     Lv_CodigoApp      := Lr_RegGetConfigNfs.CODIGO_APP;
     Lv_CodigoPath     := Lr_RegGetConfigNfs.CODIGO_PATH;
     IF Lv_CodigoApp  IS NULL OR Lv_CodigoPath IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la configuraci�n de la ruta NFS';
+      Lv_MsjError := 'No se ha podido obtener la configuracion de la ruta NFS';
       RAISE Le_Exception;
     END IF;
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
@@ -402,7 +402,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_NOTIFICACIONES IS
                 Ln_CodeResWsNFS   := APEX_JSON.GET_NUMBER('code');
 
                 IF Ln_CodeResWsNFS IS NULL OR Ln_CodeResWsNFS <> 200 THEN
-                  Lv_MsjError := 'Ha ocurrido alg�n error al generar el archivo. Por favor consulte al Dep. de Sistemas!';
+                  Lv_MsjError := 'Ha ocurrido algun error al generar el archivo. Por favor consulte al Dep. de Sistemas!';
                   RAISE Le_Exception;
                 END IF;
 

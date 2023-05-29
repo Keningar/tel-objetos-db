@@ -1,21 +1,21 @@
-CREATE OR REPLACE package  DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
+CREATE OR REPLACE package DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
   /**
-  * Documentaci�n para el procedimiento P_DETALLE_POR_PARAMETRO
+  * Documentación para el procedimiento P_DETALLE_POR_PARAMETRO
   *
-  * M�todo encargado de retornar la lista de detalles de un parametro.
+  * Método encargado de retornar la lista de detalles de un parametro.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
-  *   empresaCod          := C�digo empresa Default '10',
+  *   empresaCod          := Código empresa Default '10',
   *   estado              := Estado Default 'Activo',
   *   parametroId         := Id del parametro
   *   nombreParametro     := Nombre del parametro
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_DETALLE_POR_PARAMETRO(Pcl_Request  IN  CLOB,
@@ -24,14 +24,14 @@ CREATE OR REPLACE package  DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
                                     Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-  * Documentaci�n para proceso 'P_GET_DETALLE_PARAMETRO'
+  * Documentación para proceso 'P_GET_DETALLE_PARAMETRO'
   * 
-  * Permite consultar el detalle de un par�metro de acuerdo a la informaci�n ingresada
+  * Permite consultar el detalle de un parámetro de acuerdo a la información ingresada
   *
-  * @param  Pv_NombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE Recibe nombre del par�metro de la tabla cabecera
-  * @param  Pv_Descripcion      IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE Recibe descripcion del par�metro de la tabla detalle
+  * @param  Pv_NombreParametro  IN DB_GENERAL.ADMI_PARAMETRO_CAB.Nombre_Parametro%TYPE Recibe nombre del parámetro de la tabla cabecera
+  * @param  Pv_Descripcion      IN DB_GENERAL.ADMI_PARAMETRO_DET.Descripcion%TYPE Recibe descripcion del parámetro de la tabla detalle
   * @param  Pv_Empresa_Cod      IN DB_GENERAL.ADMI_PARAMETRO_DET.Empresa_Cod%TYPE Recibe el identificador de la empresa
-  * @param  Pr_AdmiParametroDet OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Retorna Registro del detalle del par�metro
+  * @param  Pr_AdmiParametroDet OUT DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Retorna Registro del detalle del parámetro
   * @param  Pv_Status           OUT VARCHAR2 Retorna estatus de la consulta
   * @param  Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la consulta
   *
@@ -75,7 +75,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
 
     -- VALIDACIONES
     IF Ln_ParametroId IS NULL AND Lv_NombreParametro IS NULL THEN
-      Pv_Mensaje := 'El par�metro parametroId o nombreParametro esta vac�o';
+      Pv_Mensaje := 'El parámetro parametroId o nombreParametro esta vacío';
       RAISE Le_Errors;
     END IF;
     IF Ln_EmpresaCod IS NULL THEN
@@ -108,7 +108,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_PARAMETRO_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacci�n exitosa';
+    Pv_Mensaje    := 'Transacción exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';

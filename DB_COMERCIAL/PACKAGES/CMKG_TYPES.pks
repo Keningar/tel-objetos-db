@@ -11,7 +11,7 @@ AS
   --
 
   /*
-  * Documentaci�n para TYPE 'Lr_RptClientesFacturas'.
+  * Documentación para TYPE 'Lr_RptClientesFacturas'.
   * Record que me permite devolver los valores para setear columnas del reporte de clientes con sus primeras facturas
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 15-12-2016
@@ -50,7 +50,7 @@ AS
     );
 
   /*
-  * Documentaci�n para TYPE 'Lr_AliasPlantilla'.
+  * Documentación para TYPE 'Lr_AliasPlantilla'.
   * Record que me permite devolver los valores para setear datos correspondientes a la plantilla de correo a utilizar.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 15-12-2016
@@ -62,7 +62,7 @@ AS
     );
 
   /**
-   * Record necesario en los par�metros para la creaci�n de solicitudes de instalaci�n.
+   * Record necesario en los parámetros para la creación de solicitudes de instalación.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 23-11-2018
@@ -93,9 +93,9 @@ AS
   --
   --
   /*
-  * Documentaci�n para TYPE 'Lr_DetalladoServicios'.
+  * Documentación para TYPE 'Lr_DetalladoServicios'.
   *
-  * Record que permite el detallado de los servicios que ser�n exportados en un excel
+  * Record que permite el detallado de los servicios que serán exportados en un excel
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 05-07-2017
@@ -139,10 +139,10 @@ AS
   --
   --
   /*
-  * Documentaci�n para TYPE 'Lr_ServiciosCrm'.
+  * Documentación para TYPE 'Lr_ServiciosCrm'.
   *
   * Record que permite el detallado de los servicios relacionados con propuestas de TelcoCRM 
-  * que ser�n exportados en un excel
+  * que serán exportados en un excel
   *
   * @author Kevin Baque <kbaque@telconet.ec>
   * @version 1.0 21-09-2020
@@ -186,7 +186,7 @@ TYPE Lr_ServiciosCrm IS RECORD (
   --
 
   /**
-  * Documentaci�n para TYPE 'T_ServiciosCrm'.
+  * Documentación para TYPE 'T_ServiciosCrm'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Kevin Baque <kbaque@telconet.ec>
@@ -196,9 +196,9 @@ TYPE Lr_ServiciosCrm IS RECORD (
   --
   --
   /*
-  * Documentaci�n para TYPE 'Lt_ArrayAsociativo'.
+  * Documentación para TYPE 'Lt_ArrayAsociativo'.
   *
-  * Tipo de datos para mapear los par�metros enviados en un array asociativo
+  * Tipo de datos para mapear los parámetros enviados en un array asociativo
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 07-09-2017
@@ -206,9 +206,9 @@ TYPE Lr_ServiciosCrm IS RECORD (
   TYPE Lt_ArrayAsociativo IS TABLE OF VARCHAR2(300) INDEX BY VARCHAR2(30);
 
   /*
-  * Documentaci�n para TYPE 'Lr_ServiciosPorRechazar'.
+  * Documentación para TYPE 'Lr_ServiciosPorRechazar'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los servicios detenidos por m�s de 30 d�as
+  * Tipo de datos para el retorno de la información correspondiente a los servicios detenidos por más de 30 días
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 08-11-2018
@@ -237,8 +237,8 @@ TYPE Lr_ServiciosCrm IS RECORD (
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_ServiciosPorRechazar'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los servicios por rechazar
+  * Documentación para TYPE 'Lt_ServiciosPorRechazar'.
+  * Tabla para almacenar la data enviada con la información correspondiente a los servicios por rechazar
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 09-11-2018
@@ -249,9 +249,9 @@ TYPE Lr_ServiciosCrm IS RECORD (
 
 
    /*
-  * Documentaci�n para TYPE 'Lr_PuntoResumen'.
+  * Documentación para TYPE 'Lr_PuntoResumen'.
   *
-  * Tipo de datos para el retorno de la informaci�n resumida de un punto
+  * Tipo de datos para el retorno de la información resumida de un punto
   *
   * @author David De La Cruz <ddeleacruz@telconet.ec>
   * @version 1.0 27-01-2022
@@ -298,10 +298,10 @@ TYPE Lr_ServiciosCrm IS RECORD (
   --
   --
   /*
-  * Documentaci�n para TYPE 'Lr_ServiciosPersona'.
+  * Documentación para TYPE 'Lr_ServiciosPersona'.
   *
   * Record que permite el detallado de los servicios relacionados al Cliente/PreCliente 
-  * que ser�n exportados en un excel
+  * que serán exportados en un excel
   *
   * @author Jessenia Piloso <jpiloso@telconet.ec>
   * @version 1.0 02-12-2022
@@ -339,7 +339,7 @@ TYPE Lr_ServiciosPersona IS RECORD (
   --
 
   /**
-  * Documentaci�n para TYPE 'T_ServiciosPersona'.
+  * Documentación para TYPE 'T_ServiciosPersona'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Jessenia Piloso <jpiloso@telconet.ec>
@@ -348,4 +348,3 @@ TYPE Lr_ServiciosPersona IS RECORD (
   TYPE T_ServiciosPersona IS TABLE OF Lr_ServiciosPersona INDEX BY PLS_INTEGER;
 END CMKG_TYPES;
 /
-

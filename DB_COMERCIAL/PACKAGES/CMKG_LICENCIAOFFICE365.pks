@@ -3,30 +3,30 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LICENCIAOFFICE365 AS
   /**
   * Documentacion para el procedimiento P_RENOVAR_LICOFFICE365
   *
-  * M�todo encargado de la renovaci�n de licencias Office365 para los clientes por medio de la llamada a un Web Service.
+  * Método encargado de la renovación de licencias Office365 para los clientes por medio de la llamada a un Web Service.
   *
   * @param Pv_PrefijoEmpresa  IN VARCHAR2 Prefijo de la empresa 
-  * @param Pv_EmpresaCod      IN VARCHAR2 C�digo de empresa
-  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creaci�n
-  * @param Pv_Ip              IN VARCHAR2 Ip de creaci�n
+  * @param Pv_EmpresaCod      IN VARCHAR2 Código de empresa
+  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creación
+  * @param Pv_Ip              IN VARCHAR2 Ip de creación
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 28-06-2018
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 28-02-2019 Se envia generacion de historial e inactivaci�n de caracteristicas al proceso que ejecuta telcos.
+  * @version 1.1 28-02-2019 Se envia generacion de historial e inactivación de caracteristicas al proceso que ejecuta telcos.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.2 07-03-2019 Se agrega cursor para consultar detalle de par�metro por valor.
+  * @version 1.2 07-03-2019 Se agrega cursor para consultar detalle de parámetro por valor.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.3 09-03-2023 Se agrega cursor para consultar n�mero de meses transcurridos desde la fecha de creaci�n de la �ltima caracteristica del servicio
-  *                         creada en la renovaci�n de licencia con respecto a la fecha actual. se agrega validaci�n de dicha variable con respecto al
-  *                         n�mero de meses parametrizado para realizar la renovaci�n.
+  * @version 1.3 09-03-2023 Se agrega cursor para consultar número de meses transcurridos desde la fecha de creación de la última caracteristica del servicio
+  *                         creada en la renovación de licencia con respecto a la fecha actual. se agrega validación de dicha variable con respecto al
+  *                         número de meses parametrizado para realizar la renovación.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.4 20-03-2023 Se agrega uso de llamada a funci�n CEIL debido a problemas de decimales al calcular el tiempo en meses  con respecto 
-  *                         a la ultima fecha creaci�n de caracteristica de renovaci�n.
+  * @version 1.4 20-03-2023 Se agrega uso de llamada a función CEIL debido a problemas de decimales al calcular el tiempo en meses  con respecto 
+  *                         a la ultima fecha creación de caracteristica de renovación.
   */      
   PROCEDURE P_RENOVAR_LICOFFICE365(Pv_PrefijoEmpresa  IN VARCHAR2,
 		                   Pv_EmpresaCod      IN VARCHAR2,
@@ -121,7 +121,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_LICENCIAOFFICE365 AS
       AND   AP.ESTADO                =  Cv_Estado
       AND   AC.ESTADO                =  Cv_Estado
       AND   APC.ESTADO               =  Cv_Estado;
-    -- Cursor que obtiene el n�mero de meses desde la fecha de creaci�n de la caracter�stica con respecto a la fecha actual.
+    -- Cursor que obtiene el número de meses desde la fecha de creación de la característica con respecto a la fecha actual.
     CURSOR C_GET_NUM_MESES_ULT_REN(Cn_IdServicio NUMBER, Cv_Caracteristica VARCHAR2) IS
 
       SELECT CEIL(ROUND(MONTHS_BETWEEN((SYSDATE-1),ISC.FE_CREACION),2))
@@ -209,7 +209,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_LICENCIAOFFICE365 AS
             INTO Ln_NumMesesUltRenovacion;
          CLOSE C_GET_NUM_MESES_ULT_REN;
          IF Ln_NumMesesUltRenovacion >= Ln_NumMesesActivo THEN
-            /* Se arma el json que ser� enviado al web service. */
+            /* Se arma el json que seré enviado al web service. */
             Lcl_Json := '{ "data":{"prefijoEmpresa":"prefijoWS","empresaId":"empresaWS",';
             Lcl_Json := Lcl_Json ||'"usuarioCreacion":"userWS","ip":"ipWS","servicioId":"servicioIdWS","accion":"accionWS"},';
             Lcl_Json := Lcl_Json ||'"op":"opWS"}';

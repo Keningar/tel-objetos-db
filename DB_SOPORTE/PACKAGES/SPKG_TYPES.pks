@@ -4,7 +4,7 @@ AS
   * Documentacion para el PKG SPKG_TYPES
   * El PKG BFNKG_TYPES contendra las variables que sean necesarias a usar en los PKG de consultas o transacciones
   * separando procedimientos y funciones de las declaraciones de variables
-  * @author Andr�s Montero <amontero@telconet.ec>
+  * @author Andres Montero <amontero@telconet.ec>
   * @version 1.0 20-04-2018
   */
 --
@@ -40,9 +40,9 @@ AS
   TYPE arr_estadoscasotarea IS TABLE OF Lr_EstadosCasoTarea INDEX BY binary_integer;
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoCreaActividad'.
+  * Documentación para TYPE 'Lr_InfoCreaActividad'.
   *
-  * Tipo de datos para la informaci�n necesaria para crear una actividad
+  * Tipo de datos para la información necesaria para crear una actividad
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 30-09-2021
@@ -187,7 +187,7 @@ AS
   );
 
   /*
-   * Documentacion para TYPE 'Ltr_Tarea'|.
+   * Documentacion para TYPE 'Ltr_Tarea'.
    * Record que me permite obtener los registros de tareas
    * @author David De La Cruz <ddelacruz@telconet.ec>
    * @version 1.0

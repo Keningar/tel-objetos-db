@@ -1,34 +1,34 @@
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRKG_KONIBIT AS 
   
   /**
-   * Documentaci�n para EXKG_MD_CONSULTAS
-   * Paquete que contiene procesos de tipo consulta, que usar� la empresa de MEGADATOS
+   * Documentación para EXKG_MD_CONSULTAS
+   * Paquete que contiene procesos de tipo consulta, que usará la empresa de MEGADATOS
    * 
-   * @author Jos� Bed�n S�nchez <jobedon@telconet.ec>
+   * @author José Bedón Sánchez <jobedon@telconet.ec>
    * @version 1.0 19/10/2019
    */
    
   /**
-   * Documentaci�n para P_ENVIA_NOTIFICACION
+   * Documentación para P_ENVIA_NOTIFICACION
    * Procedimiento que se encarga del envio de notificaciones a Konibit, cuando
    * un servicio que contiene un plan con producto konibit o producto adicional
    * konibit cuando este se active, cancele, corte, reactive, o se realice un cambio
    * de plan
    *
-   * @author Jos� Bed�n S�nchez <jobedon@telconet.ec>
+   * @author José Bedón Sánchez <jobedon@telconet.ec>
    * @version 1.0 25/11/2019
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.1 20/04/2022 - Se valida el estado de las relaciones de los cantones y jurisdicciones
    * 
    * @author Jessenia Piloso <jpiloso@telconet.ec>
-   * @version 1.2 18/07/2022 - Se mejora la validaci�n de respuesta del MIDDLEWARE de productos Konibit
+   * @version 1.2 18/07/2022 - Se mejora la validación de respuesta del MIDDLEWARE de productos Konibit
    *
    * @param Pn_idServicio  IN NUMBER   Id del Servicio
    * @param Pv_tipoProceso IN VARCHAR2 Tipo de Proceso: ACTIVAR, CORTAR, RECONECTAR, CAMBIOPLAN, CANCELAR
    * @param Pv_tipoTrx     IN VARCHAR2 Tipo de TRansaccion : INDIVIDIAL O MASIVA
    * @param Pv_usrCreacion IN VARCHAR2 Usuario que realiza la transaccion
-   * @param Pv_ipCreacion  IN VARCHAR2 Ip del usuario que realiza la transacci�n
+   * @param Pv_ipCreacion  IN VARCHAR2 Ip del usuario que realiza la transacción
    * 
    */
   PROCEDURE P_ENVIA_NOTIFICACION(Pn_idServicio  IN NUMBER,
@@ -39,10 +39,10 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRKG_KONIBIT AS
                                   Pv_error       OUT VARCHAR2);
                                   
   /**
-   * Documentaci�n para F_SERVICIO_TIENE_CARAC
-   * Funci�n que valida que un servicio tenga producto adicional KONIBIT
+   * Documentación para F_SERVICIO_TIENE_CARAC
+   * Función que valida que un servicio tenga producto adicional KONIBIT
    *
-   * @author Jos� Bed�n S�nchez <jobedon@telconet.ec>
+   * @author José Bedón Sánchez <jobedon@telconet.ec>
    * @version 1.0 25/11/2019
    *
    * @param Pn_idServicio     IN NUMBER   Id del Servicio a validar
@@ -56,10 +56,10 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRKG_KONIBIT AS
   RETURN BOOLEAN;
   
   /**
-   * Documentaci�n para F_PLAN_TIENE_CARAC
-   * Funci�n que valida que un plan tenga producto KONIBIT
+   * Documentación para F_PLAN_TIENE_CARAC
+   * Función que valida que un plan tenga producto KONIBIT
    *
-   * @author Jos� Bed�n S�nchez <jobedon@telconet.ec>
+   * @author José Bedón Sánchez <jobedon@telconet.ec>
    * @version 1.0 25/11/2019
    *
    * @param Pn_idServicio     IN NUMBER   Id del Servicio a validar
@@ -73,10 +73,10 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRKG_KONIBIT AS
   RETURN BOOLEAN;
   
   /**
-   * Documentaci�n para F_OBTIENE_CONTACT_CUENTA
-   * Funci�n que obtiene los contactos de un cliente
+   * Documentación para F_OBTIENE_CONTACT_CUENTA
+   * Función que obtiene los contactos de un cliente
    *
-   * @author Jos� Bed�n S�nchez <jobedon@telconet.ec>
+   * @author José Bedón Sánchez <jobedon@telconet.ec>
    * @version 1.0 25/11/2019
    *
    * @param Pn_idPersonaRol  IN NUMBER   Id Empresa Rol del Cliente
@@ -90,16 +90,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRKG_KONIBIT AS
   RETURN VARCHAR2;
   
   /**
-   * Documentaci�n para F_OBTIENE_CICLO_CUENTA
-   * Funci�n que obtiene el cliclo de facturaci�n de un cliente
+   * Documentación para F_OBTIENE_CICLO_CUENTA
+   * Función que obtiene el cliclo de facturación de un cliente
    *
-   * @author Jos� Bed�n S�nchez <jobedon@telconet.ec>
+   * @author José Bedón Sánchez <jobedon@telconet.ec>
    * @version 1.0 25/11/2019
    *
    * @param Pn_idPersonaRol  IN NUMBER   Id Empresa Rol del Cliente
    * @param Pv_caracteristica IN VARCHAR2 Caracteristica a evaluar "CICLO_FACTURACION"
    *
-   * @return VARCHAR2 Ciclo de Facturaci�n del Cliente
+   * @return VARCHAR2 Ciclo de Facturación del Cliente
    *
    */
   FUNCTION F_OBTIENE_CICLO_CUENTA(Pn_idPersonaRol   IN NUMBER,
@@ -124,7 +124,6 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INFRKG_KONIBIT AS
   
 END INFRKG_KONIBIT;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INFRKG_KONIBIT
 AS
@@ -379,7 +378,7 @@ AS
     
     APEX_JSON.OPEN_ARRAY('puntos');
     
-    -- Recupero informaci�n del Punto donde se encuentra el servicio
+    -- Recupero información del Punto donde se encuentra el servicio
     FOR Lc_punto IN C_OBTIENE_PUNTOS_POR_CTA(Lc_infoBasica.ID_PERSONA_ROL, Pn_idServicio)
     LOOP
       APEX_JSON.OPEN_OBJECT;
@@ -400,7 +399,7 @@ AS
       
       APEX_JSON.OPEN_ARRAY('servicios');
       
-      -- Recupero informaci�n de los Servicios que contiene el servicio
+      -- Recupero información de los Servicios que contiene el servicio
       FOR Lc_servicio IN C_SERVICIOS_POR_PUNTO(Lc_punto.ID_PUNTO, Pn_idServicio)
       LOOP
         APEX_JSON.OPEN_OBJECT;
@@ -461,7 +460,7 @@ AS
     
     IF Lv_Error IS NOT NULL THEN
       Lv_estado := 'ERROR';
-      Pv_error := 'No se ha podido realizar la activaci�n de konibit';
+      Pv_error := 'No se ha podido realizar la activación de konibit';
     ELSE
       APEX_JSON.PARSE(Lcl_Respuesta);
       Lv_estado := APEX_JSON.GET_VARCHAR2('status');
@@ -849,4 +848,3 @@ AS
   
 END INFRKG_KONIBIT;
 /
-

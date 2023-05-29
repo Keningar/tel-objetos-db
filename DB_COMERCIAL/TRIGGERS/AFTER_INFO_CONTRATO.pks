@@ -85,17 +85,17 @@ BEGIN
         FETCH C_GetEmpresa INTO Lv_EmpresaCod;
         CLOSE C_GetEmpresa;
 
-        --Se verifica que la empresa aplique al flujo de facturaci�n de instalaci�n.
+        --Se verifica que la empresa aplique al flujo de facturación de instalación.
         IF 'S' <> DB_GENERAL.GNRLPCK_UTIL.F_EMPRESA_APLICA_PROCESO('FACTURACION_INSTALACION_PUNTOS_ADICIONALES', Lv_EmpresaCod) THEN
             RAISE Le_NoAplicaFlujo;
         END IF;
 
-        --Se obtiene la caracter�stica relacionada al contrato seg�n su origen.
+        --Se obtiene la característica relacionada al contrato según su origen.
         OPEN  C_GetCaractXOrigen(Cv_Origen => NVL(:NEW.ORIGEN, 'WEB'));
         FETCH C_GetCaractXOrigen INTO Ln_CaractContrato, Lv_UsrCreacion;
         CLOSE C_GetCaractXOrigen;
 
-        --Se regularizan las facturas creadas con un origen espec�fico.
+        --Se regularizan las facturas creadas con un origen específico.
         FOR Lr_Facturas IN C_GetFacturasInstalacion(Cn_PersonaEmpresaRolId => :NEW.PERSONA_EMPRESA_ROL_ID,
                                                     Cv_Origen              => NVL(:NEW.ORIGEN, 'WEB'))
         LOOP
@@ -107,7 +107,7 @@ BEGIN
                 RAISE Le_Exception;
             END IF;
 
-            --Se actualiza la caracter�stica de la factura por el nuevo origen del contrato.
+            --Se actualiza la característica de la factura por el nuevo origen del contrato.
             Lr_InfoDocumentoCaract                             := NULL;
             Lr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA := Lr_Facturas.ID_DOCUMENTO_CARACTERISTICA;
             Lr_InfoDocumentoCaract.CARACTERISTICA_ID           := Ln_CaractContrato;
@@ -120,14 +120,14 @@ BEGIN
                 RAISE Le_Exception;
             END IF;
 
-            --Inserta el historial de regularizaci�n.
+            --Inserta el historial de regularización.
             Lr_InfoDocumentoHistorial                        := NULL;
             Lr_InfoDocumentoHistorial.ID_DOCUMENTO_HISTORIAL := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
             Lr_InfoDocumentoHistorial.DOCUMENTO_ID           := Lr_Facturas.ID_DOCUMENTO;
             Lr_InfoDocumentoHistorial.FE_CREACION            := SYSDATE;
             Lr_InfoDocumentoHistorial.USR_CREACION           := Lv_UsrCreacion;
             Lr_InfoDocumentoHistorial.ESTADO                 := Lr_Facturas.ESTADO_IMPRESION_FACT;
-            Lr_InfoDocumentoHistorial.OBSERVACION            := 'Regularizaci�n de facturas de instalaci�n: Se actualiza caracter�stica por origen '
+            Lr_InfoDocumentoHistorial.OBSERVACION            := 'Regularización de facturas de instalación: Se actualiza característica por origen '
                                                                 || NVL(:NEW.ORIGEN, 'WEB');
             DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_Mensaje);
             IF Lv_Mensaje IS NOT NULL THEN

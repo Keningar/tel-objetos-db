@@ -4,7 +4,7 @@ CREATE OR REPLACE package NAF47_TNET.MPK_MIGRA_NAF_FORMA_FAP25006 is
   -- Created : 23/02/2023 11:40:12
   -- Purpose :
 
-    procedure GCP_FAP25006_POSTQUERY_UNO(
+procedure GCP_FAP25006_POSTQUERY_UNO(
 pv_nosolic_origen              in         TAPORDEE.nosolic_origen%type,
 pv_Moneda                      in         TAPORDEE.Moneda%type,
 pv_No_Cia                      in         TAPORDEE.No_Cia%type,
@@ -149,7 +149,6 @@ end MPK_MIGRA_NAF_FORMA_FAP25006;
 /
 
 CREATE OR REPLACE package body NAF47_TNET.MPK_MIGRA_NAF_FORMA_FAP25006 is
-
 
 procedure GCP_FAP25006_POSTQUERY_UNO(
 pv_nosolic_origen              in         TAPORDEE.nosolic_origen%type,
@@ -308,10 +307,10 @@ begin
               pv_desc_bodega := Lv_DescBodega;
               EXCEPTION
                 WHEN NO_DATA_FOUND THEN
-                  --MESSAGE('La bodega del centro de distribuci�n Matriz, no est� definida en inventario');
+                  --MESSAGE('La bodega del centro de distribución Matriz, no está definida en inventario');
                   --SYNCHRONIZE;
                   --RAISE FORM_TRIGGER_FAILURE;
-                  lv_error:='La bodega del centro de distribuci�n Matriz, no est� definida en inventario';
+                  lv_error:='La bodega del centro de distribución Matriz, no está definida en inventario';
                   --RAISE le_error;
             END;
          --Fin
@@ -415,7 +414,7 @@ begin
      CLOSE C_LeeSecuencia;
   END IF; 
 
-  -- Determina el tipo de cambio de la orden seg�n el proveedor
+  -- Determina el tipo de cambio de la orden según el proveedor
   vReg_prove    := proveedor.trae_datos(pv_No_Cia, pv_no_prove );
   Lv_Moneda_lim := vReg_prove.moneda_limite;   
 
@@ -606,9 +605,9 @@ BEGIN
     --
     IF :UNO.ADJUDICADOR = NVL(Lv_IdGerenteGer,'X') OR NVL(:UNO.PEDIDO_DETALLE_ID,0) != 0 THEN
       PU_P_IMPRIME_OC_AUTORIZADA;
-      PROCESO_CONCLUIDO('Orden Compra '||:uno.no_orden||' fue autorizada con �xito'); 
+      PROCESO_CONCLUIDO('Orden Compra '||:uno.no_orden||' fue autorizada con éxito'); 
     ELSE
-    	PROCESO_CONCLUIDO('Orden Compra '||:uno.no_orden||' se envi� a autorizar con �xito');
+    	PROCESO_CONCLUIDO('Orden Compra '||:uno.no_orden||' se envió a autorizar con éxito');
     END IF;
     --
     GO_BLOCK('UNO');
@@ -733,7 +732,7 @@ begin
   OPEN C_TIPO_DIST_DEFAULT;
   FETCH C_TIPO_DIST_DEFAULT INTO pv_TIPO_DISTRIBUCION_COSTO;--:UNO.TIPO_DISTRIBUCION_COSTO;
   IF C_TIPO_DIST_DEFAULT%NOTFOUND THEN
-    Lv_MensajeError := 'No se ha definido tipo de distribuci�n costos ['||pp_TIPO_DISTRIBUCION_COSTO||'] dentro del parametro ['||pp_CONTROL_PRESUPUESTO||'] para la empresa '||pv_No_Cia;
+    Lv_MensajeError := 'No se ha definido tipo de distribución costos ['||pp_TIPO_DISTRIBUCION_COSTO||'] dentro del parametro ['||pp_CONTROL_PRESUPUESTO||'] para la empresa '||pv_No_Cia;
     RAISE Le_Error;
   END IF;
   CLOSE C_TIPO_DIST_DEFAULT;
@@ -912,7 +911,7 @@ PROCEDURE PU_REG_EMPLEADO (Pv_IdEmpresa    IN VARCHAR2,
     Le_Error EXCEPTION;
   BEGIN
     IF Pv_IdEmpresa IS NULL THEN
-      Pv_MensajeError := 'El c�digo de Empresa no puede ser Vacio.';
+      Pv_MensajeError := 'El código de Empresa no puede ser Vacio.';
       RAISE Le_Error;
     END IF;
     --
@@ -979,11 +978,11 @@ PROCEDURE PU_REG_EMPLEADO (Pv_IdEmpresa    IN VARCHAR2,
 
   BEGIN
     IF Pv_IdEmpresa IS NULL THEN
-      Pv_MensajeError := 'El c�digo de la empresa no puede ser nulo.';
+      Pv_MensajeError := 'El código de la empresa no puede ser nulo.';
       RAISE Le_Error;
     END IF;
     IF Pv_IdEmpleado IS NULL THEN
-      Pv_MensajeError := 'El c�digo del empleado no puede ser nulo.';
+      Pv_MensajeError := 'El código del empleado no puede ser nulo.';
       RAISE Le_Error;
     END IF;
     --

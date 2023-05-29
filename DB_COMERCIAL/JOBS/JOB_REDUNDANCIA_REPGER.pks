@@ -14,7 +14,7 @@ job_type=>'PLSQL_BLOCK', job_action=>
 						WHERE apc.NOMBRE_PARAMETRO = ''REPORTES_GENERADOS''
 							AND apd.VALOR1 = to_char(sysdate, ''DD'')   -- Dia
 							AND apd.VALOR2 = to_char(sysdate, ''MM'')   -- Mes
-							AND apd.VALOR3 = to_char(sysdate, ''YYYY'') -- A�o
+							AND apd.VALOR3 = to_char(sysdate, ''YYYY'') -- Año
 						ORDER BY apd.FE_CREACION DESC;	
 					
 					-- No hay problema con comprobar de esta forma porque siempre se generan ambos reportes
@@ -48,7 +48,7 @@ start_date=>TO_TIMESTAMP_TZ('21-JAN-2023 02.00.00.000000000 AM -05:00','DD-MON-R
 job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
 'Comprueba que se haya generado el reporte correspondiente a la fecha actual, si no, reintenta generarlo y subirlo.'
 );
-sys.dbms_scheduler.set_attribute('"JOB_REDUNDANCIA_REPGER"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY=''�'' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY=''�'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
+sys.dbms_scheduler.set_attribute('"JOB_REDUNDANCIA_REPGER"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY='''' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY='''' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
 dbms_scheduler.set_attribute('"JOB_REDUNDANCIA_REPGER"','logging_level',DBMS_SCHEDULER.LOGGING_FULL);
 dbms_scheduler.enable('"JOB_REDUNDANCIA_REPGER"');
 COMMIT; 

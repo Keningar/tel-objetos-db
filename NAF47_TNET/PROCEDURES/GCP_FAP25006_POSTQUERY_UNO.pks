@@ -136,10 +136,10 @@ begin
               pv_desc_bodega := Lv_DescBodega;  
               EXCEPTION 
                 WHEN NO_DATA_FOUND THEN
-                  --MESSAGE('La bodega del centro de distribuci�n Matriz, no est� definida en inventario');
+                  --MESSAGE('La bodega del centro de distribución Matriz, no está definida en inventario');
                   --SYNCHRONIZE;
                   --RAISE FORM_TRIGGER_FAILURE;
-                  lv_error:='La bodega del centro de distribuci�n Matriz, no est� definida en inventario';
+                  lv_error:='La bodega del centro de distribución Matriz, no está definida en inventario';
                   RAISE le_error;
             END;           
          --Fin

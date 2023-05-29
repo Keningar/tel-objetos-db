@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE NAF47_TNET.CC_TRX_PORTAL IS
 
-  -- Author  : EDGAR MU�OZ AZUERO
+  -- Author  : EDGAR MUñOZ AZUERO
   -- Created : 06/07/2020 09:42:23
   -- Purpose : Procesos generados desde el Portal de Security Data
 
@@ -886,7 +886,7 @@ BEGIN
         
    --      UTL_MAIL.send ('dba@telconet.ec','jfmartinez@telconet.ec, sfernandez@telconet.ec',NULL, NULL, '4.- Cc_Trx_Portal.p_Inserta_Arccmd '||to_char(sysdate,'dd/mm/yyyy hh24:mi:ss'));       
         -----------------------------------------------
-        --4.- Registra la nota de cr�dito en ARCCMD 
+        --4.- Registra la nota de crédito en ARCCMD 
         -----------------------------------------------              
         Cc_Trx_Portal.p_Inserta_Arccmd(Pv_No_Cia          => Lc_Fac.No_Cia,
                                        Pv_Centro          => Lc_Fac.Centro,
@@ -1255,7 +1255,7 @@ BEGIN
                                      Pd_Fecha        => Lc_centro.Dia_Proceso,
                                      Pv_No_Fisico    => Ln_No_Docu_Inv, 
                                      Pv_Serie_Fisico => '0',
-                                     Pv_Observ1      => 'Ingreso Generado por Anulaci�n de Factura, trans. # '||Lc_cab_inv.No_Factu,
+                                     Pv_Observ1      => 'Ingreso Generado por Anulación de Factura, trans. # '||Lc_cab_inv.No_Factu,
                                      Pv_Tipo_Refe    => Lc_cab_inv.Tipo_Doc,
                                      Pv_No_Refe      => Lc_cab_inv.No_Factu,
                                      Pv_Serie_Refe   => Lc_cab_inv.Serie_Fisico,

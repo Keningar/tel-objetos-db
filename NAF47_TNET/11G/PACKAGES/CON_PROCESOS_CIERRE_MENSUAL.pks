@@ -20,25 +20,25 @@ CREATE OR REPLACE package NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
                            pmsg_error  IN OUT varchar2);
 
   PROCEDURE inicia_ctas(pCia            Varchar2,
-                        pAno_Cierre     Number, -- A�o y Mes que se esta cerrando
+                        pAno_Cierre     Number, -- Año y Mes que se esta cerrando
                         pMes_Cierre     Number,
-                        pAno_Nuevo      Number, -- A�o y Mes que se debe inicializar
+                        pAno_Nuevo      Number, -- Año y Mes que se debe inicializar
                         pMes_Nuevo      Number,
                         pCierre_Periodo Number -- Mes en que se hace el cierre fiscal
                         );
 
   PROCEDURE inicia_ctas_cc(pCia            Varchar2,
-                           pAno_Cierre     Number, -- A�o y Mes que se esta cerrando
+                           pAno_Cierre     Number, -- Año y Mes que se esta cerrando
                            pMes_Cierre     Number,
-                           pAno_Nuevo      Number, -- A�o y Mes que se debe inicializar
+                           pAno_Nuevo      Number, -- Año y Mes que se debe inicializar
                            pMes_Nuevo      Number,
                            pCierre_Periodo Number -- Mes en que se hace el cierre fiscal
                            );
 
   PROCEDURE inicia_ctas_tercero(pCia            Varchar2,
-                                pAno_Cierre     Number, -- A�o y Mes que se esta cerrando
+                                pAno_Cierre     Number, -- Año y Mes que se esta cerrando
                                 pMes_Cierre     Number,
-                                pAno_Nuevo      Number, -- A�o y Mes que se debe inicializar
+                                pAno_Nuevo      Number, -- Año y Mes que se debe inicializar
                                 pMes_Nuevo      Number,
                                 pCierre_Periodo Number -- Mes en que se hace el cierre fiscal
                                 );
@@ -55,7 +55,7 @@ CREATE OR REPLACE package NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
 end CON_PROCESOS_CIERRE_MENSUAL;
 /
 
-CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
+CREATE OR REPLACE package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
 
   procedure cierra_contab(pno_cia     IN varchar2,
                           pano        IN number,
@@ -246,8 +246,8 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
                         pMes_Cierre);
     --
     IF pmes != pmes_cierre THEN
-      -- Si la compa��a no entra a cierre anual, actualiza las utilidades para el 
-      -- nuevo a�o y mes de proceso
+      -- Si la compañia no entra a cierre anual, actualiza las utilidades para el 
+      -- nuevo año y mes de proceso
       --
       CGcalcula_utilidades(pno_cia, vnuevo_ano, vnuevo_mes, pmsg_error);
       if pmsg_error is not null then
@@ -302,9 +302,9 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
   end cierra_centros;
 
   PROCEDURE inicia_ctas(pCia            Varchar2,
-                        pAno_Cierre     Number, -- A�o y Mes que se esta cerrando
+                        pAno_Cierre     Number, -- Año y Mes que se esta cerrando
                         pMes_Cierre     Number,
-                        pAno_Nuevo      Number, -- A�o y Mes que se debe inicializar
+                        pAno_Nuevo      Number, -- Año y Mes que se debe inicializar
                         pMes_Nuevo      Number,
                         pCierre_Periodo Number -- Mes en que se hace el cierre fiscal
                         ) IS
@@ -328,7 +328,7 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
       IF pMes_Cierre = pCierre_Periodo THEN
       
         -- Se inicializan las cuentas de Resultados en cero, al iniciar un nuevo
-        -- per�odo contable
+        -- periodo contable
       
         Update NAF47_TNET.ARCGHC
            Set Saldo     = decode(cta.clase,
@@ -397,9 +397,9 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
   END inicia_ctas;
 
   PROCEDURE inicia_ctas_cc(pCia            Varchar2,
-                           pAno_Cierre     Number, -- A�o y Mes que se esta cerrando
+                           pAno_Cierre     Number, -- Año y Mes que se esta cerrando
                            pMes_Cierre     Number,
-                           pAno_Nuevo      Number, -- A�o y Mes que se debe inicializar
+                           pAno_Nuevo      Number, -- Año y Mes que se debe inicializar
                            pMes_Nuevo      Number,
                            pCierre_Periodo Number -- Mes en que se hace el cierre fiscal
                            ) IS
@@ -430,7 +430,7 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
       IF pMes_Cierre = pCierre_Periodo THEN
       
         -- Se inicializan las cuentas de Resultados en cero, al iniciar un nuevo
-        -- per�odo contable
+        -- periodo contable
       
         Update NAF47_TNET.ARCGHC_c
            Set Saldo     = decode(cta.clase,
@@ -529,9 +529,9 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
   END;
 
   PROCEDURE inicia_ctas_tercero(pCia            Varchar2,
-                                pAno_Cierre     Number, -- A�o y Mes que se esta cerrando
+                                pAno_Cierre     Number, -- Año y Mes que se esta cerrando
                                 pMes_Cierre     Number,
-                                pAno_Nuevo      Number, -- A�o y Mes que se debe inicializar
+                                pAno_Nuevo      Number, -- Año y Mes que se debe inicializar
                                 pMes_Nuevo      Number,
                                 pCierre_Periodo Number -- Mes en que se hace el cierre fiscal
                                 ) IS
@@ -544,7 +544,7 @@ CREATE or replace package body NAF47_TNET.CON_PROCESOS_CIERRE_MENSUAL is
   
     IF PMes_Cierre = pCierre_Periodo THEN
       -- Se inicializan las cuentas de Resultados en cero, al iniciar un nuevo
-      -- per�odo contable
+      -- periodo contable
     
       Insert into NAF47_TNET.arcghc_t
         (NO_CIA,

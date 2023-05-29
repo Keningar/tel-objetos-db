@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE NAF47_TNET.FAK_PROCESOS
+CREATE PACKAGE NAF47_TNET.FAK_PROCESOS
 IS
   -- Author  : SFERNANDEZ
   -- Created : 02/08/2016 14:01:48
@@ -1431,7 +1431,7 @@ IS
     END IF;
     CLOSE C_FACTURA;
     IF LXML_Factura                IS NOT NULL THEN
-      Pclob_XmlFactura             := REPLACE(REPLACE(LXML_Factura.GETCLOBVAL(), '�', 'n'), '�', 'N');
+      Pclob_XmlFactura             := REPLACE(REPLACE(LXML_Factura.GETCLOBVAL(), 'ñ', 'n'), 'Ñ', 'N');
       IF Lr_Factura.Numero_Envio_Sri= 0 THEN
         Lv_NombreArchivo           := 'FACTURA_'|| Lr_Factura.Establecimiento ||'-'|| Lr_Factura.PuntoEmision ||'-'|| Lr_Factura.Secuencia ||'.xml';
       ELSE
@@ -1455,7 +1455,7 @@ IS
         RAISE Le_ErrorXml;
       END IF;
       Pv_Salida := '200';
-      Pv_Mensaje:= 'Transacci�n Realizada Correctamente';
+      Pv_Mensaje:= 'Transacción Realizada Correctamente';
     ELSE
       Lv_MensajeError:= 'LXML_Factura Vacio';
       RAISE Le_ErrorXml;
@@ -1491,7 +1491,7 @@ IS
 * @author Sofia Fernandez <sfernandez@telconet.ec>
 * @version 1.0 26-09-2016
 * @author Sofia Fernandez <sfernandez@telconet.ec>
-* @version 1.1 24-10-2016 Se elimina la variable Lr_Transaccion debido a que no se est� utilizando
+* @version 1.1 24-10-2016 Se elimina la variable Lr_Transaccion debido a que no se está utilizando
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.2 30-12-2016 Se modifica query principal agregar comillas simples al filtro del campo ESTADO_SRI porque es Texto 
 */

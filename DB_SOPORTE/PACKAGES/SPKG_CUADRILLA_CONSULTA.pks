@@ -1,9 +1,9 @@
 CREATE OR REPLACE package DB_SOPORTE.SPKG_CUADRILLA_CONSULTA IS
 
       /**
-  * Documentaci�n para el procedimiento P_EMPLEADO_CUADRILLA
+  * Documentación para el procedimiento P_EMPLEADO_CUADRILLA
   *
-  * M�todo encargado de buscar empleados por cuadrilla
+  * Método encargado de buscar empleados por cuadrilla
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -12,9 +12,9 @@ CREATE OR REPLACE package DB_SOPORTE.SPKG_CUADRILLA_CONSULTA IS
   *   nombreCuadrilla         := nombre de la cuadrilla
   *   nombreDepartamento      := nombre del departamento
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
   *
   * @author Ivan Mata <imata@telconet.ec>
   * @version 1.0 23-09-2020
@@ -26,18 +26,18 @@ CREATE OR REPLACE package DB_SOPORTE.SPKG_CUADRILLA_CONSULTA IS
                                  
                
   /**
-  * Documentaci�n para el procedimiento P_LISTADO_CUADRILLAS
+  * Documentación para el procedimiento P_LISTADO_CUADRILLAS
   *
-  * M�todo que retorna el listado de cuadrillas.
+  * Método que retorna el listado de cuadrillas.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   empresaCod         := id de la empresa
   *   nombreDpto         := nombre del departamento
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
   *
   * @author Ivan Mata <imata@telconet.ec>
   * @version 1.0 20-10-2020
@@ -49,6 +49,7 @@ CREATE OR REPLACE package DB_SOPORTE.SPKG_CUADRILLA_CONSULTA IS
                               
 END SPKG_CUADRILLA_CONSULTA;
 /
+
 CREATE OR REPLACE package body DB_SOPORTE.SPKG_CUADRILLA_CONSULTA is
 
   PROCEDURE P_EMPLEADO_CUADRILLA(Pcl_Request  IN  CLOB,
@@ -82,12 +83,12 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_CUADRILLA_CONSULTA is
     
     
     IF Lv_EmpresaCod IS NULL THEN
-       Pv_Mensaje := 'El par�metro empresaCod est� vac�o';
+       Pv_Mensaje := 'El parámetro empresaCod está vacío';
        RAISE Le_Errors;
     END IF;
     
     IF Lv_NombreDepartamento IS NULL THEN
-       Pv_Mensaje := 'El par�metro nombreDpto est� vac�o';
+       Pv_Mensaje := 'El parámetro nombreDpto está vacío';
        RAISE Le_Errors;
     END IF;
   
@@ -130,7 +131,7 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_CUADRILLA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacci�n exitosa';
+    Pv_Mensaje    := 'Transacción exitosa';
   
   EXCEPTION
     WHEN Le_Errors THEN
@@ -167,12 +168,12 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_CUADRILLA_CONSULTA is
     
   
     IF Lv_EmpresaCod IS NULL THEN
-       Pv_Mensaje := 'El par�metro empresaCod est� vac�o';
+       Pv_Mensaje := 'El parámetro empresaCod está vacío';
        RAISE Le_Errors;
     END IF;
     
     IF Lv_NombreDepartamento IS NULL THEN
-       Pv_Mensaje := 'El par�metro nombreDpto est� vac�o';
+       Pv_Mensaje := 'El parámetro nombreDpto está vacío';
        RAISE Le_Errors;
     END IF;
     
@@ -191,7 +192,7 @@ CREATE OR REPLACE package body DB_SOPORTE.SPKG_CUADRILLA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacci�n exitosa';
+    Pv_Mensaje    := 'Transacción exitosa';
   
   EXCEPTION
     WHEN Le_Errors THEN

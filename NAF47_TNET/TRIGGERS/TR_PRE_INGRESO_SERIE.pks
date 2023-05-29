@@ -4,7 +4,7 @@ CREATE OR REPLACE TRIGGER NAF47_TNET.TR_PRE_INGRESO_SERIE
 /**
  * Documentacion para TR_PRE_INGRESO_SERIE
  * Trigger que genera secuencia antes de realizar insert de registro, se crea con el fin de evitar
- * modificar los procesos para agregar la asignaci�n de nuevo PK de esta tabla.
+ * modificar los procesos para agregar la asignacion de nuevo PK de esta tabla.
  * 
  * @author llindao <llindao@telconet.ec>
  * @version 1.0 09/04/2019

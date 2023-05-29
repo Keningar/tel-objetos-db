@@ -1,12 +1,13 @@
+
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONSULTA_CLIENTE AS
     -- Author  : David De La Cruz <ddelacruz@telconet.ec>
     -- Created : 21/10/2022
-    -- Purpose : Paquete general de consultas sobre informaci�n de clientes
+    -- Purpose : Paquete general de consultas sobre información de clientes
 
    /**
-    * Documentaci�n para el procedimiento P_CONSULTA_VENDEDOR_CLIENTE
+    * Documentación para el procedimiento P_CONSULTA_VENDEDOR_CLIENTE
     *
-    * M�todo encargado de retornar el vendedor asignado a un cliente
+    * Método encargado de retornar el vendedor asignado a un cliente
     *
     * @param Pcl_Request    IN   CLOB Recibe json request
     * [
@@ -14,9 +15,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONSULTA_CLIENTE AS
     *   codEmpresa          := Codigo de empresa Defaul '10',
     *   idPersonaEmpresRol  := Id persona empresa rol del cliente
     * ]
-    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-    * @param Pcl_Response   OUT  CLOB Retorna datos de la transacci�n
+    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+    * @param Pcl_Response   OUT  CLOB Retorna datos de la transacción
     *
     * @author David De La Cruz <ddelacruz@telconet.ec>
     * @version 1.0 21-10-2022

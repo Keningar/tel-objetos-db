@@ -45,12 +45,12 @@ AS
   *
   * @param Pn_IdServicio                   IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Recibe el id del servicio
   * @param Pn_IdProducto                   IN DB_COMERCIAL.ADMI_PRODUCTO.ID_PRODUCTO%TYPE Recibe el id del producto
-  * @param Pv_EstadoAdmiProdCaract         IN DB_COMERCIAL.ADMI_PRODUCTO_CARACTERISTICA.ESTADO%TYPE Recibe el estado de la relaci�n entre el producto
-  *                                                                                                 y la caracter�stica
-  * @param Pv_DescripcionCaracteristica    IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Descripci�n de la caracter�stica
-  * @param Pv_ValorServicioProdCaract      IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE Valor de la caracter�stica asoaciada al servicio
-  * @param Pv_EstadoServicioProdCaract     IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ESTADO%TYPE Estado de la caracter�stica asoaciada al servicio
-  * @param Pv_UsrCreacion                  IN VARCHAR2 Usuario de creaci�n
+  * @param Pv_EstadoAdmiProdCaract         IN DB_COMERCIAL.ADMI_PRODUCTO_CARACTERISTICA.ESTADO%TYPE Recibe el estado de la relación entre el producto
+  *                                                                                                 y la característica
+  * @param Pv_DescripcionCaracteristica    IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Descripción de la característica
+  * @param Pv_ValorServicioProdCaract      IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE Valor de la característica asoaciada al servicio
+  * @param Pv_EstadoServicioProdCaract     IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ESTADO%TYPE Estado de la característica asoaciada al servicio
+  * @param Pv_UsrCreacion                  IN VARCHAR2 Usuario de creación
   * @param Pv_MsjError                     OUT VARCHAR2 Retorna un mensaje de error
   *
   */
@@ -66,18 +66,18 @@ AS
 
   /**
   * P_ELIMINA_SPC
-  * Procedimiento que elimina las caracter�sticas asociadas a un servicio
+  * Procedimiento que elimina las características asociadas a un servicio
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 14-01-2021
   *
-  * @param Pn_IdSpcUnicoPorActualizar   IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ID_SERVICIO_PROD_CARACT Recibe el id del registro que se actualizar�
+  * @param Pn_IdSpcUnicoPorActualizar   IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ID_SERVICIO_PROD_CARACT Recibe el id del registro que se actualizará
   * @param Pn_IdServicio                IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Recibe el id servicio
   * @param Pn_IdProducto                IN DB_COMERCIAL.ADMI_PRODUCTO.ID_PRODUCTO%TYPE Recibe el id producto
   * @param Pv_NombreTecnicoProducto     IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Recibe el id producto
-  * @param Pv_DescripcionCaracteristica IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Recibe el nombre t�cnico del producto
-  * @param Pv_SetValorSpc               IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE Valor que se actualizar� en el registro
-  * @param Pv_UsrUltMod                 IN VARCHAR2 Recibe el usuario que actualizar� el registro
+  * @param Pv_DescripcionCaracteristica IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Recibe el nombre técnico del producto
+  * @param Pv_SetValorSpc               IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE Valor que se actualizará en el registro
+  * @param Pv_UsrUltMod                 IN VARCHAR2 Recibe el usuario que actualizará el registro
   * @param Pv_Status                    OUT VARCHAR2 Retorna el estado del procedimiento
   * @param Pv_MsjError                  OUT VARCHAR2 Retorna el mensaje de salida
   *
@@ -95,7 +95,7 @@ AS
 
   /**
   * P_CREA_PM_REGULARIZA_SERVS
-  * Procedimiento que crea los registros de los servicios que pasar�n por un proceso de regularizaci�n de data t�cnica
+  * Procedimiento que crea los registros de los servicios que pasarán por un proceso de regularización de data técnica
   *
   * @param Pv_UsrCreacion   IN VARCHAR2 Recibe el usuario que crea el procesos masivo
   * @param Pv_Status        OUT VARCHAR2 Retorna el status del procedimiento
@@ -114,7 +114,7 @@ AS
   * P_NOTIF_CORREO_Y_SMS_PRODS_TV
   *
   * Procedimiento que notifica por correo o SMS las credenciales de los producto TV y agrega los contactos del punto en caso de que sea un plan 
-  * el que est� asociado al servicio
+  * el que esté asociado al servicio
   *
   * @param Pv_TipoNotif                  IN VARCHAR2 'CORREO' o 'SMS'
   * @param Pcl_Contenido                 IN CLOB Contenido a enviar ya sea en el correo o en el sms
@@ -146,13 +146,13 @@ AS
   /**
   * P_CREA_LOG_SERV_ADIC
   *
-  * Procedimiento para crear l�gicamente un servicio adicional
+  * Procedimiento para crear lógicamente un servicio adicional
   *
-  * @param Pr_InfoServicioInternet       IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_InfoServicioInternet Registro con la informaci�n del servicio de Internet
-  * @param Pr_InfoServicioProdAdicional  IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_InfoServicioProdAdicional Registro con la informaci�n del servicio 
+  * @param Pr_InfoServicioInternet       IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_InfoServicioInternet Registro con la información del servicio de Internet
+  * @param Pr_InfoServicioProdAdicional  IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_InfoServicioProdAdicional Registro con la información del servicio 
   *                                                                                                    adicional
-  * @param Pv_UsrCreacion                IN VARCHAR2 Usuario de creaci�n
-  * @param Pv_IpCreacion                 IN VARCHAR2 Ip de creaci�n
+  * @param Pv_UsrCreacion                IN VARCHAR2 Usuario de creación
+  * @param Pv_IpCreacion                 IN VARCHAR2 Ip de creación
   * @param Pv_Status                     OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError                   OUT VARCHAR2 Mensaje de error
   * @param Pn_IdServicioNuevo            OUT DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id de l servicio creado
@@ -173,16 +173,16 @@ AS
   /**
   * P_CANCEL_LOG_SERVS_ADIC
   *
-  * Procedimiento para crear l�gicamente un servicio adicional
+  * Procedimiento para crear lógicamente un servicio adicional
   *
   * @param Pn_IdPunto                  IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE Id del punto
-  * @param Pv_NombreTecnicoProducto    IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Nombre t�cnico del producto
-  * @param Pn_IdServicioUnicoACancelar IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id del �nico servicio a cancelar
+  * @param Pv_NombreTecnicoProducto    IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Nombre técnico del producto
+  * @param Pn_IdServicioUnicoACancelar IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id del único servicio a cancelar
   * @param Pn_IdServicioANoCancelar    IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id del servicio que no se debe cancelar
   * @param Pv_EstadoServicio           IN VARCHAR2 Estado del servicio
   * @param Pv_ProcesoEjecutante        IN VARCHAR2 Proceso que ejecuta el procedimiento
-  * @param Pv_ObsProcesoEjecutante     IN VARCHAR2 Observaci�n del proceso a ejecutar
-  * @param Pv_UsrCreacion              IN VARCHAR2 Usuario de creaci�n
+  * @param Pv_ObsProcesoEjecutante     IN VARCHAR2 Observación del proceso a ejecutar
+  * @param Pv_UsrCreacion              IN VARCHAR2 Usuario de creación
   * @param Pv_Status                   OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error
   *
@@ -207,13 +207,13 @@ AS
   *
   * Procedimiento para ejecutar el flujo de cambio de plan masivo para productos Paramount y Noggin
   *
-  * @param Pr_InfoServicioInternet IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_InfoServicioInternet Registro con la informaci�n del servicio de Internet
+  * @param Pr_InfoServicioInternet IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_InfoServicioInternet Registro con la información del servicio de Internet
   * @param Pn_IdPlanAnterior       IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE Id del plan anterior
   * @param Pn_IdPlanNuevo          IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE Id del plan nuevo
   * @param Pv_ProcesoEjecutante    IN VARCHAR2 Proceso que invoca al procedimiento
-  * @param Pv_ObsProcesoEjecutante IN VARCHAR2 Observaci�n del proceso ejecutante
-  * @param Pv_UsrCreacion          IN VARCHAR2 Usuario de creaci�n
-  * @param Pv_IpCreacion           IN VARCHAR2 Ip de creaci�n
+  * @param Pv_ObsProcesoEjecutante IN VARCHAR2 Observación del proceso ejecutante
+  * @param Pv_UsrCreacion          IN VARCHAR2 Usuario de creación
+  * @param Pv_IpCreacion           IN VARCHAR2 Ip de creación
   * @param Pv_Status               OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError             OUT VARCHAR2 Mensaje de error
   *
@@ -221,7 +221,7 @@ AS
   * @version 1.0 22-01-2021
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.1 02-08-2021 Se agrega la validaci�n del env�o de SMS por producto
+  * @version 1.1 02-08-2021 Se agrega la validación del envío de SMS por producto
   *
   */
   PROCEDURE P_EJECUTA_CPM_FLUJO_PRODS_TV(
@@ -245,9 +245,9 @@ AS
   * @param Pn_IdPlanAnterior        IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE Id del plan anterior
   * @param Pn_IdPlanNuevo           IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE Id del plan nuevo
   * @param Pv_ProcesoEjecutante     IN VARCHAR2 Proceso que ejecuta el procedimiento
-  * @param Pv_ObsProcesoEjecutante  IN VARCHAR2 Observaci�n por el proceso ejecutante
-  * @param Pv_UsrCreacion           IN VARCHAR2 Usuario de creaci�n
-  * @param Pv_IpCreacion            IN VARCHAR2 Ip de creaci�n
+  * @param Pv_ObsProcesoEjecutante  IN VARCHAR2 Observación por el proceso ejecutante
+  * @param Pv_UsrCreacion           IN VARCHAR2 Usuario de creación
+  * @param Pv_IpCreacion            IN VARCHAR2 Ip de creación
   * @param Pv_Status                OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError              OUT VARCHAR2 Mensaje de error
   *
@@ -274,19 +274,19 @@ AS
   *
   * Procedimiento para crear los registros para ejecutar un corte masivo
   *
-  * @param Pcl_JsonFiltrosBusqueda  IN CLOB  Filtros de b�squeda del corte masivo
+  * @param Pcl_JsonFiltrosBusqueda  IN CLOB  Filtros de búsqueda del corte masivo
   * @param Pv_PrefijoEmpresa        IN VARCHAR2 Prefijo de la empresa
-  * @param Pv_UsrCreacion           IN VARCHAR2 Usuario de creaci�n
-  * @param Pv_IpCreacion            IN VARCHAR2 Ip de creaci�n
+  * @param Pv_UsrCreacion           IN VARCHAR2 Usuario de creación
+  * @param Pv_IpCreacion            IN VARCHAR2 Ip de creación
   * @param Pv_Status                OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError              OUT VARCHAR2 Mensaje de error
-  * @param Pn_IdSolCortePorLotes    OUT NUMBER Id de la solicitud para ejecuci�n de corte masivo por lotes
+  * @param Pn_IdSolCortePorLotes    OUT NUMBER Id de la solicitud para ejecución de corte masivo por lotes
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 20-09-2021
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.1 26-09-2022  Se agrega actualizaci�n de estado a todos los detalles de pm y cabecera pm correspondiente
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.1 26-09-2022  Se agrega actualización de estado a todos los detalles de pm y cabecera pm correspondiente
   *
   * @author Jessenia Piloso <jpiloso@telconet.ec>
   * @version 1.8 07-03-2023     Se incluye validaciones para considerar a la empresa de Ecuanet en el proceso masivo de corte.
@@ -305,7 +305,7 @@ AS
   /**
   * P_EJECUTA_CORTE_MASIVO_X_LOTES
   *
-  * Procedimiento para ejecutar los procesos masivos por lotes de manera autom�tica
+  * Procedimiento para ejecutar los procesos masivos por lotes de manera automática
   *
   * @param Pv_Status    OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError  OUT VARCHAR2 Mensaje de error
@@ -327,7 +327,7 @@ AS
   /**
   * P_FIN_REGS_CORTE_MASIVO_XLOTES
   *
-  * Procedimiento para dar de baja de manera autom�tica todos los procesos de corte masivo por lotes  
+  * Procedimiento para dar de baja de manera automática todos los procesos de corte masivo por lotes  
   *
   * @param Pv_Status    OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError  OUT VARCHAR2 Mensaje de error
@@ -336,7 +336,7 @@ AS
   * @version 1.0 27-09-2021
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.1 25-03-2022 Se agrega validaci�n para dar de baja aquellos registros de solicitud y cabecera de procesos masivos que ya han ejecutado
+  * @version 1.1 25-03-2022 Se agrega validación para dar de baja aquellos registros de solicitud y cabecera de procesos masivos que ya han ejecutado
   *                         los detalles de dicho proceso masivo.
   *
   */
@@ -347,7 +347,7 @@ AS
   /**
   * P_FINALIZA_CORTE_MASIVO_XLOTES
   *
-  * Procedimiento que se ejecuta a las 7am del d�a siguiente al que se ejecuta un corte masivo por lotes 
+  * Procedimiento que se ejecuta a las 7am del día siguiente al que se ejecuta un corte masivo por lotes 
   *
   * @param Pv_Status    OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError  OUT VARCHAR2 Mensaje de error
@@ -365,8 +365,8 @@ AS
   *
   * Procedimiento que crea el archivo con el reporte de clientes que forman parte del corte masivo por lotes 
   *
-  * @param Pn_IdComunicacion    IN DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE Id de la tarea creada para revisi�n del reporte del corte
-  * @param Pn_IdDetalle         IN DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE Id del detalle al que est� asociado la tarea
+  * @param Pn_IdComunicacion    IN DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE Id de la tarea creada para revisión del reporte del corte
+  * @param Pn_IdDetalle         IN DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE Id del detalle al que está asociado la tarea
   * @param Pv_Status            OUT VARCHAR2 Estado del procedimiento
   * @param Pv_MsjError          OUT VARCHAR2 Mensaje de error
   * @param Pn_IdDocumento       OUT NUMBER Id del documento asociado al reporte creado
@@ -388,7 +388,7 @@ AS
   * Procedimiento que finaliza los procesos masivos al ejecutar las opciones parametrizadas
   *
   * @param Pn_IdPunto           IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE Id del punto
-  * @param Pv_OpcionEjecutante  IN VARCHAR2 Opci�n a ejecutar
+  * @param Pv_OpcionEjecutante  IN VARCHAR2 Opción a ejecutar
   * @param Pv_CodEmpresa        IN VARCHAR2 Id de la empresa
   * @param Pv_PrefijoEmpresa    IN VARCHAR2 Prefijo de la empresa
   * @param Pv_Status            OUT VARCHAR2 Estado del procedimiento
@@ -409,8 +409,8 @@ AS
   /**
   * P_CREA_PM_REACTIVACION_MD_CSV
   *
-  * Procedimiento que crea los procesos masivos de reactivaci�n de manera autom�tica de los logines subidos a un archivo csv con la estructura
-  * reactivaciones_masivas_YYYY-MM-DD.csv del d�a en que se realice la ejecuci�n. 
+  * Procedimiento que crea los procesos masivos de reactivación de manera automática de los logines subidos a un archivo csv con la estructura
+  * reactivaciones_masivas_YYYY-MM-DD.csv del día en que se realice la ejecución. 
   * El archivo debe estar situado en el directorio de base de datos RESPSOLARIS
   * 
   * @param Pv_Status            OUT VARCHAR2 Estado del procedimiento
@@ -616,8 +616,8 @@ AS
     Pv_MsjError := '';
   EXCEPTION
   WHEN OTHERS THEN
-    Pv_MsjError  := 'No se ha podido crear el registro de la asociaci�n del servicio con ID ' || Pn_IdServicio 
-                    || ' y la caracter�stica ' || Pv_DescripcionCaracteristica || ' con valor ' || Pv_ValorServicioProdCaract ;
+    Pv_MsjError  := 'No se ha podido crear el registro de la asociación del servicio con ID ' || Pn_IdServicio 
+                    || ' y la característica ' || Pv_DescripcionCaracteristica || ' con valor ' || Pv_ValorServicioProdCaract ;
   END P_INSERT_SPC;
 
   PROCEDURE P_ELIMINA_SPC(
@@ -752,7 +752,7 @@ AS
           AND ESTADO = Lv_EstadoActivo;
       END IF;
     ELSE
-      Lv_MsjError := 'No se han enviado correctamente los par�metros obligatorios';
+      Lv_MsjError := 'No se han enviado correctamente los parámetros obligatorios';
       RAISE Le_Exception;
     END IF;
     Pv_Status   := 'OK';
@@ -769,7 +769,7 @@ AS
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   WHEN OTHERS THEN
     Pv_Status   := 'ERROR';
-    Pv_MsjError := 'No se ha podido eliminar correctamente las caracter�sticas asociadas a los servicios';
+    Pv_MsjError := 'No se ha podido eliminar correctamente las características asociadas a los servicios';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'INKG_TRANSACCIONES_MASIVAS.P_ELIMINA_SPC', 
                                          SQLCODE || ' - ERROR_STACK: ' 
@@ -915,7 +915,7 @@ AS
     Lv_TipoProceso          VARCHAR2(20) := 'RegularizarCliente';
     Lv_EstadoProcesando     VARCHAR2(11) := 'Procesando';
     Lv_EstadoPendiente      VARCHAR2(9) := 'Pendiente';
-    Lv_Observacion          VARCHAR2(600) := 'Registro creado por proceso de regularizaci�n de data t�cnica del servicio';
+    Lv_Observacion          VARCHAR2(600) := 'Registro creado por proceso de regularización de data técnica del servicio';
     Lv_CodEmpresa           NUMBER := 18;
     Lv_MsjError             VARCHAR2(4000);
     Le_Exception            EXCEPTION;
@@ -982,7 +982,7 @@ AS
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   WHEN OTHERS THEN
     Pv_Status   := 'ERROR';
-    Pv_MsjError := 'No se ha podido crear correctamente el proceso masivo por regularizaci�n';
+    Pv_MsjError := 'No se ha podido crear correctamente el proceso masivo por regularización';
     ROLLBACK;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'INKG_TRANSACCIONES_MASIVAS.P_CREA_PM_REGULARIZA_SERVS', 
@@ -1088,7 +1088,7 @@ AS
       Lv_UserName := Lr_RespuestaInfoToken.VALOR4;
       Lv_Password := Lr_RespuestaInfoToken.VALOR5;  
     ELSE
-      Lv_MsjError := 'No se ha podido obtener los par�metros para obtener el Token';
+      Lv_MsjError := 'No se ha podido obtener los parámetros para obtener el Token';
       RAISE Le_Exception;
     END IF;
     
@@ -1100,13 +1100,13 @@ AS
       Lv_UrlEnvioSms  := Lr_RespuestaConsumoSMS.VALOR2;
       Lv_NotifyUrl    := Lr_RespuestaConsumoSMS.VALOR3;
     ELSE
-      Lv_MsjError := 'No se ha podido obtener los par�metros para el consumo del web service SMS';
+      Lv_MsjError := 'No se ha podido obtener los parámetros para el consumo del web service SMS';
       RAISE Le_Exception;
     END IF;
     
     
     IF Pv_TipoNotif IS NULL OR (Pv_TipoNotif <> 'CORREO' AND Pv_TipoNotif <> 'SMS') THEN
-      Lv_MsjError := 'No se ha enviado correctamente el tipo de notificaci�n -> ' || Pv_TipoNotif;
+      Lv_MsjError := 'No se ha enviado correctamente el tipo de notificación -> ' || Pv_TipoNotif;
       RAISE Le_Exception;
     END IF;
  
@@ -1141,7 +1141,7 @@ AS
       EXCEPTION
       WHEN OTHERS THEN
         Pv_Status   := 'ERROR';
-        Pv_MsjError := 'No se ha podido realizar el env�o por correo de manera correcta';
+        Pv_MsjError := 'No se ha podido realizar el envío por correo de manera correcta';
         Lv_MsjError := 'Error en INKG_TRANSACCIONES_MASIVAS.P_NOTIF_CORREO_Y_SMS_PRODS_TV: '||SQLERRM ||' ' ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(Lv_AppError, Lv_ProcesoError, Lv_MsjError, Lv_UserCreate, SYSDATE, '127.0.0.1');
       END;
@@ -1238,7 +1238,7 @@ AS
               Pcl_DestinatariosFinales  := SUBSTR(Lv_MovilDestinatarios, 1, LENGTH(Lv_MovilDestinatarios) - 1);
             ELSE
               Pv_Status                 := 'ERROR';
-              Pv_MsjError               := 'No se ha podido realizar el env�o por SMS de manera correcta';
+              Pv_MsjError               := 'No se ha podido realizar el envío por SMS de manera correcta';
               Pcl_DestinatariosFinales  := NULL;
             END IF;
           END IF;
@@ -1246,7 +1246,7 @@ AS
       EXCEPTION
       WHEN Le_Error THEN
         Pv_Status                 := 'ERROR';
-        Pv_MsjError               := 'Ha ocurrido un error al realizar el env�o de SMS';
+        Pv_MsjError               := 'Ha ocurrido un error al realizar el envío de SMS';
         Pcl_DestinatariosFinales  := NULL;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(Lv_AppError,
                                              Lv_ProcesoError,
@@ -1255,14 +1255,14 @@ AS
 
       WHEN UTL_HTTP.end_of_body THEN
         Pv_Status                 := 'ERROR';
-        Pv_MsjError               := 'Ha ocurrido un error al obtener la respuesta del env�o del SMS';
+        Pv_MsjError               := 'Ha ocurrido un error al obtener la respuesta del envío del SMS';
         Pcl_DestinatariosFinales  := NULL;
         Lv_MsjError           := 'Error UTL_HTTP.end_of_body';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(Lv_AppError, Lv_ProcesoError, Lv_MsjError, Lv_UserCreate, SYSDATE, '127.0.0.1');
         UTL_HTTP.end_response(Lhttp_Response);
       WHEN OTHERS THEN
         Pv_Status                 := 'ERROR';
-        Pv_MsjError                := 'Ha ocurrido un error inesperado al realizar el env�o de SMS';
+        Pv_MsjError                := 'Ha ocurrido un error inesperado al realizar el envío de SMS';
         Pcl_DestinatariosFinales  := NULL;
         Lv_MsjError           := 'Error en INKG_TRANSACCIONES_MASIVAS.P_NOTIF_CORREO_Y_SMS_PRODS_TV: '||SQLERRM ||' ' 
                                  || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
@@ -1272,7 +1272,7 @@ AS
   EXCEPTION
   WHEN Le_Exception THEN
     Pv_Status                 := 'ERROR';
-    Pv_MsjError               := 'Ha ocurrido un error al realizar el env�o de correo o SMS';
+    Pv_MsjError               := 'Ha ocurrido un error al realizar el envío de correo o SMS';
     Pcl_DestinatariosFinales  := NULL;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(Lv_AppError,
                                          Lv_ProcesoError,
@@ -1280,11 +1280,11 @@ AS
                                          Lv_UserCreate, SYSDATE, '127.0.0.1');
   WHEN OTHERS THEN
     Pv_Status                 := 'ERROR';
-    Pv_MsjError               := 'Ha ocurrido un error inesperado al realizar el env�o de correo o SMS';
+    Pv_MsjError               := 'Ha ocurrido un error inesperado al realizar el envío de correo o SMS';
     Pcl_DestinatariosFinales  := NULL;
     UTL_MAIL.SEND (sender => 'procesos_masivos@telconet.ec', recipients => 'mlcruz@telconet.ec', 
-                  subject => 'Ejecuci�n del proceso P_NOTIF_CORREO_Y_SMS_PRODS_TV', 
-                  MESSAGE => 'Par�metros Enviado:  <br>' || SQLERRM, mime_type => 'text/html; charset=UTF-8' );
+                  subject => 'Ejecución del proceso P_NOTIF_CORREO_Y_SMS_PRODS_TV', 
+                  MESSAGE => 'Parámetros Enviado:  <br>' || SQLERRM, mime_type => 'text/html; charset=UTF-8' );
   END P_NOTIF_CORREO_Y_SMS_PRODS_TV;
 
   PROCEDURE P_CREA_LOG_SERV_ADIC(
@@ -1373,7 +1373,7 @@ AS
         Lv_NumeroOrdenTrabajo := Lr_NumeracionDoc.NUMERACION;
         UPDATE DB_COMERCIAL.ADMI_NUMERACION SET SECUENCIA = SECUENCIA + 1 WHERE ID_NUMERACION = Lr_NumeracionDoc.ID_NUMERACION;
     ELSE
-      Lv_MsjError := 'No se pudo obtener la numeraci�n para la orden de trabajo';
+      Lv_MsjError := 'No se pudo obtener la numeración para la orden de trabajo';
       RAISE Le_Exception;    
     END IF;
     CLOSE Lc_NumeracionDoc;
@@ -1524,7 +1524,7 @@ AS
       WHERE SOLICITUD.SERVICIO_ID = Cn_IdServicio;
   BEGIN
     IF Pn_IdPunto IS NULL OR Pv_NombreTecnicoProducto IS NULL THEN
-      Lv_MsjError := 'No se han enviado todos los par�metros obligatorios';
+      Lv_MsjError := 'No se han enviado todos los parámetros obligatorios';
       RAISE Le_Exception;
     END IF;
   
@@ -1600,7 +1600,7 @@ AS
         Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
         Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
         Lr_ServicioHistorial.ESTADO       := 'Cancel';
-        Lr_ServicioHistorial.OBSERVACION  := 'Se cancela el servicio de manera l�gica' || Pv_ObsProcesoEjecutante;
+        Lr_ServicioHistorial.OBSERVACION  := 'Se cancela el servicio de manera lógica' || Pv_ObsProcesoEjecutante;
         DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
         IF Lv_MsjError IS NOT NULL THEN
           RAISE Le_Exception;
@@ -1620,7 +1620,7 @@ AS
           Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := I_GetSolicitudesServicio.ID_DETALLE_SOLICITUD;
           Lr_InfoDetalleSolHistorial.ESTADO                 := 'Eliminada';
           Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se da de baja la solicitud en estado ' || I_GetSolicitudesServicio.ESTADO
-                                                                || ' por cancelaci�n del servicio asociado ';
+                                                                || ' por cancelación del servicio asociado ';
           Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrCreacion;
           Lr_InfoDetalleSolHistorial.FE_CREACION            := SYSDATE;
           Lr_InfoDetalleSolHistorial.IP_CREACION            := Lv_IpCreacion;
@@ -2017,7 +2017,7 @@ AS
           END IF;
           -------Fin Escenario 1-------
           
-          --Se eliminan todas las caracter�sticas relacionadas con el producto dentro del servicio de Internet
+          --Se eliminan todas las características relacionadas con el producto dentro del servicio de Internet
           FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioInternet, Lv_NombreTecnicoProd, 
                                                           'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
           LOOP
@@ -2051,7 +2051,7 @@ AS
             
             IF Lr_RegistroSpcUsuario.ID_SERVICIO_PROD_CARACT IS NULL OR Lr_RegistroSpcUsuario.VALOR IS NULL
             OR Lr_RegistroSpcPassword.ID_SERVICIO_PROD_CARACT IS NULL OR Lr_RegistroSpcPassword.VALOR IS NULL THEN
-              --Se debe generar las credenciales por regularizaci�n y eliminar todas caracter�sticas asociadas al producto
+              --Se debe generar las credenciales por regularización y eliminar todas características asociadas al producto
               FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioAdicional, Lv_NombreTecnicoProd, 
                                                               'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
               LOOP
@@ -2101,7 +2101,7 @@ AS
               FETCH Lc_GetIdProdServicio INTO Ln_IdProdServicioAdic;
               CLOSE Lc_GetIdProdServicio;
      
-              --Se crean las nuevas caracter�sticas asociadas al servicio adicional por regularizaci�n
+              --Se crean las nuevas características asociadas al servicio adicional por regularización
               DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioAdicional,
                                                                           Ln_IdProdServicioAdic,
                                                                           Lv_EstadoActivo,
@@ -2207,7 +2207,7 @@ AS
           END IF;
           -------Fin Escenario 2-------
           
-          --Se obtiene los registros de las caracter�sticas del servicio de Internet con el plan que si ten�a asociado el producto
+          --Se obtiene los registros de las características del servicio de Internet con el plan que si tenía asociado el producto
           DB_COMERCIAL.TECNK_SERVICIOS.P_GET_REGISTRO_SPC(NULL, Ln_IdServicioInternet, 'USUARIO_'  || Lv_SufijoCaractsProd, NULL, 'Activo', 'SI', 
                                                           Lv_Status, Lv_MsjError, Lr_RegistroSpcUsuario);
           IF Lv_Status = 'ERROR' THEN
@@ -2227,7 +2227,7 @@ AS
           OPEN Lc_GetProdEnPlanDet(Ln_IdItemProdPlanAnterior);
           FETCH Lc_GetProdEnPlanDet INTO Lr_GetProdEnPlanDetAnterior;
           IF(Lc_GetProdEnPlanDet%NOTFOUND) THEN
-            Lv_MsjError := 'No se ha podido obtener el producto para creaci�n del servicio adicional';
+            Lv_MsjError := 'No se ha podido obtener el producto para creación del servicio adicional';
             RAISE Le_Exception;    
           END IF;
           CLOSE Lc_GetProdEnPlanDet;
@@ -2240,7 +2240,7 @@ AS
           Lr_ServicioProdAdicional.PRECIO_VENTA_SERVICIO    := Lr_GetProdEnPlanDetAnterior.PRECIO_VENTA_SERVICIO;
           Lr_ServicioProdAdicional.ESTADO_SERVICIO          := Pr_InfoServicioInternet.ESTADO;
           Lr_ServicioProdAdicional.OBSERVACION_HISTORIAL    := 'El Producto <b>' || Lr_GetProdEnPlanDetAnterior.DESCRIPCION_PRODUCTO ||
-                                                                '</b> dentro del Plan pas� como un Producto Adicional';
+                                                                '</b> dentro del Plan pasó como un Producto Adicional';
           Lr_ServicioProdAdicional.ACCION_HISTORIAL         := 'confirmarServicio';
           Lr_ServicioProdAdicional.ES_VENTA_SERVICIO        := 'S';
           Lr_ServicioProdAdicional.CANTIDAD_SERVICIO        := 1;
@@ -2256,7 +2256,7 @@ AS
           
           IF Lr_RegistroSpcUsuario.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcUsuario.VALOR IS NOT NULL
           AND Lr_RegistroSpcPassword.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcPassword.VALOR IS NOT NULL THEN
-            --Se considera que el servicio de Internet con el plan anterior si posee la informaci�n de ingreso al portal USUARIO_[PRODUCTO] 
+            --Se considera que el servicio de Internet con el plan anterior si posee la información de ingreso al portal USUARIO_[PRODUCTO] 
             --y PASSWORD_[PRODUCTO]
             Lv_ValorNuevoSpcUsuario   := Lr_RegistroSpcUsuario.VALOR;
             Lv_ValorNuevoSpcPassword  := Lr_RegistroSpcPassword.VALOR;
@@ -2272,8 +2272,8 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la informaci�n de usuario y contrase�a al nuevo servicio adicional ' || 
-                                                 Lv_NombreProductoComercial || ' por ejecuci�n de cambio de plan';
+            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la información de usuario y contraseña al nuevo servicio adicional ' || 
+                                                 Lv_NombreProductoComercial || ' por ejecución de cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
               RAISE Le_Exception;
@@ -2284,19 +2284,19 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la informaci�n de usuario y contrase�a obtenida del producto ' ||
+            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la información de usuario y contraseña obtenida del producto ' ||
                                                  Lv_NombreProductoComercial || ' incluido en el plan anterior del servicio de Internet' ||
-                                                 ' por ejecuci�n de cambio de plan';
+                                                 ' por ejecución de cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
               RAISE Le_Exception;
             END IF;
 
           ELSE
-            --El servicio de Internet con el plan anterior no posee la informaci�n correcta de USUARIO_[PRODUCTO] y/o PASSWORD_[PRODUCTO]
+            --El servicio de Internet con el plan anterior no posee la información correcta de USUARIO_[PRODUCTO] y/o PASSWORD_[PRODUCTO]
             IF Lr_RegistroSpcUsuario.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcUsuario.VALOR IS NOT NULL
             AND Lr_RegistroSpcSsid.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcSsid.VALOR IS NOT NULL THEN
-              ----El servicio de Internet con el plan anterior posee la informaci�n correcta de USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+              ----El servicio de Internet con el plan anterior posee la información correcta de USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
               Lv_ValorNuevoSpcUsuario := Lr_RegistroSpcUsuario.VALOR;
               Lv_ValorNuevoSpcSsid    := Lr_RegistroSpcSsid.VALOR;
             ELSE
@@ -2309,7 +2309,7 @@ AS
               CLOSE Lc_GetIdPrimerServAdicCancel;
               
               IF Ln_IdPrimerServAdicCancel IS NOT NULL THEN
-                --Existe un servicio adicional que fue cancelado anteriormente, por lo que se consultar� la infomaci�n del Usuario 
+                --Existe un servicio adicional que fue cancelado anteriormente, por lo que se consultará la infomación del Usuario 
                 --y Ssid de este servicio
                 DB_COMERCIAL.TECNK_SERVICIOS.P_GET_REGISTRO_SPC(NULL, Ln_IdPrimerServAdicCancel, 'USUARIO_'  || Lv_SufijoCaractsProd, NULL, 
                                                                 'Eliminado', 'SI', Lv_Status, Lv_MsjError, Lr_RegistroSpcElimUsuario);
@@ -2325,7 +2325,7 @@ AS
                 
                 IF Lr_RegistroSpcElimUsuario.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcElimUsuario.VALOR IS NOT NULL
                 AND Lr_RegistroSpcElimSsid.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcElimSsid.VALOR IS NOT NULL THEN
-                  --El servicio adicional Cancelado si tiene asociadas las caracter�sticas USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+                  --El servicio adicional Cancelado si tiene asociadas las características USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
                   Lv_ValorNuevoSpcUsuario           := Lr_RegistroSpcElimUsuario.VALOR;
                   Lv_ValorNuevoSpcSsid              := Lr_RegistroSpcElimSsid.VALOR;
 
@@ -2334,9 +2334,9 @@ AS
                   Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
                   Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
                   Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-                  Lr_ServicioHistorial.OBSERVACION  := 'Recontrataci�n: El Cliente ya posee un Servicio ' 
+                  Lr_ServicioHistorial.OBSERVACION  := 'Recontratación: El Cliente ya posee un Servicio ' 
                                                        || Lr_GetProdEnPlanDetAnterior.DESCRIPCION_PRODUCTO
-                                                       || ' Cancelado, se procede a Activar el Servicio con la informaci�n del <b>LOGIN</b>'
+                                                       || ' Cancelado, se procede a Activar el Servicio con la información del <b>LOGIN</b>'
                                                        || ' y <b>SUSCRIBER_ID existente.';
                   Lr_ServicioHistorial.ACCION       := NULL;
                   DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
@@ -2355,7 +2355,7 @@ AS
                                                                       Lv_MsjError);
                                                                       
                 ELSE
-                  --El servicio adicional Cancelado no tiene asociadas las caracter�sticas USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+                  --El servicio adicional Cancelado no tiene asociadas las características USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
                   Lv_ValorNuevoSpcUsuario := DB_COMERCIAL.COMEK_TRANSACTION.F_GENERA_USUARIO( Ln_IdPersona,
                                                                                               'INFO_SERVICIO_PROD_CARACT',
                                                                                               'FP',
@@ -2399,8 +2399,8 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la informaci�n de usuario y contrase�a al nuevo servicio adicional ' || 
-                                                 Lv_NombreProductoComercial || ' por ejecuci�n de cambio de plan';
+            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la información de usuario y contraseña al nuevo servicio adicional ' || 
+                                                 Lv_NombreProductoComercial || ' por ejecución de cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
               RAISE Le_Exception;
@@ -2411,9 +2411,9 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la informaci�n regularizada de usuario y contrase�a obtenida del producto ' ||
+            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la información regularizada de usuario y contraseña obtenida del producto ' ||
                                                  Lv_NombreProductoComercial || ' incluido en el plan anterior del servicio de Internet' ||
-                                                 ' por ejecuci�n de cambio de plan';
+                                                 ' por ejecución de cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
               RAISE Le_Exception;
@@ -2436,7 +2436,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          ----Se eliminan todas las caracter�sticas asociadas al servicio de Internet del plan anterior.
+          ----Se eliminan todas las características asociadas al servicio de Internet del plan anterior.
           DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_ELIMINA_SPC(NULL, Ln_IdServicioInternet, NULL, Lv_NombreTecnicoProd, 
                                                                       'USUARIO_'  || Lv_SufijoCaractsProd, NULL, 
                                                                       Lv_UsrCreacion, Lv_Status, Lv_MsjError);
@@ -2458,7 +2458,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ning�n otro servicio
+          --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ningún otro servicio
           FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioInternet, Lv_NombreTecnicoProd, 
                                                           'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
           LOOP
@@ -2485,7 +2485,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          --Se crean las nuevas caracter�sticas asociadas al servicio adicional nuevo.
+          --Se crean las nuevas características asociadas al servicio adicional nuevo.
           DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioAdicNuevo,
                                                                       Lr_ServicioProdAdicional.ID_PRODUCTO,
                                                                       Lv_EstadoActivo,
@@ -2629,7 +2629,7 @@ AS
                 RAISE Le_Exception;
               END IF;
             
-              --Se debe generar las credenciales por regularizaci�n y eliminar todas caracter�sticas asociadas al producto
+              --Se debe generar las credenciales por regularización y eliminar todas características asociadas al producto
               FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioAdicional, Lv_NombreTecnicoProd, 
                                                               'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
               LOOP
@@ -2697,7 +2697,7 @@ AS
               FETCH Lc_GetIdProdServicio INTO Ln_IdProdServicioAdic;
               CLOSE Lc_GetIdProdServicio;
      
-              --Se crean las nuevas caracter�sticas asociadas al servicio adicional por regularizaci�n
+              --Se crean las nuevas características asociadas al servicio adicional por regularización
               DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioAdicional,
                                                                           Ln_IdProdServicioAdic,
                                                                           Lv_EstadoActivo,
@@ -2803,7 +2803,7 @@ AS
           OPEN Lc_GetProdEnPlanDet(Ln_IdItemProdPlanNuevo);
           FETCH Lc_GetProdEnPlanDet INTO Lr_GetProdEnPlanDetNuevo;
           IF(Lc_GetProdEnPlanDet%NOTFOUND) THEN
-            Lv_MsjError := 'No se ha podido obtener el producto que ser� incluido en el plan';
+            Lv_MsjError := 'No se ha podido obtener el producto que será incluido en el plan';
             RAISE Le_Exception;    
           END IF;
           CLOSE Lc_GetProdEnPlanDet;
@@ -2817,7 +2817,7 @@ AS
           CLOSE Lc_GetIdPrimerServAdicCancel;
           
           IF Ln_IdPrimerServAdicCancel IS NOT NULL THEN
-            --Existe un servicio adicional que fue cancelado anteriormente, por lo que se consultar� la infomaci�n del Usuario 
+            --Existe un servicio adicional que fue cancelado anteriormente, por lo que se consultará la infomación del Usuario 
             --y Ssid de este servicio
             DB_COMERCIAL.TECNK_SERVICIOS.P_GET_REGISTRO_SPC(NULL, Ln_IdPrimerServAdicCancel, 'USUARIO_'  || Lv_SufijoCaractsProd, 
                                                             NULL, 'Eliminado', 'SI',
@@ -2835,7 +2835,7 @@ AS
             
             IF Lr_RegistroSpcElimUsuario.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcElimUsuario.VALOR IS NOT NULL
             AND Lr_RegistroSpcElimSsid.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcElimSsid.VALOR IS NOT NULL THEN
-              --El servicio adicional Cancelado si tiene asociadas las caracter�sticas USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+              --El servicio adicional Cancelado si tiene asociadas las características USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
               Lv_ValorNuevoSpcUsuario           := Lr_RegistroSpcElimUsuario.VALOR;
               Lv_ValorNuevoSpcSsid              := Lr_RegistroSpcElimSsid.VALOR;
 
@@ -2844,9 +2844,9 @@ AS
               Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
               Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
               Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-              Lr_ServicioHistorial.OBSERVACION  := 'Recontrataci�n: El Cliente ya posee un Servicio ' 
+              Lr_ServicioHistorial.OBSERVACION  := 'Recontratación: El Cliente ya posee un Servicio ' 
                                                    || Lr_GetProdEnPlanDetNuevo.DESCRIPCION_PRODUCTO
-                                                   || ' Cancelado, se procede a Activar el Servicio con la informaci�n del <b>LOGIN</b>'
+                                                   || ' Cancelado, se procede a Activar el Servicio con la información del <b>LOGIN</b>'
                                                    || ' y <b>SUSCRIBER_ID existente.';
               Lr_ServicioHistorial.ACCION       := NULL;
               DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
@@ -2864,7 +2864,7 @@ AS
                                                                   Lv_IpCreacion,
                                                                   Lv_MsjError);
             ELSE
-              --El servicio adicional Cancelado no tiene asociadas las caracter�sticas USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+              --El servicio adicional Cancelado no tiene asociadas las características USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
               Lv_ValorNuevoSpcUsuario := DB_COMERCIAL.COMEK_TRANSACTION.F_GENERA_USUARIO( Ln_IdPersona,
                                                                                           'INFO_SERVICIO_PROD_CARACT',
                                                                                           'FP',
@@ -2873,7 +2873,7 @@ AS
               Lv_ValorNuevoSpcSsid    := TO_CHAR(Ln_IdServicioInternet);
             END IF;
             
-            --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ning�n otro servicio
+            --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ningún otro servicio
             FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdPrimerServAdicCancel, Lv_NombreTecnicoProd, 
                                                             'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoEliminado)
             LOOP
@@ -2920,7 +2920,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          ----Se eliminan todas las caracter�sticas asociadas al servicio de Internet del plan anterior.
+          ----Se eliminan todas las características asociadas al servicio de Internet del plan anterior.
           DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_ELIMINA_SPC(NULL, Ln_IdServicioInternet, NULL, Lv_NombreTecnicoProd, 
                                                                       'USUARIO_'  || Lv_SufijoCaractsProd, NULL, 
                                                                       Lv_UsrCreacion, Lv_Status, Lv_MsjError);
@@ -2942,7 +2942,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ning�n otro servicio
+          --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ningún otro servicio
           FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioInternet, Lv_NombreTecnicoProd, 
                                                           'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
           LOOP
@@ -2981,7 +2981,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          --Se crean las nuevas caracter�sticas asociadas al servicio de Internet debido a que el nuevo plan incluye el producto
+          --Se crean las nuevas características asociadas al servicio de Internet debido a que el nuevo plan incluye el producto
           DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioInternet,
                                                                       Lr_GetProdEnPlanDetNuevo.ID_PRODUCTO,
                                                                       Lv_EstadoActivo,
@@ -3117,7 +3117,7 @@ AS
               RAISE Le_Exception;
             END IF;
             
-            --Se debe generar las credenciales por regularizaci�n y eliminar todas caracter�sticas asociadas al producto
+            --Se debe generar las credenciales por regularización y eliminar todas características asociadas al producto
             FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioInternet, Lv_NombreTecnicoProd, 
                                                             'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
             LOOP
@@ -3182,12 +3182,12 @@ AS
             OPEN Lc_GetProdEnPlanDet(Ln_IdItemProdPlanNuevo);
             FETCH Lc_GetProdEnPlanDet INTO Lr_GetProdEnPlanDetNuevo;
             IF(Lc_GetProdEnPlanDet%NOTFOUND) THEN
-              Lv_MsjError := 'No se ha podido obtener el producto que ser� incluido en el plan';
+              Lv_MsjError := 'No se ha podido obtener el producto que será incluido en el plan';
               RAISE Le_Exception;    
             END IF;
             CLOSE Lc_GetProdEnPlanDet;
    
-            --Se crean las nuevas caracter�sticas asociadas al servicio de Internet por regularizaci�n
+            --Se crean las nuevas características asociadas al servicio de Internet por regularización
             DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioInternet,
                                                                         Lr_GetProdEnPlanDetNuevo.ID_PRODUCTO,
                                                                         Lv_EstadoActivo,
@@ -3288,7 +3288,7 @@ AS
             
             IF Lr_RegistroSpcUsuario.ID_SERVICIO_PROD_CARACT IS NULL OR Lr_RegistroSpcUsuario.VALOR IS NULL
             OR Lr_RegistroSpcPassword.ID_SERVICIO_PROD_CARACT IS NULL OR Lr_RegistroSpcPassword.VALOR IS NULL THEN
-              --Se debe generar las credenciales por regularizaci�n y eliminar todas caracter�sticas asociadas al producto
+              --Se debe generar las credenciales por regularización y eliminar todas características asociadas al producto
               DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_ELIMINA_SPC(NULL, Ln_IdServicioAdicional, NULL, Lv_NombreTecnicoProd, 
                                                                           'USUARIO_'  || Lv_SufijoCaractsProd, NULL, 
                                                                           Lv_UsrCreacion, Lv_Status, Lv_MsjError);
@@ -3373,7 +3373,7 @@ AS
               FETCH Lc_GetIdProdServicio INTO Ln_IdProdServicioAdic;
               CLOSE Lc_GetIdProdServicio;
      
-              --Se crean las nuevas caracter�sticas asociadas al servicio adicional por regularizaci�n
+              --Se crean las nuevas características asociadas al servicio adicional por regularización
               DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioAdicional,
                                                                           Ln_IdProdServicioAdic,
                                                                           Lv_EstadoActivo,
@@ -3490,7 +3490,7 @@ AS
           OPEN Lc_GetProdEnPlanDet(Ln_IdItemProdPlanNuevo);
           FETCH Lc_GetProdEnPlanDet INTO Lr_GetProdEnPlanDetNuevo;
           IF(Lc_GetProdEnPlanDet%NOTFOUND) THEN
-            Lv_MsjError := 'No se ha podido obtener el producto que ser� incluido en el plan';
+            Lv_MsjError := 'No se ha podido obtener el producto que será incluido en el plan';
             RAISE Le_Exception;    
           END IF;
           CLOSE Lc_GetProdEnPlanDet;
@@ -3511,7 +3511,7 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la informaci�n de usuario y contrase�a al servicio de Internet por ejecuci�n de '
+            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la información de usuario y contraseña al servicio de Internet por ejecución de '
                                                  || 'cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
@@ -3523,8 +3523,8 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la informaci�n de usuario y contrase�a obtenida del servicio ' 
-                                                 || Lv_NombreProductoComercial || ' adicional que fue cancelado por ejecuci�n de cambio de plan';
+            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la información de usuario y contraseña obtenida del servicio ' 
+                                                 || Lv_NombreProductoComercial || ' adicional que fue cancelado por ejecución de cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
               RAISE Le_Exception;
@@ -3533,7 +3533,7 @@ AS
           ELSE
             IF Lr_RegistroSpcUsuario.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcUsuario.VALOR IS NOT NULL
             AND Lr_RegistroSpcSsid.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcSsid.VALOR IS NOT NULL THEN
-              ----El servicio de Internet con el plan anterior posee la informaci�n correcta de USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+              ----El servicio de Internet con el plan anterior posee la información correcta de USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
               Lv_ValorNuevoSpcUsuario := Lr_RegistroSpcUsuario.VALOR;
               Lv_ValorNuevoSpcSsid    := Lr_RegistroSpcSsid.VALOR;
             ELSE
@@ -3546,7 +3546,7 @@ AS
               CLOSE Lc_GetIdPrimerServAdicCancel;
               
               IF Ln_IdPrimerServAdicCancel IS NOT NULL THEN
-                --Existe un servicio adicional que fue cancelado anteriormente, por lo que se consultar� la infomaci�n del Usuario 
+                --Existe un servicio adicional que fue cancelado anteriormente, por lo que se consultará la infomación del Usuario 
                 --y Ssid de este servicio
                 DB_COMERCIAL.TECNK_SERVICIOS.P_GET_REGISTRO_SPC(NULL, Ln_IdPrimerServAdicCancel, 'USUARIO_'  || Lv_SufijoCaractsProd, NULL, 
                                                                 'Eliminado', 'SI', Lv_Status, Lv_MsjError, Lr_RegistroSpcElimUsuario);
@@ -3562,7 +3562,7 @@ AS
                 
                 IF Lr_RegistroSpcElimUsuario.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcElimUsuario.VALOR IS NOT NULL
                 AND Lr_RegistroSpcElimSsid.ID_SERVICIO_PROD_CARACT IS NOT NULL AND Lr_RegistroSpcElimSsid.VALOR IS NOT NULL THEN
-                  --El servicio adicional Cancelado si tiene asociadas las caracter�sticas USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+                  --El servicio adicional Cancelado si tiene asociadas las características USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
                   Lv_ValorNuevoSpcUsuario           := Lr_RegistroSpcElimUsuario.VALOR;
                   Lv_ValorNuevoSpcSsid              := Lr_RegistroSpcElimSsid.VALOR;
 
@@ -3571,9 +3571,9 @@ AS
                   Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
                   Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
                   Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-                  Lr_ServicioHistorial.OBSERVACION  := 'Recontrataci�n: El Cliente ya posee un Servicio ' 
+                  Lr_ServicioHistorial.OBSERVACION  := 'Recontratación: El Cliente ya posee un Servicio ' 
                                                        || Lr_GetProdEnPlanDetNuevo.DESCRIPCION_PRODUCTO
-                                                       || ' Cancelado, se procede a Activar el Servicio con la informaci�n del <b>LOGIN</b>'
+                                                       || ' Cancelado, se procede a Activar el Servicio con la información del <b>LOGIN</b>'
                                                        || ' y <b>SUSCRIBER_ID existente.';
                   Lr_ServicioHistorial.ACCION       := NULL;
                   DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
@@ -3591,7 +3591,7 @@ AS
                                                                       Lv_IpCreacion,
                                                                       Lv_MsjError);
                 ELSE
-                  --El servicio adicional Cancelado no tiene asociadas las caracter�sticas USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
+                  --El servicio adicional Cancelado no tiene asociadas las características USUARIO_[PRODUCTO] y SSID_[PRODUCTO]
                   Lv_ValorNuevoSpcUsuario := DB_COMERCIAL.COMEK_TRANSACTION.F_GENERA_USUARIO( Ln_IdPersona,
                                                                                               'INFO_SERVICIO_PROD_CARACT',
                                                                                               'FP',
@@ -3633,7 +3633,7 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la informaci�n de usuario y contrase�a al servicio de Internet por ejecuci�n de '
+            Lr_ServicioHistorial.OBSERVACION  := 'Se traspasa la información de usuario y contraseña al servicio de Internet por ejecución de '
                                                  || 'cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
@@ -3645,8 +3645,8 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la informaci�n regularizada de usuario y contrase�a obtenida del servicio ' 
-                                                 || Lv_NombreProductoComercial || ' adicional que fue cancelado por ejecuci�n de cambio de plan';
+            Lr_ServicioHistorial.OBSERVACION  := 'Se guarda la información regularizada de usuario y contraseña obtenida del servicio ' 
+                                                 || Lv_NombreProductoComercial || ' adicional que fue cancelado por ejecución de cambio de plan';
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_Status = 'ERROR' THEN
               RAISE Le_Exception;
@@ -3672,7 +3672,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ning�n otro servicio
+          --Si existe el registro para MIGRADO_[PRODUCTO], se lo elimina con valor S para que no lo tome ningún otro servicio
           FOR I_SpcPorCaractyProd IN Lc_SpcPorCaractyProd(Ln_IdServicioAdicional, Lv_NombreTecnicoProd, 
                                                           'MIGRADO_' || Lv_SufijoCaractsProd, Lv_EstadoActivo)
           LOOP
@@ -3685,7 +3685,7 @@ AS
             END IF;
           END LOOP;
           
-          --Se crean las nuevas caracter�sticas asociadas al servicio adicional nuevo.
+          --Se crean las nuevas características asociadas al servicio adicional nuevo.
           DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_SPC( Ln_IdServicioInternet,
                                                                       Lr_GetProdEnPlanDetNuevo.ID_PRODUCTO,
                                                                       Lv_EstadoActivo,
@@ -3829,7 +3829,7 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contrase�a de ' || Lv_NombreProductoComercial || ' fue enviada al correo: <br>' 
+            Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contraseña de ' || Lv_NombreProductoComercial || ' fue enviada al correo: <br>' 
                                                  || Lcl_DestinatariosFinales ;
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
             IF Lv_MsjError IS NOT NULL THEN
@@ -3839,7 +3839,7 @@ AS
             RAISE Le_Exception;
           END IF;
           
-          --Se verifica si est� activa la bandera para el env�o de SMS
+          --Se verifica si está activa la bandera para el envío de SMS
           OPEN Lc_GetPermiteNotifSms(Lv_NombreTecnicoProd);
           FETCH Lc_GetPermiteNotifSms INTO Lv_PermiteNotifSms;
           CLOSE Lc_GetPermiteNotifSms; 
@@ -3868,7 +3868,7 @@ AS
               Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
               Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
               Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-              Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contrase�a de ' || Lv_NombreProductoComercial || ' fue enviada al tel�fono: <br>' 
+              Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contraseña de ' || Lv_NombreProductoComercial || ' fue enviada al teléfono: <br>' 
                                                    || Lcl_DestinatariosFinales ;
               DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
               IF Lv_MsjError IS NOT NULL THEN
@@ -3925,7 +3925,7 @@ AS
             Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
             Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-            Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contrase�a  por regularizaci�n de ' || Lv_NombreProductoComercial 
+            Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contraseña  por regularización de ' || Lv_NombreProductoComercial 
                                                  || ' fue enviada al correo: <br>' 
                                                  || Lcl_DestinatariosFinales ;
             DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
@@ -3965,8 +3965,8 @@ AS
               Lr_ServicioHistorial.USR_CREACION := Lv_UsrCreacion;
               Lr_ServicioHistorial.IP_CREACION  := Lv_IpCreacion;
               Lr_ServicioHistorial.ESTADO       := Pr_InfoServicioInternet.ESTADO;
-              Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contrase�a por regularizaci�n de ' || Lv_NombreProductoComercial 
-                                                   || ' fue enviada al tel�fono: <br>' 
+              Lr_ServicioHistorial.OBSERVACION  := 'El usuario y contraseña por regularización de ' || Lv_NombreProductoComercial 
+                                                   || ' fue enviada al teléfono: <br>' 
                                                    || Lcl_DestinatariosFinales ;
               DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_SERVICIO_HISTORIA(Lr_ServicioHistorial, Lv_MsjError);
               IF Lv_MsjError IS NOT NULL THEN
@@ -4006,7 +4006,7 @@ AS
       END;  
       --Fin de proceso por producto encontrado
       
-      --Inicio de creaci�n de historial en el servicio de Internet cuando da error el proceso
+      --Inicio de creación de historial en el servicio de Internet cuando da error el proceso
       IF Lv_CreaHistoError = 'SI' THEN
         BEGIN
           Lr_ServicioHistorial              := NULL;
@@ -4037,11 +4037,11 @@ AS
                         MIME_TYPE   => 'text/html; charset=iso-8859-1' );
         END;
       END IF;
-      --Fin de creaci�n de historial en el servicio de Internet cuando da error el proceso
+      --Fin de creación de historial en el servicio de Internet cuando da error el proceso
       
       Ln_IndxParametrosDetFlujoBusq := Lt_ParametrosDetFlujoBusq.NEXT(Ln_IndxParametrosDetFlujoBusq);
     END LOOP;
-    --Fin de b�squeda de los productos que pertenecen al grupo TV para ejecutar el flujo respectivo
+    --Fin de búsqueda de los productos que pertenecen al grupo TV para ejecutar el flujo respectivo
     
     Pv_Status   := 'OK';
     Pv_MsjError := '';
@@ -4303,7 +4303,7 @@ AS
         Lv_NombreCliente          := Lr_GetServicioInternetGeneral.NOMBRE_CLIENTE;
         Lv_EstadoServicioInternet := Lr_GetServicioInternetGeneral.ESTADO;
         
-        Lt_MsjsErrores(Ln_ContadorErrores)  := 'No se ha podido obtener la informaci�n del servicio de Internet ' || Lv_ObsProcesoEjecutante;
+        Lt_MsjsErrores(Ln_ContadorErrores)  := 'No se ha podido obtener la información del servicio de Internet ' || Lv_ObsProcesoEjecutante;
         Ln_ContadorErrores                  := Ln_ContadorErrores + 1;
       END IF;
       CLOSE Lc_GetServicioInternetGeneral;
@@ -4545,7 +4545,7 @@ AS
 
     Lv_NombreTecnicoProdUm:= Lr_RegGetValoresParamsGeneral.VALOR4;
     IF Lv_NombreTecnicoProdUm IS NULL THEN
-      Lv_MsjError := 'No se ha configurado el nombre t�cnico del producto Internet';
+      Lv_MsjError := 'No se ha configurado el nombre técnico del producto Internet';
       RAISE Le_Exception;
     END IF;
     
@@ -4559,7 +4559,7 @@ AS
     END IF;
    
     IF Ln_IdEmpresaUmFo IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la empresa para la �ltima milla FO';
+      Lv_MsjError := 'No se ha podido obtener el id de la empresa para la última milla FO';
       RAISE Le_Exception;
     END IF;
 
@@ -4570,7 +4570,7 @@ AS
         CLOSE Lc_GetInfoEmpresaPm;
         Ln_IdEmpresaUmCoRad := Lr_RegGetInfoEmpresaPm.ID_EMPRESA;
         IF Ln_IdEmpresaUmCoRad IS NULL  THEN
-          Lv_MsjError := 'No se ha podido obtener el id de la empresa para la �ltima milla CO';
+          Lv_MsjError := 'No se ha podido obtener el id de la empresa para la última milla CO';
           RAISE Le_Exception;
         END IF;
       END IF;
@@ -4587,7 +4587,7 @@ AS
     FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractIdPmCabFo;
     CLOSE Lc_GetIdCaracteristica;
     IF Ln_IdCaractIdPmCabFo IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica de procesos masivos de Fibra �ptica';
+      Lv_MsjError := 'No se ha podido obtener el id de la característica de procesos masivos de Fibra Óptica';
       RAISE Le_Exception;
     END IF;
 
@@ -4595,7 +4595,7 @@ AS
     FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractIdPmCabCoRad;
     CLOSE Lc_GetIdCaracteristica;
     IF Ln_IdCaractIdPmCabCoRad IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica de procesos masivos de Cobre/Radio';
+      Lv_MsjError := 'No se ha podido obtener el id de la característica de procesos masivos de Cobre/Radio';
       RAISE Le_Exception;
     END IF;
 
@@ -4603,7 +4603,7 @@ AS
     FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractIdPmCabErrorUm;
     CLOSE Lc_GetIdCaracteristica;
     IF Ln_IdCaractIdPmCabErrorUm IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica de procesos masivos de Error �ltima milla';
+      Lv_MsjError := 'No se ha podido obtener el id de la característica de procesos masivos de Error última milla';
       RAISE Le_Exception;
     END IF;
 
@@ -4611,7 +4611,7 @@ AS
     FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractIdsFormasPago;
     CLOSE Lc_GetIdCaracteristica;
     IF Ln_IdCaractIdsFormasPago IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica de formas de pago';
+      Lv_MsjError := 'No se ha podido obtener el id de la característica de formas de pago';
       RAISE Le_Exception;
     END IF;
 
@@ -4619,7 +4619,7 @@ AS
     FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractCodigosTiposDoc;
     CLOSE Lc_GetIdCaracteristica;
     IF Ln_IdCaractCodigosTiposDoc IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica de los c�digos de los tipos de documentos';
+      Lv_MsjError := 'No se ha podido obtener el id de la característica de los códigos de los tipos de documentos';
       RAISE Le_Exception;
     END IF;
 
@@ -4654,7 +4654,7 @@ AS
           Lr_InfoDetalleSolicitud.TIPO_SOLICITUD_ID       := Ln_IdTipoSolCortePorLotes;
           Lr_InfoDetalleSolicitud.USR_CREACION            := Lv_UsrCreacion;
           Lr_InfoDetalleSolicitud.ESTADO                  := Lv_EstadoPorEjecutar;
-          Lr_InfoDetalleSolicitud.OBSERVACION             := 'Se crea la solicitud por ejecuci�n de corte masivo por lotes';
+          Lr_InfoDetalleSolicitud.OBSERVACION             := 'Se crea la solicitud por ejecución de corte masivo por lotes';
           DB_COMERCIAL.COMEK_MODELO.COMPP_INSERT_DETALLE_SOLICITUD(Lr_InfoDetalleSolicitud, Lv_MsjError);
           IF Lv_MsjError IS NOT NULL THEN
             RAISE Le_Exception;
@@ -4711,7 +4711,7 @@ AS
               Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
               Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Ln_IdDetalleSolicitud;
               Lr_InfoDetalleSolHistorial.ESTADO                 := Lv_EstadoPorEjecutar;
-              Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se crea el proceso masivo de corte de Fibra �ptica #' || Ln_IdProcesoMasivoCabFo
+              Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se crea el proceso masivo de corte de Fibra Óptica #' || Ln_IdProcesoMasivoCabFo
                                                                    || ' asociado a esta solicitud';
               Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrCreacion;
               Lr_InfoDetalleSolHistorial.FE_CREACION            := SYSDATE;
@@ -4798,7 +4798,7 @@ AS
             Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
             Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Ln_IdDetalleSolicitud;
             Lr_InfoDetalleSolHistorial.ESTADO                 := Lv_EstadoPorEjecutar;
-            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se crea y finaliza el proceso masivo de corte sin �ltima milla especificada #' 
+            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se crea y finaliza el proceso masivo de corte sin última milla especificada #' 
                                                                  || Ln_IdProcesoMasivoCabErrorUm || ' asociado a esta solicitud';
             Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrCreacion;
             Lr_InfoDetalleSolHistorial.FE_CREACION            := SYSDATE;
@@ -4815,7 +4815,7 @@ AS
           Lr_InfoProcesoMasivoDet.FE_CREACION           := SYSDATE;
           Lr_InfoProcesoMasivoDet.USR_CREACION          := Lv_UsrCreacion;
           Lr_InfoProcesoMasivoDet.IP_CREACION           := Lv_IpCreacion;
-          Lr_InfoProcesoMasivoDet.OBSERVACION           := 'Error de data - No se ha podido obtener la �ltima milla asociada al servicio de Internet';
+          Lr_InfoProcesoMasivoDet.OBSERVACION           := 'Error de data - No se ha podido obtener la última milla asociada al servicio de Internet';
           DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_PROCESO_MASIVO_DET(Lr_InfoProcesoMasivoDet, Ln_IdProcesoMasivoDet, Lv_MsjError);
           IF Lv_MsjError IS NOT NULL THEN 
             RAISE Le_Exception;
@@ -5081,7 +5081,7 @@ AS
       AND ROWNUM                                      = 1;
   BEGIN
     /*
-     * Se verifica si existe alg�n proceso ejecutado que deba finalizarse a nivel de solicitud
+     * Se verifica si existe algún proceso ejecutado que deba finalizarse a nivel de solicitud
      * FILTROS_REGISTROS_PM_VERIFICA_FINALIZACION
      * ESTADOS_VALIDADOS_INFO_DETALLE_SOLICITUD: EnEjecucion
      * ESTADOS_VALIDADOS_INFO_DETALLE_SOL_CARACT: EnEjecucion
@@ -5098,9 +5098,9 @@ AS
     Ln_NumPuntosProcesPmVerifFin    := Lr_RegGetInfoPmCorte.NUM_REGISTROS_PM_CAB;
     Ln_NumPuntosTotalPmVerifFin     := Lr_RegGetInfoPmCorte.CANTIDAD_PUNTOS;
     IF Ln_IdSolCorteVerifFin IS NOT NULL AND Ln_IdSolCaractPmCabVerifFin IS NOT NULL AND Ln_IdPmCabCorteVerifFin IS NOT NULL THEN
-      --Si existe un proceso que contenga detalles ya ejecutados, se verificar� si se han ejecutado todos los detalles asociados a dicho proceso
+      --Si existe un proceso que contenga detalles ya ejecutados, se verificará si se han ejecutado todos los detalles asociados a dicho proceso
       IF Ln_NumPuntosProcesPmVerifFin = Ln_NumPuntosTotalPmVerifFin THEN
-        --Se actualiza el estado de la caracter�stica atada al proceso que ya ejecut� todos los registros  
+        --Se actualiza el estado de la característica atada al proceso que ya ejecutó todos los registros  
         UPDATE DB_COMERCIAL.INFO_DETALLE_SOL_CARACT
         SET ESTADO = Lv_EstadoEjecutada,
         USR_ULT_MOD = Lv_UsrEjecucion,
@@ -5108,12 +5108,12 @@ AS
         WHERE ID_SOLICITUD_CARACTERISTICA = Ln_IdSolCaractPmCabVerifFin
         AND ESTADO <> Lv_EstadoEjecutada;
         IF SQL%ROWCOUNT = 1 THEN
-          --Se crea historial de la solicitud indicando que se ha culminado la ejecuci�n de todos los detalles de un proceso masivo
+          --Se crea historial de la solicitud indicando que se ha culminado la ejecución de todos los detalles de un proceso masivo
           Lr_InfoDetalleSolHistorial                        := NULL;
           Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
           Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Ln_IdSolCorteVerifFin;
           Lr_InfoDetalleSolHistorial.ESTADO                 := Lv_EstadoEnEjecucion;
-          Lr_InfoDetalleSolHistorial.OBSERVACION            := 'El proceso masivo de corte de Fibra �ptica #'|| Ln_IdPmCabCorteVerifFin
+          Lr_InfoDetalleSolHistorial.OBSERVACION            := 'El proceso masivo de corte de Fibra Óptica #'|| Ln_IdPmCabCorteVerifFin
                                                                || ' ha ejecutado todos sus detalles asociados';
           Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrEjecucion;
           Lr_InfoDetalleSolHistorial.FE_CREACION            := SYSDATE;
@@ -5152,12 +5152,12 @@ AS
               RAISE Le_Exception;
             END IF;
 
-            --Se crea una caracter�stica para marcar las solicitudes que se tomar�n en cuenta para enviar el reporte con todos los procesos ejecutados
+            --Se crea una característica para marcar las solicitudes que se tomarán en cuenta para enviar el reporte con todos los procesos ejecutados
             OPEN Lc_GetIdCaracteristica(Lv_CaractEnvioReporte);
             FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractEnvioReporte;
             CLOSE Lc_GetIdCaracteristica;
             IF Ln_IdCaractEnvioReporte IS NULL THEN
-              Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica para enviar el reporte';
+              Lv_MsjError := 'No se ha podido obtener el id de la característica para enviar el reporte';
               RAISE Le_Exception;
             END IF;
 
@@ -5177,7 +5177,7 @@ AS
       END IF;
     ELSE
       /*
-       * Se verifica si la solicitud tiene otros procesos a�n por procesar.
+       * Se verifica si la solicitud tiene otros procesos aún por procesar.
        * FILTROS_REGISTROS_PM_EN_EJECUCION
        * ESTADOS_VALIDADOS_INFO_DETALLE_SOLICITUD: EnEjecucion
        * ESTADOS_VALIDADOS_INFO_DETALLE_SOL_CARACT: EnEjecucion
@@ -5196,7 +5196,7 @@ AS
     
     IF Lv_VerificaProcesoPorEjecutar = 'SI' THEN
       /*
-       * Se verifica si existen otros procesos a�n por procesar.
+       * Se verifica si existen otros procesos aún por procesar.
        * FILTROS_REGISTROS_PM_POR_EJECUTAR
        * ESTADOS_VALIDADOS_INFO_DETALLE_SOLICITUD: PorEjecutar, EnEjecucion
        * ESTADOS_VALIDADOS_INFO_DETALLE_SOL_CARACT: PorEjecutar
@@ -5212,7 +5212,7 @@ AS
       Ln_IdPmCabCortePorEjecutar      := Lr_RegGetInfoPmCorte.ID_PROCESO_MASIVO_CAB;
 
       IF Ln_IdSolCortePorEjecutar IS NOT NULL AND Ln_IdSolCaractPmCabPorEjecutar IS NOT NULL AND Ln_IdPmCabCortePorEjecutar IS NOT NULL THEN          
-        --Se habilita los detalles del pr�ximo proceso para que se ejecute el corte masivo
+        --Se habilita los detalles del próximo proceso para que se ejecute el corte masivo
         UPDATE DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET
         SET ESTADO = Lv_EstadoPendiente,
         USR_ULT_MOD = Lv_UsrEjecucion,
@@ -5221,14 +5221,14 @@ AS
         AND ESTADO = Lv_EstadoPorEjecutar;
 
         IF SQL%ROWCOUNT > 0 THEN
-          --Se habilita el pr�ximo proceso 
+          --Se habilita el próximo proceso 
           UPDATE DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB
           SET ESTADO = Lv_EstadoPendiente,
           USR_ULT_MOD = Lv_UsrEjecucion,
           FE_ULT_MOD = SYSDATE
           WHERE ID_PROCESO_MASIVO_CAB = Ln_IdPmCabCortePorEjecutar;
 
-          --Se actualiza el estado de la caracter�stica de la solicitud asociada al proceso masivo
+          --Se actualiza el estado de la característica de la solicitud asociada al proceso masivo
           UPDATE DB_COMERCIAL.INFO_DETALLE_SOL_CARACT 
           SET ESTADO = Lv_EstadoEnEjecucion,
           USR_ULT_MOD = Lv_UsrEjecucion,
@@ -5245,7 +5245,7 @@ AS
           Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
           Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Ln_IdSolCortePorEjecutar;
           Lr_InfoDetalleSolHistorial.ESTADO                 := Lv_EstadoEnEjecucion;
-          Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se inicia la ejecuci�n del proceso masivo de corte de Fibra �ptica #' 
+          Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se inicia la ejecución del proceso masivo de corte de Fibra Óptica #' 
                                                              || Ln_IdPmCabCortePorEjecutar;
           Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrEjecucion;
           Lr_InfoDetalleSolHistorial.FE_CREACION            := SYSDATE;
@@ -5272,12 +5272,12 @@ AS
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   WHEN OTHERS THEN
     Pv_Status   := 'ERROR';
-    Pv_MsjError := 'Ha ocurrido un error inesperado al ejecutar el corte masivo por lotes. Por favor comun�quese con el Dep. de Sistemas!';
+    Pv_MsjError := 'Ha ocurrido un error inesperado al ejecutar el corte masivo por lotes. Por favor comuníquese con el Dep. de Sistemas!';
     ROLLBACK;
     Lv_MsjError := SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'INKG_TRANSACCIONES_MASIVAS.P_EJECUTA_CORTE_MASIVO_X_LOTES', 
-                                            'Ocurri� un error general en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
+                                            'Ocurrió un error general en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1'));
@@ -5514,11 +5514,11 @@ AS
     FETCH Lc_GetIdCaracteristica INTO Ln_IdCaractEnvioReporte;
     CLOSE Lc_GetIdCaracteristica;
     IF Ln_IdCaractEnvioReporte IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener el id de la caracter�stica para enviar el reporte';
+      Lv_MsjError := 'No se ha podido obtener el id de la característica para enviar el reporte';
       RAISE Le_Exception;
     END IF;
 
-    --Se actualizar�n todos los detalles en estado Fallo para que no se vuelva a reintentar desde el proceso masivo de corte
+    --Se actualizarán todos los detalles en estado Fallo para que no se vuelva a reintentar desde el proceso masivo de corte
     OPEN Lc_GetRegsCortePmEjecutado(Lv_ParamDetValor2DarDeBajaEjec);
     LOOP
       FETCH Lc_GetRegsCortePmEjecutado BULK COLLECT INTO Lt_TInfoCortePmEjecutado LIMIT 1000;
@@ -5547,7 +5547,7 @@ AS
             Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
             Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Lr_RegInfoCortePmEjecutado.ID_DETALLE_SOLICITUD;
             Lr_InfoDetalleSolHistorial.ESTADO                 := Lr_RegInfoCortePmEjecutado.ESTADO_SOL_CORTE;
-            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza autom�ticamente la ejecuci�n del proceso masivo #'
+            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza automáticamente la ejecución del proceso masivo #'
                                                                  || Lr_RegInfoCortePmEjecutado.ID_PROCESO_MASIVO_CAB
                                                                  || ' - Registro pasa de estado '  || Lr_RegInfoCortePmEjecutado.ESTADO_PM_CAB
                                                                  || ' a ' || Lr_RegInfoCortePmEjecutado.ESTADO_NUEVO_PM_CAB;
@@ -5578,7 +5578,7 @@ AS
             Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
             Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Lr_RegInfoCortePmEjecutado.ID_DETALLE_SOLICITUD;
             Lr_InfoDetalleSolHistorial.ESTADO                 := Lr_RegInfoCortePmEjecutado.ESTADO_NUEVO_SOL_CORTE;
-            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza la solicitud autom�ticamente'
+            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza la solicitud automáticamente'
                                                                  || ' - Registro pasa de estado ' || Lr_RegInfoCortePmEjecutado.ESTADO_SOL_CORTE
                                                                  || ' a ' || Lr_RegInfoCortePmEjecutado.ESTADO_NUEVO_SOL_CORTE;
             Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrFinalizaCorteMasivo;
@@ -5597,7 +5597,7 @@ AS
     CLOSE Lc_GetRegsCortePmEjecutado;
     COMMIT;
     
-    --Se dar� de baja todos los procesos para proceder a enviar el reporte
+    --Se dará de baja todos los procesos para proceder a enviar el reporte
     OPEN Lc_GetInfoProcesosDarDeBaja(Lv_ParamDetValor2DarDeBaja);
     LOOP
       FETCH Lc_GetInfoProcesosDarDeBaja BULK COLLECT INTO Lt_TProcesosCorteDarDeBaja LIMIT 1000;
@@ -5641,7 +5641,7 @@ AS
             Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
             Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Lr_RegProcesosCorteDarDeBaja.ID_DETALLE_SOLICITUD;
             Lr_InfoDetalleSolHistorial.ESTADO                 := Lv_EstadoEnEjecucion;
-            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza autom�ticamente la ejecuci�n del proceso masivo #'
+            Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza automáticamente la ejecución del proceso masivo #'
                                                                  || Lr_RegProcesosCorteDarDeBaja.ID_PROCESO_MASIVO_CAB
                                                                  || ' - Registro pasa de estado '  || Lr_RegProcesosCorteDarDeBaja.ESTADO_PM_CAB
                                                                  || ' a ' || Lr_RegProcesosCorteDarDeBaja.ESTADO_NUEVO_PM_CAB;
@@ -5672,7 +5672,7 @@ AS
               Lr_InfoDetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
               Lr_InfoDetalleSolHistorial.DETALLE_SOLICITUD_ID   := Lr_RegProcesosCorteDarDeBaja.ID_DETALLE_SOLICITUD;
               Lr_InfoDetalleSolHistorial.ESTADO                 := Lr_RegProcesosCorteDarDeBaja.ESTADO_NUEVO_SOL_CORTE;
-              Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza la solicitud autom�ticamente'
+              Lr_InfoDetalleSolHistorial.OBSERVACION            := 'Se finaliza la solicitud automáticamente'
                                                                    || ' - Registro pasa de estado ' || Lr_RegProcesosCorteDarDeBaja.ESTADO_SOL_CORTE
                                                                    || ' a ' || Lr_RegProcesosCorteDarDeBaja.ESTADO_NUEVO_SOL_CORTE;
               Lr_InfoDetalleSolHistorial.USR_CREACION           := Lv_UsrFinalizaCorteMasivo;
@@ -5723,7 +5723,7 @@ AS
     Lv_MsjError := SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'INKG_TRANSACCIONES_MASIVAS.P_FIN_REGS_CORTE_MASIVO_XLOTES', 
-                                            'Ocurri� un error general en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
+                                            'Ocurrió un error general en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1'));
@@ -5930,7 +5930,7 @@ AS
     CLOSE Lc_GetPlantilla;
     Lv_PlantillaTareaCorreo := Lr_RegGetPlantillaTareaCorreo.PLANTILLA;
     IF Lv_PlantillaTareaCorreo IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la plantilla para la asignaci�n de la tarea';
+      Lv_MsjError := 'No se ha podido obtener la plantilla para la asignación de la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -5939,7 +5939,7 @@ AS
     FETCH Lc_GetInfoAsignacionTarea INTO Lr_RegGetInfoAsignacionTarea;
     CLOSE Lc_GetInfoAsignacionTarea;
     IF Lr_RegGetInfoAsignacionTarea.ID_DETALLE IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la informaci�n de la asignaci�n de la tarea';
+      Lv_MsjError := 'No se ha podido obtener la información de la asignación de la tarea';
       RAISE Le_Exception;
     END IF;
 
@@ -5988,7 +5988,7 @@ AS
     Lv_CodigoAppCorteMasivo     := Lr_RegGetConfigNfsCorteMasivo.CODIGO_APP;
     Lv_CodigoPathCorteMasivo    := Lr_RegGetConfigNfsCorteMasivo.CODIGO_PATH;
     IF Lv_CodigoAppCorteMasivo IS NULL OR Lv_CodigoPathCorteMasivo IS NULL THEN
-      Lv_MsjError := 'No se ha podido obtener la configuraci�n de la ruta NFS';
+      Lv_MsjError := 'No se ha podido obtener la configuración de la ruta NFS';
       RAISE Le_Exception;
     END IF;
 
@@ -6022,7 +6022,7 @@ AS
     END IF;
 
     IF Lv_PlantillaCorreo IS NULL THEN 
-      Lv_MsjError := 'No se ha podido obtener la plantilla de env�o de correo asociada al proceso de corte masivo por lotes';
+      Lv_MsjError := 'No se ha podido obtener la plantilla de envío de correo asociada al proceso de corte masivo por lotes';
       RAISE Le_Exception;
     END IF;
 
@@ -6110,7 +6110,7 @@ AS
     APEX_JSON.PARSE(Lv_RespuestaGuardarArchivo);
     Ln_CodeGuardarArchivo   := APEX_JSON.GET_NUMBER('code');
     IF Ln_CodeGuardarArchivo IS NULL OR Ln_CodeGuardarArchivo <> 200 THEN
-      Lv_MsjError := 'Ha ocurrido alg�n error al generar el archivo. Por favor consulte al Dep. de Sistemas!';
+      Lv_MsjError := 'Ha ocurrido algún error al generar el archivo. Por favor consulte al Dep. de Sistemas!';
       RAISE Le_Exception;
     END IF;
 
@@ -6219,7 +6219,7 @@ AS
     Lv_MsjError := SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'INKG_TRANSACCIONES_MASIVAS.P_REPORTE_CORTE_MASIVO_XLOTES', 
-                                            'Ocurri� un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
+                                            'Ocurrió un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1'));
@@ -6308,7 +6308,7 @@ AS
       FETCH Lc_GetValorParamServiciosMd INTO Lr_RegGetParamsCreacionTarea;
       CLOSE Lc_GetValorParamServiciosMd;
       IF Lr_RegGetParamsCreacionTarea.ID_PARAMETRO_DET IS NULL THEN
-        Lv_MsjError := 'No se ha podido obtener los par�metros configurados para la creaci�n de la tarea para el corte masivo por lotes';
+        Lv_MsjError := 'No se ha podido obtener los parámetros configurados para la creación de la tarea para el corte masivo por lotes';
         RAISE Le_Exception;
       END IF;
   
@@ -6316,7 +6316,7 @@ AS
       FETCH Lc_GetValorParamServiciosMd INTO Lr_RegGetParamsAsignacionTarea;
       CLOSE Lc_GetValorParamServiciosMd;
       IF Lr_RegGetParamsAsignacionTarea.ID_PARAMETRO_DET IS NULL THEN
-        Lv_MsjError := 'No se ha podido obtener los par�metros configurados para la asignaci�n de la tarea para el corte masivo por lotes';
+        Lv_MsjError := 'No se ha podido obtener los parámetros configurados para la asignación de la tarea para el corte masivo por lotes';
         RAISE Le_Exception;
       END IF;
   
@@ -6388,7 +6388,7 @@ AS
     Lv_MsjError := SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'INKG_TRANSACCIONES_MASIVAS.P_FINALIZA_CORTE_MASIVO_XLOTES', 
-                                            'Ocurri� un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
+                                            'Ocurrió un error inesperado en el proceso, '|| SUBSTR(Lv_MsjError,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'),'127.0.0.1'));
@@ -6519,7 +6519,7 @@ AS
     ROLLBACK;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'INKG_TRANSACCIONES_MASIVAS.P_FINALIZA_PMS_POR_OPCION', 
-                                            'Ocurri� un error inesperado en el proceso, '
+                                            'Ocurrió un error inesperado en el proceso, '
                                             || SUBSTR(SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
                                             || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,0,3950),
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
@@ -6667,7 +6667,7 @@ AS
       Lt_TCamposPrimeraLineaCsv := DB_COMERCIAL.TECNK_SERVICIOS.F_SPLIT_VARCHAR2(Lv_ContenidoPrimeraLinea, Lv_Delimitador);
       Ln_CantidadColumnasCsv := Lt_TCamposPrimeraLineaCsv.COUNT;
       IF Ln_CantidadColumnasCsv <> 1 THEN
-        Lv_MsjError := 'El archivo tiene un n�mero de columnas no permitidas. S�lo se permite 1 columna';
+        Lv_MsjError := 'El archivo tiene un número de columnas no permitidas. Sólo se permite 1 columna';
         RAISE Le_Exception;
       END IF;
     ELSE
@@ -6703,7 +6703,7 @@ AS
         END IF;
         
         IF Lv_LoginPuntoCsv IS NOT NULL THEN 
-          --Se valida si el login enviado est� listo para ser reactivado
+          --Se valida si el login enviado está listo para ser reactivado
           OPEN Lc_GetObtieneDataPunto(Lv_LoginPuntoCsv);
           FETCH Lc_GetObtieneDataPunto INTO Lr_RegGetObtieneDataPunto;
           CLOSE Lc_GetObtieneDataPunto;
@@ -6749,7 +6749,7 @@ AS
                 Lr_PmDetReactivacion.FE_CREACION            := SYSDATE;
                 Lr_PmDetReactivacion.USR_CREACION           := Lv_UsrCreacion;
                 Lr_PmDetReactivacion.IP_CREACION            := Lv_IpCreacion;
-                Lr_PmDetReactivacion.OBSERVACION            := 'Registro creado autom�ticamente por subida de archivo csv';
+                Lr_PmDetReactivacion.OBSERVACION            := 'Registro creado automáticamente por subida de archivo csv';
                 DB_INFRAESTRUCTURA.INKG_TRANSACCIONES_MASIVAS.P_INSERT_PROCESO_MASIVO_DET(Lr_PmDetReactivacion, Ln_IdPmDetReactivacion, Lv_MsjError);
                 IF Lv_MsjError IS NOT NULL THEN 
                   RAISE Le_ExceptionInterno;
@@ -6843,10 +6843,10 @@ AS
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   WHEN OTHERS THEN
     Pv_Status               := 'ERROR';
-    Pv_MsjError             := 'No se han podido crear los registros para el proceso masivo de reactivaci�n';
+    Pv_MsjError             := 'No se han podido crear los registros para el proceso masivo de reactivación';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'INKG_TRANSACCIONES_MASIVAS.P_CREA_PM_REACTIVACION_MD_CSV',
-                                          'Error al crear los registros para el proceso masivo de reactivaci�n - ' || SQLCODE || ' - ERROR_STACK: '
+                                          'Error al crear los registros para el proceso masivo de reactivación - ' || SQLCODE || ' - ERROR_STACK: '
                                           || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
                                           SYSDATE,
@@ -7101,7 +7101,7 @@ AS
                                       }';
                     --ejecuto el request
                     Lv_StatusResult := 'ERROR';
-                    Lv_MsgResult    := 'Problemas al ejecutar el Ws de Telcos para ejecutar la creaci�n del monitoreo del TelcoGraph del cliente.';
+                    Lv_MsgResult    := 'Problemas al ejecutar el Ws de Telcos para ejecutar la creación del monitoreo del TelcoGraph del cliente.';
                     DB_GENERAL.GNKG_WEB_SERVICE.P_POST(Lv_Url,Lcl_Headers,Lcl_Request,Ln_CodeRequest,Lv_MsgResult,Lcl_Response);
                     IF Ln_CodeRequest = 0 AND INSTR(Lcl_Response, 'status') != 0 AND INSTR(Lcl_Response, 'mensaje') != 0 THEN
                         APEX_JSON.PARSE(Lcl_Response);

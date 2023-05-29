@@ -9,7 +9,7 @@ CREATE OR REPLACE package  NAF47_TNET.GEK_MIGRACION_JZU is
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.1 03-10-2018 -  Se modifica para asignar forma de pago cero como valor por defecto
   *
-  * @author Elvis Mu�oz <emunoz@telconet.ec>
+  * @author Elvis Muñoz <emunoz@telconet.ec>
   * @version 1.2 15-01-2023 -  Se procede al cambio GEK_CONSULTA.F_RECUPERA_LOGIN  por la senetencia LOWER(UPER)
   *
   * @param Pr_MigraArcga   IN NAF47_TNET.MIGRA_ARCGAE recibe variable registro de tabla

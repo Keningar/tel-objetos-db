@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_ARCOTEL_CASOS'.
+  * Documentación para PROCEDURE 'P_REPORTE_ARCOTEL_CASOS'.
   * Procedure que permite generar un reporte de casos cerrados para la empresa Telconet
   *
   * PARAMETROS:
@@ -19,7 +19,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_TAREAS_TT'.
+  * Documentación para PROCEDURE 'P_REPORTE_TAREAS_TT'.
   * Procedure que permite generar un reporte de tareas que es enviado al Ing. TT
   *
   * PARAMETROS:
@@ -37,18 +37,18 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
                                 pv_mensaje_error   OUT VARCHAR2); 
 
   /*
-   * Documentaci�n para TYPE 'Gr_Tareas'.
+   * Documentación para TYPE 'Gr_Tareas'.
    * Record que me permite devolver los valores para setear las columnas del reporte de tareas.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 29-05-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 29-05-2019
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.1 04-07-2019 - Se agrega las columnas 'ASIGNADO_ID_HIS', 'DEPARTAMENTO_ORIGEN_ID' y se cambias las fechas
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.1 04-07-2019 - Se agrega las columnas 'ASIGNADO_ID_HIS', 'DEPARTAMENTO_ORIGEN_ID' y se cambias las fechas
    *                           por tipo de dato VARCHAR2.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.2 27-12-2019 - Se agrega la columna 'ID_DETALLE_HISTORIAL' para obtener el
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.2 27-12-2019 - Se agrega la columna 'ID_DETALLE_HISTORIAL' para obtener el
    *                           id del detalle historial de la tarea.
    */
   TYPE Gr_Tareas IS RECORD (
@@ -83,46 +83,46 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
   );
 
   /*
-   * Documentaci�n para el procedimiento 'P_REPORTE_TAREAS'.
+   * Documentación para el procedimiento 'P_REPORTE_TAREAS'.
    *
-   * M�todo que permite generar el reporte de tareas solicitada por el Telcos+.
+   * Método que permite generar el reporte de tareas solicitada por el Telcos+.
    *
    * @Param CLOB     Pcl_Json   Json de los criterios de consulta para el reporte de tarea
-   * @Param varchar2 Pv_Status  Estado de la ejecuci�n del proceso ('ok','fail')
-   * @Param varchar2 Pv_Message Mensaje de respuesta de la ejecuci�n del proceso
+   * @Param varchar2 Pv_Status  Estado de la ejecución del proceso ('ok','fail')
+   * @Param varchar2 Pv_Message Mensaje de respuesta de la ejecución del proceso
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 29-05-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 29-05-2019
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.1 15-06-2019 - Se modifica la manera de parsear el estado y las cuadrillas, obteniendo
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.1 15-06-2019 - Se modifica la manera de parsear el estado y las cuadrillas, obteniendo
    *                           un array y filtrandolo por un IN.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.2 27-06-2019 - En caso de que ocurra una excepci�n se valida si el archivo existe y se procede a eliminarlo.
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.2 27-06-2019 - En caso de que ocurra una excepción se valida si el archivo existe y se procede a eliminarlo.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.3 03-07-2019 - Se agrega el par�metro 'Prf_Tareas' encargado de retorna el record de tareas
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.3 03-07-2019 - Se agrega el parámetro 'Prf_Tareas' encargado de retorna el record de tareas
    *                           solicitadas por el usuario.
-   *                         - Se agrega el par�metro 'Pn_Total' encargado de retornar la cantidad de registros de las tareas
+   *                         - Se agrega el parámetro 'Pn_Total' encargado de retornar la cantidad de registros de las tareas
    *                           solicitadas por el usuario.
    *
-   * @author Modificado: N�stor Naula <nnaulal@telconet.ec>
+   * @author Modificado: Néstor Naula <nnaulal@telconet.ec>
    * @version 1.4 04-09-2019 - Se agrega la variable strVerTareasEcucert que permite ver o no las tareas de ECUCERT.
    * @since 1.3
    *
-   * @author Modificado: N�stor Naula <nnaulal@telconet.ec>
+   * @author Modificado: Néstor Naula <nnaulal@telconet.ec>
    * @version 1.5 13-09-2019 - Se cambia la forma de filtro de las tareas ECUCERT de NOT IN a EXISTS para optimizar la consulta.
    * @since 1.4
    *
-   * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.6 27-12-2019 - Se agrega en el query principal el campo 'ID_DETALLE_HISTORIAL'
    *
-   * @author Modificado: N�stor Naula <nnaulal@telconet.ec>
+   * @author Modificado: Néstor Naula <nnaulal@telconet.ec>
    * @version 1.7 15-06-2020 - Se cambia la forma de filtro de las tareas ECUCERT por temas de lentitud.
    * @since 1.6
    *
-   * @author Modificado: Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Modificado: Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.8 02-02-2021 - Se modifica el filtro por cliente, para evitar la consulta a la info_comunicacion.
    */
   PROCEDURE P_REPORTE_TAREAS(Pcl_Json    IN  CLOB,
@@ -132,12 +132,12 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
                              Pv_Message  OUT VARCHAR2);
 
   /*
-   * Documentaci�n para TYPE 'Gr_Casos'.
+   * Documentación para TYPE 'Gr_Casos'.
    *
    * Record que me permite devolver los valores para setear las columnas del reporte de casos.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 19-06-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 19-06-2019
    */
   TYPE Gr_Casos IS RECORD (
           ID_CASO        DB_SOPORTE.INFO_CASO.ID_CASO%TYPE,
@@ -153,19 +153,19 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
   );
 
   /*
-   * Documentaci�n para el procedimiento 'P_REPORTE_CASOS'.
+   * Documentación para el procedimiento 'P_REPORTE_CASOS'.
    *
-   * M�todo que permite generar el reporte de casos solicitado por el Telcos+.
+   * Método que permite generar el reporte de casos solicitado por el Telcos+.
    *
    * @Param CLOB     Pcl_Json   Json de los criterios de consulta para el reporte de casos.
-   * @Param varchar2 Pv_Status  Estado de la ejecuci�n del proceso ('ok','fail').
-   * @Param varchar2 Pv_Message Mensaje de respuesta de la ejecuci�n del proceso.
+   * @Param varchar2 Pv_Status  Estado de la ejecución del proceso ('ok','fail').
+   * @Param varchar2 Pv_Message Mensaje de respuesta de la ejecución del proceso.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 19-06-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 19-06-2019
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.1 03-06-2020 - Se elimina la llamada al cursor *C_GetUltimosCasosLogin*
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.1 03-06-2020 - Se elimina la llamada al cursor *C_GetUltimosCasosLogin*
    *                           por motivos que ocasiona latencia en la base de datos.
    */
   PROCEDURE P_REPORTE_CASOS(Pcl_Json    IN  CLOB,
@@ -173,21 +173,22 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_REPORTES AS
                             Pv_Message  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para la funci�n 'F_GET_VARCHAR_CLEAN'
+   * Documentación para la función 'F_GET_VARCHAR_CLEAN'
    *
-   * Funci�n que limpia ciertos car�cteres especiales para los reportes.
+   * Función que limpia ciertos carácteres especiales para los reportes.
    *
    * @Param CLOB Fv_Cadena Recibe la cadena a limpiar.
    *
-   * @return CLOB Retorna la cadena sin car�cteres especiales.
+   * @return CLOB Retorna la cadena sin carácteres especiales.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 21-06-2019
    */
   FUNCTION F_GET_VARCHAR_CLEAN(Fv_Cadena IN CLOB) RETURN CLOB;
 
 END SPKG_REPORTES;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_REPORTES AS
 
 PROCEDURE P_REPORTE_ARCOTEL_CASOS(pv_prefijo_empresa IN  VARCHAR2,
@@ -330,7 +331,7 @@ IS
 
 
 lv_fecha_archivo                VARCHAR2(20)   := TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS');
-lv_asunto_notificacion          VARCHAR2(100)  := 'Notificaci�n de Generacion de Reporte de Casos';
+lv_asunto_notificacion          VARCHAR2(100)  := 'Notificación de Generacion de Reporte de Casos';
 lv_directorio                   VARCHAR2(50)   := 'DIR_REPORTES_ARCOTEL_CASOS';
 lv_nombre_archivo               VARCHAR2(100)  := 'ReporteArcotelCasosTN_'|| lv_fecha_archivo||'.csv';
 lv_nombre_archivo_comprimir     VARCHAR2(100)  := '';
@@ -778,7 +779,7 @@ SELECT LISTAGG(g.estado_tarea
   OR g.OBSERVACION LIKE'%Tarea fue Reanudada%'
   OR g.OBSERVACION LIKE'%Tarea fue Finalizada%'
   OR g.OBSERVACION LIKE'%Tarea fue Asignada%'
-  OR g.OBSERVACION LIKE '%Obs: Desde el m�vil%'
+  OR g.OBSERVACION LIKE '%Obs: Desde el móvil%'
   OR g.OBSERVACION LIKE '%Tarea fue Cancelada%'
   OR g.OBSERVACION LIKE '%Tarea fue Rechazada%'
   OR g.OBSERVACION LIKE '%Se inicia la ejecucion de la Tarea%');
@@ -998,7 +999,7 @@ END P_REPORTE_TAREAS_TT;
                              Pv_Status   OUT VARCHAR2,
                              Pv_Message  OUT VARCHAR2) IS
 
-    --Cursor para obtener el n�mero de caso
+    --Cursor para obtener el número de caso
     CURSOR C_ObtenerCaso(Cn_IdDetalle NUMBER) IS
         SELECT  ICA.ID_CASO,
                 ICA.NUMERO_CASO
@@ -1107,7 +1108,7 @@ END P_REPORTE_TAREAS_TT;
         WHERE NVEE.LOGIN_EMPLE   = Cv_Login
           AND UPPER(NVEE.ESTADO) = UPPER(Cv_Estado);
 
-    --Cursor para obtener el valor de configuraci�n
+    --Cursor para obtener el valor de configuración
     CURSOR C_ParametrosConfiguracion(Cv_NombreParametro VARCHAR2,
                                      Cv_Modulo          VARCHAR2,
                                      Cv_Descripcion     VARCHAR2) IS
@@ -1121,7 +1122,7 @@ END P_REPORTE_TAREAS_TT;
       AND APCAB.MODULO           = Cv_Modulo
       AND APCDET.DESCRIPCION     = Cv_Descripcion;
 
-    --Variables para el query din�mico
+    --Variables para el query dinámico
     Lrf_ReporteTareas       SYS_REFCURSOR;
     Lv_QuerySelect          VARCHAR2(2000);
     Lv_Queryfrom            VARCHAR2(1000) := '';
@@ -1145,7 +1146,7 @@ END P_REPORTE_TAREAS_TT;
     Lcl_AfectadoDireccion   CLOB;
     Lcl_FormaContacto       CLOB;
 
-    -- Variables de configuraci�n
+    -- Variables de configuración
     Lv_NombreArchivo             VARCHAR2(100) := 'ReporteTareas_'||to_char(SYSDATE,'RRRRMMDDHH24MISS')||'.csv';
     Lv_NombreParametro           VARCHAR2(25)  := 'PARAMETROS_REPORTE_TAREAS';
     Lv_Modulo                    VARCHAR2(7)   := 'SOPORTE';
@@ -1250,7 +1251,7 @@ END P_REPORTE_TAREAS_TT;
     END IF;
 
     apex_json.parse(Pcl_Json);
-    Lv_UsuarioSolicita := apex_json.get_varchar2('strUsuarioSolicita');--Obtenemos el usuario quien realiza la petici�n
+    Lv_UsuarioSolicita := apex_json.get_varchar2('strUsuarioSolicita');--Obtenemos el usuario quien realiza la petición
     Lv_EsConsulta      := apex_json.get_varchar2('esConsulta');
     Lv_Start           := apex_json.get_varchar2('start');
     Lv_Limit           := apex_json.get_varchar2('limit');
@@ -1342,7 +1343,7 @@ END P_REPORTE_TAREAS_TT;
     Lv_CodEmpresa             := apex_json.get_varchar2('codEmpresa');
     Lv_VerTareasEcucert       := apex_json.get_varchar2('strVerTareasEcucert');
 
-    --Creaci�n del Query.
+    --Creación del Query.
     Lv_QuerySelect := 'SELECT /*+ RESULT_CACHE */ ' ||
                              'IDE.ID_DETALLE AS ID_DETALLE, '||
                              'IDE.LATITUD AS LATITUD, '||
@@ -1976,7 +1977,7 @@ END P_REPORTE_TAREAS_TT;
         --Cierre del Archivo
         UTL_FILE.FCLOSE(Lf_Archivo);
 
-        --Ejecuci�n del comando para crear el archivo comprimido
+        --Ejecución del comando para crear el archivo comprimido
         DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND(Lt_ComandoReporte||' '||Lt_RutaDirectorio||Lv_NombreArchivo));
 
         --Envio del archivo por correo
@@ -1987,7 +1988,7 @@ END P_REPORTE_TAREAS_TT;
                                                   Lt_NombreDirectorio,
                                                   Lv_NombreArchivo||Lt_ExtensionReporte);
 
-        --Eliminaci�n del archivo
+        --Eliminación del archivo
         BEGIN
             UTL_FILE.FREMOVE(Lt_NombreDirectorio,Lv_NombreArchivo||Lt_ExtensionReporte);
         EXCEPTION
@@ -2008,7 +2009,7 @@ END P_REPORTE_TAREAS_TT;
     Pv_Status  := 'ok';
     Pv_Message := 'Proceso ejecutado correctamente';
 
-    --Insertamos la ejecuci�n por ok del reporte.
+    --Insertamos la ejecución por ok del reporte.
     IF Lt_InsertaOk IS NULL OR UPPER(Lt_InsertaOk) = 'S' THEN
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('SPKG_REPORTES',
@@ -2029,7 +2030,7 @@ END P_REPORTE_TAREAS_TT;
 
         IF Lv_EsConsulta IS NULL OR UPPER(Lv_EsConsulta) <> 'S' THEN
 
-            --Eliminaci�n del archivo
+            --Eliminación del archivo
             BEGIN
 
                 IF Lt_NombreDirectorio IS NOT NULL AND Lv_NombreArchivo IS NOT NULL THEN
@@ -2079,7 +2080,7 @@ END P_REPORTE_TAREAS_TT;
                 Lt_PlantillaError := REPLACE(Lt_PlantillaError,'[[diaReporte]]', TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS'));
             ELSE
                 Lt_PlantillaError := 'Estimado usuario '||Lv_UsuarioSolicita
-                    ||', el reporte generado el d�a '||TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS')
+                    ||', el reporte generado el día '||TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS')
                     ||' no se pudo generar. Por favor comunicar a Sistemas';
             END IF;
 
@@ -2138,7 +2139,7 @@ END P_REPORTE_TAREAS_TT;
 --
 --
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_CASOS'.
+  * Documentación para PROCEDURE 'P_REPORTE_CASOS'.
   * Mejora para disminuir el costo de query aumentando usando WITH Antes: 3714434875 Ahora: 49668
   * @author Jose Guaman <jaguamanp@telconet.ec>
   * @version 1.0 18-10-2022
@@ -2384,7 +2385,7 @@ END P_REPORTE_TAREAS_TT;
         WHERE NVEE.LOGIN_EMPLE   = Cv_Login
           AND UPPER(NVEE.ESTADO) = UPPER(Cv_Estado);
 
-    --Cursor para obtener el valor de configuraci�n
+    --Cursor para obtener el valor de configuración
     CURSOR C_ParametrosConfiguracion(Cv_NombreParametro VARCHAR2,
                                      Cv_Modulo          VARCHAR2,
                                      Cv_Descripcion     VARCHAR2) IS
@@ -2418,7 +2419,7 @@ END P_REPORTE_TAREAS_TT;
 
     --========= FIN DE CURSORES ========--
 
-    --Variables para la formaci�n del query din�mico
+    --Variables para la formación del query dinámico
     Lv_QuerySelect          VARCHAR2(2000)  := '';
     Lv_Queryfrom            VARCHAR2(1500) := '';
     Lv_QueryWhere           VARCHAR2(2000) := '';
@@ -2496,7 +2497,7 @@ END P_REPORTE_TAREAS_TT;
     Lv_CabeceraHipotesisFile  VARCHAR2(600);
     Lv_DetalleHipotesisFile   VARCHAR2(600);
 
-    --Variables de configuraci�n
+    --Variables de configuración
     Lf_Archivo                   UTL_FILE.FILE_TYPE;
     Lv_NombreArchivo             VARCHAR2(100) := 'ReporteCasos_'||to_char(SYSDATE,'RRRRMMDDHH24MISS')||'.csv';
     Lv_Delimitador               VARCHAR2(2)   := ';';
@@ -3261,7 +3262,7 @@ END P_REPORTE_TAREAS_TT;
 
                                 EXIT WHEN Lb_EnLimite;
 
-                                --En caso que la condici�n anterior no se cumpla, se procede a obtener los afectados.
+                                --En caso que la condición anterior no se cumpla, se procede a obtener los afectados.
 
                                IF Lv_LoginAfectado IS NULL THEN
                                     Lv_LoginAfectado := parteAfectada.AFECTADO_NOMBRE;
@@ -3277,7 +3278,7 @@ END P_REPORTE_TAREAS_TT;
 
                                 EXIT WHEN parteAfectada.TIPO_AFECTADO = 'Elemento';
 
-                                --En caso que la condici�n anterior no se cumpla se sobre entiende que el afectado es Cliente
+                                --En caso que la condición anterior no se cumpla se sobre entiende que el afectado es Cliente
                                 OPEN C_GetPuntoCliente(parteAfectada.AFECTADO_ID);
                                     FETCH C_GetPuntoCliente INTO Lc_GetPuntoCliente;
                                      Lb_tieneDatos := C_GetOneDetalleByIdCaso%FOUND;
@@ -3520,7 +3521,7 @@ END P_REPORTE_TAREAS_TT;
     --Cierre del Archivo
     UTL_FILE.FCLOSE(Lf_Archivo);
 
-    --Ejecuci�n del comando para crear el archivo comprimido
+    --Ejecución del comando para crear el archivo comprimido
     DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND(Lt_ComandoReporte||' '||Lt_RutaDirectorio||Lv_NombreArchivo));
 
     --Envio del archivo por correo
@@ -3531,7 +3532,7 @@ END P_REPORTE_TAREAS_TT;
                                               Lt_NombreDirectorio,
                                               Lv_NombreArchivo||Lt_ExtensionReporte);
 
-    --Eliminaci�n del archivo
+    --Eliminación del archivo
     BEGIN
         UTL_FILE.FREMOVE(Lt_NombreDirectorio,Lv_NombreArchivo||Lt_ExtensionReporte);
     EXCEPTION
@@ -3553,7 +3554,7 @@ END P_REPORTE_TAREAS_TT;
     Pv_Status  := 'ok';
     Pv_Message := 'Proceso ejecutado correctamente';
 
-    --Insertamos la ejecuci�n por ok del reporte.
+    --Insertamos la ejecución por ok del reporte.
     IF Lt_InsertaOk IS NULL OR UPPER(Lt_InsertaOk) = 'S' THEN
 
         IF Lv_IpSolicita IS NULL THEN
@@ -3576,7 +3577,7 @@ END P_REPORTE_TAREAS_TT;
             Lv_IpSolicita := SYS_CONTEXT('USERENV','IP_ADDRESS');
         END IF;
 
-        --Eliminaci�n del archivo
+        --Eliminación del archivo
         BEGIN
 
             IF Lt_NombreDirectorio IS NOT NULL AND Lv_NombreArchivo IS NOT NULL THEN
@@ -3629,7 +3630,7 @@ END P_REPORTE_TAREAS_TT;
             Lt_PlantillaError := REPLACE(Lt_PlantillaError,'[[diaReporte]]', TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS'));
         ELSE
             Lt_PlantillaError := 'Estimado usuario '||Lv_UsuarioSolicita
-                ||', el reporte de casos generado el d�a '||TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS')
+                ||', el reporte de casos generado el día '||TO_CHAR(SYSDATE,'RRRR-MM-DD HH24:MI:SS')
                 ||' no se pudo generar. Por favor comunicar a Sistemas';
         END IF;
 
@@ -3691,9 +3692,9 @@ END P_REPORTE_TAREAS_TT;
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|;|.|%|"]|+$', ' ')
-              ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-              ,'������������', 'AEIOUNaeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|;|.|%|"]|+$', ' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+              ,'ÁÉÍÓÚÑáéíóúñ', 'AEIOUNaeioun')
               , Chr(9), ' ')
               , Chr(10), ' ')
               , Chr(13), ' ')

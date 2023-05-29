@@ -1,15 +1,15 @@
 CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   /**
-  * Documentaci�n para la funci�n F_GENERATE_TOKEN
+  * Documentación para la función F_GENERATE_TOKEN
   *
-  * Funci�n encargada para generar un token en el portal 3dEYE
+  * Función encargada para generar un token en el portal 3dEYE
   *
   * @param Fv_Username        IN  VARCHAR2 Recibe usuario del customer
   * @param Fv_Password        IN  VARCHAR2 Recibe password del customer
   * @param Fv_ApiKey          IN  VARCHAR2 Recibe api-key del customer
   * RETURN                    OUT VARCHAR2 Retorna token del customer
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   FUNCTION F_GENERATE_TOKEN(Fv_Username IN VARCHAR2,
@@ -18,17 +18,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN VARCHAR2;
   
   /**
-  * Documentaci�n para el procedimiento P_CORTE_SERVICIO_NETCAM
+  * Documentación para el procedimiento P_CORTE_SERVICIO_NETCAM
   *
-  * M�todo encargado de cortar el servicio netcam
+  * Método encargado de cortar el servicio netcam
   *
   * @param Pn_IdServicio       IN  NUMBER   Recibe id del servicio
-  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acci�n
+  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acción
   * @param Pv_User             IN  VARCHAR2 Recibe usuario logeado
-  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacci�n
-  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacción
+  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   PROCEDURE P_CORTE_SERVICIO_NETCAM(Pn_IdServicio IN  NUMBER,
@@ -38,18 +38,18 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                     Pv_Mensaje    OUT VARCHAR2);
   
   /**
-  * Documentaci�n para el procedimiento P_ROLLBACK_CORTE_NETCAM
+  * Documentación para el procedimiento P_ROLLBACK_CORTE_NETCAM
   *
-  * M�todo encargado de hacer el roolback del proceso cortar servicio netcam
+  * Método encargado de hacer el roolback del proceso cortar servicio netcam
   *
-  * @param Pv_IdCam       IN  VARCHAR2 Recibe id de la c�mara
+  * @param Pv_IdCam       IN  VARCHAR2 Recibe id de la cámara
   * @param Pv_IdRol       IN  VARCHAR2 Recibe id del rol
   * @param Pv_ApiKey      IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token       IN  VARCHAR2 Recibe token del customer
   * @param Pv_User        IN  VARCHAR2 Recibe usuario logeado
-  * @param Pv_Status      OUT VARCHAR2 Retorna estado de la transacci�n
+  * @param Pv_Status      OUT VARCHAR2 Retorna estado de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   PROCEDURE P_ROLLBACK_CORTE_NETCAM(Pv_IdCam   IN  VARCHAR2,
@@ -60,17 +60,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                     Pv_Status  OUT VARCHAR2);
   
   /**
-  * Documentaci�n para la funci�n F_REMOVER_CAM_ROL
+  * Documentación para la función F_REMOVER_CAM_ROL
   *
-  * Funci�n encargada de remover una c�mara de un rol en el portal 3dEYE
+  * Función encargada de remover una cámara de un rol en el portal 3dEYE
   *
-  * @param Fv_IdCam        IN  VARCHAR2 Recibe id de la c�mara
+  * @param Fv_IdCam        IN  VARCHAR2 Recibe id de la cámara
   * @param Fv_IdRol        IN  VARCHAR2 Recibe id del rol
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                                  
   FUNCTION F_REMOVER_CAM_ROL(Fv_IdCam  IN VARCHAR2,
@@ -80,17 +80,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_REMOVER_USER_ROL
+  * Documentación para la función F_REMOVER_USER_ROL
   *
-  * Funci�n encargada de remover un usuario de un rol en el portal 3dEYE
+  * Función encargada de remover un usuario de un rol en el portal 3dEYE
   *
   * @param Fv_IdUser       IN  VARCHAR2 Recibe id del usuario
   * @param Fv_IdRol        IN  VARCHAR2 Recibe id del rol
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */  
   FUNCTION F_REMOVER_USER_ROL(Fv_IdUser IN VARCHAR2,
@@ -100,17 +100,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_ASIGNAR_CAM_ROL
+  * Documentación para la función F_ASIGNAR_CAM_ROL
   *
-  * Funci�n encargada de asignar una c�mara a un rol en el portal 3dEYE
+  * Función encargada de asignar una cámara a un rol en el portal 3dEYE
   *
-  * @param Fv_IdCam        IN  VARCHAR2 Recibe id de la c�mara
+  * @param Fv_IdCam        IN  VARCHAR2 Recibe id de la cámara
   * @param Fv_IdRol        IN  VARCHAR2 Recibe id del rol
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */ 
   FUNCTION F_ASIGNAR_CAM_ROL(Fv_IdCam  IN VARCHAR2,
@@ -120,17 +120,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_ASIGNAR_USER_ROL
+  * Documentación para la función F_ASIGNAR_USER_ROL
   *
-  * Funci�n encargada de asignar un usuario a un rol en el portal 3dEYE
+  * Función encargada de asignar un usuario a un rol en el portal 3dEYE
   *
   * @param Fv_IdUser       IN  VARCHAR2 Recibe id del usuario
   * @param Fv_IdRol        IN  VARCHAR2 Recibe id del rol
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */ 
   FUNCTION F_ASIGNAR_USER_ROL(Fv_IdUser IN VARCHAR2,
@@ -140,16 +140,16 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_ELIMINAR_CAM
+  * Documentación para la función F_ELIMINAR_CAM
   *
-  * Funci�n encargada de eliminar una c�mara en el portal 3dEYE
+  * Función encargada de eliminar una cámara en el portal 3dEYE
   *
-  * @param Fv_IdCam        IN  VARCHAR2 Recibe id de la c�mara
+  * @param Fv_IdCam        IN  VARCHAR2 Recibe id de la cámara
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   FUNCTION F_ELIMINAR_CAM(Fv_IdCam  IN VARCHAR2,
@@ -158,16 +158,16 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_ELIMINAR_USER
+  * Documentación para la función F_ELIMINAR_USER
   *
-  * Funci�n encargada de eliminar un  en el portal 3dEYE
+  * Función encargada de eliminar un  en el portal 3dEYE
   *
   * @param Fv_IdUser       IN  VARCHAR2 Recibe id del usuario
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   FUNCTION F_ELIMINAR_USER(Fv_IdUser  IN VARCHAR2,
@@ -176,17 +176,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_VALIDAR_ESTADO_CAM
+  * Documentación para la función F_VALIDAR_ESTADO_CAM
   *
-  * Funci�n encargada de validar el estado de una c�mara en el portal 3dEYE
+  * Función encargada de validar el estado de una cámara en el portal 3dEYE
   *
-  * @param Fv_IdCam              IN  VARCHAR2 Recibe id de la c�mara
-  * @param Fv_TipoActivacion     IN  VARCHAR2 Recibe el tipo de activaci�n
+  * @param Fv_IdCam              IN  VARCHAR2 Recibe id de la cámara
+  * @param Fv_TipoActivacion     IN  VARCHAR2 Recibe el tipo de activación
   * @param Fv_ApiKey             IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token              IN  VARCHAR2 Recibe token del customer
-  * RETURN                       OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                       OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   FUNCTION F_VALIDAR_ESTADO_CAM(Fv_IdCam          IN VARCHAR2,
@@ -196,16 +196,16 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para la funci�n F_ELIMINAR_ROL
+  * Documentación para la función F_ELIMINAR_ROL
   *
-  * Funci�n encargada de eliminar un rol en el portal 3dEYE
+  * Función encargada de eliminar un rol en el portal 3dEYE
   *
   * @param Fv_IdRol        IN  VARCHAR2 Recibe id del rol
   * @param Fv_ApiKey       IN  VARCHAR2 Recibe api-key del customer
   * @param Fv_Token        IN  VARCHAR2 Recibe token del customer
-  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE seg�n su �xito
+  * RETURN                 OUT BOOLEAN  Retorna TRUE/FALSE según su éxito
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   FUNCTION F_ELIMINAR_ROL(Fv_IdRol  IN VARCHAR2,
@@ -214,21 +214,21 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
   RETURN BOOLEAN;
   
   /**
-  * Documentaci�n para el procedimiento P_CREAR_CAM_P2P
+  * Documentación para el procedimiento P_CREAR_CAM_P2P
   *
-  * M�todo encargado para crear una c�mara P2P
+  * Método encargado para crear una cámara P2P
   *
-  * @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la c�mara
-  * @param Pv_CodigoPush     IN  VARCHAR2 Recibe c�digo push
-  * @param Pv_AdminUser      IN  VARCHAR2 Recibe usuario de la c�mara
-  * @param Pv_AdminPass      IN  VARCHAR2 Recibe pass de la c�mara
+  * @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la cámara
+  * @param Pv_CodigoPush     IN  VARCHAR2 Recibe código push
+  * @param Pv_AdminUser      IN  VARCHAR2 Recibe usuario de la cámara
+  * @param Pv_AdminPass      IN  VARCHAR2 Recibe pass de la cámara
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Data          OUT CLOB     Retorna data de la transacci�n
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Data          OUT CLOB     Retorna data de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   PROCEDURE P_CREAR_CAM_P2P(Pv_NombreCam  IN  VARCHAR2,
@@ -242,26 +242,26 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                             Pcl_Data      OUT CLOB);
   
   /**
-  * Documentaci�n para el procedimiento P_CREAR_CAM_ONVIF
+  * Documentación para el procedimiento P_CREAR_CAM_ONVIF
   *
-  * M�todo encargado para crear una c�mara ONVIF
+  * Método encargado para crear una cámara ONVIF
   *
   * @param Pcl_DatosONVIF         JSON REQUEST
   * {
-  *  @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la c�mara
-  *  @param Pv_UrlHTTP        IN  VARCHAR2 Recibe url HTTP de la c�mara
-  *  @param Pn_PuertoHTTP     IN  NUMBER   Recibe puerto HTTP de la c�mara
-  *  @param Pn_PuertoRTSP     IN  NUMBER   Recibe puerto RTSP de la c�mara
-  *  @param Pv_AdminUser      IN  VARCHAR2 Recibe usuario de la c�mara
-  *  @param Pv_AdminPass      IN  VARCHAR2 Recibe pass de la c�mara
+  *  @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la cámara
+  *  @param Pv_UrlHTTP        IN  VARCHAR2 Recibe url HTTP de la cámara
+  *  @param Pn_PuertoHTTP     IN  NUMBER   Recibe puerto HTTP de la cámara
+  *  @param Pn_PuertoRTSP     IN  NUMBER   Recibe puerto RTSP de la cámara
+  *  @param Pv_AdminUser      IN  VARCHAR2 Recibe usuario de la cámara
+  *  @param Pv_AdminPass      IN  VARCHAR2 Recibe pass de la cámara
   *  }
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Data          OUT CLOB     Retorna data de la transacci�n
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Data          OUT CLOB     Retorna data de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                         
   PROCEDURE P_CREAR_CAM_ONVIF(Pcl_DatosONVIF  IN  CLOB,
@@ -272,28 +272,28 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                               Pcl_Data        OUT CLOB);
   
   /**
-  * Documentaci�n para el procedimiento P_CREAR_CAM_GENERIC
+  * Documentación para el procedimiento P_CREAR_CAM_GENERIC
   *
-  * M�todo encargado para crear una c�mara GENERIC
+  * Método encargado para crear una cámara GENERIC
   *
   * @param Pcl_DatosGENERIC       JSON REQUEST
   * {
-  *  @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la c�mara
-  *  @param Pv_UrlHTTP        IN  VARCHAR2 Recibe url HTTP de la c�mara
-  *  @param Pn_PuertoHTTP     IN  NUMBER   Recibe puerto HTTP de la c�mara
-  *  @param Pv_UrlRTSP        IN  VARCHAR2 Recibe url RTSP de la c�mara
-  *  @param Pn_PuertoRTSP     IN  NUMBER   Recibe puerto RTSP de la c�mara
-  *  @param Pv_DeviceBrand    IN  VARCHAR2 Recibe fabricante de la c�mara
-  *  @param Pv_AdminUser      IN  VARCHAR2 Recibe usuario de la c�mara
-  *  @param Pv_AdminPass      IN  VARCHAR2 Recibe pass de la c�mara
+  *  @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la cámara
+  *  @param Pv_UrlHTTP        IN  VARCHAR2 Recibe url HTTP de la cámara
+  *  @param Pn_PuertoHTTP     IN  NUMBER   Recibe puerto HTTP de la cámara
+  *  @param Pv_UrlRTSP        IN  VARCHAR2 Recibe url RTSP de la cámara
+  *  @param Pn_PuertoRTSP     IN  NUMBER   Recibe puerto RTSP de la cámara
+  *  @param Pv_DeviceBrand    IN  VARCHAR2 Recibe fabricante de la cámara
+  *  @param Pv_AdminUser      IN  VARCHAR2 Recibe usuario de la cámara
+  *  @param Pv_AdminPass      IN  VARCHAR2 Recibe pass de la cámara
   *  }
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Data          OUT CLOB     Retorna data de la transacci�n
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Data          OUT CLOB     Retorna data de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                           
   PROCEDURE P_CREAR_CAM_GENERIC(Pcl_DatosGENERIC IN  CLOB,
@@ -304,20 +304,20 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                 Pcl_Data         OUT CLOB);
   
   /**
-  * Documentaci�n para el procedimiento P_CREAR_ROL
+  * Documentación para el procedimiento P_CREAR_ROL
   *
-  * M�todo encargado para crear un rol en el portal 3dEYE
+  * Método encargado para crear un rol en el portal 3dEYE
   *
   * @param Pv_NombreRol      IN  VARCHAR2 Recibe nombre del rol
-  * @param Pv_Descripcion    IN  VARCHAR2 Recibe descripci�n del rol
+  * @param Pv_Descripcion    IN  VARCHAR2 Recibe descripción del rol
   * @param Pv_Type           IN  VARCHAR2 Recibe tipo de rol
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Data          OUT CLOB     Retorna data de la transacci�n
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Data          OUT CLOB     Retorna data de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                          
   PROCEDURE P_CREAR_ROL(Pv_NombreRol   IN  VARCHAR2,
@@ -330,18 +330,18 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                         Pcl_Data       OUT CLOB);
   
   /**
-  * Documentaci�n para el procedimiento P_LISTA_USERS_BY_ROL
+  * Documentación para el procedimiento P_LISTA_USERS_BY_ROL
   *
-  * M�todo encargado de listar los usuarios de un rol en el portal 3dEYE
+  * Método encargado de listar los usuarios de un rol en el portal 3dEYE
   *
   * @param Pn_IdRol          IN  VARCHAR2 Recibe id del rol
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Data          OUT CLOB     Retorna data de la transacci�n
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Data          OUT CLOB     Retorna data de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                     
   PROCEDURE P_LISTA_USERS_BY_ROL(Pn_IdRol   IN  VARCHAR2,
@@ -352,18 +352,18 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                  Pcl_Data   OUT CLOB);
   
   /**
-  * Documentaci�n para el procedimiento P_VALIDAR_ROL
+  * Documentación para el procedimiento P_VALIDAR_ROL
   *
-  * M�todo encargado de validar un rol en el portal 3dEYE
+  * Método encargado de validar un rol en el portal 3dEYE
   *
   * @param Pv_NombreRol      IN  VARCHAR2 Recibe nombre del rol
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
   * @param Pn_IdRol          OUT NUMBER   Retorna id del rol
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                              
   PROCEDURE P_VALIDAR_ROL(Pv_NombreRol IN  VARCHAR2,
@@ -374,18 +374,18 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                           Pn_IdRol     OUT NUMBER);
                           
   /**
-  * Documentaci�n para el procedimiento P_VALIDAR_CAM
+  * Documentación para el procedimiento P_VALIDAR_CAM
   *
-  * M�todo encargado de validar una c�mara en el portal 3dEYE
+  * Método encargado de validar una cámara en el portal 3dEYE
   *
-  * @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la c�mara
+  * @param Pv_NombreCam      IN  VARCHAR2 Recibe nombre de la cámara
   * @param Pv_ApiKey         IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token          IN  VARCHAR2 Recibe token del customer
-  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pn_IdCam          OUT NUMBER   Retorna id de la c�mara
+  * @param Pv_Status         OUT VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje        OUT VARCHAR2 Retorna mensaje de la transacción
+  * @param Pn_IdCam          OUT NUMBER   Retorna id de la cámara
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                              
   PROCEDURE P_VALIDAR_CAM(Pv_NombreCam IN  VARCHAR2,
@@ -396,17 +396,17 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                           Pn_IdCam     OUT NUMBER);
   
   /**
-  * Documentaci�n para el procedimiento P_REACTIVACION_SERVICIO_NETCAM
+  * Documentación para el procedimiento P_REACTIVACION_SERVICIO_NETCAM
   *
-  * M�todo encargado de reconectar el servicio netcam
+  * Método encargado de reconectar el servicio netcam
   *
   * @param Pn_IdServicio       IN  NUMBER   Recibe id del servicio
-  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acci�n
+  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acción
   * @param Pv_User             IN  VARCHAR2 Recibe usuario logeado
-  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacci�n
-  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacción
+  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */
   PROCEDURE P_REACTIVACION_SERVICIO_NETCAM(Pn_IdServicio IN  NUMBER,
@@ -416,18 +416,18 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                            Pv_Mensaje    OUT VARCHAR2);
   
   /**
-  * Documentaci�n para el procedimiento P_ROLLBACK_REACTIVACION_NETCAM
+  * Documentación para el procedimiento P_ROLLBACK_REACTIVACION_NETCAM
   *
-  * M�todo encargado de hacer el roolback del proceso reconectar servicio netcam
+  * Método encargado de hacer el roolback del proceso reconectar servicio netcam
   *
-  * @param Pv_IdCam       IN  VARCHAR2 Recibe id de la c�mara
+  * @param Pv_IdCam       IN  VARCHAR2 Recibe id de la cámara
   * @param Pv_IdRol       IN  VARCHAR2 Recibe id del rol
   * @param Pv_ApiKey      IN  VARCHAR2 Recibe api-key del customer
   * @param Pv_Token       IN  VARCHAR2 Recibe token del customer
   * @param Pv_User        IN  VARCHAR2 Recibe usuario logeado
-  * @param Pv_Status      OUT VARCHAR2 Retorna estado de la transacci�n
+  * @param Pv_Status      OUT VARCHAR2 Retorna estado de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                                        
   PROCEDURE P_ROLLBACK_REACTIVACION_NETCAM(Pv_IdCam   IN  VARCHAR2,
@@ -438,18 +438,18 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                            Pv_Status  OUT VARCHAR2);
   
   /**
-  * Documentaci�n para el procedimiento P_CANCELACION_SERVICIO_NETCAM
+  * Documentación para el procedimiento P_CANCELACION_SERVICIO_NETCAM
   *
-  * M�todo encargado de cancelar el servicio netcam
+  * Método encargado de cancelar el servicio netcam
   *
   * @param Pn_IdServicio       IN  NUMBER   Recibe id del servicio
-  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acci�n
+  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acción
   * @param Pv_EsMasivo         IN  VARCHAR2 S = Si es masivo, N = No es masivo
   * @param Pv_User             IN  VARCHAR2 Recibe usuario logeado
-  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacci�n
-  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacción
+  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                                         
   PROCEDURE P_CANCELACION_SERVICIO_NETCAM(Pn_IdServicio IN  NUMBER,
@@ -460,20 +460,20 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_NETCAM is
                                           Pv_Mensaje    OUT VARCHAR2);
   
   /**
-  * Documentaci�n para el procedimiento P_CAMBIO_SERVICIO_ESTADO
+  * Documentación para el procedimiento P_CAMBIO_SERVICIO_ESTADO
   *
-  * M�todo encargado de cambiar el estado del servicio
+  * Método encargado de cambiar el estado del servicio
   *
   * @param Pn_IdServicio       IN  NUMBER   Recibe id del servicio
-  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acci�n
+  * @param Pn_IdAccion         IN  NUMBER   Recibe id de la acción
   * @param Pv_CambiarEstado    IN  VARCHAR2 Recibe tipo del cambio de estado
-  * @param Pv_ObservCambio     IN  VARCHAR2 Recibe observaci�n del cambio de estado
+  * @param Pv_ObservCambio     IN  VARCHAR2 Recibe observación del cambio de estado
   * @param Pv_EsMasivo         IN  VARCHAR2 S = Si es masivo, N = No es masivo
   * @param Pv_User             IN  VARCHAR2 Recibe usuario logeado
-  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacci�n
-  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacci�n
+  * @param Pv_Status           OUT VARCHAR2 Retorna estado de la transacción
+  * @param Pv_Mensaje          OUT VARCHAR2 Retorna mensaje de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */ 
   PROCEDURE P_CAMBIO_SERVICIO_ESTADO(Pn_IdServicio    IN  NUMBER,
@@ -2287,12 +2287,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     IF Lc_ParametrosPortal3DEYE.USERNAME IS NULL OR 
        Lc_ParametrosPortal3DEYE.PASSWORD IS NULL OR
        Lc_ParametrosPortal3DEYE.API_KEY IS NULL THEN
-      Pv_Mensaje := 'No se encuentran completos los par�metros del customer del portal 3dEYE';
+      Pv_Mensaje := 'No se encuentran completos los parámetros del customer del portal 3dEYE';
       RAISE Le_Errors;  
     END IF;
     
     IF Pn_IdServicio IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdServicio esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdServicio esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -2306,7 +2306,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     END IF;
     
     IF Pn_IdAccion IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdAccion esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdAccion esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -2315,12 +2315,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     CLOSE C_ValidarAccion;
     
     IF Lc_Accion.ID_ACCION IS NULL THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no existe o no se encuentra Activo';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no existe o no se encuentra Activo';
       RAISE Le_Errors;
     END IF;
     
     IF Lc_Accion.Nombre_Accion != 'cortarCliente' THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no esta relacionada con cortarCliente';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no esta relacionada con cortarCliente';
       RAISE Le_Errors;
     END IF;
     -- FIN VALIDACIONES GLOBALES
@@ -2363,7 +2363,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
                                                                   Lc_ParametrosPortal3DEYE.API_KEY,
                                                                   Lv_Token3DEYE);
     IF NOT Lb_RemoveCamRol THEN
-      Pv_Mensaje := 'No se pudo remover la c�mara del rol en el portal 3dEYE';
+      Pv_Mensaje := 'No se pudo remover la cámara del rol en el portal 3dEYE';
       RAISE Le_Errors;
     END IF;
     
@@ -2384,7 +2384,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     
     COMMIT;
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacci�n exitosa';
+    Pv_Mensaje := 'Transacción exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       -- ROLLBACK 3DEYE
@@ -2456,7 +2456,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
                                                                    Pv_ApiKey,
                                                                    Pv_Token);
     IF NOT Lb_AsignarCamRol THEN
-      Lv_Mensaje := 'Rollback: No se pudo asignar la c�mara '||Pv_IdCam||' al rol '||Pv_IdRol||' en el portal 3dEYE';
+      Lv_Mensaje := 'Rollback: No se pudo asignar la cámara '||Pv_IdCam||' al rol '||Pv_IdRol||' en el portal 3dEYE';
       RAISE Le_Errors;
     END IF;
     
@@ -2578,7 +2578,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
   BEGIN
     -- INICIO VALIDACIONES GLOBALES
     IF Pn_IdServicio IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdServicio esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdServicio esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -2592,7 +2592,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     END IF;
     
     IF Pn_IdAccion IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdAccion esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdAccion esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -2601,7 +2601,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     CLOSE C_ValidarAccion;
     
     IF Lc_Accion.ID_ACCION IS NULL THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no existe o no se encuentra Activo';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no existe o no se encuentra Activo';
       RAISE Le_Errors;
     END IF;
     -- FIN VALIDACIONES GLOBALES
@@ -2645,7 +2645,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
           NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'),
           'In-Corte',
           NULL,
-          NVL(Pv_ObservCambio, TO_CLOB('Se cort� el servicio')),
+          NVL(Pv_ObservCambio, TO_CLOB('Se cortó el servicio')),
           Lc_Accion.NOMBRE_ACCION
         );
     -- LOGICA REACTIVACION
@@ -2678,7 +2678,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
           NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1'),
           'Activo',
           NULL,
-          NVL(Pv_ObservCambio, TO_CLOB('Se reactiv� el servicio')),
+          NVL(Pv_ObservCambio, TO_CLOB('Se reactivó el servicio')),
           Lc_Accion.NOMBRE_ACCION
         );
     -- LOGICA CANCELACION
@@ -2841,7 +2841,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
           Lc_InfoGeneral.Id_Elemento,
           'Eliminado',
           NULL,
-          'Se elimino por cancelaci�n de Servicio',
+          'Se elimino por cancelación de Servicio',
           NVL(Pv_User, 'telcos'),
           SYSDATE,
           NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1')
@@ -2946,13 +2946,13 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
           NULL
         );
     ELSE
-      Pv_Mensaje := 'La acci�n '||Pv_CambiarEstado||' no existe o no se encuentra configurado
+      Pv_Mensaje := 'La acción '||Pv_CambiarEstado||' no existe o no se encuentra configurado
       actualmente existe CORTE, REACTIVACION y CANCELACION';
       RAISE Le_Errors;
     END IF;
     
     Pv_Status := 'OK';
-    Pv_Mensaje := 'Transacci�n exitosa';
+    Pv_Mensaje := 'Transacción exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status := 'ERROR';
@@ -3040,12 +3040,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     IF Lc_ParametrosPortal3DEYE.USERNAME IS NULL OR 
        Lc_ParametrosPortal3DEYE.PASSWORD IS NULL OR
        Lc_ParametrosPortal3DEYE.API_KEY IS NULL THEN
-      Pv_Mensaje := 'No se encuentran completos los par�metros del customer del portal 3dEYE';
+      Pv_Mensaje := 'No se encuentran completos los parámetros del customer del portal 3dEYE';
       RAISE Le_Errors;  
     END IF;
     
     IF Pn_IdServicio IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdServicio esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdServicio esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -3060,7 +3060,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     END IF;
     
     IF Pn_IdAccion IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdAccion esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdAccion esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -3069,12 +3069,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     CLOSE C_ValidarAccion;
     
     IF Lc_Accion.ID_ACCION IS NULL THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no existe o no se encuentra Activo';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no existe o no se encuentra Activo';
       RAISE Le_Errors;
     END IF;
     
     IF Lc_Accion.Nombre_Accion != 'reconectarCliente' THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no esta relacionada con reconectarCliente';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no esta relacionada con reconectarCliente';
       RAISE Le_Errors;
     END IF;
     -- FIN VALIDACIONES GLOBALES
@@ -3117,7 +3117,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
                                                                    Lc_ParametrosPortal3DEYE.API_KEY,
                                                                    Lv_Token3DEYE);
     IF NOT Lb_AsignarCamRol THEN
-      Pv_Mensaje := 'No se pudo asignar la c�mara al rol en el portal 3dEYE';
+      Pv_Mensaje := 'No se pudo asignar la cámara al rol en el portal 3dEYE';
       RAISE Le_Errors;
     END IF;
   
@@ -3138,7 +3138,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     
     COMMIT;
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacci�n exitosa';
+    Pv_Mensaje := 'Transacción exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       -- ROLLBACK 3DEYE
@@ -3210,7 +3210,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
                                                                    Pv_ApiKey,
                                                                    Pv_Token);
     IF NOT Lb_RemoverCamRol THEN
-      Lv_Mensaje := 'Rollback: No se pudo remover la c�mara '||Pv_IdCam||' del rol '||Pv_IdRol||' en el portal 3dEYE';
+      Lv_Mensaje := 'Rollback: No se pudo remover la cámara '||Pv_IdCam||' del rol '||Pv_IdRol||' en el portal 3dEYE';
       RAISE Le_Errors;
     END IF;
     
@@ -3382,12 +3382,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     IF Lc_ParametrosPortal3DEYE.USERNAME IS NULL OR 
         Lc_ParametrosPortal3DEYE.PASSWORD IS NULL OR
         Lc_ParametrosPortal3DEYE.API_KEY IS NULL THEN
-      Pv_Mensaje := 'No se encuentran completos los par�metros del customer del portal 3dEYE';
+      Pv_Mensaje := 'No se encuentran completos los parámetros del customer del portal 3dEYE';
       RAISE Le_Errors;  
     END IF;
     
     IF Pn_IdServicio IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdServicio esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdServicio esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -3401,7 +3401,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     END IF;
     
     IF Pn_IdAccion IS NULL THEN
-      Pv_Mensaje := 'El campo Pn_IdAccion esta vac�o';
+      Pv_Mensaje := 'El campo Pn_IdAccion esta vacío';
       RAISE Le_Errors;
     END IF;
     
@@ -3410,12 +3410,12 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     CLOSE C_ValidarAccion;
     
     IF Lc_Accion.ID_ACCION IS NULL THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no existe o no se encuentra Activo';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no existe o no se encuentra Activo';
       RAISE Le_Errors;
     END IF;
     
     IF Lc_Accion.Nombre_Accion != 'cancelarCliente' THEN
-      Pv_Mensaje := 'La acci�n '||Pn_IdAccion||' no esta relacionada con cancelarCliente';
+      Pv_Mensaje := 'La acción '||Pn_IdAccion||' no esta relacionada con cancelarCliente';
       RAISE Le_Errors;
     END IF;
     -- FIN VALIDACIONES GLOBALES
@@ -3537,7 +3537,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
         IF Ln_IdCam = 0 OR Ln_IdCam IS NULL THEN
           Lb_EliminarCam := TRUE; 
         END IF;                                              
-        Pv_Mensaje := 'No se pudo eliminar la c�mara en el portal 3dEYE';
+        Pv_Mensaje := 'No se pudo eliminar la cámara en el portal 3dEYE';
         RAISE Le_Errors;
       END IF;
       -- REMOVER LOS USUARIOS DEL ROL
@@ -3611,7 +3611,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
         IF Ln_IdCam = 0 OR Ln_IdCam IS NULL THEN
           Lb_EliminarCam := TRUE; 
         END IF;
-        Pv_Mensaje := 'No se pudo eliminar la c�mara en el portal 3dEYE';
+        Pv_Mensaje := 'No se pudo eliminar la cámara en el portal 3dEYE';
         RAISE Le_Errors;
       END IF;
     ELSE 
@@ -3635,7 +3635,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
     END IF;
   
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacci�n exitosa';
+    Pv_Mensaje := 'Transacción exitosa';
     COMMIT;
   EXCEPTION
     WHEN Le_Errors THEN
@@ -3707,7 +3707,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
             IF ln_NumServiciosNetCam = 1 AND Lb_EliminarRol THEN
               -- ROLLBACK ROL
               DB_COMERCIAL.CMKG_NETCAM.P_CREAR_ROL(Lc_InfoGeneralCancel.Login,
-                                                   'Contenedor de c�maras del login '||Lc_InfoGeneralCancel.Login,
+                                                   'Contenedor de cámaras del login '||Lc_InfoGeneralCancel.Login,
                                                    'Guard',
                                                    Lc_ParametrosPortal3DEYE.Api_Key,
                                                    Lv_Token3DEYE,
@@ -3836,7 +3836,7 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_NETCAM is
             IF ln_NumServiciosNetCam = 1 AND Lb_EliminarRol THEN
               -- ROLLBACK ROL
               DB_COMERCIAL.CMKG_NETCAM.P_CREAR_ROL(Lc_InfoGeneralCancel.Login,
-                                                   'Contenedor de c�maras del login '||Lc_InfoGeneralCancel.Login,
+                                                   'Contenedor de cámaras del login '||Lc_InfoGeneralCancel.Login,
                                                    'Guard',
                                                    Lc_ParametrosPortal3DEYE.Api_Key,
                                                    Lv_Token3DEYE,

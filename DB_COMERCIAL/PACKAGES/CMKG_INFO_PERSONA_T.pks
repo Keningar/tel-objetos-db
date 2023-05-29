@@ -21,7 +21,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_INFO_PERSONA_T AS
     * @since 1.0 28-10-2018
     **/
 
-    PROCEDURE P_UPDATE_INFO_PERSONA (
+  PROCEDURE P_UPDATE_INFO_PERSONA (
         Pr_Info_Persona   IN                INFO_PERSONA%ROWTYPE,
         Pn_IdPersona      IN                INFO_PERSONA.ID_PERSONA%TYPE,
         Pv_Status         OUT               VARCHAR2,
@@ -29,8 +29,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_INFO_PERSONA_T AS
         Pv_Msn            OUT               VARCHAR2
     );   
     
+    
     /**
-    * Actualiza un registro en INFO_PERSONA, para la sincronizaci�n de empleados
+    * Actualiza un registro en INFO_PERSONA, para la sincronización de empleados
     * recibe como parametro un objeto de tipo INFO_PERSONA.
     * @author Alexander Samaniego <awsamaniego@telconet.ec>
     * @since 1.0 28-10-2018

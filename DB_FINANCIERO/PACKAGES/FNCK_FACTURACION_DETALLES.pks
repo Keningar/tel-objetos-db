@@ -29,7 +29,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_DETALLES AS
   );
 
   /*
-  * Documentaci�n para TYPE 'TypeBienServicio'.
+  * Documentación para TYPE 'TypeBienServicio'.
   * Record que me permite devolver los valores para los acumuladores de bienes y servicios
   */
   Type TypeBienServicio IS RECORD (
@@ -62,7 +62,7 @@ PROCEDURE GET_DETALLE_PLAN(Fn_IdPlan IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE,
 --
   /**
   * Documentacion para el procedimiento P_FACTURACION_DETALLE
-  * Proceso principal para la ejecuci�n de el prorrateo de los productos facturados
+  * Proceso principal para la ejecución de el prorrateo de los productos facturados
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.0 28-12-2015
   *
@@ -137,7 +137,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION_DETALLES AS
     Lv_TipoFechaContable      VARCHAR2(30) := NULL;
     --
   BEGIN
-    -- se recupera parametro fecha de contabilziaci�n.
+    -- se recupera parametro fecha de contabilziación.
     IF C_PARAMETRO_CONTABILIZACION%ISOPEN THEN
       CLOSE C_PARAMETRO_CONTABILIZACION;
     END IF;
@@ -205,8 +205,8 @@ END GET_FACTURAS_DETALLAR;
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 21-06-2018
   *
-  * @Param  Pn_IdDocumento       IN NUMBER   C�digo Documento
-  * @Param  Pv_EmpresaId         IN VARCHAR2 C�digo de Empresa
+  * @Param  Pn_IdDocumento       IN NUMBER   Código Documento
+  * @Param  Pv_EmpresaId         IN VARCHAR2 Código de Empresa
   * @Param  Pt_Fe_Emision_Ini    IN VARCHAR2 Fecha Inicial a procesar
   * @Param  Pt_Fe_Emision_Fin    IN VARCHAR2 Fecha Final a procesar
   * @Return Pr_Facturas_Procesar IN VARCHAR2 Ref Cursor con listado documentos.
@@ -748,7 +748,7 @@ END P_ASIGNAR_VALOR_POR_DETALLE;
       Lv_IdEmpresa         := NULL;
     ELSE
       --
-      -- Se recupera C�digo de Empresa 
+      -- Se recupera Código de Empresa 
       IF C_EMPRESA%ISOPEN THEN
         CLOSE C_EMPRESA;
       END IF;
@@ -757,7 +757,7 @@ END P_ASIGNAR_VALOR_POR_DETALLE;
       CLOSE C_EMPRESA;
       --
       IF Lv_IdEmpresa IS NULL THEN
-        Lv_MensajeError := 'No se encuentra definido c�digo de Empresa para prefijo '||Pv_PrefijoEmpresa;
+        Lv_MensajeError := 'No se encuentra definido código de Empresa para prefijo '||Pv_PrefijoEmpresa;
         RAISE Le_Error;
       END IF;
       --

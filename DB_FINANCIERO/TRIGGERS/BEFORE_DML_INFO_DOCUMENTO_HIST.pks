@@ -25,7 +25,7 @@ BEGIN
                                          SYSDATE,
                                          '127.0.0.1'
                                         );
-    --SI EL ESTADO DEL NUEVO HISTORIAL ES CERRADO, SE VERIFICA QUE LA CABECERA EST� CERRADA.
+    --SI EL ESTADO DEL NUEVO HISTORIAL ES CERRADO, SE VERIFICA QUE LA CABECERA ESTÉ CERRADA.
     IF INSERTING AND Lv_EstadoCerrado = :NEW.ESTADO THEN
 
         --SE OBTIENE EL ESTADO_IMPRESION_FACT DE LA CABECERA
@@ -60,7 +60,7 @@ BEGIN
     --
   EXCEPTION
   WHEN Le_Error THEN
-    --Env�a un correo de notificaci�n
+    --Envía un correo de notificación
     DB_FINANCIERO.FNCK_COM_ELECTRONICO.SEND_MAIL_PLANTILLA('sistemas-financiero@telconet.ec', 
                                              'Error Trigger - BEFORE_DML_INFO_DOCUMENTO_HIST en DOCUMENTO_ID : ' 
                                              || :NEW.DOCUMENTO_ID || ' '
@@ -75,8 +75,8 @@ BEGIN
                                              || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE 
                                              || '</small>', 'EXCTG');
     --
-    --Cancela la transacci�n y crea un c�digo de error
-    RAISE_APPLICATION_ERROR(-20001, 'Error en INFO_DOCUMENTO_FINANCIERO_CAB, no se pudo completar la actualizaci�n. ID_DOCUMENTO: ' 
+    --Cancela la transacción y crea un código de error
+    RAISE_APPLICATION_ERROR(-20001, 'Error en INFO_DOCUMENTO_FINANCIERO_CAB, no se pudo completar la actualización. ID_DOCUMENTO: ' 
                             || :NEW.DOCUMENTO_ID
                             || ' ' || SYS_CONTEXT ('USERENV', 'HOST') 
                             || ' ' 
@@ -86,7 +86,7 @@ BEGIN
     --
   WHEN OTHERS THEN
     --
-    --Env�a un correo de notificaci�n
+    --Envía un correo de notificación
     DB_FINANCIERO.FNCK_COM_ELECTRONICO.SEND_MAIL_PLANTILLA('sistemas-financiero@telconet.ec', 
                                              'Error Trigger - BEFORE_DML_INFO_DOCUMENTO_HIST en DOCUMENTO_ID : ' 
                                              || :NEW.DOCUMENTO_ID || ' '
@@ -101,8 +101,8 @@ BEGIN
                                              || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE 
                                              || '</small>', 'EXCTG');
     --
-    --Cancela la transacci�n y crea un c�digo de error
-    RAISE_APPLICATION_ERROR(-20001, 'Error en INFO_DOCUMENTO_FINANCIERO_CAB, no se pudo completar la actualizaci�n. ID_DOCUMENTO: ' 
+    --Cancela la transacción y crea un código de error
+    RAISE_APPLICATION_ERROR(-20001, 'Error en INFO_DOCUMENTO_FINANCIERO_CAB, no se pudo completar la actualización. ID_DOCUMENTO: ' 
                             || :NEW.DOCUMENTO_ID
                             || ' ' || SYS_CONTEXT ('USERENV', 'HOST') 
                             || ' ' 

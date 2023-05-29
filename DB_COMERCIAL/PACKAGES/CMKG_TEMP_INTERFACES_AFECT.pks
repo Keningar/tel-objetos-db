@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TEMP_INTERFACES_AFECT AS 
    
 /**
-* Documentaci�n para CMKG_TEMP_INTERFACES_AFECT
+* Documentación para CMKG_TEMP_INTERFACES_AFECT
 * Paquete que contiene procedimientos relacionadas a la tabla temporal INFO_INTERFACES_AFECTATADAS
 * 
 * @author Richard Cabrera <rcabrera@telconet.ec>
@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TEMP_INTERFACES_AFECT AS
 
 
 /**
-* Documentaci�n para P_CARGA_TMP_INTERFACES_AFECT
+* Documentación para P_CARGA_TMP_INTERFACES_AFECT
 * Procedimiento que sirve para cargar la tabla temporal INFO_INTERFACES_AFECTATADAS
 * 
 * @author Richard Cabrera <rcabrera@telconet.ec>
@@ -25,7 +25,7 @@ PROCEDURE P_CARGA_TMP_INTERFACES_AFECT(PCL_INTERFACES IN CLOB,
 
 
 /**
-* Documentaci�n para P_BORRA_TMP_INTERFACES_AFECT
+* Documentación para P_BORRA_TMP_INTERFACES_AFECT
 * Procedimiento que sirve para eliminar registros de la tabla temporal INFO_INTERFACES_AFECTATADAS
 * relacionados a un proceso_id en particular
 * 

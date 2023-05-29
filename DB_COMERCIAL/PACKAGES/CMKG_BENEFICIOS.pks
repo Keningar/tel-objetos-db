@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS 
 
  /**
-  * Documentaci�n para TYPE 'Lr_RegistrosSolicitudes'.
+  * Documentación para TYPE 'Lr_RegistrosSolicitudes'.
   *  
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 12-03-2021
@@ -19,7 +19,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
              CICLO_FACTURACION    VARCHAR2(100));
 
  /**
-  * Documentaci�n para TYPE 'T_RegistrosSolicitudes'.
+  * Documentación para TYPE 'T_RegistrosSolicitudes'.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 12-03-2021
@@ -27,9 +27,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
   TYPE T_RegistrosSolicitudes IS TABLE OF Lr_RegistrosSolicitudes INDEX BY PLS_INTEGER;
   
  /**
-  * Documentacion para la funci�n F_SUM_PRECIO_ITEM_SERV_PLAN
+  * Documentacion para la función F_SUM_PRECIO_ITEM_SERV_PLAN
   *
-  * Funci�n que obtiene la sumatoria de los precios de los detalles de Productos de un Plan correspondiente a un servicio, 
+  * Función que obtiene la sumatoria de los precios de los detalles de Productos de un Plan correspondiente a un servicio, 
   * se sumariza los detalles de productos que se encuentren parametrizados
   * por "PARAM_FLUJO_ADULTO_MAYOR" detalle "APLICA_PRODUCTO_DESCUENTO_ADULTO_MAYOR" en S.
   *
@@ -52,10 +52,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
   RETURN NUMBER;       
 
  /**
-  * Documentaci�n para procedimiento P_RECALCULO.
-  * Procedimiento que permite realizar el rec�lculo de los valores para las solicitudes de Beneficio 3era Edad / Adulto Mayor 
-  * � Cliente con Discapacidad. Permite la funcionalidad de ejecuci�n por tipo de proceso ya sea Individual o Masivo.
-  * - Individual: Permite procesar el servicio enviado por par�metro la solicitud que posea Adulto Mayor o Dsicapacidad.
+  * Documentación para procedimiento P_RECALCULO.
+  * Procedimiento que permite realizar el recálculo de los valores para las solicitudes de Beneficio 3era Edad / Adulto Mayor 
+  * ó Cliente con Discapacidad. Permite la funcionalidad de ejecución por tipo de proceso ya sea Individual o Masivo.
+  * - Individual: Permite procesar el servicio enviado por parámetro la solicitud que posea Adulto Mayor o Dsicapacidad.
   * - Masivo: Permite procesar todas las solicitudes que posea beneficio de Adulto Mayor.
   *
   * Costo query C_Parametros: 3
@@ -69,9 +69,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
   * @version 1.0 12-03-2021
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 26-08-2021 - Se modifica c�digo para validar los beneficios de adulto mayor por flujos de procesos. Se obtiene el
+  * @version 1.1 26-08-2021 - Se modifica código para validar los beneficios de adulto mayor por flujos de procesos. Se obtiene el
   *                           flujo de proceso a partir del nombre de motivo a procesarse.
-  *                           Se realiza el c�lculo del valor descuento por los flujos de adulto mayor para setear los valores en 
+  *                           Se realiza el cálculo del valor descuento por los flujos de adulto mayor para setear los valores en 
   *                           la solicitud.
   *
   * Costo query C_GetParamCategPlanBasico: 3
@@ -88,10 +88,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
                         Pv_MsnError       OUT VARCHAR2);
 
  /**
-  * Documentaci�n para procedimiento P_APLICA_RECALCULO.
-  * Procedimiento que permite obtener el valor de resultado 'S' o 'N' para aplicar o no el proceso de rec�lculo. 
+  * Documentación para procedimiento P_APLICA_RECALCULO.
+  * Procedimiento que permite obtener el valor de resultado 'S' o 'N' para aplicar o no el proceso de recálculo. 
   * Se realiza validaciones para determinar si los detalles parametrizados por Adulto Mayor ha sido actualizado en la base. 
-  * Detalles de par�metros a verificar son: PORCENTAJE_DESC_ADULTO_MAYOR,SALARIO_BASICO_UNIFICADO,PORCENTAJE_VALOR_RESIDENCIAL_BASICO.
+  * Detalles de parámetros a verificar son: PORCENTAJE_DESC_ADULTO_MAYOR,SALARIO_BASICO_UNIFICADO,PORCENTAJE_VALOR_RESIDENCIAL_BASICO.
   *
   * PARAMETROS:
   * @Param Pv_EmpresaCod      IN DB_COMERCIAL.INFO_EMPRESA_ROL.EMPRESA_COD%TYPE 
@@ -113,7 +113,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
   *
   * PARAMETROS:
   * @Param Pr_InfoServicioCaract IN DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA%ROWTYPE 
-  * @Param Pv_MsnError           OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsnError           OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   *
   * @author Alex Arreaga  <atarreaga@telconet.ec>
   * @version 1.0 15/03/2021
@@ -123,7 +123,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
 
   /**
   * Documentacion para la funcion F_DESCUENTO_ADULTO_MAYOR
-  * Funci�n que obtiene el valor de descuento a otorgarse por Beneficio 3era Edad/ Adulto Mayor
+  * Función que obtiene el valor de descuento a otorgarse por Beneficio 3era Edad/ Adulto Mayor
   *
   * @param  Fn_ParamPorcValorResidencial IN NUMBER,
   * @param  Fn_ParamSalarioBasico        IN NUMBER,
@@ -131,7 +131,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
   * @param  Fn_SumPrecioItem             IN NUMBER
   *
   * @return Retorna el valor de descuento a otorgarse
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 23-01-2021
   */
   FUNCTION F_DESCUENTO_ADULTO_MAYOR(Fn_ParamPorcValorResidencial IN NUMBER,
@@ -141,20 +141,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
   RETURN NUMBER;
 
   /** Documentacion para la funcion F_EDAD_PERSONA
-  * Funci�n que obtiene la edad en a�os de una persona
+  * Función que obtiene la edad en años de una persona
   *
   * @param  Fn_IdPersona IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE  
   *
   * Costo Query C_GetEdadPersona: 3
-  * @return Retorna la edad en a�os de una persona
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @return Retorna la edad en años de una persona
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 22-02-2021
   */
   FUNCTION F_EDAD_PERSONA(Fn_IdPersona IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE)                         
   RETURN NUMBER;
 
   /** Documentacion para la funcion F_PRECIO_PLAN_BASICO.
-  * Funci�n que obtiene el valor del plan b�sico para 3era Edad.
+  * Función que obtiene el valor del plan básico para 3era Edad.
   *
   * @param  Fv_DescCaracteristica IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE 
   * @param  Fv_Valor              IN DB_COMERCIAL.INFO_PLAN_CARACTERISTICA.VALOR%TYPE
@@ -186,6 +186,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_BENEFICIOS AS
 
 END CMKG_BENEFICIOS;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
 
   FUNCTION F_SUM_PRECIO_ITEM_SERV_PLAN(Fn_IdServicio       IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -345,8 +346,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     FETCH C_ObtieneValorParamHist INTO Lr_PorcDescAdultoMayor;
     CLOSE C_ObtieneValorParamHist;
 
-    --Se realiza la validaci�n si existi� un cambio en la tabla de par�metros historial para obtenter el valor modificado
-    --caso contrario se env�a bandera que no existe cambio.
+    --Se realiza la validación si existió un cambio en la tabla de parámetros historial para obtenter el valor modificado
+    --caso contrario se envía bandera que no existe cambio.
     IF Lr_SBU.VALOR1 IS NOT NULL OR Lr_PorcValorResid.VALOR1 IS NOT NULL OR Lr_PorcDescAdultoMayor.VALOR1 IS NOT NULL THEN
     
         IF (Ln_SalarioBaseUnificado != Lr_SBU.VALOR1                 AND Lr_SBU.VALOR1 IS NOT NULL)             OR
@@ -368,7 +369,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
       Pv_AplicaRecalculo := 'N';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            'CMKG_BENEFICIOS.P_APLICA_RECALCULO',
-                                           'Error al obtener resultado para rec�lculo: ' || SQLCODE || ' - ERROR_STACK: '
+                                           'Error al obtener resultado para recálculo: ' || SQLCODE || ' - ERROR_STACK: '
                                              || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
                                              || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL'),
@@ -593,7 +594,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamCalculoProducto, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Lv_ValorCalculoProducto;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro c�lculo por producto.';
+        Lv_MsnError := 'Error al recuperar el parámetro cálculo por producto.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -601,7 +602,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamFormPlanBasico, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Lv_FormulaPlanBasico;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro de f�rmula plan b�sico.';
+        Lv_MsnError := 'Error al recuperar el parámetro de fórmula plan básico.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -609,7 +610,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamFormDescAdultoMayor, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Lv_FormulaAdultoMayor;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro de f�rmula de adulto mayor.';
+        Lv_MsnError := 'Error al recuperar el parámetro de fórmula de adulto mayor.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -617,7 +618,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamSalarioBaseUnif, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Ln_ValorSBU;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro de salario b�sico unificado.';
+        Lv_MsnError := 'Error al recuperar el parámetro de salario básico unificado.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -625,7 +626,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamPorcResidBasico, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Ln_ValorPorcResidBasico;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro de porcentaje residencial b�sico.';
+        Lv_MsnError := 'Error al recuperar el parámetro de porcentaje residencial básico.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros; 
@@ -633,7 +634,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamPorcDescAdultoMayor, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Ln_ValorPorcDescAdultoMayor;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro de porcentaje descuento adulto mayor.';
+        Lv_MsnError := 'Error al recuperar el parámetro de porcentaje descuento adulto mayor.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -649,7 +650,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParametro, Lv_ParamMotivoAdultoMayor, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Lv_MotivoAdultoMayor;
       IF C_Parametros%NOTFOUND THEN
-            Lv_MsnError := 'Error al recuperar el par�metro de Beneficio 3era Edad / Adulto Mayor.';
+            Lv_MsnError := 'Error al recuperar el parámetro de Beneficio 3era Edad / Adulto Mayor.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -657,7 +658,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     OPEN C_Parametros(Lv_NombreParamDisc, Lv_ParamMotivoDisc, Lv_EstadoActivo, Pv_EmpresaCod);
     FETCH C_Parametros INTO Lv_MotivoDiscapacidad;
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsnError := 'Error al recuperar el par�metro de Cliente con Discapacidad.';
+        Lv_MsnError := 'Error al recuperar el parámetro de Cliente con Discapacidad.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -692,16 +693,16 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
         OPEN C_GetParamTipoProceso(Lv_NombreParametro, Lv_ParamTipoProceso, Lv_EstadoActivo, Pv_TipoProceso, Pv_EmpresaCod);
         FETCH C_GetParamTipoProceso INTO Lc_TipoProceso;
             IF C_GetParamTipoProceso%NOTFOUND THEN
-                Lv_MsnError := 'Error al recuperar el par�metro de tipo proceso.';
+                Lv_MsnError := 'Error al recuperar el parámetro de tipo proceso.';
                 RAISE Lex_Exception;  
             END IF;
         CLOSE C_GetParamTipoProceso;
     END IF;
     --
 
-    --Si el servicio no existe y el tipoProceso es Individual se enviar� a la excepci�n controlada.
+    --Si el servicio no existe y el tipoProceso es Individual se enviará a la excepción controlada.
     IF Pn_IdServicio IS NULL AND Pv_TipoProceso = 'INDIVIDUAL'  THEN
-        Lv_MsnError := 'No se encontr� el id del servicio para el tipo de proceso '||Pv_TipoProceso;
+        Lv_MsnError := 'No se encontró el id del servicio para el tipo de proceso '||Pv_TipoProceso;
         RAISE Lex_Exception; 
     END IF;
 
@@ -865,7 +866,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
             FETCH C_GetParamTipoProceso INTO Lc_TipoFlujoAdultoMayor;
             CLOSE C_GetParamTipoProceso;
             --
-            --Se obtiene el tipo de categor�a en el plan mediante el servicio para validaciones.
+            --Se obtiene el tipo de categoría en el plan mediante el servicio para validaciones.
             IF Pv_TipoProceso = 'INDIVIDUAL' THEN
                 OPEN C_GetTipoCategoriaPlan (Lv_DescCaractPlanAdultoMayor, La_RegistrosSolicitudes(Ln_Indx).SERVICIO_ID);
                 FETCH C_GetTipoCategoriaPlan INTO Lv_TipoCategoriaPlan;
@@ -876,7 +877,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
             IF Lc_TipoFlujoAdultoMayor.valor6 = 'PROCESO_3ERA_EDAD_ADULTO_MAYOR' AND 
                 (Pv_TipoProceso = 'INDIVIDUAL' OR Pv_TipoProceso = 'MASIVO') THEN
                 --Se obtiene la sumatoria de los precios de los detalles de Productos de un Plan correspondiente a un servicio
-                --en base al par�metro 'APLICA_PRODUCTO_DESCUENTO_ADULTO_MAYOR' =>'S' si es motivo por beneficio de Adulto Mayor
+                --en base al parámetro 'APLICA_PRODUCTO_DESCUENTO_ADULTO_MAYOR' =>'S' si es motivo por beneficio de Adulto Mayor
                 IF Lv_ValorCalculoProducto = 'S' THEN   
                 
                     Ln_SumPrecioItem := CMKG_BENEFICIOS.F_SUM_PRECIO_ITEM_SERV_PLAN(La_RegistrosSolicitudes(Ln_Indx).SERVICIO_ID,
@@ -899,21 +900,21 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
 
                 Ln_ValorTotalDescuento := ROUND(Ln_ValorTotalDescuento,2);            
             ELSIF Lc_TipoFlujoAdultoMayor.valor6 = 'PROCESO_3ERA_EDAD_RESOLUCION_072021' AND Pv_TipoProceso = 'INDIVIDUAL' THEN 
-                --Se realiza el c�lculo del valor de descuento para la solicitud con beneficio 3era Edad Resoluci�n 07-2021, bas�ndose
-                --en el precio de plan b�sico adulto mayor tanto para los tipos de categor�as de plan b�sico o comerciales.
+                --Se realiza el cálculo del valor de descuento para la solicitud con beneficio 3era Edad Resolución 07-2021, basándose
+                --en el precio de plan básico adulto mayor tanto para los tipos de categorías de plan básico o comerciales.
 
                 Ln_ValorPlanBasico     := CMKG_BENEFICIOS.F_PRECIO_PLAN_BASICO(Lv_DescCaractPlanAdultoMayor,Lc_ParamCategoriaPlanBasico.VALOR1,Pv_EmpresaCod);
                 Ln_ValorTotalDescuento := ROUND(Ln_ValorPlanBasico * (Ln_PorcDescResolucion/100),2); 
 
             ELSIF Lv_MotivoDiscapacidad = La_RegistrosSolicitudes(Ln_Indx).NOMBRE_MOTIVO THEN
-                --C�lculo si el beneficio es discapacidad
+                --Cálculo si el beneficio es discapacidad
                 Ln_ValorTotalDescuento := ROUND( ROUND(Lc_InfoServicio.PRECIO_VENTA,2) * (Ln_ValorPorcDescDisc / 100),2);
             
             END IF;
             --    
 
             IF (Ln_ValorTotalDescuento IS NULL OR Ln_ValorTotalDescuento = 0) THEN
-                Lv_MsnError := 'Error al obtener descuento del servicio en el proceso de rec�lculo. Ln_ValorTotalDescuento: ' 
+                Lv_MsnError := 'Error al obtener descuento del servicio en el proceso de recálculo. Ln_ValorTotalDescuento: ' 
                                     ||Ln_ValorTotalDescuento;
                 RAISE Le_Exception;
             END IF; 
@@ -963,7 +964,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
                 Lr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD := La_RegistrosSolicitudes(Ln_Indx).ID_DETALLE_SOLICITUD; 
 
             ELSIF Lc_TipoFlujoAdultoMayor.valor6 = 'PROCESO_3ERA_EDAD_RESOLUCION_072021' AND Pv_TipoProceso = 'INDIVIDUAL' THEN 
-                --Se setean los valores cuando sea por beneficio de adulto mayor 3era Edad Resoluci�n.
+                --Se setean los valores cuando sea por beneficio de adulto mayor 3era Edad Resolución.
 
                 IF Lv_TipoCategoriaPlan = Lc_ParamCategoriaPlanBasico.VALOR1 THEN
                     Lr_InfoDetalleSolicitud.PRECIO_DESCUENTO     := Ln_ValorTotalDescuento;
@@ -988,7 +989,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
             IF TRIM(Lv_MsnError) IS NOT NULL THEN
                 RAISE Le_Exception;
             END IF;   
-            -- Inserto caracter�stica para la solicitud
+            -- Inserto característica para la solicitud
             Lr_InfoDetalleSolCaract                      := NULL;
             Lr_InfoDetalleSolCaract.CARACTERISTICA_ID    := Ln_IdCaractValorDescuento;
             Lr_InfoDetalleSolCaract.VALOR                := NVL(ROUND(La_RegistrosSolicitudes(Ln_Indx).PRECIO_DESCUENTO,2),0);
@@ -1002,7 +1003,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
                 RAISE Le_Exception;
             END IF;  
     
-            -- Inserto caracter�stica id de adulto mayor para el servicio (ID_DET_CARACT_ADULTO_MAYOR)
+            -- Inserto característica id de adulto mayor para el servicio (ID_DET_CARACT_ADULTO_MAYOR)
             Lr_InfoServicioCaract                            := NULL;
             Lr_InfoServicioCaract.ID_SERVICIO_CARACTERISTICA := DB_COMERCIAL.SEQ_INFO_SERVICIO_CARAC.NEXTVAL;
             Lr_InfoServicioCaract.SERVICIO_ID                := La_RegistrosSolicitudes(Ln_Indx).SERVICIO_ID;
@@ -1010,7 +1011,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
             Lr_InfoServicioCaract.VALOR                      := La_RegistrosSolicitudes(Ln_Indx).ID_DETALLE_SOLICITUD;
             Lr_InfoServicioCaract.ESTADO                     := 'Activo';  
             Lr_InfoServicioCaract.OBSERVACION                := 
-                'Se crea caracter�stica por proceso de rec�lculo, campo Valor: id solicitud. TipoProceso: '||Pv_TipoProceso;  
+                'Se crea característica por proceso de recálculo, campo Valor: id solicitud. TipoProceso: '||Pv_TipoProceso;  
             Lr_InfoServicioCaract.USR_CREACION               := Pv_Usuario;
             Lr_InfoServicioCaract.IP_CREACION                := Lv_IpCreacion;
     
@@ -1022,7 +1023,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
      
             Ln_IdServicioCaract := Lr_InfoServicioCaract.ID_SERVICIO_CARACTERISTICA;
     
-            -- Inserto caracter�stica valor descuento para el servicio
+            -- Inserto característica valor descuento para el servicio
             Lr_InfoServicioCaract                                := NULL;
             Lr_InfoServicioCaract.ID_SERVICIO_CARACTERISTICA     := DB_COMERCIAL.SEQ_INFO_SERVICIO_CARAC.NEXTVAL;
             Lr_InfoServicioCaract.SERVICIO_ID                    := La_RegistrosSolicitudes(Ln_Indx).SERVICIO_ID;
@@ -1030,7 +1031,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
             Lr_InfoServicioCaract.VALOR                          := NVL(ROUND(La_RegistrosSolicitudes(Ln_Indx).PRECIO_DESCUENTO,2),0);
             Lr_InfoServicioCaract.ESTADO                         := 'Activo';
             Lr_InfoServicioCaract.OBSERVACION                    := 
-                'Se crea caracter�stica por proceso de rec�lculo, campo Valor: valor anterior descuento. TipoProceso: '||Pv_TipoProceso;
+                'Se crea característica por proceso de recálculo, campo Valor: valor anterior descuento. TipoProceso: '||Pv_TipoProceso;
             Lr_InfoServicioCaract.USR_CREACION                   := Pv_Usuario;
             Lr_InfoServicioCaract.IP_CREACION                    := Lv_IpCreacion;
             Lr_InfoServicioCaract.REF_ID_SERVICIO_CARACTERISTICA := Ln_IdServicioCaract;
@@ -1040,7 +1041,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
             IF TRIM(Lv_MsnError) IS NOT NULL THEN
                 RAISE Le_Exception;
             END IF;  
-            -- Inserto historial de rec�lculo de la solicitud
+            -- Inserto historial de recálculo de la solicitud
             Lr_DetalleSolHistorial                        := NULL;
             Lr_DetalleSolHistorial.ID_SOLICITUD_HISTORIAL := DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL;
             Lr_DetalleSolHistorial.DETALLE_SOLICITUD_ID   := La_RegistrosSolicitudes(Ln_Indx).ID_DETALLE_SOLICITUD;
@@ -1055,7 +1056,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
                 RAISE Le_Exception;
             END IF;   
     
-            -- Inserto historial de rec�lculo del servicio
+            -- Inserto historial de recálculo del servicio
             Lr_ServicioHistorial                       := NULL;
             Lr_ServicioHistorial.ID_SERVICIO_HISTORIAL := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL;
             Lr_ServicioHistorial.OBSERVACION           := Lv_MensajeHistorial;
@@ -1087,7 +1088,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
         EXCEPTION
           WHEN Le_Exception THEN
             ROLLBACK;
-            Lv_MsjResultado := 'Ocurri� error al generar el proceso de rec�lculo. - TipoProceso: '||Pv_TipoProceso ||' - '||Lv_MsnError;
+            Lv_MsjResultado := 'Ocurrió error al generar el proceso de recálculo. - TipoProceso: '||Pv_TipoProceso ||' - '||Lv_MsnError;
             Pv_MsnError     := Lv_MsjResultado; 
             Pv_Mensaje      := NULL; 
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -1099,7 +1100,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
 
           WHEN OTHERS THEN
             ROLLBACK;
-            Lv_MsjResultado := 'Ocurri� error al generar el proceso de rec�lculo - TipoProceso: '||Pv_TipoProceso;
+            Lv_MsjResultado := 'Ocurrió error al generar el proceso de recálculo - TipoProceso: '||Pv_TipoProceso;
             Pv_MsnError     := Lv_MsjResultado;
             Pv_Mensaje      := NULL;  
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -1140,7 +1141,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
   EXCEPTION
   WHEN Lex_Exception THEN
     ROLLBACK;
-    Lv_MsjResultado := 'Ocurri� un error al generar el proceso de rec�lculo. - TipoProceso: '||Pv_TipoProceso||' - '||Lv_MsnError;
+    Lv_MsjResultado := 'Ocurrió un error al generar el proceso de recálculo. - TipoProceso: '||Pv_TipoProceso||' - '||Lv_MsnError;
     Pv_MsnError     := Lv_MsjResultado;
     Pv_Mensaje      := NULL;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -1151,7 +1152,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
   WHEN OTHERS THEN
     ROLLBACK;
-    Lv_MsjResultado := 'Ocurri� un error al generar el proceso de rec�lculo - TipoProceso: '||Pv_TipoProceso;
+    Lv_MsjResultado := 'Ocurrió un error al generar el proceso de recálculo - TipoProceso: '||Pv_TipoProceso;
     Pv_MsnError     := Lv_MsjResultado;
     Pv_Mensaje      := NULL;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -1208,7 +1209,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
       );
   EXCEPTION
   WHEN OTHERS THEN
-    Pv_MsnError := 'Error al insertar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+    Pv_MsnError := 'Error al insertar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                          'CMKG_BENEFICIOS.P_INSERT_INFO_SERVICIO_CARACT',
@@ -1470,7 +1471,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
     CLOSE C_GetPrecioPlanBasico;
     --
     IF Ln_PrecioPlanBasico IS NULL THEN
-      Lv_MsnError := 'Error al obtener el precio del plan b�sico.';
+      Lv_MsnError := 'Error al obtener el precio del plan básico.';
       RAISE Le_Exception;
     END IF; 
     --  
@@ -1489,7 +1490,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
         RETURN Ln_PrecioPlanBasico;
       WHEN OTHERS THEN
         --
-        Lv_MsnError := 'Error al obtener el precio del plan b�sico -'
+        Lv_MsnError := 'Error al obtener el precio del plan básico -'
                        || SQLCODE || ' - ERROR_STACK: '
                        || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
@@ -1513,3 +1514,80 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_BENEFICIOS AS
 * @return VARCHAR2                            Fv_esClienteDiscapacitado identifica si el cliente es Discapacitado
 * 
 */
+FUNCTION F_GET_ES_CLIENTE_DISCAPACITADO(
+    Fn_IdServicio      IN INFO_SERVICIO.ID_SERVICIO%TYPE,
+    Fn_IdPersonaEmpRol  IN INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE)
+  RETURN VARCHAR2
+IS
+  --
+  Lv_ClienteDisc              VARCHAR2(2) := 'NO';
+  Lv_MotivoClienteDisc        DB_GENERAL.ADMI_MOTIVO.NOMBRE_MOTIVO%TYPE;
+  Lv_NombreParamDisc          DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE:='PARAM_FLUJO_SOLICITUD_DESC_DISCAPACIDAD';
+  Lv_TipoSolicitud            DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE      :='SOLICITUD DESCUENTO'; 
+  Lv_ParamMotivoDisc          DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE   := 'MOTIVO_DESC_DISCAPACIDAD';
+  --
+  Lv_QueryClienteDis       VARCHAR2(4000) := '';
+  Lv_QueryLimit            VARCHAR2(100)  := '';
+  Lv_EstadoActivo          VARCHAR2(6)    := 'Activo';
+  --
+BEGIN
+  --
+
+  IF Fn_IdPersonaEmpRol IS NULL AND Fn_IdServicio IS NULL  THEN
+      RETURN 'ERROR';
+  END IF;   
+
+  Lv_QueryClienteDis := 'SELECT  MOT.NOMBRE_MOTIVO
+                              FROM
+                              DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL CLIE,
+                              DB_COMERCIAL.INFO_PUNTO PTO,                             
+                              DB_COMERCIAL.INFO_SERVICIO SERV,
+                              DB_COMERCIAL.INFO_DETALLE_SOLICITUD SOL,
+                              DB_COMERCIAL.ADMI_TIPO_SOLICITUD TSOL,
+                              DB_GENERAL.ADMI_MOTIVO MOT
+                              WHERE 
+                              PTO.PERSONA_EMPRESA_ROL_ID  = CLIE.ID_PERSONA_ROL 
+                              AND PTO.ID_PUNTO  = SERV.PUNTO_ID 
+                              AND SERV.ID_SERVICIO          = SOL.SERVICIO_ID  
+                              AND SERV.ID_SERVICIO      = DB_COMERCIAL.GET_ID_SERVICIO_PREF(PTO.ID_PUNTO)    
+                              AND SOL.TIPO_SOLICITUD_ID       = TSOL.ID_TIPO_SOLICITUD 
+                              AND TSOL.ESTADO                 = :Bv_EstadoActivo1
+                              AND TSOL.DESCRIPCION_SOLICITUD  = :Bv_TipoSolicitud
+                              AND SOL.MOTIVO_ID               = MOT.ID_MOTIVO                                                          
+                              AND MOT.NOMBRE_MOTIVO IN ( SELECT PD.VALOR1 
+                                                        FROM DB_GENERAL.ADMI_PARAMETRO_DET PD, 
+                                                          DB_GENERAL.ADMI_PARAMETRO_CAB PC 
+                                                        WHERE PC.ID_PARAMETRO   = PD.PARAMETRO_ID 
+                                                        AND PC.NOMBRE_PARAMETRO = :Bv_NombreParamDisc
+                                                        AND PC.ESTADO           = :Bv_EstadoActivo2
+                                                        AND PD.ESTADO           = :Bv_EstadoActivo3
+                                                        AND PD.DESCRIPCION      = :Bv_ParamMotivoDisc) ';
+                                                        
+
+     IF Fn_IdServicio IS NOT NULL THEN  
+        Lv_QueryClienteDis := Lv_QueryClienteDis || ' AND SERV.ID_SERVICIO = :Bn_IdServicio';
+         EXECUTE IMMEDIATE Lv_QueryClienteDis INTO Lv_MotivoClienteDisc USING Lv_EstadoActivo, Lv_TipoSolicitud, Lv_NombreParamDisc, Lv_EstadoActivo, Lv_EstadoActivo,Lv_ParamMotivoDisc, Fn_IdServicio;
+    ELSE 
+        Lv_QueryClienteDis := 'SELECT NOMBRE_MOTIVO FROM ('|| Lv_QueryClienteDis || ' AND CLIE.ID_PERSONA_ROL = :Bn_IdPersonaEmpRol ) WHERE ROWNUM = 1';
+         EXECUTE IMMEDIATE Lv_QueryClienteDis INTO Lv_MotivoClienteDisc USING Lv_EstadoActivo, Lv_TipoSolicitud, Lv_NombreParamDisc, Lv_EstadoActivo, Lv_EstadoActivo,Lv_ParamMotivoDisc, Fn_IdPersonaEmpRol;
+    END IF;
+ 
+  IF Lv_MotivoClienteDisc IS NOT NULL THEN 
+        Lv_ClienteDisc := 'SI';
+  END IF;
+  --
+  RETURN Lv_ClienteDisc;
+  --
+  EXCEPTION WHEN NO_DATA_FOUND THEN
+  --
+  RETURN Lv_ClienteDisc;
+  --
+  WHEN OTHERS THEN
+  --
+  RETURN NULL;
+  --
+END F_GET_ES_CLIENTE_DISCAPACITADO;
+
+
+END CMKG_BENEFICIOS;
+/

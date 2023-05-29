@@ -9,7 +9,7 @@ CREATE OR REPLACE package NAF47_TNET.INK_DEVOLUCION_PEDIDO is
 
 /**
 * Documentacion para NAF47_TNET.INK_PROCESA_DEVOLUCION_PEDIDO.Gr_ArticuloDevolucion
-* Variable Registro que permite pasar por parametro los datos necesarios para procesar ingreso a bodega por devoluvi�n de pedidos
+* Variable Registro que permite pasar por parametro los datos necesarios para procesar ingreso a bodega por devoluvión de pedidos
 * @author llindao <llindao@telconet.ec>
 * @version 1.0 23/10/2017
 */
@@ -62,12 +62,12 @@ CREATE OR REPLACE package NAF47_TNET.INK_DEVOLUCION_PEDIDO is
 
   /**
   * Documentacion para P_PROCESA_DEVOLUCION
-  * Procedure que registra Ingresos a bodegas por devoluci�n de pedidos.
+  * Procedure que registra Ingresos a bodegas por devolución de pedidos.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 23/10/2017
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.1 13/08/2018  Se modifica para cambiar validaci�n de n�meros de series para considerar unidades por serie
+  * @version 1.1 13/08/2018  Se modifica para cambiar validación de números de series para considerar unidades por serie
   *
   * @author llindao <llindao@telconet.ec>
   * @version 1.2 31/08/2018  Se modifica para asignar correctamente el cdigo de artculo a devolver cuando se presentan los siguiente casos
@@ -79,10 +79,10 @@ CREATE OR REPLACE package NAF47_TNET.INK_DEVOLUCION_PEDIDO is
   * los estados y el tiempo de las devoluciones.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.4 30/07/2021 - Se modifica para considerar nuevo proceso de generaci�n n�mero de series
+  * @version 1.4 30/07/2021 - Se modifica para considerar nuevo proceso de generación número de series
   *
   * @author banton <banton@telconet.ec>
-  * @version 1.5 27/05/2022 - Se cambia validaci�n de numero de serie
+  * @version 1.5 27/05/2022 - Se cambia validación de numero de serie
   *
   * @param Pr_ArtDevolver  IN OUT ARRAY    Recibe registros de articulos a devolver
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
@@ -349,8 +349,8 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
                                            NVL(SYS_CONTEXT(GEK_VAR.Gr_Sesion.USERENV,GEK_VAR.Gr_Sesion.IP_ADRESS),'127.0.0.1'));
         
       IF Pr_ArtDevolver(Li_Devolucion).ACCION != 'Devolver' THEN
-        Pr_ArtDevolver(Li_Devolucion).DETALLE_ERROR := 'Tipo de acci�n no valido '||Pr_ArtDevolver(Li_Devolucion).ACCION;
-        Pv_MensajeError := 'Tipo de acci�n no valido '||Pr_ArtDevolver(Li_Devolucion).ACCION;
+        Pr_ArtDevolver(Li_Devolucion).DETALLE_ERROR := 'Tipo de acción no valido '||Pr_ArtDevolver(Li_Devolucion).ACCION;
+        Pv_MensajeError := 'Tipo de acción no valido '||Pr_ArtDevolver(Li_Devolucion).ACCION;
         Raise Le_Error;
       END IF;
       --
@@ -375,8 +375,8 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
         Lv_SeriesDesp := NULL;
         --
         IF NVL(Lr_ValidaCantSerie.Unidades ,0) != NVL(Pr_ArtDevolver(Li_Devolucion).CANTIDAD,0) THEN -- valida serie
-          Pr_ArtDevolver(Li_Devolucion).DETALLE_ERROR := 'Para el articulo '||Pr_ArtDevolver(Li_Devolucion).PRODUCTO_ID||' cantidad de n�mero de series seleccionados '||Lr_ValidaCantSerie.Unidades||' no coincide con la cantidad a devolver '||NVL(Pr_ArtDevolver(Li_Devolucion).CANTIDAD,0)||'.';
-          Pv_MensajeError := 'Para el articulo '||Lr_Arinml.No_Arti||' cantidad de n�mero de series seleccionados '||Lr_ValidaCantSerie.Unidades||' no coincide con la cantidad a devolver '||NVL(Pr_ArtDevolver(Li_Devolucion).CANTIDAD,0)||'.';
+          Pr_ArtDevolver(Li_Devolucion).DETALLE_ERROR := 'Para el articulo '||Pr_ArtDevolver(Li_Devolucion).PRODUCTO_ID||' cantidad de número de series seleccionados '||Lr_ValidaCantSerie.Unidades||' no coincide con la cantidad a devolver '||NVL(Pr_ArtDevolver(Li_Devolucion).CANTIDAD,0)||'.';
+          Pv_MensajeError := 'Para el articulo '||Lr_Arinml.No_Arti||' cantidad de número de series seleccionados '||Lr_ValidaCantSerie.Unidades||' no coincide con la cantidad a devolver '||NVL(Pr_ArtDevolver(Li_Devolucion).CANTIDAD,0)||'.';
           Raise Le_Error;
         END IF;
       END IF;
@@ -402,7 +402,7 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
                               Pr_ArtDevolver(Li_Devolucion).ID_EMPRESA);
         FETCH C_DATOS_PERIODO INTO Lr_DatosPeriodo;
         IF C_DATOS_PERIODO%NOTFOUND THEN
-          Pv_MensajeError := 'La definici�n del calendario del inventario es incorrecta.';
+          Pv_MensajeError := 'La definición del calendario del inventario es incorrecta.';
           RAISE Le_Error;
         END IF;
         CLOSE C_DATOS_PERIODO;
@@ -596,34 +596,34 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
         --
         -- se valida que series se encuentren ingresadas
         IF Ln_CantidadSerie = 0 THEN
-          Pv_MensajeError := 'No se encuentran ingresados los numeros de series para el art�culo ['||Lr_Arinml.No_Arti||']';
+          Pv_MensajeError := 'No se encuentran ingresados los numeros de series para el artículo ['||Lr_Arinml.No_Arti||']';
           RAISE Le_Error;
         ELSIF nvl(Ln_CantidadSerie,0) != nvl(Lr_Arinml.Unidades,0) THEN
-          Pv_MensajeError := 'Total unidades solicitadas ['||nvl(Lr_Arinml.Unidades,0)||'] no coincide con total de n�mero series ingresadas ['||nvl(Ln_CantidadSerie,0)||']';
+          Pv_MensajeError := 'Total unidades solicitadas ['||nvl(Lr_Arinml.Unidades,0)||'] no coincide con total de número series ingresadas ['||nvl(Ln_CantidadSerie,0)||']';
           RAISE Le_Error;
         END IF;
       --
       END IF;
       --
-      -- se recuperan las cantidades del detalle de la devoluci�n para validarlas
+      -- se recuperan las cantidades del detalle de la devolución para validarlas
       IF C_CANTIDADES_DEVOLUCION%ISOPEN THEN
         CLOSE C_CANTIDADES_DEVOLUCION;
       END IF;
       OPEN C_CANTIDADES_DEVOLUCION(Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES_DET);
       FETCH C_CANTIDADES_DEVOLUCION INTO Lr_CantDetDevol;
       IF C_CANTIDADES_DEVOLUCION%NOTFOUND THEN
-        Pv_MensajeError := 'No se encontro cantidades a devolver para validar. Id Det Devoluci�n '||Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES_DET;
+        Pv_MensajeError := 'No se encontro cantidades a devolver para validar. Id Det Devolución '||Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES_DET;
         RAISE Le_Error;
       END IF;
       CLOSE C_CANTIDADES_DEVOLUCION;
       -------------------------------
       -- Validaciones Devoluciones --
       -------------------------------
-      -- Se valida que los montos del detalle devoluci�n no fueron superados
+      -- Se valida que los montos del detalle devolución no fueron superados
       IF (Lr_CantDetDevol.Cantidad_Devuelta + Lr_Arinml.Unidades) > Lr_CantDetDevol.Cantidad_a_Devolver THEN
         Pv_MensajeError := 'Total unidades devueltas '||(Lr_CantDetDevol.Cantidad_Devuelta + Lr_Arinml.Unidades)||
                            ' supera las unidades a devolver '||Lr_CantDetDevol.Cantidad_a_Devolver||
-                           ' para el detalle devoluci�n '||Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES_DET;
+                           ' para el detalle devolución '||Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES_DET;
         RAISE Le_Error;
         
       ELSIF  (Lr_CantDetDevol.Cantidad_Devuelta + Lr_Arinml.Unidades) = Lr_CantDetDevol.Cantidad_a_Devolver THEN
@@ -654,7 +654,7 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
         Pv_MensajeError := 'Total unidades devueltas '||(Pr_ArtDevolver(Li_Devolucion).CANTIDAD_DEVUELTA + Lr_Arinml.Unidades)||
                            ' supera las unidades despachadas '||Pr_ArtDevolver(Li_Devolucion).CANTIDAD_DESPACHADA||
                            ' para el articulo '||Lr_Arinml.No_Arti|| --Pr_ArtDevolver(Li_Devolucion).PRODUCTO_ID||
-                           ' de la devoluci�n '||Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES;
+                           ' de la devolución '||Pr_ArtDevolver(Li_Devolucion).ID_DEVOLUCIONES;
         RAISE Le_Error;
       ELSIF Pr_ArtDevolver(Li_Devolucion).CANTIDAD_DESPACHADA = (Pr_ArtDevolver(Li_Devolucion).CANTIDAD_DEVUELTA + Lr_Arinml.Unidades) THEN
         Lv_DevCompleta := 'S';
@@ -741,7 +741,7 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
         FROM INV_NUMERO_SERIE
        WHERE SERIE  = Pv_NumeroSerie
          AND ESTADO = GEK_VAR.Gr_EstadoNAF.EN_BODEGA;
-         --se valida si articulo no genera serie autom�tica.
+         --se valida si articulo no genera serie automática.
     --
     CURSOR C_VERIFICA_REPOSITORIO IS
       SELECT A.ESTADO,
@@ -804,7 +804,7 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
     CLOSE C_ACTIVO_FIJO;
     --
     IF Lr_DatosActivo.No_Acti IS NOT NULL THEN
-      Pv_MensajeError := 'N�mero de serie '||Pv_NumeroSerie||' pertenece a activo fijo '||Lr_DatosActivo.No_Acti||' dado de Baja en la empresa '||Lr_DatosActivo.No_Cia;
+      Pv_MensajeError := 'Número de serie '||Pv_NumeroSerie||' pertenece a activo fijo '||Lr_DatosActivo.No_Acti||' dado de Baja en la empresa '||Lr_DatosActivo.No_Cia;
       RAISE Le_Error;
     END IF;
     --
@@ -826,7 +826,7 @@ CREATE OR REPLACE package body NAF47_TNET.INK_DEVOLUCION_PEDIDO is
     END LOOP;
     
     IF Pv_MensajeError IS NOT NULL THEN
-      Pv_MensajeError := 'No. Serie '||Pv_NumeroSerie||' se encuentra en Repositorio '||chr(13)||Pv_MensajeError||', Favor regule repositorio instalaci�n';
+      Pv_MensajeError := 'No. Serie '||Pv_NumeroSerie||' se encuentra en Repositorio '||chr(13)||Pv_MensajeError||', Favor regule repositorio instalación';
       RAISE Le_Error;
     END IF;
     

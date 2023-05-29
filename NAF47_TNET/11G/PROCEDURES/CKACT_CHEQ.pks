@@ -208,7 +208,7 @@ BEGIN
   Lv_Aniomes := Rcta.Ano_Proc || LPAD(Rcta.Mes_Proc, 2, '0');
 
   IF Lv_Aniomes <> TO_CHAR(Rce.Fecha, 'YYYYMM') THEN
-    Msg_Error_p := 'El a�o ' || Rcta.Ano_Proc || ' y mes ' || Rcta.Mes_Proc || ' de la fecha del proceso no corresponde al a�o y mes de la fecha del cheque: ' || TO_CHAR(Rce.Fecha, 'YYYY-MM');
+    Msg_Error_p := 'El año ' || Rcta.Ano_Proc || ' y mes ' || Rcta.Mes_Proc || ' de la fecha del proceso no corresponde al año y mes de la fecha del cheque: ' || TO_CHAR(Rce.Fecha, 'YYYY-MM');
     RAISE Error_Proceso;
   END IF;
 
@@ -287,7 +287,7 @@ BEGIN
   IF rce.no_prove IS NOT NULL THEN
   
     -- llindao: 03/09/2012
-    -- Actualziaci�n de Ordenes de Compras Locales
+    -- Actualziación de Ordenes de Compras Locales
     FOR Lr_Origen IN C_ORDEN_COMPRA_LOCAL(rce.no_secuencia, rce.tipo_docu, pno_cia) LOOP
       -- se verifica saldo de Orden de compra.
       IF C_SALDO_OC_LOCAL%ISOPEN THEN
@@ -337,7 +337,7 @@ BEGIN
     -- ACTUAZIACION DE SALDO PAGADO ORDEN COMPRA
   
     -- llindao: 03/09/2012
-    -- Actualziaci�n de Ordenes de Compras Locales accesando por facturas relacionadas al cheque 
+    -- Actualziación de Ordenes de Compras Locales accesando por facturas relacionadas al cheque 
     FOR Lr_Origen IN C_FACTURAS_ORDENES(rce.no_secuencia, rce.tipo_docu, pno_cia) LOOP
       -- se verifica saldo de Orden de compra.
       IF C_SALDO_OC_LOCAL%ISOPEN THEN
@@ -466,7 +466,7 @@ BEGIN
   
   ELSIF rce.id_prov_orden IS NOT NULL THEN
     -- llindao: 03/09/2012
-    -- Actualziaci�n de Ordenes de Compras Locales
+    -- Actualziación de Ordenes de Compras Locales
     FOR Lr_Origen IN C_ORDEN_COMPRA_LOCAL(rce.no_secuencia, rce.tipo_docu, pno_cia) LOOP
       -- se verifica saldo de Orden de compra.
       IF C_SALDO_OC_LOCAL%ISOPEN THEN

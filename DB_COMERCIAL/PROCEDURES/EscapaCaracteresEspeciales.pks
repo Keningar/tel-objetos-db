@@ -13,10 +13,10 @@ CREATE OR REPLACE procedure DB_COMERCIAL.EscapaCaracteresEspeciales(v_cadena IN 
   */
 BEGIN
  MENSAJE:='Proceso quita los caracteres especiales del login formado por Punto Cliente';
- v_caracteres_orig  := '������������������������������������������������';
+ v_caracteres_orig  := 'ñáéíóúàèìòùãõâêîôôäëïöüçÑÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ';
  v_caracteres_reemp := 'naeiouaeiouaoaeiooaeioucNAEIOUAEIOUAOAEIOOAEIOUC';
  v_cadena_limpia           := lower(TRANSLATE(v_cadena,v_caracteres_orig,v_caracteres_reemp));
-              
+             
  SELECT
   REGEXP_REPLACE(v_cadena_limpia, '[^A-Za-z0-9_-]', '') into v_cadena_limpia
  FROM dual;

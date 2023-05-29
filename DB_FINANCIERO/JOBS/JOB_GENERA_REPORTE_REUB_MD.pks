@@ -26,7 +26,7 @@ job_type=>'PLSQL_BLOCK', job_action=>
                                                                       '''',
                                                                       REPLACE(LC_ALIASPLANTILLA.ALIAS_CORREOS,'';'','',''),
                                                                       LV_USUARIO,
-                                                                      ''Ejecuci�n reporte de Fact y Nc emitidas por reubicaci�n'',
+                                                                      ''Ejecución reporte de Fact y Nc emitidas por reubicación'',
                                                                       ''DB_FINANCIERO'' );                                    
         END;'
 , number_of_arguments=>0,

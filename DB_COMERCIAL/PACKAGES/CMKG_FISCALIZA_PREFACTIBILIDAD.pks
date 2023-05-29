@@ -1,17 +1,17 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FISCALIZA_PREFACTIBILIDAD AS 
   
   /**
-   * Documentaci�n para P_PROCESA_ACT_COORDENADA_MOVIL
-   * Procedimiento que se encarga de la actualizaci�n de estados del servicio, solicitudes e historiales
-   * seg�n el estado del servicio que hayan ca�do en PreFactibilidad por la funcionalidad de actualizaci�n de coordenadas desde el m�vil
+   * Documentación para P_PROCESA_ACT_COORDENADA_MOVIL
+   * Procedimiento que se encarga de la actualización de estados del servicio, solicitudes e historiales
+   * según el estado del servicio que hayan caído en PreFactibilidad por la funcionalidad de actualización de coordenadas desde el móvil
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.0 19/03/2021
    * 
    *
    *
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.1 08/04/2021
    * Se Validan estados parametrizados para realizar acciones cuando pasa el primer umbral en estado Factible y
    * se registra en la INFO_LOG en caso de error al ejecutar el procedure.
@@ -21,22 +21,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FISCALIZA_PREFACTIBILIDAD AS
 
 
   /**
-   * Documentaci�n para P_RECHAZAR_SOL_CANCELA_TAR
+   * Documentación para P_RECHAZAR_SOL_CANCELA_TAR
    * Procedimiento que se encarga rechazar la solicitud y cancelar la tarea e historiales.
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.0 19/03/2021
    *
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.1 05/04/2021
    * Se registra en la tabla info_log en caso de error
    *
-   * @param Pn_DetalleSolicitudId                   IN INTEGER   Id del detalle de la solicitu de planificaci�n.
+   * @param Pn_DetalleSolicitudId                   IN INTEGER   Id del detalle de la solicitu de planificación.
    * @param Pn_DetalleId                            IN INTEGER   Id del detalle
    * @param Pv_ModificaSolicitudPla                 IN VARCHAR2  Opcion para modificar : SI O NO
-   * @param Pv_EstadoSolPlanif                      IN VARCHAR2  Estado de la solicitud de Planificaci�n
-   * @param Pv_ObservaSolPlanif                     IN VARCHAR2  Observaci�n de la solicitud de Planificaci�n
+   * @param Pv_EstadoSolPlanif                      IN VARCHAR2  Estado de la solicitud de Planificación
+   * @param Pv_ObservaSolPlanif                     IN VARCHAR2  Observación de la solicitud de Planificación
    *
    */
   PROCEDURE P_RECHAZAR_SOL_CANCELA_TAR(
@@ -49,23 +49,23 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FISCALIZA_PREFACTIBILIDAD AS
 
 
   /**
-   * Documentaci�n para P_SERVICIO_FACTIBILIDAD
+   * Documentación para P_SERVICIO_FACTIBILIDAD
    * Procedimiento que se encarga de modificar estado del servicio y de la solicitud de factibilidad.
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.0 19/03/2021
    * 
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.1 05/04/2021
    * Se registra en la tabla info_log en caso de error
    *
    * @param cn_idServicio  					IN INTEGER    Id del servicio.
    * @param Pv_ModificaSolicitudFac 		IN VARCHAR2   Opcion para modificar : SI O NO
-   * @param Pv_ObservacionSolicitudFac 		IN VARCHAR2   Observaci�n para la solicitu de factibilidad
+   * @param Pv_ObservacionSolicitudFac 		IN VARCHAR2   Observación para la solicitu de factibilidad
    * @param Pv_estadoSolicitudFac 			IN VARCHAR2   Estado para la solicitu de factibilidad
    * @param Pv_estadoServicio 				IN VARCHAR2   Estado para servicio
-   * @param Pv_ObservacionServicio 			IN VARCHAR2   Observaci�n para servicio
+   * @param Pv_ObservacionServicio 			IN VARCHAR2   Observación para servicio
    *
    */
   PROCEDURE P_SERVICIO_FACTIBILIDAD(
@@ -78,18 +78,18 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FISCALIZA_PREFACTIBILIDAD AS
 									);
 
  /**
-   * Documentaci�n para P_FINALIZA_EVENTO_ACTIVO
+   * Documentación para P_FINALIZA_EVENTO_ACTIVO
    * Procedimiento que se encarga de finalizar el evento asociado a una tarea.
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.0 19/03/2021
    *
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.1 05/04/2021
    * Se registra en la tabla info_log en caso de error
    * 
-   * @param cn_idComunicacion  					IN INTEGER    N�mero de la tarea
+   * @param cn_idComunicacion  					IN INTEGER    Número de la tarea
    * @param Pn_DetalleId  					IN INTEGER    Id Del Detalle 
    *
    */
@@ -106,16 +106,16 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FISCALIZA_PREFACTIBILIDAD
 AS
 
   /**
-   * Documentaci�n para P_PROCESA_ACT_COORDENADA_MOVIL
-   * Procedimiento que se encarga de la actualizaci�n de estados del servicio, solicitudes e historiales
-   * seg�n el estado del servicio que hayan ca�do en PreFactibilidad por la funcionalidad de actualizaci�n de coordenadas desde el m�vil
+   * Documentación para P_PROCESA_ACT_COORDENADA_MOVIL
+   * Procedimiento que se encarga de la actualización de estados del servicio, solicitudes e historiales
+   * según el estado del servicio que hayan caído en PreFactibilidad por la funcionalidad de actualización de coordenadas desde el móvil
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.0 19/03/2021
    *
    *
    *
-   * @author Ronny Mor�n <rmoranc@telconet.ec>
+   * @author Ronny Morán <rmoranc@telconet.ec>
    * @version 1.1 08/04/2021
    * Se Validan estados parametrizados para realizar acciones cuando pasa el primer umbral en estado Factible y 
    * se registra en la INFO_LOG en caso de error al ejecutar el procedure.
@@ -126,7 +126,7 @@ AS
 
   lv_correos            	VARCHAR2(1000);		
   Lv_MensajeErrorCorreo         VARCHAR2(4000);
-  Lv_AsuntoVendedor     	VARCHAR2(300) := 'Notificaci�n Autom�tica por factibilidad no gestionada.';
+  Lv_AsuntoVendedor     	VARCHAR2(300) := 'Notificación Automática por factibilidad no gestionada.';
   Lcl_Plantilla         	CLOB;
   Lv_estadosMayorUmbralUno    	VARCHAR2(600);
   type arrayTabla               is TABLE OF VARCHAR2(600);
@@ -138,7 +138,7 @@ AS
 	SELECT servicio_id, max(id_servicio_historial), FE_CREACION FROM  DB_COMERCIAL.INFO_SERVICIO_HISTORIAL WHERE 
 	FE_CREACION > (SYSDATE-(cn_horasBusqueda/24)) 
 	AND ESTADO = 'PreFactibilidad' 
-	AND DBMS_LOB.instr(OBSERVACION,'Motivo: Actualizaci�n de coordenadas, Origen: MOVIL') > 0
+	AND DBMS_LOB.instr(OBSERVACION,'Motivo: Actualización de coordenadas, Origen: MOVIL') > 0
     GROUP BY servicio_id, FE_CREACION;
 
   CURSOR c_infoServicio_tarea(cn_idServicio NUMBER) IS 
@@ -266,7 +266,7 @@ AS
 								  '',
 								  '',
 								  'AsignadoTarea',
-								  'Asignaci�n autom�tica. motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL'
+								  'Asignación automática. motivo: Job - Actualización de coordenadas, Origen: MOVIL'
 								 );
 
 						ELSE
@@ -290,14 +290,14 @@ AS
 								  '',
 								  '',
 								  'PrePlanificada',
-								  'Asignaci�n autom�tica. motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL'
+								  'Asignación automática. motivo: Job - Actualización de coordenadas, Origen: MOVIL'
 								 );
 
 							P_RECHAZAR_SOL_CANCELA_TAR(r_servicio_tarea.ID_DETALLE_SOLICITUD,
 										   r_servicio_tarea.ID_DETALLE,
 										   'SI',
                                                                                    'PrePlanificada',
-                                                                                   'Solicitud PrePlanificada por motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL');
+                                                                                   'Solicitud PrePlanificada por motivo: Job - Actualización de coordenadas, Origen: MOVIL');
 
                                                         P_FINALIZA_EVENTO_ACTIVO(r_servicio_tarea.ID_COMUNICACION,
                                                                                  r_servicio_tarea.ID_DETALLE);
@@ -315,7 +315,7 @@ AS
                                                                    r_servicio_tarea.ID_DETALLE,
 								   'SI',
                                                                    'Rechazada',
-                                                                   'Solicitud rechazada por motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL');
+                                                                   'Solicitud rechazada por motivo: Job - Actualización de coordenadas, Origen: MOVIL');
 
 				--PreFactibilidad						   
 				ELSIF (r_servicio_tarea.ESTADO_SERVICIO = 'PreFactibilidad'  AND r_servicio_tarea.ESTAD0_TAREA != 'Cancelada')  THEN
@@ -331,17 +331,17 @@ AS
 							P_SERVICIO_FACTIBILIDAD(
 								  servicio.servicio_id,
 								  'SI',
-								  'Solicitud rechazada por motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL',
+								  'Solicitud rechazada por motivo: Job - Actualización de coordenadas, Origen: MOVIL',
 								  'Rechazada',
 								  'Rechazada',
-								  'Rechazo autom�tico. motivo: : Job - Actualizaci�n de coordenadas, Origen: MOVIL'
+								  'Rechazo automático. motivo: : Job - Actualización de coordenadas, Origen: MOVIL'
 								 );
 
 							P_RECHAZAR_SOL_CANCELA_TAR(r_servicio_tarea.ID_DETALLE_SOLICITUD,
 										   r_servicio_tarea.ID_DETALLE,
 										   'SI',
                                                                                    'Rechazada',
-                                                                                   'Solicitud rechazada por motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL');
+                                                                                   'Solicitud rechazada por motivo: Job - Actualización de coordenadas, Origen: MOVIL');
 
                                                         P_FINALIZA_EVENTO_ACTIVO(r_servicio_tarea.ID_COMUNICACION,
                                                                                  r_servicio_tarea.ID_DETALLE);
@@ -356,7 +356,7 @@ AS
 
 								Lcl_Plantilla                   := REPLACE(Lcl_Plantilla,'{{login}}',   r_servicio_tarea.remitente_nombre);
 								Lcl_Plantilla                   := REPLACE(Lcl_Plantilla,'{{minutos}}', Lc_map_umbral_dos.VALOR2);
-								--Env�os de correo
+								--Envíos de correo
 								DB_COMUNICACION.CUKG_TRANSACTIONS.P_SEND_MAIL(Lc_map_remitente.VALOR2, lv_correos, 
                                                                                                               Lv_AsuntoVendedor, 
                                                                                                               SUBSTR(Lcl_Plantilla, 1, 32767), 'text/html; charset=UTF-8', 
@@ -380,7 +380,7 @@ AS
 										   r_servicio_tarea.ID_DETALLE,
 										   'SI',
                                                                                    'Rechazada',
-                                                                                   'Solicitud rechazada por motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL');
+                                                                                   'Solicitud rechazada por motivo: Job - Actualización de coordenadas, Origen: MOVIL');
 
                                                         P_FINALIZA_EVENTO_ACTIVO(r_servicio_tarea.ID_COMUNICACION,
                                                                                  r_servicio_tarea.ID_DETALLE);
@@ -408,7 +408,7 @@ AS
                          'Ejecutando procedure principal P_PROCESA_ACT_COORDENADA_MOVIL',
                          'Fallido',
                          SQLERRM,
-                         'Sin par�metros',
+                         'Sin parámetros',
                          'reg_prefact'
                         );  
 
@@ -418,22 +418,22 @@ AS
 
 
 /**
- * Documentaci�n para P_RECHAZAR_SOL_CANCELA_TAR
+ * Documentación para P_RECHAZAR_SOL_CANCELA_TAR
  * Procedimiento que se encarga rechazar la solicitud y cancelar la tarea e historiales.
  *
- * @author Ronny Mor�n <rmoranc@telconet.ec>
+ * @author Ronny Morán <rmoranc@telconet.ec>
  * @version 1.0 19/03/2021
  *
  *
- * @author Ronny Mor�n <rmoranc@telconet.ec>
+ * @author Ronny Morán <rmoranc@telconet.ec>
  * @version 1.1 05/04/2021
  * Se registra en la tabla info_log en caso de error
  *
- * @param Pn_DetalleSolicitudId                 IN INTEGER   Id del detalle de la solicitu de planificaci�n.
+ * @param Pn_DetalleSolicitudId                 IN INTEGER   Id del detalle de la solicitu de planificación.
  * @param Pn_DetalleId 				IN INTEGER   Id del detalle
  * @param Pv_ModificaSolicitudPla               IN VARCHAR2  Opcion para modificar : SI O NO
- * @param Pv_EstadoSolPlanif                    IN VARCHAR2  Estado de la solicitud de Planificaci�n
- * @param Pv_ObservaSolPlanif                   IN VARCHAR2  Observaci�n de la solicitud de Planificaci�n
+ * @param Pv_EstadoSolPlanif                    IN VARCHAR2  Estado de la solicitud de Planificación
+ * @param Pv_ObservaSolPlanif                   IN VARCHAR2  Observación de la solicitud de Planificación
  *
 */
 PROCEDURE P_RECHAZAR_SOL_CANCELA_TAR(
@@ -514,7 +514,7 @@ IS
 	) VALUES (
         DB_SOPORTE.SEQ_INFO_DETALLE_HISTORIAL.NEXTVAL,
         Pn_DetalleId,
-        'Rechazo de Orden de Trabajo, motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL',
+        'Rechazo de Orden de Trabajo, motivo: Job - Actualización de coordenadas, Origen: MOVIL',
         'Rechazada',
         'reg_prefact',
         sysdate,
@@ -549,7 +549,7 @@ IS
 	(
 	DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL,
         Pn_DetalleId,
-        'Tarea fue Rechazada por el motivo: Rechazo de Orden de Trabajo, motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL',
+        'Tarea fue Rechazada por el motivo: Rechazo de Orden de Trabajo, motivo: Job - Actualización de coordenadas, Origen: MOVIL',
         'reg_prefact',
         sysdate,
         '18',
@@ -582,7 +582,7 @@ IS
 	) VALUES (
         DB_SOPORTE.SEQ_INFO_DETALLE_HISTORIAL.NEXTVAL,
         Pn_DetalleId,
-        'Cancelaci�n autom�tica por rechazo de Orden de Trabajo, motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL',
+        'Cancelación automática por rechazo de Orden de Trabajo, motivo: Job - Actualización de coordenadas, Origen: MOVIL',
         'Cancelada',
         'reg_prefact',
         sysdate,
@@ -616,7 +616,7 @@ IS
 	(
 	DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL,
         Pn_DetalleId,
-        'Tarea fue Cancelada por el motivo: Cancelaci�n autom�tica por rechazo de Orden de Trabajo, motivo: Job - Actualizaci�n de coordenadas, Origen: MOVIL',
+        'Tarea fue Cancelada por el motivo: Cancelación automática por rechazo de Orden de Trabajo, motivo: Job - Actualización de coordenadas, Origen: MOVIL',
         'reg_prefact',
         sysdate,
         '18',
@@ -659,23 +659,23 @@ END P_RECHAZAR_SOL_CANCELA_TAR;
 
 
 /**
- * Documentaci�n para P_SERVICIO_FACTIBILIDAD
+ * Documentación para P_SERVICIO_FACTIBILIDAD
  * Procedimiento que se encarga de modificar estado del servicio y de la solicitud de factibilidad.
  *
- * @author Ronny Mor�n <rmoranc@telconet.ec>
+ * @author Ronny Morán <rmoranc@telconet.ec>
  * @version 1.0 19/03/2021
  *
  *
- * @author Ronny Mor�n <rmoranc@telconet.ec>
+ * @author Ronny Morán <rmoranc@telconet.ec>
  * @version 1.1 05/04/2021
  * Se registra en la tabla info_log en caso de error
  * 
  * @param cn_idServicio  			IN INTEGER    Id del servicio.
  * @param Pv_ModificaSolicitudFac 		IN VARCHAR2   Opcion para modificar : SI O NO
- * @param Pv_ObservacionSolicitudFac            IN VARCHAR2   Observaci�n para la solicitu de factibilidad
+ * @param Pv_ObservacionSolicitudFac            IN VARCHAR2   Observación para la solicitu de factibilidad
  * @param Pv_estadoSolicitudFac 		IN VARCHAR2   Estado para la solicitu de factibilidad
  * @param Pv_estadoServicio 			IN VARCHAR2   Estado para servicio
- * @param Pv_ObservacionServicio 		IN VARCHAR2   Observaci�n para servicio
+ * @param Pv_ObservacionServicio 		IN VARCHAR2   Observación para servicio
  *
 */
 PROCEDURE P_SERVICIO_FACTIBILIDAD(
@@ -809,18 +809,18 @@ EXCEPTION
 END P_SERVICIO_FACTIBILIDAD;
 
 /**
-  * Documentaci�n para P_FINALIZA_EVENTO_ACTIVO
+  * Documentación para P_FINALIZA_EVENTO_ACTIVO
   * Procedimiento que se encarga de finalizar el evento asociado a una tarea.
   *
-  * @author Ronny Mor�n <rmoranc@telconet.ec>
+  * @author Ronny Morán <rmoranc@telconet.ec>
   * @version 1.0 19/03/2021
   * 
   *
-  * @author Ronny Mor�n <rmoranc@telconet.ec>
+  * @author Ronny Morán <rmoranc@telconet.ec>
   * @version 1.1 05/04/2021
   * Se registra en la tabla info_log en caso de error
   *
-  * @param cn_idComunicacion  					IN INTEGER    N�mero de la tarea 
+  * @param cn_idComunicacion  					IN INTEGER    Número de la tarea 
   * @param Pn_DetalleId  					IN INTEGER    Id Del Detalle 
   *
   */
@@ -886,9 +886,5 @@ EXCEPTION
                         );    
 
 END P_FINALIZA_EVENTO_ACTIVO;
-
-
 END CMKG_FISCALIZA_PREFACTIBILIDAD;
-
-
 /

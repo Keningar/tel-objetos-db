@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE DB_COMERCIAL.P_MIGRA_CORREOS_COMPELEC IS
-    --Query para obtener todos los puntos padre de facturaci�n con estado activo.
+    --Query para obtener todos los puntos padre de facturación con estado activo.
     CURSOR Lc_PuntosCliente IS
       SELECT
             IP.IDENTIFICACION_CLIENTE,
@@ -53,12 +53,12 @@ BEGIN
     LOOP
         BEGIN
             Lv_Usuario := 'migraCompElec0';
-            Lv_Observacion := 'No se pudo realizar la migraci�n a DB_COMPROBANTES porque NO tiene correo electr�nico en sus puntos de facturaci�n';
+            Lv_Observacion := 'No se pudo realizar la migración a DB_COMPROBANTES porque NO tiene correo electrónico en sus puntos de facturación';
             FOR Lr_EmailEnvio IN Lc_EmailEnvio (Lr_PuntosCliente.ID_PERSONA_ROL)
             LOOP
                 IF Lc_EmailEnvio%ROWCOUNT = 1 THEN
                     Lv_Usuario     := 'migraCompElec1';
-                    Lv_Observacion := 'Se realiza la migraci�n a DB_COMPROBANTES satisfactoriamente';
+                    Lv_Observacion := 'Se realiza la migración a DB_COMPROBANTES satisfactoriamente';
                     --Se actualiza la tabla ADMI_USUARIO
                     Ln_IdUsuario   := 0;
                     UPDATE DB_COMPROBANTES.ADMI_USUARIO
@@ -70,12 +70,12 @@ BEGIN
                      RETURNING ID_USUARIO INTO Ln_IdUsuario;
 
                      IF NVL(Ln_IdUsuario,0) = 0 THEN
-                        Lv_Observacion := 'No se encontr� un usuario en DB_COMPROBANTES.';
+                        Lv_Observacion := 'No se encontró un usuario en DB_COMPROBANTES.';
                         Lv_Usuario := 'migraCompElec2';
                         RAISE Le_Error;
                      END IF;
 
-                    --Se actualiza la tabla ADMI_USUARIO_EMPRESA V�LIDO PARA TN
+                    --Se actualiza la tabla ADMI_USUARIO_EMPRESA VÁLIDO PARA TN
                     UPDATE DB_COMPROBANTES.ADMI_USUARIO_EMPRESA
                        SET EMAIL = Lr_EmailEnvio.EMAIL_ENVIO,
                            USR_ULT_MOD = Lv_Usuario,
@@ -83,7 +83,7 @@ BEGIN
                      WHERE USUARIO_ID = Ln_IdUsuario
                        AND EMPRESA_ID = 1;
                 ELSE
-                    Lv_Observacion := 'No se realiz� la migraci�n a DB_COMPROBANTES porque tiene correos diferentes en sus puntos de facturaci�n';
+                    Lv_Observacion := 'No se realizó la migración a DB_COMPROBANTES porque tiene correos diferentes en sus puntos de facturación';
                     Lv_Usuario := 'migraCompElec3';
                     RAISE Le_Error;
                 END IF;
@@ -93,11 +93,11 @@ BEGIN
                 ROLLBACK;
             WHEN OTHERS THEN
                 ROLLBACK;
-                Lv_Observacion := 'No se pudo realizar la migraci�n a DB_COMPROBANTES porque ocurri� un error inesperado';
+                Lv_Observacion := 'No se pudo realizar la migración a DB_COMPROBANTES porque ocurrió un error inesperado';
                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(
                                             'Telcos+',
-                                            'Migraci�n de correos a Comprobantes Electr�nicos',
-                                            'Error al al migrar los correos electr�nicos a CompElec: ' || SQLCODE || ' - ERROR_STACK: '
+                                            'Migración de correos a Comprobantes Electrónicos',
+                                            'Error al al migrar los correos electrónicos a CompElec: ' || SQLCODE || ' - ERROR_STACK: '
                                             || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                             'migraCompElec',
                                             SYSDATE,
@@ -107,7 +107,7 @@ BEGIN
             CLOSE Lc_EmailEnvio;
         END IF;
 
-        --INSERTO EN LA INFO_PERSONA_EMPRESA_ROL_HISTORIAL SEG�N �XITO O ERROR
+        --INSERTO EN LA INFO_PERSONA_EMPRESA_ROL_HISTORIAL SEGÚN ÉXITO O ERROR
         INSERT INTO DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL_HISTO (
                     ID_PERSONA_EMPRESA_ROL_HISTO,
                     USR_CREACION,
@@ -144,7 +144,7 @@ BEGIN
     COMMIT;
     DB_FINANCIERO.FNCK_CONSULTS.P_SEND_MAIL('notificaciones_telcos@telconet.ec', 
                                             'lcabrera@telconet.ec;gvillalba@telconet.ec;', 
-                                            'Ejecuci�n de script de migraci�n de correos electr�nicos', 
+                                            'Ejecución de script de migración de correos electrónicos', 
                                             'HA FINALIZADO LA EJECUCION DEL SCRIPT DE MIGRACION DE CORREOS ELECTRONICOS A DB_COMPROBANTES',
                                             'text/html; charset=UTF-8', 
                                             Lv_MsnError);
@@ -152,8 +152,8 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
-                                              'Migraci�n de correos a Comprobantes Electr�nicos',
-                                              'Error al al migrar los correos electr�nicos a CompElec: ' || SQLCODE || ' - ERROR_STACK: '
+                                              'Migración de correos a Comprobantes Electrónicos',
+                                              'Error al al migrar los correos electrónicos a CompElec: ' || SQLCODE || ' - ERROR_STACK: '
                                                  || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                               'migraCompElec',
                                               SYSDATE,

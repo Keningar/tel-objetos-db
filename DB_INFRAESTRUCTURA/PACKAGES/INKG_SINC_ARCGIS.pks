@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS 
 
   /**
-   * Documentaci�n para P_MIGRA_DESDE_GIS
-   * Procedimiento que realiza la extracci�n de datos de cajas creadas, modificadas y eliminadas en ArcGis
+   * Documentación para P_MIGRA_DESDE_GIS
+   * Procedimiento que realiza la extracción de datos de cajas creadas, modificadas y eliminadas en ArcGis
    * y las sincroniza con Telcos. Se ejecuta mediante JOB.
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
@@ -12,14 +12,14 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_REACTIVA_ELEMENTO
+   * Documentación para P_REACTIVA_ELEMENTO
    * Procedimiento que reactiva elementos eliminados por error
    * 
    * @param Pn_Tipo_Elemento            IN NUMBER     Tipo de elemento a reactivar
    * @param Pv_Nombre_Elemento          IN VARCHAR2   Nombre del elemento a buscar como eliminado
    * @param Pn_IDTELCOS                 IN OUT NUMBER Id de Telcos para el elemento
    * @param Pn_EXISTE                   IN OUT NUMBER Trae cantidad de elementos existentes con el mismo nombre
-   * @param Pv_Mensaje                  OUT VARCHAR2  Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  OUT VARCHAR2  Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -33,13 +33,13 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_VALIDAR_DETALLE_CAJA
+   * Documentación para P_VALIDAR_DETALLE_CAJA
    * Procedimiento que valida los detalles de cajas para INFO_DETALLE_ELEMENTO
    * 
    * @param Pn_Nivel_Splitter           IN NUMBER     Nivel de splitter en la caja
-   * @param Pv_Ubicado_en               IN VARCHAR2   Lugar f�sico donde se encuentra la caja poste, etc
+   * @param Pv_Ubicado_en               IN VARCHAR2   Lugar físico donde se encuentra la caja poste, etc
    * @param Pv_Tipo_Lugar               IN VARCHAR2   Caracteristicas para indicar el lugar del Elemento, aereo, soterrado
-   * @param Pv_Mensaje                  OUT VARCHAR2  Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  OUT VARCHAR2  Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -52,12 +52,12 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_VALIDAR_MODELO_ELEMENTO
+   * Documentación para P_VALIDAR_MODELO_ELEMENTO
    * Procedimiento que valida que el modelo de elemento se encuentre registrado en telcos.
    * 
    * @param Pv_Modelo_Elemento          IN VARCHAR2   Modelo de elemento a migrar.
    * @param Pn_Id_Modelo_Elemento       IN NUMBER     ID del modelo de elemento para registro.
-   * @param Pv_Mensaje                  OUT VARCHAR2  Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  OUT VARCHAR2  Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -69,14 +69,14 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_VALIDA_UBICACION
-   * Procedimiento que valida que la ubicaci�n geogr�fica pol�tica sea correcta.
+   * Documentación para P_VALIDA_UBICACION
+   * Procedimiento que valida que la ubicación geográfica política sea correcta.
    * 
    * @param Pv_Provincia          IN VARCHAR2   Provincia donde se ubica el elemento.
-   * @param Pv_Canton             IN VARCHAR2   Cant�n donde se ubica el elemento.
+   * @param Pv_Canton             IN VARCHAR2   Cantón donde se ubica el elemento.
    * @param Pv_Parroquia          IN VARCHAR2   Parroquia donde se ubica el elemento.
    * @param Pn_Id_Parroquia       IN NUMBER     ID de la parroquia donde se ubica el elemento para registro.
-   * @param Pv_Mensaje            OUT VARCHAR2  Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje            OUT VARCHAR2  Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -90,12 +90,12 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_VALIDAR_EDIFICIO
+   * Documentación para P_VALIDAR_EDIFICIO
    * Procedimiento que valida que el edificio o ciudadela ingresada sea valida.
    * 
    * @param Pv_Nombre_Edificacion IN VARCHAR2   Nombre del edificio o ciudadela.
    * @param Pn_Edificacion        IN NUMBER     Id del elemento edificio
-   * @param Pv_Mensaje            OUT VARCHAR2  Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje            OUT VARCHAR2  Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -107,8 +107,8 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para GET_CODIGO_TIPO_ELEMENTO
-   * Funci�n que obtiene el ID del tipo de elemento para registro
+   * Documentación para GET_CODIGO_TIPO_ELEMENTO
+   * Función que obtiene el ID del tipo de elemento para registro
    * 
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -122,18 +122,18 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_INSERTAR_UBICACION_CAJA
-   * Procedimiento que inserta la ubicaci�n geogr�fica del elemento.
+   * Documentación para P_INSERTAR_UBICACION_CAJA
+   * Procedimiento que inserta la ubicación geográfica del elemento.
    * 
    * @param Pn_Id_Elemento              IN NUMBER       Id del elemento
    * @param Pv_Provincia                IN VARCHAR2     Provincia donde se ubica el elemento
-   * @param Pv_Canton                   IN VARCHAR2     Cant�n donde se ubica el elemento
+   * @param Pv_Canton                   IN VARCHAR2     Cantón donde se ubica el elemento
    * @param Pv_Parroquia                IN VARCHAR2     Parroquia donde se ubica el elemento
-   * @param Pn_Latitud                  IN NUMBER       Latitud geogr�fica del elemento
-   * @param Pn_Longitud                 IN NUMBER       Longitud geogr�fica del elemento
+   * @param Pn_Latitud                  IN NUMBER       Latitud geográfica del elemento
+   * @param Pn_Longitud                 IN NUMBER       Longitud geográfica del elemento
    * @param Pn_Altura                   IN NUMBER       Altura del elemento sobre el nivel del mar
    * @param Pv_Direccion                IN VARCHAR2     Caracteristicas para indicar el lugar del Elemento, aereo, soterrado
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -152,14 +152,14 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_INSERTAR_DETALLE_ELEMENTO
-   * Procedimiento que inserta las caracter�sticas espec�ficas del objeto caja, sea nueva o actualizaci�n.
+   * Documentación para P_INSERTAR_DETALLE_ELEMENTO
+   * Procedimiento que inserta las características específicas del objeto caja, sea nueva o actualización.
    * 
    * @param Pn_Id_Elemento              IN NUMBER Id del elemento 
    * @param Pn_DETALLE_ELEMENTO_ID      IN NUMBER Id del detalle_elemento desde ArcGis
-   * @param Pn_TIPO_ELEMENTO            IN NUMBER C�digo del tipo elemento seg�n Telcos,
-   * @param Pv_USR_ARCGIS               IN VARCHAR2 Usuario que realiz� los cambios en ArcGis
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pn_TIPO_ELEMENTO            IN NUMBER Código del tipo elemento según Telcos,
+   * @param Pv_USR_ARCGIS               IN VARCHAR2 Usuario que realizó los cambios en ArcGis
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -172,11 +172,11 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
   Pv_MENSAJE             IN OUT VARCHAR2);
 
   /**
-   * Documentaci�n para P_INSERT_ELEMENTO
-   * Procedimiento que inserta un elemento tra�do desde ArcGis.
+   * Documentación para P_INSERT_ELEMENTO
+   * Procedimiento que inserta un elemento traído desde ArcGis.
    * 
    * @param Pr_InfoElemento             IN DB_INFRAESTRUCTURA.INFO_ELEMENTO%ROWTYPE Recibe un registro para P_INSERT_ELEMENTO
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -187,11 +187,11 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_INSERT_HISTORIAL
-   * Procedimiento que inserta el historial de un elemento tra�do desde ArcGis.
+   * Documentación para P_INSERT_HISTORIAL
+   * Procedimiento que inserta el historial de un elemento traído desde ArcGis.
    * 
    * @param Pr_InfoHistorialElemento    IN DB_INFRAESTRUCTURA.INFO_HISTORIAL_ELEMENTO%ROWTYPE Recibe un registro para P_INSERT_HISTORIAL
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -202,12 +202,12 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_INSERT_INFO_EMPRESA_ELEMENTO
-   * Procedimiento que inserta el punto de referencia de un elemento tra�do desde ArcGis, se realizan validaciones por tipo 
+   * Documentación para P_INSERT_INFO_EMPRESA_ELEMENTO
+   * Procedimiento que inserta el punto de referencia de un elemento traído desde ArcGis, se realizan validaciones por tipo 
    * de elemento.
    * 
    * @param Pr_InfoEmpresaElemento      IN DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO%ROWTYPE Recibe un registro para P_INSERT_INFO_EMPRESA_ELEMENTO
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 18/03/2020
@@ -220,13 +220,13 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
   /**
-   * Documentaci�n para P_INSERTAR_EDIFICIO
-   * Procedimiento que inserta un elemento tra�do de ArcGis como contenido de un edificio.
+   * Documentación para P_INSERTAR_EDIFICIO
+   * Procedimiento que inserta un elemento traído de ArcGis como contenido de un edificio.
    * 
    * @param Pn_Edificacion              IN NUMBER       Id del elemento edificio  ID_A
    * @param Pn_IDTELCOS                 IN NUMBER       Id del elemento en Telcos ID_B
-   * @param Pv_Usuario                  IN VARCHAR2     Usuario que realiza la acci�n
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Usuario                  IN VARCHAR2     Usuario que realiza la acción
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 11/12/2019
@@ -239,12 +239,12 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
     /**
-   * Documentaci�n para P_SET_IDTELCOS_EN_BDARCGIS
+   * Documentación para P_SET_IDTELCOS_EN_BDARCGIS
    * Procedimiento que setea el ID ArcGis en MIGRATELCOS_ELEMENTO para futuros reportes.
    * 
-   * @param Pn_IDTELCOS                 IN NUMBER     Id que Telcos ser� seteado
-   * @param Pn_ID_MIGRATELCOS_ELEMENTO             IN NUMBER     Id del registro que se actualizar�
-   * @param Pv_Mensaje                  IN OUT VARCHAR2  Mensaje de la ejecuci�n del procedimiento
+   * @param Pn_IDTELCOS                 IN NUMBER     Id que Telcos será seteado
+   * @param Pn_ID_MIGRATELCOS_ELEMENTO             IN NUMBER     Id del registro que se actualizará
+   * @param Pv_Mensaje                  IN OUT VARCHAR2  Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 19/12/2019
@@ -255,13 +255,13 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
   Pv_Mensaje      IN OUT VARCHAR2); 
 
     /**
-   * Documentaci�n para P_SET_ESTADO_EN_BDARCGIS
+   * Documentación para P_SET_ESTADO_EN_BDARCGIS
    * Procedimiento que setea-actualiza el estado en MIGRATELCOS_ELEMENTO para futuros reportes.
    * 
-   * @param Pn_ID_MIGRATELCOS_ELEMENTO             IN NUMBER       Id del registro que se actualizar�
-   * @param Pn_IDTELCOS                 IN NUMBER       Id que Telcos ser� seteado
-   * @param Pv_Estado                   IN VARCHAR2     Estado que ser� seteado
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pn_ID_MIGRATELCOS_ELEMENTO             IN NUMBER       Id del registro que se actualizará
+   * @param Pn_IDTELCOS                 IN NUMBER       Id que Telcos será seteado
+   * @param Pv_Estado                   IN VARCHAR2     Estado que será seteado
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 19/12/2019
@@ -274,12 +274,12 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
     /**
-   * Documentaci�n para P_ACTUALIZA_ESTADO_ELEMENTO
+   * Documentación para P_ACTUALIZA_ESTADO_ELEMENTO
    * Procedimiento que actualiza el estado del elemento en INFO_ELEMENTO.
    * 
-   * @param Pn_ID_MIGRATELCOS_ELEMENTO             IN NUMBER       Id del registro que se actualizar�
-   * @param Pv_Estado                   IN VARCHAR2     Estado que ser� seteado
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pn_ID_MIGRATELCOS_ELEMENTO             IN NUMBER       Id del registro que se actualizará
+   * @param Pv_Estado                   IN VARCHAR2     Estado que será seteado
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 19/12/2019
@@ -291,14 +291,14 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 
     /**
-   * Documentaci�n para P_ACTUALIZA_ELEMENTO_CAJA
-   * Procedimiento que actualiza el elemento en INFO_ELEMENTO, solo se env�an datos necesarios.
+   * Documentación para P_ACTUALIZA_ELEMENTO_CAJA
+   * Procedimiento que actualiza el elemento en INFO_ELEMENTO, solo se envían datos necesarios.
    *
-   * @param Pn_IDTELCOS                 IN NUMBER       Id que Telcos ser� seteado
-   * @param Pv_Descripcion              IN VARCHAR2     Descripci�n de elemento a insertar
+   * @param Pn_IDTELCOS                 IN NUMBER       Id que Telcos será seteado
+   * @param Pv_Descripcion              IN VARCHAR2     Descripción de elemento a insertar
    * @param Pn_Modelo                   IN NUMBER       Id del modelo a actualizar
    * @param Pv_Comentarios              IN VARCHAR2     Comentarios a actualizar
-   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje                  IN OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Marlon Aguilar <mlaguilar@telconet.ec>
    * @version 1.0 19/12/2019
@@ -315,10 +315,10 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
     *
     * Se envia a actualizar el estado de la UM en la tabla FIBER_TN y FIBER_MD
     *
-    * @param  Pv_UsrCancelacion      IN usuario en sesi�n
+    * @param  Pv_UsrCancelacion      IN usuario en sesión
     * @param  Pv_NombreSwitch        IN varchar2 NombreElemento
     * @param  Pv_PuertoSwitch        IN varchar2 NombreInterfaceElemento
-    * @param  Pv_LoginPunto          IN varchar2 Login que se consulta de la de la informaci�n del Servicio
+    * @param  Pv_LoginPunto          IN varchar2 Login que se consulta de la de la información del Servicio
     * @param  Pv_Prefijo             IN varchar2 Prefijo de la empresa que se desea consultar
     * @param  Pv_Status              OUT VARCHAR2 estado que presenta el proceso
     * @param Pv_Mensaje              OUT VARCHAR2 mensaje que presenta el proceso
@@ -341,6 +341,7 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
 
 END INKG_SINC_ARCGIS;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
   
   PROCEDURE P_MIGRA_DESDE_GIS 
@@ -395,20 +396,20 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
           Lv_Usr_ArcGis     :=REG.LAST_EDITED_USER;
           Ln_Tipo_Elemento  :=INKG_SINC_ARCGIS.GET_CODIGO_TIPO_ELEMENTO(REG.TIPO_ELEMENTO);
 
-          --SI EL REGISTRO ES PARA CREAR O ACTUALIZAR TENDR� ESTADO PENDIENTE
+          --SI EL REGISTRO ES PARA CREAR O ACTUALIZAR TENDRÁ ESTADO PENDIENTE
           IF REG.ESTADO_SINCRONIZACION='PENDIENTE' THEN
           /*
-            Si existen elementos que consten como eliminados con ese nombre se reactivan para considerarlos como actualizaci�n
+            Si existen elementos que consten como eliminados con ese nombre se reactivan para considerarlos como actualización
             esto se hace por que ArcGis permite usar ctrl+z y puede reactivarse una caja eliminada antes por error.
           */
           INKG_SINC_ARCGIS.P_REACTIVA_ELEMENTO(Ln_Tipo_Elemento, REG.NOMBRE_ELEMENTO, Ln_IDTELCOS, Ln_existe, Lv_MENSAJE);
 
-            --Traer los atributos espec�ficos, sirve para todos los elementos
+            --Traer los atributos específicos, sirve para todos los elementos
             SELECT * INTO Lr_Atributos
             FROM SDE.MIGRATELCOS_DETALLE_ELEMENTO@dblink_arc
             WHERE ID_DETALLE_ELEMENTO=REG.DETALLE_ELEMENTO_ID;
 
-            --Traer los datos de ubicaci�n, sirve para todos los elementos
+            --Traer los datos de ubicación, sirve para todos los elementos
             SELECT PROVINCIA, CANTON, PARROQUIA, DIRECCION, LATITUD, LONGITUD, ALTURA, TELCONET, MEGADATOS
             INTO Lv_Provincia, Lv_canton, Lv_Parroquia, Lv_Direccion, Ln_Latitud, Ln_Longitud, Ln_Altura, Lv_Telconet, Lv_Megadatos
             FROM SDE.MIGRATELCOS_UBICACION@dblink_arc 
@@ -418,7 +419,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
             INKG_SINC_ARCGIS.P_VALIDAR_UBICACION(Lv_Provincia, Lv_canton, Lv_Parroquia, Ln_Id_parroquia, Lv_Mensaje);
             INKG_SINC_ARCGIS.P_VALIDAR_MODELO_ELEMENTO(REG.MODELO_ELEMENTO, Ln_Modelo_elemento, Lv_Mensaje);
 
-            --VALIDACIONES ESPEC�FICAS POR TIPO DE ELEMENTO EN MIGRATELCOS_ELEMENTO
+            --VALIDACIONES ESPECÍFICAS POR TIPO DE ELEMENTO EN MIGRATELCOS_ELEMENTO
             IF Ln_Tipo_Elemento = 61 THEN
               INKG_SINC_ARCGIS.P_VALIDAR_EDIFICIO(Lr_Atributos.Edificacion, Ln_Edificacion, Lv_Mensaje);
               INKG_SINC_ARCGIS.P_VALIDAR_DETALLE_CAJA(Lr_Atributos.Nivel, Lr_Atributos.Ubicado_en, Lr_Atributos.Tipo_Lugar, Lv_Mensaje);
@@ -450,7 +451,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
                 INKG_SINC_ARCGIS.P_INSERTAR_UBICACION(Ln_IDTELCOS, Ln_Id_parroquia, Ln_Latitud, Ln_Longitud, Ln_Altura, Lv_Direccion, Lv_Usr_ArcGis, Lv_Telconet, Lv_Megadatos, Lv_MENSAJE);
                 --
               ELSE
-                Lv_MENSAJE:=Lv_MENSAJE || 'Error: Datos incorrectos verifique la informaci�n del objeto '|| REG.ID_ELEMENTO_ARGIS ||' en ArcGis.';
+                Lv_MENSAJE:=Lv_MENSAJE || 'Error: Datos incorrectos verifique la información del objeto '|| REG.ID_ELEMENTO_ARGIS ||' en ArcGis.';
               END IF;
               Lv_Estado_ArcGis:='SINCRONIZADO -C';
             --
@@ -471,7 +472,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
               END IF;
               Lv_Estado_ArcGis:='SINCRONIZADO -A';
             END IF;
-            --Se registra el ID_telcos en la tabla de migraci�n para identificaci�n
+            --Se registra el ID_telcos en la tabla de migración para identificación
             INKG_SINC_ARCGIS.P_SET_IDTELCOS_EN_BDARCGIS(Ln_IDTELCOS, REG.ID_MIGRATELCOS_ELEMENTO, Lv_MENSAJE);
             --
           ELSE --PROCESO ELIMINAR 
@@ -498,7 +499,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
             INKG_SINC_ARCGIS.P_SET_ESTADO_EN_BDARCGIS(REG.ID_MIGRATELCOS_ELEMENTO, 0, Lv_Estado_ArcGis, Lv_MENSAJE);
             COMMIT;
           ELSE
-            --Preparamos e insertamos informaci�n de historial
+            --Preparamos e insertamos información de historial
             Lr_InfoHistorialElemento.ID_HISTORIAL     :=DB_INFRAESTRUCTURA.SEQ_INFO_HISTORIAL_ELEMENTO.NEXTVAL;
             Lr_InfoHistorialElemento.ELEMENTO_ID      :=Ln_IDTELCOS;
             Lr_InfoHistorialElemento.ESTADO_ELEMENTO  :=Lv_Estado_Telcos;
@@ -506,7 +507,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
               Lr_InfoHistorialElemento.ESTADO_ELEMENTO  :='Modificado';
             END IF; 
             Lr_InfoHistorialElemento.CAPACIDAD        :=null; 
-            Lr_InfoHistorialElemento.OBSERVACION      :='Se sincroniza '||REG.TIPO_ELEMENTO|| ' de ID: '|| Ln_IDTELCOS || ' por medio de ArcGis con ID de Migraci�n: ' || REG.ID_MIGRATELCOS_ELEMENTO;
+            Lr_InfoHistorialElemento.OBSERVACION      :='Se sincroniza '||REG.TIPO_ELEMENTO|| ' de ID: '|| Ln_IDTELCOS || ' por medio de ArcGis con ID de Migración: ' || REG.ID_MIGRATELCOS_ELEMENTO;
             Lr_InfoHistorialElemento.USR_CREACION     :=Lv_Usr_ArcGis;
             Lr_InfoHistorialElemento.FE_CREACION      :=SYSDATE;
             Lr_InfoHistorialElemento.IP_CREACION      :='127.0.0.1';
@@ -608,7 +609,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SINC_ARCGIS AS
             END IF;          
             EXCEPTION
         WHEN OTHERS THEN
-        Pv_MENSAJE := Pv_MENSAJE || ' Error al insertar ubicaci�n';
+        Pv_MENSAJE := Pv_MENSAJE || ' Error al insertar ubicación';
 END P_INSERTAR_UBICACION;
 
 
@@ -645,7 +646,7 @@ END P_INSERTAR_UBICACION;
     EXCEPTION
     WHEN OTHERS THEN
       Pn_Id_Modelo_Elemento:=0;
-      Pv_MENSAJE:= Pv_MENSAJE || ' Modelo de elemento incorrecto verificar opci�n ingresada. ';
+      Pv_MENSAJE:= Pv_MENSAJE || ' Modelo de elemento incorrecto verificar opción ingresada. ';
   END P_VALIDAR_MODELO_ELEMENTO; 
 
 
@@ -672,7 +673,7 @@ END P_INSERTAR_UBICACION;
     EXCEPTION
     WHEN OTHERS THEN
       Pn_Edificacion:=0;
-      Pv_Mensaje    := Pv_MENSAJE || ' Error: Edificio no se encuentra registrado, verificar la opci�n ingresada. ';
+      Pv_Mensaje    := Pv_MENSAJE || ' Error: Edificio no se encuentra registrado, verificar la opción ingresada. ';
   END P_VALIDAR_EDIFICIO; 
 
 
@@ -705,7 +706,7 @@ END P_INSERTAR_UBICACION;
         END IF;
       END IF;
       IF Pn_Id_Parroquia = 0 THEN
-        Pv_MENSAJE:= Pv_MENSAJE || ' Error, ubicaci�n geogr�fica/pol�tica incorrecta.';
+        Pv_MENSAJE:= Pv_MENSAJE || ' Error, ubicación geográfica/política incorrecta.';
       END IF;
   END P_VALIDAR_UBICACION;
 
@@ -882,7 +883,7 @@ END P_INSERTAR_UBICACION;
     WHERE ID_MIGRATELCOS_ELEMENTO=Pn_ID_MIGRATELCOS_ELEMENTO;
     EXCEPTION
     WHEN OTHERS THEN
-      Pv_Mensaje :=Pv_MENSAJE || 'No se puede insertar el id de ArcGis en la tabla de migraci�n';
+      Pv_Mensaje :=Pv_MENSAJE || 'No se puede insertar el id de ArcGis en la tabla de migración';
   END P_SET_IDTELCOS_EN_BDARCGIS;
 
 
@@ -908,7 +909,7 @@ END P_INSERTAR_UBICACION;
     END IF;
     EXCEPTION
     WHEN OTHERS THEN
-      Pv_Mensaje := Pv_MENSAJE || 'No se puede actualizar el estado en la tabla de migraci�n';
+      Pv_Mensaje := Pv_MENSAJE || 'No se puede actualizar el estado en la tabla de migración';
   END P_SET_ESTADO_EN_BDARCGIS;
 
 
@@ -1090,10 +1091,10 @@ END P_INSERTAR_UBICACION;
             (SELECT OBJECTID FROM SDE.FIBER_MD@dblink_arc WHERE LOGIN = Pv_LoginPunto
             );
           Pv_Status  := 'OK';
-          Pv_Mensaje := 'Proceso de actualizar el estado de la UM en ARGIS realizado con �xito';
+          Pv_Mensaje := 'Proceso de actualizar el estado de la UM en ARGIS realizado con éxito';
         ELSE
           Pv_Status := 'ERROR';
-          Pv_Mensaje:=', no se encuentra informaci�n en la base de ARGIS - MD';
+          Pv_Mensaje:=', no se encuentra información en la base de ARGIS - MD';
           -- Fin de si existe el login
         END IF;
         -- Fin si es MD
@@ -1117,10 +1118,10 @@ END P_INSERTAR_UBICACION;
             AND PUERTO_SWITCH   = Pv_PuertoSwitch
             );
           Pv_Status  := 'OK';
-          Pv_Mensaje := 'Proceso de actualizar el estado de la UM en ARGIS realizado con �xito';
+          Pv_Mensaje := 'Proceso de actualizar el estado de la UM en ARGIS realizado con éxito';
         ELSE
           Pv_Status := 'ERROR';
-          Pv_Mensaje:=', no se encuentra informaci�n en la base de ARGIS - TN';
+          Pv_Mensaje:=', no se encuentra información en la base de ARGIS - TN';
           -- Fin de si existe el login
         END IF;
         -- Fin de si es TN
@@ -1136,4 +1137,3 @@ END P_INSERTAR_UBICACION;
 
 END INKG_SINC_ARCGIS;
 /
-

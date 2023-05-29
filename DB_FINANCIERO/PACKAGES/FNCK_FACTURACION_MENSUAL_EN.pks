@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS 
 
  /*
-  * Documentaci�n para TYPE 'TypeClientesFacturar'.
+  * Documentación para TYPE 'TypeClientesFacturar'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los documentos a notificar a los usuarios
+  * Tipo de datos para el retorno de la información correspondiente a los documentos a notificar a los usuarios
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 22-02-2023
@@ -28,7 +28,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   );
 
  /*
-  * Documentaci�n para TYPE 'T_ClientesFacturar'.
+  * Documentación para TYPE 'T_ClientesFacturar'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -39,8 +39,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   --
   --
  /*
-  * Documentaci�n para TYPE 'TypeServiciosAsociados'.
-  * Record que me permite almancernar la informacion devuelta de los servicios asociados al punto de facturaci�n.
+  * Documentación para TYPE 'TypeServiciosAsociados'.
+  * Record que me permite almancernar la informacion devuelta de los servicios asociados al punto de facturación.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 22-02-2023
@@ -60,7 +60,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   );
 
  /*
-  * Documentaci�n para TYPE 'T_ServiciosAsociados'.
+  * Documentación para TYPE 'T_ServiciosAsociados'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -71,8 +71,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   --
   --
  /*
-  * Documentaci�n para TYPE 'TypeSolicitudes'.
-  * Record que me permite almancernar la informacion devuelta de las solicitudes asociados al punto de facturaci�n.
+  * Documentación para TYPE 'TypeSolicitudes'.
+  * Record que me permite almancernar la informacion devuelta de las solicitudes asociados al punto de facturación.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 22-02-2023
@@ -85,7 +85,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   );
 
  /*
-  * Documentaci�n para TYPE 'T_Solicitudes'.
+  * Documentación para TYPE 'T_Solicitudes'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -96,9 +96,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
  --
  --
  /*
-  * Documentaci�n para TYPE 'TypeSolicitudesReproceso'.
+  * Documentación para TYPE 'TypeSolicitudesReproceso'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a las solicitudes
+  * Tipo de datos para el retorno de la información correspondiente a las solicitudes
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 22-02-2023
@@ -125,7 +125,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   );
 
  /*
-  * Documentaci�n para TYPE 'T_SolicitudesReproceso'.
+  * Documentación para TYPE 'T_SolicitudesReproceso'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -136,19 +136,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
   --
   --
  /*
-  * Documentaci�n para el PROCEDURE 'P_PROCESAR_INFORMACION'.
+  * Documentación para el PROCEDURE 'P_PROCESAR_INFORMACION'.
   *
-  * Procedimiento para procesar la informaci�n de los clientes a facturar
+  * Procedimiento para procesar la información de los clientes a facturar
   *
   * @param Prf_ClientesFacturar        IN T_ClientesFacturar  (Cursor que contiene los clientes a facturar)
   * @param Pv_MesEmisionNumeros        IN VARCHAR2  (Mes de emision de la factura en numero)
   * @param Pv_MesEmisionLetras         IN VARCHAR2  (Mes de emision de la factura en letras)
-  * @param Pv_AnioEmision              IN VARCHAR2  (A�o de emision de la factura)
+  * @param Pv_AnioEmision              IN VARCHAR2  (Año de emision de la factura)
   * @param Pv_PrefijoEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de la empresa a facturar)
   * @param Pn_IdOficina                IN DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE (Id de la oficina del cliente)
   * @param Pv_FeEmision                IN VARCHAR2  (Fecha de emision de la factura)
   * @param Pn_Porcentaje               IN NUMBER  (Porcentaje del IVA que se va a facturar)
-  * @param Pn_RecordCount              IN OUT NUMBER  (Cantidad de clientes que se les proces� la informaci�n de facturaci�n)
+  * @param Pn_RecordCount              IN OUT NUMBER  (Cantidad de clientes que se les procesó la información de facturación)
   * @param Pn_ClientesFacturados       IN OUT NUMBER  (Cantidad de clientes facturados)
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -168,20 +168,20 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
       Pn_ClientesFacturados       IN OUT NUMBER);
 
  /*
-  * Documentaci�n para el PROCEDURE 'P_FACTURACION_MENSUAL'.
+  * Documentación para el PROCEDURE 'P_FACTURACION_MENSUAL'.
   *
-  * Procedimiento para realizar la facturaci�n mensual de todos los puntos
+  * Procedimiento para realizar la facturación mensual de todos los puntos
   *
-  * @param Pv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa que va a ejecutar el proceso de facturaci�n)
-  * @param Pv_DescripcionImpuesto IN DB_GENERAL.ADMI_IMPUESTO.DESCRIPCION_IMPUESTO%TYPE  (Descripci�n del impuesto a facturar)
-  * @param Pv_TipoFacturacion     IN VARCHAR2  (Tipo de ciclo de facturaci�n a ejecutar)
+  * @param Pv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa que va a ejecutar el proceso de facturación)
+  * @param Pv_DescripcionImpuesto IN DB_GENERAL.ADMI_IMPUESTO.DESCRIPCION_IMPUESTO%TYPE  (Descripción del impuesto a facturar)
+  * @param Pv_TipoFacturacion     IN VARCHAR2  (Tipo de ciclo de facturación a ejecutar)
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 22-02-2023
   * @since 1.0
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.1 05-04-2023 - Se modifica el c�digo de plantilla para env�o de notificaciones de la empresa Ecuanet (FAC_MASIVA_EN).
+  * @version 1.1 05-04-2023 - Se modifica el código de plantilla para envío de notificaciones de la empresa Ecuanet (FAC_MASIVA_EN).
   *
   */
   PROCEDURE P_FACTURACION_MENSUAL( Pn_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -190,6 +190,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN AS
 
 END FNCK_FACTURACION_MENSUAL_EN;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_EN
 AS
 
@@ -199,7 +200,7 @@ AS
                                    Pv_TipoFacturacion     IN VARCHAR2)
   IS
   
-  --Consulta del ciclo de facturaci�n
+  --Consulta del ciclo de facturación
   CURSOR C_ConsultaCiclos (Cn_EmpresaCod DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE)
     IS
       SELECT AC.ID_CICLO,
@@ -255,7 +256,7 @@ BEGIN
     FETCH C_ConsultaCiclos INTO Lc_ConsultaCiclos;
   CLOSE C_ConsultaCiclos;
 
-  --Validacion de Ciclo de Facturaci�n
+  --Validacion de Ciclo de Facturación
   IF Lc_ConsultaCiclos.BANDERA IS NULL THEN
     RETURN;
   END IF;
@@ -341,7 +342,7 @@ BEGIN
   --Seteamos fe_emision
   DB_FINANCIERO.FNCK_FACTURACION_MENSUAL.P_GENERAR_FECHA_EMISION_CICLOS(Lc_ConsultaCiclos.ID_CICLO,Lv_FeEmision,Lv_MesEmision,Ln_MesEmision,Lv_AnioEmision);
 
-  --Previo a la ejecuci�n del proceso de facturacion, se verifica , se valida o ingresa el log de la ejecuci�n de la facturaci�n
+  --Previo a la ejecución del proceso de facturacion, se verifica , se valida o ingresa el log de la ejecución de la facturación
   Ln_CantidadCiclo:= 0;
   Lv_NombreCiclo  := Lc_ConsultaCiclos.NOMBRE_CICLO;
   Ln_CantidadCiclo:= DB_FINANCIERO.FNCK_FACTURACION_MENSUAL.F_VERIFICAR_CICLO(Lv_NombreCiclo,UPPER(TRIM(Lv_MesEmision)),UPPER(TRIM(Lv_AnioEmision)),Pv_TipoFacturacion,Pn_EmpresaCod);
@@ -349,7 +350,7 @@ BEGIN
   --Inicializando variable de error
   Lv_InfoError:='';
   IF(Ln_CantidadCiclo>0)THEN
-    --Escribir que el proceso ya se ejecut�
+    --Escribir que el proceso ya se ejecutó
     Lv_InfoError:='F_VERIFICAR_CICLO, Ln_CantidadCiclo: '||Ln_CantidadCiclo ||
                     ', Ciclo ya procesado: Lv_NombreCiclo:'||Lv_NombreCiclo ||'-'||
                     'Lv_MesEmision:'||UPPER(TRIM(Lv_MesEmision))||'-'||
@@ -365,11 +366,11 @@ BEGIN
     Lr_InfoCicloFacturacion.ANIO_FACTURADO      := Lv_AnioEmision;
     Lr_InfoCicloFacturacion.FE_EJE_INICIO       := SYSDATE;
     Lr_InfoCicloFacturacion.USR_CREACION        := Lv_UsrCreacion;
-    --Se mete la informaci�n referente al proceso ejecutado
+    --Se mete la información referente al proceso ejecutado
     Lr_InfoCicloFacturacion.PROCESO           := 'MENSUAL';
     DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_CICLO_FACTURACION(Lr_InfoCicloFacturacion,Lv_InfoError);
 
-    --Guardamos la confirmaci�n de la ejecuci�n del paquete
+    --Guardamos la confirmación de la ejecución del paquete
     IF(Lv_InfoError IS NULL) THEN
       COMMIT;
     END IF;
@@ -559,7 +560,7 @@ END P_FACTURACION_MENSUAL;
     Ln_IndSolicitudReproceso      NUMBER;
     --
 
-    --Cursor que obtiene el id de una caracter�stica seg�n su descripci�n, estado y tipo.
+    --Cursor que obtiene el id de una característica según su descripción, estado y tipo.
     CURSOR C_ObtieneCaracteristica (Cv_DescripcionCaract DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
                                     Cv_Tipo              DB_COMERCIAL.ADMI_CARACTERISTICA.TIPO%TYPE,
                                     Cv_Estado            DB_COMERCIAL.ADMI_CARACTERISTICA.ESTADO%TYPE) IS
@@ -586,7 +587,7 @@ END P_FACTURACION_MENSUAL;
       FETCH C_GetValorCargoReproceso INTO Ln_PrecioCargoReproceso;
     CLOSE C_GetValorCargoReproceso;
     --
-    --Se obtiene la caracter�stica por CRS para excluir los servicios.
+    --Se obtiene la característica por CRS para excluir los servicios.
     OPEN C_ObtieneCaracteristica('FACTURACION_CRS_CICLO_FACT', 'COMERCIAL', 'Activo');
       FETCH C_ObtieneCaracteristica INTO Lr_ObtieneCaracteristica;
     CLOSE C_ObtieneCaracteristica;
@@ -668,7 +669,7 @@ END P_FACTURACION_MENSUAL;
         --Inicializo la bandera que se utilizara para los detalles
         LV_BanderaPoseeDetalle:='N';
 
-        --Inicializo la bandera que se utilizara para agregar los detalles  por reproceso de d�bito.
+        --Inicializo la bandera que se utilizara para agregar los detalles  por reproceso de débito.
         Lv_TieneSolCargoReproceso := 'N';
 
         --Con el pto de facturacion podemos obtener los servicios asociados al punto
@@ -690,7 +691,7 @@ END P_FACTURACION_MENSUAL;
           LOOP
               Lr_Servicios:= Lt_ServiciosFacturar(Ln_IndServicio);
 
-              -- Se verifica si existe solicitud de reproceso de d�bito.
+              -- Se verifica si existe solicitud de reproceso de débito.
               IF Lv_TieneSolCargoReproceso = 'N' THEN
 
                 Ln_PtoSolicitudReprocesoId   := 0;
@@ -858,7 +859,7 @@ END P_FACTURACION_MENSUAL;
 
           Ln_PrecioVentaFacProDetalle:=ROUND((Ln_CantidadSolReproceso*Ln_PrecioCargoReproceso),2);
 
-          -- Finalizamos la solicitud de cargo por reproceso de d�bito
+          -- Finalizamos la solicitud de cargo por reproceso de débito
           LOOP
             --
             FETCH Lrf_GetSolicitudesReproceso BULK COLLECT INTO Lt_SolicitudReproceso LIMIT Ln_Limit;
@@ -877,7 +878,7 @@ END P_FACTURACION_MENSUAL;
 
           CLOSE Lrf_GetSolicitudesReproceso;
 
-          -- Se agrega detalle por cargo de reproceso de d�bito.
+          -- Se agrega detalle por cargo de reproceso de débito.
           Lr_InfoDocumentoFinancieroDet                                := NULL;
           Lr_InfoDocumentoFinancieroDet.ID_DOC_DETALLE                 := DB_FINANCIERO.SEQ_INFO_DOC_FINANCIERO_DET.NEXTVAL;
           Lr_InfoDocumentoFinancieroDet.DOCUMENTO_ID                   := Lr_InfoDocumentoFinancieroCab.ID_DOCUMENTO;
@@ -1029,4 +1030,4 @@ END P_FACTURACION_MENSUAL;
 
 
 END FNCK_FACTURACION_MENSUAL_EN;
-/
+/ 

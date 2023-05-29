@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS 
 
   /**
-  * Se agregan types necesarios para Generaci�n del Listado de Clientes a realizar Cambio de Ciclo de Facturaci�n
+  * Se agregan types necesarios para Generación del Listado de Clientes a realizar Cambio de Ciclo de Facturación
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 19-09-2017
   */
@@ -54,14 +54,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
     RETURN VARCHAR2;  
 
   /**
-  * Documentaci�n para PROCEDURE 'P_GET_CLIENTES_CAMBIO_CICLO'.
-  * Procedure que me permite obtener Listado de clientes a los cuales se realizara Cambio de Ciclo de Facturaci�n
+  * Documentación para PROCEDURE 'P_GET_CLIENTES_CAMBIO_CICLO'.
+  * Procedure que me permite obtener Listado de clientes a los cuales se realizara Cambio de Ciclo de Facturación
   * en base a filtros de Busqueda enviados por parametros
   *
   * PARAMETROS:
-  * @Param Pv_Identificacion      IN  DB_COMERCIAL.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE (Identificaci�n del Cliente)
-  * @Param Pv_NombreCliente       IN  VARCHAR2 ( Nombre o Raz�n Social del Cliente )
-  * @Param Pn_IdCicloFacturacion  IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE ( Id del Ciclo de Facturaci�n)
+  * @Param Pv_Identificacion      IN  DB_COMERCIAL.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE (Identificación del Cliente)
+  * @Param Pv_NombreCliente       IN  VARCHAR2 ( Nombre o Razón Social del Cliente )
+  * @Param Pn_IdCicloFacturacion  IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE ( Id del Ciclo de Facturación)
   * @Param Pv_IdsEstadoServicio   IN  VARCHAR2( Ids del parametro Det correspondiente a los estados de servicios)
   * @Param Pv_IdsPtoCobertura     IN  VARCHAR2 ( Ids para filtrar por puntos de cobertura )
   * @Param Pn_IdFormaPago         IN  DB_GENERAL.ADMI_FORMA_PAGO.ID_FORMA_PAGO%TYPE ( Id de la forma de pago)
@@ -99,14 +99,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   );
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_CLIENTES_CAMBIO_CICLO'.
-  * Funci�n que me permite obtener Listado de clientes a los cuales se realizara Cambio de Ciclo de Facturaci�n
+  * Documentación para la función 'F_GET_CLIENTES_CAMBIO_CICLO'.
+  * Función que me permite obtener Listado de clientes a los cuales se realizara Cambio de Ciclo de Facturación
   * en base a filtros de Busqueda enviados por parametros
   * Costo: 26
   * PARAMETROS:
-  * @Param Fv_Identificacion      IN  DB_COMERCIAL.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE (Identificaci�n del Cliente)
-  * @Param Fv_NombreCliente       IN  VARCHAR2 ( Nombre o Raz�n Social del Cliente )
-  * @Param Fn_IdCicloFacturacion  IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE ( Id del Ciclo de Facturaci�n)
+  * @Param Fv_Identificacion      IN  DB_COMERCIAL.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE (Identificación del Cliente)
+  * @Param Fv_NombreCliente       IN  VARCHAR2 ( Nombre o Razón Social del Cliente )
+  * @Param Fn_IdCicloFacturacion  IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE ( Id del Ciclo de Facturación)
   * @Param Fv_IdsEstadoServicio   IN  VARCHAR2( Ids del parametro Det correspondiente a los estados de servicios)
   * @Param Fv_IdsPtoCobertura     IN  VARCHAR2 ( Ids para filtrar por puntos de cobertura )
   * @Param Fn_IdFormaPago         IN  DB_GENERAL.ADMI_FORMA_PAGO.ID_FORMA_PAGO%TYPE ( Id de la forma de pago)
@@ -154,7 +154,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
     RETURN NUMBER;  
 
 /**
-  * Documentaci�n para F_INFO_CLIENTE_PORPTOFACT
+  * Documentación para F_INFO_CLIENTE_PORPTOFACT
   * Retorna Informacion del Cliente segun el tipo de informacion que desea obtener como:
   * Valor Recurrente de Facturacion: Valor Total de la sumatoria de los servicios definidos como PREFERENCIALES en estado Activos e In-Corte
   * marcados como VENTA y Ciclicos mensual
@@ -174,7 +174,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
     RETURN VARCHAR2;
         
 /**
-  * Documentaci�n para F_INFORMACION_CONTRATO_CLI
+  * Documentación para F_INFORMACION_CONTRATO_CLI
   * Retorna Informacion del Contrato por cliente segun el estado y por el tipo de informacion que desea obtener
   * 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -193,19 +193,19 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_CREA_PM_CAMBIO_CICLO'.
-  * Procedure que me permite crear un Proceso Masivo por Cambio de Ciclo de Facturaci�n.
+  * Documentación para PROCEDURE 'P_CREA_PM_CAMBIO_CICLO'.
+  * Procedure que me permite crear un Proceso Masivo por Cambio de Ciclo de Facturación.
   * Procedure que genera un Proceso Masivo de Cambio de Ciclo de Facturacion, en base a parametros enviados.
   * El metodo incluira en el PMA de Cambio de Ciclo a todos los Clientes que hayan sido previamente escogidos o
   * marcados en el proceso, asignando el nuevo Ciclo escogido.
   * PARAMETROS:
   * @Param Pv_IdsPersonaRol            IN  VARCHAR2 ( ids de Clientes a los cuales se realizara el cambio de ciclo.)
-  * @Param Pn_IdCicloFacturacionNuevo  IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE ( Id del Ciclo de Facturaci�n)
+  * @Param Pn_IdCicloFacturacionNuevo  IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE ( Id del Ciclo de Facturación)
   * @Param Pv_IdsPtoCobertura          IN  VARCHAR2 (Ids de Puntos de Cobertura)
   * @Param Pv_CodEmpresa               IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Codigo Empresa en sesion)
   * @Param Pv_PrefijoEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de empresaen sesion)
   * @Param Pv_UsrSesion                IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE (Usuario en sesion)   
-  * @Param Pv_MsjResultado             OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado             OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 22-09-2017
@@ -221,8 +221,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   ); 
   
   /**
-   * Documentaci�n para P_ANULA_CAMBIO_CICLO_PMA
-   * Procedimiento que anula los procesos en ejecuci�n.
+   * Documentación para P_ANULA_CAMBIO_CICLO_PMA
+   * Procedimiento que anula los procesos en ejecución.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 26-02-2018
@@ -230,8 +230,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   PROCEDURE P_ANULA_CAMBIO_CICLO_PMA;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_CREA_PM_CMB_CICLO_TODOS'.
-  * Procedure que me permite crear un Proceso Masivo por Cambio de Ciclo de Facturaci�n.
+  * Documentación para PROCEDURE 'P_CREA_PM_CMB_CICLO_TODOS'.
+  * Procedure que me permite crear un Proceso Masivo por Cambio de Ciclo de Facturación.
   * El metodo incluira en el PMA de Cambio de Ciclo a todos los Clientes que esten incluidos en los criterios 
   * o filtros seleccionados por pantalla, asignando el nuevo Ciclo escogido.
   * PARAMETROS:
@@ -248,13 +248,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   * @Param Pv_CodEmpresa                   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Codigo Empresa en sesion)
   * @Param Pv_PrefijoEmpresa               IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de empresaen sesion)
   * @Param Pv_UsrSesion                    IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE (Usuario en sesion)   
-  * @Param Pv_MsjResultado                 OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado                 OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 13-10-2017
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
-  * @version 1.1 - Se validan los filtros para no realizar la misma transacci�n.
+  * @version 1.1 - Se validan los filtros para no realizar la misma transacción.
   * @since 26-02-2018
   *
   */
@@ -276,10 +276,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   );
   
   /**
-  * Documentaci�n para PROCEDURE 'P_GENERAR_RPT_CAMBIO_CICLO'.
-  * Procedure que me permite obtener reporte de clientes a los cuales se realizara Cambio de Ciclo de Facturaci�n
+  * Documentación para PROCEDURE 'P_GENERAR_RPT_CAMBIO_CICLO'.
+  * Procedure que me permite obtener reporte de clientes a los cuales se realizara Cambio de Ciclo de Facturación
   * La consulta se realiza en base a los filtros de busqueda enviados por parametros, genera CSV de la informacion 
-  * que ser� enviado por correo.
+  * que será enviado por correo.
   * PARAMETROS:  
   * @Param Pv_Identificacion               IN  DB_COMERCIAL.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE, Ced/Ruc/Pas del cliente
   * @Param Pv_NombreCliente                IN  VARCHAR2, Nombre o Razon Social del cliente
@@ -293,7 +293,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   * @Param Pv_CodEmpresa                   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Codigo Empresa en sesion)
   * @Param Pv_PrefijoEmpresa               IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de empresaen sesion)
   * @Param Pv_UsrSesion                    IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE (Usuario en sesion)   
-  * @Param Pv_MsjResultado                 OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado                 OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-10-2017
@@ -316,8 +316,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
   );
   
   /**
-  * Documentaci�n para PROCEDURE 'P_EJECUTA_PM_CAMBIO_CICLO'.
-  * Procedure que me permite ejecutar Proceso Masivo por Cambio de Ciclo de Facturaci�n.
+  * Documentación para PROCEDURE 'P_EJECUTA_PM_CAMBIO_CICLO'.
+  * Procedure que me permite ejecutar Proceso Masivo por Cambio de Ciclo de Facturación.
   *
   * PARAMETROS:
   * @Param Pn_IdProcesoMasivoCab  IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE
@@ -336,7 +336,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
                                       Pv_IdsPtoCobertura    IN  VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_CARACT_ALCANCE'.
+  * Documentación para PROCEDURE 'P_VALIDA_CARACT_ALCANCE'.
   * Procedure que me permite Validar la caracteristica de alcance.
   *
   * PARAMETROS:
@@ -350,7 +350,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
                                     Pn_Servi NUMBER);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_CARACT_ALCANCE'.
+  * Documentación para PROCEDURE 'P_VALIDA_CARACT_ALCANCE'.
   * Procedure que me permite Validar la caracteristica de alcance.
   *
   * PARAMETROS:
@@ -366,13 +366,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CICLOS_FACTURACION AS
     RETURN NUMBER;
 
   /**
-   * Documentaci�n para PROCEDURE P_CREA_PARAM_GRUPOS_PROMO
+   * Documentación para PROCEDURE P_CREA_PARAM_GRUPOS_PROMO
    * Procedure que permite parametrizar los grupos de clientes a procesarse en el mapeo promocional por banco_tipo_cuenta_id y por ciclo de Facturacion 
    * 
    * PARAMETROS:
    * @Param Pv_CodEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
    *
-   * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+   * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
    * @version 1.0 16-06-2022
    */  
   PROCEDURE P_CREA_PARAM_GRUPOS_PROMO (Pv_CodEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE);
@@ -893,7 +893,7 @@ EXCEPTION
 WHEN OTHERS THEN 
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                         'CMKG_CICLOS_FACTURACION.F_INFO_CLIENTE_PORPTOFACT', 
-                                        'Error al obtener informaci�n de VALOR RECURRENTE, SALDO DEUDOR y JURISDICCION del cliente
+                                        'Error al obtener información de VALOR RECURRENTE, SALDO DEUDOR y JURISDICCION del cliente
                                         (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
                                         || SQLCODE || ' -ERROR- ' || SQLERRM, 
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
@@ -1047,7 +1047,7 @@ EXCEPTION
 WHEN OTHERS THEN 
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                         'CMKG_CICLOS_FACTURACION.F_INFORMACION_CONTRATO_CLI', 
-                                        'Error al obtener la informaci�n de contrato (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
+                                        'Error al obtener la información de contrato (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
                                         || SQLCODE || ' -ERROR- ' || SQLERRM, 
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
                                         SYSDATE, 
@@ -1070,9 +1070,9 @@ WHEN OTHERS THEN
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|;|.|,|%|"]|[)]+$', ' ')
-              ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-              ,'������,������', 'AEIOUN aeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|;|.|,|%|"]|[)]+$', ' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+              ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
               , Chr(9), ' ')
               , Chr(10), ' ')
               , Chr(13), ' ')
@@ -1268,7 +1268,7 @@ WHEN OTHERS THEN
                                 end_date           => NULL,
                                 enabled            => FALSE,
                                 auto_drop          => TRUE,
-                                comments           => 'Job para ejecutar Proceso Masivo de Cambio de Ciclo de Facturaci�n ');
+                                comments           => 'Job para ejecutar Proceso Masivo de Cambio de Ciclo de Facturación ');
        SYS.DBMS_SCHEDULER.SET_ATTRIBUTE( 
                                      name      => '"DB_COMERCIAL"."JOB_PMA_CAMBIOCICLO_'||Ln_IdProcesoMasivoCab||'"', 
                                      attribute => 'logging_level', value => DBMS_SCHEDULER.LOGGING_OFF );
@@ -1319,7 +1319,7 @@ WHEN OTHERS THEN
     Lv_Delimitador               VARCHAR2(1)    := '|';
     Lv_Gzip                      VARCHAR2(100)  := 'gzip /backup/repgerencia/'||Lv_NombreArchivo;
     Lv_Remitente                 VARCHAR2(100)  := 'notificaciones_telcos@telconet.ec';    
-    Lv_Asunto                    VARCHAR2(300)  := 'Reporte de Clientes consultados para ejecutar Cambio de Ciclo de Facturaci�n ';
+    Lv_Asunto                    VARCHAR2(300)  := 'Reporte de Clientes consultados para ejecutar Cambio de Ciclo de Facturación ';
     Lv_Cuerpo                    VARCHAR2(9999) := ''; 
     Lv_IpCreacion                VARCHAR2(15)   := (NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1'));
     Ln_Total                     NUMBER         := 0;
@@ -1635,8 +1635,8 @@ WHEN OTHERS THEN
     Lv_AliasCorreos,
     'Telcos',
     'Activo',
-    'Reporte de Clientes consultados para ejecutar Cambio de Ciclo de Facturaci�n :'||
-    '</br> Identificaci�n: <b>'||Pv_Identificacion||
+    'Reporte de Clientes consultados para ejecutar Cambio de Ciclo de Facturación :'||
+    '</br> Identificación: <b>'||Pv_Identificacion||
     '</br> Nombre Cliente: <b>'||Pv_NombreCliente||
     '</br> Nombre Ciclo:   <b>'||Lv_NombreCiclo||    
     '</br> Estados de Servicios: <b>'||Lv_DescEstadosServicios||
@@ -1854,7 +1854,7 @@ WHEN OTHERS THEN
      --
      --
 
-    --VALIDO UNA EJECUCI�N CON LOS MISMOS FILTROS.
+    --VALIDO UNA EJECUCIÓN CON LOS MISMOS FILTROS.
     SELECT COUNT(*) INTO Ln_CuentaEjecuciones FROM DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB
        WHERE TIPO_PROCESO = 'CicloFacturacion'
          AND ESTADO IN ('Pendiente', 'Procesado', 'Creado')
@@ -1880,7 +1880,7 @@ WHEN OTHERS THEN
     FECHA_CORTE_HASTA,
     VALOR_DEUDA,
     FORMA_PAGO_ID,
-    IDS_BANCOS_TARJETAS, --ALMACENO LOS FILTROS DE B�SQUEDA
+    IDS_BANCOS_TARJETAS, --ALMACENO LOS FILTROS DE BÚSQUEDA
     IDS_OFICINAS,
     ESTADO,
     FE_CREACION,
@@ -1904,7 +1904,7 @@ WHEN OTHERS THEN
     'Creado',SYSDATE,null,Pv_UsrSesion,NULL,Lv_IpCreacion,
     NULL,NULL,NULL,NULL,NULL,NULL,NULL,Pn_IdCicloFacturacionNuevo);
 
-    --CONFIRMO LA CABECERA DEL PROCESO MASIVO ANTES DE REALIZAR LA B�SQUEDA DE LOS CLIENTES.
+    --CONFIRMO LA CABECERA DEL PROCESO MASIVO ANTES DE REALIZAR LA BÚSQUEDA DE LOS CLIENTES.
     COMMIT;
     --
     --     
@@ -1986,7 +1986,7 @@ WHEN OTHERS THEN
                                 end_date           => NULL,
                                 enabled            => FALSE,
                                 auto_drop          => TRUE,
-                                comments           => 'Job para ejecutar Proceso Masivo de Cambio de Ciclo de Facturaci�n ');
+                                comments           => 'Job para ejecutar Proceso Masivo de Cambio de Ciclo de Facturación ');
        SYS.DBMS_SCHEDULER.SET_ATTRIBUTE( 
                                      name      => '"DB_COMERCIAL"."JOB_PMA_CAMBIOCICLO_'||Ln_IdProcesoMasivoCab||'"', 
                                      attribute => 'logging_level', value => DBMS_SCHEDULER.LOGGING_OFF );
@@ -2182,7 +2182,7 @@ WHEN OTHERS THEN
    Lv_Delimitador               VARCHAR2(1)    := '|';
    Lv_Gzip                      VARCHAR2(100);
    Lv_Remitente                 VARCHAR2(100)  := 'notificaciones_telcos@telconet.ec';
-   Lv_Asunto                    VARCHAR2(300)  := 'Reporte de Ejecuci�n de Cambio de Ciclo de Facturaci�n ';
+   Lv_Asunto                    VARCHAR2(300)  := 'Reporte de Ejecución de Cambio de Ciclo de Facturación ';
    Lv_Cuerpo                    VARCHAR2(9999) := ''; 
    Lv_NombreArchivoZip          VARCHAR2(250);
    Lc_GetAliasPlantilla         DB_FINANCIERO.FNKG_TYPES.Lr_AliasPlantilla;
@@ -2403,7 +2403,7 @@ WHEN OTHERS THEN
           Lv_IpCreacion,
           'Activo',
           Lr_GetProcesoMasivo.PERSONA_EMPRESA_ROL_ID,
-         'Se modifico Ciclo de Facturaci�n :
+         'Se modifico Ciclo de Facturación :
           <br>Ciclo Anterior: ' || Lv_NombreCicloAnterior || ' <br>Ciclo Nuevo: ' || Lr_GetProcesoMasivo.NOMBRE_CICLO,
           NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
@@ -2419,7 +2419,7 @@ WHEN OTHERS THEN
        WHERE ID_PROCESO_MASIVO_DET = Lr_GetProcesoMasivo.ID_PROCESO_MASIVO_DET;
        --
        --
-       --ACTUALIZO CADA CIERTO N�MERO DE REGISTROS
+       --ACTUALIZO CADA CIERTO NÚMERO DE REGISTROS
        IF Ln_ContadorCursor >= Ln_LimiteBulk THEN
          COMMIT;
          Ln_ContadorCursor := 0;
@@ -2552,7 +2552,7 @@ WHEN OTHERS THEN
     Lv_AliasCorreos,
     'Telcos',
     'Activo',
-    'Reporte de Ejecuci�n de Cambio de Ciclo de Facturaci�n:'||
+    'Reporte de Ejecución de Cambio de Ciclo de Facturación:'||
     '<br> Ciclo Anterior: '|| Lv_NombreCicloAnterior || '<b> Ciclo Nuevo: '||Lv_NombreCicloNuevo||'</br>');
     --
     --
@@ -2594,7 +2594,7 @@ WHEN OTHERS THEN
     Lr_AdmiParametroDet      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;
 
   BEGIN
-    --SE ITERA EL PAR�METRO SI TIENE CICLO DE FACTURACI�N
+    --SE ITERA EL PARÁMETRO SI TIENE CICLO DE FACTURACIÓN
     Lrf_AdmiParametroDet := DB_GENERAL.GNRLPCK_UTIL.F_GET_PARAMS_DETS('CICLO_FACTURACION_EMPRESA');
     LOOP
         FETCH Lrf_AdmiParametroDet INTO Lr_AdmiParametroDet;
@@ -2624,7 +2624,7 @@ WHEN OTHERS THEN
                SET ESTADO = 'Anulado',
                    FE_ULT_MOD = SYSDATE,
                    USR_ULT_MOD = 'pma_cambiociclo',
-                   OBSERVACION = SUBSTR(OBSERVACION || '|Estado:' || ESTADO || '|| Se da de baja por proceso autom�tico de eliminaci�n de procesos pendientes '
+                   OBSERVACION = SUBSTR(OBSERVACION || '|Estado:' || ESTADO || '|| Se da de baja por proceso automático de eliminación de procesos pendientes '
                                   || 'de Cambio de ciclo de facturacion' || Lv_Observacion, 1, 4000)
              WHERE PROCESO_MASIVO_CAB_ID = Lr_PmaPorAnular.ID_PROCESO_MASIVO_CAB
                AND ESTADO NOT IN ('Finalizado','Fallo');
@@ -2859,7 +2859,7 @@ WHEN OTHERS THEN
       Lr_AdmiParamtroCab       DB_GENERAL.ADMI_PARAMETRO_CAB%ROWTYPE;
       Lv_Observacion           DB_GENERAL.ADMI_PARAMETRO_DET.OBSERVACION%TYPE:='VALOR1: DESCRIPCION REFERENTE A LA FORMA DE PAGO,'||
                                'VALOR2: ID_BANCO_TIPO_CUENTA,    VALOR3: ID_TIPO_CUENTA,    VALOR4: ID_BANCO,    VALOR5: ID DEL CICLO DE FACTURACION ADMI_CICLO'||
-                               'VALOR6: DESCRIPCION DEL TIPO DE CUENTA    VALOR7: DESCRIPCI�N DEL BANCO';
+                               'VALOR6: DESCRIPCION DEL TIPO DE CUENTA    VALOR7: DESCRIPCIÓN DEL BANCO';
       Lv_Descripcion           DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE;
       Ln_IdParametro           DB_GENERAL.ADMI_PARAMETRO_CAB.ID_PARAMETRO%TYPE;
       Lv_Usuario               DB_GENERAL.ADMI_PARAMETRO_DET.USR_CREACION%TYPE:='telcos_map_prom';

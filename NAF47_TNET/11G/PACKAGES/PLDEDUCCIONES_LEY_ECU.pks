@@ -514,7 +514,7 @@ BEGIN
   * 
   * @actualiza banton <banton@telconet.ec>
   * @version 1.1 19/05/2020
-  * Se agrega condici�n para empleados que aplica descuento
+  * Se agrega condicion para empleados que aplica descuento
   * Se debe sacar valor en base al monto sin descuentos
   */
 
@@ -522,7 +522,7 @@ BEGIN
   * 
   * @actualiza banton <banton@telconet.ec>
   * @version 1.2 29/06/2020
-  * Se agrega condici�n para empleados que aplica descuento
+  * Se agrega condicion para empleados que aplica descuento
   * para empleados de Telconet
   */
 
@@ -530,7 +530,7 @@ BEGIN
   * 
   * @actualiza banton <banton@telconet.ec>
   * @version 1.3 27/08/2020
-  * Se modifica condici�n para empleados que aplica descuento
+  * Se modifica condicion para empleados que aplica descuento
   * para empleados de Megadatos
   */
 
@@ -1096,14 +1096,14 @@ BEGIN
        Close c_emp;
     END IF;
 
-    -- Divido por el n�mero de meses del a�o que se esta trabajando
+    -- Divido por el numero de meses del año que se esta trabajando
     Ln_anio := to_number(to_char(Ld_f_ingre,'yyyy'));
     Ln_mes  := to_number(to_char(Ld_f_ingre,'mm'));
 
     If rPla.ano_proce > Ln_anio Then  -- Entro antes del anio de proceso
        Ln_meses := 1;
        Ln_mesDivide := rPla.mes_proce;
-     else  -- Entro en el a�o de proceso
+     else  -- Entro en el año de proceso
        -- Desde que mes entro
        Ln_meses := Ln_mes;
        Ln_mesDivide := (rPla.mes_proce - Ln_meses)+1;
@@ -1156,9 +1156,9 @@ BEGIN
     CLOSE c_ded_otros_meses_otras_pla;
 
     --*********** DEDUCCION POR UTILIDADES  **************
-    -- Como desde Enero a Abril no se tomo en cuenta el valor de Utilidades se tendr� que 
-    -- calcular un valor por mes multiplicarlo por 4 y a�adirlo a los ingresos,  para el 
-    -- calculo del a�o 2015 hay que hacerlo sobre 3 meses
+    -- Como desde Enero a Abril no se tomo en cuenta el valor de Utilidades se tendra que 
+    -- calcular un valor por mes multiplicarlo por 4 y añadirlo a los ingresos,  para el 
+    -- calculo del año 2015 hay que hacerlo sobre 3 meses
     OPEN  C_Anio_proceso;
     FETCH C_Anio_proceso INTO Ln_Anio_proceUt, Ln_mes_proce;
     CLOSE C_Anio_proceso;
@@ -1189,7 +1189,7 @@ BEGIN
     -- De los datos encontradas dividirlos para los meses
     vImponible_p := (vtodos_ing - vtodos_ded) / Ln_mesDivide;
 
-    -- Del valor proyectado(1 mes) lo llevo al a�o y le resto los gastos anuales
+    -- Del valor proyectado(1 mes) lo llevo al año y le resto los gastos anuales
     vImponible := (vImponible_p * 12) - vgastos;
 
     -- Si el total de ingresos es superior al minimo grabable calcula el impuesto al salario
@@ -1457,14 +1457,14 @@ BEGIN
        Close c_emp;
     END IF;
 
-    -- Divido por el n�mero de meses del a�o que se esta trabajando
+    -- Divido por el numero de meses del año que se esta trabajando
     Ln_anio := to_number(to_char(Ld_f_ingre,'yyyy'));
     Ln_mes  := to_number(to_char(Ld_f_ingre,'mm'));
 
     If rPla.ano_proce > Ln_anio Then  -- Entro antes del anio de proceso
        Ln_meses := 1;
        Ln_mesDivide := rPla.mes_proce;
-     else  -- Entro en el a�o de proceso
+     else  -- Entro en el año de proceso
        -- Desde que mes entro
        Ln_meses := Ln_mes;
        Ln_mesDivide := (rPla.mes_proce - Ln_meses)+1;
@@ -1533,7 +1533,7 @@ BEGIN
     -- De los datos encontradas dividirlos para los meses
     vImponible_p := (vtodos_ing - vtodos_ded) / Ln_mesDivide;
 
-    -- Del valor proyectado(1 mes) lo llevo al a�o y le resto los gastos anuales
+    -- Del valor proyectado(1 mes) lo llevo al año y le resto los gastos anuales
     vImponible := (vImponible_p * 12) - vgastos;
 
     -- Si el total de ingresos es superior al minimo grabable calcula el impuesto al salario

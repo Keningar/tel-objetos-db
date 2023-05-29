@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
  /**
-  * Documentaci�n para TYPE 'Lr_Punto_Promo_Procesar'.
-  * Record para almacenar la informaci�n del punto a procesar.
+  * Documentación para TYPE 'Lr_Punto_Promo_Procesar'.
+  * Record para almacenar la información del punto a procesar.
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 8-08-2019
   */   
@@ -14,8 +14,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   );   
 
  /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_PUNTO_PROMO_PROCESAR'.
-  * Procedimiento que obtiene la informaci�n del punto a procesar.
+  * Documentación para PROCEDURE 'P_OBTIENE_PUNTO_PROMO_PROCESAR'.
+  * Procedimiento que obtiene la información del punto a procesar.
   *
   * Costo del Query C_Obtiene_Punto_Promo: 8
   *
@@ -30,14 +30,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                            Pr_Punto_Promo  OUT Lr_Punto_Promo_Procesar);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_PROMOCIONES_BW'.
-  * Procedimiento que obtiene la informaci�n de las promociones de Ancho de Banda, que ser�n procesadas.
+  * Documentación para PROCEDURE 'P_OBTIENE_PROMOCIONES_BW'.
+  * Procedimiento que obtiene la información de las promociones de Ancho de Banda, que serán procesadas.
   *
   * Costo del Query: 14 
   *
   * PARAMETROS:
-  * @Param Pv_TipoPromocion       IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE     Recibe el tipo de promoci�n
-  * @Param Pv_CodEmpresa          IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                Recibe el c�digo de empresa
+  * @Param Pv_TipoPromocion       IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE     Recibe el tipo de promoción
+  * @Param Pv_CodEmpresa          IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                Recibe el código de empresa
   * @Param Pv_TipoProceso         IN VARCHAR2                                           Recibe el tipo de proceso
   * @Param Pn_Valor               IN NUMBER                                             Recibe un valor dependiendo el tipoProceso 
   * @Param Pn_IdServicio          IN INFO_SERVICIO.ID_SERVICIO%TYPE                     Recibe el id del servicio
@@ -57,17 +57,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                      Prf_TiposPromociones    OUT SYS_REFCURSOR);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_PROCESO_MAPEO_PROMOCIONES_BW'.
-  * Procedimiento principal que maneja la l�gica del mapeo de Promociones de Ancho de Banda.
+  * Documentación para PROCEDURE 'P_PROCESO_MAPEO_PROMOCIONES_BW'.
+  * Procedimiento principal que maneja la lógica del mapeo de Promociones de Ancho de Banda.
   *
   * PARAMETROS:
-  * @Param  Pv_CodEmpresa           IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                  Recibe c�digo de empresa
+  * @Param  Pv_CodEmpresa           IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                  Recibe código de empresa
   * @Param  Pv_TipoProceso          IN VARCHAR2                                             Recibe el tipo de proceso
   * @Param  Pn_Valor                IN NUMBER                                               Recibe un valor que depende del TipoProceso 
   * @Param  Pn_IdServicio           IN INFO_SERVICIO.ID_SERVICIO%TYPE                       Recibe el id del servicio  
   * @Param  Pv_AplicaPromo         OUT VARCHAR2                                             Devuelve 'SI/NO', si/no aplica promo
   * @Param  Pv_MapeaPromo          OUT VARCHAR2                                             Devuelve 'SI/NO', si/no mapea promo
-  * @Param  Pv_TeniaPromo          OUT VARCHAR2                                             Devuelve 'SI/NO', si/no ten�a promo
+  * @Param  Pv_TeniaPromo          OUT VARCHAR2                                             Devuelve 'SI/NO', si/no tenía promo
   * @Param  Pn_IdPlanSuperior      OUT INFO_DETALLE_MAPEO_SOLICITUD.PLAN_ID_SUPERIOR%TYPE   Devuelve el id plan superior
   * @Param  Pv_ConfiguraBW         OUT VARCHAR2                                             Devuelve 'SI/NO', si/no configura promo
   * @Param  Pv_EstadoProceso       OUT VARCHAR2                                             Devuelve 'OK o ERROR', del estadoProceso
@@ -75,10 +75,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 16-08-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los par�metros necesarios a la funci�n que valida la regla tipo negocio.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los parámetros necesarios a la función que valida la regla tipo negocio.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.2 07-03-2023 - Se realiza envio de empresa a la funcion F_GET_TRAMA.
   */
   PROCEDURE P_PROCESO_MAPEO_PROMOCIONES_BW(Pv_CodEmpresa         IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -93,12 +93,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                            Pv_EstadoProceso     OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_MAPEA_PROMOCIONES_BW'.
-  * Procedimiento que realiza el proceso de validaci�n para mapear la promoci�n correspondiente de Ancho de Banda.
+  * Documentación para PROCEDURE 'P_VALIDA_MAPEA_PROMOCIONES_BW'.
+  * Procedimiento que realiza el proceso de validación para mapear la promoción correspondiente de Ancho de Banda.
   *
   * PARAMETROS:
-  * @Param Pv_TipoPromocion        IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE      Recibe el tipo de promoci�n
-  * @Param Pv_CodEmpresa           IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                 Recibe el c�digo de empresa
+  * @Param Pv_TipoPromocion        IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE      Recibe el tipo de promoción
+  * @Param Pv_CodEmpresa           IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                 Recibe el código de empresa
   * @Param Pv_TipoProceso          IN VARCHAR2                                            Recibe el tipo de proceso
   * @Param Pn_IdServicio           IN INFO_SERVICIO.ID_SERVICIO%TYPE                      Recibe el id del servicio
   * @Param Pn_Valor                IN VARCHAR2                                            Recibe un valor que depende del tipoProceso
@@ -111,13 +111,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 18-08-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los par�metros necesarios a la funci�n que valida la regla tipo negocio.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los parámetros necesarios a la función que valida la regla tipo negocio.
   *
   * @author Felix Caicedo <facaicedo@telconet.ec>
   * @version 1.2 26-01-2022 - Se realizan el control de los estados para los procesos promos para las promociones de ancho de banda.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.3 07-03-2023 - Se realiza envio de empresa a la funcion F_GET_TRAMA.
   */                                                                            
   PROCEDURE P_VALIDA_MAPEA_PROMOCIONES_BW(Pv_TipoPromocion      IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
@@ -132,8 +132,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                           Pv_Mensaje           OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_SERV_PROCESAR_BW'.
-  * Procedimiento que obtiene la informaci�n del servicio a procesar.
+  * Documentación para PROCEDURE 'P_OBTIENE_SERV_PROCESAR_BW'.
+  * Procedimiento que obtiene la información del servicio a procesar.
   *
   * Costo del Query: 8
   *
@@ -150,20 +150,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                        Pa_ServiciosProcesar    OUT DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_PROMO_APLICADA'.
-  * Procedimiento que obtiene la informaci�n de una promoci�n si ya est� aplicada a un servicio espec�fico.
+  * Documentación para PROCEDURE 'P_OBTIENE_PROMO_APLICADA'.
+  * Procedimiento que obtiene la información de una promoción si ya está aplicada a un servicio específico.
   *
   * Costo del Query C_TienePromoAplicada: 81
   *
   * PARAMETROS:
-  * @Param  Pv_TipoPromocion         IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE  Recibe el tipo de promoci�n
-  * @Param  Pv_CodEmpresa            IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Recibe el c�digo de empresa
+  * @Param  Pv_TipoPromocion         IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE  Recibe el tipo de promoción
+  * @Param  Pv_CodEmpresa            IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Recibe el código de empresa
   * @Param  Pv_TipoProceso           IN VARCHAR2                                        Recibe el tipo de proceso
   * @Param  Pn_Valor                 IN NUMBER                                          Recibe un valor que depende del tipoProceso
   * @Param  Pn_IdServicio            IN INFO_SERVICIO.ID_SERVICIO%TYPE                  Recibe el id servicio
-  * @Param  Pb_TienePromoAplicada   OUT BOOLEAN                                         Devuelve 'TRUE/FALSE', si/no tiene una promoci�n aplicada
-  * @Param  Pn_IdGrupoPromocion     OUT ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE    Devuelve el id grupo promoci�n
-  * @Param  Pn_IdTipoPromocion      OUT ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE      Devuelve el id tipo promoci�n
+  * @Param  Pb_TienePromoAplicada   OUT BOOLEAN                                         Devuelve 'TRUE/FALSE', si/no tiene una promoción aplicada
+  * @Param  Pn_IdGrupoPromocion     OUT ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE    Devuelve el id grupo promoción
+  * @Param  Pn_IdTipoPromocion      OUT ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE      Devuelve el id tipo promoción
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 21-08-2019
@@ -178,24 +178,24 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                      Pn_IdTipoPromocion      OUT DB_COMERCIAL.ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_CUMPLE_PLAN'.
+  * Documentación para PROCEDURE 'P_VALIDA_CUMPLE_PLAN'.
   *
-  * Procedimiento que valida si un plan consta en los planes de la promoci�n a procesar.
+  * Procedimiento que valida si un plan consta en los planes de la promoción a procesar.
   *
   * PARAMETROS:
-  * @Param  Pv_CodigoTipoPromocion         IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE      Recibe el tipo de promoci�n
-  * @Param  Pa_TipoPromoPlanProdProcesar   IN CMKG_PROMOCIONES.T_TipoPromoPlanProdProcesar        Recibe tabla de planes de la promoci�n
+  * @Param  Pv_CodigoTipoPromocion         IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE      Recibe el tipo de promoción
+  * @Param  Pa_TipoPromoPlanProdProcesar   IN CMKG_PROMOCIONES.T_TipoPromoPlanProdProcesar        Recibe tabla de planes de la promoción
   * @Param  Pa_ServiciosProcesar           IN CMKG_PROMOCIONES.T_ServiciosProcesar                Recibe tabla de servicios a procesar
   * @Param  Pn_IdPlan                      IN INFO_SERVICIO.PLAN_ID%TYPE                          Recibe id de plan
   * @Param  Pn_IdPlanSuperior             OUT INFO_DETALLE_MAPEO_SOLICITUD.PLAN_ID_SUPERIOR%TYPE  Devuelve id plan superior
-  * @Param  Pb_CumplePlanPromo            OUT BOOLEAN                                             Devuelve 'TRUE/FALSE', si el plan (cumple/no cumple) la promoci�n
-  * @Param  Pa_ServiciosCumplePromo       OUT CMKG_PROMOCIONES.T_ServiciosProcesar                Devuelve tabla de servicios cumpliendo promoci�n
+  * @Param  Pb_CumplePlanPromo            OUT BOOLEAN                                             Devuelve 'TRUE/FALSE', si el plan (cumple/no cumple) la promoción
+  * @Param  Pa_ServiciosCumplePromo       OUT CMKG_PROMOCIONES.T_ServiciosProcesar                Devuelve tabla de servicios cumpliendo promoción
   *     
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 7-08-2019
   *
   * @author Felix Caicedo <facaicedo@telconet.ec>
-  * @version 1.1 26-01-2022 - Se realiza la compraci�n de los planes por la caracter�stica line profile para las promociones de ancho de banda.
+  * @version 1.1 26-01-2022 - Se realiza la compración de los planes por la característica line profile para las promociones de ancho de banda.
   */                                                                   
   PROCEDURE P_VALIDA_CUMPLE_PLAN(Pv_CodigoTipoPromocion         IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
                                  Pa_TipoPromoPlanProdProcesar   IN DB_COMERCIAL.CMKG_PROMOCIONES.T_TipoPromoPlanProdProcesar,
@@ -206,20 +206,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                  Pa_ServiciosCumplePromo       OUT DB_COMERCIAL.CMKG_PROMOCIONES.T_ServiciosProcesar);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_PROCESO_TRASLADO'.
-  * Procedimiento que actualiza la informaci�n del mapeo cuando se realiza un traslado.
+  * Documentación para PROCEDURE 'P_UPDATE_PROCESO_TRASLADO'.
+  * Procedimiento que actualiza la información del mapeo cuando se realiza un traslado.
   *
   * Costo del Query C_ObtieneMapeosPromo: 2
   *
   * PARAMETROS:
-  * @Param  Pn_IdGrupoPromocion   IN INFO_DETALLE_MAPEO_PROMO.GRUPO_PROMOCION_ID%TYPE  Recibe id grupo de promoci�n
-  * @Param  Pn_IdTipoPromocion    IN ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE        Recibe id tipo de promoci�n
-  * @Param  Pv_TipoPromocion      IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE    Recibe tipo de promoci�n
-  * @Param  Pv_CodEmpresa         IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE               Recibe c�digo de empresa
+  * @Param  Pn_IdGrupoPromocion   IN INFO_DETALLE_MAPEO_PROMO.GRUPO_PROMOCION_ID%TYPE  Recibe id grupo de promoción
+  * @Param  Pn_IdTipoPromocion    IN ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE        Recibe id tipo de promoción
+  * @Param  Pv_TipoPromocion      IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE    Recibe tipo de promoción
+  * @Param  Pv_CodEmpresa         IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE               Recibe código de empresa
   * @Param  Pn_IdPunto            IN INFO_PUNTO.ID_PUNTO%TYPE                          Recibe id del punto
   * @Param  Pn_IdServOrigen       IN INFO_SERVICIO.ID_SERVICIO%TYPE                    Recibe id del servicio origen
   * @Param  Pn_IdServicio         IN INFO_SERVICIO.ID_SERVICIO%TYPE                    Recibe id del servicio
-  * @Param  Pv_Trama              IN VARCHAR2                                          Recibe informaci�n de trama
+  * @Param  Pv_Trama              IN VARCHAR2                                          Recibe información de trama
   * @Param  Pv_MsjResultado      OUT VARCHAR2                                          Devuelve mensaje de resultado
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -236,14 +236,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                       Pv_MsjResultado       OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_PROCESO_CAMBIO_PLAN'.
-  * Procedimiento que actualiza la informaci�n del mapeo cuando se realiza un cambio de plan.
+  * Documentación para PROCEDURE 'P_UPDATE_PROCESO_CAMBIO_PLAN'.
+  * Procedimiento que actualiza la información del mapeo cuando se realiza un cambio de plan.
   *
   * Costo del Query C_DetalleMapeoSolicitud: 81
   *
   * PARAMETROS:
-  * @Param  Pv_TipoPromocion   IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE       Recibe tipo de promoci�n
-  * @Param  Pv_CodEmpresa      IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                  Recibe c�digo de empresa
+  * @Param  Pv_TipoPromocion   IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE       Recibe tipo de promoción
+  * @Param  Pv_CodEmpresa      IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                  Recibe código de empresa
   * @Param  Pn_IdServicio      IN INFO_SERVICIO.ID_SERVICIO%TYPE                       Recibe id del servicio
   * @Param  Pn_IdPlan          IN INFO_SERVICIO.PLAN_ID%TYPE                           Recibe id del plan
   * @Param  Pn_IdPlanSuperior  IN INFO_DETALLE_MAPEO_SOLICITUD.PLAN_ID_SUPERIOR%TYPE   Recibe id del plan Superior
@@ -260,13 +260,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                          Pv_MsjResultado   OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_UPDATE_MAP_SOLIC_TRASLADO'.
+   * Documentación para PROCEDURE 'P_UPDATE_MAP_SOLIC_TRASLADO'.
    *
    * Procedimiento que actualiza un registro en la tabla de Info_Detalle_Mapeo_Solicitud para Traslado
    *
    * PARAMETROS:
-   * @Param Pr_InfoDetMapSolicitud     IN  INFO_DETALLE_MAPEO_SOLICITUD%ROWTYPE  Recibe un registro con la informaci�n para actualizar
-   * @Param Pv_MsjResultado           OUT  VARCHAR2                              Devuelve un mensaje del resultado de ejecuci�n
+   * @Param Pr_InfoDetMapSolicitud     IN  INFO_DETALLE_MAPEO_SOLICITUD%ROWTYPE  Recibe un registro con la información para actualizar
+   * @Param Pv_MsjResultado           OUT  VARCHAR2                              Devuelve un mensaje del resultado de ejecución
    * 
    * @author Hector Lozano <hlozano@telconet.ec>
    * @version 1.0 04-10-2019
@@ -275,20 +275,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                         Pv_MsjResultado         OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_BAJA_PROMO_BW'.
-  * Proceso para dar de baja una promoci�n mapeada por servicio y tipo de promoci�n.
+  * Documentación para PROCEDURE 'P_BAJA_PROMO_BW'.
+  * Proceso para dar de baja una promoción mapeada por servicio y tipo de promoción.
   *
   * Costo del Query C_RegistrosMapeados: 6
   * Costo del Query C_EstadoServio: 3
   *
   * PARAMETROS:
   * @Param Pn_IdServicio    IN INFO_SERVICIO.ID_SERVICIO%TYPE                   Recibe id del servicio
-  * @Param Pv_Empresa       IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE              Recibe c�digo de empresa
-  * @Param Pv_tipoPromo     IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE   Recibe tipo promoci�n
+  * @Param Pv_Empresa       IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE              Recibe código de empresa
+  * @Param Pv_tipoPromo     IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE   Recibe tipo promoción
   * @Param Pv_TipoProceso   IN VARCHAR2                                         Recibe tipo de proceso
   * @Param Pv_mensaje      OUT VARCHAR2                                         Devuelve mensaje de resultado
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-09-2019
   *
   * @author Felix Caicedo <facaicedo@telconet.ec>
@@ -301,8 +301,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                              Pv_Mensaje     OUT  VARCHAR2);
 
  /**
-  * Documentaci�n para TYPE 'Lr_ClientesPomoBw'.
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * Documentación para TYPE 'Lr_ClientesPomoBw'.
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-06-2019
   */
   TYPE Lr_ClientesPomoBw IS RECORD (
@@ -319,40 +319,40 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   );
 
  /**
-  * Documentaci�n para TYPE 'T_ClientesMapeo'.
+  * Documentación para TYPE 'T_ClientesMapeo'.
   * Record para almacenar la data enviada al BULK.
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 03-06-2019
   */
   TYPE T_ClientesPromoBw IS TABLE OF Lr_ClientesPomoBw INDEX BY PLS_INTEGER;
 
  /**
-  * Documentaci�n para PROCEDURE 'P_PIERDE_PROMO_BW'.
-  * Proceso que obtiene un registro de los servicios mapeados que pierden promoci�n.
+  * Documentación para PROCEDURE 'P_PIERDE_PROMO_BW'.
+  * Proceso que obtiene un registro de los servicios mapeados que pierden promoción.
   *
   * Costo del Query C_ClientesMapeo: 1306
   * Costo del Query C_TipoPromocion: 1
   * Costo del Query C_DatosServicio: 14
   *
   * PARAMETROS:
-  * @Param Pv_Empresa              IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE              Recibe c�digo de empresa
-  * @Param Pv_TipoPromo            IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE   Recibe tipo de promoci�n
+  * @Param Pv_Empresa              IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE              Recibe código de empresa
+  * @Param Pv_TipoPromo            IN ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE   Recibe tipo de promoción
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-09-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los par�metros necesarios a la funci�n que valida la regla tipo negocio.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los parámetros necesarios a la función que valida la regla tipo negocio.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.2 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
   */
   PROCEDURE P_PIERDE_PROMO_BW (Pv_Empresa     IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                Pv_TipoPromo   IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE);
 
  /**
-  * Documentaci�n para FUNCTION 'F_NUMERO_IPS_FIJAS'.
-  * Funci�n que obtiene el numero de Ip's fijas.
+  * Documentación para FUNCTION 'F_NUMERO_IPS_FIJAS'.
+  * Función que obtiene el numero de Ip's fijas.
   *
   * Costo del Query C_ServiciosPunto: 11
   * Costo del Query C_IpsPorProductos: 11
@@ -361,9 +361,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   * PARAMETROS:
   * @Param Fn_IdPunto    IN INFO_PUNTO.ID_PUNTO%TYPE              Recibe id del punto
   * @Param Fn_IdServicio IN INFO_SERVICIO.ID_SERVICIO%TYPE        Recibe id de servicio
-  * @Param Fv_Empresa    IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE   Recibe c�digo de empresa
+  * @Param Fv_Empresa    IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE   Recibe código de empresa
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-09-2019
   */                                 
   FUNCTION F_NUMERO_IPS_FIJAS(Fn_IdPunto    IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -372,17 +372,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     RETURN NUMBER;
 
  /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_SIGUIENTE_MAPEO'.
-  * Proceso que verifica si el servicio con promoci�n tiene un mapeo para el siguiente mes.
+  * Documentación para PROCEDURE 'P_OBTIENE_SIGUIENTE_MAPEO'.
+  * Proceso que verifica si el servicio con promoción tiene un mapeo para el siguiente mes.
   *
   * Costo del Query C_ObtieneSiguienteMapeo: 4
   *
   * PARAMETROS:
-  * @Param Pn_IdGrupoPromocion   IN ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE    Recibe id grupo promoci�n
-  * @Param Pn_IdTipoPromocion    IN ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE      Recibe id Tipo promoci�n
+  * @Param Pn_IdGrupoPromocion   IN ADMI_GRUPO_PROMOCION.ID_GRUPO_PROMOCION%TYPE    Recibe id grupo promoción
+  * @Param Pn_IdTipoPromocion    IN ADMI_TIPO_PROMOCION.ID_TIPO_PROMOCION%TYPE      Recibe id Tipo promoción
   * @Param Pn_IdPunto            IN INFO_PUNTO.ID_PUNTO%TYPE                        Recibe id del punto
   * @Param Pn_IdServicio         IN INFO_SERVICIO.ID_SERVICIO%TYPE                  Recibe id del servicio
-  * @Param Pv_Empresa            IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Recibe c�digo de empresa
+  * @Param Pv_Empresa            IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Recibe código de empresa
   * @Param Pb_SiguienteMapeoBw   OUT BOOLEAN                                        Devuelve 'TRUE/FALSE',si/no tiene siguiente mapeo
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -396,16 +396,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                       Pb_SiguienteMapeoBw   OUT BOOLEAN);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_PIERDE_PROMO_EXT'.
+  * Documentación para PROCEDURE 'P_VALIDA_PIERDE_PROMO_EXT'.
   * Proceso que verifica si existe un registro con PierdePromo en las tablas del Esquema DB_EXTERNO que consume RDA.
   *
   * Costo del Query C_ObtieneRegPierdePromo: 1
   *
   * PARAMETROS:
   * @Param Pn_IdServicio        IN  INFO_PROCESO_PROMO.SERVICIO_ID%TYPE   Recibe id del servicio
-  * @Param Pv_TipoPromocion     IN  INFO_PROCESO_PROMO.TIPO_PROMO%TYPE    Recibe tipo de promoci�n
+  * @Param Pv_TipoPromocion     IN  INFO_PROCESO_PROMO.TIPO_PROMO%TYPE    Recibe tipo de promoción
   * @Param Pv_TipoProceso       IN  INFO_PROCESO_PROMO.TIPO_PROCESO%TYPE  Recibe tipo de proceso
-  * @Param Pv_CodEmpresa        IN  INFO_PROCESO_PROMO.EMPRESA_COD%TYPE   Recibe c�digo de empresa
+  * @Param Pv_CodEmpresa        IN  INFO_PROCESO_PROMO.EMPRESA_COD%TYPE   Recibe código de empresa
   * @Param Pb_ExistePierdePromo OUT BOOLEAN                               Devuelve 'TRUE/FALSE', si/no existe un registro con tipoProceso PierdePromo
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -418,15 +418,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                       Pb_ExistePierdePromo OUT BOOLEAN);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_VALIDA_PROMO_FINALIZADA'.
+  * Documentación para PROCEDURE 'P_VALIDA_PROMO_FINALIZADA'.
   * Proceso que verifica si el servicio tiene un mapeo finalizado en el mes actual.
   *
   * Costo del Query C_ObtienePromoFinalizada: 8
   *
   * PARAMETROS:
   * @Param Pn_IdServicio     IN  INFO_SERVICIO.ID_SERVICIO%TYPE                  Recibe id del servicio
-  * @Param Pv_TipoPromocion  IN  ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE  Recibe tipo de promoci�n
-  * @Param Pv_CodEmpresa     IN  INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Recibe c�digo de empresa
+  * @Param Pv_TipoPromocion  IN  ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE  Recibe tipo de promoción
+  * @Param Pv_CodEmpresa     IN  INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Recibe código de empresa
   * @Param Pv_TienePromoFin  OUT VARCHAR2                                        Devuelve 'SI/NO', si el servicio (tiene/no tiene) un mapeo finalizado en el mes actual
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -438,7 +438,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                       Pv_TienePromoFin  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para TYPE 'T_RegPromoExterno'.
+   * Documentación para TYPE 'T_RegPromoExterno'.
    * @author Hector Lozano <hlozano@telconet.ec>
    * @version 1.0 01-10-2019
    */
@@ -451,12 +451,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 ----
 
   /**
-   * Documentaci�n para TYPE 'Gr_ClientesPromo'.
+   * Documentación para TYPE 'Gr_ClientesPromo'.
    *
-   * Record que me permite almacenar los posibles clientes que aplican a una promoci�n.
+   * Record que me permite almacenar los posibles clientes que aplican a una promoción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 17-09-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 17-09-2019
    */
   TYPE Gr_ClientesPromo IS RECORD (
     ID_PERSONA_ROL  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE,
@@ -467,41 +467,41 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   );
 
   /**
-   * Documentaci�n para TYPE 'Gtl_ClientesPromo'.
+   * Documentación para TYPE 'Gtl_ClientesPromo'.
    *
-   * Tabla que contiene los posibles clientes que aplican a una promoci�n.
+   * Tabla que contiene los posibles clientes que aplican a una promoción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 18-06-2019
   */
   TYPE Gtl_ClientesPromo IS TABLE OF Gr_ClientesPromo INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para el procedimiento 'P_PROCESO_MASIVO_BW'.
+   * Documentación para el procedimiento 'P_PROCESO_MASIVO_BW'.
    *
-   * Proceso encargado de darle a los clientes la promoci�n de BW en caso de aplicar.
+   * Proceso encargado de darle a los clientes la promoción de BW en caso de aplicar.
    *
    * Costo Query Posibles Clientes : 400.
    * Costo Query C_Promociones     : 7.
    * Costo Query C_ListaPeriodos   : 2.
    *
    * @Param Pv_TipoProceso IN  VARCHAR2 : Recibe el valor de NUEVO o EXISTENTE.
-   * @Param Pn_IdPromocion IN  NUMBER   : Recibe el id de la promoci�n para ejecuciones de promociones de ancho de banda programadas
-   * @Param Pv_EstadoPromo IN  VARCHAR2 : Recibe el estado de la promoci�n para ejecuciones de promociones de ancho de banda programadas
+   * @Param Pn_IdPromocion IN  NUMBER   : Recibe el id de la promoción para ejecuciones de promociones de ancho de banda programadas
+   * @Param Pv_EstadoPromo IN  VARCHAR2 : Recibe el estado de la promoción para ejecuciones de promociones de ancho de banda programadas
    * @Param Pv_Mensaje     OUT VARCHAR2 : Mensaje de error en caso de existir.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-09-2019
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los par�metros necesarios a la funci�n que valida la regla tipo negocio.
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.1 30-12-2020 - Se realizan cambios en el proceso para enviar los parámetros necesarios a la función que valida la regla tipo negocio.
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
-   * @version 1.2 08-12-2021 - Se realizan cambios en el proceso para enviar los par�metros en el procedimiento que valida
+   * @version 1.2 08-12-2021 - Se realizan cambios en el proceso para enviar los parámetros en el procedimiento que valida
    *                           las ejecuciones de promociones de ancho de banda programadas.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.3 07-03-2023 - Se realiza env�o de empresa a la funci�n F_GET_TRAMA
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.3 07-03-2023 - Se realiza envío de empresa a la función F_GET_TRAMA
    */
   PROCEDURE P_PROCESO_MASIVO_BW(Pv_TipoProceso IN  VARCHAR2,
                                 Pn_IdPromocion IN  NUMBER DEFAULT NULL,
@@ -509,12 +509,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                 Pv_Mensaje     OUT VARCHAR2);
 
   /*
-   * Documentaci�n para el RECORD 'Gr_ClientesPromo'.
+   * Documentación para el RECORD 'Gr_ClientesPromo'.
    *
-   * Record que permite almacenar los par�metros necesarios para praparar la data del los procesos de promoci�n.
+   * Record que permite almacenar los parámetros necesarios para praparar la data del los procesos de promoción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 17-09-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 17-09-2019
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.1 26-01-2022 - Se aunmenta la columna estado
@@ -533,64 +533,64 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   );
 
   /**
-   * Documentaci�n para el procedimiento 'P_PREPARA_DATA_PROCESO_PROMO'.
+   * Documentación para el procedimiento 'P_PREPARA_DATA_PROCESO_PROMO'.
    *
-   * Proceso encargado de armar la informaci�n necesaria para insertar
+   * Proceso encargado de armar la información necesaria para insertar
    * en la 'INFO_PROCESO_PROMO'del esquema 'DB_EXTERNO'.
    *
    * Costo Query C_DatosServicio : 16.
    *
-   * @Param Pr_ProcesoPromo IN  Gr_ProcesoPromo : Recibe un record con los par�metros necesarios para armar la informaci�n.
+   * @Param Pr_ProcesoPromo IN  Gr_ProcesoPromo : Recibe un record con los parámetros necesarios para armar la información.
    * @Param Pv_Mensaje      OUT VARCHAR2 : Mensaje de error en caso de existir.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-09-2019
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.1 13-05-2020 Se modifica las validaciones para comparar la marca en lugar del modelo del olt 
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
-   * @version 1.2 26-01-2022 - Se env�a el estado del proceso promo para promociones ya en ejecuci�n.
+   * @version 1.2 26-01-2022 - Se envía el estado del proceso promo para promociones ya en ejecución.
    */
   PROCEDURE P_PREPARA_DATA_PROCESO_PROMO(Pr_ProcesoPromo IN  Gr_ProcesoPromo,
                                          Pv_Mensaje      OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_UPDATE_RDA_PROMOCION'.
+   * Documentación para el procedimiento 'P_UPDATE_RDA_PROMOCION'.
    *
    * Proceso encargado de actualizar las promociones en las tablas que consume el RDA.
    *
    * Costo Query C_InforProcesoPromo : 10.
    *
-   * @Param Pcl_Json IN  CLOB  : JSON Con los par�metros necesarios para la actualizaci�n del proceso de promoci�n.
+   * @Param Pcl_Json IN  CLOB  : JSON Con los parámetros necesarios para la actualización del proceso de promoción.
    *      [
    *          IdServicio          : Recibe el id del servicio.
-   *          TrafficPromo        : Valor de la caracter�stica promocional 'TRAFFIC_PROMO'.
-   *          GemportPromo        : Valor de la caracter�stica promocional 'GEMPORT_PROMO'.
-   *          LineProfilePromo    : Valor de la caracter�stica promocional 'LINE_PROFILE_PROMO'.
-   *          CapacidadUpPromo    : Valor de la caracter�stica promocional 'CAPACIDAD_UP_PROMO'.
-   *          CapacidadDownPromo  : Valor de la caracter�stica promocional 'CAPACIDAD_DOWN_PROMO'.
-   *          TipoPromocion       : Tipo de Promoci�n.
+   *          TrafficPromo        : Valor de la característica promocional 'TRAFFIC_PROMO'.
+   *          GemportPromo        : Valor de la característica promocional 'GEMPORT_PROMO'.
+   *          LineProfilePromo    : Valor de la característica promocional 'LINE_PROFILE_PROMO'.
+   *          CapacidadUpPromo    : Valor de la característica promocional 'CAPACIDAD_UP_PROMO'.
+   *          CapacidadDownPromo  : Valor de la característica promocional 'CAPACIDAD_DOWN_PROMO'.
+   *          TipoPromocion       : Tipo de Promoción.
    *          TipoProceso         : Proceso al cual se debe actualizar (AplicaPromo/PierdePromo).
-   *          Observacion         : Obsevaci�n para el historial de la promoci�n.
-   *          Usuario             : Usuario quien realiza la actualizaci�n.
-   *          Ip                  : Ip del usuario quien realiza la actualizaci�n.
+   *          Observacion         : Obsevación para el historial de la promoción.
+   *          Usuario             : Usuario quien realiza la actualización.
+   *          Ip                  : Ip del usuario quien realiza la actualización.
    *      ]
    * @Param Pv_Mensaje OUT VARCHAR2 : Mensaje de error en caso de existir.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-09-2019
    */
   PROCEDURE P_UPDATE_RDA_PROMOCION(Pcl_Json   IN  CLOB,
                                    Pv_Mensaje OUT VARCHAR2);
 
   /*
-   * Documentaci�n para el RECORD 'Gr_Caracteristica'.
+   * Documentación para el RECORD 'Gr_Caracteristica'.
    *
-   * Record que permite almacenar la caracter�stica promocional que aplica un servicio.
+   * Record que permite almacenar la característica promocional que aplica un servicio.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 17-09-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 17-09-2019
    */
   TYPE Gr_Caracteristica IS RECORD (
     CARACTERISTICA  DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
@@ -598,23 +598,23 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   );
 
   /*
-   * Documentaci�n para el RECORD 'Gr_Caracteristica'.
+   * Documentación para el RECORD 'Gr_Caracteristica'.
    *
-   * Record que permite almacenar todas la caracter�sticas promocionales que aplica un servicio.
+   * Record que permite almacenar todas la características promocionales que aplica un servicio.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 17-09-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 17-09-2019
    */
   TYPE Gtl_Caracteristicas IS TABLE OF Gr_Caracteristica INDEX BY PLS_INTEGER;
 
   /*
-   * Documentaci�n para el RECORD 'Gr_ParametrosCreaCaract'.
+   * Documentación para el RECORD 'Gr_ParametrosCreaCaract'.
    *
-   * Record que permite almacenar los par�metros necesarios para el proceso de validaci�n de las
-   * caracter�sticas promocionales de un servicio.
+   * Record que permite almacenar los parámetros necesarios para el proceso de validación de las
+   * características promocionales de un servicio.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 17-09-2019
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 17-09-2019
    */
   TYPE Gr_ParametrosCreaCaract IS RECORD (
     ID_PLAN_PROMO  NUMBER,
@@ -624,9 +624,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   );
 
   /**
-   * Documentaci�n para el procedimiento 'P_VALIDA_CARACTERISTICAS_PROMO'.
+   * Documentación para el procedimiento 'P_VALIDA_CARACTERISTICAS_PROMO'.
    *
-   * Proceso encargado de validar y obtener las caracter�sticas promocionales de un servicio.
+   * Proceso encargado de validar y obtener las características promocionales de un servicio.
    *
    * Costo Query C_Caracteristica  : 17.
    * Costo Query C_ElementoCliente : 8.
@@ -634,63 +634,63 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
    * Costo Query C_CaractHuawei    : 77.
    * Costo Query C_AdmiProdCaract  : 10.
    *
-   * @Param Pr_ParametrosCreaCaract IN  RECORD   : Recibe un record con los par�metros necesarios para la b�squeda y validaci�n
-                                                   de las caracter�sticas promocionales de un servicio.
+   * @Param Pr_ParametrosCreaCaract IN  RECORD   : Recibe un record con los parámetros necesarios para la búsqueda y validación
+                                                   de las características promocionales de un servicio.
    * @Param Pv_Mensaje              OUT VARCHAR2 : Mensaje de error en caso de existir.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-09-2019
    */
   PROCEDURE P_VALIDA_CARACTERISTICAS_PROMO(Pr_ParametrosCreaCaract IN  Gr_ParametrosCreaCaract,
                                            Pv_Mensaje              OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_NOTIFICA_ERROR_PROCESO_PROMO'.
+   * Documentación para el procedimiento 'P_NOTIFICA_ERROR_PROCESO_PROMO'.
    *
    * Proceso encargado de enviar un reporte de los servicios que no pudieron se configurados por RDA.
    *
    * Costo Query C_CLientesPromocion: 20
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 01-10-2019
    */
   PROCEDURE P_NOTIFICA_ERROR_PROCESO_PROMO;
 
   /**
-   * Documentaci�n para el procedimiento 'P_PM_REACTIVACION_BW'.
+   * Documentación para el procedimiento 'P_PM_REACTIVACION_BW'.
    *
-   * Proceso encargado de procesar la informaci�n de promociones de servicios que ser�n reactivados masivamente.
+   * Proceso encargado de procesar la información de promociones de servicios que serán reactivados masivamente.
    *
    * Costo Query C_GetProcesosMasivosCab: 4
    * Costo Query C_GetProcesosMasivosDet: 4
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
+   * @author Jesús Bozada <jbozada@telconet.ec>
    * @version 1.0 10-10-2019
    */
   PROCEDURE P_PM_REACTIVACION_BW;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_UPDATE_PM_CABECERA'.
+   * Documentación para PROCEDURE 'P_UPDATE_PM_CABECERA'.
    *
-   * Procedimiento que actualiza un registro en la tabla de Info_Proceso_Masivo_Cab para procesamiento de reactivaci�n de servicio
+   * Procedimiento que actualiza un registro en la tabla de Info_Proceso_Masivo_Cab para procesamiento de reactivación de servicio
    *
    * PARAMETROS:
-   * @Param Pr_InfoProcesoMasivoCab   IN  INFO_PROCESO_MASIVO_CAB%ROWTYPE  Recibe un registro con la informaci�n para actualizar
-   * @Param Pv_MsjResultado           OUT  VARCHAR2                        Devuelve un mensaje del resultado de ejecuci�n
+   * @Param Pr_InfoProcesoMasivoCab   IN  INFO_PROCESO_MASIVO_CAB%ROWTYPE  Recibe un registro con la información para actualizar
+   * @Param Pv_MsjResultado           OUT  VARCHAR2                        Devuelve un mensaje del resultado de ejecución
    * 
-   * @author Jes�s Bozada <jbozada@telconet.ec>
+   * @author Jesús Bozada <jbozada@telconet.ec>
    * @version 1.0 10-10-2019
    */
    PROCEDURE P_UPDATE_PM_CABECERA(Pr_InfoProcesoMasivoCab IN  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE, 
                                   Pv_MsjResultado         OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_EJECUTAR_PROMOCIONES_BW'.
+   * Documentación para PROCEDURE 'P_EJECUTAR_PROMOCIONES_BW'.
    *
    * Procedimiento que ejecuta las promociones de ancho de banda al ws de rda middleware
    *
    * PARAMETROS:
-   * @Param Pv_Tipo IN VARCHAR2 - tipo de la ejecuci�n APLICAR o QUITAR
+   * @Param Pv_Tipo IN VARCHAR2 - tipo de la ejecución APLICAR o QUITAR
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.0 03-12-2021
@@ -698,14 +698,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
    PROCEDURE P_EJECUTAR_PROMOCIONES_BW(Pv_Tipo IN VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_PROCESAR_PROMOCIONES_BW'.
+   * Documentación para PROCEDURE 'P_PROCESAR_PROMOCIONES_BW'.
    *
    * Procedimiento que procesa las promociones de ancho de banda
    *
    * PARAMETROS:
    * @Param Pcl_JsonRespuesta   IN CLOB         - json de la respuesta recibida por rda middleware
-   * @Param Pv_Status           OUT VARCHAR2    - status de la operaci�n
-   * @Param Pv_Mensaje          OUT VARCHAR2    - mensaje de la operaci�n
+   * @Param Pv_Status           OUT VARCHAR2    - status de la operación
+   * @Param Pv_Mensaje          OUT VARCHAR2    - mensaje de la operación
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.0 03-12-2021
@@ -719,30 +719,30 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                        Pv_Mensaje        OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_NOTIFICA_PROMOCIONES_BW'.
+   * Documentación para PROCEDURE 'P_NOTIFICA_PROMOCIONES_BW'.
    *
    * Procedimiento que realice el reporte de errores de las promociones de ancho de banda
    *
    * PARAMETROS:
-   * @Param Pv_Tipo IN VARCHAR2 - tipo de la ejecuci�n APLICAR o QUITAR
+   * @Param Pv_Tipo IN VARCHAR2 - tipo de la ejecución APLICAR o QUITAR
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.0 03-12-2021
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
-   * @version 1.1 25-04-2022 - Se mejora el proceso para generar una sola vez el reporte por tipo de ejecuci�n.
+   * @version 1.1 25-04-2022 - Se mejora el proceso para generar una sola vez el reporte por tipo de ejecución.
    */
    PROCEDURE P_NOTIFICA_PROMOCIONES_BW(Pv_Tipo IN VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_PREPARE_FIN_PROMOCION_BW'.
+   * Documentación para PROCEDURE 'P_PREPARE_FIN_PROMOCION_BW'.
    *
    * Procedimiento que actualiza los procesos de las promociones para ser finalizados
    *
    * PARAMETROS:
-   * @Param Pn_IdPromocion IN  NUMBER      - Id de la promoci�n
-   * @Param Pv_Status      OUT VARCHAR2    - status de la operaci�n
-   * @Param Pv_Mensaje     OUT VARCHAR2    - mensaje de la operaci�n
+   * @Param Pn_IdPromocion IN  NUMBER      - Id de la promoción
+   * @Param Pv_Status      OUT VARCHAR2    - status de la operación
+   * @Param Pv_Mensaje     OUT VARCHAR2    - mensaje de la operación
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.0 10-12-2021
@@ -752,12 +752,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                         Pv_Mensaje     OUT VARCHAR2);
 
   /**
-   * Documentaci�n para FUNCTION 'F_CONTADOR_PROCESOS_PROMO_BW'.
-   * Funci�n que obtiene el total confirmado o no confirmado de los procesos de las promociones de ancho de banda.
+   * Documentación para FUNCTION 'F_CONTADOR_PROCESOS_PROMO_BW'.
+   * Función que obtiene el total confirmado o no confirmado de los procesos de las promociones de ancho de banda.
    *
    * PARAMETROS:
-   * @Param Fn_IdPromocion IN NUMBER     - Id de la promoci�n
-   * @Param Fv_Tipo        IN VARCHAR2   - tipo de la operaci�n
+   * @Param Fn_IdPromocion IN NUMBER     - Id de la promoción
+   * @Param Fv_Tipo        IN VARCHAR2   - tipo de la operación
    * @Param Fb_Confirmado  IN BOOLEAN    - verifica total de confirmados
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
@@ -769,11 +769,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
    RETURN NUMBER;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_PREPARE_OLT_PROMOCION_BW'.
+   * Documentación para PROCEDURE 'P_PREPARE_OLT_PROMOCION_BW'.
    * Procedimiento para generar los detalles de los procesos para los olt
    *
    * PARAMETROS:
-   * @Param Pn_IdPromocion IN  NUMBER - Id de la promoci�n
+   * @Param Pn_IdPromocion IN  NUMBER - Id de la promoción
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.0 19-12-2021
@@ -784,15 +784,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
    PROCEDURE P_PREPARE_OLT_PROMOCION_BW(Pn_IdPromocion IN NUMBER);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_VERIFICAR_PLAN_PROMO_BW'.
-   * Procedimiento que compara el plan con otros planes de otras promociones de ancho de banda en la misma sectorizaci�n.
+   * Documentación para PROCEDURE 'P_VERIFICAR_PLAN_PROMO_BW'.
+   * Procedimiento que compara el plan con otros planes de otras promociones de ancho de banda en la misma sectorización.
    *
    * PARAMETROS:
-   * @Param Pn_IdPromocion    IN NUMBER     - Id de la promoci�n
+   * @Param Pn_IdPromocion    IN NUMBER     - Id de la promoción
    * @Param Pv_FechaInicio    IN VARCHAR2   - fecha inicio
    * @Param Pv_Jurisdicciones IN VARCHAR2   - jurisdicciones
    * @Param Pn_IdPlan         IN NUMBER     - id del plan
-   * @Param Pv_Resultado      OUT VARCHAR2  - resultado de la operaci�n
+   * @Param Pv_Resultado      OUT VARCHAR2  - resultado de la operación
    *
    * @author Felix Caicedo <facaicedo@telconet.ec>
    * @version 1.0 11-02-2022
@@ -805,13 +805,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                       Pv_Resultado      OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_ENVIA_DETENER_PROMOCION_BW'.
+   * Documentación para PROCEDURE 'P_ENVIA_DETENER_PROMOCION_BW'.
    * Procedimiento que creara un job temporal que permitira detener las promociones seleccionadas.
    *
    * PARAMETROS:
-   * @Param Pn_IdPromocion IN NUMBER     - Id de la promoci�n
-   * @Param Pv_Status      OUT VARCHAR2  - resultado de la operaci�n
-   * @Param Pv_Mensaje     OUT VARCHAR2  - resultado de la operaci�n
+   * @Param Pn_IdPromocion IN NUMBER     - Id de la promoción
+   * @Param Pv_Status      OUT VARCHAR2  - resultado de la operación
+   * @Param Pv_Mensaje     OUT VARCHAR2  - resultado de la operación
    *
    * @author Daniel Reyes <djreyes@telconet.ec>
    * @version 1.0 30-03-2022
@@ -821,11 +821,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                           Pv_Mensaje     OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_HISTO_CLIENTE_PROMO_BW'.
+   * Documentación para PROCEDURE 'P_HISTO_CLIENTE_PROMO_BW'.
    * Procedimiento para ingresar los historiales de promociones de ancho de banda.
    *
    * PARAMETROS:
-   * @Param Pn_IdPromocion    IN NUMBER     - Id de la promoci�n
+   * @Param Pn_IdPromocion    IN NUMBER     - Id de la promoción
    * @Param Pv_Tipo           IN VARCHAR2   - tipo proceso
    * @Param Pv_ForHistorial   IN VARCHAR2   - formato historial del servicio
    * @Param Pv_HistoProceso   IN VARCHAR2   - historial de los registros de los detalles
@@ -843,7 +843,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                       Pv_Tecnologia    IN VARCHAR2 DEFAULT NULL);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_PROCESAR_REG_PROMO_BW'.
+   * Documentación para PROCEDURE 'P_PROCESAR_REG_PROMO_BW'.
    * Procedimiento para procesar las promociones de ancho de banda por tarea programada.
    *
    * PARAMETROS:
@@ -947,7 +947,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       Lr_InfoDetalleMapeoHisto.FE_CREACION             := SYSDATE;
       Lr_InfoDetalleMapeoHisto.USR_CREACION            := Lv_UsuarioCreacion;
       Lr_InfoDetalleMapeoHisto.IP_CREACION             := Lv_IpCreacion;
-      Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se actualiz� correctamente el mapeo de la Promoci�n: '
+      Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se actualizó correctamente el mapeo de la Promoción: '
                                                           ||Lc_DetalleMapeoPromo.TIPO_PROMOCION
                                                           ||', Grupo-Promocional: '||Lc_DetalleMapeoPromo.GRUPO_PROMOCION_ID
                                                           ||', Fecha-Mapeo: '||TO_CHAR(Lc_DetalleMapeoPromo.FE_MAPEO)
@@ -965,7 +965,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       La_PromocionExterna(1) := DB_EXTERNO.Gr_Promocion(NULL,
                                                         Lc_DetalleMapeoPromo.ID_DETALLE_MAPEO,
                                                         'Baja',
-                                                        'La promoci�n fu� dada de baja, ID_DETALLE_MAPEO: '
+                                                        'La promoción fué dada de baja, ID_DETALLE_MAPEO: '
                                                          ||Lc_DetalleMapeoPromo.ID_DETALLE_MAPEO,
                                                         'BAJA',
                                                         NULL);
@@ -1001,7 +1001,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       Lr_InfoDetalleMapeoHisto.FE_CREACION             := SYSDATE;
       Lr_InfoDetalleMapeoHisto.USR_CREACION            := Lv_UsuarioCreacion;
       Lr_InfoDetalleMapeoHisto.IP_CREACION             := Lv_IpCreacion;
-      Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se ingres� correctamente la informaci�n para RDA, tipo de proceso AplicaPromo, con Id_Detalle_Mapeo: '
+      Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se ingresó correctamente la información para RDA, tipo de proceso AplicaPromo, con Id_Detalle_Mapeo: '
                                                           ||Lc_DetalleMapeoPromo.ID_DETALLE_MAPEO;
       Lr_InfoDetalleMapeoHisto.ESTADO                  := 'Activo';
       --
@@ -1105,7 +1105,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       Lr_InfoDetalleMapeoHisto.FE_CREACION             := SYSDATE;
       Lr_InfoDetalleMapeoHisto.USR_CREACION            := Lv_UsuarioCreacion;
       Lr_InfoDetalleMapeoHisto.IP_CREACION             := Lv_IpCreacion;
-      Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se actualiz� correctamente el Detalle Mapeo Solicitud: '
+      Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se actualizó correctamente el Detalle Mapeo Solicitud: '
                                                           ||Lc_DetalleMapeoSolicitud.DETALLE_MAPEO_ID
                                                           ||', SERVICIO_ID-Cambio_plan: '||TO_CHAR(Lc_DetalleMapeoSolicitud.SERVICIO_ID)
                                                           ||', PLAN_ID-Cambio_plan: '||Pn_IdPlan
@@ -1235,7 +1235,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   EXCEPTION
   WHEN OTHERS THEN 
     --
-    Lv_MsjResultado := 'Ocurri� un error al verificar que el plan nuevo se encuentre en los Planes Promocionales para el Grupo de Promocional: PROM_BW';
+    Lv_MsjResultado := 'Ocurrió un error al verificar que el plan nuevo se encuentre en los Planes Promocionales para el Grupo de Promocional: PROM_BW';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_VALIDA_CUMPLE_PLAN', 
                                          SUBSTR(Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000) , 
@@ -1297,7 +1297,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_Obtiene_Punto_Promo;
     END IF;
     --
-    Lv_MsjResultado := 'Ocurri� un error al obtener informaci�n del punto del servicio: '
+    Lv_MsjResultado := 'Ocurrió un error al obtener información del punto del servicio: '
                         ||Pn_IdServicio ||', para el Grupo de Promocional: PROM_BW' ; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_OBTIENE_PUNTO_PROMO', 
@@ -1392,7 +1392,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   EXCEPTION
   WHEN OTHERS THEN
     --
-    Lv_MsjResultado := 'Ocurri� un error al obtener informaci�n del servicio: '
+    Lv_MsjResultado := 'Ocurrió un error al obtener información del servicio: '
                        ||Pn_IdServicio ||', para el Grupo de Promocional: PROM_BW';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_OBTIENE_SERV_PROCESAR_BW', 
@@ -1617,7 +1617,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE Prf_TiposPromociones;
     END IF;
     --
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso para obtener las promociones para el Grupo Promocional: '
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso para obtener las promociones para el Grupo Promocional: '
                        || Pv_TipoPromocion|| ', Tipo Proceso: '||Pv_TipoProceso;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_OBTIENE_PROMOCIONES_BW', 
@@ -1633,7 +1633,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE Prf_TiposPromociones;
     END IF;
     --
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso para obtener las promociones para el Grupo Promocional: '||
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso para obtener las promociones para el Grupo Promocional: '||
                         Pv_TipoPromocion || ', Tipo Proceso: '|| Pv_TipoProceso;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_OBTIENE_PROMOCIONES_BW', 
@@ -1735,7 +1735,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_TienePromoAplicada;
     END IF;
     --
-    Lv_MsjResultado := 'Ocurri� un error al ejecutar el proceso para obtener las promociones aplicadas para el Grupo de Promocional: '||
+    Lv_MsjResultado := 'Ocurrió un error al ejecutar el proceso para obtener las promociones aplicadas para el Grupo de Promocional: '||
                         Pv_TipoPromocion || ', Tipo Proceso: '|| Pv_TipoProceso;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_OBTIENE_PROMO_APLICADA', 
@@ -1826,7 +1826,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     --
   BEGIN
     --
-    --Obtiene informaci�n del punto a procesar
+    --Obtiene información del punto a procesar
     DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_OBTIENE_PUNTO_PROMO_PROCESAR(Pn_IdServicio,Lr_Punto_Promo);
     --
     IF Pv_TipoProceso = 'ACTIVACION' THEN
@@ -1850,7 +1850,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     Pv_EstadoProceso := 'OK';
     --
     IF NOT(Lrf_TiposPromociones%ISOPEN) THEN          
-      Lv_MsjResultado:= 'Ocurri� un error al obtener los Tipos Promocionales del Grupo Promoci�n: PROM_BW' ;
+      Lv_MsjResultado:= 'Ocurrió un error al obtener los Tipos Promocionales del Grupo Promoción: PROM_BW' ;
       RAISE Lex_ExceptionGeneral;
     END IF; 
     --
@@ -1864,7 +1864,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           --
           Lr_TiposPromociones:= La_TiposPromocionesProcesar(Ln_IndTpro);
 
-          --Limpiamos la Tabla de Sectores y Obtengo Sectorizaci�n como estructura de tabla por Tipo Promocional
+          --Limpiamos la Tabla de Sectores y Obtengo Sectorización como estructura de tabla por Tipo Promocional
           La_SectorizacionProcesar.DELETE();
           La_SectorizacionProcesar:= DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_PROMO_SECTORIZACION(Lr_TiposPromociones.ID_GRUPO_PROMOCION);
 
@@ -1872,11 +1872,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           Lr_TipoPromoRegla:= DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_PROMO_TIPO_REGLA(Lr_TiposPromociones.ID_TIPO_PROMOCION); 
 
           IF Lr_TipoPromoRegla.ID_TIPO_PROMOCION IS NULL THEN                    
-            Lv_MsjResultado:= 'Ocurri� un error al obtener las reglas del Tipo Promocional, ID_TIPO_PROMOCION: '||Lr_TiposPromociones.ID_TIPO_PROMOCION;
+            Lv_MsjResultado:= 'Ocurrió un error al obtener las reglas del Tipo Promocional, ID_TIPO_PROMOCION: '||Lr_TiposPromociones.ID_TIPO_PROMOCION;
             RAISE Lex_Exception;            
           END IF; 
 
-          --Obtengo los planes por Tipo de Promoci�n, en este caso: PROM_BW.
+          --Obtengo los planes por Tipo de Promoción, en este caso: PROM_BW.
           La_TipoPromoPlanProdProcesar:= DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_TIPO_PROMO_PLAN_PROD(Lr_TiposPromociones.ID_TIPO_PROMOCION); 
           --
           IF (Lr_TipoPromoRegla.CODIGO_TIPO_PROMOCION IN ('PROM_BW') AND La_TipoPromoPlanProdProcesar.COUNT = 0) THEN  
@@ -1888,14 +1888,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_OBTIENE_SERV_PROCESAR_BW(Pn_IdServicio,Lv_EstadoActivo, La_ServiciosProcesar);
           --
           IF La_ServiciosProcesar.COUNT = 0 THEN                    
-            Lv_MsjResultado:= 'Ocurri� un error al obtener los servicios a procesar en el punto cliente ID_PUNTO: '||Lr_Punto_Promo.ID_PUNTO;
+            Lv_MsjResultado:= 'Ocurrió un error al obtener los servicios a procesar en el punto cliente ID_PUNTO: '||Lr_Punto_Promo.ID_PUNTO;
             RAISE Lex_Exception;            
           END IF; 
           --
           La_ServiciosCumplePromo.DELETE(); 
           --
           IF Pv_TipoProceso = 'CAMBIO_PLAN' THEN
-            --Valida que el plan cumpla en la promoci�n.
+            --Valida que el plan cumpla en la promoción.
             DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_CUMPLE_PLAN(Pv_TipoPromocion,
                                                                   La_TipoPromoPlanProdProcesar,
                                                                   La_ServiciosProcesar,
@@ -1904,7 +1904,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                                   Lb_CumplePlanPromo,
                                                                   La_ServiciosCumplePromo);
           ELSE
-            --Validaci�n para confirmar que los servicios consultados existan en la Promoci�n.
+            --Validación para confirmar que los servicios consultados existan en la Promoción.
             DB_COMERCIAL.CMKG_PROMOCIONES.P_GET_SERV_PROMO_PLAN_PROD(La_ServiciosProcesar, 
                                                                      Lr_TipoPromoRegla.CODIGO_TIPO_PROMOCION,
                                                                      La_TipoPromoPlanProdProcesar, 
@@ -1930,7 +1930,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             Lr_GrupoPromoRegla                        := NULL;
             Lr_GrupoPromoRegla.ID_GRUPO_PROMOCION     := Lr_TiposPromociones.ID_GRUPO_PROMOCION;
 
-            --Validaci�n de reglas de la promoci�n.
+            --Validación de reglas de la promoción.
             --
             IF Pv_TipoProceso = 'CAMBIO_LINEA_PON' THEN
               Lb_CumpleReglaSectorizacion := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_SECTORIZACION_OLT(
@@ -1957,7 +1957,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
             IF Lb_CumpleReglaSectorizacion AND Lb_CumpleReglaFormaPago
                 AND Lb_CumpleReglaAntiguedad AND Lb_CumpleReglaUltimaMilla AND Lb_CumpleReglaTipoNegocio THEN               
-              --Funci�n que construye la Trama de la informaci�n del Cliente en base a las reglas Promocionales evaluadas.
+              --Función que construye la Trama de la información del Cliente en base a las reglas Promocionales evaluadas.
               Lv_Trama:=DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_TRAMA(Lr_Punto_Promo.ID_PUNTO,
                                                                   Lr_GrupoPromoRegla,
                                                                   Lr_TipoPromoRegla,
@@ -1996,7 +1996,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
               Lr_InfoDetalleMapeoPromo.EMPRESA_COD              := Pv_CodEmpresa;
               Lr_InfoDetalleMapeoPromo.ESTADO                   := Lv_EstadoActivo;
               --
-              --Bucle que recorre los per�odos para realizar el mapeo de la promoci�n.
+              --Bucle que recorre los períodos para realizar el mapeo de la promoción.
               FOR DescuentoPeriodo IN (SELECT REGEXP_SUBSTR (Lv_DescuentoPeriodo,'[^,]+',1, LEVEL) SPLIT FROM DUAL
               CONNECT BY REGEXP_SUBSTR (Lv_DescuentoPeriodo,'[^,]+',1, LEVEL) IS NOT NULL)
               LOOP
@@ -2078,7 +2078,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                   Lr_InfoServicioHistorial.IP_CREACION            := Lv_IpCreacion;
                   Lr_InfoServicioHistorial.ESTADO                 := La_ServiciosCumplePromo(Ln_IndxServMap).ESTADO;
                   Lr_InfoServicioHistorial.MOTIVO_ID              := NULL;
-                  Lr_InfoServicioHistorial.OBSERVACION            := 'Se registr� correctamente el mapeo de la Promoci�n: ' 
+                  Lr_InfoServicioHistorial.OBSERVACION            := 'Se registró correctamente el mapeo de la Promoción: ' 
                                                                      || Lr_TiposPromociones.NOMBRE_GRUPO
                                                                      || ' para el tipo promocional: '
                                                                      || Lr_TiposPromociones.CODIGO_TIPO_PROMOCION
@@ -2106,11 +2106,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                       --
                       IF Lv_EstadoPromocion = 'Procesamiento' OR Lv_EstadoPromocion = 'Activo' THEN
                           --verificar tecnologia
-                          Lv_MsjHistorialServicio := 'Se aplica la promoci�n de ancho de banda. '
+                          Lv_MsjHistorialServicio := 'Se aplica la promoción de ancho de banda. '
                                                   ||'<br>VIGENCIA: ' || Lv_FechaInicio || ' hasta ' || Lv_FechaFin
                                                   ||'<br>FRANJA HORARIA: ' || Lv_HoraInicio || ' a ' || Lv_HoraFin;
                           Lv_MsjHistorialServicio := Lv_MsjHistorialServicio || '<br>Nombre de plan contratado: <b>' || Lv_NombrePlan || '</b>';
-                          Lv_MsjHistorialServicio := Lv_MsjHistorialServicio || '<br>Line profile de la promoci�n: <b>' || Lv_LineProfilePromo || '</b>';
+                          Lv_MsjHistorialServicio := Lv_MsjHistorialServicio || '<br>Line profile de la promoción: <b>' || Lv_LineProfilePromo || '</b>';
                           --
                           Lr_InfoServicioHistorial                        := NULL;
                           Lr_InfoServicioHistorial.ID_SERVICIO_HISTORIAL  := DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL ;
@@ -2171,7 +2171,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           --
           ROLLBACK;
           --
-          Lv_MsjResultado:= 'Ocurri� un error al procesar las promociones del Proceso Valida y Mapea de Promociones para el Grupo de Promocional: '||
+          Lv_MsjResultado:= 'Ocurrió un error al procesar las promociones del Proceso Valida y Mapea de Promociones para el Grupo de Promocional: '||
                              Pv_TipoPromocion|| ', Tipo Proceso: '||Pv_TipoProceso ||', IdTipoPromocion:' || Lr_TiposPromociones.ID_TIPO_PROMOCION 
                              || ', Id Servcio:' || Pn_IdServicio;
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -2216,7 +2216,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     --  
   WHEN OTHERS THEN
     --
-    Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso Valida y Mapea de Promociones para el Grupo de Promocional: '||
+    Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso Valida y Mapea de Promociones para el Grupo de Promocional: '||
                       Pv_TipoPromocion || ' Tipo Proceso: ' || Pv_TipoProceso || ', Id Servcio:' || Pn_IdServicio;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_VALIDA_MAPEA_PROMOCIONES_BW', 
@@ -2294,10 +2294,10 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     Lv_EstadoProcesoMapeo := 'ERROR';
     Lv_ConfiguraBW        := 'NO';
     --
-    -- Se obtiene la informaci�n del punto a procesar.
+    -- Se obtiene la información del punto a procesar.
     DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_OBTIENE_PUNTO_PROMO_PROCESAR(Ln_IdServicio,Lr_Punto_Promo);
     --
-    --Se verifica si existe una promoci�n aplicada al servicio.
+    --Se verifica si existe una promoción aplicada al servicio.
     DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_OBTIENE_PROMO_APLICADA(Lv_TipoPromocion,
                                                               Pv_CodEmpresa,
                                                               Pv_TipoProceso,
@@ -2308,7 +2308,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                               Ln_IdTipoPromocion);
     IF(Lb_TienePromoAplicada) THEN
       --
-      --Se obtienen los planes de la Promoci�n
+      --Se obtienen los planes de la Promoción
       La_TipoPromoPlanProdProcesar := DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_TIPO_PROMO_PLAN_PROD(Ln_IdTipoPromocion); 
 
       IF La_TipoPromoPlanProdProcesar.COUNT = 0 THEN  
@@ -2320,12 +2320,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_OBTIENE_SERV_PROCESAR_BW(Ln_IdServicio,Lv_EstadoActivo, La_ServiciosProcesar);
 
       IF La_ServiciosProcesar.COUNT = 0 THEN                    
-        Lv_MsjResultado:= 'Ocurri� un error al obtener los servicios a procesar en el Punto Cliente ID_PUNTO: '||Lr_Punto_Promo.ID_PUNTO;
+        Lv_MsjResultado:= 'Ocurrió un error al obtener los servicios a procesar en el Punto Cliente ID_PUNTO: '||Lr_Punto_Promo.ID_PUNTO;
         RAISE Le_ExceptionProceso;            
       END IF; 
 
       IF Pv_TipoProceso = 'CAMBIO_PLAN' THEN
-        --Validaci�n para confirmar que el plan consultado exista en la Promoci�n.
+        --Validación para confirmar que el plan consultado exista en la Promoción.
         DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_CUMPLE_PLAN(Lv_TipoPromocion,
                                                               La_TipoPromoPlanProdProcesar,
                                                               La_ServiciosProcesar,
@@ -2341,7 +2341,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         END IF;
         --
       ELSE
-        --Validaci�n para confirmar que los servicios consultados existan en la Promoci�n.
+        --Validación para confirmar que los servicios consultados existan en la Promoción.
         La_ServiciosCumplePromo.DELETE(); 
         DB_COMERCIAL.CMKG_PROMOCIONES.P_GET_SERV_PROMO_PLAN_PROD(La_ServiciosProcesar, 
                                                                  Lv_TipoPromocion,
@@ -2362,7 +2362,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       END IF;
       --                                                           
       IF Lb_CumplePlanPromo THEN
-        --Validaci�n de reglas de la promoci�n.
+        --Validación de reglas de la promoción.
         --
         IF Pv_TipoProceso = 'CAMBIO_LINEA_PON' THEN
           Lb_CumpleReglaSectorizacion:= DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_SECTORIZACION_OLT(
@@ -2397,7 +2397,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           --
           IF Pv_TipoProceso = 'MIGRACION_EQUIPO' THEN
             --
-            --Proceso que da De Baja a registros de una promoci�n
+            --Proceso que da De Baja a registros de una promoción
             Lv_TipoProcesoBaja:='MIGRACION_EQUIPO_RDA';
             DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_BAJA_PROMO_BW(Ln_IdServicio,Pv_CodEmpresa,Lv_TipoPromocion,Lv_TipoProcesoBaja,Lv_MsjResultado);
             --
@@ -2418,7 +2418,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                                  Ln_IdServicio,
                                                                  Pv_CodEmpresa);
             --
-            --Actualiza Informaci�n necesaria cuando se realiza el proceso de Traslado.
+            --Actualiza Información necesaria cuando se realiza el proceso de Traslado.
             DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_UPDATE_PROCESO_TRASLADO(Ln_IdGrupoPromocion,  
                                                                        Ln_IdTipoPromocion,    
                                                                        Lv_TipoPromocion,      
@@ -2435,12 +2435,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             RAISE Le_ExceptionProceso;             
           END IF;
           --
-          --Lv_ConfiguraBW: Variable que retorna el proceso para indicar si realiza las configuraciones t�cnicas.
+          --Lv_ConfiguraBW: Variable que retorna el proceso para indicar si realiza las configuraciones técnicas.
           DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_PROMO_FINALIZADA(Ln_IdServicio,Lv_TipoPromocion,Pv_CodEmpresa,Lv_ConfiguraBW);
           --
         ELSE
           --
-          --Proceso que da De Baja a registros de una promoci�n
+          --Proceso que da De Baja a registros de una promoción
           IF Pv_TipoProceso = 'CAMBIO_PLAN' THEN
             Lv_TipoProcesoBaja:='BAJA_PROMO_CAMBIO_PLAN';
           ELSE
@@ -2463,7 +2463,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           END IF;
           --
           Lv_TeniaPromo:= 'SI';
-          --Proceso que realiza las validaciones necesarias para poder mapear una promoci�n.
+          --Proceso que realiza las validaciones necesarias para poder mapear una promoción.
           DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_MAPEA_PROMOCIONES_BW(Lv_TipoPromocion,
                                                                          Pv_CodEmpresa,
                                                                          Pv_TipoProceso,
@@ -2486,7 +2486,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           END IF;
           --
           IF Lv_ConfiguraBW = 'NO' THEN
-            --Verifica si tiene un registro de PierdePromo(Esquema Externo) del d�a y le da de Baja
+            --Verifica si tiene un registro de PierdePromo(Esquema Externo) del día y le da de Baja
             DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_PIERDE_PROMO_EXT(Ln_IdServicioOrigen,
                                                                        Lv_TipoPromocion,
                                                                        'INDIVIDUAL', 
@@ -2495,7 +2495,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
           END IF;
           --
-          --Elimina las caracter�sticas promocionales del servicio.
+          --Elimina las características promocionales del servicio.
           DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW(Ln_IdServicioOrigen, Lv_MsjResultado);
           --
           IF TRIM(Lv_MsjResultado) IS NOT NULL THEN
@@ -2513,7 +2513,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           Ln_IdServicioOrigen:= Pn_Valor;
         END IF;
         --
-        --Proceso que da De Baja a registros de una promoci�n
+        --Proceso que da De Baja a registros de una promoción
         IF Pv_TipoProceso = 'CAMBIO_PLAN' THEN
           Lv_TipoProcesoBaja:='BAJA_PROMO_CAMBIO_PLAN';
         ELSE
@@ -2526,7 +2526,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         END IF;
         --
         Lv_TeniaPromo:= 'SI';
-        --Proceso que realiza las validaciones necesarias para poder mapear una promoci�n.
+        --Proceso que realiza las validaciones necesarias para poder mapear una promoción.
         DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_MAPEA_PROMOCIONES_BW(Lv_TipoPromocion,
                                                                        Pv_CodEmpresa,
                                                                        Pv_TipoProceso,
@@ -2549,7 +2549,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         END IF;
         --
         IF Lv_ConfiguraBW = 'NO' THEN
-          --Verifica si tiene un registro de PierdePromo(Esquema Externo) del d�a y le da de Baja
+          --Verifica si tiene un registro de PierdePromo(Esquema Externo) del día y le da de Baja
           DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_PIERDE_PROMO_EXT(Ln_IdServicioOrigen,
                                                                      Lv_TipoPromocion,
                                                                      'INDIVIDUAL', 
@@ -2558,7 +2558,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           --
         END IF;
         --
-        --Elimina las caracter�sticas promocionales del servicio.
+        --Elimina las características promocionales del servicio.
         DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW(Ln_IdServicioOrigen, Lv_MsjResultado);
         --
         IF TRIM(Lv_MsjResultado) IS NOT NULL THEN
@@ -2573,7 +2573,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     ELSE
       --
       Lv_TeniaPromo:= 'NO';
-      --Proceso que realiza las validaciones necesarias para poder mapear una promoci�n.
+      --Proceso que realiza las validaciones necesarias para poder mapear una promoción.
       DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_VALIDA_MAPEA_PROMOCIONES_BW(Lv_TipoPromocion,
                                                                      Pv_CodEmpresa,
                                                                      Pv_TipoProceso,
@@ -2629,7 +2629,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   WHEN OTHERS THEN
     --
     ROLLBACK;
-    Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de Mapeo de Promociones para el Grupo de Promocional: '||
+    Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de Mapeo de Promociones para el Grupo de Promocional: '||
                       Lv_TipoPromocion||', Tipo Proceso: '||Pv_TipoProceso||', IdServicio: '||Pn_IdServicio||', Valor: '||Pn_Valor;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_PROCESO_MAPEO_PROMOCIONES_BW', 
@@ -2752,7 +2752,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         Lr_InfoDetalleMapeoHisto.FE_CREACION             := SYSDATE;
         Lr_InfoDetalleMapeoHisto.USR_CREACION            := Lv_UsuarioCreacion;
         Lr_InfoDetalleMapeoHisto.IP_CREACION             := Lv_IpCreacion;
-        Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'El servicio pierde promoci�n indefinidamente para el tipo : '||Pv_tipoPromo;
+        Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'El servicio pierde promoción indefinidamente para el tipo : '||Pv_tipoPromo;
         Lr_InfoDetalleMapeoHisto.ESTADO                  := 'Baja';
         --
         DB_COMERCIAL.CMKG_PROMOCIONES.P_UPDATE_DET_MAP_SOLIC(Lr_InfoDetMapSolicitud,Lv_msj);
@@ -2775,7 +2775,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             Lr_InfoProcesoPromoHist.ID_PROCESO_PROMO_HIST :=  DB_EXTERNO.SEQ_INFO_PROCESO_PROMO_HIST.NEXTVAL;
             Lr_InfoProcesoPromoHist.PROCESO_PROMO_ID      :=  Ln_IdProcesoPromo;
             Lr_InfoProcesoPromoHist.ESTADO                :=  'Baja';
-            Lr_InfoProcesoPromoHist.OBSERVACION           :=  'La promoci�n fu� dada de baja, ID_DETALLE_MAPEO: '
+            Lr_InfoProcesoPromoHist.OBSERVACION           :=  'La promoción fué dada de baja, ID_DETALLE_MAPEO: '
                                                               ||Lc_RegistrosMapeados.ID_DETALLE_MAPEO;
             Lr_InfoProcesoPromoHist.FE_CREACION           :=  SYSDATE;
             Lr_InfoProcesoPromoHist.USR_CREACION          :=  Lv_UsuarioCreacion;
@@ -2785,9 +2785,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             SELECT NOMBRE_PLAN INTO Lv_NombrePlan FROM DB_COMERCIAL.INFO_PLAN_CAB WHERE ID_PLAN = Lc_RegistrosMapeados.PLAN_ID;
             Lv_LineProfilePromo := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_GET_LINE_PROFILE_PROMO_BW(Lc_RegistrosMapeados.PLAN_ID_SUPERIOR);
             --
-            Ln_ObsServicio := 'Se anula promoci�n de ancho de banda en el punto del cliente por '|| lv_tipo_proceso ||'.';
+            Ln_ObsServicio := 'Se anula promoción de ancho de banda en el punto del cliente por '|| lv_tipo_proceso ||'.';
             Ln_ObsServicio := Ln_ObsServicio || '<br>Nombre de plan contratado: <b>' || Lv_NombrePlan || '</b>';
-            Ln_ObsServicio := Ln_ObsServicio || '<br>Line profile de la promoci�n: <b>' || Lv_LineProfilePromo || '</b>';
+            Ln_ObsServicio := Ln_ObsServicio || '<br>Line profile de la promoción: <b>' || Lv_LineProfilePromo || '</b>';
         END IF;
       END IF;
       --      
@@ -2797,7 +2797,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           La_PromocionExterna(1) := DB_EXTERNO.Gr_Promocion(NULL,
                                                             Lc_RegistrosMapeados.ID_DETALLE_MAPEO,
                                                             'Baja',
-                                                            'La promoci�n fu� dada de baja, ID_DETALLE_MAPEO: '
+                                                            'La promoción fué dada de baja, ID_DETALLE_MAPEO: '
                                                             ||Lc_RegistrosMapeados.ID_DETALLE_MAPEO,
                                                             'BAJA',
                                                             NULL);
@@ -2814,7 +2814,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       --
       IF Pv_TipoProceso = 'CAMBIO_PLAN_RDA' OR Pv_TipoProceso = 'MIGRACION_EQUIPO_RDA' THEN
         --
-        --Elimina las caracter�sticas promocionales del servicio.
+        --Elimina las características promocionales del servicio.
         DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW(Pn_IdServicio, Lv_msj);
         --
         IF TRIM(Lv_msj) IS NOT NULL THEN
@@ -2843,7 +2843,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         Lr_InfoDetalleMapeoHisto.FE_CREACION             := SYSDATE;
         Lr_InfoDetalleMapeoHisto.USR_CREACION            := Lv_UsuarioCreacion;
         Lr_InfoDetalleMapeoHisto.IP_CREACION             := Lv_IpCreacion;
-        Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se ingres� correctamente la informaci�n para RDA, tipo de proceso AplicaPromo, con Id_Detalle_Mapeo: '
+        Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se ingresó correctamente la información para RDA, tipo de proceso AplicaPromo, con Id_Detalle_Mapeo: '
                                                             ||Lc_RegistrosMapeados.ID_DETALLE_MAPEO;
         Lr_InfoDetalleMapeoHisto.ESTADO                  := 'Activo';
         --
@@ -2859,7 +2859,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     --
 
     IF Pv_TipoProceso = 'BAJA_PROMO' THEN
-      Ln_ObsBajaPromo:= 'El servicio pierde promoci�n indefinidamente para el tipo : ';          
+      Ln_ObsBajaPromo:= 'El servicio pierde promoción indefinidamente para el tipo : ';          
     END IF;
 
     IF Pv_TipoProceso = 'CAMBIO_PLAN_RDA' OR Pv_TipoProceso = 'MIGRACION_EQUIPO_RDA' THEN
@@ -2898,7 +2898,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   EXCEPTION
   WHEN Le_Exception THEN
   --
-    Lv_msj     := 'Ocurri� un error al actualizar la informaci�n para el servico : ' || Pn_IdServicio || ' - ' || Lv_msj;
+    Lv_msj     := 'Ocurrió un error al actualizar la información para el servico : ' || Pn_IdServicio || ' - ' || Lv_msj;
     Pv_Mensaje := Lv_msj;
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
@@ -2909,7 +2909,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                          Lv_IpCreacion); 
   WHEN OTHERS THEN
   --
-    Lv_msj     := 'Ocurri� un error al actualizar la informaci�n para el servico : ' || Pn_IdServicio;
+    Lv_msj     := 'Ocurrió un error al actualizar la información para el servico : ' || Pn_IdServicio;
     Pv_Mensaje := Lv_msj;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES_BW.P_BAJA_PROMO_BW', 
@@ -3149,7 +3149,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             END IF;
             --  
             IF Lb_EliminaCaract THEN
-              --Elimina las caracter�sticas promocionales del servicio.
+              --Elimina las características promocionales del servicio.
               DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW(La_ClientesProcesar(Ln_Indx).ID_SERVICIO, Lv_msj);
               --
               IF TRIM(Lv_msj) IS NOT NULL THEN
@@ -3166,8 +3166,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         WHEN Le_Exception THEN
           --
           ROLLBACK;
-          Lv_msj := 'Ocurri� un error al evaluar el servcio: ' || La_ClientesProcesar(Ln_Indx).ID_SERVICIO 
-                    || ' para el script de perdida de promoci�n.'|| 'Error: '||Lv_msj; 
+          Lv_msj := 'Ocurrió un error al evaluar el servcio: ' || La_ClientesProcesar(Ln_Indx).ID_SERVICIO 
+                    || ' para el script de perdida de promoción.'|| 'Error: '||Lv_msj; 
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                                'CMKG_PROMOCIONES.P_PIERDE_PROMO_BW', 
                                                SUBSTR(Lv_msj,0,4000),
@@ -3178,8 +3178,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         WHEN OTHERS THEN
           --
           ROLLBACK;
-          Lv_msj := 'Ocurri� un error al evaluar el servcio: ' || La_ClientesProcesar(Ln_Indx).ID_SERVICIO 
-                    || ' para el script de perdida de promoci�n.'; 
+          Lv_msj := 'Ocurrió un error al evaluar el servcio: ' || La_ClientesProcesar(Ln_Indx).ID_SERVICIO 
+                    || ' para el script de perdida de promoción.'; 
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                                'CMKG_PROMOCIONES.P_PIERDE_PROMO_BW', 
                                                SUBSTR(Lv_msj || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -3196,7 +3196,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   EXCEPTION
   WHEN OTHERS THEN
     ROLLBACK;
-    Lv_msj := 'Ocurri� un error al ejecutar el script de perdida de promociones.'; 
+    Lv_msj := 'Ocurrió un error al ejecutar el script de perdida de promociones.'; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES.P_PIERDE_PROMO_BW', 
                                          Lv_msj || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -3305,7 +3305,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al obtener el n�mero de ip fijas para el ID_PUNTO: ' || Fn_IdPunto; 
+    Lv_MsjResultado := 'Ocurrió un error al obtener el número de ip fijas para el ID_PUNTO: ' || Fn_IdPunto; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                          'CMKG_PROMOCIONES.F_NUMERO_IPS_FIJAS', 
                                          SUBSTR(Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -3380,8 +3380,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_ObtieneSiguienteMapeo;
     END IF;
     --
-    Lv_MsjResultado := 'Ocurri� un error al obtener informaci�n del Siguiente Mapeo para el Grupo de Promocional: PROM_BW'
-                       ||', Id Grupo Pormoci�n: '|| Pn_IdGrupoPromocion||', Id Servicio: ' || Pn_IdServicio; 
+    Lv_MsjResultado := 'Ocurrió un error al obtener información del Siguiente Mapeo para el Grupo de Promocional: PROM_BW'
+                       ||', Id Grupo Pormoción: '|| Pn_IdGrupoPromocion||', Id Servicio: ' || Pn_IdServicio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_OBTIENE_SIGUIENTE_MAPEO', 
                                          SUBSTR(Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), 
@@ -3460,7 +3460,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           La_PromocionExterna(1) := DB_EXTERNO.Gr_Promocion(La_RegPromoExtProcesar(Ln_Indx).ID_PROCESO_PROMO,
                                                             NULL,
                                                             'Baja',
-                                                            'La promoci�n fu� dada de baja, ID_PROCESO_PROMO: '
+                                                            'La promoción fué dada de baja, ID_PROCESO_PROMO: '
                                                              ||La_RegPromoExtProcesar(Ln_Indx).ID_PROCESO_PROMO,
                                                             'BAJA',
                                                             NULL);
@@ -3506,7 +3506,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     --
   WHEN OTHERS THEN
     --
-    Lv_MsjResultado := 'Ocurri� un error al verificar si existe un registro de Pierde Promo para RDA, del tipo promocional: PROM_BW' ; 
+    Lv_MsjResultado := 'Ocurrió un error al verificar si existe un registro de Pierde Promo para RDA, del tipo promocional: PROM_BW' ; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_VALIDA_PIERDE_PROMO_EXT', 
                                          SUBSTR(Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000), 
@@ -3587,7 +3587,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_ObtienePromoFinalizada;
     END IF;
     --
-    Lv_MsjResultado := 'Ocurri� un error al verificar si existe una promoci�n finalizada del servicio: '|| Pn_IdServicio 
+    Lv_MsjResultado := 'Ocurrió un error al verificar si existe una promoción finalizada del servicio: '|| Pn_IdServicio 
                        || 'del tipo promocional: PROM_BW' ; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_PROMOCIONES_BW.P_VALIDA_PIERDE_PROMO_EXT', 
@@ -3751,7 +3751,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_ObtenerRegistrosMaximo;
     END IF;
 
-    --Query encargado de obtener los posibles clientes que aplican a una promoci�n vigente.
+    --Query encargado de obtener los posibles clientes que aplican a una promoción vigente.
     Lv_QuerySelect :=
         'SELECT IPEROL.ID_PERSONA_ROL, '||
                'IPUNTO.ID_PUNTO, '      ||
@@ -4023,7 +4023,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       Lcl_QueryCLientes := Lcl_QueryCLientes || ' AND ROWNUM <= ' || Ln_RegistroMaximo;
     END IF;
 
-    --Loop para obtener los posibles clientes que aplican a una promoci�n.
+    --Loop para obtener los posibles clientes que aplican a una promoción.
     OPEN Lrf_ClientesPromo FOR Lcl_QueryCLientes;
 
       LOOP
@@ -4042,7 +4042,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           --se encontraron registros
           Pv_Mensaje := 'OK';
 
-          --Variable que identifica cuando un servicio aplic� a una promoci�n.
+          --Variable que identifica cuando un servicio aplicó a una promoción.
           Lb_CumplePromocion := FALSE;
 
           --Loop para obtener todas las promociones vigentes de acuerdo al plan del servicio del cliente.
@@ -4064,38 +4064,38 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                   Ln_IndxPromociones := Ltl_Promociones.NEXT(Ln_IndxPromociones);
 
                   IF Pn_IdPromocion IS NULL THEN
-                    --Record para validar la sectorizaci�n del punto cliente.
+                    --Record para validar la sectorización del punto cliente.
                     Lr_ParametrosValidarSec                    := NULL;
                     Lr_ParametrosValidarSec.ID_GRUPO_PROMOCION := Lc_Promociones.ID_GRUPO_PROMOCION;
                     Lr_ParametrosValidarSec.ID_SERVICIO        := Lr_ClientesPromo.ID_SERVICIO;
                     Lr_ParametrosValidarSec.TIPO_EVALUACION    := Lv_TipoEvaluacion;
                     Lr_ParametrosValidarSec.TIPO_PROMOCION     := Lv_TipoPromocion;--ANCHO DE BANDA
                     Lr_ParametrosValidarSec.EMPRESA_COD        := Lv_CodEmpresa;
-                    --Validaci�n para identificar si el servicio cumple con la regla de sectorizaci�n.
+                    --Validación para identificar si el servicio cumple con la regla de sectorización.
                     Lb_ReglaSector := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_SECTORIZACION(Lr_ParametrosValidarSec);
 
                     CONTINUE WHEN NOT Lb_ReglaSector OR Lb_ReglaSector IS NULL;
 
-                    --Validaci�n para identificar si el servicio cumple con la regla de forma de pago.
+                    --Validación para identificar si el servicio cumple con la regla de forma de pago.
                     Lb_ReglaFormaPago  := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_FORMA_PAGO(Lc_Promociones.ID_GRUPO_PROMOCION,
                                                                                                  Lr_ClientesPromo.ID_PUNTO);
 
                     CONTINUE WHEN NOT Lb_ReglaFormaPago OR Lb_ReglaFormaPago IS NULL;
 
-                    --Validaci�n para identificar si el servicio cumple con la regla de ultima milla.
+                    --Validación para identificar si el servicio cumple con la regla de ultima milla.
                     Lb_ReglaUltimaMilla := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_ULTIMA_MILLA(Lc_Promociones.ID_GRUPO_PROMOCION,
                                                                                                     Lr_ClientesPromo.ID_SERVICIO);
 
                     CONTINUE WHEN NOT Lb_ReglaUltimaMilla OR Lb_ReglaUltimaMilla IS NULL;
 
-                    --Validaci�n para identificar si el servicio cumple con la regla de tipo de negocio.
+                    --Validación para identificar si el servicio cumple con la regla de tipo de negocio.
                     Lb_ReglaTipoNegocio := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_TIPO_NEGOCIO(Fn_IntIdPromocion => Lc_Promociones.ID_GRUPO_PROMOCION,
                                                                                                     Fn_IdServicio     => Lr_ClientesPromo.ID_SERVICIO,
                                                                                                     Fv_CodEmpresa     => Lv_CodEmpresa);
 
                     CONTINUE WHEN NOT Lb_ReglaTipoNegocio OR Lb_ReglaTipoNegocio IS NULL;
 
-                    --Validaci�n para identificar si el servicio cumple con la regla de antiguedad.
+                    --Validación para identificar si el servicio cumple con la regla de antiguedad.
                     Lb_ReglaAntiguedad  := DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_VALIDA_ANTIGUEDAD(Lc_Promociones.ID_GRUPO_PROMOCION,
                                                                                                   Lr_ClientesPromo.ID_PUNTO);
 
@@ -4129,7 +4129,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
                   Lv_Trama := '{}';
                   IF Pn_IdPromocion IS NULL THEN
-                    --Llamada a la funci�n que construye la trama de la informaci�n del
+                    --Llamada a la función que construye la trama de la información del
                     --cliente, en base a las reglas promocionales evaluadas.
                     Lv_Trama := DB_COMERCIAL.CMKG_PROMOCIONES.F_GET_TRAMA(Fn_IdPunto               => Lr_ClientesPromo.ID_PUNTO,
                                                                           Fr_GrupoPromoRegla       => Lr_GrupoPromoRegla,
@@ -4138,7 +4138,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                                           Fa_SectorizacionProcesar => La_SectoresProcesar,
                                                                           Pv_CodEmpresa            => Lv_CodEmpresa);
 
-                    --Llamada al m�todo encargado de eliminar y crear las caracter�sticas promocionales.
+                    --Llamada al método encargado de eliminar y crear las características promocionales.
                     Lr_ParametrosCreaCaract               := NULL;
                     Lr_ParametrosCreaCaract.ID_PLAN_PROMO := Lc_Promociones.PLAN_ID_SUPERIOR;
                     Lr_ParametrosCreaCaract.ID_SERVICIO   := Lr_ClientesPromo.ID_SERVICIO;
@@ -4173,7 +4173,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                   Lr_InfoDetMapeoPromo.IP_CREACION            := Lv_IpCreacion;
 
                   Lv_FechaMapeoTotal := NULL;
-                  --Loop que recorre los per�odos para realizar el mapeo de la promoci�n.
+                  --Loop que recorre los períodos para realizar el mapeo de la promoción.
                   FOR DescuentoPeriodo IN C_ListaPeriodos(Lr_TipoPromoRegla.PROM_PERIODO) LOOP
 
                     Lv_Periodo         := TO_NUMBER(regexp_substr(DescuentoPeriodo.SPLIT,'[^|]+', 1, 1));
@@ -4200,7 +4200,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                       RAISE Le_MyException;
                     END IF;
 
-                    --Insertamos el proceso de la promoci�n en la 'INFO_PROCESO_PROMO' de 'DB_EXTERNO'.
+                    --Insertamos el proceso de la promoción en la 'INFO_PROCESO_PROMO' de 'DB_EXTERNO'.
                     Lr_ProcesoPromo                  :=  NULL;
                     Lr_ProcesoPromo.TIPO_PROCESO     := 'AplicaPromo';
                     Lr_ProcesoPromo.EMPRESA_COD      :=  Lv_CodEmpresa;
@@ -4220,7 +4220,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
                   END LOOP;
 
-                  Lv_MensajeHistorial := 'Se registr� correctamente el mapeo de la Promoci�n: '
+                  Lv_MensajeHistorial := 'Se registró correctamente el mapeo de la Promoción: '
                           ||Lc_Promociones.NOMBRE_GRUPO||' para el tipo promocional: '
                           ||Lc_Promociones.CODIGO_TIPO_PROMOCION||', Fecha-Mapeo: '||Lv_FechaMapeoTotal;
 
@@ -4243,7 +4243,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                     RAISE Le_MyException;
                   END IF;
 
-                  --A este punto, el servicio ya cuenta con una promoci�n.
+                  --A este punto, el servicio ya cuenta con una promoción.
                   COMMIT;
                   Lb_CumplePromocion := TRUE;
 
@@ -4275,7 +4275,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
   EXCEPTION
     WHEN OTHERS THEN
       ROLLBACK;
-      Pv_Mensaje := 'Error al ejecutar el proceso masivo de aplica promoci�n de BW';
+      Pv_Mensaje := 'Error al ejecutar el proceso masivo de aplica promoción de BW';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CMKG_PROMOCIONES_BW',
                                            'P_PROCESO_MASIVO_BW',
                                             SQLCODE||' - ERROR_STACK:'||
@@ -4346,11 +4346,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
     --Verificamos si el cursor retorno datos.
     IF Lb_TieneDatos THEN
-      Lv_Mensaje := 'M�todo: P_PREPARA_DATA_PROCESO_PROMO, Mensaje: La consulta no retorno datos';
+      Lv_Mensaje := 'Método: P_PREPARA_DATA_PROCESO_PROMO, Mensaje: La consulta no retorno datos';
       RAISE Le_MyException;
     END IF;
 
-    --Validaci�n para obtener el n�mero de ips fijas.
+    --Validación para obtener el número de ips fijas.
     IF Lc_DatosServicio.MARCA_ELEMENTO = 'TELLION' THEN --TELLION
 
       Lv_Perfil  := DB_COMERCIAL.TECNK_SERVICIOS.GET_VALOR_SERVICIO_PROD_CARACT(Lc_DatosServicio.ID_SERVICIO,'PERFIL');
@@ -4452,7 +4452,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     Lr_InfoProcesoPromo.USR_CREACION     :=  Pr_ProcesoPromo.USR_CREACION;
     Lr_InfoProcesoPromo.IP_CREACION      :=  Pr_ProcesoPromo.IP_CREACION;
 
-    --Llamada al procedimiento encargado de registrar el proceso de la promoci�n.
+    --Llamada al procedimiento encargado de registrar el proceso de la promoción.
     DB_EXTERNO.EXKG_MD_TRANSACTIONS.P_INSERT_PROCESO_PROMO(Lr_InfoProcesoPromo,Lv_Mensaje);
 
     IF Lv_Mensaje IS NOT NULL THEN
@@ -4468,12 +4468,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     Lr_InfoProcesoPromoHist.ID_PROCESO_PROMO_HIST :=  DB_EXTERNO.SEQ_INFO_PROCESO_PROMO_HIST.NEXTVAL;
     Lr_InfoProcesoPromoHist.PROCESO_PROMO_ID      :=  Lr_InfoProcesoPromo.ID_PROCESO_PROMO;
     Lr_InfoProcesoPromoHist.ESTADO                :=  Lr_InfoProcesoPromo.ESTADO;
-    Lr_InfoProcesoPromoHist.OBSERVACION           := 'Creaci�n del proceso de promoci�n';
+    Lr_InfoProcesoPromoHist.OBSERVACION           := 'Creación del proceso de promoción';
     Lr_InfoProcesoPromoHist.FE_CREACION           :=  SYSDATE;
     Lr_InfoProcesoPromoHist.USR_CREACION          :=  Lr_InfoProcesoPromo.USR_CREACION;
     Lr_InfoProcesoPromoHist.IP_CREACION           :=  Lr_InfoProcesoPromo.IP_CREACION;
 
-    --Llamada al procedimiento encargado de registrar el historial del proceso de la promoci�n.
+    --Llamada al procedimiento encargado de registrar el historial del proceso de la promoción.
     DB_EXTERNO.EXKG_MD_TRANSACTIONS.P_INSERT_PROCESO_PROMO_HIST(Lr_InfoProcesoPromoHist,Lv_Mensaje);
 
     IF Lv_Mensaje IS NOT NULL THEN
@@ -4488,7 +4488,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     WHEN Le_MyException THEN
       Pv_Mensaje := Lv_Mensaje;
     WHEN OTHERS THEN
-      Pv_Mensaje := 'M�todo: P_PREPARA_DATA_PROCESO_PROMO, Error: '||SUBSTR(SQLERRM,0,2000);
+      Pv_Mensaje := 'Método: P_PREPARA_DATA_PROCESO_PROMO, Error: '||SUBSTR(SQLERRM,0,2000);
 
   END P_PREPARA_DATA_PROCESO_PROMO;
 ----
@@ -4523,7 +4523,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_InforProcesoPromo;
     END IF;
 
-    --Record del proceso de promoci�n.
+    --Record del proceso de promoción.
     APEX_JSON.PARSE(Pcl_Json);
 
     Lv_Usuario := NVL(SUBSTR(TRIM(APEX_JSON.GET_VARCHAR2('strUsrCreacion')),0,20),'telcos_promo_bw');
@@ -4538,7 +4538,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     Lr_InfoProcesoPromo.USR_MODIFICACION     := Lv_Usuario;
     Lr_InfoProcesoPromo.IP_MODIFICACION      := Lv_Ip;
 
-    --Record del historial del proceso de promoci�n.
+    --Record del historial del proceso de promoción.
     Lr_InfoProcesoPromoHist              := NULL;
     Lr_InfoProcesoPromoHist.OBSERVACION  := APEX_JSON.GET_VARCHAR2('strObservacion');
     Lr_InfoProcesoPromoHist.USR_CREACION := Lr_InfoProcesoPromo.USR_MODIFICACION;
@@ -4554,7 +4554,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
         Lr_InfoProcesoPromo.ID_PROCESO_PROMO := InfoProcesoPromo.ID_PROCESO_PROMO;
 
-        --Actualizamos la promoci�n
+        --Actualizamos la promoción
         DB_EXTERNO.EXKG_MD_TRANSACTIONS.P_UPDATE_PROMOCION(Lr_InfoProcesoPromo,Lv_Mensaje);
 
         IF Lv_Mensaje IS NOT NULL THEN
@@ -4562,7 +4562,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             RAISE Le_MyException;
         END IF;
 
-        --Se arma el record para insertar el historial de la actualizaci�n de la promoci�n.
+        --Se arma el record para insertar el historial de la actualización de la promoción.
         Lr_InfoProcesoPromoHist.ID_PROCESO_PROMO_HIST := DB_EXTERNO.SEQ_INFO_PROCESO_PROMO_HIST.NEXTVAL;
         Lr_InfoProcesoPromoHist.PROCESO_PROMO_ID      := InfoProcesoPromo.ID_PROCESO_PROMO;
         Lr_InfoProcesoPromoHist.ESTADO                := InfoProcesoPromo.ESTADO;
@@ -4589,7 +4589,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
   EXCEPTION
     WHEN OTHERS THEN
-      Pv_Mensaje := 'M�todo: P_UPDATE_RDA_PROMOCION, Error: '||SUBSTR(SQLERRM,0,2000);
+      Pv_Mensaje := 'Método: P_UPDATE_RDA_PROMOCION, Error: '||SUBSTR(SQLERRM,0,2000);
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('CMKG_PROMOCIONES_BW',
                                            'P_UPDATE_RDA_PROMOCION',
@@ -4638,7 +4638,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           AND UPPER(A3_.NOMBRE_TECNICO)       = UPPER(Cv_NombreTecnico)
           AND UPPER(a5_.DESCRIPCION_CARACTERISTICA) = UPPER(Cv_DescripcionCaract);
 
-    --Cursor para obtener informaci�n necesaria del elemento
+    --Cursor para obtener información necesaria del elemento
     CURSOR C_ElementoCliente(Cn_IdServicio NUMBER) IS
         SELECT IEL.ID_ELEMENTO             AS ID_OLT,
                AMOE.NOMBRE_MODELO_ELEMENTO AS NOMBRE_MODELO_ELEMENTO,
@@ -4652,7 +4652,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           AND AMOE.MARCA_ELEMENTO_ID = AMAE.ID_MARCA_ELEMENTO
           AND IST.SERVICIO_ID        = Cn_IdServicio;
 
-    --Cursor para obtener la caracter�stica de Ultra Velocidad
+    --Cursor para obtener la característica de Ultra Velocidad
     CURSOR C_PlanCaracUltraV(Cn_IdPlan         NUMBER,
                              Cv_Caracteristica VARCHAR2,  --'ULTRA VELOCIDAD'
                              Cv_Estado         VARCHAR2)  --'Activo'
@@ -4666,7 +4666,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           AND CA.ESTADO                     = Cv_Estado
           AND IPC.ESTADO                    = Cv_Estado;
 
-    --Cursor para obtener las caracter�sticas de HUAWEI
+    --Cursor para obtener las características de HUAWEI
     CURSOR C_CaractHuawei(Cv_NombreTecnico      VARCHAR2,   --'INTERNET'
                           Cv_CodEmpresa         VARCHAR2,
                           Cv_CaractTrafficTable VARCHAR2,   --'TRAFFIC-TABLE'
@@ -4787,7 +4787,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             ) BBB
         WHERE AAA.DESCRIPCION_CARACTERISTICA = BBB.DETALLE_NOMBRE;
 
-    --Cursor que obtiene el producto caracter�stica.
+    --Cursor que obtiene el producto característica.
     CURSOR C_AdmiProdCaract(Cv_NombreTecnico  VARCHAR2,
                             Cv_CodEmpresa     VARCHAR2,
                             Cv_Caracteristica VARCHAR2,
@@ -4848,7 +4848,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_AdmiProdCaract;
     END IF;
 
-    --Obtenemos la informaci�n necesaria del servicio.
+    --Obtenemos la información necesaria del servicio.
     OPEN C_ElementoCliente(Pr_ParametrosCreaCaract.ID_SERVICIO);
       FETCH C_ElementoCliente INTO Lc_ElementoCliente;
         Lb_TieneDatos := C_ElementoCliente%NOTFOUND;
@@ -4894,7 +4894,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
     Ltl_Caracteristicas.DELETE();
 
-    --Validaci�n
+    --Validación
     IF Lc_ElementoCliente.NOMBRE_MARCA_ELEMENTO = 'TELLION' THEN --TELLION
 
       Lv_PerfilPromo := substr(Lv_PerfilEqui,-(LENGTH(Lv_PerfilEqui)),(INSTR(Lv_PerfilEqui,'_',-1))-1);
@@ -4937,7 +4937,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         Lv_PlanCaracUltraV := 'NO';
       END IF;
 
-      --Obtenemos las caracter�sticas.
+      --Obtenemos las características.
       FOR HUAWEI IN C_CaractHuawei('INTERNET',Pr_ParametrosCreaCaract.COD_EMPRESA,
                                    'TRAFFIC-TABLE','GEM-PORT','LINE-PROFILE-NAME',
                                     Lc_ElementoCliente.ID_OLT,Lv_PerfilEqui,
@@ -4956,7 +4956,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       END LOOP;
 
       IF Lv_ValorTrafficTable IS NULL OR Lv_ValorGemPort IS NULL OR Lv_LineProfileName IS NULL THEN
-        Lv_Mensaje := 'No se pudo obtener las caracter�sticas promocionales del plan.';
+        Lv_Mensaje := 'No se pudo obtener las características promocionales del plan.';
         RAISE Le_MyException;
       END IF;
 
@@ -4972,14 +4972,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       RAISE Le_MyException;
     END IF;
 
-    --Eliminaci�n de las caracter�sticas promocionales.
+    --Eliminación de las características promocionales.
     DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.P_ELIMINA_CARACT_PROMO_BW(Pr_ParametrosCreaCaract.ID_SERVICIO,Lv_Mensaje);
 
     IF Lv_Mensaje IS NOT NULL THEN
       RAISE Le_MyException;
     END IF;
 
-    --Creaci�n de las caracter�sticas promocionales.
+    --Creación de las características promocionales.
     Ln_Index := Ltl_Caracteristicas.FIRST;
     WHILE (Ln_Index IS NOT NULL) LOOP
 
@@ -4992,7 +4992,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_AdmiProdCaract;
 
       IF Lb_TieneDatos THEN
-        Lv_Mensaje := 'La caracter�stica: '||Lr_Caracteristica.CARACTERISTICA||' no se encuentra configurada.';
+        Lv_Mensaje := 'La característica: '||Lr_Caracteristica.CARACTERISTICA||' no se encuentra configurada.';
         RAISE Le_MyException;
       END IF;
 
@@ -5015,9 +5015,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
 
   EXCEPTION
     WHEN Le_MyException THEN
-      Pv_Mensaje := 'M�todo: P_VALIDA_CARACTERISTICAS_PROMO, Error: '||Lv_Mensaje;
+      Pv_Mensaje := 'Método: P_VALIDA_CARACTERISTICAS_PROMO, Error: '||Lv_Mensaje;
     WHEN OTHERS THEN
-      Pv_Mensaje := 'M�todo: P_VALIDA_CARACTERISTICAS_PROMO, Error: '||SUBSTR(SQLERRM,0,2000);
+      Pv_Mensaje := 'Método: P_VALIDA_CARACTERISTICAS_PROMO, Error: '||SUBSTR(SQLERRM,0,2000);
 
   END P_VALIDA_CARACTERISTICAS_PROMO;
 ----
@@ -5136,7 +5136,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       --Cierre del Archivo.
       UTL_FILE.FCLOSE(Lf_Archivo);
 
-      --Ejecuci�n del comando para crear el archivo comprimido.
+      --Ejecución del comando para crear el archivo comprimido.
       DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND(Lv_ComandoReporte||' '||Lv_RutaDirectorio||Lv_NombreArchivo));
 
       --Envio del archivo por correo
@@ -5147,7 +5147,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                 Lv_NombreDirectorio,
                                                 Lv_NombreArchivo||Lv_Extension);
 
-      --Eliminaci�n del archivo.
+      --Eliminación del archivo.
       BEGIN
         UTL_FILE.FREMOVE(Lv_NombreDirectorio,Lv_NombreArchivo||Lv_Extension);
       EXCEPTION
@@ -5243,14 +5243,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
     LOOP
 
       BEGIN
-        --Recuperar informaci�n de detalle de procesos masivos
+        --Recuperar información de detalle de procesos masivos
         FOR R_GetProcesoMasivoDet IN C_GetProcesosMasivosDet(R_GetProcesoMasivoCab.ID_PROCESO_MASIVO_CAB,
                                                              Lv_EstadoProcesoMasivoDet)
         LOOP
 
           BEGIN
 
-            --Recuperar informaci�n del servicio de internet del proceso masivo
+            --Recuperar información del servicio de internet del proceso masivo
             Lv_IdServicioInternet := DB_COMERCIAL.GET_ID_SERVICIO_PREF(R_GetProcesoMasivoDet.PUNTO_ID);
 
             --Ejecutar proceso de promociones BW
@@ -5352,7 +5352,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                     APEX_JSON.WRITE('intIdServicio' ,   Lv_IdServicioInternet);
                     APEX_JSON.WRITE('strUsrCreacion',   Lv_UsuarioCreacion);
                     APEX_JSON.WRITE('strTipoProceso',  'AplicaPromo');
-                    APEX_JSON.WRITE('strObservacion',  'Actualizaci�n de campos promocionales');
+                    APEX_JSON.WRITE('strObservacion',  'Actualización de campos promocionales');
                     APEX_JSON.WRITE('strTrafficPromo',  Lv_TrafficPromo);
                     APEX_JSON.WRITE('strGemPortPromo',  Lv_GemportPromo);
                     APEX_JSON.WRITE('strTipoPromocion', Lv_TipoPromocion);
@@ -5365,7 +5365,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                     DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_UPDATE_RDA_PROMOCION( Lv_JsonUpdate,
                                                                              Lv_MsjResultado);
                     IF TRIM(Lv_MsjResultado) IS NOT NULL THEN
-                      Lv_MsjResultado:= 'Error al procesar actualizaci�n de registros de tabla masiva RDA de servicio'
+                      Lv_MsjResultado:= 'Error al procesar actualización de registros de tabla masiva RDA de servicio'
                                         ||' Servicio : '        ||Lv_IdServicioInternet
                                         ||' Tipo Promocional : '||Lv_TipoPromocion
                                         ||' Mensaje: '          ||Lv_MsjResultado;
@@ -5486,7 +5486,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         Lv_EjecutoTecnologia     VARCHAR2(5);
         Lv_NombreJobHisto        VARCHAR2(100);
         Lv_FormatoJobHisto       VARCHAR2(60) := 'JOB_HIST_PROM_BW';
-        Lv_HistorialTecnologia   VARCHAR2(60) := 'Registro de la tecnolog�a ';
+        Lv_HistorialTecnologia   VARCHAR2(60) := 'Registro de la tecnología ';
         Lv_MarcaZte              VARCHAR2(30) := 'ZTE';
         Lv_PrefijoEmpresa        VARCHAR2(5)  := 'MD';
         Lv_CodEmpresa            VARCHAR2(5)  := '18';
@@ -5692,7 +5692,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParametrosDatos;
         --
         IF Lv_TipoPromocion IS NULL OR Lv_TipoClientes IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5706,7 +5706,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParametrosWs;
         --
         IF Lv_Url IS NULL OR Lv_PromoDiaria IS NULL OR Lv_EjecutaComando IS NULL OR Lv_EjecutaConfiguracion IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos del ws en los par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos del ws en los parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5721,7 +5721,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParametrosRango;
         --
         IF Ln_RangoMinutoMinimo IS NULL OR Ln_RangoMinutoMaximo IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Pv_Tipo||') de par�metros para los rangos minutos de las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Pv_Tipo||') de parámetros para los rangos minutos de las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5736,7 +5736,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParametros;
         --
         IF Lv_Opcion IS NULL OR Lv_MensajeOperacion IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Pv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Pv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5752,7 +5752,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         --
         IF Lv_EstadoPromocion IS NULL OR Lv_EstadoMapeo IS NULL OR Lv_EstadoProceso IS NULL
           OR Lv_EstadoFinalPromocion IS NULL OR Lv_EstadoFinalMapeo IS NULL OR Lv_EstadoFinalProceso IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Pv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Pv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5767,7 +5767,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParEstadosRegistro;
         --
         IF Pv_Tipo = 'APLICAR' AND Lv_EstadoRegistradaPromo IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Pv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Pv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5782,7 +5782,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerMinutoJob;
         --
         IF Lv_JobMinuto IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos para el tiempo de inicio del job para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos para el tiempo de inicio del job para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5797,7 +5797,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerFormatoHisto;
         --
         IF Lv_FormatoHistoServicio IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Pv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Pv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -5815,7 +5815,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         LOOP
             --
             IF Pv_Tipo = 'APLICAR' AND Lr_RegistrosGrupo.ESTADO = Lv_EstadoPromocion THEN
-                --se generan los detalles y los procesos de la promoci�n
+                --se generan los detalles y los procesos de la promoción
                 Lcl_Mensaje := 'OK';
                 WHILE Lcl_Mensaje = 'OK' LOOP
                     DB_COMERCIAL.CMKG_PROMOCIONES_BW.P_PROCESO_MASIVO_BW(Lv_TipoClientes,Lr_RegistrosGrupo.ID_GRUPO_PROMOCION,Lv_EstadoPromocion,Lcl_Mensaje);
@@ -5947,7 +5947,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                             ( ID_GRUPO_PROMOCION_HISTO,GRUPO_PROMOCION_ID,MOTIVO_ID,ESTADO,OBSERVACION,USR_CREACION,FE_CREACION,IP_CREACION )
                             VALUES
                             ( DB_COMERCIAL.SEQ_ADMI_GRUPO_PROMOCION_HISTO.NEXTVAL,Lr_RegistrosGrupo.ID_GRUPO_PROMOCION,NULL,Lr_RegistrosGrupo.ESTADO,
-                              'Error en la petici�n de la tecnolog�a '||Lr_RegistrosGrupoTecnologia.TECNOLOGIA||': '||
+                              'Error en la petición de la tecnología '||Lr_RegistrosGrupoTecnologia.TECNOLOGIA||': '||
                               Lv_MsgResult,Lv_User,SYSDATE,Lv_Ip );
                             --
                             --se guardan los cambios
@@ -6134,7 +6134,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             --
             --se reservan los cambios
             ROLLBACK;
-            Lv_MsjResultado := 'Ocurri� un error al ejecutar las promociones de ancho de banda: ';
+            Lv_MsjResultado := 'Ocurrió un error al ejecutar las promociones de ancho de banda: ';
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                  'CMKG_PROMOCIONES_BW.P_EJECUTAR_PROMOCIONES_BW',
                                                  SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -6158,7 +6158,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         Lv_EstadoPromo           VARCHAR2(60);
         Lv_NombreJob             VARCHAR2(100);
         Lv_Tecnologia            VARCHAR2(60);
-        Lv_HistorialPromo        VARCHAR2(100) := 'Se agrego un documento a la promoci�n:';
+        Lv_HistorialPromo        VARCHAR2(100) := 'Se agrego un documento a la promoción:';
         Lv_FormatoJob            VARCHAR2(30) := 'JOB_PROCESAR_PROMO_BW';
         Lv_JobMinuto             VARCHAR2(5)  := '3';
         Lv_TipoSolicitud         VARCHAR2(100) := 'SOLICITUD PROCESAR PROMOCIONES BW MASIVO';
@@ -6195,21 +6195,21 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         Ln_CountElementos := APEX_JSON.GET_COUNT(P_PATH => 'elemento');
         Lv_Tecnologia     := APEX_JSON.GET_VARCHAR2(p_path => 'tecnologia');
         --
-        --verificar la opci�n de ejecuci�n
+        --verificar la opción de ejecución
         IF Lv_Tipo IS NULL THEN
-            Lv_MsjResultado := 'Error no se pudo obtener la opci�n de la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error no se pudo obtener la opción de la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
-        --verificar el id de la promoci�n
+        --verificar el id de la promoción
         IF Lv_IdPromocion IS NULL THEN
-            Lv_MsjResultado := 'Error no se pudo obtener el id de la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error no se pudo obtener el id de la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
-        --verificar la cantidad de elementos de la promoci�n
+        --verificar la cantidad de elementos de la promoción
         IF Ln_CountElementos <= 0 THEN
-            Lv_MsjResultado := 'Error la cantidad de elementos a procesar es de 0 en la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error la cantidad de elementos a procesar es de 0 en la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -6221,7 +6221,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         FETCH C_VerificarPromocion INTO Ln_VerificarPromocion;
         CLOSE C_VerificarPromocion;
         IF Ln_VerificarPromocion IS NULL THEN
-            Lv_MsjResultado := 'Error no se pudo obtener la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error no se pudo obtener la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --obtener datos
@@ -6229,7 +6229,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         FETCH C_ObtenerDatos INTO Lv_EstadoPromo;
         CLOSE C_ObtenerDatos;
         IF Lv_EstadoPromo IS NULL THEN
-            Lv_MsjResultado := 'Error no se pudo obtener los datos de la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error no se pudo obtener los datos de la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -6315,7 +6315,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         COMMIT;
         --
         Pv_Status  := 'OK';
-        Pv_Mensaje := 'Se est� realizando el procesamiento de las promociones.';
+        Pv_Mensaje := 'Se está realizando el procesamiento de las promociones.';
         --
       EXCEPTION
         WHEN Le_MyException THEN
@@ -6335,8 +6335,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             --se reservan los cambios
             ROLLBACK;
             Pv_Status  := 'ERROR';
-            Pv_Mensaje := 'Error en el proceso de ejecuci�n de la promoci�n de ancho de banda.';
-            Lv_MsjResultado := 'Ocurri� un error al ejecutar las promociones de ancho de banda: ';
+            Pv_Mensaje := 'Error en el proceso de ejecución de la promoción de ancho de banda.';
+            Lv_MsjResultado := 'Ocurrió un error al ejecutar las promociones de ancho de banda: ';
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                  'CMKG_PROMOCIONES_BW.P_PROCESAR_PROMOCIONES_BW',
                                                  SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -6497,7 +6497,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParametrosDatos;
         --
         IF Lv_TipoPromocion IS NULL OR Lv_Remitente IS NULL OR Lv_TipoPlantilla IS NULL OR Lv_EstadoError IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos del reporte de correo para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos del reporte de correo para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -6514,7 +6514,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         --
         IF Lv_EstadoPromocion IS NULL OR Lv_EstadoPromocionFinal IS NULL OR Lv_EstadoProceso IS NULL OR
            Lv_Asunto IS NULL OR Ln_RangoMinutoMinimo IS NULL OR Ln_RangoMinutoMaximo IS NULL OR Lv_HistoPromocion IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos del reporte de correo para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos del reporte de correo para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -6592,7 +6592,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                 --
                 --cierre del archivo
                 UTL_FILE.FCLOSE(Lf_Archivo);
-                --ejecuci�n del comando para crear el archivo comprimido
+                --ejecución del comando para crear el archivo comprimido
                 DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND(Lv_ComandoReporte||' '||Lv_RutaDirectorio||Lv_NombreArchivo));
                 --
                 --enviar correo
@@ -6609,7 +6609,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                           Lv_NombreDirectorio,
                                                           Lv_NombreArchivo||Lv_Extension);
                 --
-                --eliminaci�n del archivo
+                --eliminación del archivo
                 BEGIN
                     UTL_FILE.FREMOVE(Lv_NombreDirectorio,Lv_NombreArchivo||Lv_Extension);
                 EXCEPTION
@@ -6641,7 +6641,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                  Lv_Ip);
         WHEN OTHERS THEN
             --
-            Lv_MsjResultado := 'Ocurri� un error en el reporte de las promociones de ancho de banda: ';
+            Lv_MsjResultado := 'Ocurrió un error en el reporte de las promociones de ancho de banda: ';
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                  'CMKG_PROMOCIONES_BW.P_NOTIFICA_PROMOCIONES_BW',
                                                  SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -6746,7 +6746,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         IF Lv_EstadoPromocion IS NULL OR Lv_EstadoFinalPromocion IS NULL
           OR Lv_EstadoMapeo IS NULL OR Lv_EstadoProceso IS NULL
           OR Lv_EstadoFinalMapeo IS NULL OR Lv_EstadoFinalProceso IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Lv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Lv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -6758,7 +6758,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         FETCH C_VerificarPromocion INTO Ln_VerificarPromocion;
         CLOSE C_VerificarPromocion;
         IF Ln_VerificarPromocion IS NULL THEN
-            Lv_MsjResultado := 'Error no se pudo verificar la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error no se pudo verificar la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         -- Preparamos los datos que se van a detener
@@ -6782,14 +6782,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
               Lr_InfoDetalleMapeoHisto.FE_CREACION             := SYSDATE;
               Lr_InfoDetalleMapeoHisto.USR_CREACION            := Lv_User;
               Lr_InfoDetalleMapeoHisto.IP_CREACION             := Lv_Ip;
-              Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se ejecuta la finalizaci�n de la promoci�n de ancho de banda.';
+              Lr_InfoDetalleMapeoHisto.OBSERVACION             := 'Se ejecuta la finalización de la promoción de ancho de banda.';
               DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_DET_MAPEO_HISTO(Lr_InfoDetalleMapeoHisto,Lv_MsjResultado);
               --ingresar historial proceso promo
               Lr_InfoProcesoPromoHist                       :=  NULL;
               Lr_InfoProcesoPromoHist.ID_PROCESO_PROMO_HIST :=  DB_EXTERNO.SEQ_INFO_PROCESO_PROMO_HIST.NEXTVAL;
               Lr_InfoProcesoPromoHist.PROCESO_PROMO_ID      :=  Lr_RegistrosDetalles(Ln_index).ID_PROCESO_PROMO;
               Lr_InfoProcesoPromoHist.ESTADO                :=  Lv_EstadoFinalProceso;
-              Lr_InfoProcesoPromoHist.OBSERVACION           :=  'Se ejecuta la finalizaci�n de la promoci�n de ancho de banda.';
+              Lr_InfoProcesoPromoHist.OBSERVACION           :=  'Se ejecuta la finalización de la promoción de ancho de banda.';
               Lr_InfoProcesoPromoHist.FE_CREACION           :=  SYSDATE;
               Lr_InfoProcesoPromoHist.USR_CREACION          :=  Lv_User;
               Lr_InfoProcesoPromoHist.IP_CREACION           :=  Lv_Ip;
@@ -6797,9 +6797,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
               --setear historial servicio
               IF Lr_RegistrosDetalles(Ln_index).SERVICIO_ID IS NOT NULL AND NOT Lr_DataServicios.EXISTS(Lr_RegistrosDetalles(Ln_index).SERVICIO_ID) THEN
                   Lr_DataServicios(Lr_RegistrosDetalles(Ln_index).SERVICIO_ID) := 1;
-                  Lv_ObservacionPlanes := 'Se ejecuta la finalizaci�n de la promoci�n de ancho de banda por concepto de DETENER_PROMOCIONES.';
+                  Lv_ObservacionPlanes := 'Se ejecuta la finalización de la promoción de ancho de banda por concepto de DETENER_PROMOCIONES.';
                   Lv_ObservacionPlanes := Lv_ObservacionPlanes || '<br>Nombre de plan contratado: <b>' || Lr_RegistrosDetalles(Ln_index).PLAN_ACTUAL || '</b>';
-                  Lv_ObservacionPlanes := Lv_ObservacionPlanes || '<br>Line profile de la promoci�n: <b>'
+                  Lv_ObservacionPlanes := Lv_ObservacionPlanes || '<br>Line profile de la promoción: <b>'
                                           || DB_COMERCIAL.CMKG_PROMOCIONES_UTIL.F_GET_LINE_PROFILE_PROMO_BW(Lr_RegistrosDetalles(Ln_index).PLAN_ID_PROMO) || '</b>';
                   SELECT ESTADO INTO Lv_EstadoServicio FROM DB_COMERCIAL.INFO_SERVICIO
                   WHERE ID_SERVICIO = Lr_RegistrosDetalles(Ln_index).SERVICIO_ID;
@@ -6829,7 +6829,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         COMMIT;
         --
         Pv_Status  := 'OK';
-        Pv_Mensaje := 'Se finalizo la actualizaci�n los procesos de las promociones de ancho de banda.';
+        Pv_Mensaje := 'Se finalizo la actualización los procesos de las promociones de ancho de banda.';
         --
       EXCEPTION
         WHEN Le_MyException THEN
@@ -6848,7 +6848,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
             ROLLBACK;
             Pv_Status  := 'ERROR';
             Pv_Mensaje := 'Error al actualizar los procesos de las promociones de ancho de banda.';
-            Lv_MsjResultado := 'Ocurri� un error al actualizar los procesos de las promociones de ancho de banda: ';
+            Lv_MsjResultado := 'Ocurrió un error al actualizar los procesos de las promociones de ancho de banda: ';
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                  'CMKG_PROMOCIONES_BW.P_PREPARE_FIN_PROMOCION_BW',
                                                  SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -6930,7 +6930,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         --
         IF Lv_EstadoPromocion IS NULL OR Lv_EstadoMapeo IS NULL OR Lv_EstadoProceso IS NULL OR Lv_EstadoProcesoError IS NULL
           OR Lv_EstadoFinalPromocion IS NULL OR Lv_EstadoFinalMapeo IS NULL OR Lv_EstadoFinalProceso IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Fv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Fv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -6968,7 +6968,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                               Lv_Ip);
           RETURN 0;
       WHEN OTHERS THEN
-          Lv_MsjResultado := 'Ocurri� un error al obtener el total de los procesos de las promociones de ancho de banda.';
+          Lv_MsjResultado := 'Ocurrió un error al obtener el total de los procesos de las promociones de ancho de banda.';
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                               'CMKG_PROMOCIONES_BW.F_CONTADOR_PROCESOS_PROMO_BW',
                                               SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -7199,17 +7199,17 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_ObtenerParametrosEstados;
       --
       IF Lv_EstadoMapeo IS NULL OR Lv_EstadoProceso IS NULL THEN
-          Lv_MsjResultado := 'No se encontrar�n los datos('||Lv_Tipo||') de par�metros para las promociones de ancho de banda.';
+          Lv_MsjResultado := 'No se encontrarón los datos('||Lv_Tipo||') de parámetros para las promociones de ancho de banda.';
           RAISE Le_MyException;
       END IF;
       --
       --
-      --obtengo los datos de la promoci�n
+      --obtengo los datos de la promoción
       OPEN C_ObtenerDatosPromocion;
       FETCH C_ObtenerDatosPromocion INTO Lv_FechaInicio, Lv_FechaFin, Ln_IdTipoPromocion, Lv_TipoPromocion;
       CLOSE C_ObtenerDatosPromocion;
       --
-      Lv_Observacion := 'Se registr� correctamente el mapeo de la Promoci�n: '||Lv_TipoPromocion
+      Lv_Observacion := 'Se registró correctamente el mapeo de la Promoción: '||Lv_TipoPromocion
                         ||', Grupo-Promocional: '||Pn_IdPromocion||', Fecha-Mapeo: '||Lv_FechaInicio;
       --
       FOR Lr_RegistrosElementos IN C_ObtenerElementos
@@ -7266,7 +7266,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                     Lr_InfoProcesoPromoHist.ID_PROCESO_PROMO_HIST :=  DB_EXTERNO.SEQ_INFO_PROCESO_PROMO_HIST.NEXTVAL;
                     Lr_InfoProcesoPromoHist.PROCESO_PROMO_ID      :=  Ln_IdProcesoPromo;
                     Lr_InfoProcesoPromoHist.ESTADO                :=  Lv_EstadoProceso;
-                    Lr_InfoProcesoPromoHist.OBSERVACION           :=  'Creaci�n del proceso de promoci�n';
+                    Lr_InfoProcesoPromoHist.OBSERVACION           :=  'Creación del proceso de promoción';
                     Lr_InfoProcesoPromoHist.FE_CREACION           :=  SYSDATE;
                     Lr_InfoProcesoPromoHist.USR_CREACION          :=  Lv_User;
                     Lr_InfoProcesoPromoHist.IP_CREACION           :=  Lv_Ip;
@@ -7299,7 +7299,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         WHEN OTHERS THEN
             --se reservan los cambios
             ROLLBACK;
-            Lv_MsjResultado := 'Ocurri� un error al generar los procesos de las promociones de ancho de banda en los olt: ';
+            Lv_MsjResultado := 'Ocurrió un error al generar los procesos de las promociones de ancho de banda en los olt: ';
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                  'CMKG_PROMOCIONES_BW.P_PREPARE_OLT_PROMOCION_BW',
                                                  SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -7508,7 +7508,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         --
     EXCEPTION
       WHEN OTHERS THEN
-          Lv_MsjResultado := 'Ocurri� un error al comparar el plan con otras promociones en el proceso de ancho de banda.';
+          Lv_MsjResultado := 'Ocurrió un error al comparar el plan con otras promociones en el proceso de ancho de banda.';
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                'CMKG_PROMOCIONES_BW.P_VERIFICAR_PLAN_PROMO_BW',
                                                SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -7555,7 +7555,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       CLOSE C_ObtenerParametrosEstados;
       --
       IF Lv_EstadoFinalPromocion IS NULL THEN
-          Lv_MsjResultado := 'No se encontrar�n los datos('||Lv_Tipo||') de par�metros para las promociones de ancho de banda.';
+          Lv_MsjResultado := 'No se encontrarón los datos('||Lv_Tipo||') de parámetros para las promociones de ancho de banda.';
           RAISE Le_MyException;
       END IF;
       --actualizar estado
@@ -7588,7 +7588,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       SYS.DBMS_SCHEDULER.enable(
             name => '"DB_COMERCIAL"."JOB_DETENER_PROMO_BW_'||Pn_IdPromocion||'"');
       Pv_Status  := 'OK';
-      Pv_Mensaje := 'Se finalizo la actualizaci�n los procesos de las promociones de ancho de banda.';
+      Pv_Mensaje := 'Se finalizo la actualización los procesos de las promociones de ancho de banda.';
       --
     EXCEPTION
       WHEN Le_MyException THEN
@@ -7607,7 +7607,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
           ROLLBACK;
           Pv_Status  := 'ERROR';
           Pv_Mensaje := 'Error al intentar detener los procesos de las promociones de ancho de banda.';
-          Lv_MsjResultado := 'Ocurri� un error al actualizar los procesos de las promociones de ancho de banda: ';
+          Lv_MsjResultado := 'Ocurrió un error al actualizar los procesos de las promociones de ancho de banda: ';
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                'CMKG_PROMOCIONES_BW.P_ENVIA_DETENER_PROMOCION_BW',
                                                SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -7885,7 +7885,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
       WHEN OTHERS THEN
           --se reservan los cambios
           ROLLBACK;
-          Lv_MsjResultado := 'Ocurri� un error al ingresar los historiales de promociones de ancho de banda: ';
+          Lv_MsjResultado := 'Ocurrió un error al ingresar los historiales de promociones de ancho de banda: ';
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                'CMKG_PROMOCIONES_BW.P_HISTO_CLIENTE_PROMO_BW',
                                                SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -8102,7 +8102,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         FETCH C_DatosPromo INTO Lv_NombreGrupo;
         CLOSE C_DatosPromo;
         IF Lv_NombreGrupo IS NULL THEN
-            Lv_MsjResultado := 'Error no se pudo obtener los datos de la promoci�n de ancho de banda.';
+            Lv_MsjResultado := 'Error no se pudo obtener los datos de la promoción de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -8118,7 +8118,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         IF Lv_MensajeOperacion IS NULL
           OR Lv_EstadoPromocion IS NULL OR Lv_EstadoMapeo IS NULL OR Lv_EstadoProceso IS NULL OR Lv_EstadoProcesoError IS NULL
           OR Lv_EstadoFinalPromocion IS NULL OR Lv_EstadoFinalMapeo IS NULL OR Lv_EstadoFinalProceso IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Lv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Lv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -8131,7 +8131,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         CLOSE C_ObtenerParametrosCorreo;
         --
         IF Lv_Remitente IS NULL OR Lv_TipoPlantilla IS NULL OR Lv_Asunto IS NULL THEN
-            Lv_MsjResultado := 'No se encontrar�n los datos('||Lv_Tipo||') de par�metros para las promociones de ancho de banda.';
+            Lv_MsjResultado := 'No se encontrarón los datos('||Lv_Tipo||') de parámetros para las promociones de ancho de banda.';
             RAISE Le_MyException;
         END IF;
         --
@@ -8148,7 +8148,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                     FETCH C_ObtenerDatosOlt INTO Ln_IdOlt, Lv_EstadoOlt;
                     CLOSE C_ObtenerDatosOlt;
                     IF Ln_IdOlt IS NULL OR Lv_EstadoOlt IS NULL THEN
-                        Lv_MsjResultado := 'Error no se pudo obtener los datos del elemento('||Lv_NombreOlt||') de la promoci�n de ancho de banda.';
+                        Lv_MsjResultado := 'Error no se pudo obtener los datos del elemento('||Lv_NombreOlt||') de la promoción de ancho de banda.';
                         RAISE Le_RegException;
                     END IF;
                     --
@@ -8169,11 +8169,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                 IF Lv_Tipo = Lv_TipoAplicar THEN
                                     Lv_ObservacionTipo := 'el cambio de plan';
                                 ELSE
-                                    Lv_ObservacionTipo := 'la finalizaci�n';
+                                    Lv_ObservacionTipo := 'la finalización';
                                 END IF;
                                 --ingresar historial elemento
-                                Lv_MsjResultado := 'Error en '||Lv_ObservacionTipo||' de la promoci�n de ancho de banda.'
-                                                  ||'<br><b>Grupo Promoci�n:</b> '||Lv_IdPromocion
+                                Lv_MsjResultado := 'Error en '||Lv_ObservacionTipo||' de la promoción de ancho de banda.'
+                                                  ||'<br><b>Grupo Promoción:</b> '||Lv_IdPromocion
                                                   ||'<br><b>Mensaje:</b> '||Lv_MsgResult
                                                   ||Lv_ObservacionPlanes;
                                 INSERT INTO DB_INFRAESTRUCTURA.INFO_HISTORIAL_ELEMENTO
@@ -8182,7 +8182,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                 ( DB_INFRAESTRUCTURA.SEQ_INFO_HISTORIAL_ELEMENTO.NEXTVAL,Ln_IdOlt,Lv_EstadoOlt,
                                   Lv_MsjResultado,Lv_User,SYSDATE,Lv_Ip );
                                 --ingresar historial
-                                Lv_MsjResultado := 'Error en '||Lv_ObservacionTipo||' de la promoci�n de ancho de banda del elemento '||Lv_NombreOlt||'.'
+                                Lv_MsjResultado := 'Error en '||Lv_ObservacionTipo||' de la promoción de ancho de banda del elemento '||Lv_NombreOlt||'.'
                                                     ||'<br><b>Mensaje:</b> '||Lv_MsgResult
                                                     ||Lv_ObservacionPlanes;
                                 INSERT INTO DB_COMERCIAL.ADMI_GRUPO_PROMOCION_HISTO
@@ -8311,7 +8311,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                   WHEN OTHERS THEN
                       --se reservan los cambios
                       ROLLBACK;
-                      Lv_MsjResultado := 'Ocurri� un error al ejecutar las promociones de ancho de banda: ';
+                      Lv_MsjResultado := 'Ocurrió un error al ejecutar las promociones de ancho de banda: ';
                       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                           'CMKG_PROMOCIONES_BW.P_PROCESAR_REG_PROMO_BW',
                                                           SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -8359,7 +8359,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
                                                             NULL);
                   EXCEPTION
                     WHEN OTHERS THEN
-                      Lv_MsjResultado := 'Ocurri� un error al enviar el correo del procesamiento de las promociones de ancho de banda: ';
+                      Lv_MsjResultado := 'Ocurrió un error al enviar el correo del procesamiento de las promociones de ancho de banda: ';
                       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                           'CMKG_PROMOCIONES_BW.P_PROCESAR_REG_PROMO_BW',
                                                           SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -8379,7 +8379,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         ( ID_SOLICITUD_HISTORIAL,DETALLE_SOLICITUD_ID,OBSERVACION,ESTADO,USR_CREACION,FE_CREACION,IP_CREACION )
         VALUES
         ( DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL,Pn_IdSolicitud,
-          'Se finaliz� la solicitud del procesamiento de la promoci�n.',Lv_EstadoFinalizada,Lv_User,SYSDATE,Lv_Ip );
+          'Se finalizó la solicitud del procesamiento de la promoción.',Lv_EstadoFinalizada,Lv_User,SYSDATE,Lv_Ip );
         --guardar cambios
         COMMIT;
         --
@@ -8396,7 +8396,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES_BW AS
         WHEN OTHERS THEN
             --se reservan los cambios
             ROLLBACK;
-            Lv_MsjResultado := 'Ocurri� un error al ejecutar las promociones de ancho de banda: ';
+            Lv_MsjResultado := 'Ocurrió un error al ejecutar las promociones de ancho de banda: ';
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                                  'CMKG_PROMOCIONES_BW.P_PROCESAR_REG_PROMO_BW',
                                                  SUBSTR(Lv_MsjResultado || SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),

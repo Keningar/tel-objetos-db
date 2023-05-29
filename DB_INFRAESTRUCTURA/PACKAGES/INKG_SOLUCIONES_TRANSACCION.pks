@@ -1,15 +1,15 @@
 CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
 
   /**
-   * Documentaci�n para el procedimiento 'P_CREAR_MAQUINA_VIRTUAL'.
+   * Documentación para el procedimiento 'P_CREAR_MAQUINA_VIRTUAL'.
    *
-   * M�todo encargado de crear maquinas virtuales.
+   * Método encargado de crear maquinas virtuales.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 13-05-2020
    */
   PROCEDURE P_CREAR_MAQUINA_VIRTUAL(Pcl_Request IN  CLOB,
@@ -18,15 +18,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
 
 
   /**
-   * Documentaci�n para el procedimiento 'P_CREAR_FACTIBILIDAD_MV'.
+   * Documentación para el procedimiento 'P_CREAR_FACTIBILIDAD_MV'.
    *
-   * M�todo encargado de guardar factibilidad de la maquina virtual.
+   * Método encargado de guardar factibilidad de la maquina virtual.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 13-05-2020
    */
   PROCEDURE P_CREAR_FACTIBILIDAD_MV(Pcl_Request IN  CLOB,
@@ -34,15 +34,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                     Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_CREAR_FACTIBILIDAD_MV'.
+   * Documentación para el procedimiento 'P_CREAR_FACTIBILIDAD_MV'.
    *
-   * M�todo encargado de guardar factibilidad de la maquina virtual.
+   * Método encargado de guardar factibilidad de la maquina virtual.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 13-05-2020
    */
   PROCEDURE P_CREAR_FACTIBILIDAD_SERVIDOR(Pcl_Request IN  CLOB,
@@ -50,15 +50,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                           Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_CREAR_FACTIBILIDAD_POOL_SERVIDOR'.
+   * Documentación para el procedimiento 'P_CREAR_FACTIBILIDAD_POOL_SERVIDOR'.
    *
-   * M�todo encargado de guardar factibilidad de la maquina virtual.
+   * Método encargado de guardar factibilidad de la maquina virtual.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 13-05-2020
    */
   PROCEDURE P_CREAR_FACTIB_POOL_SERVIDOR(Pcl_Request IN  CLOB,
@@ -66,15 +66,15 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                          Pv_Mensaje  OUT VARCHAR2);
 
    /**
-   * Documentaci�n para el procedimiento 'P_ELIMINAR_MV'.
+   * Documentación para el procedimiento 'P_ELIMINAR_MV'.
    *
-   * M�todo encargado de eliminar una maquina virtual.
+   * Método encargado de eliminar una maquina virtual.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 13-05-2020
    */
   PROCEDURE P_ELIMINAR_MV(Pcl_Request IN  CLOB,
@@ -82,16 +82,16 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                           Pv_Mensaje  OUT VARCHAR2);  
 
    /**
-   * Documentaci�n para el procedimiento 'P_REVERSAR_POOL_SERVIDOR'.
+   * Documentación para el procedimiento 'P_REVERSAR_POOL_SERVIDOR'.
    *
-   * M�todo encargado de reversar la factibilidad asignada al servicio alquiler
+   * Método encargado de reversar la factibilidad asignada al servicio alquiler
    * de servidor y los registros de InfoServicioRecurdoDet asociados al mismo.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 24-07-2020
    */
   PROCEDURE P_REVERSAR_POOL_SERVIDOR(Pcl_Request IN  CLOB,
@@ -133,7 +133,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
 
     APEX_JSON.PARSE(Lt_JsonIndex,Pcl_Request);
 
-    --Obtenemos el total de los atributos que se encuentran dentro de la ra�z.
+    --Obtenemos el total de los atributos que se encuentran dentro de la raíz.
     Ln_Total := APEX_JSON.GET_COUNT(P_PATH => '.' , P_VALUES => Lt_JsonIndex);
 
     IF Ln_Total < 1 OR Ln_Total IS NULL THEN
@@ -184,7 +184,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
       Lb_HabilitaCommit := FALSE;
     END IF;
 
-  --Json para crear elemento m�quina virtual.
+  --Json para crear elemento máquina virtual.
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('estado' , Lv_Estado);
@@ -197,10 +197,10 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;   
     APEX_JSON.FREE_OUTPUT;
 
-    --Creaci�n de elemento m�quina virtual..
+    --Creación de elemento máquina virtual..
     DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION.P_GUARDAR_ELEMENTO(Lcl_Request,Ln_IdElemento,Lv_Status,Lv_Mensaje);
     IF Lv_Status  = 'ERROR' THEN
-            Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear elemento de m�quina virtual');
+            Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear elemento de máquina virtual');
             RAISE Le_Exception;
     END IF;
 
@@ -217,7 +217,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;   
     APEX_JSON.FREE_OUTPUT;
 
-    --Creaci�n de empresaElementoUbica.
+    --Creación de empresaElementoUbica.
     DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION.P_GUARDAR_EMPRESA_ELEMENTO_UBI(Lcl_Request,Ln_IdEmpresaElementoUbica,Lv_Status,Lv_Mensaje);
 
     IF Lv_Status  = 'ERROR' THEN
@@ -238,7 +238,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
     Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;   
     APEX_JSON.FREE_OUTPUT;
 
-    --Creaci�n de empresaElemento.
+    --Creación de empresaElemento.
     DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION.P_GUARDAR_EMPRESA_ELEMENTO(Lcl_Request,Ln_IdEmpresaElemento,Lv_Status,Lv_Mensaje);
 
     IF Lv_Status  = 'ERROR' THEN
@@ -275,7 +275,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                                                               Lv_Mensaje); 
 
       IF Lv_Status  = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear detalle elemento de la m�quina virtual');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear detalle elemento de la máquina virtual');
         RAISE Le_Exception;
       END IF;
 
@@ -312,7 +312,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                                                      Lv_Status,
                                                                      Lv_Mensaje); 
       IF Lv_Status  = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear detalleRecursos de la m�quina virtual');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear detalleRecursos de la máquina virtual');
         RAISE Le_Exception;
       END IF;
     END LOOP;
@@ -323,7 +323,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
     END IF;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -456,7 +456,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                                                                 Lv_Status,
                                                                                 Lv_Mensaje); 
         IF Lv_Status  = 'ERROR' THEN
-          Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear detalle elemento de la m�quina virtual');
+          Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear detalle elemento de la máquina virtual');
           RAISE Le_Exception;
         END IF;
 
@@ -475,7 +475,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                                                                    Lv_Status,
                                                                                    Lv_Mensaje); 
         IF Lv_Status  = 'ERROR' THEN
-          Lv_Mensaje := NVL(Lv_Mensaje,'Error al actualizar detalle elemento de la m�quina virtual');
+          Lv_Mensaje := NVL(Lv_Mensaje,'Error al actualizar detalle elemento de la máquina virtual');
           RAISE Le_Exception;
         END IF;
 
@@ -520,7 +520,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
                                                                      Lv_Mensaje); 
 
       IF Lv_Status  = 'ERROR' THEN
-        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear datastore para disco de la m�quina virtual');
+        Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear datastore para disco de la máquina virtual');
         RAISE Le_Exception;
       END IF;
     END LOOP;
@@ -531,7 +531,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
     END IF;
 
         Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -689,7 +689,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
       Lb_HabilitaCommit := FALSE;
     END IF;
 
-    Lv_Historial :='Se asign� factibilidad autom�tica de los siguientes Servidores: ';
+    Lv_Historial :='Se asignó factibilidad automática de los siguientes Servidores: ';
     --Se consultan los modelos de servidores contratados con la cantidad
     FOR Lc_ServidoresContratados IN C_ServidoresContratados(Ln_IdServicio) LOOP
       Ln_CantidadSolicitada := Lc_ServidoresContratados.CANTIDAD;
@@ -753,7 +753,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
           Ln_NumSecuenciaServidor := Ln_SecuenciaServidor.SECUENCIASERVIDOR;
         CLOSE C_SecuenciaServidor;
 
-        --Consultados la ubicacion seg�n el cant�n
+        --Consultados la ubicacion según el cantón
         OPEN C_UbicacionDC(Ln_IdCanton, Lv_CodEmpresa);
           FETCH C_UbicacionDC INTO Lc_UbicacionDC;
           Ln_IDUbicacion := Lc_UbicacionDC.ID_UBICACION;
@@ -764,7 +764,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
             --Contador de secuencia para el nombre del elemento
             Ln_NumSecuenciaServidor := Ln_NumSecuenciaServidor + 1;
 
-            --Json para crear elemento m�quina virtual.
+            --Json para crear elemento máquina virtual.
             APEX_JSON.INITIALIZE_CLOB_OUTPUT;
             APEX_JSON.OPEN_OBJECT;
             APEX_JSON.WRITE('estado'              , 'Asignado');
@@ -777,11 +777,11 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
             Lcl_Request := APEX_JSON.GET_CLOB_OUTPUT;   
             APEX_JSON.FREE_OUTPUT;
 
-            --Creaci�n de elemento m�quina virtual..
+            --Creación de elemento máquina virtual..
             DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION.P_GUARDAR_ELEMENTO(Lcl_Request,Ln_IdElemento,Lv_Status,Lv_Mensaje);
 
             IF Lv_Status  = 'ERROR' THEN
-                    Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear elemento de m�quina virtual');
+                    Lv_Mensaje := NVL(Lv_Mensaje,'Error al crear elemento de máquina virtual');
                     RAISE Le_Exception;
             END IF;
 
@@ -951,8 +951,8 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
       Lb_HabilitaCommit := FALSE;
     END IF;
 
-    Lv_Historial := 'Se realiz� la siguiente asignaci�n de Pool de Recursos: 
-                    Se gener� Factibilidad con las siguientes Descripciones:';
+    Lv_Historial := 'Se realizó la siguiente asignación de Pool de Recursos: 
+                    Se generó Factibilidad con las siguientes Descripciones:';
 
     FOR i in 1..Ln_TotalFactibilidad LOOP
 
@@ -1008,7 +1008,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
       END IF;
 
      END LOOP;        
- --Llamada al m�todo que parsea y actualiza la solicitud.
+ --Llamada al método que parsea y actualiza la solicitud.
     DB_COMERCIAL.CMKG_SOLICITUD_TRANSACCION.P_PARSEO_JSON_SOLICITUD(Pcl_Request,Lv_Status,Lv_Mensaje);
 
     IF Lv_Status = 'ERROR' THEN
@@ -1016,7 +1016,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
       RAISE Le_Exception;
     END IF;
 
-    --Insertamos la observaci�n en los Historiales.
+    --Insertamos la observación en los Historiales.
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
     APEX_JSON.WRITE('detalleSolicitudId', Ln_IdSolicitud);
@@ -1109,7 +1109,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')       IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'nombreElemento') IS NULL OR
        APEX_JSON.GET_NUMBER(P_PATH   => 'elementoId')       IS NULL THEN
-      Lv_Mensaje := 'Ning�n valor puede ir nulo [(elementoId),usrUltMod,ipUltMod)';
+      Lv_Mensaje := 'Ningún valor puede ir nulo [(elementoId),usrUltMod,ipUltMod)';
       RAISE Le_Exception;
     END IF;
 
@@ -1125,7 +1125,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
       RAISE Le_Exception;
     END IF;
 
-    --Array para eliminar el elemento m�quina virtual.
+    --Array para eliminar el elemento máquina virtual.
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
     APEX_JSON.OPEN_OBJECT;
       APEX_JSON.WRITE('idElemento'   , Ln_ElementoId);
@@ -1136,32 +1136,32 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
 
     DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION.P_ACTUALIZAR_ELEMENTO(Lcl_Request,Lv_Status,Lv_Mensaje);
     IF Lv_Status  = 'ERROR' THEN
-       Lv_Mensaje := NVL(Lv_Mensaje,'Error al eliminar la m�quina virtual');
+       Lv_Mensaje := NVL(Lv_Mensaje,'Error al eliminar la máquina virtual');
        RAISE Le_Exception;
     END IF;
 
     DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_ACTUALIZAR_RECURSO_DET(Pcl_Request,Lv_Status,Lv_Mensaje);
 
     IF Lv_Status  = 'ERROR' THEN
-      Lv_Mensaje := NVL(Lv_Mensaje,'Error al eliminar recursos de la m�quina virtual');
+      Lv_Mensaje := NVL(Lv_Mensaje,'Error al eliminar recursos de la máquina virtual');
       RAISE Le_Exception;
     END IF;
 
     DB_INFRAESTRUCTURA.INKG_ELEMENTO_TRANSACCION.P_ACTUALIZAR_DETALLE_ELEMENTO(Pcl_Request,Lv_Status,Lv_Mensaje);
     IF Lv_Status  = 'ERROR' THEN
-       Lv_Mensaje := NVL(Lv_Mensaje,'Error al eliminar la factibilidad de la m�quina virtual');
+       Lv_Mensaje := NVL(Lv_Mensaje,'Error al eliminar la factibilidad de la máquina virtual');
        RAISE Le_Exception;
     END IF;
 
     Lr_InfoHistorialElemento                 := NULL;
     Lr_InfoHistorialElemento.ELEMENTO_ID     := Ln_ElementoId;
     Lr_InfoHistorialElemento.ESTADO_ELEMENTO := 'Eliminado';
-    Lr_InfoHistorialElemento.OBSERVACION     := 'Se elimin� la m�quina virtual : <b>'||APEX_JSON.GET_VARCHAR2(P_PATH => 'nombreElemento');
+    Lr_InfoHistorialElemento.OBSERVACION     := 'Se eliminó la máquina virtual : <b>'||APEX_JSON.GET_VARCHAR2(P_PATH => 'nombreElemento');
     Lr_InfoHistorialElemento.USR_CREACION    := APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod');
     Lr_InfoHistorialElemento.IP_CREACION     := APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod');
     DB_INFRAESTRUCTURA.INFRK_DML.INFRP_INSERT_HISTORIAL_ELEMENT(Lr_InfoHistorialElemento, Lv_Mensaje);
     IF Lv_Mensaje  IS NOT NULL THEN
-       Lv_Mensaje := NVL(SUBSTR(Lv_Mensaje, 0 , 3000 ),'Error al insertar historial de la m�quina virtual');
+       Lv_Mensaje := NVL(SUBSTR(Lv_Mensaje, 0 , 3000 ),'Error al insertar historial de la máquina virtual');
        RAISE Le_Exception;
     END IF;
 
@@ -1175,7 +1175,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -1230,7 +1230,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
     IF APEX_JSON.GET_VARCHAR2(P_PATH => 'usrUltMod')      IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipUltMod')       IS NULL OR
        APEX_JSON.GET_NUMBER(P_PATH   => 'servicioId')       IS NULL  THEN
-      Lv_Mensaje := 'Ning�n valor puede ir nulo [(servicioId),usrUltMod,ipUltMod)';
+      Lv_Mensaje := 'Ningún valor puede ir nulo [(servicioId),usrUltMod,ipUltMod)';
       RAISE Le_Exception;
     END IF;
 
@@ -1276,7 +1276,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
         DB_COMERCIAL.CMKG_SOLUCIONES_TRANSACCION.P_ACTUALIZAR_RECURSO_DET(Lcl_Request,Lv_Status,Lv_Mensaje);
 
         IF Lv_Status  = 'ERROR' THEN
-          Lv_Mensaje := NVL(SUBSTR( Lv_Mensaje, 0 , 3000 ),'Error al eliminar recursos de la m�quina virtual');
+          Lv_Mensaje := NVL(SUBSTR( Lv_Mensaje, 0 , 3000 ),'Error al eliminar recursos de la máquina virtual');
           RAISE Le_Exception;
         END IF;
 
@@ -1292,7 +1292,7 @@ CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_SOLUCIONES_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN

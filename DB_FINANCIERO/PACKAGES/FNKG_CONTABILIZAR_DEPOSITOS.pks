@@ -40,19 +40,19 @@ AS
 --
 --
 /*
-* Documentaci�n para FUNCION 'PROCESAR_DEPOSITO'.
+* Documentación para FUNCION 'PROCESAR_DEPOSITO'.
 * PROCEDIMIENTO QUE CREA ASIENTOS CONTABLES PARA LOS DEPOSITOS
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
 * @since 17/03/2016
 *
 * @author Edson Franco <efranco@telconet.ec>
-* @version 1.1 17-03-2017 - Se quita la funci�n SUBSTR de las columnas 'l_migra_arckmm.NO_FISICO' y 'l_migra_arckmm.SERIE_FISICO' para que el valor
-*                           ingresado por el usuario se pase en su totalidad y se pueda realizar la comparaci�n de lo guardado en TELCOS+ con lo
-*                           migrado al NAF por el n�mero de comprobante de dep�sito.
+* @version 1.1 17-03-2017 - Se quita la función SUBSTR de las columnas 'l_migra_arckmm.NO_FISICO' y 'l_migra_arckmm.SERIE_FISICO' para que el valor
+*                           ingresado por el usuario se pase en su totalidad y se pueda realizar la comparación de lo guardado en TELCOS+ con lo
+*                           migrado al NAF por el número de comprobante de depósito.
 *
 * @author Edson Franco <efranco@telconet.ec>
-* @version 1.2 14-09-2017 - Se agrega la funci�n 'NAF47_TNET.GEK_MIGRACION.P_PROCESA_MIGRA_DOC_ASOCIADO' el cual guarda la relaci�n del detalle del
+* @version 1.2 14-09-2017 - Se agrega la función 'NAF47_TNET.GEK_MIGRACION.P_PROCESA_MIGRA_DOC_ASOCIADO' el cual guarda la relación del detalle del
 *                           pago migrado con las tablas del NAF.
 *                           Se agregan la funcion implementada en NAF 'NAF47_TNET.GEK_MIGRACION.P_INSERTA_MIGRA_ARCKMM' para insertar en la tabla
 *                          'MIIGRA_ARCKMM'.
@@ -60,7 +60,7 @@ AS
 *
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.3 06-02-2018 - Se cambia el proceso para que se contabilice en base a los montos de los pagos asociados y no por el valor registrado en 
-*                           la cabecera de dep�sito.
+*                           la cabecera de depósito.
 *
 * @Param in  varchar2  v_no_cia (id de la empresa)
 * @Param in  number    v_deposito_id (id del deposito)
@@ -72,7 +72,7 @@ PROCEDURE procesar_deposito(v_no_cia in varchar2,v_deposito_id in number, v_ofic
 --
 --
 /*
-* Documentaci�n para FUNCION 'CREA_DEBITO_CREDITO_DEPOSITO'.
+* Documentación para FUNCION 'CREA_DEBITO_CREDITO_DEPOSITO'.
 * PROCEDIMIENTO QUE CREA EL DEBITO Y CREDITO DEL ASIENTO CONTABLE
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -102,8 +102,8 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_CONTABILIZAR_DEPOSITOS
 AS
 
  /*
- * Documentaci�n para FUNCION 'F_OBTENER_VALOR_PARAMETRO'.
- * FUNCION QUE OBTIENE PARAMETROS DE ECUANET PARA MIGRACION A COMPA�IA MEGADATOS
+ * Documentación para FUNCION 'F_OBTENER_VALOR_PARAMETRO'.
+ * FUNCION QUE OBTIENE PARAMETROS DE ECUANET PARA MIGRACION A COMPAÑIA MEGADATOS
  * @author Jimmy Gilces <jgilces@telconet.ec>
  * @version 1.0
  * @since 27/03/2023
@@ -140,7 +140,7 @@ AS
  END;
  
 /*
-* Documentaci�n para FUNCION 'GET_TIPO_DOC'.
+* Documentación para FUNCION 'GET_TIPO_DOC'.
 * FUNCION QUE VERIFICA SI EL DEPOSITO TIENE TRANSFERENCIAS
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -177,7 +177,7 @@ BEGIN
 END;
 
 /*
-* Documentaci�n para PROCEDIMIENTO 'MARCA_CONTABILIZADO_PAGOS_DEP'.
+* Documentación para PROCEDIMIENTO 'MARCA_CONTABILIZADO_PAGOS_DEP'.
 * PROCEDIMIENTO QUE MARCA COMO CONTABILIZADO AL DEPOSITO
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -662,7 +662,7 @@ BEGIN
             --
             IF msg_ret IS NOT NULL THEN
               --
-              raise_application_error( -20001, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+              raise_application_error( -20001, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || Lr_GetPagosDeposito.ID_PAGO_DET || '). MENSAJE ERROR NAF (' || msg_ret || ').');
               --
             END IF;
@@ -675,7 +675,7 @@ BEGIN
               NAF47_TNET.GEK_MIGRACION.P_PROCESA_MIGRA_DOC_ASOCIADO(Lr_MigraDocumentoAsociado, 'I', msg_ret);
               
               IF msg_ret IS NOT NULL THEN
-              raise_application_error( -20001, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+              raise_application_error( -20001, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || Lr_GetPagosDeposito.ID_PAGO_DET || '). MENSAJE ERROR NAF (' || msg_ret || ').');
               --
             END IF;
@@ -685,7 +685,7 @@ BEGIN
             END IF;
           ELSE
             --
-            raise_application_error( -20001, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+            raise_application_error( -20001, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                              ' DETALLE_PAGO ( ' || Lr_GetPagosDeposito.ID_PAGO_DET || '). MENSAJE ERROR ( NO EXISTE ID_MIGRACION ).');
             --
           END IF;
@@ -776,4 +776,3 @@ BEGIN
   --
 END FNKG_CONTABILIZAR_DEPOSITOS;
 /
-

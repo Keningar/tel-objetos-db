@@ -43,7 +43,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.GE_CORREO_ELECTRONICO is
     /**
     * P_ENVIA_MAIL, procedimiento que realiza envio de correo adjunto pdf que se genera en el despacho de pedidos.
     *
-    * @author Andr�s Astudillo <aastudillo@telconet.ec>
+    * @author Andrés Astudillo <aastudillo@telconet.ec>
     * @version 25-03-2020
     * @since 1.0
     *
@@ -308,7 +308,7 @@ PROCEDURE GEP_ENVIA_NOTIFICACION (Pv_CodPla IN Varchar2,
       CLOSE C_LeeHora;
       IF Ln_Hora >= 0 AND Ln_Hora < 12 THEN
         --DIAS
-        Lv_Saludo := 'Buenos D�as';
+        Lv_Saludo := 'Buenos Días';
       END IF;
       IF Ln_Hora >= 12 AND Ln_Hora < 19 THEN
         --TARDES
@@ -334,7 +334,7 @@ PROCEDURE GEP_ENVIA_NOTIFICACION (Pv_CodPla IN Varchar2,
                        
                        <div >
                         <p> <br>' || Lv_Saludo ||','|| '                          
-                        <br><br>  Se ha procedido con el cierre de la Planilla de pagos: <b>'|| Pv_CodPla || ' - '||Pv_DesCodPla ||'</b>, por lo que deber� ingresar la observacion 
+                        <br><br>  Se ha procedido con el cierre de la Planilla de pagos: <b>'|| Pv_CodPla || ' - '||Pv_DesCodPla ||'</b>, por lo que deberá ingresar la observacion 
                         de Remunerracion Variable(KPI) manualmente en el modulo de Nomina, Opcion Procesos/ Movimiento de Nomina / Carga Masiva desglose KPI.
                         <br><br>
                         Sistema NAF.
@@ -348,7 +348,7 @@ PROCEDURE GEP_ENVIA_NOTIFICACION (Pv_CodPla IN Varchar2,
    sys.utl_mail.send(sender     => 'NAF@TELCONET.EC',
                      recipients =>  Lv_Para,--Lv_Destinos, --Envia al autorizador o a su reemplazo
                      CC         => 'NAF@TELCONET.EC',--Lv_Copias,
-                     subject    => 'SISTEMA NAF: NOMINA CERRADA, NO SE CARG� OBSERVACION KPI',
+                     subject    => 'SISTEMA NAF: NOMINA CERRADA, NO SE CARGÓ OBSERVACION KPI',
                      mime_type  => 'text/html; charset=us-ascii',
                      MESSAGE    => Lv_Mensaje);
      EXCEPTION
@@ -384,11 +384,11 @@ PROCEDURE GEP_ENVIA_NOTIFICACION (Pv_CodPla IN Varchar2,
     Lv_Directorio    := Pv_Dir;
     Lv_NombreArchivo := Pv_NameFile;
     
-    Lv_Cuerpo := REPLACE(Lv_Cuerpo, '�', chr(38)||'aacute;');
-    Lv_Cuerpo := REPLACE(Lv_Cuerpo, '�', chr(38)||'eacute;');
-    Lv_Cuerpo := REPLACE(Lv_Cuerpo, '�', chr(38)||'iacute;');
-    Lv_Cuerpo := REPLACE(Lv_Cuerpo, '�', chr(38)||'oacute;');
-    Lv_Cuerpo := REPLACE(Lv_Cuerpo, '�', chr(38)||'ntilde;');
+    Lv_Cuerpo := REPLACE(Lv_Cuerpo, 'á', chr(38)||'aacute;');
+    Lv_Cuerpo := REPLACE(Lv_Cuerpo, 'é', chr(38)||'eacute;');
+    Lv_Cuerpo := REPLACE(Lv_Cuerpo, 'í', chr(38)||'iacute;');
+    Lv_Cuerpo := REPLACE(Lv_Cuerpo, 'ó', chr(38)||'oacute;');
+    Lv_Cuerpo := REPLACE(Lv_Cuerpo, 'ú', chr(38)||'ntilde;');
         
     
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('NAF',

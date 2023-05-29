@@ -167,10 +167,10 @@ IS
     bodega_det arfafl.bodega%type );
   /*Funcion que verifica la existencia de un cliente x cedula/ruc/pasapote*/
   /**
-  * Documentaci�n para P_ValidaCliente
+  * Documentación para P_ValidaCliente
   * Se hace validacion para que no valide RUC Cedula de Security Data
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.1 22/10/2020 
   * 
   * @author Luis Lindao <llindao@telconet.ec>

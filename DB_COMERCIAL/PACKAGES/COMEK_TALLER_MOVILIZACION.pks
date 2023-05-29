@@ -3,13 +3,13 @@ AS
 /**
 * COMEKP_FIN_CHOFER_PROVISIONAL
 *
-* PROCEDIMIENTO QUE FINALIZA LAS ASIGNACIONES PROVISIONALES DE CHOFERES QUE YA HAN CUMPLIDO CON SU RESPECTIVO TIEMPO DE ASIGNACI�N
+* PROCEDIMIENTO QUE FINALIZA LAS ASIGNACIONES PROVISIONALES DE CHOFERES QUE YA HAN CUMPLIDO CON SU RESPECTIVO TIEMPO DE ASIGNACIÓN
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 01/08/2016
 * @author Modificado: Lizbeth Cruz <mlcruz@telconet.ec>
-* @version 1.1 28/08/2016 Se incluye nuevo detalle con el id de la solicitud que tambi�n deber� ser eliminada cuando la asignaci�n
-* cumpla con el tiempo que el usuario asign�
+* @version 1.1 28/08/2016 Se incluye nuevo detalle con el id de la solicitud que también deberá ser eliminada cuando la asignación
+* cumpla con el tiempo que el usuario asignó
 *
 */
 PROCEDURE COMEKP_FIN_CHOFER_PROVISIONAL(Lv_MsjError OUT VARCHAR2); 
@@ -23,7 +23,7 @@ AS
 PROCEDURE COMEKP_FIN_CHOFER_PROVISIONAL(Lv_MsjError OUT VARCHAR2)
 AS
   --Obtiene las asignaciones de chofer provisional que se encuentran con estado pendiente y que ya han cumplido con 
-  --su tiempo de asignaci�n respecto al tiempo actual
+  --su tiempo de asignación respecto al tiempo actual
   CURSOR C_getSolChoferProv 
   IS
     SELECT DISTINCT sol.ID_DETALLE_SOLICITUD,solHist.FE_INI_PLAN,solHist.FE_FIN_PLAN, sol.ELEMENTO_ID
@@ -54,7 +54,7 @@ AS
   --
 
 BEGIN
-  --si existen asignaciones provisionales de chofer que ya hayan concluido con su tiempo de asignaci�n, se les actualiza el estado
+  --si existen asignaciones provisionales de chofer que ya hayan concluido con su tiempo de asignación, se les actualiza el estado
   --de Pendiente a Finalizado en la solicitud y de Activo a Eliminado en el detalle del elemento
   
   SELECT motivo.ID_MOTIVO INTO id_motivo
@@ -102,7 +102,7 @@ BEGIN
   WHEN OTHERS THEN
     ROLLBACK;
     IF (C_getSolChoferProv%isopen) THEN CLOSE C_getSolChoferProv; END IF;
-    Lv_MsjError := 'ERROR AL ELIMINAR ASIGNACI�N PROVISIONAL DE CHOFER';
+    Lv_MsjError := 'ERROR AL ELIMINAR ASIGNACIÓN PROVISIONAL DE CHOFER';
   END COMEKP_FIN_CHOFER_PROVISIONAL;
     
 --

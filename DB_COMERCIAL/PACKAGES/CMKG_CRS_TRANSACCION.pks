@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
   /**
-    * Documentaci�n para P_REVERSAR_CRS
+    * Documentación para P_REVERSAR_CRS
     * se creo un reverso de la siguiente funcion 
     * ruta :src/telconet/comercialBundle/Controller/ClienteController.php 
     * funcion base :cambiarRazonSocialAction
@@ -22,6 +22,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 END CMKG_CRS_TRANSACCION;
 
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CRS_TRANSACCION AS
 
     PROCEDURE   P_REVERSAR_CRS(Pcl_Request IN CLOB,Pv_Mensaje OUT VARCHAR2,Pv_Status OUT VARCHAR2,Pcl_Response OUT SYS_REFCURSOR)AS 

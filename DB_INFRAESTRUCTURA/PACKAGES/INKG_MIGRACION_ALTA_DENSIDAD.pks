@@ -6117,7 +6117,7 @@ BEGIN
   LV_CODIGOAPPCORTEMASIVO    := LR_GETCONFIGNFSMIGRAAD.CODIGO_APP;
   LV_CODIGOPATHCORTEMASIVO   := LR_GETCONFIGNFSMIGRAAD.CODIGO_PATH;
   IF LV_CODIGOAPPCORTEMASIVO IS NULL OR LV_CODIGOPATHCORTEMASIVO IS NULL THEN
-    LV_MENSAJE               := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+    LV_MENSAJE               := 'No se ha podido obtener la configuracion de la ruta NFS';
     RAISE LE_EXCEPTION;
   END IF;
   FOR LC_GET_ARCHIVOS_CARGADOS IN C_GET_ARCHIVOS_CARGADOS
@@ -6595,7 +6595,7 @@ BEGIN
       APEX_JSON.PARSE(LV_RESPUESTAGUARDARARCHIVO);
       LN_CODEGUARDARARCHIVO    := APEX_JSON.GET_NUMBER('code');
       IF LN_CODEGUARDARARCHIVO IS NULL OR LN_CODEGUARDARARCHIVO <> 200 THEN
-        LV_MENSAJE             := 'Ha ocurrido alg¿n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
+        LV_MENSAJE             := 'Ha ocurrido algun error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
         RAISE LE_EXCEPTION_NFS;
       END IF;
       LN_COUNTARCHIVOSGUARDADOS    := APEX_JSON.GET_COUNT(P_PATH => 'data');
@@ -7123,7 +7123,7 @@ IS
     LV_CODIGOAPPCORTEMASIVO    := LR_GETCONFIGNFSMIGRAAD.CODIGO_APP;
     LV_CODIGOPATHCORTEMASIVO   := LR_GETCONFIGNFSMIGRAAD.CODIGO_PATH;
     IF LV_CODIGOAPPCORTEMASIVO IS NULL OR LV_CODIGOPATHCORTEMASIVO IS NULL THEN
-      LV_MENSAJE               := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+      LV_MENSAJE               := 'No se ha podido obtener la configuracion de la ruta NFS';
       RAISE LE_EXCEPTION;
     END IF;
     LV_NOMBREARCHIVOCORREO  := 'REPORTE_ENLACE_PREVIO_'||TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')||'.csv';
@@ -7227,7 +7227,7 @@ IS
       APEX_JSON.PARSE(LV_RESPUESTAGUARDARARCHIVO);
       LN_CODEGUARDARARCHIVO    := APEX_JSON.GET_NUMBER('code');
       IF LN_CODEGUARDARARCHIVO IS NULL OR LN_CODEGUARDARARCHIVO <> 200 THEN
-        LV_MENSAJE             := 'Ha ocurrido alg¿n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
+        LV_MENSAJE             := 'Ha ocurrido algun error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
         RAISE LE_EXCEPTION_NFS;
       END IF;
       LN_COUNTARCHIVOSGUARDADOS    := APEX_JSON.GET_COUNT(P_PATH => 'data');
@@ -7632,7 +7632,7 @@ IS
     LV_CODIGOAPPCORTEMASIVO    := LR_GETCONFIGNFSMIGRAAD.CODIGO_APP;
     LV_CODIGOPATHCORTEMASIVO   := LR_GETCONFIGNFSMIGRAAD.CODIGO_PATH;
     IF LV_CODIGOAPPCORTEMASIVO IS NULL OR LV_CODIGOPATHCORTEMASIVO IS NULL THEN
-      LV_MSJERROR              := 'No se ha podido obtener la configuraci¿n de la ruta NFS';
+      LV_MSJERROR              := 'No se ha podido obtener la configuracion de la ruta NFS';
       RAISE LE_EXCEPTION;
     END IF;
     OPEN C_GET_REMITENTE_ASUNTO(LV_NOTI_PARAMETRO);
@@ -7689,7 +7689,7 @@ IS
       APEX_JSON.PARSE(LV_RESPUESTAGUARDARARCHIVO);
       LN_CODEGUARDARARCHIVO    := APEX_JSON.GET_NUMBER('code');
       IF LN_CODEGUARDARARCHIVO IS NULL OR LN_CODEGUARDARARCHIVO <> 200 THEN
-        LV_MSJERROR            := 'Ha ocurrido alg¿n error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
+        LV_MSJERROR            := 'Ha ocurrido algun error al generar el archivo en el NFS. Por favor consulte al Dep. de Sistemas!';
         RAISE LE_EXCEPTION_NFS;
       END IF;
       LN_COUNTARCHIVOSGUARDADOS    := APEX_JSON.GET_COUNT(P_PATH => 'data');

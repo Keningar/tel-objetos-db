@@ -1,14 +1,15 @@
 CREATE OR REPLACE package NAF47_TNET.PRKG_CONSULTA is
 
+
   /**
   * Documentacion para F_DESCRIPCION_INDIVIDUAL 
-  * Funci�n que retorna la descripci�n del tipo de centro de costos.
+  * Función que retorna la descripción del tipo de centro de costos.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 09/09/2020
   *
-  * @param Pn_TipoCCosto   IN NUMBER Recibe c�digo de tipo de centro de costo a consultar
-  * @param Pv_ReferenciaId IN VARCHAR2 Recibe C�digo de referencia a consultar
-  * @param Pv_RefEmpresaId IN VARCHAR2 Recibe C�digo de empresa a consultar
+  * @param Pn_TipoCCosto   IN NUMBER Recibe código de tipo de centro de costo a consultar
+  * @param Pv_ReferenciaId IN VARCHAR2 Recibe Código de referencia a consultar
+  * @param Pv_RefEmpresaId IN VARCHAR2 Recibe Código de empresa a consultar
   */
   FUNCTION F_DESCRIPCION_INDIVIDUAL (Pn_TipoCCosto   IN NUMBER,
                                      Pv_ReferenciaId IN VARCHAR2,
@@ -16,11 +17,11 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONSULTA is
   --
   /**
   * Documentacion para F_DESCRIPCION_CCOSTO 
-  * Funci�n que retorna la descripci�n del tipo de centro de costos y las concatena.
+  * Función que retorna la descripción del tipo de centro de costos y las concatena.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 09/09/2020
   *
-  * @param Pn_CCostoId IN NUMBER Recibe c�digo centro de costo a consultar
+  * @param Pn_CCostoId IN NUMBER Recibe código centro de costo a consultar
   */
   FUNCTION F_DESCRIPCION_CCOSTO (Pn_CCostoId IN NUMBER) RETURN VARCHAR2;
   --

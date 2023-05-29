@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REGULARIZACION_SOL_DES
 AS
   /**
-  * Documentaci�n para PROCEDURE 'P_REGULARIZACION_SOL_DESC_T'.
+  * Documentación para PROCEDURE 'P_REGULARIZACION_SOL_DESC_T'.
   *
-  * Proceso de ejecuci�n diaria a travez de un JOB para la regularizacion
+  * Proceso de ejecución diaria a travez de un JOB para la regularizacion
   * de solicitudes de descuento
   *
   *
@@ -331,12 +331,12 @@ AS
               SER.DESCUENTO_UNITARIO     = Ln_ValorDesc
             WHERE SER.ID_SERVICIO        = Lr_PlnNoSolDescuento.ID_SERVICIO;
             IF Ln_PorcentajeDescuento    > 0 THEN
-              Lcl_ObservHistorialServ :=  'Se crea la solicitud de descuento de forma autom�tica por traslado: ' || ' <br> ' || 
+              Lcl_ObservHistorialServ :=  'Se crea la solicitud de descuento de forma automática por traslado: ' || ' <br> ' || 
                                           'Precio venta: <b>' || Lr_PlnNoSolDescuento.PRECIO_VENTA || '</b>,<br> ' || 
                                           'Descuento: <b>' || Ln_PorcentajeDescuento || '%</b>,<br> ' || 
                                           'Valor descuento: <b>' || Ln_ValorDesc || '</b>';
             ELSE
-              Lcl_ObservHistorialServ :=  'Se crea la solicitud de descuento de forma autom�tica por traslado: ' || ' <br> ' || 
+              Lcl_ObservHistorialServ :=  'Se crea la solicitud de descuento de forma automática por traslado: ' || ' <br> ' || 
                                           'Precio venta: <b>' || Lr_PlnNoSolDescuento.PRECIO_VENTA || '</b>,<br> ' || 
                                           'Valor descuento: <b>' || Ln_ValorDesc || '</b>';
             END IF;
@@ -391,7 +391,7 @@ AS
   CLOSE Lc_GetPlnNoSolDescuento;
   EXCEPTION
   WHEN OTHERS THEN
-    Lv_MsjError := 'Error en la ejecuci�n del PROCESO DE REGULARIZACION DIARIA de servicios con descuento sin solicitudes de descuento ' 
+    Lv_MsjError := 'Error en la ejecución del PROCESO DE REGULARIZACION DIARIA de servicios con descuento sin solicitudes de descuento ' 
                     || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK 
                     || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
     ROLLBACK;

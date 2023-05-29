@@ -199,7 +199,7 @@ IS
     RETURN Lr_InfoDocumentoHistorial;
     -- 
    /**
-  * Documentaci�n para funcion 'F_XMLBLOG'.
+  * Documentación para funcion 'F_XMLBLOG'.
   * Funcion para Convertir campo XMLTYPE a BLOG
   *
   * PARAMETROS:
@@ -213,7 +213,7 @@ IS
     RETURN BLOB;    
     --
   /**
-  * Documentaci�n para funcion 'F_GENERATORCLAVE'.
+  * Documentación para funcion 'F_GENERATORCLAVE'.
   * Funcion para obtener Clave de Acceso a generarse en base a algoritmo java
   *
   * PARAMETROS:
@@ -241,7 +241,7 @@ IS
    RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para funcion 'F_GENERA_PASSWD_SHA256'.
+  * Documentación para funcion 'F_GENERA_PASSWD_SHA256'.
   * Funcion para obtener password del Usuario a generarse en base a algoritmo java
   *
   * PARAMETROS:
@@ -255,7 +255,7 @@ IS
    RETURN VARCHAR2; 
    --
   /**
-  * Documentaci�n para funcion 'F_GET_TOTAL_IMPUESTO'.
+  * Documentación para funcion 'F_GET_TOTAL_IMPUESTO'.
   * Funcion para obtener registro de totales de impuesto por id documento
   *
   * PARAMETROS:
@@ -269,7 +269,7 @@ IS
     RETURN Lr_TotalImpuesto;
     --  
   /**
-  * Documentaci�n para funcion 'GET_DIFERENCIA_XML'.
+  * Documentación para funcion 'GET_DIFERENCIA_XML'.
   * Funcion para verificar si los Valores del Documento estan cuadrados
   *
   * PARAMETROS:
@@ -298,7 +298,7 @@ IS
   * Pclob_Comprobante           OUT CLOB,           Retorna el comprobante XML
   * Pv_NombreComprobante        OUT VARCHAR2,       Retorna el nombre de comprobante
   * Pv_NombreTipoComprobante    OUT VARCHAR2,       Retorna el nombre del tipo del comprobante
-  * Pv_Anio                     OUT VARCHAR2,       Retorna el a�o en el que se genera el comprobante
+  * Pv_Anio                     OUT VARCHAR2,       Retorna el año en el que se genera el comprobante
   * Pv_Mes                      OUT VARCHAR2,       Retorna el mes en el que se genera el comprobante
   * Pv_Dia                      OUT VARCHAR2,       Retorna el dia en el que se genera el comprobante
   * Pv_MessageError             OUT VARCHAR2        Retorna un mensaje de error si llega existir
@@ -319,13 +319,13 @@ IS
   * @author Alexander Samaniego <awsamaniego@telconet.ec>
   * @version 1.5 01-07-2016 Se envia la oficina en la funcion que retorna la direccion sucursal
   * @author Gina Villalba <gvillalba@telconet.ec>
-  * @version 1.6 18-07-2016 Se cambia la utilizacion de la funcion GET_VARCHAR_CLEAN_CLIENTE para la direcci�n
+  * @version 1.6 18-07-2016 Se cambia la utilizacion de la funcion GET_VARCHAR_CLEAN_CLIENTE para la dirección
   * de envio
   * @author Gina Villalba <gvillalba@telconet.ec>
-  * @version 1.7 31-08-2016 Se agrega el Id persona rol para obtener la informaci�n del pago
+  * @version 1.7 31-08-2016 Se agrega el Id persona rol para obtener la información del pago
   * de envio
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.8 22-09-2016 - Se verifica que al actualizar el comprobante electr�nico de un documento se actualice el campo 'FE_EMISION' de la tabla
+  * @version 1.8 22-09-2016 - Se verifica que al actualizar el comprobante electrónico de un documento se actualice el campo 'FE_EMISION' de la tabla
   *                           'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB'
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.9 27-09-2016 - Se agregan los tags de 'COMPENSACIONES' requeridos por SRI al formato XML cuando el cliente es 'COMPENSADO'.
@@ -333,28 +333,28 @@ IS
   *                           DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB es diferente de NULL y mayor que CERO.
   *                           Adicional se eliminan los tags de 'COMPENSACION' y 'FORMA_PAGO' de los campos adicionales.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.0 10-10-2016 - Se modifica la funci�n a�adiendo como campo adicional el tag de 'contribucionSolidaria'. Adicional se modifica la
-  *                           la funci�n 'GET_INFODOCUMENTOXML' a�adiendo el par�metro 'Pv_CodEmpresa'
+  * @version 2.0 10-10-2016 - Se modifica la función añadiendo como campo adicional el tag de 'contribucionSolidaria'. Adicional se modifica la
+  *                           la función 'GET_INFODOCUMENTOXML' añadiendo el parámetro 'Pv_CodEmpresa'
   * @author Edson Franco <efranco@telconet.ec>
   * @version 2.1 13-10-2016 - Se parametrizan las validaciones para la longitud de los tags 'dirMatriz' y 'campoAdicional'.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.2 15-10-2016 - Se env�a el punto de facturaci�n a la funci�n GET_INFODOCUMENTOXML para poder obtener la forma de pago del punto
+  * @version 2.2 15-10-2016 - Se envía el punto de facturación a la función GET_INFODOCUMENTOXML para poder obtener la forma de pago del punto
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.3 03-01-2017 - Se modifica procedimiento para enviar a la funci�n 'F_SET_ATTR_CONSUMO_CLIENTE' el a�o de consumo para ser mostrado en
-  *                           la informaci�n adicional de la factura. El cambio solo aplica para TN.
+  * @version 2.3 03-01-2017 - Se modifica procedimiento para enviar a la función 'F_SET_ATTR_CONSUMO_CLIENTE' el año de consumo para ser mostrado en
+  *                           la información adicional de la factura. El cambio solo aplica para TN.
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
   * @version 2.4 18-04-2017 - Se agrega el tag 'fpagoCliente' como campo adicional con el objetivo de enviar la forma del pago del cliente dentro
   *                           del documento xml.
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
   * @version 2.5 20-09-2017 - Se agrega el validacion dentro de los detalles del documento en el tag descripcion, se modifica el contenido que 
-  *                            presenta, se realiza la llamada a la funci�n F_GET_DESCRIPCION_DET el cual retornar� la descripcion respectiva por 
+  *                            presenta, se realiza la llamada a la función F_GET_DESCRIPCION_DET el cual retornará la descripcion respectiva por 
   *                           tipo de facturacion (reactivacion, proporcional, mensual, contrato, req clientes, cambioPrecio) unicamente para MD.
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 2.6 04-12-2017 - Se agrega funcionalidad por Facturacion OFFLINE:
   *                           Se realiza con la generacion del comprobante electronico en DB_FINANCIERO, la creacion del documento en INFO_DOCUMENTO 
   *                           de DB_COMPROBANTES, asi como del usuario y usuarioEmpresa de no existir.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 2.7 08-01-2018 - Se modifica Procedimiento para que en los querys no sea tomada la empresa en sesion, como mejora se realiza cambio para 
   *                           que se tome la Empresa asignada a la Oficina que emitio el Documento sea factura o NC.
   *                           Se agrega llamada a la funcion F_GENERA_PASSWD_SHA256 para la generacion de PASSWORD que sera ingresado en ADMI_USUARIO 
@@ -364,7 +364,7 @@ IS
   *                           Se realiza mejora en el calculo de F_SUM_IMPUESTO_ICE_DET, para que calcule correctamente la base imponible del IVA incluyendo 
   *                           el impuesto ICE.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 2.8 06-02-2018 - Se modifica que cuando se trata de un reenvio se tome la clave de acceso de INFO_DOCUMENTO para la regeneracion del XML
   * con la misma clave de acceso ya que Proceso de Descarte Automatico, nuleaba la clave de acceso, lo cual es un proceso incorrecto para el proceso de facturacion offline.
   * Creacion de historial para el caso de documentos descuadrados unicamente cuando el mensaje sea nuevo, para evitar duplicidad de registros innecesarias. 
@@ -372,12 +372,12 @@ IS
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 2.9
   * @since 08-11-2018
-  * Se realiza el rec�lculo de impuestos cuando el documento no cuadra. Este proceso inserta historial por cambio de valores en la cabecera.
+  * Se realiza el recálculo de impuestos cuando el documento no cuadra. Este proceso inserta historial por cambio de valores en la cabecera.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 3.0
-  * @since 13-01-2021 - Se realiza validaci�n para activar las facturas (FAC, FACP) del proceso Offline, 
-  *                     antes de ser enviada al SRI por medio de la consulta de un par�metro.
+  * @since 13-01-2021 - Se realiza validación para activar las facturas (FAC, FACP) del proceso Offline, 
+  *                     antes de ser enviada al SRI por medio de la consulta de un parámetro.
   * Costo C_GetParametroActivaFact: 3
   *
   *
@@ -408,7 +408,7 @@ IS
       Pv_MessageError OUT VARCHAR2);
     --
     /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_USUARIO_COMP_ELECT'.
+  * Documentación para PROCEDURE 'P_INSERT_USUARIO_COMP_ELECT'.
   * Procedure que me permite el ingreso de usuario en DB_COMPROBANTE
   *
   * PARAMETROS:
@@ -425,7 +425,7 @@ IS
             Prf_AdmiUsuario IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_AdmiUsuario,
             Pv_MsnError     OUT VARCHAR2);
  /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_USUARIOEMP_COMP_ELECT'.
+  * Documentación para PROCEDURE 'P_INSERT_USUARIOEMP_COMP_ELECT'.
   * Procedure que me permite el ingreso de usuario por empresa en DB_COMPROBANTE
   *
   * PARAMETROS:
@@ -443,7 +443,7 @@ IS
             Pv_MsnError            OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_DOCUMENTO'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_DOCUMENTO'.
   * Procedure que me permite el ingreso de info_documento en DB_COMPROBANTES
   *
   * PARAMETROS:
@@ -460,7 +460,7 @@ IS
             Prf_InfoDocumento IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_InfoDocumento,
             Pv_MsnError       OUT VARCHAR2);
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DOCUMENTO'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DOCUMENTO'.
   * Procedure que me permite actualizar info_documento en DB_COMPROBANTES
   *
   * PARAMETROS:
@@ -477,7 +477,7 @@ IS
             Prf_InfoDocumento IN DB_FINANCIERO.FNCK_COM_ELECTRONICO.Lr_InfoDocumento,
             Pv_MsnError       OUT VARCHAR2);
   /**
-  * Documentaci�n para PROCEDURE 'INSERT_COMP_ELECTRONICO'.
+  * Documentación para PROCEDURE 'INSERT_COMP_ELECTRONICO'.
   * Procedure que me permite crear el comprobante electronico
   *
   * PARAMETROS:
@@ -491,7 +491,7 @@ IS
             Prf_ComprobanteElectronico IN FNCK_COM_ELECTRONICO.Lr_ComprobanteElectronico,
             Pv_MsnError                OUT VARCHAR2);            
    /**
-  * Documentaci�n para PROCEDURE 'UPDATE_COMP_ELECTRONICO'.
+  * Documentación para PROCEDURE 'UPDATE_COMP_ELECTRONICO'.
   * Procedure que me permite actualizar el comprobante electronico
   *
   * PARAMETROS:
@@ -523,12 +523,12 @@ IS
   * @version 1.3 05-07-2016
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.4 06-10-2016 - Se parametrizan las validaciones para la longitud del tag 'descripcion'.
-  * @author  Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.5 08-03-2017 - Se agrega llamada a funci�n que retorna una cadena eliminando caracteres considerados inv�lidos dentro de un tag xml 
+  * @author  Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.5 08-03-2017 - Se agrega llamada a función que retorna una cadena eliminando caracteres considerados inválidos dentro de un tag xml 
                               para este caso del tag 'descripcion'.
   * @author  Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.6 09-06-2021 - Se mueve funci�n F_SPLIT_DESCRIPCION_DET en el cursor C_GetDocumentoDetDescripXML para realizar split a la 
-  *                           descripci�n previo a la validaci�n que realiza la funci�n de F_VALIDACION_FORMATO_XML.
+  * @version 1.6 09-06-2021 - Se mueve función F_SPLIT_DESCRIPCION_DET en el cursor C_GetDocumentoDetDescripXML para realizar split a la 
+  *                           descripción previo a la validación que realiza la función de F_VALIDACION_FORMATO_XML.
   */
   FUNCTION COMP_ELEC_DET(
       Fn_IdDocumento INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -561,7 +561,7 @@ IS
   * @version 1.2 07-07-2016 Se quita el uso del TRUNC para cabeceras y se permite el redondeo
   * @version 1.0
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 16-10-2016 - Se realiza una validaci�n para considerar el total de los detalles sin impuestos, es decir los que no pagan IVA, 
+  * @version 1.3 16-10-2016 - Se realiza una validación para considerar el total de los detalles sin impuestos, es decir los que no pagan IVA, 
   *                           cuando la factura tiene detalles adicionales que si pagan el impuesto de IVA
   */
   FUNCTION IMPUESTOS_CAB(
@@ -616,9 +616,9 @@ IS
   * Pn_TotalDescuento        IN INFO_DOCUMENTO_FINANCIERO_CAB.SUBTOTAL%TYPE,                Recibe el total de descuento del comprobante
   * Pn_ReferenciaDocId       IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE             Recibe la referencia (id documento) en caso de que sea NC
   * Pn_IdPersonaRol          IN INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE                Recibe la referencia (id persona rol)
-  * Pv_CodEmpresa            IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE            Recibe el c�digo de la empresa a la que pertenece el
+  * Pv_CodEmpresa            IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE            Recibe el código de la empresa a la que pertenece el
   *                                                                                         documento
-  * Pn_IdPunto               IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE   Id del punto de facturaci�n
+  * Pn_IdPunto               IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE   Id del punto de facturación
   *
   * Retorna:
   * En tipo xmltype la infirmacion tributaria del cliente
@@ -637,21 +637,21 @@ IS
   * @version 1.4 31-08-2016
   * @since 1.0
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.5 16-09-2016 - Se a�ade como parte de la cabecera del XML los tags de 'COMPENSACION' mediante la funci�n 
+  * @version 1.5 16-09-2016 - Se añade como parte de la cabecera del XML los tags de 'COMPENSACION' mediante la función 
   *                           'DB_FINANCIERO.FNCK_COM_ELECTRONICO.F_GET_CONTRIBUCION_SOLIDARIA'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.6 10-10-2016 - Se a�ade el par�metro 'Pv_CodEmpresa', adicional se modifica la funci�n 'F_GET_CONTRIBUCION_SOLIDARIA' para enviarle
-  *                           como par�metros las variables 'Pv_CodEmpresa' y 'Pv_TipoDocumento' para verificar posteriormente si deben o no aparecer
+  * @version 1.6 10-10-2016 - Se añade el parámetro 'Pv_CodEmpresa', adicional se modifica la función 'F_GET_CONTRIBUCION_SOLIDARIA' para enviarle
+  *                           como parámetros las variables 'Pv_CodEmpresa' y 'Pv_TipoDocumento' para verificar posteriormente si deben o no aparecer
   *                           los tags de compensaciones.
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.7 13-10-2016 - Se parametrizan las validaciones para la longitud de los tags 'dirEstablecimiento', 'razonSocialComprador' e 
   *                           'identificacionComprador'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.8 15-10-2016 - Se recibe como par�metro el punto de facturaci�n para obtener la forma de pago por punto del cliente.
+  * @version 1.8 15-10-2016 - Se recibe como parámetro el punto de facturación para obtener la forma de pago por punto del cliente.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.9 24-10-2016 - Se modifica la funci�n 'IMPUESTOS_CAB' para que retorne los tags correspondientes al 'totalConImpuestos'
+  * @version 1.9 24-10-2016 - Se modifica la función 'IMPUESTOS_CAB' para que retorne los tags correspondientes al 'totalConImpuestos'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.0 02-12-2016 - Se modifica el cursor 'C_GetInfoDocNotaCredito' para enviar el valor de compensaci�n calculado al XML.
+  * @version 2.0 02-12-2016 - Se modifica el cursor 'C_GetInfoDocNotaCredito' para enviar el valor de compensación calculado al XML.
   */
   FUNCTION GET_INFODOCUMENTOXML(
       Pn_IdDocumento           IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -687,7 +687,7 @@ IS
      * Funcion que obtiene el codigo de la forma de pago del SRI
      * Fn_IdPersonaRol     IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE                     Recibe el Id persona empresa rol
      * Fn_BaseImponible    IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.PRECIO_VENTA_FACPRO_DETALLE%TYPE  Recibe el Valor total facturado
-     * Fn_IdPunto          IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE                     Id del punto de facturaci�n
+     * Fn_IdPunto          IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE                     Id del punto de facturación
      * Retorna:
      * Retorna un xmltype con la forma de pago asociada al cliente
      * @author Gina Villalba <gvillalba@telconet.ec>
@@ -697,17 +697,17 @@ IS
      * @author Gina Villalba <gvillalba@telconet.ec>
      * @version 1.1 03-09-2016
      * @author Edson Franco <efranco@telconet.ec>
-     * @version 1.2 07-09-2016 - Se cambia la validaci�n para obtener la forma de pago asociada al cliente. Primero se busca la forma de pago ligada
+     * @version 1.2 07-09-2016 - Se cambia la validación para obtener la forma de pago asociada al cliente. Primero se busca la forma de pago ligada
      *                           al contrato, en caso de no existir se busca la forma de pago ligada al cliente o pre-cliente es decir, se busca el
      *                           el campo FORMA_PAGO_ID ingresada en la DB_COMERCIAL.INFO_PERSONA_EMP_FORMA_PAGO.
      * @author Edson Franco <efranco@telconet.ec>
-     * @version 1.3 19-09-2016 - Se cambia la validaci�n para obtener el c�digo de SRI que retorna la forma de pago asociada al cliente o al contrato
-     *                           Se verifica si la forma de pago asociada al cliente es 'DEBITO', si lo es se debe verificar si es d�bito por 
-     *                           'TARJETA' para enviar el c�digo del SRI respectivo asociado a la forma de pago de 'TARJETA DE CREDITO', caso
-     *                           contrario se debe seguir enviando el c�digo del SRI que tiene asociado la forma de pago 'DEBITO'
+     * @version 1.3 19-09-2016 - Se cambia la validación para obtener el código de SRI que retorna la forma de pago asociada al cliente o al contrato
+     *                           Se verifica si la forma de pago asociada al cliente es 'DEBITO', si lo es se debe verificar si es débito por 
+     *                           'TARJETA' para enviar el código del SRI respectivo asociado a la forma de pago de 'TARJETA DE CREDITO', caso
+     *                           contrario se debe seguir enviando el código del SRI que tiene asociado la forma de pago 'DEBITO'
      * @author Edson Franco <efranco@telconet.ec>
-     * @version 1.4 15-10-2016 - Se recibe el id del punto de facturaci�n para poder obtener la forma de pago por punto del cliente, en caso de
-     *                           existir un error se retornar� en NULL el XMLTYPE.
+     * @version 1.4 15-10-2016 - Se recibe el id del punto de facturación para poder obtener la forma de pago por punto del cliente, en caso de
+     *                           existir un error se retornará en NULL el XMLTYPE.
      */
     FUNCTION GET_FORMA_PAGO_SRI(
         Fn_IdPersonaRol   IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE,
@@ -735,7 +735,7 @@ IS
      * @version 1.2 22-08-2016
      * Se agrega la reestriccion para el caracter ".", debido a la valicacion del SRI
      * @author Edson Franco <efranco@telconet.ec>
-     * @version 1.3 07-09-2016 - Se agrega que permita los caracteres '&', '�' y '�'. Adicional que cuando sea '�' y/o '�' los convierta a 'N' y/o 'n'
+     * @version 1.3 07-09-2016 - Se agrega que permita los caracteres '&', 'Ñ' y 'ñ'. Adicional que cuando sea 'Ñ' y/o 'ñ' los convierta a 'N' y/o 'n'
      */
     FUNCTION GET_VARCHAR_CLEAN_CLIENTE(
         Fv_Cadena IN VARCHAR2)
@@ -750,13 +750,13 @@ IS
     * @version 1.0 14-10-2014
     * @version 1.1 30-05-2016
     *
-    * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+    * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
     * @version 1.2 06-12-2017
-    * Se agrega a la creacion del comprobante electronico la migraci�n del Documento en DB_COMPROBANTES
+    * Se agrega a la creacion del comprobante electronico la migración del Documento en DB_COMPROBANTES
     *
-    * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+    * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
     * @version 1.3 30-01-2018
-    * Se aumenta el tama�o de  Pv_MessageError  a VARCHAR2(4000)
+    * Se aumenta el tamaño de  Pv_MessageError  a VARCHAR2(4000)
     *
     * @author Sofia Fernandez <sfernandez@telconet.ec>
     * @version 1.4 13-04-2018
@@ -769,20 +769,20 @@ IS
     * @author Luis Cabrera <lcabrera@telconet.ec>
     * @version 1.6
     * @since 29-08-2018
-    * Se agrega el par�metro Pv_CodEmpresa. Por defecto es NULL y ejecuta facturaci�n para todas las empresas.
-    * Si se env�a el Pv_CodEmpresa se realiza la facturaci�n �nicamente para esa empresa.
+    * Se agrega el parámetro Pv_CodEmpresa. Por defecto es NULL y ejecuta facturación para todas las empresas.
+    * Si se envía el Pv_CodEmpresa se realiza la facturación únicamente para esa empresa.
     * Se ordenan las empresas que se obtienen en el Cursor C_GetRucEmpresa para realizar el proceso primero por TN y luego MD.
     *
     * @author Luis Cabrera <lcabrera@telconet.ec>
     * @version 1.7
     * @since 08-11-2018
     * Se modifica la variable Pv_UsrCreacion a 'telcos_CompElec'
-    * Se modifica la documentaci�n escrita en la cuerpo del paquete.
+    * Se modifica la documentación escrita en la cuerpo del paquete.
     *
-    * @author Jos� Candelario <jcandelario@telconet.ec>
+    * @author José Candelario <jcandelario@telconet.ec>
     * @version 1.8
     * @since 11-02-2021
-    * Se agrega el par�metro de entrada Pv_FechaEjecucion para que proceso obtenga los documentos que se crearon antes de la fecha 
+    * Se agrega el parámetro de entrada Pv_FechaEjecucion para que proceso obtenga los documentos que se crearon antes de la fecha 
     * recibida.
     */
     PROCEDURE CREA_COMP_ELECTRONICO_MASIVO (Pv_FechaEjecucion IN VARCHAR2,
@@ -855,10 +855,10 @@ IS
   * @version 1.4 14-07-2016 Se agrega segunda evaluacion sin redondeo para cuadratura, unicamente si en la evaluacion con
   * redondeo genera diferencias
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.5 16-09-2016 - Se actualiza la validaci�n de los valores cuadrados, tomando en cuenta el valor de compensaci�n obtenido para el
+  * @version 1.5 16-09-2016 - Se actualiza la validación de los valores cuadrados, tomando en cuenta el valor de compensación obtenido para el
   *                           cliente en su documento
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.6 02-12-2016 - Se actualiza la validaci�n de los valores cuadrados, calculando el valor de compensaci�n s�lo de los productos y/o
+  * @version 1.6 02-12-2016 - Se actualiza la validación de los valores cuadrados, calculando el valor de compensación sólo de los productos y/o
   *                           planes que pagan IVA
   */
   FUNCTION GET_DIFERENCIA_DOC(
@@ -955,10 +955,10 @@ IS
   * @author Edson Franco <efranco@telconet.ec>
   * @version 2.0 06-10-2016 - Se parametrizan las validaciones para la longitud del tag 'campoAdicional'.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.1 03-01-2017 - Se agrega variable 'Fv_AnioConsumo' para mostrar en el tag de consumo de la informaci�n adicional el a�o a la cual
-  *                           pertenece la factura emitida. Dicha validaci�n se parametriza puesto que solo debe aplicar por el momento a TN.
+  * @version 2.1 03-01-2017 - Se agrega variable 'Fv_AnioConsumo' para mostrar en el tag de consumo de la información adicional el año a la cual
+  *                           pertenece la factura emitida. Dicha validación se parametriza puesto que solo debe aplicar por el momento a TN.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 2.2 07-02-2018 - Se modifica XML Tags de CONSUMOCLIENTE generando en mayuscula la informacion requerida para poder validar XSD.
   *
   */
@@ -986,7 +986,7 @@ IS
   * @author Gina Villalba <gvillalba@telconte.ec>
   * @version 1.1 13-07-2016
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.2 08-01-2018 -  Se realiza mejora para que calcule correctamente la base imponible para el calculo del IVA incluyendo 
   *                            el impuesto ICE, se modifica cursor C_GetTipoImpuesto  para que verifique el Impuesto 
   *                            asignado al detalle del documento y no solo por codigo de impuesto sri, ya que existen mas registros de Imp.IVA 
@@ -1008,10 +1008,10 @@ IS
   * @author Alexander Samaniego <awsamaniego@telconte.ec>
   * @version 1.0 04-07-2016
   * @author Edson Franco <efranco@telconte.ec>
-  * @version 1.1 20-01-2017 - Se quita el TRUNC de la funci�n para que sean tomado en cuenta todos los decimales en la suma del impuesto con el 
+  * @version 1.1 20-01-2017 - Se quita el TRUNC de la función para que sean tomado en cuenta todos los decimales en la suma del impuesto con el 
   *                           subtotal
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.2 08-01-2018 -  Se realiza mejora para que calcule correctamente la base imponible para el calculo del IVA incluyendo 
   *                            el impuesto ICE, se modifica cursor C_GetTipoImpuesto  para que verifique el Impuesto 
   *                            asignado al documento y no solo por codigo de impuesto sri, ya que existen mas registros de Imp.IVA 
@@ -1052,22 +1052,22 @@ IS
   /**
   * Documentacion para la funcion F_SET_ATTR_CONTRIBUCION
   *
-  * Funci�n que retorna el tag de 'contribucionSolidaria' como campo adicional al XML de un documento
+  * Función que retorna el tag de 'contribucionSolidaria' como campo adicional al XML de un documento
   *
-  * @param Fv_CodEmpresa        IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             C�digo de la empresa a la que pertenece el documento
+  * @param Fv_CodEmpresa        IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE             Código de la empresa a la que pertenece el documento
   * @param Fn_IdPunto           IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                        Id del punto del cliente
   * @param Fn_IdPersonalRol     IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE    Id del cliente
   * @param Fn_IdDocumento       IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE              Id del documento al cual se le va a crear el XML
-  * @param Fv_CodeTipoDocumento IN ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE    C�digo del tipo de documento que se va a crear el XML
+  * @param Fv_CodeTipoDocumento IN ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE    Código del tipo de documento que se va a crear el XML
   * @param Fn_SectorId          IN DB_COMERCIAL.INFO_PUNTO.SECTOR_ID%TYPE                       Id del sector al que pertenece el punto del cliente
-  * @param Fn_OficinaId         IN DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE              Id de la oficina de facturaci�n
+  * @param Fn_OficinaId         IN DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE              Id de la oficina de facturación
   *
   * @return XMLTYPE Con los tags respectivos a la COMPENSACION
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.1 16-09-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 16-10-2016 - Se modifica la funci�n para que calcule el valor de compensaci�n del 2% de los productos que aplican IVA.
+  * @version 1.2 16-10-2016 - Se modifica la función para que calcule el valor de compensación del 2% de los productos que aplican IVA.
   */
   FUNCTION F_SET_ATTR_CONTRIBUCION(
       Fv_CodEmpresa        IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -1082,7 +1082,7 @@ IS
    /**
     * Documentacion para la funcion F_SET_ATTR_DET_ADICIONAL
     *
-    * Funci�n que retorna el tag de 'Detalle Adicional' como campo adicional al XML de un documento
+    * Función que retorna el tag de 'Detalle Adicional' como campo adicional al XML de un documento
     */
 
     FUNCTION F_SET_ATTR_DET_ADICIONAL(
@@ -1093,7 +1093,7 @@ IS
   /**
   * Documentacion para la funcion F_GET_CONTRIBUCION_SOLIDARIA
   *
-  * Funcion que retorna los tags respectivos a la COMPENSACION que ser� a�adidos a la cabecera del XML. 
+  * Funcion que retorna los tags respectivos a la COMPENSACION que será añadidos a la cabecera del XML. 
   * Tag de ejemplo seria: <compensaciones>
   *                         <compensacion>
   *                           <codigo></codigo>
@@ -1109,8 +1109,8 @@ IS
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 16-09-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 10-10-2016 - Se agregan dos par�metros 'Pv_CodEmpresa' y 'Pv_CodTipoDocumento' los cuales ayudar�n a verificar si el tag debe
-  *                           aparecer o no en el XML que se enviar� al SRI.
+  * @version 1.1 10-10-2016 - Se agregan dos parámetros 'Pv_CodEmpresa' y 'Pv_CodTipoDocumento' los cuales ayudarán a verificar si el tag debe
+  *                           aparecer o no en el XML que se enviará al SRI.
   */
   FUNCTION F_GET_CONTRIBUCION_SOLIDARIA(
       Pn_DescuentoCompensacion IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.DESCUENTO_COMPENSACION%TYPE,
@@ -1124,9 +1124,9 @@ IS
   * Funcion que obtiene el codigo de la forma de pago del SRI dependiendo del BANCO_TIPO_CUENTA que tenga asociado el contrato o el cliente.
   *
   * @param Fn_IdContratoOrPersona IN NUMBER     Id del Contrato asociado al cliente o el id de la PERSONA_EMPRESA_ROL
-  * @param Fv_Filtro              IN VARCHAR2   Par�metro que indica si se debe buscar por CONTRATO o por PERSONA
-  * @param Fv_CodigoFormaPago     IN DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_FORMA_PAGO%TYPE      C�digo de la forma de pago que se desea buscar
-  * @param Fv_CodigoSri           IN DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_SRI%TYPE     C�digo del SRI que tiene asociada la forma de pago
+  * @param Fv_Filtro              IN VARCHAR2   Parámetro que indica si se debe buscar por CONTRATO o por PERSONA
+  * @param Fv_CodigoFormaPago     IN DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_FORMA_PAGO%TYPE      Código de la forma de pago que se desea buscar
+  * @param Fv_CodigoSri           IN DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_SRI%TYPE     Código del SRI que tiene asociada la forma de pago
   * 
   * @return DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_SRI%TYPE 
   *
@@ -1153,7 +1153,7 @@ IS
   * Funcion que valida el formato del tag del XML de acuerdo a las consideraciones expuestas en el XSD del SRI.
   *
   * @param Fv_Tag           IN VARCHAR2     Tag del xml que se va a validar
-  * @param Fv_Validador     IN VARCHAR2     Tipo de validaci�n que se va a realizar
+  * @param Fv_Validador     IN VARCHAR2     Tipo de validación que se va a realizar
   * @param Fv_ValorTag      IN VARCHAR2     Cadena que contiene lo que se desea escribir en el tag
   *
   * @return VARCHAR2
@@ -1168,12 +1168,12 @@ IS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para la funcion F_GET_VARCHAR_VALID_XML_VALUE
-  * Funci�n que retorna una cadena eliminando caracteres considerados inv�lidos dentro de un tag xml.
+  * Documentación para la funcion F_GET_VARCHAR_VALID_XML_VALUE
+  * Función que retorna una cadena eliminando caracteres considerados inválidos dentro de un tag xml.
   *
-  * Fv_Cadena  IN VARCHAR2, Texto que se evaluar� y del cual se eliminar�n los caracteres inv�lidos
+  * Fv_Cadena  IN VARCHAR2, Texto que se evaluará y del cual se eliminarán los caracteres inválidos
   * Retorna:
-  * En tipo varchar2 texto sin caracteres inv�lidos
+  * En tipo varchar2 texto sin caracteres inválidos
   *
   * @author Hector Ortega <haortega@telconet.ec>
   * @version 1.00 16-12-2016
@@ -1183,12 +1183,12 @@ IS
   RETURN VARCHAR2;
   --
   /**
-  * Documentaci�n para la funcion F_GET_DESCRIPCION_DET
+  * Documentación para la funcion F_GET_DESCRIPCION_DET
   *
-  * Funci�n que retorna la descripcion de la factura por tipo de facturacion 
+  * Función que retorna la descripcion de la factura por tipo de facturacion 
   * (reactivacion, proporcional, mensual, contrato, req clientes, cambioPrecio)
   * con la finalidad de realizar la busqueda del parametro dentro de la descripcion 
-  * para proceder a a�adirle el nombre del plan unicamente para MD. 
+  * para proceder a añadirle el nombre del plan unicamente para MD. 
   *
   * Fn_IdDocumento     IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE, Id del documento a consultar.
   * Fv_PrefijoEmpresa  IN VARCHAR2, Prefijo de empresa a consultar
@@ -1200,8 +1200,8 @@ IS
   * @version 1.00 16-12-2016
   *
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
-  * @version 1.01 06-10-2017 - Se realiza correcci�n se env�a idDocDetalle de la factura con esto 
-  *                            se proceder� a a�adir el nombre del plan a cada descripcion del detalle.
+  * @version 1.01 06-10-2017 - Se realiza corrección se envía idDocDetalle de la factura con esto 
+  *                            se procederá a añadir el nombre del plan a cada descripcion del detalle.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.00 31-07-2018 Se agrega usuario telcos_cancelacion para obtener la descripcion del documento.
@@ -1209,7 +1209,7 @@ IS
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.03
   * @since 14-11-2018
-  * Se agrega estructura de control que por defecto se retorne �nicamente la descripci�n del detalle.
+  * Se agrega estructura de control que por defecto se retorne únicamente la descripción del detalle.
   */
   FUNCTION F_GET_DESCRIPCION_DET(
     Fn_IdDocDetalle     IN INFO_DOCUMENTO_FINANCIERO_DET.ID_DOC_DETALLE%TYPE,
@@ -1218,7 +1218,7 @@ IS
   --
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DOC_FINANCIERO_CAB'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DOC_FINANCIERO_CAB'.
   * Procedure que me permite actualizar el estado de INFO_DOCUMENTO_FINANCIERO_CAB en DB_FINANCIERO
   *
   * PARAMETROS:
@@ -1236,8 +1236,8 @@ IS
   --
   --
   /**
-  * Documentaci�n para PROCEDURE 'F_GET_ULTIMO_ESTADO_DOC'.
-  * Funci�n que me permite obtener el �ltimo estado diferente de rechazado de un documento financiero.
+  * Documentación para PROCEDURE 'F_GET_ULTIMO_ESTADO_DOC'.
+  * Función que me permite obtener el último estado diferente de rechazado de un documento financiero.
   *
   * PARAMETROS:
   * @Param Fn_IdDocumento     IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE
@@ -1254,9 +1254,9 @@ IS
   --
   --
   /**
-   * Documentaci�n para PROCEDURE 'P_BAJA_PM_FACT_RECHAZADAS'.
+   * Documentación para PROCEDURE 'P_BAJA_PM_FACT_RECHAZADAS'.
    *
-   * Procedure da de Baja a los procesos masivos de reenv�o de facturas rechazadas, que no fueron procesados.
+   * Procedure da de Baja a los procesos masivos de reenvío de facturas rechazadas, que no fueron procesados.
    *
    * @author Hector Lozano <hlozano@telconet.ec>
    * @version 1.0 05-04-2022
@@ -1265,16 +1265,16 @@ IS
    --
    --
    /**
-   * Documentaci�n para PROCEDURE 'P_CREA_PM_FACT_RECHAZADAS'.
+   * Documentación para PROCEDURE 'P_CREA_PM_FACT_RECHAZADAS'.
    *
    * Procedure que genera un Proceso Masivo para enviar al SRI las facturas rechazadas, para ser reprocesadas.
    *
    * PARAMETROS:
-   * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesi�n)
-   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
-   * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creaci�n)
+   * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesión)
+   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
+   * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creación)
    * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo)
-   * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+   * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
    * @author Hector Lozano <hlozano@telconet.ec>
    * @version 1.0 20-01-2021
@@ -1287,13 +1287,13 @@ IS
   --
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_PROCESAR_FACT_RECHAZADAS'.
+  * Documentación para PROCEDURE 'P_PROCESAR_FACT_RECHAZADAS'.
   *
   * Procedure que procesa las facturas rechazadas.
   *
   * PARAMETROS:
-  * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
-  * @Param Pv_TipoTransaccion      IN  VARCHAR2 (Tipo de transacci�n 'UPDATE')
+  * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
+  * @Param Pv_TipoTransaccion      IN  VARCHAR2 (Tipo de transacción 'UPDATE')
   * @Param Pv_IdsDocumento         IN  VARCHAR2 (String de Id's Documentos separados por coma)
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -1310,14 +1310,14 @@ IS
   --
   --
   /**
-  * Documentaci�n para el procedimiento P_REPORTE_DOC_RECHAZADOS.
+  * Documentación para el procedimiento P_REPORTE_DOC_RECHAZADOS.
   *
-  * Procedimiento que ejecuta la generaci�n de reporte de NC autom�ticas,pagos,anticipos que estan enlazados a facturas sin gesti�n.
+  * Procedimiento que ejecuta la generación de reporte de NC automáticas,pagos,anticipos que estan enlazados a facturas sin gestión.
   *
   * PARAMETROS:
   * @param Pv_EmpresaCod      IN VARCHAR2   (Id de la empresa).
   * @param Pv_PrefijoEmpresa  IN VARCHAR2   (Prefijo de la empresa).
-  * @param Pv_EmailUsuario    IN VARCHAR2   (Correo a quien se env�a reporte).
+  * @param Pv_EmailUsuario    IN VARCHAR2   (Correo a quien se envía reporte).
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 25-01-2021
@@ -1331,9 +1331,9 @@ IS
   --
   --
   /**
-  * Documentaci�n para Funci�n 'F_SPLIT_DESCRIPCION_DET'.
+  * Documentación para Función 'F_SPLIT_DESCRIPCION_DET'.
   *
-  * Funci�n que separa una cadena de string demasiado larga.
+  * Función que separa una cadena de string demasiado larga.
   *
   * PARAMETROS:
   * @Param Fn_DescripcionDetalle   IN  INFO_DOCUMENTO_FINANCIERO_DET.OBSERVACIONES_FACTURA_DETALLE%TYPE  (Detalle del documento financiero)
@@ -1346,9 +1346,9 @@ IS
   --
   --
   /**
-  * Documentaci�n para Funci�n 'F_GET_FECHA_MAXIMA_PAGO'.
+  * Documentación para Función 'F_GET_FECHA_MAXIMA_PAGO'.
   *
-  * Funci�n que regresa la fecha maxima de pago estipulada en 10 dias en funcion del id del documento.
+  * Función que regresa la fecha maxima de pago estipulada en 10 dias en funcion del id del documento.
   *
   * PARAMETROS:
   * @Param Fn_IdDocumento   IN  INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  (Detalle del documento financiero)
@@ -1541,7 +1541,7 @@ BEGIN
   --
   CLOSE C_GetDetImpuestos;  
   --
-  --Solo ingresar� aqu� cuando la factura tenga todos sus detalles sin impuestos 
+  --Solo ingresará aquí cuando la factura tenga todos sus detalles sin impuestos 
   IF Lv_BanderaCalcularSinImpuesto = 'S' THEN  
     --
     OPEN C_GetDetImpuestosImpNull(Fn_IdDocumento, Lv_EstadoActivo, Lv_TipoImpuesto);
@@ -1817,7 +1817,7 @@ IS
     AND IDFC.ID_DOCUMENTO                        = Cn_IdDocumento
     AND IEG.PREFIJO                              = EMPDOC.CODIGO;   
 
-    --Cursor que obtiene el total de impuestos de un documento con la m�scara necesaria para que cuadren los valores.
+    --Cursor que obtiene el total de impuestos de un documento con la máscara necesaria para que cuadren los valores.
     --Costo: 5
     CURSOR C_ObtieneTotalImpuestos (Pn_DocumentoId DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.DOCUMENTO_ID%TYPE) IS
         SELECT SUM(TRIM(TO_CHAR(NVL(VALOR_IMPUESTO, 0), '99999999990D99'))) AS SUMA_IMPUESTOS
@@ -2264,7 +2264,7 @@ BEGIN
         -- Bloque que se realiza solo por Facturacion ONLINE, se verifica parametro Activo.
         IF Lv_OrigenDocumento ='Online' THEN
           --
-          /** Bloque que actualiza la Fecha de Emision del documento cuando se actualiza el comprobante electr�nico y crea un historial en el 
+          /** Bloque que actualiza la Fecha de Emision del documento cuando se actualiza el comprobante electrónico y crea un historial en el 
           * documento 
           **/
           IF UPPER(Pv_TipoTransaccion) = 'UPDATE' THEN
@@ -2280,7 +2280,7 @@ BEGIN
               --
               IF TRIM(Pv_MessageError) IS NOT NULL THEN
                 --
-                Pv_MessageError := Pv_MessageError || ' - Error al actualizar la fecha de emisi�n del documento(' || Pn_IdDocumento || ')';
+                Pv_MessageError := Pv_MessageError || ' - Error al actualizar la fecha de emisión del documento(' || Pn_IdDocumento || ')';
                 --
                 RAISE Lex_Exception;
               --
@@ -2294,8 +2294,8 @@ BEGIN
               Lr_InfoDocFinanCabHisto.FE_CREACION            := SYSDATE;
               Lr_InfoDocFinanCabHisto.USR_CREACION           := NVL(TRIM(Pv_UsrCreacion), Lv_UsrDefault);
               Lr_InfoDocFinanCabHisto.ESTADO                 := Lr_InfoDocFinanCab.ESTADO_IMPRESION_FACT;
-              Lr_InfoDocFinanCabHisto.OBSERVACION            := 'Se actualiza fecha de emisi�n del documento por actualizaci�n del comprobante '
-                                                              || 'electr�nico';
+              Lr_InfoDocFinanCabHisto.OBSERVACION            := 'Se actualiza fecha de emisión del documento por actualización del comprobante '
+                                                              || 'electrónico';
               DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocFinanCabHisto, Pv_MessageError);
               --
               IF TRIM(Pv_MessageError) IS NOT NULL THEN
@@ -2309,7 +2309,7 @@ BEGIN
             END IF;
             --
           END IF;
-          /** Fin del Bloque que actualiza la Fecha de Emision del documento cuando se actualiza el comprobante electr�nico y crea un historial en el 
+          /** Fin del Bloque que actualiza la Fecha de Emision del documento cuando se actualiza el comprobante electrónico y crea un historial en el 
           * documento 
           **/
         --
@@ -2690,7 +2690,7 @@ BEGIN
         END IF;
         --
         --
-        Pclob_Comprobante := REPLACE(REPLACE(LXML_Comprobante.GETCLOBVAL(), '�', 'n'), '�', 'N');
+        Pclob_Comprobante := REPLACE(REPLACE(LXML_Comprobante.GETCLOBVAL(), 'ñ', 'n'), 'Ñ', 'N');
         --
       ELSE
       --
@@ -2729,7 +2729,7 @@ BEGIN
             Lr_InfoDocFinanCabHisto.OBSERVACION            := 'Los valores de la factura no cuadran';            
             DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocFinanCabHisto, Pv_MessageError);            
 
-            --Se obtiene la suma de los impuestos con la m�scara TRIM(TO_CHAR(NVL(VALOR_IMPUESTO, 0), '99999999990D99')) para cuadrar el documento
+            --Se obtiene la suma de los impuestos con la máscara TRIM(TO_CHAR(NVL(VALOR_IMPUESTO, 0), '99999999990D99')) para cuadrar el documento
             OPEN  C_ObtieneTotalImpuestos (Pn_DocumentoId => Lr_InfoDocFinanCab.ID_DOCUMENTO);
             FETCH C_ObtieneTotalImpuestos INTO Lr_TotalImpuestos;
             CLOSE C_ObtieneTotalImpuestos;
@@ -2751,7 +2751,7 @@ BEGIN
             Lr_InfoDocFinanCabHisto.FE_CREACION            := SYSDATE;
             Lr_InfoDocFinanCabHisto.USR_CREACION           := 'FNCK_COM_ELECTRONICO';
             Lr_InfoDocFinanCabHisto.ESTADO                 := Lr_InfoDocFinanCab.ESTADO_IMPRESION_FACT;
-            Lr_InfoDocFinanCabHisto.OBSERVACION            := 'Se realiza el rec�lculo aut�matico de los impuestos para cuadrar el documento.';
+            Lr_InfoDocFinanCabHisto.OBSERVACION            := 'Se realiza el recálculo autómatico de los impuestos para cuadrar el documento.';
             DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocFinanCabHisto, Pv_MessageError);
             IF Pv_MessageError IS NOT NULL THEN
                 RAISE Lex_Exception;
@@ -3359,7 +3359,7 @@ END IMPUESTOS_DET;
           --
         END IF;
         --
-        --SOLO ingresar� aqu� cuando la factura tenga todos sus detalles sin impuestos 
+        --SOLO ingresará aquí cuando la factura tenga todos sus detalles sin impuestos 
         IF Lxml_CabImpuestosIvaIce IS NULL AND Lv_BanderaCalcularSinImpuesto = 'S' THEN
           --
           IF C_GetDetImpuestosXMLImpNull%ISOPEN THEN
@@ -3599,7 +3599,7 @@ END COMP_ELEC_DET;
   *                         primero el la INFO_PUNTO_CONTACTO y luego en la INFO_PERSONA_CONTACTO
   *
   * @author Robinson Salgado <rsalgado@telconet.ec>
-  * @version 1.3 05-07-2016 Se a�adio la concatenacion de un separador 
+  * @version 1.3 05-07-2016 Se añadio la concatenacion de un separador 
   *
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.4 22-08-2016 Se modifica la validacion del TDL mediante: 
@@ -3609,8 +3609,8 @@ END COMP_ELEC_DET;
   * @version 1.5 14-06-2017 Se agrega cursor para obtener la informacion del correo electronico y telefono de la 
   *                         INFO_PUNTO_DATO_ADICIONAL exclusivamente para .
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.6 08-07-2020 Se trunca consulta de data en query principal de cursores que obtienen informaci�n de formas de contacto.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.6 08-07-2020 Se trunca consulta de data en query principal de cursores que obtienen información de formas de contacto.
   *
   * @author Gustavo Narea <gnarea@telconet.ec>
   * @version 1.7 17-11-021 Se limita el listado de contactos al traerlo de base.
@@ -4652,7 +4652,7 @@ END GET_CANTON_FORMA_PAGO;
         --
       ELSE
         --
-        Lv_Error := 'No se encontr� forma de pago con los par�metros iniciales enviados (' || Fn_IdPersonaRol || '), (' || Fn_IdPunto ||'), (' 
+        Lv_Error := 'No se encontró forma de pago con los parámetros iniciales enviados (' || Fn_IdPersonaRol || '), (' || Fn_IdPunto ||'), (' 
                     || Fn_BaseImponible || ') - ';
         --
         RAISE Lex_Exception;
@@ -4661,7 +4661,7 @@ END GET_CANTON_FORMA_PAGO;
       --
     ELSE
       --
-      Lv_Error := 'No se pudo formar el tag de forma de pagos debido a que los par�metros iniciales no cumplen con la validaci�n inicial (' 
+      Lv_Error := 'No se pudo formar el tag de forma de pagos debido a que los parámetros iniciales no cumplen con la validación inicial (' 
                   || Fn_IdPersonaRol || '), (' || Fn_IdPunto ||'), (' || Fn_BaseImponible || ') - ';
       --
       RAISE Lex_Exception;
@@ -4689,7 +4689,7 @@ END GET_CANTON_FORMA_PAGO;
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                           'FNCK_COM_ELECTRONICO.GET_FORMA_PAGO_SRI', 
-                                          'No se pudo formar el tag de forma de pagos porque ocurri� una excepci�n en la funci�n (' 
+                                          'No se pudo formar el tag de forma de pagos porque ocurrió una excepción en la función (' 
                                           || Fn_IdPersonaRol || '), (' || Fn_IdPunto ||'), (' || Fn_BaseImponible || ') - ' || SQLCODE || ' -ERROR- '
                                           || SQLERRM, 
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
@@ -4715,7 +4715,7 @@ FUNCTION GET_VARCHAR_CLEAN(
     RETURN VARCHAR2
 IS
 BEGIN
-    RETURN TRIM(REPLACE(REPLACE(REPLACE(TRANSLATE(REGEXP_REPLACE(Fv_Cadena,'[^[:alnum:], ^[:space:]]', ''), '������,.������', 'AEIOUN  aeioun'), Chr(9), ' '), Chr(10), ' '), Chr(13), ' '));
+    RETURN TRIM(REPLACE(REPLACE(REPLACE(TRANSLATE(REGEXP_REPLACE(Fv_Cadena,'[^[:alnum:], ^[:space:]]', ''), 'ÁÉÍÓÚÑ,.áéíóúñ', 'AEIOUN  aeioun'), Chr(9), ' '), Chr(10), ' '), Chr(13), ' '));
     --
 
 END GET_VARCHAR_CLEAN;
@@ -4732,9 +4732,9 @@ BEGIN
             REPLACE(
             TRANSLATE(
             REGEXP_REPLACE(
-            REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|%|"]|[)]+$', ' ')
-            ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-            ,'������,������', 'AEIOUN aeioun')
+            REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|%|"]|[)]+$', ' ')
+            ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+            ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
             , Chr(9), ' ')
             , Chr(10), ' ')
             , Chr(13), ' '));
@@ -6109,7 +6109,7 @@ END F_SET_ATTR_CONSUMO_CLIENTE;
 * @author Gina Villalba <gvillalba@telconte.ec>
 * @version 1.1 13-07-2016
 *
-* @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+* @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
 * @version 1.2 08-01-2018 -  Se realiza mejora para que calcule correctamente la base imponible para el calculo del IVA incluyendo 
 *                            el impuesto ICE, se modifica cursor C_GetTipoImpuesto  para que verifique el Impuesto 
 *                            asignado al detalle del documento y no solo por codigo de impuesto sri, ya que existen mas registros de Imp.IVA 
@@ -7130,7 +7130,7 @@ END F_SET_ATTR_DET_ADICIONAL;
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                           'FNCK_COM_ELECTRONICO.F_VALIDACION_FORMATO_XML', 
-                                          'No se pudo realizar la validacion del formato XML con los par�metros enviados ( TAG: '|| Fv_Tag || 
+                                          'No se pudo realizar la validacion del formato XML con los parámetros enviados ( TAG: '|| Fv_Tag || 
                                           '; VALIDADOR: ' || Fv_Validador || '; VALOR_TAG: ' || Fv_ValorTag || ') - ' || SQLCODE || ' -ERROR- ' 
                                           || SQLERRM, 
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
@@ -7540,7 +7540,7 @@ END F_SET_ATTR_DET_ADICIONAL;
                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
       WHEN OTHERS THEN
       --
-        Pv_MsjResultado      := 'Ocurri� un error al guardar el Proceso Masivo '||Pv_TipoPma; 
+        Pv_MsjResultado      := 'Ocurrió un error al guardar el Proceso Masivo '||Pv_TipoPma; 
         ROLLBACK;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                              'FNCK_COM_ELECTRONICO.P_CREA_PM_FACT_RECHAZADAS', 
@@ -7815,7 +7815,7 @@ END F_SET_ATTR_DET_ADICIONAL;
           --ACTUALIZO DETALLE DE PROCESO MASIVO A BAJA  
           --
           Lr_InfoProcesoMasivoDet.ID_PROCESO_MASIVO_DET  := Ln_IdProcesoMasivoDet;
-          Lr_InfoProcesoMasivoDet.OBSERVACION            := 'Se regulariz� exitosamente el Proceso ReproFactRechazo';
+          Lr_InfoProcesoMasivoDet.OBSERVACION            := 'Se regularizó exitosamente el Proceso ReproFactRechazo';
           Lr_InfoProcesoMasivoDet.FE_ULT_MOD             := SYSDATE;
           Lr_InfoProcesoMasivoDet.USR_ULT_MOD            := Lv_UsrCreacion;    
           Lr_InfoProcesoMasivoDet.ESTADO                 := Lv_EstadoBaja;   
@@ -8018,7 +8018,7 @@ END F_SET_ATTR_DET_ADICIONAL;
 
   EXCEPTION
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al generar el reporte de Documentos Rechazados. '
+    Lv_MsjResultado := 'Ocurrió un error al generar el reporte de Documentos Rechazados. '
                        ||'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' ERROR_BACKTRACE: ' 
                        || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
 
@@ -8082,4 +8082,3 @@ END F_SET_ATTR_DET_ADICIONAL;
   --
 END FNCK_COM_ELECTRONICO;
 /
-

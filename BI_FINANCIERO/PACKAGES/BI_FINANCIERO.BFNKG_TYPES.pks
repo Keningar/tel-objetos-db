@@ -4,7 +4,7 @@ AS
   * Documentacion para el PKG BFNKG_TYPES
   * El PKG BFNKG_TYPES contendra las variables que sean necesarias a usar en los PKG de consultas o transacciones
   * separando procedimientos y funciones de las declaraciones de variables
-  * @author Andr¿s Montero <amontero@telconet.ec>
+  * @author Andres Montero <amontero@telconet.ec>
   * @version 1.0 20-04-2018
   */
 --

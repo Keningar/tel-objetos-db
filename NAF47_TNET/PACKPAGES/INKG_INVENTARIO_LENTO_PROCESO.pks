@@ -12,7 +12,7 @@ CREATE OR REPLACE package NAF47_TNET.INKG_INVENTARIO_LENTO_PROCESO is
   --
   /**
   * Documentacion para P_PROCESAR 
-  * Procedure que procesa inventario de lento movimiento y ser� ejecutado desde JOB
+  * Procedure que procesa inventario de lento movimiento y será ejecutado desde JOB
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 18/11/2018
   *
@@ -133,7 +133,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_INVENTARIO_LENTO_PROCESO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 18/11/2020
   *
-  * @param Pv_NoCia        IN VARCHAR2 Recibe c�digo de empresa
+  * @param Pv_NoCia        IN VARCHAR2 Recibe código de empresa
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_ASIGNA_DATOS_PROCESO ( Pv_NoCia        IN VARCHAR2,
@@ -304,7 +304,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_INVENTARIO_LENTO_PROCESO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 18/11/2020
   *
-  * @param Pv_NoCia        IN VARCHAR2 Recibe c�digo de empresa
+  * @param Pv_NoCia        IN VARCHAR2 Recibe código de empresa
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_GENERA_INGRESOS_BODEGA (Pv_NoCia        IN VARCHAR2,
@@ -495,7 +495,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_INVENTARIO_LENTO_PROCESO is
           --
           IF Lr_Arinme.Tipo_Consumo_Interno IS NULL THEN
             --
-            Pv_MensajeError := 'Centro distribuci�n '||Lr_Arinme.Centro||' no tiene asignado tipo consumo para herramientas';
+            Pv_MensajeError := 'Centro distribución '||Lr_Arinme.Centro||' no tiene asignado tipo consumo para herramientas';
             RAISE Le_Error;
             --
           END IF;
@@ -513,7 +513,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_INVENTARIO_LENTO_PROCESO is
                                 Lr_Arinme.No_Cia);
           FETCH C_DATOS_PERIODO INTO Lr_DatosPeriodo;
           IF C_DATOS_PERIODO%NOTFOUND THEN
-            Pv_MensajeError := 'La definici�n del calendario del inventario es incorrecta.';
+            Pv_MensajeError := 'La definición del calendario del inventario es incorrecta.';
             RAISE Le_Error;
           END IF;
           CLOSE C_DATOS_PERIODO;
@@ -701,7 +701,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_INVENTARIO_LENTO_PROCESO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 18/11/2020
   *
-  * @param Pv_NoCia        IN VARCHAR2 Recibe c�digo de empresa
+  * @param Pv_NoCia        IN VARCHAR2 Recibe código de empresa
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_ACTUALIZA_DOCUMENTOS ( Pv_NoCia        IN     VARCHAR2,

@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
 
     /**
-     * Documentaci�n Para CMKG_VENDEDOR_MASIVO
+     * Documentación Para CMKG_VENDEDOR_MASIVO
      * Paquete que contiene procedimientos y funciones para el cambio masivo de vendedor
      *
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
@@ -23,7 +23,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
     TYPE T_Array_Documento IS TABLE OF DB_DOCUMENTAL.INFO_DOCUMENTO%ROWTYPE INDEX BY BINARY_INTEGER;
     /**
      *
-     * Procedimiento que realiza la creaci�n masiva de contactos a nivel puntos y/o cliente
+     * Procedimiento que realiza la creación masiva de contactos a nivel puntos y/o cliente
      *
      * Costo Del Query C_GetInfoPersona:           2
      * Costo Del Query C_GetInfoDetalleSolicitud:  2
@@ -41,16 +41,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
      * @Version 1.1 02/04/2020 Se asigna al estado del historial del servicio el estado actual del servicio.
      *
      * @author Kevin Baque Puya <kbaque@telconet.ec>
-     * @version 1.2 17-03-2021 - Se agrega nueva l�gica que permite actualizar los documentos del vendedor.
+     * @version 1.2 17-03-2021 - Se agrega nueva lógica que permite actualizar los documentos del vendedor.
      *
      *
      * @PARAM Pn_Id_Solicitud              IN NUMBER    Id de la solicitud
-     * @PARAM Pv_Accion                    IN VARCHAR2  Acci�n de la solicitud
+     * @PARAM Pv_Accion                    IN VARCHAR2  Acción de la solicitud
      * @PARAM Pn_Id_Vendedor_Origen        IN NUMBER    Id del vendedor origen
      * @PARAM Pn_Id_Vendedor_Destino       IN NUMBER    Id del vendedor destino
      * @PARAM Pn_Id_Motivo_Rechazo         IN NUMBER    Id del motivo de rechazo
      * @PARAM Pcl_Id_Clientes              IN CLOB      Id de los clientes
-     * @PARAM Pcl_Extraparams              IN CLOB      Par�metros adicionales
+     * @PARAM Pcl_Extraparams              IN CLOB      Parámetros adicionales
      **** @PARAM intIdOficina              NUMBER       Id De Oficina
      **** @PARAM strCodEmpresa             VARCHAR2     Id De Empresa
      **** @PARAM strUsuario                VARCHAR2     Usuario Creador
@@ -239,7 +239,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
 
         IF Lr_InfoPersona.ID_PERSONA IS NULL THEN
             Ln_Status_Error := 1;
-            Lv_Mensaje_Error := 'Informaci�n de vendedor origen no encontrado.';
+            Lv_Mensaje_Error := 'Información de vendedor origen no encontrado.';
             raise NO_DATA_FOUND;
         END IF;
 
@@ -262,7 +262,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
 
         IF Lr_InfoPersona.ID_PERSONA IS NULL THEN
             Ln_Status_Error := 1;
-            Lv_Mensaje_Error := 'Informaci�n de vendedor destino no encontrado.';
+            Lv_Mensaje_Error := 'Información de vendedor destino no encontrado.';
             raise NO_DATA_FOUND;
         END IF;
 
@@ -296,7 +296,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
 
         IF Pv_Accion IS NULL OR LENGTH(Pv_Accion) <= 0 THEN
             Ln_Status_Error := 1;
-            Lv_Mensaje_Error := 'Acci�n no encontrada.';
+            Lv_Mensaje_Error := 'Acción no encontrada.';
             raise NO_DATA_FOUND;
         END IF;
 
@@ -417,7 +417,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
 
                 IF Lv_Bandera_Continuar_Doc = 'S' AND Lv_Identificacion_Cliente IS NOT NULL THEN
                 Ln_Indice_documento := 1;
-                --Actualizamos los documentos relacionados a la identificaci�n del cliente, del antiguo vendedor
+                --Actualizamos los documentos relacionados a la identificación del cliente, del antiguo vendedor
                     OPEN C_GetDocumento(Ln_Id_Vendedor_Origen_Doc, Lv_Identificacion_Cliente, Lv_Codempresa, Lv_Estado_Activo, Lv_Valor_Etiqueta);
                         FETCH C_GetDocumento BULK COLLECT INTO Lt_Info_Documento LIMIT 10000000;
                         CLOSE C_GetDocumento;
@@ -444,7 +444,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_VENDEDOR_MASIVO AS
                 END IF;
             ELSE
                 Ln_Status_Error  := 2;
-                Lv_Mensaje_Error := 'Informaci�n de cliente no encontrado. (Id: ' || Ln_Id_Cliente_Actual || ')';
+                Lv_Mensaje_Error := 'Información de cliente no encontrado. (Id: ' || Ln_Id_Cliente_Actual || ')';
             END IF;
 
             Ln_Cantidad_Clientes_Contador := Ln_Cantidad_Clientes_Contador + 1;

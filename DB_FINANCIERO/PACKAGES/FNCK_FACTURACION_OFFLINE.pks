@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_OFFLINE AS 
 
   /**
-  * Documentacion para la funci�n 'F_VALIDA_SCHEMA'
+  * Documentacion para la función 'F_VALIDA_SCHEMA'
   *
-  * Funci�n que valida el XML versus el XSD registrado como esquema.
+  * Función que valida el XML versus el XSD registrado como esquema.
   *
   * @param Pxml_documento    IN XMLType    Documento XML con schema referencia
   *
@@ -16,7 +16,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_OFFLINE AS
   /**
   * Documentacion para el procedimiento 'P_ASIGNA_SCHEMA'
   *
-  * M�todo que modifica el XML y se asigna el XSD a validar.
+  * Método que modifica el XML y se asigna el XSD a validar.
   *
   * @param Pxml_DocumentoIn     IN XMLType    Variable de entrada con el documento XML
   * @param Pv_EtiquetaRaiz      IN VARCHAR2   Etiqueta raiz del XML donde se asignara la referencia del XSD
@@ -37,7 +37,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_OFFLINE AS
   /**
   * Documentacion para el procedimiento 'P_VALIDA_COMPROBANTE'
   *
-  * M�todo que modifica el XML y se asigna el XSD a validar.
+  * Método que modifica el XML y se asigna el XSD a validar.
   *
   * @param Pn_Document_Fin     IN NUMBER     ID del documento financiero
   * @param Pn_TipoDoc          IN NUMBER     Tipo de documento a validar
@@ -53,7 +53,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_OFFLINE AS
                                  Pv_Error OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DOCUMENTO'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DOCUMENTO'.
   * Procedure que me permite actualizar info_documento en DB_COMPROBANTES
   *
   * PARAMETROS:
@@ -261,8 +261,8 @@ AS
     END IF;
   EXCEPTION
   WHEN Le_UpdateFinan THEN
-    Pv_MsnError:=' Error en FNCK_FACTURACION_OFFLINE.P_UPDATE_INFO_DOCUMENTO Le_UpdateFinan ' || 'Variable DOCUMENTO_ID_FINAN NULL, no se puede realizar actualizaci�n';
-    FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('FACTURACION OFFLINE', ' Error en FNCK_FACTURACION_OFFLINE.P_UPDATE_INFO_DOCUMENTO Le_UpdateFinan', '' || 'Variable DOCUMENTO_ID_FINAN NULL, no se puede realizar actualizaci�n');
+    Pv_MsnError:=' Error en FNCK_FACTURACION_OFFLINE.P_UPDATE_INFO_DOCUMENTO Le_UpdateFinan ' || 'Variable DOCUMENTO_ID_FINAN NULL, no se puede realizar actualización';
+    FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('FACTURACION OFFLINE', ' Error en FNCK_FACTURACION_OFFLINE.P_UPDATE_INFO_DOCUMENTO Le_UpdateFinan', '' || 'Variable DOCUMENTO_ID_FINAN NULL, no se puede realizar actualización');
   WHEN OTHERS THEN
     Pv_MsnError:=substr(' Error en FNCK_FACTURACION_OFFLINE.P_UPDATE_INFO_DOCUMENTO OTHERS ' || SQLERRM,0,3000);
     FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('FACTURACION OFFLINE', ' Error en FNCK_FACTURACION_OFFLINE.P_UPDATE_INFO_DOCUMENTO OTHERS',substr(SQLERRM,0,3000));

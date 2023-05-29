@@ -3,8 +3,8 @@ CREATE OR REPLACE TRIGGER NAF47_TNET.TR_MGCGAL_VALIDACIONES
   ON "NAF47_TNET"."MIGRA_ARCGAL" FOR EACH ROW
   /**
   * Documentacion para trigger TR_MGCGAL_VALIDACIONES
-  * Trigger que validar� la consistencia entre cuentas contables y centros de costos 
-  * al registrar en repositorio migraci�n modulo contable
+  * Trigger que validará la consistencia entre cuentas contables y centros de costos 
+  * al registrar en repositorio migración modulo contable
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 01-09-2017
   */

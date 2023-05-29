@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REGULARIZACIONES
 AS 
   --
   /**
-  * Documentaci�n para el procedure 'P_REGULARIZAR_ESTADOS_FACTURAS'.
+  * Documentación para el procedure 'P_REGULARIZAR_ESTADOS_FACTURAS'.
   *
   * Procedimiento que verifica si existen facturas con estado Activo, saldo 0 y contiene un historial de estado Cerrado o Activo. A esas facturas
   * se las regulariza, actualizando el estado a cerrado e ingresando un historial .
@@ -10,8 +10,8 @@ AS
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 15-02-2019
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.0 18-06-2020 Se elimina condici�n de consulta por fecha de emisi�n de la factura.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.0 18-06-2020 Se elimina condición de consulta por fecha de emisión de la factura.
   * PARAMETROS:
   * @param Pn_CodEmpresa   IN   VARCHAR2  (Codigo de Empresa)
   */
@@ -20,44 +20,44 @@ AS
 
 
   /**
-  * Documentaci�n para el procedure 'P_REGULARIZAR_NOTA_CREDITO'.
+  * Documentación para el procedure 'P_REGULARIZAR_NOTA_CREDITO'.
   *
-  * Procedimiento que se utiliza para regularizar una nota de cr�dito que no fu� aplicada.
+  * Procedimiento que se utiliza para regularizar una nota de crédito que no fué aplicada.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 21-02-2019
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.1 27-02-2019 - Se realiza la b�squeda en el query principal por notas de creditos emitidas en la fecha actual.
+  * @version 1.1 27-02-2019 - Se realiza la búsqueda en el query principal por notas de creditos emitidas en la fecha actual.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.2 23-06-2020 - Se elimina consulta por fecha de emisi�n, se agrega validaci�n por historiales de cierre y aplicaci�n de nota de cr�dito.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.2 23-06-2020 - Se elimina consulta por fecha de emisión, se agrega validación por historiales de cierre y aplicación de nota de crédito.
   *
   * PARAMETROS:
-  * @param Pn_CodEmpresa   IN   VARCHAR2  (C�digo de Empresa)
+  * @param Pn_CodEmpresa   IN   VARCHAR2  (Código de Empresa)
   */
   PROCEDURE P_REGULARIZAR_NOTA_CREDITO(Pv_EmpresaCod   IN VARCHAR2);
 
 
   /*
-  * Documentaci�n para TYPE 'T_DocumentoRegularizaNc'.
+  * Documentación para TYPE 'T_DocumentoRegularizaNc'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 24-06-2020
   */
   TYPE T_DocumentoRegularizaNc IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_DocumentoRegularizaNc INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para el procedimiento P_GET_DOCUMENTOS_REGULA_NC
+  * Documentación para el procedimiento P_GET_DOCUMENTOS_REGULA_NC
   *
   * Procedimiento que retorna cursor de documentos a regularizar.
   *
   * Costo del query 96216
   *
-  * @param Pv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa.
+  * @param Pv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa.
   * @param Prf_GetDocumentos      OUT SYS_REFCURSOR  Retorna cursor de puntos no facturados.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>  JOB_REGULARIZA_NC_DIARIO
+  * @author Edgar Holguín <eholguin@telconet.ec>  JOB_REGULARIZA_NC_DIARIO
   * @version 1.00 15-08-2019
   */
   PROCEDURE P_GET_DOCUMENTOS_REGULA_NC(
@@ -65,43 +65,43 @@ AS
     Prf_GetDocumentos     OUT SYS_REFCURSOR);
 
   /**
-  * Documentaci�n para el procedure 'P_REGULARIZA_NOTA_CREDITO'.
+  * Documentación para el procedure 'P_REGULARIZA_NOTA_CREDITO'.
   *
-  * Procedimiento que se utiliza para regularizar una nota de cr�dito que no fu� aplicada.
+  * Procedimiento que se utiliza para regularizar una nota de crédito que no fué aplicada.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 24-06-2020 - 
   *
   * PARAMETROS:
-  * @param Pn_CodEmpresa   IN   VARCHAR2  (C�digo de Empresa)
+  * @param Pn_CodEmpresa   IN   VARCHAR2  (Código de Empresa)
   */
   PROCEDURE P_REGULARIZA_NOTA_CREDITO(Pv_EmpresaCod   IN VARCHAR2); --
 
   /**
-  * Documentaci�n para el procedure 'P_REGULA_NUM_FACT_MIGRACION'.
+  * Documentación para el procedure 'P_REGULA_NUM_FACT_MIGRACION'.
   *
   * Procedimiento que se utiliza para regularizar el campo NUM_FACT_MIGRACION de las Facturas, debido a que los documentos financieros
   * FAC y FACP se estan actualizando a 1, debiendo tener el campo en NULL ya que dicho campo solo es usado para la migracion de facturas 
   * del sistema SIT al Telcos.
   * Se considera regularizar Facturas FAC y FACP de la empresa 18: Megadatos, con NUM_FACT_MIGRACION is not null, estado; Activo y electronica: S
   * Se actualiza campo NUM_FACT_MIGRACION en NULL en INFO_DOCUMENTO_FINANCIERO_CAB
-  * Registra en INFO_DOCUMENTO_HISTORIAL la actualizaci�n realizada:
+  * Registra en INFO_DOCUMENTO_HISTORIAL la actualización realizada:
   *     - USR_CREACION: telcos_regula
   *     - OBSERVACION: Actualizacion del campo num_fac_migracion por regularizacion del Sistema. 
   * El proceso de regularizacion va a permitir que las Facturas regularizadas puedan ser consideradas en el proceso de Cruce de anticipos.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 22-08-2022
   *
   * PARAMETROS:
-  * @param Pn_CodEmpresa   IN   VARCHAR2  (C�digo de Empresa)
+  * @param Pn_CodEmpresa   IN   VARCHAR2  (Código de Empresa)
   */
   PROCEDURE P_REGULA_NUM_FACT_MIGRACION(Pv_EmpresaCod   IN VARCHAR2);
   
  /*
-  * Documentaci�n para TYPE 'T_DocumentoRegulariza'.
+  * Documentación para TYPE 'T_DocumentoRegulariza'.
   * Record para almacenar la data enviada al BULK.
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 22-08-2022
   */
   TYPE T_DocumentoRegulariza IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_FacturasPto INDEX BY PLS_INTEGER;
@@ -174,7 +174,7 @@ AS
         SET ESTADO_IMPRESION_FACT = 'Cerrado'
         WHERE ID_DOCUMENTO = I_GetIdDocumentoFinanciero.ID_DOCUMENTO;
      
-        --Inserta Historial de Regularizaci�n
+        --Inserta Historial de Regularización
         INSERT 
         INTO DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL 
           (
@@ -217,7 +217,7 @@ AS
     IF Ln_Contador > 0 THEN
       UTL_MAIL.SEND (sender => 'notificaciones_telcos@telconet.ec', 
                      recipients => Lv_MailDestino, 
-                     subject => 'Proceso Autom�tico de Regularizaci�n de Estados de Facturas', 
+                     subject => 'Proceso Automático de Regularización de Estados de Facturas', 
                      MESSAGE => Lv_Mensaje, 
                      mime_type => 'text/html; charset=UTF-8' 
                     );
@@ -227,7 +227,7 @@ AS
     WHEN OTHERS THEN
     ROLLBACK;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
-                                         'PROCESO_AUTOM�TICO_REGULARIZACI�N_ESTADO_FACTURA',
+                                         'PROCESO_AUTOMÁTICO_REGULARIZACIÓN_ESTADO_FACTURA',
                                          'No se pudo actualizar el estado de la factura de "Activo" a "Cerrado" - ' || SQLCODE || ' -ERROR- '
                                          || SQLERRM || ' - ERROR_STACK: ' ||DBMS_UTILITY.FORMAT_ERROR_STACK||' - ERROR_BACKTRACE: '
                                          ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
@@ -322,7 +322,7 @@ AS
       
         DB_FINANCIERO.FNCK_CONSULTS.P_APLICA_NOTA_CREDITO(Ln_IdDocumentoNC,null,I_GetDocumentoFinanciero.OFICINA_ID,Lv_MessageError);
       
-        --Inserta Historial de Regularizaci�n
+        --Inserta Historial de Regularización
         INSERT 
         INTO DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL 
           (
@@ -354,7 +354,7 @@ AS
     WHEN OTHERS THEN
     ROLLBACK;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
-                                         'PROCESO_AUTOM�TICO_REGULARIZACI�N_NOTA_CREDITO',
+                                         'PROCESO_AUTOMÁTICO_REGULARIZACIÓN_NOTA_CREDITO',
                                          'No se pudo regularizar nota de credito" - ' || SQLCODE || ' -ERROR- '
                                          || SQLERRM || ' - ERROR_STACK: ' ||DBMS_UTILITY.FORMAT_ERROR_STACK||' - ERROR_BACKTRACE: '
                                          ||DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
@@ -481,7 +481,7 @@ AS
 
                 DB_FINANCIERO.FNCK_CONSULTS.P_APLICA_NOTA_CREDITO(Ln_IdDocumentoNC,null,Lr_Documento.OFICINA_ID,Lv_MessageError);
 
-                --Inserta Historial de Regularizaci�n
+                --Inserta Historial de Regularización
                 INSERT 
                 INTO DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL 
                   (
@@ -572,7 +572,7 @@ AS
               UPDATE DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB SET NUM_FACT_MIGRACION = NULL
               WHERE ID_DOCUMENTO = Lr_Documento.ID_DOCUMENTO;
 
-              --Inserta Historial de Regularizaci�n
+              --Inserta Historial de Regularización
               INSERT 
               INTO DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL 
               (

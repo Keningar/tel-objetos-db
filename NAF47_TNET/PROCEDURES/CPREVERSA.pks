@@ -16,10 +16,10 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.CPREVERSA (pCia       IN VARCHAR2,
  * @version 1.0 01/01/2007
  *
  * @author llindao <llindao@telconet.ec>
- * @version 1.1 17/12/2019 Se modifica anular retenci�n electr�nica asociadas al documento que se reversa
+ * @version 1.1 17/12/2019 Se modifica anular retención electrónica asociadas al documento que se reversa
  * 
  * @author llindao <llindao@telconet.ec>
- * @version 1.2 07/02/2020 Se corrige anulaci�n de retenciones y replica para nuevo solo de los registros tipo retenci�n, 
+ * @version 1.2 07/02/2020 Se corrige anulación de retenciones y replica para nuevo solo de los registros tipo retención, 
  * 
  * @author llindao <llindao@telconet.ec>
  * @version 1.3 11/09/2020 se modifica para hacer llamdo de reverso de control presupuesto * 
@@ -66,10 +66,10 @@ BEGIN
   CLOSE c_tipo;
   --
   --
-  -- se valida que para documentos electronicos de tipo factura no se permite el reverso... solo anulaci�n
+  -- se valida que para documentos electronicos de tipo factura no se permite el reverso... solo anulación
   IF Lr_TipoDoc.Documento = 'F' AND Lr_TipoDoc.Comprobante_Electronico = 'S' THEN
     --
-    pmsg_error := 'Tipo de documento es electr�nico y no se puede Reversar!!!';
+    pmsg_error := 'Tipo de documento es electrónico y no se puede Reversar!!!';
     RAISE error_proceso;
     --
   END IF;
@@ -116,7 +116,7 @@ BEGIN
   AND NO_CIA  = pCia
   AND NO_DOCU = pDocu;
 
-  -- Al reversar documento, el comprobante electr�nico se anula autom�ticamente.
+  -- Al reversar documento, el comprobante electrónico se anula automáticamente.
   --
   UPDATE DB_COMPROBANTES.INFO_DOCUMENTO IDC
   SET IDC.ESTADO_DOC_ID = 8
@@ -128,7 +128,7 @@ BEGIN
                 AND MD.NO_DOCU = pDocu
                 AND MD.NO_PROVE = pProve);
   --
-  --si actualiz� el documento es electr�nico
+  --si actualizó el documento es electrónico
   IF SQL%ROWCOUNT != 0 THEN
     -- se replica nuevo detalle de retenciones para nuevao comprobante
     INSERT INTO arcpti 

@@ -57,7 +57,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.COMEK_MODELO AS
 /*
  * Procedimiento que sirbe para insertar el seguimiento de los servicios
  *
- * @author David Le�n <mdleon@telconet.ec>
+ * @author David León <mdleon@telconet.ec>
  * @version 1.0 09-03-2020
  * @param  INFO_SEGUIMIENTO_SERVICIO%ROWTYPE   Pr_seguimientoServicio   Registro a ingresar
  * @return VARCHAR2   Lv_MensaError   Mensaje de Error
@@ -146,7 +146,7 @@ PROCEDURE COMPP_INSERT_DETALLE_SOLICITUD(
 Ln_idDetalleSolicitud  number;
 
 BEGIN
-  --Se agrega validaci�n de ingreso de ID
+  --Se agrega validación de ingreso de ID
   IF Pr_detalleSolicitud.ID_DETALLE_SOLICITUD is null THEN
     Ln_idDetalleSolicitud := SEQ_INFO_DETALLE_SOLICITUD.NEXTVAL;
   ELSE
@@ -294,7 +294,7 @@ END COMEP_INSERT_DETALLE_SOL_CARAC;
 /*
  * Procedimiento que sirbe para insertar el seguimiento de los servicios
  *
- * @author David Le�n <mdleon@telconet.ec>
+ * @author David León <mdleon@telconet.ec>
  * @version 1.0 09-03-2020
  * @param  INFO_SEGUIMIENTO_SERVICIO%ROWTYPE   Pr_seguimientoServicio   Registro a ingresar
  * @return VARCHAR2   Lv_MensaError   Mensaje de Error

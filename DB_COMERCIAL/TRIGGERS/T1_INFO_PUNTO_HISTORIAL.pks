@@ -4,18 +4,18 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.T1_INFO_PUNTO_HISTORIAL AFTER
   DECLARE 
 /**
   * Documentacion para TRIGGER DB_COMERCIAL.T1_INFO_PUNTO_HISTORIAL
-  * Crea un registro en el historial INFO_PUNTO_HISTORIAL usando el m�todo COMEK_MODELO.COMP_INSERTA_PUNTO_HISTORIAL
+  * Crea un registro en el historial INFO_PUNTO_HISTORIAL usando el método COMEK_MODELO.COMP_INSERTA_PUNTO_HISTORIAL
   *
   * @author Unknow
   * @version 1.0
   *
-  * @author Alejandro Dom�nguez Vargas <adominguez@telconet.ec>
+  * @author Alejandro Domínguez Vargas <adominguez@telconet.ec>
   * @version 1.1 04-12-2015
-  * Se valida la asignaci�n inicial del ejecutivo de cobranzas al punto del cliente VIP
+  * Se valida la asignación inicial del ejecutivo de cobranzas al punto del cliente VIP
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.2 05-11-2020 - Se agregan caracter�sticas PUNTO_COBERTURA_ID y SECTOR_ID para guardar a nivel de INFO_PUNTO_CARACTERISTICA
-  *                           los valores que tenia un Punto Cliente en la INFO_PUNTO antes del cambio, dichos registros ser�n actualizables. 
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.2 05-11-2020 - Se agregan características PUNTO_COBERTURA_ID y SECTOR_ID para guardar a nivel de INFO_PUNTO_CARACTERISTICA
+  *                           los valores que tenia un Punto Cliente en la INFO_PUNTO antes del cambio, dichos registros serán actualizables. 
   * 
   */
   --RECUPERAMOS EL TIPO DE NEGOCIO
@@ -296,7 +296,7 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.T1_INFO_PUNTO_HISTORIAL AFTER
     END IF;
     
     --
-    /* Validaci�n del ejecutivo de cobranzas*/
+    /* Validación del ejecutivo de cobranzas*/
     IF :OLD.USR_COBRANZAS IS NULL THEN
       IF Lv_Valor IS NOT NULL THEN
         Lv_Valor :=Lv_Valor||'|';

@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL AS 
 
 /*
-* Documentaci�n para TYPE 'TypeClientesFacturar'.
+* Documentación para TYPE 'TypeClientesFacturar'.
 *
 * Tipo de datos para el retorno de la informacion correspondiente a los documentos a notificar a los usuarios
 *
@@ -28,13 +28,13 @@ TYPE TypeClientesFacturar IS RECORD (
 );
 
 /*
-* Documentaci�n para TYPE 'T_ClientesFacturar'.
+* Documentación para TYPE 'T_ClientesFacturar'.
 * Record para almacenar la data enviada al BULK.
 */
 TYPE T_ClientesFacturar IS TABLE OF TypeClientesFacturar INDEX BY PLS_INTEGER;
 
 /*
-* Documentaci�n para TYPE 'TypeServiciosAsociados'.
+* Documentación para TYPE 'TypeServiciosAsociados'.
 * Record que me permite almancernar la informacion devuelta de los servicios asociados al punto de facturacion.
 */
 TYPE TypeServiciosAsociados IS RECORD (
@@ -51,7 +51,7 @@ TYPE TypeServiciosAsociados IS RECORD (
 );
 
 /*
-* Documentaci�n para TYPE 'TypeSolicitudes'.
+* Documentación para TYPE 'TypeSolicitudes'.
 * Record que me permite almancernar la informacion devuelta de las solicitudes asociados al punto de facturacion.
 */
 Type TypeSolicitudes IS RECORD (
@@ -61,9 +61,9 @@ Type TypeSolicitudes IS RECORD (
 );
 
 /**
- * Documentaci�n para PROCEDURE 'GET_SOL_DESCT_PROMOCIONAL'.
+ * Documentación para PROCEDURE 'GET_SOL_DESCT_PROMOCIONAL'.
  *
- * Procedimiento que obtiene la solicitud de descuento Promocional y su porcentaje de descuento para ser aplicada en la Facturaci�n
+ * Procedimiento que obtiene la solicitud de descuento Promocional y su porcentaje de descuento para ser aplicada en la Facturación
  * Costo:3
  *
  * PARAMETROS:
@@ -110,7 +110,7 @@ RETURN NUMBER;
 --Funcion para retornar el id_ciclo segun el nombre el proceso
 FUNCTION F_OBTENER_CICLO(Fv_NombreCiclo IN DB_FINANCIERO.ADMI_CICLO.NOMBRE_CICLO%TYPE) RETURN DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE;
 
---Funcion para verificar si existe informacion relacionada con el ciclo y el mes/ a�o facturado
+--Funcion para verificar si existe informacion relacionada con el ciclo y el mes/ año facturado
 
 FUNCTION F_VERIFICAR_CICLO(Fv_NombreCiclo       IN DB_FINANCIERO.ADMI_CICLO.NOMBRE_CICLO%TYPE,
                             Fv_MesVerificar     IN DB_FINANCIERO.INFO_CICLO_FACTURADO.MES_FACTURADO%TYPE,
@@ -125,7 +125,7 @@ RETURN NUMBER;
   * Procedimiento para obtener la fecha de emision dependiendo de la fecha actual
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.1 22-06-2017 - Modificacion del procedimiento para extraer el mes en espa�ol
+  * @version 1.1 22-06-2017 - Modificacion del procedimiento para extraer el mes en español
   */
 PROCEDURE P_GENERAR_FECHA_EMISION(Fv_TipoFacturacion  IN VARCHAR2,
                                     Pv_FeEmision        OUT VARCHAR2,
@@ -136,47 +136,47 @@ PROCEDURE P_GENERAR_FECHA_EMISION(Fv_TipoFacturacion  IN VARCHAR2,
 --
 --
   /*
-  * Documentaci�n para el PROCEDURE 'P_PROCESAR_INFORMACION'.
+  * Documentación para el PROCEDURE 'P_PROCESAR_INFORMACION'.
   *
-  * Procedimiento para procesar la informaci�n de los clientes a facturar
+  * Procedimiento para procesar la información de los clientes a facturar
   *
   * @param Prf_ClientesFacturar        IN T_ClientesFacturar  (Cursor que contiene los clientes a facturar)
   * @param Pv_MesEmisionNumeros        IN VARCHAR2  (Mes de emision de la factura en numero)
   * @param Pv_MesEmisionLetras         IN VARCHAR2  (Mes de emision de la factura en letras)
-  * @param Pv_AnioEmision              IN VARCHAR2  (A�o de emision de la factura)
+  * @param Pv_AnioEmision              IN VARCHAR2  (Año de emision de la factura)
   * @param Pv_PrefijoEmpresa           IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de la empresa a facturar)
   * @param Pn_IdOficina                IN DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE (Id de la oficina del cliente)
   * @param Pv_FeEmision                IN VARCHAR2  (Fecha de emision de la factura)
   * @param Pn_Porcentaje               IN NUMBER  (Porcentaje del IVA que se va a facturar)
-  * @param Pn_RecordCount              IN OUT NUMBER  (Cantidad de clientes que se les proces� la informaci�n de facturaci�n)
-  * @param Pv_CuerpoClieNoCompensados  IN OUT NUMBER  (Informaci�n de los clientes que deb�an compensar y no fueron compensados)
+  * @param Pn_RecordCount              IN OUT NUMBER  (Cantidad de clientes que se les procesó la información de facturación)
+  * @param Pv_CuerpoClieNoCompensados  IN OUT NUMBER  (Información de los clientes que debían compensar y no fueron compensados)
   * @param Pn_ClientesFacturados       IN OUT NUMBER  (Cantidad de clientes facturados)
   * @param Pn_ClientesCompensados      IN OUT NUMBER  (Cantidad de clientes compensados)
   * @param Pn_ClientesNoCompensados    IN OUT NUMBER  (Cantidad de clientes no compensados)
-  * @param Pn_CantNoCompensados        IN OUT NUMBER  (Contador que indicar� cantidad de clientes no compensados, pero el cual ser� reiniciado cada
-  *                                                    100 clientes puesto que ser�n notificados al usuario correspondientes)
+  * @param Pn_CantNoCompensados        IN OUT NUMBER  (Contador que indicará cantidad de clientes no compensados, pero el cual será reiniciado cada
+  *                                                    100 clientes puesto que serán notificados al usuario correspondientes)
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.2 24-03-2017 - Se realiza modificaci�n para el ingreso de un nuevo detalle a la factura por cargo de reproceso de d�bito.
+  * @version 1.2 24-03-2017 - Se realiza modificación para el ingreso de un nuevo detalle a la factura por cargo de reproceso de débito.
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 07-02-2017 - Se modifica la funci�n para realizar la facturaci�n por compensaci�n a los clientes que tienen asociado el cant�n
+  * @version 1.1 07-02-2017 - Se modifica la función para realizar la facturación por compensación a los clientes que tienen asociado el cantón
   *                           'MANTA' y 'PORTOVIEJO'. Estos cantones son tomados de la tabla 'DB_GENERAL.ADMI_PARAMETRO_DET' los cuales pertenecen al
-  *                           par�metro cabecera llamado 'CANTONES_OFICINAS_COMPENSADAS'.
-  *                           Tambi�n se elimina el round que se realiza a los impuestos por cada detalle de la factura.
-  *                           Adicional se agregan los siguientes par�metros 'Pv_CuerpoClieNoCompensados', 'Pn_ClientesFacturados',
-  *                           'Pn_ClientesCompensados' y 'Pn_ClientesNoCompensados' los cuales ayudan a verificar la informaci�n de los clientes que
-  *                           se est�n facturando para luego ser notificado v�a correo a los usuarios correspondientes.
+  *                           parámetro cabecera llamado 'CANTONES_OFICINAS_COMPENSADAS'.
+  *                           También se elimina el round que se realiza a los impuestos por cada detalle de la factura.
+  *                           Adicional se agregan los siguientes parámetros 'Pv_CuerpoClieNoCompensados', 'Pn_ClientesFacturados',
+  *                           'Pn_ClientesCompensados' y 'Pn_ClientesNoCompensados' los cuales ayudan a verificar la información de los clientes que
+  *                           se están facturando para luego ser notificado vía correo a los usuarios correspondientes.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.3 25-07-2019 - Se valida si existe Solicitud de Descuento Promocional Mensual para ser aplicada en la Facturaci�n
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.3 25-07-2019 - Se valida si existe Solicitud de Descuento Promocional Mensual para ser aplicada en la Facturación
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.4 02-02-2021 - Se actualizan las cabeceras a estado Eliminado de los servicios que tienen caracteristica "FACTURACION_CRS_CICLO_FACT",
   *                           debido a que no tienen detalle y su valor total es 0 o nulo. Adicional se crea un historial del estado eliminado. 
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.5 02-03-2023  Se agrega par�metro CvEmpresaCod en el cursor C_GetValorCargoReproceso para filtrar el resultado por empresa.
+  * @version 1.5 02-03-2023  Se agrega parámetro CvEmpresaCod en el cursor C_GetValorCargoReproceso para filtrar el resultado por empresa.
   *
   * @since 1.0
   */
@@ -209,7 +209,7 @@ PROCEDURE P_ELIMINAR_DOC_NULOS(Pn_UsrCreacion IN VARCHAR2);
 PROCEDURE UPD_SOL_DESCT_UNICO (Pn_IdDetalleSol IN DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE);
 
  /**
-  * Documentaci�n para PROCEDURE 'GET_SERVICIO_ASOCIADOS'.
+  * Documentación para PROCEDURE 'GET_SERVICIO_ASOCIADOS'.
   * Procedimiento para obtener los servicios asociados a los ptos de facturacion
   *
   * PARAMETROS:
@@ -225,9 +225,9 @@ PROCEDURE UPD_SOL_DESCT_UNICO (Pn_IdDetalleSol IN DB_COMERCIAL.INFO_DETALLE_SOLI
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.2
   * @since 13-06-2018
-  * Se agrega el par�metro Pn_CaracteristicaId.
-  * Se agrega el filtro de los servicios que no tengan la caracter�stica por CRS (FACTURACION_CRS_CICLO_FACT). Es decir,
-  * obtiene �nicamente los servicios que no han sido creados a trav�s del Cambio de Raz�n Social.
+  * Se agrega el parámetro Pn_CaracteristicaId.
+  * Se agrega el filtro de los servicios que no tengan la característica por CRS (FACTURACION_CRS_CICLO_FACT). Es decir,
+  * obtiene únicamente los servicios que no han sido creados a través del Cambio de Razón Social.
   *  
   */    
 PROCEDURE GET_SERVICIO_ASOCIADOS(Pn_PuntoFacturacionId IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -248,29 +248,29 @@ PROCEDURE P_SIMULAR_FACT_MENSUAL(Pn_IdPuntoFacturacion IN DB_COMERCIAL.INFO_PUNT
                                   Pn_PorValor OUT DB_COMERCIAL.INFO_SERVICIO.VALOR_DESCUENTO%TYPE);
 
   /*
-  * Documentaci�n para el PROCEDURE 'P_FACTURACION_MENSUAL'.
+  * Documentación para el PROCEDURE 'P_FACTURACION_MENSUAL'.
   *
   * Procedimiento para realizar la facturacion mensual de todos los puntos de facturacion
   *
-  * @param Pv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa que va a ejecutar el proceso de
-  *                                                                                     facturaci�n)
-  * @param Pv_DescripcionImpuesto IN DB_GENERAL.ADMI_IMPUESTO.DESCRIPCION_IMPUESTO%TYPE  (Descripci�n del impuesto a facturar)
-  * @param Pv_TipoFacturacion     IN VARCHAR2  (Tipo de ciclo de facturaci�n a ejecutar)
+  * @param Pv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa que va a ejecutar el proceso de
+  *                                                                                     facturación)
+  * @param Pv_DescripcionImpuesto IN DB_GENERAL.ADMI_IMPUESTO.DESCRIPCION_IMPUESTO%TYPE  (Descripción del impuesto a facturar)
+  * @param Pv_TipoFacturacion     IN VARCHAR2  (Tipo de ciclo de facturación a ejecutar)
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.2 03-10-2017 - Se modifica la funcionalidad del procedimiento para que considere por ciclos la facturaci�n.
+  * @version 1.2 03-10-2017 - Se modifica la funcionalidad del procedimiento para que considere por ciclos la facturación.
   *                           Se modifica el query principal para que tome solo los clientes del ciclo a facturar.
-  *                           Se extrae las fechas de la facturaci�n del procedimiento P_GENERAR_FECHA_EMISION_CICLOS.
+  *                           Se extrae las fechas de la facturación del procedimiento P_GENERAR_FECHA_EMISION_CICLOS.
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 10-02-2017 - Se modifica la funci�n para agregar al query principal el nombre del cliente y su identificaci�n, adicional se agrega
-  *                           una validaci�n para notificar a los usuarios la cantidad de clientes facturados, compensados, y no compensados para que
-  *                           realicen la gesti�n correspondiente. Tambi�n se modifica la funci�n 'P_PROCESAR_INFORMACION' para enviarle los 
-  *                           par�metros correspondientes que son 'Lv_CuerpoClieNoCompensados', 'Ln_ClientesFacturados', 'Ln_ClientesCompensados' y 
+  * @version 1.1 10-02-2017 - Se modifica la función para agregar al query principal el nombre del cliente y su identificación, adicional se agrega
+  *                           una validación para notificar a los usuarios la cantidad de clientes facturados, compensados, y no compensados para que
+  *                           realicen la gestión correspondiente. También se modifica la función 'P_PROCESAR_INFORMACION' para enviarle los 
+  *                           parámetros correspondientes que son 'Lv_CuerpoClieNoCompensados', 'Ln_ClientesFacturados', 'Ln_ClientesCompensados' y 
   *                           'Ln_ClientesNoCompensados'
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.3 02-03-2023  Se agrega par�metro CvEmpresaCod en el cursor C_ConsultaCiclos para filtrar el resultado por empresa.
+  * @version 1.3 02-03-2023  Se agrega parámetro CvEmpresaCod en el cursor C_ConsultaCiclos para filtrar el resultado por empresa.
   * @since 1.0
   */
   PROCEDURE P_FACTURACION_MENSUAL(
@@ -279,15 +279,15 @@ PROCEDURE P_SIMULAR_FACT_MENSUAL(Pn_IdPuntoFacturacion IN DB_COMERCIAL.INFO_PUNT
       Pv_TipoFacturacion     IN VARCHAR2);
 
   /*
-  * Documentaci�n para el PROCEDURE 'P_GENERAR_FECHA_EMISION_CICLOS'.
+  * Documentación para el PROCEDURE 'P_GENERAR_FECHA_EMISION_CICLOS'.
   *
   * Procedimiento para devolver las fechas de emision de forma detallada
   *
-  * @param Pn_CicloFacturacion   IN  NUMBER    (C�digo del ciclo de facturaci�n)
+  * @param Pn_CicloFacturacion   IN  NUMBER    (Código del ciclo de facturación)
   * @param Pv_FeEmision          OUT VARCHAR2  (Fecha de Inicio del ciclo)
   * @param Pv_MesEmision         OUT VARCHAR2  (Mes del ciclo en letras)
-  * @param Pn_MesEmision         OUT VARCHAR2  (Mes del ciclo en n�mero)
-  * @param Pv_AnioEmision        OUT VARCHAR2  (A�o del ciclo)
+  * @param Pn_MesEmision         OUT VARCHAR2  (Mes del ciclo en número)
+  * @param Pv_AnioEmision        OUT VARCHAR2  (Año del ciclo)
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
   *
@@ -302,15 +302,15 @@ PROCEDURE P_SIMULAR_FACT_MENSUAL(Pn_IdPuntoFacturacion IN DB_COMERCIAL.INFO_PUNT
     );
   
   /*
-  * Documentaci�n para el PROCEDURE 'P_GET_CLIENT_FACT'.
+  * Documentación para el PROCEDURE 'P_GET_CLIENT_FACT'.
   *
   * Procedimiento para devolver las fechas de emision de forma detallada
   *
-  * @param Pn_PuntoFact      IN  NUMBER    (Punto de Facturaci�n)
+  * @param Pn_PuntoFact      IN  NUMBER    (Punto de Facturación)
   * @param Pd_FecIniRango    OUT DATE      (Fecha de Inicio Rango)
   * @param Pd_FecFinRango    OUT DATE      (Fecha de Fin Rango)
   * @param Pb_ValidaCliente  OUT NUMBER    (Bandera para facturar)
-  * @param Pv_RangoFactura   OUT NUMBER    (Rango de la facturaci�n)
+  * @param Pv_RangoFactura   OUT NUMBER    (Rango de la facturación)
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
   *
@@ -321,17 +321,17 @@ PROCEDURE P_SIMULAR_FACT_MENSUAL(Pn_IdPuntoFacturacion IN DB_COMERCIAL.INFO_PUNT
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
   * @version 1.1 1-11-2017 - Se agrega la validacion para calcular mejor el rango de fechas por ciclo
   *
-  * Se agrega la conversi�n a TO_DATE en los rangos de fechas. Se agrega el FORMAT_ERROR_BACKTRACE en el mensaje de error.
+  * Se agrega la conversión a TO_DATE en los rangos de fechas. Se agrega el FORMAT_ERROR_BACKTRACE en el mensaje de error.
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.2
   * @since 01-05-2018
   *
-  * Se agrega el insert en la INFO_ERROR cuando el punto no cumple la validaci�n del rango de fecha del mes de consumo.
+  * Se agrega el insert en la INFO_ERROR cuando el punto no cumple la validación del rango de fecha del mes de consumo.
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.3
   * @since 28-09-2018
   *
-  * Se modifica validaci�n de facturaci�n generada por ciclo de facturaci�n.
+  * Se modifica validación de facturación generada por ciclo de facturación.
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.4
   * @since 16-01-2019
@@ -1189,7 +1189,7 @@ END P_GENERAR_FECHA_EMISION;
     Lv_EmpresaCod                 DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE := '';
     --
 
-    --Cursor que obtiene el id de una caracter�stica seg�n su descripci�n, estado y tipo.
+    --Cursor que obtiene el id de una característica según su descripción, estado y tipo.
     CURSOR C_ObtieneCaracteristica (Cv_DescripcionCaract DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
                                     Cv_Tipo              DB_COMERCIAL.ADMI_CARACTERISTICA.TIPO%TYPE,
                                     Cv_Estado            DB_COMERCIAL.ADMI_CARACTERISTICA.ESTADO%TYPE) IS
@@ -1232,7 +1232,7 @@ END P_GENERAR_FECHA_EMISION;
     CLOSE C_GetValorCargoReproceso;
     --
 
-    --Se obtiene la caracter�stica por CRS para excluir los servicios.
+    --Se obtiene la característica por CRS para excluir los servicios.
     OPEN C_ObtieneCaracteristica('FACTURACION_CRS_CICLO_FACT', 'COMERCIAL', 'Activo');
     FETCH C_ObtieneCaracteristica
         INTO Lr_ObtieneCaracteristica;
@@ -1314,7 +1314,7 @@ END P_GENERAR_FECHA_EMISION;
         FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoFinancieroHis,Pv_MsnError);
         --Inicializo la bandera que se utilizara para los detalles
         LV_BanderaPoseeDetalle:='N';
-        --Inicializo la bandera que se utilizara para agregar los detalles  por reproceso de d�bito.
+        --Inicializo la bandera que se utilizara para agregar los detalles  por reproceso de débito.
         Lv_TieneSolCargoReproceso := 'N';
         --Con el pto de facturacion podemos obtener los servicios asociados al punto
         GET_SERVICIO_ASOCIADOS(Lr_Punto.id_punto, Ln_CaracteristicaId ,Lc_ServiciosFacturar);
@@ -1328,7 +1328,7 @@ END P_GENERAR_FECHA_EMISION;
           EXIT
           WHEN Lc_ServiciosFacturar%notfound;
 
-          -- Se verifica si existe solicitud de reproceso de d�bito.
+          -- Se verifica si existe solicitud de reproceso de débito.
           IF Lv_TieneSolCargoReproceso = 'N' THEN
 
             Ln_PtoSolicitudReprocesoId   := 0;
@@ -1477,7 +1477,7 @@ END P_GENERAR_FECHA_EMISION;
 
           Ln_PrecioVentaFacProDetalle:=ROUND((Ln_CantidadSolReproceso*Ln_PrecioCargoReproceso),2);
 
-          -- Finalizamos la solicitud de cargo por reproceso de d�bito
+          -- Finalizamos la solicitud de cargo por reproceso de débito
           LOOP
             --
             FETCH
@@ -1494,7 +1494,7 @@ END P_GENERAR_FECHA_EMISION;
 
           CLOSE Lrf_GetSolicitudesReproceso;
 
-          -- Se agrega detalle por cargo de reproceso de d�bito.
+          -- Se agrega detalle por cargo de reproceso de débito.
           Lr_InfoDocumentoFinancieroDet                                := NULL;
           Lr_InfoDocumentoFinancieroDet.ID_DOC_DETALLE                 := SEQ_INFO_DOC_FINANCIERO_DET.NEXTVAL;
           Lr_InfoDocumentoFinancieroDet.DOCUMENTO_ID                   := Lr_InfoDocumentoFinancieroCab.ID_DOCUMENTO;
@@ -1720,7 +1720,7 @@ END P_GENERAR_FECHA_EMISION;
       Pv_TipoFacturacion     IN VARCHAR2)
   IS
   
-  --Consulta del ciclo de facturaci�n
+  --Consulta del ciclo de facturación
   CURSOR C_ConsultaCiclos (Cn_EmpresaCod DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE)
     IS
       SELECT AC.ID_CICLO,UPPER(TRIM(AC.NOMBRE_CICLO)) as NOMBRE_CICLO, 1 as BANDERA
@@ -1789,7 +1789,7 @@ BEGIN
   OPEN C_ConsultaCiclos (Pn_EmpresaCod);
   FETCH C_ConsultaCiclos INTO Lc_ConsultaCiclos;
   CLOSE C_ConsultaCiclos;
-  --Validacion de Ciclo de Facturaci�n
+  --Validacion de Ciclo de Facturación
   IF Lc_ConsultaCiclos.BANDERA IS NULL THEN
     RETURN;
   END IF;
@@ -1903,7 +1903,7 @@ BEGIN
     Lr_InfoCicloFacturacion.PROCESO           := 'MENSUAL';
     DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_CICLO_FACTURACION(Lr_InfoCicloFacturacion,Lv_InfoError);
 
-    --Guardamos la confirmacion de la ejecuci�n del paquete
+    --Guardamos la confirmacion de la ejecución del paquete
     IF(Lv_InfoError IS NULL) THEN
       COMMIT;
     END IF;
@@ -2162,7 +2162,7 @@ BEGIN
       --Se inserta en la INFO_ERROR para llevar el control de los clientes que no se facturaron.
       DB_FINANCIERO.FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('VALIDACION_FACTURACION_MASIVA',
                                                            'FNCK_FACTURACION_MENSUAL.P_GET_CLIENT_FACT',
-                                                           'El punto ' || Pn_PuntoFact || ' no pas� la validaci�n de rangos de consumo.');
+                                                           'El punto ' || Pn_PuntoFact || ' no pasó la validación de rangos de consumo.');
     END IF;
   
   END IF;
@@ -2208,4 +2208,3 @@ END P_GET_CLIENT_FACT;
 
 END FNCK_FACTURACION_MENSUAL;
 /
-

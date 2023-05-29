@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
 
   /*
-  * Documentaci�n para TYPE 'Lrf_Result'.
+  * Documentación para TYPE 'Lrf_Result'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a pagos o facturas.
+  * Tipo de datos para el retorno de la información correspondiente a pagos o facturas.
   *
   * @author Ricardo Robles <rrobles@telconet.ec>
   * @version 1.0 05-06-2019
@@ -19,7 +19,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
       REF CURSOR;
 
   /*
-  * Documentaci�n para procedimiento P_PREFACTURA_X_CLIENTE.
+  * Documentación para procedimiento P_PREFACTURA_X_CLIENTE.
   *
   * Procedimiento para facturar los servicios de los clientes que se les aplica un cambio de ciclo.
   * Genera una factura proporcional en base al ciclo de facturacion del cliente.
@@ -30,22 +30,22 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   * @version 1.0 12-09-2017 - Version inicial
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.1 24-10-2017 - Modificaci�n del query principal, se elimina el filtro por ciclos, se realiza la factura de alcance
+  * @version 1.1 24-10-2017 - Modificación del query principal, se elimina el filtro por ciclos, se realiza la factura de alcance
   *                           a todos los clientes que posean dicha caracteristica.
-  *                           Se elimina el ingreso del mes y a�o de consumo, y se agrega el rango del consumo en la facturas de alcance.
+  *                           Se elimina el ingreso del mes y año de consumo, y se agrega el rango del consumo en la facturas de alcance.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.2 16-12-2019 - Se agrega en el cursor 'C_PuntosFact' el campo del select 'fe_UltFact_Periodo' al group by, para solventar
-  *                           y obtener la informaci�n de los puntos a facturar. 
+  *                           y obtener la información de los puntos a facturar. 
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.3 26-12-2019 - Se excluye el proceso que realizaba para las solicitudes de descuento �nico.
+  * @version 1.3 26-12-2019 - Se excluye el proceso que realizaba para las solicitudes de descuento único.
   *                         - Se cambia el nombre de usuario de la factura a 'telcos_cambio_ciclo'.
   */
   PROCEDURE P_PREFACTURA_X_CLIENTE;
 
   /*
-  * Documentaci�n para procedimiento P_PERIODO_FACTURACION.
+  * Documentación para procedimiento P_PERIODO_FACTURACION.
   *
   * Procedimiento para extraer los dias proporcionales que se le deben facturar al cliente.
   *
@@ -69,7 +69,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                   Pn_CantidadDiasTotalMes   OUT NUMBER);
 
  /**
-  * Procedimiento que obtiene la siguiente fecha a facturar en base a un ciclo espec�fico.
+  * Procedimiento que obtiene la siguiente fecha a facturar en base a un ciclo específico.
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.0
   * @since 08-06-2018
@@ -77,7 +77,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.1
   * @since 27-09-2018
-  * Se env�a por par�metro la fecha a validar, por defecto es el SYSDATE.
+  * Se envía por parámetro la fecha a validar, por defecto es el SYSDATE.
   */
   PROCEDURE P_OBTIENE_FE_SIG_CICLO_FACT(Pn_IdCiclo       IN  NUMBER,
                                         Pd_FeAValidar    IN  DATE DEFAULT SYSDATE,
@@ -92,20 +92,20 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.1
   * @since 28-08-2018
-  * Se agrega el filtro por caracter�stica_Id para obtener los puntos a facturar.
-  * Se fija en NULL el valor de los campos MES_CONSUMO y ANIO_CONSUMO para que que no sea tomada por la validaci�n de la facturaci�n mensual de
+  * Se agrega el filtro por característica_Id para obtener los puntos a facturar.
+  * Se fija en NULL el valor de los campos MES_CONSUMO y ANIO_CONSUMO para que que no sea tomada por la validación de la facturación mensual de
   * facturas creadas.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.2
   * @since 27-09-2018
-  * Se modifican los par�metros al llamar a procedimiento que obtiene la siguiente fecha a facturar en base a un ciclo. P_OBTIENE_FE_SIG_CICLO_FACT
+  * Se modifican los parámetros al llamar a procedimiento que obtiene la siguiente fecha a facturar en base a un ciclo. P_OBTIENE_FE_SIG_CICLO_FACT
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.3 03-12-2019 - Se valida si existe Solicitud de Descuento Promocional Mensual para ser aplicada en la Facturaci�n. 
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.3 03-12-2019 - Se valida si existe Solicitud de Descuento Promocional Mensual para ser aplicada en la Facturación. 
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.4 01-07-2020 - Se agregan excepciones WHEN OTHERS a los BEGIN internos y se limita los campos observaci�n a 500 car�cteres.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.4 01-07-2020 - Se agregan excepciones WHEN OTHERS a los BEGIN internos y se limita los campos observación a 500 carácteres.
   *
   * @author Gustavo Narea <gnarea@telconet.ec>
   * @version 1.5 12-12-2022 - Se verifica si el rol del consumidor del servicio a facturar no sea Cliente Canal
@@ -113,23 +113,23 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   PROCEDURE P_FACTURACION_ALCANCE_CRS(Pv_UsrCreacion IN VARCHAR2);
 
   /**
-   * Documentaci�n para P_FACTURACION_UNICA
-   * Procedimiento que realiza la facturacion �nica.
+   * Documentación para P_FACTURACION_UNICA
+   * Procedimiento que realiza la facturacion única.
    * 
    * @author Hector Lozano <hlozano@telconet.ec>
    * @version 1.0 22/08/2018
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
-   * @version 1.1 16/01/2019 Se realiza correcci�n en c�lculo de impuesto, descuento y valor en detalle del documento.
+   * @author Edgar Holguín <eholguin@telconet.ec>
+   * @version 1.1 16/01/2019 Se realiza corrección en cálculo de impuesto, descuento y valor en detalle del documento.
    *
    * @autor Hector Lozano <hlozano@telconet.ec>
-   * @version 1.2 26/03/2019 Se realiza el c�lculo del valor del impuesto del IVA e ICE correspondiente al detalle, si este aplica.
+   * @version 1.2 26/03/2019 Se realiza el cálculo del valor del impuesto del IVA e ICE correspondiente al detalle, si este aplica.
    * 
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
-   * @version 1.3 30/06/2020 Se agrega condici�n que excluye servicios que ya hayan sido facturados.
+   * @author Edgar Holguín <eholguin@telconet.ec>
+   * @version 1.3 30/06/2020 Se agrega condición que excluye servicios que ya hayan sido facturados.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
-   * @version 1.4 30/07/2020 Se agrega condici�n que excluye servicios que ya hayan sido facturados, se valida servicio a nivel de detalle de factura.
+   * @author Edgar Holguín <eholguin@telconet.ec>
+   * @version 1.4 30/07/2020 Se agrega condición que excluye servicios que ya hayan sido facturados, se valida servicio a nivel de detalle de factura.
    *
    * @author Gustavo Narea <gnarea@telconet.ec>
    * @version 1.5 08/12/2020 Se sube ventana de tiempo para incluir servicios que no hayan sido facturados.
@@ -139,15 +139,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
    * Costo query C_ObtienePuntos: 356                        
    *
    * @author Gustavo Narea <gnarea@telconet.ec>
-   * @version 1.7 09/05/2021 Si tuviere, se a�ade la descripcion de la factura del servicio en el detalle de la factura, 
-   *                         sino se a�ade la descripcion del producto en el detalle de la factura
+   * @version 1.7 09/05/2021 Si tuviere, se añade la descripcion de la factura del servicio en el detalle de la factura, 
+   *                         sino se añade la descripcion del producto en el detalle de la factura
    *
    * @author Gustavo Narea <gnarea@telconet.ec>
    * @version 1.8 02/07/2021 Se parametriza si la empresa necesita mostrar la fecha de facturacion en la observacion del detalle de la factura
    *
    * @param Pv_UsrCreacion       IN VARCHAR2 Recibe el usuario
    * @param Pv_PrefijoEmpresa    IN VARCHAR2 Recibe el prefijo de la empresa
-   * @param Pv_EmpresaCod        IN VARCHAR2 Recibe el c�digo de la empresa
+   * @param Pv_EmpresaCod        IN VARCHAR2 Recibe el código de la empresa
    */
   PROCEDURE P_FACTURACION_UNICA(Pv_UsrCreacion     IN VARCHAR2,
                                 Pv_PrefijoEmpresa  IN VARCHAR2,
@@ -163,7 +163,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   PROCEDURE P_UPDATE_AT_SERV_CARAC (Pr_InfoServicioCaracteristica IN  DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA%ROWTYPE,
                                     Pv_MsnError                   OUT VARCHAR2);
   /*
-  * Documentaci�n para procedimiento P_SENSA_CICLO.
+  * Documentación para procedimiento P_SENSA_CICLO.
   *
   * Procedimiento para facturar los servicios de los clientes que se les aplica un cambio de ciclo.
   * Genera una factura proporcional en base al ciclo de facturacion del cliente.
@@ -177,7 +177,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   PROCEDURE P_SENSA_CICLO;
 
   /*
-  * Documentaci�n para procedimiento P_INSERT_CABECERA_FACTURACION.
+  * Documentación para procedimiento P_INSERT_CABECERA_FACTURACION.
   *
   * Procedimiento para insertar la cabecera de la factura.
   *
@@ -194,7 +194,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                           Pv_Error         OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_INSERT_HISTORIAL_FACTURACION.
+  * Documentación para procedimiento P_INSERT_HISTORIAL_FACTURACION.
   *
   * Procedimiento para insertar el historial de la factura.
   *
@@ -208,7 +208,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                            Pv_Error      OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_INSERT_DETALLE_FACTURACION.
+  * Documentación para procedimiento P_INSERT_DETALLE_FACTURACION.
   *
   * Procedimiento para insertar los detalles de la factura.
   *
@@ -222,7 +222,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                          Pv_Error         OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_INSERT_IMPUESTO_FACTURACION.
+  * Documentación para procedimiento P_INSERT_IMPUESTO_FACTURACION.
   *
   * Procedimiento para insertar los impuestos de la factura.
   *
@@ -236,7 +236,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                           Pv_Error         OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_INSERT_DET_SOL_HIST.
+  * Documentación para procedimiento P_INSERT_DET_SOL_HIST.
   *
   * Procedimiento para insertar el historico del detalle de la solicitud.
   *
@@ -250,7 +250,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                   Pv_Error        OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_ACTUAL_CABECERA_FACTURACION.
+  * Documentación para procedimiento P_ACTUAL_CABECERA_FACTURACION.
   *
   * Procedimiento para actualizar la cabecera de la factura.
   *
@@ -264,7 +264,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                           Pv_Error         OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_ACTUAL_NUMERAC_FACTURACION.
+  * Documentación para procedimiento P_ACTUAL_NUMERAC_FACTURACION.
   *
   * Procedimiento para actualizar la numeracion del SRI.
   *
@@ -278,7 +278,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                          Pv_Error          OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_ACTUAL_PERS_EMP_ROL_CARACT.
+  * Documentación para procedimiento P_ACTUAL_PERS_EMP_ROL_CARACT.
   *
   * Procedimiento para actualizar la caracteristica
   *
@@ -292,7 +292,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                          Pv_Error            OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_ACTUAL_DET_SOLICITUD.
+  * Documentación para procedimiento P_ACTUAL_DET_SOLICITUD.
   *
   * Procedimiento para actualizar el estado del historial, actualiza los registros procesados.
   *
@@ -306,20 +306,20 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                    Pv_Error         OUT VARCHAR2);
 
   /*
-  * Documentaci�n para procedimiento P_PERIODO_FACTURACION_X_PUNTO.
+  * Documentación para procedimiento P_PERIODO_FACTURACION_X_PUNTO.
   *
   * Procedimiento para extraer los dias restantes a facturar y rango de fecha a facturar.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.1
   * @since 26/07/2018
-  * Se agrega el filtro del estado de la caracter�stica en el cursor principal para obtener el ciclo actual del cliente.
+  * Se agrega el filtro del estado de la característica en el cursor principal para obtener el ciclo actual del cliente.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.2
   * @since 15-01-2018
-  * Se agregan par�metros Pv_TipoProceso y Pn_ServicioId para poder determinar si un servicio sufri� CRS. Para los cambio de precio, es necesario
-  * modificar el rango de fechas, debido a que el proceso de facturaci�n de CRS, crea una nueva factura por el ciclo establecido del nuevo cliente.
+  * Se agregan parámetros Pv_TipoProceso y Pn_ServicioId para poder determinar si un servicio sufrió CRS. Para los cambio de precio, es necesario
+  * modificar el rango de fechas, debido a que el proceso de facturación de CRS, crea una nueva factura por el ciclo establecido del nuevo cliente.
   *
   * @param Pn_EmpresaCod             IN   NUMBER    (Codigo de la empresa)
   * @param Pv_FechaActivacion        IN   VARCHAR2  (Fecha de activacion del servicio)
@@ -342,7 +342,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                             Pn_CantidadDiasRestantes OUT NUMBER );
 
   /*
-  * Documentaci�n para procedimiento P_INSERT_INFO_DOC_CARACT.
+  * Documentación para procedimiento P_INSERT_INFO_DOC_CARACT.
   *
   * Procedimiento para insertar el registro de la tabla INFO_DOCUMENTO_CARACTERISTICA.
   *
@@ -356,26 +356,26 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                      Pv_Error         OUT VARCHAR2);
   
   /*
-  * Documentaci�n para procedimiento F_GET_FECHA_ULT_FACT.
+  * Documentación para procedimiento F_GET_FECHA_ULT_FACT.
   *
-  * Procedimiento para extraer la ultima fecha de facturaci�n de un punto.
+  * Procedimiento para extraer la ultima fecha de facturación de un punto.
   *
-  * @param Pn_PuntFact  IN   NUMBER  (Punto de Facturaci�n)
+  * @param Pn_PuntFact  IN   NUMBER  (Punto de Facturación)
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
   * @version 1.0 12-10-2017 - Version inicial
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.1 24-10-2017 - Modificaci�n de la forma de extraer el mes y a�o de consumo para las facturas con rango.
+  * @version 1.1 24-10-2017 - Modificación de la forma de extraer el mes y año de consumo para las facturas con rango.
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.1 26-04-2018 - Se excluyen las facturas de telcos Contrato (facturas de instalaci�n).
+  * @version 1.1 26-04-2018 - Se excluyen las facturas de telcos Contrato (facturas de instalación).
   * 
-  * @author Anabelle Pe�aherrera <apenaherrerap@telconet.ec>
-  * @version 1.2 28-06-2018 - Se agrega verificaci�n que la Ultima Factura sea del servicio que se recibe por parametro.   
+  * @author Anabelle Peñaherrera <apenaherrerap@telconet.ec>
+  * @version 1.2 28-06-2018 - Se agrega verificación que la Ultima Factura sea del servicio que se recibe por parametro.   
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.3 18-12-2019 - Se modifica la llamada a consultar de los usuarios por medio del par�metro 'SOLICITUDES_DE_CONTRATO'.
+  * @version 1.3 18-12-2019 - Se modifica la llamada a consultar de los usuarios por medio del parámetro 'SOLICITUDES_DE_CONTRATO'.
   */
   FUNCTION F_GET_FECHA_ULT_FACT(Pn_PuntFact NUMBER, Fn_IdServicio DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE)
     RETURN VARCHAR2;
@@ -384,27 +384,27 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   /**
   * Documentacion para el procedimiento P_FACT_OFFICE365_CANCEL
   *
-  * M�todo encargado de facturar los sericios con producto Office365 cancelados.
+  * Método encargado de facturar los sericios con producto Office365 cancelados.
   *
   * @param Pn_ServicioId      IN NUMBER   Id del servicio a facturar. 
   * @param Pv_PrefijoEmpresa  IN VARCHAR2 Prefijo de la empresa 
-  * @param Pv_EmpresaCod      IN VARCHAR2 C�digo de empresa
-  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creaci�n
-  * @param Pv_Ip              IN VARCHAR2 Ip de creaci�n
+  * @param Pv_EmpresaCod      IN VARCHAR2 Código de empresa
+  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creación
+  * @param Pv_Ip              IN VARCHAR2 Ip de creación
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 04-07-2018
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 31-10-2018 Se modifica f�rmula de valor a facturar (precio*cantidad*12)- valor facturado.
+  * @version 1.1 31-10-2018 Se modifica fórmula de valor a facturar (precio*cantidad*12)- valor facturado.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.2 22-01-2018 Se agrega NVL para valor total facturado para escenario cuando es NULL
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.3 05-11-2020 Se agrega par�metros de salida para obtener el resultado de este procedimiento invocado desde php
+  * @version 1.3 05-11-2020 Se agrega parámetros de salida para obtener el resultado de este procedimiento invocado desde php
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.4 16-03-2021 Se agrega restricci�n en cursor que obtiene servicios a facturar.
+  * @version 1.4 16-03-2021 Se agrega restricción en cursor que obtiene servicios a facturar.
   *
   * @author Gustavo Narea <gnarea@telconet.ec>
   * @version 1.5 20-12-2022 Se verifica que el servicio no sea de un Cliente Canal.
@@ -418,8 +418,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                     Pv_Mensaje         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para funci�n F_WS_FECHA_PAGO_FACTURA.
-  * Funci�n para mostrar la fecha de pago de una factura FAC-FACP.
+  * Documentación para función F_WS_FECHA_PAGO_FACTURA.
+  * Función para mostrar la fecha de pago de una factura FAC-FACP.
   * Costo del Query C_ObtenerInfFacturacionCliente: 14
   * Costo del Query C_ObtenerDiaLaborable: 2
   * Costo del Query C_getParametros: 3
@@ -435,8 +435,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para procedimiento P_WS_ULTIMAS_FACTURAS_X_PUNTO.
-  * Procedimiento para listar las n �ltimas facturas FAC-FACP por cada punto del cliente.
+  * Documentación para procedimiento P_WS_ULTIMAS_FACTURAS_X_PUNTO.
+  * Procedimiento para listar las n últimas facturas FAC-FACP por cada punto del cliente.
   * Costo del Query 28.
   *
   * @author Ricardo Robles <rrobles@telconet.ec>
@@ -455,7 +455,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                           Pv_Mensaje      OUT VARCHAR2 );
 
   /**
-   * Documentaci�n para procedimiento P_DESCRI_PRODUCTOS_X_FACTURA.
+   * Documentación para procedimiento P_DESCRI_PRODUCTOS_X_FACTURA.
    * Procedimiento que trae el listado de descripciones de productos  concatenados de una factura. .
    * Costo del Query 6.
    *
@@ -474,8 +474,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
 
 
   /**
-  * Documentaci�n para procedimiento P_WS_ULTIMOS_PAGOS_X_PUNTO.
-  * Procedimiento para listar los n �ltimos pagos 'PAG','ANT','ANTS','PAGC','ANTC' por cada punto del cliente.
+  * Documentación para procedimiento P_WS_ULTIMOS_PAGOS_X_PUNTO.
+  * Procedimiento para listar los n últimos pagos 'PAG','ANT','ANTS','PAGC','ANTC' por cada punto del cliente.
   * Costo del Query 23.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
@@ -494,7 +494,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                        Pv_Mensaje      OUT VARCHAR2 );  
 
   /**
-  * Documentaci�n para procedimiento P_WS_TIPO_NEGOCIO_X_PUNTO.
+  * Documentación para procedimiento P_WS_TIPO_NEGOCIO_X_PUNTO.
   * Procedimiento para obtener el tipo de negocio de un plan de internet: 'HOME','PYME','PRO' por cada punto del cliente.
   * Costo del Query 4.
   *
@@ -512,7 +512,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                       Pv_Mensaje OUT VARCHAR2 );
 
   /**
-  * Documentaci�n para procedimiento P_WS_FECHA_FIRMA_CONTRATO.
+  * Documentación para procedimiento P_WS_FECHA_FIRMA_CONTRATO.
   * Procedimiento para obtener la fecha de firma de contrato del cliente.
   * Costo del Query 12.
   * @author Alex Arreaga <atarreaga@telconet.ec>
@@ -529,16 +529,16 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                       Pv_Mensaje OUT VARCHAR2); 
 
   /**
-  * Documentaci�n para el procedure 'P_GET_VALOR_TOTAL_NC_BY_FACT'.
+  * Documentación para el procedure 'P_GET_VALOR_TOTAL_NC_BY_FACT'.
   *
-  * Procedimiento que obtiene el saldo disponible, de la diferencia entre factura y el valor total de notas de cr�ditos. 
+  * Procedimiento que obtiene el saldo disponible, de la diferencia entre factura y el valor total de notas de créditos. 
   * Costo del Query 9
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 29-01-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Pn_IdDocumento IN   DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  (Id del documento)
-  * @param Pn_Saldo       OUT  NUMBER  (Diferencia entre el valor de la factura y el total de las notas de cr�ditos)
+  * @param Pn_Saldo       OUT  NUMBER  (Diferencia entre el valor de la factura y el total de las notas de créditos)
   */
    PROCEDURE P_GET_VALOR_TOTAL_NC_BY_FACT(
     Pn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -547,12 +547,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   /**
   * Documentacion para el procedimiento P_FACT_ECDF_CANCEL
   *
-  * M�todo encargado de facturar los servicios adicionales ECDF al cancelarlo.
+  * Método encargado de facturar los servicios adicionales ECDF al cancelarlo.
   *
   * @param Pn_ServicioId      IN NUMBER   Id del servicio a facturar. 
   * @param Pv_PrefijoEmpresa  IN VARCHAR2 Prefijo de la empresa 
-  * @param Pv_EmpresaCod      IN VARCHAR2 C�digo de empresa
-  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creaci�n
+  * @param Pv_EmpresaCod      IN VARCHAR2 Código de empresa
+  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creación
   *
   * @author Jonathan Mazon Sanchez <jmazon@telconet.ec>
   * @version 1.0 28-09-2021
@@ -565,14 +565,14 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
                                Pv_Mensaje         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el procedimiento P_FACT_CANCEL_SERV_ADICIONAL
+  * Documentación para el procedimiento P_FACT_CANCEL_SERV_ADICIONAL
   *
-  * M�todo encargado de facturar los servicios adicionales al cancelarlo.
+  * Método encargado de facturar los servicios adicionales al cancelarlo.
   *
   * @param Pn_ServicioId      IN NUMBER   Id del servicio a facturar. 
   * @param Pv_PrefijoEmpresa  IN VARCHAR2 Prefijo de la empresa 
-  * @param Pv_EmpresaCod      IN VARCHAR2 C�digo de empresa
-  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creaci�n
+  * @param Pv_EmpresaCod      IN VARCHAR2 Código de empresa
+  * @param Pv_UsrCreacion     IN VARCHAR2 Usuario de creación
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 28-11-2021
@@ -580,7 +580,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION AS
   * @author Alberto Arias <farias@telconet.ec>
   * @version 1.1 26-01-2022
   *
-  * Se cambia el rodondeo del n�mero de meses �ctivos, para que pueda entrar a la condici�n y se genere la factura por los d�as faltantes
+  * Se cambia el rodondeo del número de meses áctivos, para que pueda entrar a la condición y se genere la factura por los días faltantes
   */    
   PROCEDURE P_FACT_CANCEL_SERV_ADICIONAL(  Pn_IdServicio      IN NUMBER,
                                            Pv_PrefijoEmpresa  IN VARCHAR2,
@@ -1171,14 +1171,14 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
     Lv_FeInicio VARCHAR2(20);
   BEGIN
     SELECT TO_CHAR(FE_INICIO,'DD') INTO Lv_FeInicio FROM DB_FINANCIERO.ADMI_CICLO WHERE ID_CICLO = Pn_IdCiclo;
-    --SE OBTIENE LA FECHA DE FACTURACI�N DEL MES ENVIADO POR PAR�METRO EN BASE AL CICLO_ID
+    --SE OBTIENE LA FECHA DE FACTURACIÓN DEL MES ENVIADO POR PARÁMETRO EN BASE AL CICLO_ID
     Pd_FeFacturacion := TO_DATE(Lv_FeInicio ||  '/' || TO_CHAR(Pd_FeAValidar, 'MM') || '/' || TO_CHAR(Pd_FeAValidar, 'YYYY'),'DD/MM/YYYY');
-    --SE OBTIENE LA FECHA DE LA �LTIMA FACTURA DEL CICLO
+    --SE OBTIENE LA FECHA DE LA ÚLTIMA FACTURA DEL CICLO
     IF( TRUNC(Pd_FeFacturacion) > TRUNC(Pd_FeAValidar)) THEN
-        --SI LA FECHA DE FACTURACI�N DEL MES ACTUAL DEL CICLO ES MAYOR A LA FECHA A VALIDAR, LA FACTURACI�N SE EJECUT� EL MES ANTERIOR
+        --SI LA FECHA DE FACTURACIÓN DEL MES ACTUAL DEL CICLO ES MAYOR A LA FECHA A VALIDAR, LA FACTURACIÓN SE EJECUTÓ EL MES ANTERIOR
         Pd_FeFacturacion := ADD_MONTHS(Pd_FeFacturacion,-1);
     END IF;
-    --SE OBTIENE EL SIGUIENTE PER�ODO A FACTURAR POR REGULARIZACI�N DE CRS
+    --SE OBTIENE EL SIGUIENTE PERÍODO A FACTURAR POR REGULARIZACIÓN DE CRS
     Pd_FeFacturacion := TRUNC(ADD_MONTHS(Pd_FeFacturacion, 1));
   EXCEPTION
     WHEN OTHERS THEN
@@ -1326,7 +1326,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                                    Cv_Valor            DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA.VALOR%TYPE,
                                    Cd_FeFacturacion    DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA.FE_FACTURACION%TYPE) IS
         --COSTO DEL QUERY 3
-        --Cursor que obtiene los valores de la carater�stica de un servicio seg�n su fecha de facturaci�n y estado.
+        --Cursor que obtiene los valores de la caraterística de un servicio según su fecha de facturación y estado.
         SELECT *
           FROM DB_COMERCIAL.INFO_SERVICIO_CARACTERISTICA
          WHERE SERVICIO_ID = NVL(Cn_ServicioId, SERVICIO_ID)
@@ -1338,7 +1338,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
     Lr_InfoServicioCaracteristica C_ObtieneInfoServCarac%ROWTYPE;
   BEGIN
 
-        --Se obtiene la caracter�stica por CRS para excluir los servicios.
+        --Se obtiene la característica por CRS para excluir los servicios.
     OPEN C_ObtieneCaracteristica('FACTURACION_CRS_CICLO_FACT', 'COMERCIAL', Lv_EstadoActivo);
     FETCH C_ObtieneCaracteristica
         INTO Lr_ObtieneCaracteristica;
@@ -1379,8 +1379,8 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
       LOOP
         BEGIN
 
-            /*Se obtiene la fecha inicial del siguiente mes a facturar para restarle un d�a.
-              Y obtener el �ltimo d�a del ciclo actual*/
+            /*Se obtiene la fecha inicial del siguiente mes a facturar para restarle un día.
+              Y obtener el último día del ciclo actual*/
             P_OBTIENE_FE_SIG_CICLO_FACT(Pn_IdCiclo       => Lr_PuntosAFacturar.CICLO_ACTUAL_ID,
                                         Pd_FeAValidar    => SYSDATE,
                                         Pd_FeFacturacion => Ld_FechaFinalCiclo);
@@ -1389,7 +1389,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                                 || ' AL ' ||
                                TO_CHAR(Ld_FechaFinalCiclo, 'DD MONTH YYYY','NLS_DATE_LANGUAGE=SPANISH');
             Ln_DiasXFact    := TRUNC(Ld_FechaFinalCiclo) - TRUNC(SYSDATE);
-            --Se le suma el d�a 0, d�a en que se ejecuta la facturaci�n.
+            --Se le suma el día 0, día en que se ejecuta la facturación.
             Ln_DiasXFact    := Ln_DiasXFact +1;
             Ln_DiasTotales  := TO_NUMBER(TO_CHAR(LAST_DAY(SYSDATE),'DD'));
 
@@ -1423,7 +1423,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
             Lr_InfoDocumentoFinancieroHis.FE_CREACION           := SYSDATE;
             Lr_InfoDocumentoFinancieroHis.USR_CREACION          := Pv_UsrCreacion;
             Lr_InfoDocumentoFinancieroHis.ESTADO                := Lv_EstadoPendiente;
-            Lr_InfoDocumentoFinancieroHis.OBSERVACION           := 'Se crea la factura por alcance de Cambio de Raz�n Social';
+            Lr_InfoDocumentoFinancieroHis.OBSERVACION           := 'Se crea la factura por alcance de Cambio de Razón Social';
             FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoFinancieroHis,Lv_MsnError);
             IF Lv_MsnError IS NOT NULL THEN
                 RAISE Le_Error;
@@ -1447,7 +1447,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                 Lr_InfoServicioCaracteristica.VALOR       := Lv_ValorN;
                 Lr_InfoServicioCaracteristica.USR_ULT_MOD := Pv_UsrCreacion;
                 Lr_InfoServicioCaracteristica.IP_ULT_MOD  := Lv_IpLocal;
-                Lr_InfoServicioCaracteristica.OBSERVACION := SUBSTR('Se procesa la caracter�stica en el proceso de alcance de CRS: '
+                Lr_InfoServicioCaracteristica.OBSERVACION := SUBSTR('Se procesa la característica en el proceso de alcance de CRS: '
                                                              || Lr_InfoServicioCaracteristica.OBSERVACION,0,500);
                 P_UPDATE_AT_SERV_CARAC (Lr_InfoServicioCaracteristica, Lv_MsnError);
                 CLOSE C_ObtieneInfoServCarac;
@@ -1510,7 +1510,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                                                                                     || ', Fecha de Activacion: '|| Lv_FeActivacion);
                 END IF;
 
-                --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTIN�A ITERANDO
+                --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTINÚA ITERANDO
                 IF Ln_PrecioVentaFacProDetalle > 0 THEN
                     FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinancieroDet,Lv_MsnError);
                 ELSE
@@ -1629,7 +1629,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
             Lr_Filas.VALOR       := Lv_ValorN;
             Lr_Filas.USR_ULT_MOD := Pv_UsrCreacion;
             Lr_Filas.IP_ULT_MOD  := Lv_IpLocal;
-            Lr_Filas.OBSERVACION := SUBSTR('La caracter�stica no cumple con las validaciones para ser procesada: '
+            Lr_Filas.OBSERVACION := SUBSTR('La característica no cumple con las validaciones para ser procesada: '
                                  || Lr_Filas.OBSERVACION,0,500);
             P_UPDATE_AT_SERV_CARAC (Lr_Filas, Lv_MsnError);
             IF Lv_MsnError IS NOT NULL THEN
@@ -1718,7 +1718,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
     Lv_EsMatriz                   VARCHAR2(1) := Lv_ValorS;
     Lv_EsOficinaFacturacion       VARCHAR2(1) := Lv_ValorS;
     Lv_CodigoNumeracion           VARCHAR2(4) := 'FACE';
-    --Variables de la numeraci�n
+    --Variables de la numeración
     Lrf_Numeracion                FNKG_TYPES.Lrf_AdmiNumeracion;
     Lr_AdmiNumeracion             FNKG_TYPES.Lr_AdmiNumeracion;
     Lv_AdmiParamCabFechaActiv     DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE   := 'FACTURACION UNICA';
@@ -2095,7 +2095,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
             Ln_BanderaImpuestoAdicional:=FNCK_FACTURACION_MENSUAL_TN.F_VERIFICAR_IMPUESTO_PRODUCTO(Lr_Servicios.producto_id,'ICE');
             --
             IF(Ln_BanderaImpuestoAdicional>0) THEN
-              --Se obtiene la informaci�n del impuesto ICE en estado Activo
+              --Se obtiene la información del impuesto ICE en estado Activo
               Ln_PorcentajeImpAdicional :=FNCK_FACTURACION_MENSUAL_TN.F_OBTENER_IMPUESTO('ICE');
               Ln_IdImpuestoImpAdicional :=FNCK_FACTURACION_MENSUAL.F_CODIGO_IMPUESTO('ICE');
               Ln_ValorImpuestoAdicional :=(((Ln_PrecioVentaFacProDetalle * Lr_Servicios.cantidad)-Ln_DescuentoFacProDetalle)
@@ -2127,7 +2127,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
             IF Lr_Servicios.DESCRIPCION_PRESENTA_FACTURA IS NOT NULL THEN
               Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE := Lr_Servicios.DESCRIPCION_PRESENTA_FACTURA;
              ELSE 
-              Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE :=TRIM('Facturaci�n de Servicio: '|| Lr_Servicios.descripcion_producto);  
+              Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE :=TRIM('Facturación de Servicio: '|| Lr_Servicios.descripcion_producto);  
             END IF;
             
             IF NVL(Lr_ObtieneParamFechaActivacion.VALOR1, 'N') = 'S' THEN
@@ -2136,7 +2136,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                     Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE:=TRIM(Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE || ', Fecha de Activacion: '|| Lv_FeActivacion);
               END IF;
             END IF;
-            --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTIN�A ITERANDO
+            --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTINÚA ITERANDO
             IF Ln_PrecioVentaFacProDetalle > 0 THEN
               FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinancieroDet,Lv_MsnError);
             ELSE
@@ -2893,7 +2893,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
   Lv_NombreParametroCab         VARCHAR2(30)  := 'DESCRIPCION_TIPO_FACTURACION';
   Lv_Mensaje                    VARCHAR2(4000);
 
-  --Cursor que sirve para  obtener la fecha de activaci�n del servicio enviado como par�metro.
+  --Cursor que sirve para  obtener la fecha de activación del servicio enviado como parámetro.
   CURSOR C_FECHA_ACTIVACION(Cn_IdServicio DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE) IS
     SELECT MAX (ISH.FE_CREACION) FE_CREACION
     FROM  DB_COMERCIAL.INFO_SERVICIO_HISTORIAL ISH
@@ -2911,7 +2911,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                                         AND   ISER.ESTADO      = Lv_EstadoCancelado
                                         AND   ISHT.ACCION      = Lv_AccionHistActivacion);
   
-  --Cursor que sirve para  obtener para obtener las caracter�sticas seg�n los filtros enviados como par�metro.
+  --Cursor que sirve para  obtener para obtener las características según los filtros enviados como parámetro.
   CURSOR C_GET_PARAMETROS(Cv_EmpresaCod VARCHAR2, Cv_NombreParametro VARCHAR2, Cv_Modulo VARCHAR2, Cv_Estado VARCHAR2) IS
     SELECT DET.VALOR1,
            DET.VALOR2,
@@ -2926,7 +2926,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
     AND   DET.EMPRESA_COD      =  Cv_EmpresaCod
     AND   CAB.NOMBRE_PARAMETRO =  Cv_NombreParametro;
 
-  --Cursor que sirve para obtener la primera factura proporcional del servicio enviado como par�metro.
+  --Cursor que sirve para obtener la primera factura proporcional del servicio enviado como parámetro.
   --Costo query: 5
   CURSOR C_GET_FACT_PRO(Cv_DescProducto VARCHAR2, Cn_IdServicio NUMBER) IS
     SELECT IDFD.*
@@ -2944,7 +2944,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
                                                           WHERE ISER.ID_SERVICIO = Cn_IdServicio)
                                    );
 
-  --Cursor que obtiene la fecha posterior n meses despu�s contados a partir de la �ltima fecha de creaci�n del historial del servicio.
+  --Cursor que obtiene la fecha posterior n meses después contados a partir de la última fecha de creación del historial del servicio.
   --Costo Query: 28
   CURSOR  C_GET_FE_FINPERIODO(Cn_IdServicio NUMBER , Cn_NumMesesTotal NUMBER) IS
     SELECT TO_CHAR(ADD_MONTHS(ISH.FE_CREACION,Cn_NumMesesTotal), 'DD MONTH YYYY','NLS_DATE_LANGUAGE=SPANISH')
@@ -2980,7 +2980,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
         WHERE ISE.ID_SERVICIO = Cn_IdServicio 
         AND ARO.DESCRIPCION_ROL <> 'Cliente Canal';
 
-   -- Cursor que obtiene el punto a facturar seg�n el id servicio enviado como par�metro.
+   -- Cursor que obtiene el punto a facturar según el id servicio enviado como parámetro.
    -- Costo Query: 10
    CURSOR C_GET_PTOS_FACTURAR(Cv_PrefijoEmpresa VARCHAR2,Cv_DescripcionProducto VARCHAR2, Cn_IdServicio NUMBER) IS
      SELECT DISTINCT ISE.PUNTO_FACTURACION_ID,IPER.OFICINA_ID
@@ -3076,7 +3076,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
     Ln_NumMesesTotal := NVL(Lc_ParametrosCm.VALOR1,0);
 
     --
-    -- Obtengo la descripci�n que debe ir mediante
+    -- Obtengo la descripción que debe ir mediante
     Lrf_GetAdmiParamtrosDet := FNCK_CONSULTS.F_GET_ADMI_PARAMETROS_DET(Lv_NombreParametroCab, 
                                                                        Lv_EstadoActivo, 
                                                                        Lv_EstadoActivo, 
@@ -3266,7 +3266,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
               RAISE Le_Error;
             END IF;
 
-            --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTIN�A ITERANDO
+            --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTINÚA ITERANDO
             IF Ln_PrecioVentaFacProDetalle > 0 THEN
                 FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinancieroDet,Lv_MsnError);
             ELSE
@@ -3356,7 +3356,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
         EXCEPTION
           WHEN Le_Error THEN
             Lv_Mensaje := 'No se ha podido generar la factura de servicios NetlifeCloud cancelados con ID SERVICIO '|| Pn_ServicioId 
-                          || ' como par�metro';
+                          || ' como parámetro';
             ROLLBACK;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            Lv_NombreProcedimiento,
@@ -3371,8 +3371,8 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION AS
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status     := 'ERROR';
-      Pv_Mensaje    := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturaci�n de servicios NetlifeCloud cancelados '
-                        || 'con ID SERVICIO ' || Pn_ServicioId || ' como par�metro';
+      Pv_Mensaje    := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturación de servicios NetlifeCloud cancelados '
+                        || 'con ID SERVICIO ' || Pn_ServicioId || ' como parámetro';
       ROLLBACK;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            Lv_NombreProcedimiento,
@@ -3819,7 +3819,7 @@ PROCEDURE P_FACT_ECDF_CANCEL(Pn_ServicioId      IN NUMBER,
   Lv_EstadoActivo               VARCHAR2(15)  := 'Activo';
   Lv_EstadoPendiente            VARCHAR2(15)  := 'Pendiente';
   Lv_EstadoCancelado            VARCHAR2(20)  := 'Cancel';
-  Lv_DescripcionProducto        VARCHAR2(50)  := 'El Canal Del F�tbol';
+  Lv_DescripcionProducto        VARCHAR2(50)  := 'El Canal Del Fútbol';
   Lv_ValorS                     VARCHAR2(1)   := 'S';
   Lv_ValorN                     VARCHAR2(1)   := 'N';
   Lv_ModuloTecnico              VARCHAR2(20)  := 'TECNICO';
@@ -3834,7 +3834,7 @@ PROCEDURE P_FACT_ECDF_CANCEL(Pn_ServicioId      IN NUMBER,
   Lv_ParamDetDescripFactura     VARCHAR2(30)  := 'DESCRIPCION_FACTURA';
   Lv_Mensaje                    VARCHAR2(4000);
 
-  --Cursor que obtiene la fecha de activaci�n del servicio
+  --Cursor que obtiene la fecha de activación del servicio
   CURSOR C_FECHA_ACTIVACION(Cn_IdServicio DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE) IS
   SELECT 
         TO_DATE(ISPC.VALOR, 'YYYY-MM-DD HH24:MI:SS') AS FECHA_COMPLETA
@@ -3987,7 +3987,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
 
     Ln_NumMesesTotal := NVL(Lc_ParametrosCm.VALOR2,0);
     
-    -- Se obtiene descripci�n parametrizada de la factura
+    -- Se obtiene descripción parametrizada de la factura
     IF C_GET_PARAMETROS%ISOPEN THEN
       CLOSE C_GET_PARAMETROS;
     END IF;
@@ -4141,7 +4141,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
             Lr_InfoDocumentoFinancieroDet.SERVICIO_ID                :=Lr_Servicios.id_servicio;
             Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE  := Lv_DescripcionFacturaDet;
 
-            --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTIN�A ITERANDO
+            --SI EL DETALLE ES MAYOR A 0, SE INSERTA. CASO CONTRARIO CONTINÚA ITERANDO
             IF Ln_PrecioVentaFacProDetalle > 0 THEN
                 FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinancieroDet,Lv_MsnError);
             ELSE
@@ -4236,7 +4236,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
         EXCEPTION
           WHEN Le_Error THEN
             Lv_Mensaje := 'No se ha podido generar la factura del servicio '|| Lv_DescripcionProducto ||' cancelado con ID SERVICIO: '|| Pn_ServicioId 
-                          || ' como par�metro';
+                          || ' como parámetro';
             ROLLBACK;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            Lv_NombreProcedimiento,
@@ -4251,8 +4251,8 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
   EXCEPTION
     WHEN OTHERS THEN
       Pv_Status     := 'ERROR';
-      Pv_Mensaje    := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturaci�n del servicio '|| Lv_DescripcionProducto ||' cancelado '
-                        || 'con ID SERVICIO ' || Pn_ServicioId || ' como par�metro';
+      Pv_Mensaje    := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturación del servicio '|| Lv_DescripcionProducto ||' cancelado '
+                        || 'con ID SERVICIO ' || Pn_ServicioId || ' como parámetro';
       ROLLBACK;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            Lv_NombreProcedimiento,
@@ -4274,7 +4274,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
     Lv_EstadoActivo               VARCHAR2(15)  := 'Activo';
     Lv_EstadoPendiente            VARCHAR2(15)  := 'Pendiente';
     Lv_EstadoCancelado            VARCHAR2(20)  := 'Cancel';
-     --Lv_DescripcionProducto        VARCHAR2(50)  := 'El Canal Del F��tbol';
+     --Lv_DescripcionProducto        VARCHAR2(50)  := 'El Canal Del Futbol';
     Lv_DescripcionProducto        VARCHAR2(50);
     Lv_ValorS                     VARCHAR2(1)   := 'S';
     Lv_ValorN                     VARCHAR2(1)   := 'N';
@@ -4290,7 +4290,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
     Lv_ParamDetDescripFactura     VARCHAR2(30)  := 'DESCRIPCION_FACTURA';
     Lv_Mensaje                    VARCHAR2(4000);
 
-    --Cursor que obtiene la fecha de activaci�n del servicio
+    --Cursor que obtiene la fecha de activación del servicio
     CURSOR C_FECHA_ACTIVACION(Cn_IdServicio DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE) 
     IS
       SELECT TO_DATE(ISPC.VALOR, 'YYYY-MM-DD HH24:MI:SS') AS FECHA_COMPLETA
@@ -4360,7 +4360,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
                                         FROM   DB_COMERCIAL.INFO_SERVICIO_HISTORIAL ISH2 
                                         WHERE  ISH2.SERVICIO_ID = Cn_IdServicio);
 
-       --Cursor que obtiene la descripci��n del producto segun servicio
+       --Cursor que obtiene la descripcion del producto segun servicio
     CURSOR C_GET_DESC_PRODUCTO(Cn_ServicioId NUMBER) IS
       SELECT ADP.DESCRIPCION_PRODUCTO
       FROM DB_COMERCIAL.ADMI_PRODUCTO ADP
@@ -4451,7 +4451,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
   
       Ln_NumMesesTotal := NVL(Lr_ParametrosCm.VALOR2,0);
 
-      -- Se obtiene descripci�n parametrizada de la factura
+      -- Se obtiene descripción parametrizada de la factura
       IF C_GET_PARAMETROS%ISOPEN THEN
         CLOSE C_GET_PARAMETROS;
       END IF;
@@ -4642,7 +4642,7 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
         COMMIT;
       END IF;
     ELSE
-      Lv_MsnError := 'No se ha podido obtener la informaci�n de facturaci�n ' || 'con ID SERVICIO ' || Pn_IdServicio || ' como par�metro';
+      Lv_MsnError := 'No se ha podido obtener la información de facturación ' || 'con ID SERVICIO ' || Pn_IdServicio || ' como parámetro';
       RAISE Le_Error;
     END IF;
     CLOSE C_GET_SERV_FACTURAR;
@@ -4653,11 +4653,11 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
   EXCEPTION
     WHEN Le_Error THEN
       Pv_Status  := 'ERROR';
-      Pv_Mensaje := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturaci�n del servicio '|| Lv_DescripcionProducto 
+      Pv_Mensaje := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturación del servicio '|| Lv_DescripcionProducto 
                     ||' cancelado '
-                    || 'con ID SERVICIO ' || Pn_IdServicio || ' como par�metro';
+                    || 'con ID SERVICIO ' || Pn_IdServicio || ' como parámetro';
       Lv_Mensaje := 'No se ha podido generar la factura del servicio '|| Lv_DescripcionProducto ||' cancelado con ID SERVICIO: '|| Pn_IdServicio 
-                    || ' como par�metro';
+                    || ' como parámetro';
       ROLLBACK;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                             Lv_NombreProcedimiento,
@@ -4679,8 +4679,8 @@ CURSOR C_GET_NUMERACION (Cv_PrefijoEmpresa VARCHAR2, Cv_OficinaId VARCHAR2, Cv_C
       END;
     WHEN OTHERS THEN
       Pv_Status     := 'ERROR';
-      Pv_Mensaje    := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturaci�n del servicio '|| Lv_DescripcionProducto 
-                        || ' cancelado con ID SERVICIO ' || Pn_IdServicio || ' como par�metro';
+      Pv_Mensaje    := 'Ha ocurrido un error inesperado al ejecutar el procedimiento de facturación del servicio '|| Lv_DescripcionProducto 
+                        || ' cancelado con ID SERVICIO ' || Pn_IdServicio || ' como parámetro';
       ROLLBACK;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                             Lv_NombreProcedimiento,

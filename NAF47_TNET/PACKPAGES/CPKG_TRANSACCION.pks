@@ -15,7 +15,7 @@ CREATE OR REPLACE package NAF47_TNET.CPKG_TRANSACCION is
 
   /**
   * Documentacion para NAF47_TNET.CPKG_TRANSACCION.Gr_DatosFactura
-  * Variable Registro que permite pasar por parametro los datos necesarios para el registro autom�tico de factura proveedor
+  * Variable Registro que permite pasar por parametro los datos necesarios para el registro automático de factura proveedor
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 11/10/2021
   */
@@ -832,7 +832,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
                                            SYSDATE,
                                            NVL(SYS_CONTEXT(GEK_VAR.Gr_Sesion.USERENV,GEK_VAR.Gr_Sesion.IP_ADRESS),'127.0.0.1'));      
       --
-      -- primera interacci�n se genera registro en arcpmd
+      -- primera interacción se genera registro en arcpmd
       IF Lr_Arcpmd.No_Docu IS NULL THEN
         --
         IF C_DATOS_COMPANIA%ISOPEN THEN
@@ -902,7 +902,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
         CLOSE C_DATOS_TIPO_DOCUMENTO;
         --
         IF Lr_datosTipoDoc.Cod_Diario IS NULL THEN
-          Pv_MensajeError := 'No se ha definido c�digo de diario para el tipo documento: '||Lr_Arcpmd.Tipo_Doc;
+          Pv_MensajeError := 'No se ha definido código de diario para el tipo documento: '||Lr_Arcpmd.Tipo_Doc;
           RAISE Le_Error;
         END IF;
         --
@@ -916,7 +916,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
         CLOSE C_DATOS_PROVEEDOR;
         --
         IF Lr_datosProveedor.No_Prove IS NULL THEN
-          Pv_MensajeError := 'No se encontr� c�digo de proveedor: '||Lr_Arcpmd.No_Prove;
+          Pv_MensajeError := 'No se encontró código de proveedor: '||Lr_Arcpmd.No_Prove;
           RAISE Le_Error;
         END IF;
         --
@@ -936,7 +936,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
         CLOSE C_TIPO_RETENCION;
         --
         IF Lr_tipoRetencion.Tipo_Doc IS NULL THEN
-          Pv_MensajeError := 'No se ha definido tipo retenci�n electr�nica para empresa: '||Lr_Arcpmd.No_Cia;
+          Pv_MensajeError := 'No se ha definido tipo retención electrónica para empresa: '||Lr_Arcpmd.No_Cia;
           RAISE Le_Error;
         END IF;
         --
@@ -979,7 +979,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
       --
     END LOOP;
     --------------------------------------
-    -- Generaci�n de registro impuestos --
+    -- Generación de registro impuestos --
     --------------------------------------
     Lr_Arcpti.no_cia := Lr_Arcpmd.No_Cia;
     Lr_Arcpti.no_prove := Lr_Arcpmd.No_Prove;
@@ -1046,7 +1046,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
       --
     END IF;
     -------------------------------
-    -- Generaci�n de Retenciones --
+    -- Generación de Retenciones --
     -------------------------------
     Lr_Arcpti.ind_imp_ret := 'R';
     Lr_Arcpti.aplica_cred_fiscal := 'N';
@@ -1098,7 +1098,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
                              ', Lr_Retencion.Retencion_Fuente: '||Lr_Retencion.Retencion_Fuente||
                              ', Lr_Arcpmd.Excento_Serv: '||Lr_Arcpmd.Excento_Serv||
                              ', Lr_Arcpmd.Excento_Bienes: '||Lr_Arcpmd.Excento_Bienes||
-                             ' Tipo de retenci�n y montos no definidos, favor revisar!!!';
+                             ' Tipo de retención y montos no definidos, favor revisar!!!';
           RAISE Le_Error;
           */
           Lr_Arcpti.Base := 0;
@@ -1129,7 +1129,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
       --
     END LOOP;
     --
-    -- Actualizaci�n de montos
+    -- Actualización de montos
     Lr_Arcpmd.Monto := Lr_Arcpmd.Subtotal + Lr_Arcpmd.Tot_Imp - Lr_Arcpmd.Tot_Ret;
     Lr_Arcpmd.Saldo := Lr_Arcpmd.Monto;
     Lr_Arcpmd.Monto_Nominal := Lr_Arcpmd.Subtotal + Lr_Arcpmd.Tot_Imp - Lr_Arcpmd.Tot_Ret;
@@ -1198,7 +1198,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
     --
     --
     -----------------------------------------------------------------
-    -- Detalle contable por c�digo de Bienes en Ingresos a Bodegas --
+    -- Detalle contable por código de Bienes en Ingresos a Bodegas --
     -----------------------------------------------------------------
     Lr_Arcpdc.tipo := 'D';
     --
@@ -1252,12 +1252,12 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
           RAISE Le_Error;
         END IF;
         --
-        -- proceso genera factura por defecto los impuestos se asignan al d�bito
+        -- proceso genera factura por defecto los impuestos se asignan al débito
         Lr_Arcpdc.Tipo := 'D';
         --
       ELSIF Lr_Impuesto.Ind_Imp_Ret = 'R' THEN 
         --
-        --proceso genera factura por defecto las retenciones se asignan al cr�dito
+        --proceso genera factura por defecto las retenciones se asignan al crédito
         Lr_Arcpdc.Codigo := Lr_Impuesto.Cuenta;
         Lr_Arcpdc.Tipo := 'C';
         --
@@ -1265,7 +1265,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
       --
       -- se valida que recupere cuenta contable
       IF Lr_Arcpdc.Codigo IS NULL THEN
-        Pv_MensajeError := 'No se encontr� cuenta contable para impuesto: '||Lr_Impuesto.Clave;
+        Pv_MensajeError := 'No se encontró cuenta contable para impuesto: '||Lr_Impuesto.Clave;
         RAISE Le_Error;
       END IF;
       --
@@ -1293,7 +1293,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
       --
     END LOOP;
     -------------------------------------------------------------------
-    -- Detalle contable por c�digo de servicio en ordenes de compras --
+    -- Detalle contable por código de servicio en ordenes de compras --
     -------------------------------------------------------------------
     FOR Lr_OrdenCompra IN C_DATOS_ORDEN_COMPRA (Lr_Arcpmd.No_Docu, Lr_Arcpmd.No_Cia) LOOP
       --
@@ -1329,7 +1329,7 @@ CREATE OR REPLACE package body NAF47_TNET.CPKG_TRANSACCION is
         END IF;
         --
         IF Ln_CantidadDistribuir <= 0 THEN
-          Pv_MensajeError := 'No se ha encontrado distribuci�n de costos, revisar sentencia de consulta para DISTRIBUCION_CONTABLE.';
+          Pv_MensajeError := 'No se ha encontrado distribución de costos, revisar sentencia de consulta para DISTRIBUCION_CONTABLE.';
           Raise Le_Error;
         END IF;
         --

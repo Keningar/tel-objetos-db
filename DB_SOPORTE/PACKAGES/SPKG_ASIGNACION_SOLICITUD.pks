@@ -1,34 +1,34 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_ASIGNACION_SOLICITUD
 AS
   /**
-  * Actualizaci�n: Se agrega validaci�n para nuevos campos en la gestos de Tareas de Agente
-  * @author Fernando L�pez <filopez@telconet.ec>
+  * Actualización: Se agrega validación para nuevos campos en la gestos de Tareas de Agente
+  * @author Fernando López <filopez@telconet.ec>
   * @version 1.7 17-01-2022
   * 
-  * Actualizaci�n: Se agrega validaci�n para no considerar asignaciones con dependencia.
-  * @author Miguel Angulo S�nchez <jmangulos@telconet.ec>
+  * Actualización: Se agrega validación para no considerar asignaciones con dependencia.
+  * @author Miguel Angulo Sánchez <jmangulos@telconet.ec>
   * @version 1.6 26-06-2019
   *
-  * Actualizaci�n: Se corrige el conteo de asignaciones por agente en el d�a, se valida que no 
+  * Actualización: Se corrige el conteo de asignaciones por agente en el día, se valida que no 
   *                se repitan por los cambios de turno.
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.5 01-03-2019
   *
-  * Actualizaci�n: La fecha de conexi�n se obtiene desde la funci�n: F_GET_FECHA_ESTADO_CONEXION
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: La fecha de conexión se obtiene desde la función: F_GET_FECHA_ESTADO_CONEXION
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.4 22-01-2019
   *
-  * Actualizaci�n: Se agrega campo para validar si el orden es por CANTIDAD o por ESTADO_CONEXION
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega campo para validar si el orden es por CANTIDAD o por ESTADO_CONEXION
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.3 08-01-2019
   *
-  * Actualizaci�n: Se agrega en el SELECT del query principal el campo per.ID_PERSONA_ROL
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega en el SELECT del query principal el campo per.ID_PERSONA_ROL
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.2 23-10-2018
   *
-  * Actualizaci�n: Se valida que si no envia parametro de canton entonces que
+  * Actualización: Se valida que si no envia parametro de canton entonces que
   * consulte todos los empleados del departamento de todos los cantones
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 03-10-2018
   *
   * Documentacion para procedimiento 'P_GET_INFO_EMPLE_ASIGNACION'
@@ -38,11 +38,11 @@ AS
   * @param Pv_EmpresaCod       IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE   Codigo de la empresa
   * @param Pv_DepartamentoId   IN DB_GENERAL.ADMI_DEPARTAMENTO.ID_DEPARTAMENTO%TYPE  Id del departamento
   * @param Pv_CantonId         IN DB_GENERAL.ADMI_CANTON.ID_CANTON%TYPE              Id del canton
-  * @param Pv_feCreacion       IN VARCHAR2                                           Fecha de creaci�n de InfoAsignacionSolicitudHist
+  * @param Pv_feCreacion       IN VARCHAR2                                           Fecha de creación de InfoAsignacionSolicitudHist
   * @param Pv_orden            IN VARCHAR2                                           indica como se ordena registros del query
   * @param Pv_MensajeError    OUT VARCHAR2                                           Retorna el mensaje de error en caso de existir
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   PROCEDURE P_GET_INFO_EMPLE_ASIGNACION(
@@ -53,10 +53,10 @@ AS
       Pv_orden            IN VARCHAR2,
       Pr_Informacion      OUT SYS_REFCURSOR );
 
-  /** Funci�n que retorna 1 si es asiganaci�n Padre 0 si no lo es
+  /** Función que retorna 1 si es asiganación Padre 0 si no lo es
   *
   * @param Pv_EmpresaCod       IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE   Codigo de la empresa
-  * @author Miguel Angulo S�nchez <jmangulos@telconet.ec>
+  * @author Miguel Angulo Sánchez <jmangulos@telconet.ec>
   * @version 1.0 28-06-2019
   */
   FUNCTION F_GET_ES_PADRE(Pn_IdAsignacionPadre IN DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ASIGNACION_PADRE_ID%TYPE)
@@ -64,18 +64,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega en el Select del query el campo DATO_ADICIONAL
-  * @author Andr�s Montero <amontero@telconet.ec>
+  * Actualización: Se agrega en el Select del query el campo DATO_ADICIONAL
+  * @author Andrés Montero <amontero@telconet.ec>
   * @version 1.1 28-11-2018
   *
   * Documentacion para procedimiento 'P_GET_INFO_ASIGNACION_POR_ID'
   *
-  * Procedimiento que obtiene informacion de asignaci�n por id
+  * Procedimiento que obtiene informacion de asignación por id
   *
-  * @param Pv_idAsignacion IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE  Id de la asignaci�n
+  * @param Pv_idAsignacion IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE  Id de la asignación
   * @param Pr_Informacion  OUT SYS_REFCURSOR  Retorna el resultado de la consulta
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   PROCEDURE P_GET_INFO_ASIGNACION_POR_ID(
@@ -86,27 +86,27 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega validaci�n para que excluya los seguimientos de asignaciones Eliminadas.
-  * @author Andr�s Montero <amontero@telconet.ec>
+  * Actualización: Se agrega validación para que excluya los seguimientos de asignaciones Eliminadas.
+  * @author Andrés Montero <amontero@telconet.ec>
   * @version 1.2 03-04-2019
   *
-  * Actualizaci�n: Se agrega par�metro de id de tarea que se usar� para consultar 
-  *                directamente la tarea con este id si el tipo de atenci�n es caso
-  * @author Andr�s Montero <amontero@telconet.ec>
+  * Actualización: Se agrega parámetro de id de tarea que se usará para consultar 
+  *                directamente la tarea con este id si el tipo de atención es caso
+  * @author Andrés Montero <amontero@telconet.ec>
   * @version 1.1 18-02-2019
   *
   * Documentacion para procedimiento 'P_GET_SEGUIMIENTOS'
   *
   * Procedimiento que obtiene seguimientos de asignaciones
   *
-  * @param Pv_idAsignacion     IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE   Id de asignaci�n
+  * @param Pv_idAsignacion     IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE   Id de asignación
   * @param Pv_idTarea          IN  DB_SOPORTE.INFO_COMUNICACION.ID_COMUNICACION%TYPE                   Id de la tarea
-  * @param Pv_usrCreacion      IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.USR_CREACION%TYPE              Usuario de creaci�n
+  * @param Pv_usrCreacion      IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.USR_CREACION%TYPE              Usuario de creación
   * @param Pv_tipo             IN  VARCHAR2                                                            Id del canton
-  * @param Pv_feCreacion       IN  VARCHAR2                                                            Fecha de creaci�n
+  * @param Pv_feCreacion       IN  VARCHAR2                                                            Fecha de creación
   * @param Pr_Informacion      OUT SYS_REFCURSOR                                                       Retorna el resultado de la consulta
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   PROCEDURE P_GET_SEGUIMIENTOS(
@@ -121,13 +121,13 @@ AS
   /**
   * Documentacion para procedimiento 'P_GET_ESTADOS_POR_TAREA'
   *
-  * Procedimiento que obtiene los estados de la tarea y del caso seg�n el numero de tarea
+  * Procedimiento que obtiene los estados de la tarea y del caso según el numero de tarea
   *
-  * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE   Id de asignaci�n
+  * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE   Id de asignación
   * @param Pr_estadoTarea       OUT  VARCHAR2                                      Estado de la tarea
   * @param Pr_estadoCaso        OUT  VARCHAR2                                      Estado del caso
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   PROCEDURE P_GET_ESTADOS_POR_TAREA(
@@ -138,13 +138,13 @@ AS
   /**
   * Documentacion para procedimiento 'P_GET_ESTADOS_POR_CASO'
   *
-  * Procedimiento que obtiene los estados de la tarea y del caso seg�n el id de caso
+  * Procedimiento que obtiene los estados de la tarea y del caso según el id de caso
   *
-  * @param Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE   Id de asignaci�n
+  * @param Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE   Id de asignación
   * @param Pr_estadoTarea       OUT  VARCHAR2            Estado de la tarea
   * @param Pr_estadoCaso        OUT  VARCHAR2            Estado del caso
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   PROCEDURE P_GET_ESTADOS_POR_CASO(
@@ -157,10 +157,10 @@ AS
   *
   * Procedimiento que obtiene seguimientos de asignaciones por usuario
   *
-  * @param Pv_usrAsignadoSeg   IN DB_SOPORTE.INFO_SEGUIMIENTO_ASIGNACION.USR_GESTION%TYPE   Usuario de creaci�n del seguimiento
+  * @param Pv_usrAsignadoSeg   IN DB_SOPORTE.INFO_SEGUIMIENTO_ASIGNACION.USR_GESTION%TYPE   Usuario de creación del seguimiento
   * @param Pr_Informacion      OUT SYS_REFCURSOR                                            Retorna el resultado de la consulta
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   PROCEDURE P_GET_SEGUIMIENTOS_PEND_USR(
@@ -169,18 +169,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 24-10-2018
   *
   * Documentacion para 'F_ESTADO_TAREA_POR_TAREA'
   *
-  * Funci�n que obtiene estado de tarea por n�mero de tarea
+  * Función que obtiene estado de tarea por número de tarea
   *
-  * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE n�mero de la tarea a consultar
+  * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE número de la tarea a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_ESTADO_TAREA_POR_TAREA(Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE)
@@ -188,18 +188,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 24-10-2018
   *
   * Documentacion para 'F_ESTADO_CASO_POR_TAREA'
   *
-  * Funci�n que obtiene estado del caso por n�mero de tarea
+  * Función que obtiene estado del caso por número de tarea
   *
-  * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE n�mero de la tarea a consultar
+  * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE número de la tarea a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_ESTADO_CASO_POR_TAREA(Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE)
@@ -207,18 +207,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 24-10-2018
   *
   * Documentacion para 'F_ESTADO_TAREA_POR_CASO'
   *
-  * Funci�n que obtiene estado de tarea por id de caso
+  * Función que obtiene estado de tarea por id de caso
   *
   * @param Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE id del caso a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_ESTADO_TAREA_POR_CASO(Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE)
@@ -226,18 +226,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 24-10-2018
   *
   * Documentacion para 'F_ESTADO_CASO_POR_CASO'
   *
-  * Funci�n que obtiene estado del caso por id de caso
+  * Función que obtiene estado del caso por id de caso
   *
   * @param Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE id del caso a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_ESTADO_CASO_POR_CASO(Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE)
@@ -245,18 +245,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se elimina las comillas del detalle de seguimiento.
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se elimina las comillas del detalle de seguimiento.
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 15-02-2019
   *
   * Documentacion para 'F_SEGUIMIENTOSJSON_POR_IDASIG'
   *
-  * Funci�n que obtiene los seguimientos por id de asignaci�n
+  * Función que obtiene los seguimientos por id de asignación
   *
-  * @param Pv_idAsignacion DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE id de la asignaci�n
+  * @param Pv_idAsignacion DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE id de la asignación
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_SEGUIMIENTOSJSON_POR_IDASIG(Pv_idAsignacion DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.ID_ASIGNACION_SOLICITUD%TYPE)
@@ -264,18 +264,18 @@ AS
 
   /**
   *
-  * Actualizaci�n: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega excepcion NO_DATA_FOUND para que no se inserte error al no encontrar datos
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 24-10-2018
   *
   * Documentacion para 'F_NUMERO_TAREA_POR_CASO'
   *
-  * Funci�n que obtiene numero de tarea por id de caso
+  * Función que obtiene numero de tarea por id de caso
   *
   * @param Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE id del caso a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_NUMERO_TAREA_POR_CASO(Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE)
@@ -284,12 +284,12 @@ AS
   /**
   * Documentacion para 'F_NUMERO_CASO_POR_TAREA'
   *
-  * Funci�n que obtiene numero de caso por id de tarea
+  * Función que obtiene numero de caso por id de tarea
   *
   * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE id de tarea a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 22-08-2018
   */
   FUNCTION F_NUMERO_CASO_POR_TAREA(Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE)
@@ -298,12 +298,12 @@ AS
   /**
   * Documentacion para 'F_GET_DATOS_TAREA'
   *
-  * Funci�n que obtiene datos de la tarea
+  * Función que obtiene datos de la tarea
   *
   * @param Pv_numeroTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE id de tarea a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 28-11-2018
   */
   FUNCTION F_GET_DATOS_TAREA(
@@ -314,12 +314,12 @@ AS
   /**
   * Documentacion para 'F_GET_AFECTADOS_POR_CASO'
   *
-  * Funci�n que obtiene los afectados por caso
+  * Función que obtiene los afectados por caso
   *
   * @param Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE id del caso a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 28-11-2018
   */
   FUNCTION F_GET_AFECTADOS_POR_CASO(
@@ -327,27 +327,27 @@ AS
     RETURN VARCHAR2;
 
   /**
-  * Actualizaci�n: Se mejora query por la obtenci�n de m�ltiples Login.
+  * Actualización: Se mejora query por la obtención de múltiples Login.
   * @author Miguel Angulo S <jmangulos@telconet.ec>
   * @version 1.3 26-07-2019
   *
-  * Actualizaci�n: Se mejora el query para obtener el afectado para las tareas
+  * Actualización: Se mejora el query para obtener el afectado para las tareas
   * @author Miguel Angulo S <amontero@telconet.ec>
   * @version 1.2 09-05-2019
   *
-  * Actualizaci�n: Se mejora el query para obtener el afectado para las tareas
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se mejora el query para obtener el afectado para las tareas
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 02-01-2019
   *
   *
   * Documentacion para 'F_GET_AFECTADOS_POR_TAREA'
   *
-  * Funci�n que obtiene datos de la tarea
+  * Función que obtiene datos de la tarea
   *
   * @param Pv_idTarea DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE id de tarea a consultar
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 28-11-2018
   */
   FUNCTION F_GET_AFECTADOS_POR_TAREA(
@@ -355,19 +355,19 @@ AS
     RETURN VARCHAR2;
 
   /**
-  * Actualizaci�n: Se agrega parametro Pv_TipoConsulta para validar que campo se desea obtener VALOR o FE_ULT_MOD
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega parametro Pv_TipoConsulta para validar que campo se desea obtener VALOR o FE_ULT_MOD
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 08-01-2019
   *
   * Documentacion para 'F_GET_CARACTERISTICA_EMPLEADO'
   *
-  * Funci�n que obtiene caracteristica del empleado
+  * Función que obtiene caracteristica del empleado
   *
   * @param Pv_idPersonaEmpresaRol DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_EMPRESA_ROL%TYPE id persona empresa rol a consultar
-  * @param Pv_descCaracteristica  DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  descripci�n de la caracter�stica
+  * @param Pv_descCaracteristica  DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  descripción de la característica
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 03-12-2018
   */
   FUNCTION F_GET_CARACTERISTICA_EMPLEADO(
@@ -379,12 +379,12 @@ AS
   /**
   * Documentacion para 'F_GET_FECHA_ESTADO_CONEXION'
   *
-  * Funci�n que obtiene �ltima fecha de conexi�n del agente
+  * Función que obtiene última fecha de conexión del agente
   *
   * @param Pv_idPersonaEmpresaRol DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_EMPRESA_ROL%TYPE id persona empresa rol a consultar
   * @return TIMESTAMP
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 21-01-2019
   */
   FUNCTION F_GET_FECHA_ESTADO_CONEXION(
@@ -393,27 +393,27 @@ AS
 
 
 /**
-  * Actualizaci�n: Se agrega validaci�n para no considerar asignaciones con dependencia.
-  * @author Miguel Angulo S�nchez <jmangulos@telconet.ec>
+  * Actualización: Se agrega validación para no considerar asignaciones con dependencia.
+  * @author Miguel Angulo Sánchez <jmangulos@telconet.ec>
   * @version 1.3 26-06-2019
   *
-  * Actualizaci�n: Se reduce el tama�o de la cadena que obtiene por medio de LISTAGG las asignaciones por agente
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se reduce el tamaño de la cadena que obtiene por medio de LISTAGG las asignaciones por agente
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.2 02-01-2019
   *
-  * Actualizaci�n: Se elimina caracteres especiales en el login de las asignaciones
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se elimina caracteres especiales en el login de las asignaciones
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 28-12-2018
   * Documentacion para 'F_GET_REGISTROS_ASIGNACIONES'
   *
-  * Funci�n que obtiene las asignaciones por login de empleado
+  * Función que obtiene las asignaciones por login de empleado
   *
   * @param Pv_EmpresaCod  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE - Id de la empresa
   * @param Pv_UsrAsignado DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.USR_ASIGNADO%TYPE - Usuario asignado
-  * @param Pv_FeCreacion  VARCHAR2 - Fecha de creaci�n de las asignaciones
+  * @param Pv_FeCreacion  VARCHAR2 - Fecha de creación de las asignaciones
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 04-12-2018
   */
   FUNCTION F_GET_REGISTROS_ASIGNACIONES(
@@ -423,16 +423,16 @@ AS
     RETURN VARCHAR2;
 /**
   *
-  * Actualizaci�n: Se agrega nuevo par�metro Pv_Estado para consultar las asignaciones por estado
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega nuevo parámetro Pv_Estado para consultar las asignaciones por estado
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.3 22-05-2020
   *
-  * Actualizaci�n: Se valida que si par�metro Pv_cantonId es NULL entonces excluye consultar por Cant�n
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se valida que si parámetro Pv_cantonId es NULL entonces excluye consultar por Cantón
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.2 05-02-2019
   *
-  * Actualizaci�n: Se agrega nuevo parametro de Pv_cantonId para consultar las asignaciones por canton
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega nuevo parametro de Pv_cantonId para consultar las asignaciones por canton
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 15-01-2019
   *
   * Documentacion para 'P_GET_ASIGNACIONES_TOTALIZADAS'
@@ -448,7 +448,7 @@ AS
   * @param Pr_Informacion    SYS_REFCURSOR - que retorna el resultado
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 05-12-2018
   */
 PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
@@ -463,13 +463,13 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
 
 /**
   *
-  * Actualizaci�n: Se valida que si par�metro Pv_cantonId es NULL entonces excluye consultar por Cant�n
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se valida que si parámetro Pv_cantonId es NULL entonces excluye consultar por Cantón
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 05-02-2019
   *
   * Documentacion para 'F_GET_LISTAGG_ASIGTOTALIZADAS'
   *
-  * Funci�n que obtiene totalizado de asignaciones
+  * Función que obtiene totalizado de asignaciones
   *
   * @param Pv_EmpresaCod     DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  - Id de la empresa
   * @param Pv_DepartamentoId DB_GENERAL.ADMI_DEPARTAMENTO.ID_DEPARTAMENTO%TYPE - id del departamento
@@ -479,7 +479,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   * @param Pv_FiltroQuery    VARCHAR2 - campo para filtrar el query o subquery
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 05-12-2018
   */
   FUNCTION F_GET_LISTAGG_ASIGTOTALIZADAS(
@@ -495,18 +495,18 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
 
 /**
   *
-  * Actualizaci�n: Se corrige query para que no se muestre error de columna ambigua 
-  *                cuando se envia idCanton por par�metro
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se corrige query para que no se muestre error de columna ambigua 
+  *                cuando se envia idCanton por parámetro
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 13-03-2019
   *
-  * Actualizaci�n: Se agrega en el query principal las asignaciones abiertas del d�a
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * Actualización: Se agrega en el query principal las asignaciones abiertas del día
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.1 06-03-2019
   *
   * Documentacion para 'P_GET_ASIGNACIONES_TOT_ESTADO'
   *
-  * Procedimiento que obtiene totalizado por estado de la asignaci�n
+  * Procedimiento que obtiene totalizado por estado de la asignación
   *
   * @param Pv_EmpresaCod     DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  - Id de la empresa
   * @param Pv_DepartamentoId DB_GENERAL.ADMI_DEPARTAMENTO.ID_DEPARTAMENTO%TYPE - id del departamento
@@ -514,7 +514,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   * @param Pr_Informacion    SYS_REFCURSOR - que retorna el resultado
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 07-02-2019
   */
   PROCEDURE P_GET_ASIGNACIONES_TOT_ESTADO(
@@ -526,7 +526,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
 /**
   * Documentacion para 'P_REPORTE_ASIGNACIONES_PEND'
   *
-  * Funci�n que genera reporte de asignaciones pendientes y envia por correo a los remitentes
+  * Función que genera reporte de asignaciones pendientes y envia por correo a los remitentes
   * que esten configurados en admi_parametro_det
   *
   * @param pv_cod_empresa     NUMBER   - Id de la empresa
@@ -534,7 +534,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   * @param pn_canton_id       VARCHAR2 - fecha Inicio
   * @return VARCHAR2
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 25-01-2019
   */
   PROCEDURE P_REPORTE_ASIGNACIONES_PEND(pv_cod_empresa     IN  VARCHAR2,
@@ -552,7 +552,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     * @param pn_canton_id       VARCHAR2 - fecha Inicio
     * @param Pr_Informacion     SYS_REFCURSOR - refcursor con los registros de las asignaciones
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 29-01-2019
     */
   PROCEDURE P_ASIGNACIONES_PENDIENTES (
@@ -564,11 +564,11 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   /**
     * Documentacion para 'F_INFO_TAREAS_POR_CASO'
     *
-    * Funci�n que obtiene las asignaciones pendientes por departamento
+    * Función que obtiene las asignaciones pendientes por departamento
     *
     * @param pv_idCaso     NUMBER   - Id del caso
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 14-02-2019
     */
   FUNCTION F_INFO_TAREAS_POR_CASO(Pv_idCaso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE)
@@ -577,14 +577,14 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   /**
     * Documentacion para 'P_GET_ULTIMO_AGENTE_ASIGNADO'
     *
-    * Procedimiento que obtiene el �ltimo agente asignado seg�n parametros recibidos
+    * Procedimiento que obtiene el último agente asignado según parametros recibidos
     *
     * @param Pv_cod_empresa     IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.EMPRESA_COD          - Id de la empresa
     * @param Pn_departamento_id IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.DEPARTAMENTO_ID%TYPE - Id del departamento
     * @param Pn_canton_id       IN  DB_COMERCIAL.INFO_OFICINA_GRUPO.CANTON_ID%TYPE            - Id de la oficina
     * @param Pv_ultimoAsignado  OUT VARCHAR2
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 20-02-2019
     */
   PROCEDURE P_GET_ULTIMO_AGENTE_ASIGNADO(
@@ -594,12 +594,12 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     Pv_ultimoAsignado OUT VARCHAR2);
 
   /**
-    * Actualizaci�n: Se a�adieron parametros y campos nuevos para la gesti�n de las tareas.
+    * Actualización: Se añadieron parametros y campos nuevos para la gestión de las tareas.
     *
-    * @author Fernando L�pez <filopez@telconet.ec>
+    * @author Fernando López <filopez@telconet.ec>
     * @version 1.2 17-01-2022
     * 
-    * Actualizaci�n: Se a�adieron campos adicionales en consulta para departamento de sistemas.
+    * Actualización: Se añadieron campos adicionales en consulta para departamento de sistemas.
     *
     * @author Pedro Velez <psvelez@telconet.ec>
     * @version 1.1 09-07-2021
@@ -615,7 +615,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     * @param Pv_FechaIni        IN VARCHAR2                     - fecha inicial de consulta
     * @param Pv_FechaFin        IN VARCHAR2                     - fecha final de consulta
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 21-02-2019
     */
   PROCEDURE P_GET_TAREAS_DEPARTAMENTO(
@@ -638,7 +638,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     * @param Pn_DepartamentoId IN  VARCHAR2                                                  - Fecha de fin de la consulta
     * @param Pv_Informacion    OUT SYS_REFCURSOR
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 21-02-2019
     */
   PROCEDURE P_GET_TOP_LOGINS(
@@ -653,14 +653,14 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   /**
     * Documentacion para 'P_GET_REGISTROS_CONEXION'
     *
-    * Procedimiento que obtiene listado de conexiones de un usuario seg�n idPersonaEmpresaRol enviado por parametro
+    * Procedimiento que obtiene listado de conexiones de un usuario según idPersonaEmpresaRol enviado por parametro
     *
     * @param Pn_PersonaEmpresaRolId IN  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE - Id persona empresa rol del usuario
     * @param Pn_Mes                 IN  NUMBER                                                    - mes de consulta
     * @param Pn_Anio                IN  NUMBER                                                    - anio de consulta
     * @param Pr_Informacion         OUT SYS_REFCURSOR
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 17-03-2020
     */
     PROCEDURE P_GET_REGISTROS_CONEXION(
@@ -671,7 +671,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   /**
     * Documentacion para 'P_GET_TOT_ASIGNACIONES_SIN_NUM'
     *
-    * Procedimiento que obtiene el total de asignaciones que no contienen n�mero de caso o tarea
+    * Procedimiento que obtiene el total de asignaciones que no contienen número de caso o tarea
     *
     * @param Pv_idDepartamento IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.DEPARTAMENTO_ID%TYPE - Id del departamento
     * @param Pv_codEmpresa     IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.EMPRESA_COD          - Id de la empresa
@@ -679,7 +679,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     * @param Pv_usrAsignado    IN  DB_SOPORTE.INFO_ASIGNACION_SOLICITUD.USR_ASIGNADO%TYPE    - Usuario asignado
     * @param Pn_total          OUT NUMBER
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 13-03-2020
     */
     PROCEDURE P_GET_TOT_ASIGNACIONES_SIN_NUM(
@@ -696,7 +696,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     *
     * @param pv_mensaje_respuesta OUT VARCHAR2
     *
-    * @author Andr�s Montero H <amontero@telconet.ec>
+    * @author Andrés Montero H <amontero@telconet.ec>
     * @version 1.0 15-05-2020
     */
     PROCEDURE P_ENVIAR_STANDBY_A_CAMB_TURNO(pv_mensaje_respuesta OUT VARCHAR2);
@@ -704,7 +704,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     /**
     * Documentacion para 'GET_TRAZABILIDAD_TAREAS_USR'
     *
-    * Funci�n que obtiene trazabilidad(usuario y departamento) de tareas
+    * Función que obtiene trazabilidad(usuario y departamento) de tareas
     *
     * @param Pn_IdDetalle     NUMBER   - Id del detalle
     *
@@ -717,12 +717,12 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
     /**
     * Documentacion para 'F_GET_FECHA_CREACION_TAREA'
     *
-    * Funci�n que obtiene la fecha de creaci�n de tarea
+    * Función que obtiene la fecha de creación de tarea
     *
     * @param Pn_IdDetalle     NUMBER   - Id del detalle
     * @param Pn_VecesIniciada NUMBER   - numerp de veces que ha sido iniciada una tarea
     *
-    * @author Fernando L�pez <filopez@telconet.ec>
+    * @author Fernando López <filopez@telconet.ec>
     * @version 1.0 14-01-2022
     */
    
@@ -731,6 +731,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
 
 END SPKG_ASIGNACION_SOLICITUD;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_ASIGNACION_SOLICITUD
 AS
   --
@@ -2573,7 +2574,7 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
   Ln_NumeroRegistros              NUMBER;
   Pr_Informacion                  SYS_REFCURSOR;
   lv_fecha_archivo                VARCHAR2(20)   := TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS');
-  lv_asunto_notificacion          VARCHAR2(100)  := 'Reporte de Asignaciones Pendientes en M�dulo Agente';
+  lv_asunto_notificacion          VARCHAR2(100)  := 'Reporte de Asignaciones Pendientes en Módulo Agente';
   lv_directorio                   VARCHAR2(50)   := 'DIR_REPORTES_MODULO_AGENTE';
   lv_nombre_archivo               VARCHAR2(100)  := 'ReporteAsignacionesPendModAgente_'|| lv_fecha_archivo||'.csv';
   lv_nombre_archivo_comprimir     VARCHAR2(100)  := '';
@@ -2716,12 +2717,12 @@ PROCEDURE P_GET_ASIGNACIONES_TOTALIZADAS(
 
     utl_file.put_line(lf_archivo,lv_feCreacion||lv_delimitador                            -- 1)Fecha de creacion
     ||lv_tipoProblema||lv_delimitador                                                     -- 2)Tipo de problema
-    ||lv_tipoAtencion||lv_delimitador                                                     -- 3)Tipo de atenci�n
+    ||lv_tipoAtencion||lv_delimitador                                                     -- 3)Tipo de atención
     ||lv_criticidad||lv_delimitador                                                       -- 4)Criticidad
-    ||lv_numero||lv_delimitador                                                           -- 5)N�mero de caso o tarea
+    ||lv_numero||lv_delimitador                                                           -- 5)Número de caso o tarea
     ||lv_usrAsignado||lv_delimitador                                                      -- 6)Usuario Asignado
     ||REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(lv_detalle,CHR(10),' ') ,CHR(13),' ') ,CHR(9),' '),'|',''),';','')
-    ||lv_delimitador                                                                      -- 7)Detalle de la asignaci�n
+    ||lv_delimitador                                                                      -- 7)Detalle de la asignación
     ||lv_estadoTarea||lv_delimitador                                                      -- 8)Estado de tarea
     ||lv_estadCaso||lv_delimitador                                                        -- 9)Estado de caso
     ||lv_asignado||lv_delimitador                                                         -- 10)departamento asignado
@@ -3488,7 +3489,7 @@ PROCEDURE P_GET_REGISTROS_CONEXION(
       (
         DB_SOPORTE.SEQ_INFO_SEGUIMIENTO_ASIGN_SOL.NEXTVAL,
         ln_idAsignacionSolicitud,
-        'cambio de turno autom�tico por standby',
+        'cambio de turno automático por standby',
         'telcos',
         sysdate,
         '127.0.0.1',

@@ -98,7 +98,7 @@ BEGIN
   CLOSE GetFechaHasta;
   --
   --Llamada al procedimiento que notifica las pre facturas proporcionales creadas en el periodo de tiempo
-  --enviado como par¿¿metro.
+  --enviado como parametro.
 
    FNKG_NOTIFICACIONES.P_NOTIFICACION_PREFACTURAS(
                                               PV_PREFIJOEMPRESA   => Lv_PrefijoEmpresa,

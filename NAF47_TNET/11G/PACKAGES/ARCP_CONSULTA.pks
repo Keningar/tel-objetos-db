@@ -1,18 +1,18 @@
-CREATE OR REPLACE PACKAGE  NAF47_TNET.ARCP_CONSULTA IS 
+CREATE OR REPLACE PACKAGE NAF47_TNET.ARCP_CONSULTA IS 
 
  /**
-  * Documentaci�n para NAF47_TNET.ARCP_CONSULTA
+  * Documentación para NAF47_TNET.ARCP_CONSULTA
   * Paquete que contiene procedimiento para consulta de documentos por pagar
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 28/12/2020 
   */
 
    /**
-  * Documentaci�n para Gt_PagosHist
+  * Documentación para Gt_PagosHist
   * Tabla tipo record que contiene campos de documentos por pagar
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 28/12/2020
   */
 
@@ -47,16 +47,16 @@ IS
         INDEX BY BINARY_INTEGER; 
 
  /**
-  * Documentaci�n para PRC_CONSULTA_HIST_CORTE_CP
+  * Documentación para PRC_CONSULTA_HIST_CORTE_CP
   * Procedimiento de documentos pendiente de pago a fecha corte
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 28/12/2020
   *
-  * Documentaci�n para PRC_CONSULTA_HIST_CORTE_CP
+  * Documentación para PRC_CONSULTA_HIST_CORTE_CP
   * Se sumarizan valores de Pago
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.1 12/04/2021
   * 
   * @param Pn_Cia        NAF47_TNET.ARCPMD.NO_CIA%TYPE Compania a consultar

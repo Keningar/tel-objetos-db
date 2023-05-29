@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_DASHBOARD_COMERCIAL AS
 
     /**
-      * Documentaci�n para el procedimiento P_GENERA_JSON_CATALOGOS
+      * Documentación para el procedimiento P_GENERA_JSON_CATALOGOS
       *
-      * M�todo que se encarga de generar el JSON de cada uno de los cat�logos y cargalos en la tabla
+      * Método que se encarga de generar el JSON de cada uno de los catálogos y cargalos en la tabla
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -15,17 +15,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_DASHBOARD_COMERCIAL AS
                                       Pv_Error       OUT VARCHAR2);
 
     /**
-      * Documentaci�n para la funci�n F_ANIO_BISIESTO
+      * Documentación para la función F_ANIO_BISIESTO
       *
-      * Determina si un a�o es a�o bisiesto
+      * Determina si un año es año bisiesto
       *
-      * @param Fn_Anio IN NUMBER Recibe el a�o a consultar si es bisiesto
+      * @param Fn_Anio IN NUMBER Recibe el año a consultar si es bisiesto
       *
       * author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 21-11-2018
       *
       * author Edgar Pin Villavicencio <epin@telconet.ec>
-      * @version 1.1 23-04-2019 - Se modifica el order del cursor para mostrar los a�os de manera descendente
+      * @version 1.1 23-04-2019 - Se modifica el order del cursor para mostrar los años de manera descendente
       */
     FUNCTION F_ANIO_BISIESTO(Fn_Anio IN  NUMBER)
     RETURN NUMBER;
@@ -297,7 +297,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_DASHBOARD_COMERCIAL AS
   END LOOP;
 
 
-    -- TAREA: Se necesita implantaci�n para PROCEDURE CMKG_DASHBOARD_COMERCIAL.P_GENERA_JSON_DASHBOARD
+    -- TAREA: Se necesita implantación para PROCEDURE CMKG_DASHBOARD_COMERCIAL.P_GENERA_JSON_DASHBOARD
   END P_GENERA_JSON_DASHBOARD;
 
 
@@ -316,3 +316,4 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_DASHBOARD_COMERCIAL AS
 
 END CMKG_DASHBOARD_COMERCIAL;
 /
+

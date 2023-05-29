@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_CAMBIO_EMPLEADO
 AS
   /*
-  * Documentaci�n para TYPE 'TypeInfoEmpleado'.
+  * Documentación para TYPE 'TypeInfoEmpleado'.
   * Record que me permite almancenar la informacion consultada del empleado
   */
 TYPE TypeInfoEmpleado
@@ -17,8 +17,8 @@ IS
     NOMBRE_DEPARTAMENTO DB_GENERAL.ADMI_DEPARTAMENTO.NOMBRE_DEPARTAMENTO%TYPE,
     ID_CANTON DB_GENERAL.ADMI_CANTON.ID_CANTON%TYPE );
   /**
-  * Documentaci�n para la funci�n F_CAMBIO_EMPLEADO_TAREAS
-  * La funci�n F_CAMBIO_EMPLEADO_TAREAS retorna un boolean indicando si se ha realizado el cambio de departamento de un empleado en una misma empresa
+  * Documentación para la función F_CAMBIO_EMPLEADO_TAREAS
+  * La función F_CAMBIO_EMPLEADO_TAREAS retorna un boolean indicando si se ha realizado el cambio de departamento de un empleado en una misma empresa
   *
   * @param  Fn_IdPersonaEmpresaRol IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE Recibe el id del
   * empleado que se ha cambiado de departamento
@@ -27,7 +27,7 @@ IS
   * @param  Fn_IdEmpresaRolNew IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.EMPRESA_ROL_ID%TYPE Recibe el id de la empresa rol nuevo del
   * empleado que se ha cambiado de departamento
   * @param  Fn_IdDepartamentoNew IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.DEPARTAMENTO_ID%TYPE Recibe el id del departamento
-  * nuevo al que pertenecer� el empleado
+  * nuevo al que pertenecerá el empleado
   *
   * @return BOOLEAN
   *
@@ -35,8 +35,8 @@ IS
   * @version 1.0 26-01-2017
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.1 03-02-2017 Se realizan las modificaciones respectivas debido al cambio en el trigger para la reasignaci�n de tareas,
-  *                         variando los par�metros enviados a la funci�n as� como la respectiva consulta para obtener si ha existido un
+  * @version 1.1 03-02-2017 Se realizan las modificaciones respectivas debido al cambio en el trigger para la reasignación de tareas,
+  *                         variando los parámetros enviados a la función así como la respectiva consulta para obtener si ha existido un
   *                         cambio de departamento de un empleado
   *
   */
@@ -47,12 +47,12 @@ IS
       Fn_IdDepartamentoNew   IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.DEPARTAMENTO_ID%TYPE)
     RETURN BOOLEAN;
   /**
-  * Documentaci�n para el procedimiento P_CAMBIO_EMPLEADO_TAREAS
-  * El procedimiento P_GET_INFO_JEFE_DEP obtiene la informaci�n del jefe departamental de acuerdo al id y regi�n enviada como par�metro
+  * Documentación para el procedimiento P_CAMBIO_EMPLEADO_TAREAS
+  * El procedimiento P_GET_INFO_JEFE_DEP obtiene la información del jefe departamental de acuerdo al id y región enviada como parámetro
   *
-  * @param  Pv_Region IN VARCHAR2 Recibe el string de la regi�n a la que pertenece el empleado, es decir 'R1' o 'R2'
+  * @param  Pv_Region IN VARCHAR2 Recibe el string de la región a la que pertenece el empleado, es decir 'R1' o 'R2'
   * @param  Pn_IdDepartamento IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.DEPARTAMENTO_ID%TYPE Recibe el id del departamento del empleado
-  * @param  Pv_EmpresaCod IN VARCHAR2 Recibe el string con el c�digo de la empresa
+  * @param  Pv_EmpresaCod IN VARCHAR2 Recibe el string con el código de la empresa
   *
   * @return Prf_InfoJefeDep  OUT SYS_REFCURSOR
   *
@@ -60,9 +60,9 @@ IS
   * @version 1.0 26-01-2017
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.1 03-02-2017 Se realizan las modificaciones respectivas debido al cambio en el trigger para la reasignaci�n de tareas, variando
-  *                         los par�metros enviados al procedimiento, as� como la respectiva consulta para obtener el cursor con la informaci�n
-  *                         del jefe del departamento al que pertenec�a el empleado
+  * @version 1.1 03-02-2017 Se realizan las modificaciones respectivas debido al cambio en el trigger para la reasignación de tareas, variando
+  *                         los parámetros enviados al procedimiento, así como la respectiva consulta para obtener el cursor con la información
+  *                         del jefe del departamento al que pertenecía el empleado
   *
   */
   PROCEDURE P_GET_INFO_JEFE_DEP(
@@ -71,25 +71,25 @@ IS
       Pv_EmpresaCod     IN VARCHAR2,
       Prf_InfoJefeDep OUT SYS_REFCURSOR );
   /**
-  * Documentaci�n para el procedimiento P_REASIGNAR_TAREAS_JEFE_DEP
-  * El procedimiento P_REASIGNAR_TAREAS_JEFE_DEP se encargar� de reasignar todas las tareas que se encuentran asignadas al empleado
+  * Documentación para el procedimiento P_REASIGNAR_TAREAS_JEFE_DEP
+  * El procedimiento P_REASIGNAR_TAREAS_JEFE_DEP se encargará de reasignar todas las tareas que se encuentran asignadas al empleado
   * que se ha cambiado de departamento y dichas tareas se encuentren abiertas
   *
   * @param  Pn_IdPersonaEmpresaRol IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE Recibe el id del
   * empleado que se ha cambiado de departamento
-  * @param  Pn_IdOficinaOld IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.OFICINA_ID%TYPE Recibe el id de la oficina a la que perteneci� el
+  * @param  Pn_IdOficinaOld IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.OFICINA_ID%TYPE Recibe el id de la oficina a la que perteneció el
   * empleado que se ha cambiado de departamento
   * @param  Pn_IdEmpresaRolOld IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.EMPRESA_ROL_ID%TYPE Recibe el id de la empresa rol anterior del
   * empleado que se ha cambiado de departamento
   * @param  Pn_IdDepartamentoOld IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.DEPARTAMENTO_ID%TYPE Recibe el id del departamento
-  * anterior al que pertenec�a el empleado
-  * @param  Pv_IpCreacionOld IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.IP_CREACION%TYPE Recibe la ip de creaci�n
-  * @param  Pn_IdOficinaNew IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.OFICINA_ID%TYPE Recibe el id de la oficina a la que pertenecer� el
+  * anterior al que pertenecía el empleado
+  * @param  Pv_IpCreacionOld IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.IP_CREACION%TYPE Recibe la ip de creación
+  * @param  Pn_IdOficinaNew IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.OFICINA_ID%TYPE Recibe el id de la oficina a la que pertenecerá el
   * empleado que se ha cambiado de departamento
   * @param  Pn_IdEmpresaRolNew IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.EMPRESA_ROL_ID%TYPE Recibe el id de la empresa rol actual del
   * empleado que se ha cambiadoNew de departamento
   * @param  Pn_IdDepartamentoNew IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.DEPARTAMENTO_ID%TYPE Recibe el id del departamento
-  * anterior al que pertenec�a el empleado
+  * anterior al que pertenecía el empleado
   *
   * @return Pv_MensajeError    OUT VARCHAR2
   *
@@ -98,16 +98,16 @@ IS
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.1 03-02-2017 Se realizan las modificaciones respectivas debido al cambio en el trigger que hace el llamado a este procedimiento,
-  *                         variando los par�metros enviados y por ende modificando las funciones y procedimientos llamados en el interior de
+  *                         variando los parámetros enviados y por ende modificando las funciones y procedimientos llamados en el interior de
   *                         de este procedimiento.
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.2 22-02-2017 Se realizan las modificaciones respectivas para verificar si el departamento anterior de un empleado es una divisi�n,
-  *                         ya que si �ste fuera el caso las tareas permanecen con el mismo �ltimo estado y con el mismo registro de asignaci�n.
-  *                         S�lo si la tarea est� asignada directamente al empleado, se procede a actualizar los campos referentes al departamento
-  *                         en el registro de asignaci�n.
-  *                         En ambos escenarios se ingresa un seguimiento informativo para conocer que se ha realizado la regularizaci�n de la tarea
-  *                         por cambio de divisi�n.
-  *                         Adem�s se agrega el nombre de la persona asignada cuando existe un cambio de departamento en el registro de reasignaci�n.
+  * @version 1.2 22-02-2017 Se realizan las modificaciones respectivas para verificar si el departamento anterior de un empleado es una división,
+  *                         ya que si éste fuera el caso las tareas permanecen con el mismo último estado y con el mismo registro de asignación.
+  *                         Sólo si la tarea está asignada directamente al empleado, se procede a actualizar los campos referentes al departamento
+  *                         en el registro de asignación.
+  *                         En ambos escenarios se ingresa un seguimiento informativo para conocer que se ha realizado la regularización de la tarea
+  *                         por cambio de división.
+  *                         Además se agrega el nombre de la persona asignada cuando existe un cambio de departamento en el registro de reasignación.
   *                         Costo de cursor C_GetDivisionYDep = 6
   * @author Richard Cabrera <rcabrera@telconet.ec>
   * @version 1.3 11-09-2017 - En la tabla INFO_DETALLE_HISTORIAL se agregan los campos de persona_empresa_rol_id,departamento_origen_id,
@@ -277,7 +277,7 @@ AS
   Lv_MsjAsignacionTarea  VARCHAR2(1000) := '';
   Lv_MsjSeguimientoTarea VARCHAR2(1000) := '';
   Le_Exception           EXCEPTION;
-  --Cursor para obtener la observaci�n del historial de una tarea cuando se realiza una reasignaci�n por cambio de departamento del empleado
+  --Cursor para obtener la observación del historial de una tarea cuando se realiza una reasignación por cambio de departamento del empleado
   CURSOR C_GetParamObsCambioDep
   IS
     SELECT PC.NOMBRE_PARAMETRO,
@@ -289,7 +289,7 @@ AS
     ON PC.ID_PARAMETRO        = PD.PARAMETRO_ID
     WHERE PC.NOMBRE_PARAMETRO = 'MSG_REASIGNACION_TAREA_CAMBIO_DEPARTAMENTO'
     AND ROWNUM                < 2;
-  --Cursor para obtener las tareas que se encuentran asignadas al empleado que se cambi� de departamento
+  --Cursor para obtener las tareas que se encuentran asignadas al empleado que se cambió de departamento
   CURSOR C_GetTareasAbiertasEmpleado(Cn_IdPersonaEmpresaRol DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE)
   IS
     SELECT IDE.ID_DETALLE,
@@ -409,14 +409,14 @@ BEGIN
         FOR I_GetTareasAbiertasEmpleado IN C_GetTareasAbiertasEmpleado(Pn_IdPersonaEmpresaRol)
         LOOP
           IF I_GetTareasAbiertasEmpleado.TIPO_ASIGNADO = 'EMPLEADO' THEN
-            Lv_MsjSeguimientoTarea                    := 'Tarea gestionada por asignaci�n a empleado regularizado por divisi�n departamental';
+            Lv_MsjSeguimientoTarea                    := 'Tarea gestionada por asignación a empleado regularizado por división departamental';
             UPDATE DB_SOPORTE.INFO_DETALLE_ASIGNACION
             SET DEPARTAMENTO_ID         = Ln_IdDepAnteriorEmpleado, 
             ASIGNADO_ID = Lr_GetDivisionYDep.ID_DEPARTAMENTO,
             ASIGNADO_NOMBRE = Lr_GetDivisionYDep.NOMBRE_DEPARTAMENTO
             WHERE ID_DETALLE_ASIGNACION = I_GetTareasAbiertasEmpleado.ID_DETALLE_ASIGNACION;
           ELSE
-            Lv_MsjSeguimientoTarea := 'Tarea gestionada por asignaci�n a cuadrilla de empleado regularizado por divisi�n departamental';
+            Lv_MsjSeguimientoTarea := 'Tarea gestionada por asignación a cuadrilla de empleado regularizado por división departamental';
           END IF;
           INSERT
           INTO DB_SOPORTE.INFO_TAREA_SEGUIMIENTO
@@ -446,15 +446,15 @@ BEGIN
           COMMIT;
         END LOOP;
       ELSE
-        Lv_MsjAsignacionTarea  := 'Tarea Reasignada autom�ticamente a ';
-        Lv_MsjSeguimientoTarea := 'Tarea es reasignada autom�ticamente a ';
+        Lv_MsjAsignacionTarea  := 'Tarea Reasignada automáticamente a ';
+        Lv_MsjSeguimientoTarea := 'Tarea es reasignada automáticamente a ';
         P_GET_INFO_JEFE_DEP(Lv_RegionAnteriorEmpleado, Ln_IdDepAnteriorEmpleado, Lv_EmpresaCodAnteriorEmpleado, Lrf_GetInfoJefeDep);
         FETCH Lrf_GetInfoJefeDep INTO Lr_GetInfoJefeDep;
         IF Lr_GetInfoJefeDep.ID_PERSONA_ROL IS NOT NULL THEN
           Lv_MsjAsignacionTarea             := Lv_MsjAsignacionTarea || Lr_GetInfoJefeDep.NOMBRES || ' ' || Lr_GetInfoJefeDep.APELLIDOS 
-                                               || ' por cambio de departamento del �lltimo empleado asignado';
+                                               || ' por cambio de departamento del úlltimo empleado asignado';
           Lv_MsjSeguimientoTarea            := Lv_MsjSeguimientoTarea || Lr_GetInfoJefeDep.NOMBRES || ' ' || Lr_GetInfoJefeDep.APELLIDOS 
-                                               || ' por cambio de departamento del �lltimo empleado asignado';
+                                               || ' por cambio de departamento del úlltimo empleado asignado';
           FOR I_GetTareasAbiertasEmpleado IN C_GetTareasAbiertasEmpleado(Pn_IdPersonaEmpresaRol)
           LOOP
             INSERT
@@ -598,3 +598,4 @@ WHEN OTHERS THEN
 END P_REASIGNAR_TAREAS_JEFE_DEP;
 END SPKG_TAREAS_CAMBIO_EMPLEADO;
 /
+

@@ -27,7 +27,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.PROMOCIONES AS
   procedure p_promociones_por_inst(p_fechaEjecucion timeStamp,cod_ret out number, msg_ret out varchar2) ;
   
  /**
-  * Documentaci�n para PROCEDURE 'p_promociones_HOME'.
+  * Documentaci贸n para PROCEDURE 'p_promociones_HOME'.
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.1 23-12-2016  
   * Se incluyen en el proceso de Promociones los servicios en estado T: Trasladados
@@ -438,7 +438,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.PROMOCIONES AS
  * La promocion solo aplica para clientes Netlife que esten al dia en sus pagos
  * 1) Se verifica si el cliente referente posee algun servicio en estado In-Corte en el momento de la ejecucion del script
  * 2) Se verifica  si el cliente referente estuvo en estado In-Corte cuando se activo el servicio de su referido
- *  En ambos casos se cambiara el estado de los puntos que tenga el referente a "Perdido" y se crear� un registro
+ *  En ambos casos se cambiara el estado de los puntos que tenga el referente a "Perdido" y se crearon un registro
  * en el historico de los servicios indicando que ha perdido sus puntos por estar en mora.
   *******************************************************************************************/
   procedure p_verificaPerdidaDePuntos(cod_ret out number, msg_ret out varchar2) is

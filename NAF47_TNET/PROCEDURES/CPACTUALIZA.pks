@@ -16,10 +16,10 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.CPACTUALIZA (pCia   IN arcpmd.no_cia%TYPE
  * @version 1.1 09/06/2017 Se modifica actualizar los estado de la tabla DB_COMPRAS.INFO_ORDEN_COMPRA
  * 
  * @author llindao <llindao@telconet.ec>
- * @version 1.2 05/07/2020 Se modifica invocar nuevo proceso PRKG_CONTROL_PRESUPUESTO para dsitribuci�n de costos
+ * @version 1.2 05/07/2020 Se modifica invocar nuevo proceso PRKG_CONTROL_PRESUPUESTO para dsitribucion de costos
  *
  * @author llindao <llindao@telconet.ec>
- * @version 1.3 27/08/2020 Se modifica invocar nuevo proceso PRKG_CONTROL_PRESUPUESTO.P_DISTRIBUCION_COSTO_FACTURA para dsitribuci�n de costos
+ * @version 1.3 27/08/2020 Se modifica invocar nuevo proceso PRKG_CONTROL_PRESUPUESTO.P_DISTRIBUCION_COSTO_FACTURA para dsitribucion de costos
  *
  * @author llindao <llindao@telconet.ec>
  * @version 1.3 10/11/2021 Se modifica para actualizar el valor factutado de ingreso a bodega

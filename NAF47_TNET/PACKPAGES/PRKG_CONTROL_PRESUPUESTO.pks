@@ -78,14 +78,14 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
 
  /**
   * Documentacion para F_RECUPERA_CUENTA_CONTABLE 
-  * Funci�n que retorna cuenta contable en base a query configurado en parametros.
+  * Función que retorna cuenta contable en base a query configurado en parametros.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 16/07/2021
   *
   * @param Pv_TipoCosto    IN VARCHAR2 Recibe tipo de centro de costos
-  * @param Pv_ReferenciaId IN VARCHAR2 Recibe c�digo a buscar
-  * @param Pv_EmpresaRefId IN VARCHAR2 Recibe c�digo de compa��a
-  * @return                   VARCHAR2 retorna c�digo de cuenta contable
+  * @param Pv_ReferenciaId IN VARCHAR2 Recibe código a buscar
+  * @param Pv_EmpresaRefId IN VARCHAR2 Recibe código de compañía
+  * @return                   VARCHAR2 retorna código de cuenta contable
   */
   FUNCTION F_RECUPERA_CUENTA_CONTABLE ( Pv_TipoCosto    IN VARCHAR2,
                                         Pv_ReferenciaId IN VARCHAR2,
@@ -94,7 +94,7 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
 
  /**
   * Documentacion para P_ARBOL_CENTRO_COSTO 
-  * Procedure que genera los niveles de centros de costos por tipo para asignaci�n de distribuci�n.
+  * Procedure que genera los niveles de centros de costos por tipo para asignación de distribución.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 05/07/2020
   *
@@ -106,7 +106,7 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para F_RECUPERA_CENTRO_COSTO 
-  * Funci�n que recupera el codigo de centro de costo en base a arreglo de parametros
+  * Función que recupera el codigo de centro de costo en base a arreglo de parametros
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 05/07/2020
   *
@@ -178,10 +178,10 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 24/08/2020
   *
-  * @param Pv_NoOrden        IN VARCHAR2     Recibe n�mero de OC
+  * @param Pv_NoOrden        IN VARCHAR2     Recibe número de OC
   * @param Pv_NoFactura      IN VARCHAR2     Recibe numero Factura a procesar OC
-  * @param Pv_NoCia          IN VARCHAR2     Recibe c�digo de empresa
-  * @param Pn_DetalleCostoId IN OUT NUMBER   Retorna n�mero detalle id para generar distribuci�n desde la forma
+  * @param Pv_NoCia          IN VARCHAR2     Recibe código de empresa
+  * @param Pn_DetalleCostoId IN OUT NUMBER   Retorna número detalle id para generar distribución desde la forma
   * @param Pv_MensajeError   IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
   PROCEDURE P_REPLICA_DISTRIBUCION_CXP (Pv_NoOrden        IN VARCHAR2,
@@ -193,7 +193,7 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para P_PROCESA_DISTRIBUCION 
-  * Procedimiento realiza distribuci�n y registra en la tabla de costos resumen y costo detalle trx
+  * Procedimiento realiza distribución y registra en la tabla de costos resumen y costo detalle trx
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 19/08/2020
   *
@@ -217,18 +217,18 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para P_COSTEO_OC_SERVICIO 
-  * Procedimiento realiza distribuci�n de costeo de ordenes de compras de Servicios
+  * Procedimiento realiza distribución de costeo de ordenes de compras de Servicios
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 19/08/2020
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.2 16/07/2021 - Se modifica para considerar proceso centralizado de distribuci�n.
+  * @version 1.2 16/07/2021 - Se modifica para considerar proceso centralizado de distribución.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.3 06/09/2021 - Se corrige para considerar que proceso distribuci�n por pedidos se ejecuta como distribuci�n Administrativa
+  * @version 1.3 06/09/2021 - Se corrige para considerar que proceso distribución por pedidos se ejecuta como distribución Administrativa
   *
   * @param Pv_NoDocu       IN VARCHAR2     Recibe documento a distribuir
-  * @param Pv_NoCia        IN VARCHAR2     Recibe c�digo de empresa
+  * @param Pv_NoCia        IN VARCHAR2     Recibe código de empresa
   * @param Pv_TipoProceso  IN VARCHAR2     Recibe el tipo proceso: Procesar / Reversar
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
@@ -240,15 +240,15 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para P_COSTEO_PEDIDO_SERVICIO 
-  * Procedimiento realiza distribuci�n de costeo de Pedidos de bienes al despachar articulos
+  * Procedimiento realiza distribución de costeo de Pedidos de bienes al despachar articulos
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 19/08/2020
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.1 16/07/2021 - Se modifica para considerar proceso centralizado de distribuci�n.
+  * @version 1.1 16/07/2021 - Se modifica para considerar proceso centralizado de distribución.
   *
   * @param Pv_NoDocu       IN NUMBER       Recibe documento a distribuir
-  * @param Pv_NoCia        IN NUMBER       Recibe c�digo de empresa
+  * @param Pv_NoCia        IN NUMBER       Recibe código de empresa
   * @param Pv_TipoProceso  IN VARCHAR2     Recibe el tipo proceso: Procesar / Reversar
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
@@ -260,15 +260,15 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para P_COSTEO_PEDIDO_BIENES 
-  * Procedimiento realiza distribuci�n y registra en la tabla de costos resumen y costo detalle trx despacho
+  * Procedimiento realiza distribución y registra en la tabla de costos resumen y costo detalle trx despacho
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 19/08/2020
   *
   * @author llindao <llindao@telconet.ec>
   * @version 1.1 16/07/2021 - Se modifica para considera nuevo proceso de costeo de Proyectos
   *
-  * @param Pv_NoDocu          IN Recibe Identificaci�n de documento
-  * @param Pv_NoCia           IN Recibe Identificaci�n de compa��a
+  * @param Pv_NoDocu          IN Recibe Identificación de documento
+  * @param Pv_NoCia           IN Recibe Identificación de compañía
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
   PROCEDURE P_COSTEO_PEDIDO_BIENES ( Pv_NoDocu       IN VARCHAR2,
@@ -283,15 +283,15 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   * @version 1.0 04/08/2020
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.2 28/12/2020 -  Se modifica para acumular la cantidad de empleados por centros de costos pues existen departamentos en m�s de una localidad.
+  * @version 1.2 28/12/2020 -  Se modifica para acumular la cantidad de empleados por centros de costos pues existen departamentos en más de una localidad.
   *
   * @author llindao <llindao@telconet.ec>
   * @version 1.3 01/01/2021 -  Se modifica para considerar costeo de facturas sin OC
   *
-  * @param Pn_DetalleDistribId IN VARCHAR2               Recibe c�digo detalle de distribuci�n
-  * @param Pv_NoDocumento      IN VARCHAR2               Recibe c�digo de documento a procesar
+  * @param Pn_DetalleDistribId IN VARCHAR2               Recibe código detalle de distribución
+  * @param Pv_NoDocumento      IN VARCHAR2               Recibe código de documento a procesar
   * @param Pv_Origen           IN VARCHAR2               Recibe Origen para identificar el tipo de registro a recuperar
-  * @param Pv_NoCia            IN VARCHAR2               Recibe c�digo de empresa
+  * @param Pv_NoCia            IN VARCHAR2               Recibe código de empresa
   * @param Pn_NumDistribuir    IN OUT NUMBER             retorna cantidad de empleados a distribuir
   * @param Pt_DistribContable  IN OUT Gt_DistribContable Retorna arreglo con detalle de centros de costos y numero empleados
   * @param Pv_MensajeError     IN OUT VARCHAR2           Retorna mensaje error Retorna mensaje error
@@ -307,15 +307,15 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para P_COSTEO_ASIENTO_CONTABLE 
-  * Procedimiento realiza distribuci�n y registra en la tabla de costos resumen y costo detalle de assientos contables
+  * Procedimiento realiza distribución y registra en la tabla de costos resumen y costo detalle de assientos contables
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 19/08/2020
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.1 16/07/2021 - Se modifica para considerar nuevo proceso distribuci�n de proyectos
+  * @version 1.1 16/07/2021 - Se modifica para considerar nuevo proceso distribución de proyectos
   *
-  * @param Pv_NoDocu          IN Recibe Identificaci�n de documento
-  * @param Pv_NoCia           IN Recibe Identificaci�n de compa��a
+  * @param Pv_NoDocu          IN Recibe Identificación de documento
+  * @param Pv_NoCia           IN Recibe Identificación de compañía
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
   PROCEDURE P_COSTEO_ASIENTO_CONTABLE ( Pv_NoDocu      IN VARCHAR2,
@@ -325,12 +325,12 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   --
   /**
   * Documentacion para P_DISTRIBUCION_COSTO_FACTURA 
-  * Procedimiento genera distribuci�n de costos en la tabla resumen.
+  * Procedimiento genera distribución de costos en la tabla resumen.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 05/07/2020
   *
-  * @param Pv_NoDocu       IN VARCHAR2     Recibe Identificaci�n de documento
-  * @param Pv_NoCia        IN VARCHAR2     Recibe Identificaci�n de compa��a
+  * @param Pv_NoDocu       IN VARCHAR2     Recibe Identificación de documento
+  * @param Pv_NoCia        IN VARCHAR2     Recibe Identificación de compañía
   * @param Pv_TipoProceso  IN VARCHAR2     Recibe el tipo proceso: Procesar / Reversar
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
@@ -344,11 +344,11 @@ CREATE OR REPLACE package NAF47_TNET.PRKG_CONTROL_PRESUPUESTO IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 16/07/2021
   *
-  * @param Pv_NoDocu       IN VARCHAR2     Recibe Identificaci�n de documento
+  * @param Pv_NoDocu       IN VARCHAR2     Recibe Identificación de documento
   * @param Pv_LoginAux     IN VARCHAR2     Recibe login del servicio asociado al proyecto
   * @param Pv_Periodo      IN VARCHAR2     Recibe periodo a procesar costeo
   * @param Pn_Monto        IN NUMBER       Recibe monto a distribuir
-  * @param Pv_NoCia        IN VARCHAR2     Recibe Identificaci�n de compa��a
+  * @param Pv_NoCia        IN VARCHAR2     Recibe Identificación de compañía
   * @param Pa_DatosCosteo  IN VARCHAR2     Recibe arreglo con los datos a costear
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */
@@ -1052,7 +1052,7 @@ CREATE OR REPLACE package body NAF47_TNET.PRKG_CONTROL_PRESUPUESTO is
     WHERE COSTO_RESUMEN_ID = Pr_CostosDetalleTrx.Costo_Resumen_Id
     AND LLAVE_TRANSACCION = Pr_CostosDetalleTrx.Llave_Transaccion;
     --
-    -- Si actualiz� entonces termina el proceso
+    -- Si actualizó entonces termina el proceso
     IF SQL%ROWCOUNT > 0 THEN
       RETURN;
     END IF;
@@ -1241,7 +1241,7 @@ CREATE OR REPLACE package body NAF47_TNET.PRKG_CONTROL_PRESUPUESTO is
       Ln_CentroCostoPres := F_RECUPERA_CENTRO_COSTO(Lt_DetalleCosto, Lv_CentroCosto, Pt_Detalle(Li_Datos).NO_CIA);
       --
       IF Ln_CentroCostoPres = 0 THEN
-        Pv_MensajeError := 'No se pudo recuperar c�digo de centro de costo, favor revisar distribuci�n.';
+        Pv_MensajeError := 'No se pudo recuperar código de centro de costo, favor revisar distribución.';
         RAISE Le_Error;
       END IF;
       --
@@ -1361,7 +1361,7 @@ CREATE OR REPLACE package body NAF47_TNET.PRKG_CONTROL_PRESUPUESTO is
              END AS MONTO_DISTRIBUIDO,
              --
              CASE
-               WHEN DEE.TIPO_DISTRIBUCION_COSTO = 'Pedido' THEN -- Cuando es Pedido el tipo de distribuci�n a usar Administrativo
+               WHEN DEE.TIPO_DISTRIBUCION_COSTO = 'Pedido' THEN -- Cuando es Pedido el tipo de distribución a usar Administrativo
                  'Administrativo'
                ELSE
                  DEE.TIPO_DISTRIBUCION_COSTO
@@ -2301,14 +2301,14 @@ CREATE OR REPLACE package body NAF47_TNET.PRKG_CONTROL_PRESUPUESTO is
   BEGIN
     --
     Pa_DatosCosteo := Gt_DetalleTipoCosto();
-    -- se verifica ultimo nivel de �rbol proyecto
+    -- se verifica ultimo nivel de árbol proyecto
     IF C_ULTIMO_NIVEL_PROYECTO%ISOPEN THEN
       CLOSE C_ULTIMO_NIVEL_PROYECTO;
     END IF;
     OPEN C_ULTIMO_NIVEL_PROYECTO;
     FETCH C_ULTIMO_NIVEL_PROYECTO INTO Lr_UltimoNivel;
     IF C_ULTIMO_NIVEL_PROYECTO%NOTFOUND THEN
-      Pv_MensajeError := 'No se ha definido nivel de asignaci�n en los tipos de centro de costos por '||PROYECTO;
+      Pv_MensajeError := 'No se ha definido nivel de asignación en los tipos de centro de costos por '||PROYECTO;
       RAISE Le_Error;
     END IF;
     CLOSE C_ULTIMO_NIVEL_PROYECTO;

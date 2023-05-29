@@ -15,9 +15,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_INFO_PER_FORMA_CONTACTO_C AS
     );
 
     /**
-    * Documentaci�n para el procedimiento P_CONSULTA_CONTACTOS_EMPRESA
+    * Documentación para el procedimiento P_CONSULTA_CONTACTOS_EMPRESA
     *
-    * M�todo encargado de consultar mediante id_persona_empresa_rol, codigo de empresa 
+    * Método encargado de consultar mediante id_persona_empresa_rol, codigo de empresa 
     * y estado los contactos VIP, Asesor de Cobranza y Asesor Comercial asociados a un Cliente.
     *
     * @param Pcl_Request    IN   CLOB Recibe json request
@@ -26,9 +26,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_INFO_PER_FORMA_CONTACTO_C AS
     *  personaEmpresaRolId   Id del rol de la persona en la empresa,
     *  codEmpresa             Id de la empresa
     * ]
-    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-    * @param Lrf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+    * @param Lrf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
     *
     * @author Brenyx Giraldo <agiraldo@telconet.ec>
     * @version 1.0 23-03-2022

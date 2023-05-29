@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS 
 
   /*
-  *Se agregan types necesarios para generaci�n de reporte de clientes - facturas.
+  *Se agregan types necesarios para generación de reporte de clientes - facturas.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 01-12-2016
   */
@@ -29,22 +29,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
     RETURN VARCHAR2;  
 
   /*
-  * Documentaci�n para PROCEDURE 'P_GET_CLIENTES_FACTURAS'.
-  * Procedure que me permite obtener lista de clientes con sus facturas iniciales filtros enviados como par�metros.
+  * Documentación para PROCEDURE 'P_GET_CLIENTES_FACTURAS'.
+  * Procedure que me permite obtener lista de clientes con sus facturas iniciales filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param number         Pn_EmpresaId  (empresa a generar el reporte)
   * @Param varchar2       Pv_PrefijoEmpresa   Prefijo de empresa en sesion
   * @Param varchar2       Pv_UsrSesion  Usuario en sesion
-  * @Param varchar2       Pv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_FechaActivacionDesde (rango inicial para consulta por fecha de activaci�n del servicio)
-  * @Param varchar2       Pv_FechaActivacionHasta (rango final para consulta por fecha de activaci�n del servicio)  
-  * @Param varchar2       Pv_FechaPrePlanificacionDesde (rango inicial para consulta por fecha de pre-planificaci�n del servicio)
-  * @Param varchar2       Pv_FechaPrePlanificacionHasta (rango final para consulta por fecha de pre-planificaci�n del servicio)  
-  * @Param varchar2       Pv_Identificacion Numero de identificaci�n el vendedor
-  * @Param varchar2       Pv_RazonSocial   Raz�n social del cliente
+  * @Param varchar2       Pv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_FechaActivacionDesde (rango inicial para consulta por fecha de activación del servicio)
+  * @Param varchar2       Pv_FechaActivacionHasta (rango final para consulta por fecha de activación del servicio)  
+  * @Param varchar2       Pv_FechaPrePlanificacionDesde (rango inicial para consulta por fecha de pre-planificación del servicio)
+  * @Param varchar2       Pv_FechaPrePlanificacionHasta (rango final para consulta por fecha de pre-planificación del servicio)  
+  * @Param varchar2       Pv_Identificacion Numero de identificación el vendedor
+  * @Param varchar2       Pv_RazonSocial   Razón social del cliente
   * @Param varchar2       Pv_Nombres   Nombres del cliente 
   * @Param varchar2       Pv_Apellidos Apellidos del cliente   
   * @Param varchar2       Pv_IdsPlan (ids para filtrar por plan)  
@@ -84,22 +84,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
 
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_CLIENTES_FACTURAS'.
-  * Funci�n que me permite obtener lista de clientes con sus facturas iniciales seg�n filtros enviados como par�metros.
+  * Documentación para la función 'F_GET_CLIENTES_FACTURAS'.
+  * Función que me permite obtener lista de clientes con sus facturas iniciales según filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param varchar2 Fn_EmpresaCod (empresa a generar el reporte)
   * @Param varchar2 Fv_PrefijoEmpresa   Prefijo de empresa en sesion
   * @Param varchar2 Fv_UsrSesion  Usuario en sesion
-  * @Param varchar2 Fv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2 Fv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Fv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Fv_FechaActivacionDesde (rango inicial para consulta por fecha de activaci�n del servicio)
-  * @Param varchar2 Fv_FechaActivacionHasta (rango final para consulta por fecha de activaci�n del servicio)  
+  * @Param varchar2 Fv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2 Fv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2 Fv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2 Fv_FechaActivacionDesde (rango inicial para consulta por fecha de activación del servicio)
+  * @Param varchar2 Fv_FechaActivacionHasta (rango final para consulta por fecha de activación del servicio)  
   * @Param varchar2 Fv_FechaPrePlanificacionDesde (rango inicial para consulta por fecha de pre-planificacion del servicio)
-  * @Param varchar2 Fv_FechaPrePlanificacionHasta (rango final para consulta por fecha de pre-planificaci�n del servicio) 
-  * @Param varchar2 Fv_Identificacion Numero de identificaci�n el vendedor
-  * @Param varchar2 Fv_RazonSocial   Raz�n social del cliente
+  * @Param varchar2 Fv_FechaPrePlanificacionHasta (rango final para consulta por fecha de pre-planificación del servicio) 
+  * @Param varchar2 Fv_Identificacion Numero de identificación el vendedor
+  * @Param varchar2 Fv_RazonSocial   Razón social del cliente
   * @Param varchar2 Fv_Nombres   Nombres del cliente 
   * @Param varchar2 Fv_Apellidos Apellidos del cliente
   * @Param varchar2 Fv_IdsPlan (ids para filtrar por plan)  
@@ -149,8 +149,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
     RETURN NUMBER; 
 
  /**
-  * Documentaci�n para F_GET_ULTIMO_ESTADO_ROL
-  * Retorna el �ltimo estado del rol enviado comopar�metro.
+  * Documentación para F_GET_ULTIMO_ESTADO_ROL
+  * Retorna el último estado del rol enviado comoparámetro.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 02-12-2016
@@ -164,8 +164,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
 
 
  /**
-  * Documentaci�n para F_GET_DESCRIPCION_SERVICIO
-  * Retorna la descripci�n o nombre del servicio.
+  * Documentación para F_GET_DESCRIPCION_SERVICIO
+  * Retorna la descripción o nombre del servicio.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 02-12-2016
@@ -182,8 +182,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
 
 
  /**
-  * Documentaci�n para F_GET_TOTAL_PAGOS
-  * Retorna el valor total de pagos realizados al documento enviado como par�metro.
+  * Documentación para F_GET_TOTAL_PAGOS
+  * Retorna el valor total de pagos realizados al documento enviado como parámetro.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 06-12-2016
@@ -196,28 +196,28 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
     RETURN NUMBER;
 
  /**
-  * Documentaci�n para F_GET_FECHA_ACTIVACION_SERVICIO
-  * Retorna la fecha de activaci�n del servicio.
+  * Documentación para F_GET_FECHA_ACTIVACION_SERVICIO
+  * Retorna la fecha de activación del servicio.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 05-12-2016
   *
   * @param  Fn_IdServicio     IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Recibe el ID del servicio
-  * @return VARCHAR2   Fecha de activaci�n en formato string
+  * @return VARCHAR2   Fecha de activación en formato string
   */
   FUNCTION F_GET_FECHA_ACTIVACION(
       Fn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE)
     RETURN VARCHAR2;  
 
  /**
-  * Documentaci�n para F_GET_FECHA_PREPLANIFICACION_SERVICIO
-  * Retorna la fecha de pre-planificaci�n del servicio.
+  * Documentación para F_GET_FECHA_PREPLANIFICACION_SERVICIO
+  * Retorna la fecha de pre-planificación del servicio.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 10-01-2016
   *
   * @param  Fn_IdServicio     IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Recibe el ID del servicio
-  * @return VARCHAR2   Fecha de pre-planificaci�n en formato string
+  * @return VARCHAR2   Fecha de pre-planificación en formato string
   */
   FUNCTION F_GET_FECHA_PREPLANIFICACION(
       Fn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE)
@@ -225,14 +225,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
 
 
  /**
-  * Documentaci�n para F_GET_OFICINA_USUARIO
-  * Retorna oficina correspondiente al login de usuario con rol empleado enviado como par�metro.
+  * Documentación para F_GET_OFICINA_USUARIO
+  * Retorna oficina correspondiente al login de usuario con rol empleado enviado como parámetro.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 08-12-2016
   *
   * @param  Fv_Login       DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE Recibe el login del usuario
-  * @param  Fv_EmpresaCod  DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE Recibe el ID de la empresa en  sesi�n  
+  * @param  Fv_EmpresaCod  DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE Recibe el ID de la empresa en  sesión  
   * @return DB_COMERCIAL.INFO_OFICINA_GRUPO.NOMBRE_OFICINA%TYPE   Nombre de la oficina
   */
   FUNCTION F_GET_OFICINA_USUARIO(
@@ -243,14 +243,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
 
 
  /**
-  * Documentaci�n para F_GET_ID_OFICINA_USUARIO
-  * Retorna el id oficina correspondiente al login de usuario con rol empleado enviado como par�metro.
+  * Documentación para F_GET_ID_OFICINA_USUARIO
+  * Retorna el id oficina correspondiente al login de usuario con rol empleado enviado como parámetro.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 15-12-2016
   *
   * @param  Fv_Login       DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE Recibe el login del usuario
-  * @param  Fv_EmpresaCod  DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE Recibe el ID de la empresa en  sesi�n  
+  * @param  Fv_EmpresaCod  DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE Recibe el ID de la empresa en  sesión  
   * @return DB_COMERCIAL.INFO_OFICINA_GRUPO.NOMBRE_OFICINA%TYPE   Nombre de la oficina
   */
   FUNCTION F_GET_ID_OFICINA_USUARIO(
@@ -259,8 +259,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
      RETURN DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE;  
 
  /**
-  * Documentaci�n para F_GET_PRIMERA_FACTURA
-  * Retorna el valor del campo deseado enviado como par�metro en formato string .
+  * Documentación para F_GET_PRIMERA_FACTURA
+  * Retorna el valor del campo deseado enviado como parámetro en formato string .
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 10-01-2017
@@ -274,26 +274,26 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
     RETURN VARCHAR2;     
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_CLIENTES_FACTURAS'.
-  * Procedure que me permite generar reporte de clientes-facturas en formato csv y enviarlo por mail seg�n filtros enviados como par�metros.
+  * Documentación para PROCEDURE 'P_REPORTE_CLIENTES_FACTURAS'.
+  * Procedure que me permite generar reporte de clientes-facturas en formato csv y enviarlo por mail según filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param number         Pn_EmpresaId  (empresa a generar el reporte)
   * @Param varchar2       Pv_PrefijoEmpresa   Prefijo de empresa en sesion
   * @Param varchar2       Pv_UsrSesion  Usuario en sesion
-  * @Param varchar2       Pv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_FechaActivacionDesde (rango inicial para consulta por fecha de activaci�n del servicio)
-  * @Param varchar2       Pv_FechaActivacionHasta (rango final para consulta por fecha de activaci�n del servicio)  
-  * @Param varchar2       Pv_Identificacion Numero de identificaci�n el vendedor
-  * @Param varchar2       Pv_RazonSocial   Raz�n social del cliente
+  * @Param varchar2       Pv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_FechaActivacionDesde (rango inicial para consulta por fecha de activación del servicio)
+  * @Param varchar2       Pv_FechaActivacionHasta (rango final para consulta por fecha de activación del servicio)  
+  * @Param varchar2       Pv_Identificacion Numero de identificación el vendedor
+  * @Param varchar2       Pv_RazonSocial   Razón social del cliente
   * @Param varchar2       Pv_Nombres   Nombres del cliente 
   * @Param varchar2       Pv_Apellidos Apellidos del cliente   
   * @Param varchar2       Pv_IdsPlan (ids para filtrar por plan)  
   * @Param varchar2       Pv_IdsOficinasVendedor (ids para filtrar por oficina del vendedor)  
   * @Param varchar2       Pv_IdsOficinasPtoCobertura (ids para filtrar por oficina de punto de cobertura ) 
-  * @Param varchar2       Pv_MsjResultado Devuelve un mensaje del resultado de la generaci�n del resporte
+  * @Param varchar2       Pv_MsjResultado Devuelve un mensaje del resultado de la generación del resporte
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 15-12-2016
   */
@@ -321,7 +321,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_ARCOTEL_SERV_ACT'.
+  * Documentación para PROCEDURE 'P_REPORTE_ARCOTEL_SERV_ACT'.
   * Procedure que permite generar un reporte mensual de los servicios activos de Internet y Datos para la empresa Telconet
   *
   * PARAMETROS:
@@ -331,14 +331,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
   * @version 1.0 23-03-2017
   * 
   * @author Modificado: Richard Cabrera <rcabrera@telconet.ec>
-  * @version 1.1 06-04-2017 - Se realizan ajustes para obtener la fecha de activaci�n del servicio por observaci�n, esta busqueda se
-  *                           realizara para los historiales que no tienen la acci�n de confirmarServicio
+  * @version 1.1 06-04-2017 - Se realizan ajustes para obtener la fecha de activación del servicio por observación, esta busqueda se
+  *                           realizara para los historiales que no tienen la acción de confirmarServicio
   *
   * @author Modificado: Richard Cabrera <rcabrera@telconet.ec>
-  * @version 1.2 04-05-2017 - Se realizan ajustes para mostrar tambi�n los servicios que no tiene INFO TECNICA
+  * @version 1.2 04-05-2017 - Se realizan ajustes para mostrar también los servicios que no tiene INFO TECNICA
   *
   * @author Modificado: Richard Cabrera <rcabrera@telconet.ec>
-  * @version 1.3 07-08-2017 - Se realizan ajustes para agregar 2 campos al reporte (nombre del punto y fecha de creaci�n del servicio)
+  * @version 1.3 07-08-2017 - Se realizan ajustes para agregar 2 campos al reporte (nombre del punto y fecha de creación del servicio)
   */
   PROCEDURE P_REPORTE_ARCOTEL_SERV_ACT(
     pv_prefijo_empresa IN  VARCHAR2,
@@ -363,9 +363,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REPORTE_COMERCIAL AS
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|;|.|,|%|"]|[)]+$', ' ')
-              ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-              ,'������,������', 'AEIOUN aeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|;|.|,|%|"]|[)]+$', ' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+              ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
               , Chr(9), ' ')
               , Chr(10), ' ')
               , Chr(13), ' ')
@@ -1591,7 +1591,7 @@ IS
     Lv_fecha_archivo               VARCHAR2(20)   := TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS');
     Lv_fecha_reporte               VARCHAR2(20)   := TO_CHAR(SYSDATE, 'DD/MM/YYYY');
     Lv_Fecha_ejecucion             VARCHAR2(40)   := TO_CHAR(SYSDATE, 'DD/MM/YYYY HH:MI:SS');
-    Lv_Asunto_Notificacion         VARCHAR2(100)  := 'Notificaci�n de Generacion de Reporte Mensual Arcotel';
+    Lv_Asunto_Notificacion         VARCHAR2(100)  := 'Notificación de Generacion de Reporte Mensual Arcotel';
     Lv_directorio                  VARCHAR2(50)   := 'DIR_REPORTES_ARCOTEL';
     Lv_nombre_archivo              VARCHAR2(100)  := 'ReporteArcotelServiciosActivosTN_'|| Lv_fecha_archivo||'.csv';
     Lv_parametro_proyecto_arcotel  VARCHAR2(100)  := 'PARAMETROS PROYECTO ARCOTEL';

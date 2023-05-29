@@ -20,7 +20,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GENERACION_SLA AS
   @version 1.2 23-11-2016 - Se realiza ajustes en el calculo de la disponibilidad que muestra el SLA, para que no se tome en
                             cuenta los casos que fueron SIN AFECTACION
   @author Modificado: Miguel Angulo <jmangulos@telconet.ec>
-  @version 1.3 03-04-2019 - Se realiz� ajuste al query de c�lculo de SLA, para que no tome datos repetidos en el Package
+  @version 1.3 03-04-2019 - Se realizó ajuste al query de cálculo de SLA, para que no tome datos repetidos en el Package
                             P_GENERACION_RESUMEN_SLA -> C_CalculoSla
   @param Pn_minutos
   @param Pn_puntoId
@@ -80,10 +80,10 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GENERACION_SLA AS
   RETURN CLOB;
 
   /*
-     Funci�n encargada de realizar el ingreso de la cabecera donde se encuentra al informaci�n b�sica de cada cliente y donde se ingresa
+     Función encargada de realizar el ingreso de la cabecera donde se encuentra al información básica de cada cliente y donde se ingresa
      el resumen del promedio del SLA calculado a partir de los puntos de un cliente.
 
-     @author Allan Su�rez <arsuarez@telconet.ec>
+     @author Allan Suárez <arsuarez@telconet.ec>
      @version 1.0
      @since 14-11-2018
 
@@ -114,10 +114,10 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GENERACION_SLA AS
   RETURN NUMBER;
 
   /*
-     Funci�n encargada de realizar el ingreso detallo por cliente donde se ingresan los logines con sus respectivos porcentajes de
-     disponibilidad calculados con la f�rmula de SLA
+     Función encargada de realizar el ingreso detallo por cliente donde se ingresan los logines con sus respectivos porcentajes de
+     disponibilidad calculados con la fórmula de SLA
 
-     @author Allan Su�rez <arsuarez@telconet.ec>
+     @author Allan Suárez <arsuarez@telconet.ec>
      @version 1.0
      @since 14-11-2018
 
@@ -140,9 +140,9 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GENERACION_SLA AS
   RETURN NUMBER;
 
 /*
-  * Funci�n encargado de obtener reporte de SLA detallado para Telcograf.
+  * Función encargado de obtener reporte de SLA detallado para Telcograf.
 
-  @author Karen Rodr�guez <kyrodriguez@telconet.ec>
+  @author Karen Rodríguez <kyrodriguez@telconet.ec>
   @version 1.0 30-07-2019
 
   @author Nestor Naula <nnaulal@telconet.ec>
@@ -165,10 +165,10 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GENERACION_SLA AS
 RETURN CLOB;
 
   /*
-     Funci�n encargada de realizar el c�lculo del SLA y respectiva poblaci�n de las tablas de resumen para todos los clientes de TN/MD
+     Función encargada de realizar el cálculo del SLA y respectiva población de las tablas de resumen para todos los clientes de TN/MD
      que posean servicios de DATOS o INTERNET Activos por punto.
 
-     @author Allan Su�rez <arsuarez@telconet.ec>
+     @author Allan Suárez <arsuarez@telconet.ec>
      @version 1.0
      @since 14-11-2018
 
@@ -179,10 +179,10 @@ RETURN CLOB;
                                      Ln_FechaFinal   DATE);
 
   /**
-   * Documentaci�n para TYPE 'Gr_DisponibilidadCliente'.
+   * Documentación para TYPE 'Gr_DisponibilidadCliente'.
    * Record para almacenar la disponibilidad consolidada del cliente.
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    */
   TYPE Gr_DisponibilidadCliente IS RECORD (
     CLIENTE         VARCHAR2(300),
@@ -195,20 +195,20 @@ RETURN CLOB;
   );
 
   /**
-   * Documentaci�n para TYPE 'Gtl_DisponibilidadCliente'.
+   * Documentación para TYPE 'Gtl_DisponibilidadCliente'.
    *
    * Tabla para almacenar la disponibilidad consolidada del cliente.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    */
   TYPE Gtl_DisponibilidadCliente IS TABLE OF Gr_DisponibilidadCliente INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para TYPE 'Gr_DisponibilidadDetCliente'.
+   * Documentación para TYPE 'Gr_DisponibilidadDetCliente'.
    * Record para almacenar la disponibilidad detallada del cliente.
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    */
   TYPE Gr_DisponibilidadDetCliente IS RECORD (
     RANGO               VARCHAR2(50),
@@ -225,75 +225,75 @@ RETURN CLOB;
   );
 
   /**
-   * Documentaci�n para TYPE 'Gtl_DisponibilidadDetCliente'.
+   * Documentación para TYPE 'Gtl_DisponibilidadDetCliente'.
    *
    * Tabla para almacenar la disponibilidad detallada del cliente.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    */
   TYPE Gtl_DisponibilidadDetCliente IS TABLE OF Gr_DisponibilidadDetCliente INDEX BY PLS_INTEGER;
 
   /*
-   * Documentaci�n para el procedimiento 'P_REPORTE_SLA_CONSOLIDADO'.
+   * Documentación para el procedimiento 'P_REPORTE_SLA_CONSOLIDADO'.
    *
-   * M�todo que permite generar el reporte SLA CONSOLIDADO.
+   * Método que permite generar el reporte SLA CONSOLIDADO.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.1 09-03-2021 - Se modifica la manera de generar el reporte, para utilizar el paquete GNKG_AS_XLSX.
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.1 09-03-2021 - Se modifica la manera de generar el reporte, para utilizar el paquete GNKG_AS_XLSX.
    */
   PROCEDURE P_REPORTE_SLA_CONSOLIDADO(Pcl_Request IN  CLOB,
                                       Pv_Status   OUT VARCHAR2,
                                       Pv_Mensaje  OUT VARCHAR2);
 
   /*
-   * Documentaci�n para el procedimiento 'P_REPORTE_SLA_DETALLADO'.
+   * Documentación para el procedimiento 'P_REPORTE_SLA_DETALLADO'.
    *
-   * M�todo que permite generar el reporte SLA DETALLADO.
+   * Método que permite generar el reporte SLA DETALLADO.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.1 09-03-2021 - Se modifica la manera de generar el reporte, para utilizar el paquete GNKG_AS_XLSX.
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.1 09-03-2021 - Se modifica la manera de generar el reporte, para utilizar el paquete GNKG_AS_XLSX.
    */
   PROCEDURE P_REPORTE_SLA_DETALLADO(Pcl_Request IN  CLOB,
                                     Pv_Status   OUT VARCHAR2,
                                     Pv_Mensaje  OUT VARCHAR2);
 
   /*
-   * Documentaci�n para la procedimiento 'P_OBTENER_DISP_CON_CLIENTE'.
+   * Documentación para la procedimiento 'P_OBTENER_DISP_CON_CLIENTE'.
    *
-   * M�todo que obtiene la disponibilidad consolidada del cliente.
+   * Método que obtiene la disponibilidad consolidada del cliente.
    *
    * @param Pcl_Request    IN  CLOB Recibe json request.
    * @param Pr_DispCliente OUT SYS_REFCURSOR Retorna la disponibilidad consolidada del cliente.
-   * @param Pv_Status      OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje     OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status      OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje     OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    *
    * Se modifica logica para obtener el tiempo total de los casos, ya que se duplicaba registros
    *
    * @author Jose Bedon <jobedon@telconet.ec>
-   * @versi�n 2.0 28-06-2021
+   * @versión 2.0 28-06-2021
    *
    * Se modifica logica para cuando se filtra los puntos por estado activo, este tenga tambien un servicio activo
    *
    * @author Ivan Mata <imata@telconet.ec>
-   * @versi�n 2.0 08-09-2022
+   * @versión 2.0 08-09-2022
    *
    */
   PROCEDURE P_OBTENER_DISP_CON_CLIENTE(Pcl_Request    IN CLOB,
@@ -302,17 +302,17 @@ RETURN CLOB;
                                        Pv_Mensaje     OUT VARCHAR2);
 
   /*
-   * Documentaci�n para la procedimiento 'P_OBTENER_DISP_DET_CLIENTE'.
+   * Documentación para la procedimiento 'P_OBTENER_DISP_DET_CLIENTE'.
    *
-   * M�todo que obtiene la disponibilidad detallada del cliente.
+   * Método que obtiene la disponibilidad detallada del cliente.
    *
    * @param Pcl_Request       IN  CLOB Recibe json request.
    * @param Pr_DispDetCliente OUT SYS_REFCURSOR Retorna la disponibilidad detallada del cliente.
-   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    */
   PROCEDURE P_OBTENER_DISP_DET_CLIENTE(Pcl_Request       IN  CLOB,
                                        Pr_DispDetCliente OUT SYS_REFCURSOR,
@@ -320,18 +320,18 @@ RETURN CLOB;
                                        Pv_Mensaje        OUT VARCHAR2);
 
   /*
-   * Documentaci�n para el procedimiento 'P_OBTENER_TIPO_ENLACE'.
+   * Documentación para el procedimiento 'P_OBTENER_TIPO_ENLACE'.
    *
-   * M�todo que obtiene los tipos de enlaces que se vieron
+   * Método que obtiene los tipos de enlaces que se vieron
    * afectados en un caso.
    *
    * @param Pcl_Request   IN  CLOB Recibe json request.
    * @param Pv_TipoEnlace OUT VARCHAR2 Retorna el tipo de enlace.
-   * @param Pv_Status     OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje    OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status     OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje    OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 11-01-2021
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 11-01-2021
    */
   PROCEDURE P_OBTENER_TIPO_ENLACE(Pcl_Request   IN  CLOB,
                                   Pv_TipoEnlace OUT VARCHAR2,
@@ -339,20 +339,21 @@ RETURN CLOB;
                                   Pv_Mensaje    OUT VARCHAR2);
 
   /**
-   * Documentaci�n para la funci�n 'F_LIMPIAR_CADENA_CARACTERES'
+   * Documentación para la función 'F_LIMPIAR_CADENA_CARACTERES'
    *
-   * Funci�n que limpia ciertos caracteres especiales para los reportes.
+   * Función que limpia ciertos caracteres especiales para los reportes.
    *
    * @Param CLOB Fv_Cadena Recibe la cadena de caracteres a limpiar.
-   * @return CLOB Retorna la cadena sin car�cteres especiales.
+   * @return CLOB Retorna la cadena sin carácteres especiales.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 02-10-2020
    */
   FUNCTION F_LIMPIAR_CADENA_CARACTERES(Fv_Cadena IN CLOB) RETURN CLOB;
 
 END SPKG_GENERACION_SLA;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_GENERACION_SLA AS
 
 FUNCTION FN_CALCULAR_DISPONIBILIDAD_SLA(
@@ -974,7 +975,7 @@ AS
         AND HISTORIAL.ESTADO                       = 'Cerrado'
     );
 
-      --DECLARACI�N DE CURSORES
+      --DECLARACIÓN DE CURSORES
       TYPE t_cursorClientes IS TABLE OF C_Clientes%ROWTYPE INDEX BY PLS_INTEGER;
       CursorClientes t_cursorClientes;    
 
@@ -1019,7 +1020,7 @@ AS
 
         Li_i_clientes := CursorClientes.FIRST;
 
-        --Recorrer todos los clientes que est�n dentro de la consideraci�n para el c�lculo del SLA
+        --Recorrer todos los clientes que estén dentro de la consideración para el cálculo del SLA
         WHILE(Li_i_clientes IS NOT NULL)
         LOOP
 
@@ -1060,7 +1061,7 @@ AS
                     --SOLO SE INGRESA UNA VEZ LA CABECERA DEL CLIENTE CUANDO SUS PUNTOS/SERVICIO CUMPLEN CON LA CONDICION
                     IF Ln_cabeceraIngresada = 0 THEN
 
-                          --Se realiza el ingreso de la cabecera por cliente del SLA de la informaci�n b�sica de cada cliente
+                          --Se realiza el ingreso de la cabecera por cliente del SLA de la información básica de cada cliente
                           Ln_CabeceraId := DB_SOPORTE.SPKG_GENERACION_SLA.F_INSERTA_RESUMEN_SLA_CABECERA(
                                                                                               CursorClientes(Li_i_clientes).RAZON_SOCIAL,
                                                                                               CursorClientes(Li_i_clientes).IDENTIFICACION_CLIENTE,
@@ -1103,13 +1104,13 @@ AS
 
                             WHILE(Li_i_disp IS NOT NULL)
 
-                            --Se obtiene los valores una vez realizado el c�lculo del SLA por login para luego determinar el promedio por cliente en un per�odo de tiempo                            
+                            --Se obtiene los valores una vez realizado el cálculo del SLA por login para luego determinar el promedio por cliente en un período de tiempo                            
                             LOOP                          
 
                                 Lf_disponibilidadPromedio    := Lf_disponibilidadPromedio    + CursorCalculoSla(Li_i_disp).DISPONIBILIDAD;
                                 Ln_MinutosIncidenciaPromedio := Ln_MinutosIncidenciaPromedio + CursorCalculoSla(Li_i_disp).TIEMPO_INCIDENCIA;
 
-                                --SE REALIZA LA INSERCI�N DEL DETALLE POR CADA CLIENTE EN CASO DE TENER MAS DE UN LOGIN
+                                --SE REALIZA LA INSERCIÓN DEL DETALLE POR CADA CLIENTE EN CASO DE TENER MAS DE UN LOGIN
                                 Ln_DetalleId := DB_SOPORTE.SPKG_GENERACION_SLA.F_INSERTA_RESUMEN_SLA_DETALLE(
                                                                                             Ln_CabeceraId,                                                                            
                                                                                             CursorCalculoSla(Li_i_disp).LOGIN,
@@ -1133,7 +1134,7 @@ AS
 
                         Ln_CantidadPuntosPorCliente := Ln_CantidadPuntosPorCliente + 1;
 
-                        --se obtiene el siguiente registro de la colecci�n
+                        --se obtiene el siguiente registro de la colección
                         Li_i_puntos := CursorPuntos.NEXT(Li_i_puntos);
 
                     END LOOP;--END LOOP RECORRIDO DE PUNTOS WHILE                                                                            
@@ -1143,8 +1144,8 @@ AS
                 IF Ln_CantidadPuntosPorCliente > 0 THEN
 
                     /*
-                    SE REALIZA EL C�LCULO PROMEDIO DEL PORCENTAJE DE DISPONIBILIDAD PROMEDIO DE UN CLIENTE DE ACUERDO AL N�MERO DE PUNTOS ACTIVOS EN DONDE
-                    SE REALIZ� EL AN�LISIS DE SLA 
+                    SE REALIZA EL CÁLCULO PROMEDIO DEL PORCENTAJE DE DISPONIBILIDAD PROMEDIO DE UN CLIENTE DE ACUERDO AL NÚMERO DE PUNTOS ACTIVOS EN DONDE
+                    SE REALIZÓ EL ANÁLISIS DE SLA 
                     */
                     Lf_disponibilidadPromedio    := ROUND((Lf_disponibilidadPromedio/Ln_CantidadPuntosPorCliente),2);
                     Ln_MinutosIncidenciaPromedio := ROUND((Ln_MinutosIncidenciaPromedio/Ln_CantidadPuntosPorCliente),2);
@@ -1162,7 +1163,7 @@ AS
 
             END IF;--END IF VALIDACION SI EL REGISTRO YA FUE PROCESADO
 
-            --Se realizar� commit cada 100 ingresos de informaci�n de cliente
+            --Se realizará commit cada 100 ingresos de información de cliente
             IF Ln_contadorCommit < 100 THEN
               Ln_contadorCommit := Ln_contadorCommit + 1;
             ELSE
@@ -1170,7 +1171,7 @@ AS
               COMMIT;
             END IF;   
 
-            --se obtiene el siguiente registro de la colecci�n
+            --se obtiene el siguiente registro de la colección
             Li_i_clientes :=  CursorClientes.NEXT(Li_i_clientes);  
 
         END LOOP;
@@ -1205,9 +1206,9 @@ EXCEPTION
 END P_GENERACION_RESUMEN_SLA;
 
 /*
-  * M�todo encargado de obtener reporte de SLA detallado para Telcograf.
+  * Método encargado de obtener reporte de SLA detallado para Telcograf.
 
-  @author Karen Rodr�guez <kyrodriguez@telconet.ec>
+  @author Karen Rodríguez <kyrodriguez@telconet.ec>
   @version 1.0 30-07-2019
 
   @author Nestor Naula <nnaulal@telconet.ec>
@@ -1530,7 +1531,7 @@ EXCEPTION
         WHERE NVEE.LOGIN_EMPLE   = Cv_Login
           AND UPPER(NVEE.ESTADO) = UPPER(Cv_Estado);
 
-    --Cursor para obtener el valor de configuraci�n
+    --Cursor para obtener el valor de configuración
     CURSOR C_ParametrosConfiguracion(Cv_NombreParametro VARCHAR2,Cv_Descripcion VARCHAR2)
     IS
       SELECT APCDET.VALOR1
@@ -1641,7 +1642,7 @@ EXCEPTION
     DB_GENERAL.GNKG_AS_XLSX.CELL(1,1,'TELCONET S.A');
     DB_GENERAL.GNKG_AS_XLSX.MERGECELLS(1,1,5,1);
 
-    --T�tulo del reporte.
+    --Título del reporte.
     DB_GENERAL.GNKG_AS_XLSX.SET_ROW(
       P_ROW       => 2,
       P_HEIGHT    => 21,
@@ -1698,7 +1699,7 @@ EXCEPTION
     END LOOP;
     CLOSE Lr_SysRefcursor;
 
-    --Observaci�n.
+    --Observación.
     Ln_Fila := Ln_Fila + 1;
     DB_GENERAL.GNKG_AS_XLSX.SET_ROW(
       P_ROW       => Ln_Fila,
@@ -1723,11 +1724,11 @@ EXCEPTION
     DB_GENERAL.GNKG_AS_XLSX.CELL(1,Ln_Fila,'Por favor cualquier duda comunicarse al departamento IPCC 3900111 ext. 8000');
     DB_GENERAL.GNKG_AS_XLSX.MERGECELLS(1,Ln_Fila,3,Ln_Fila);
 
-    --Fin de la creaci�n del Archivo.
+    --Fin de la creación del Archivo.
     Lv_NombreArchivo := 'REPORTE_SLA_CONSOLIDADO_DEL_'||Lv_RangoDesde||'_AL_'||Lv_RangoHasta||'.xlsx';
     DB_GENERAL.GNKG_AS_XLSX.SAVE(Lv_NombreDirectorio,Lv_NombreArchivo);
 
-    --Ejecuci�n del comando para crear el archivo comprimido.
+    --Ejecución del comando para crear el archivo comprimido.
     DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND('gzip'||' '||Lv_RutaDirectorio||Lv_NombreArchivo));
 
     Lr_Plantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA(Lv_CodigoPlantilla);
@@ -1746,7 +1747,7 @@ EXCEPTION
       Lv_Remitente := Lr_Plantilla.ALIAS_CORREOS;
     END IF;
 
-    --Env�o del archivo comprimido por correo.
+    --Envío del archivo comprimido por correo.
     DB_GENERAL.GNRLPCK_UTIL.SEND_EMAIL_ATTACH(Lv_Remitente,
                                               Lv_Para||',',
                                              'REPORTE SLA CONSOLIDADO - '||Lv_Cliente,
@@ -1754,14 +1755,14 @@ EXCEPTION
                                               Lv_NombreDirectorio,
                                               Lv_NombreArchivo||Lv_Extension);
 
-    --Eliminaci�n del archivo xlsx.
+    --Eliminación del archivo xlsx.
     UTL_FILE.FGETATTR(Lv_NombreDirectorio, Lv_NombreArchivo, Lb_Fexists, Ln_FileLength, Lbi_BlockSize);
     IF Lb_Fexists THEN
       UTL_FILE.FREMOVE(Lv_NombreDirectorio,Lv_NombreArchivo);
       DBMS_OUTPUT.PUT_LINE('Archivo '||Lv_NombreArchivo||' eliminado.');
     END IF;
 
-    --Eliminaci�n del archivo gz.
+    --Eliminación del archivo gz.
     UTL_FILE.FGETATTR(Lv_NombreDirectorio, Lv_NombreArchivo||Lv_Extension, Lb_Fexists, Ln_FileLength, Lbi_BlockSize);
     IF Lb_Fexists THEN
       UTL_FILE.FREMOVE(Lv_NombreDirectorio,Lv_NombreArchivo||Lv_Extension);
@@ -1888,7 +1889,7 @@ EXCEPTION
         WHERE NVEE.LOGIN_EMPLE   = Cv_Login
           AND UPPER(NVEE.ESTADO) = UPPER(Cv_Estado);
 
-    --Cursor para obtener el valor de configuraci�n
+    --Cursor para obtener el valor de configuración
     CURSOR C_ParametrosConfiguracion(Cv_NombreParametro VARCHAR2,Cv_Descripcion VARCHAR2)
     IS
       SELECT APCDET.VALOR1
@@ -2041,7 +2042,7 @@ EXCEPTION
         DB_GENERAL.GNKG_AS_XLSX.CELL(1,1,'TELCONET S.A');
         DB_GENERAL.GNKG_AS_XLSX.MERGECELLS(1,1,Ln_NumeroColumnas,1);
 
-        --T�tulo del reporte.
+        --Título del reporte.
         DB_GENERAL.GNKG_AS_XLSX.SET_ROW(
           P_ROW       => 2,
           P_HEIGHT    => 21,
@@ -2160,7 +2161,7 @@ EXCEPTION
         END LOOP;
         CLOSE Lr_SysRefcursorDet;
 
-      --Observaci�n.
+      --Observación.
       DB_GENERAL.GNKG_AS_XLSX.SET_ROW(
           P_ROW       => Ln_Fila,
           P_FONTID    => DB_GENERAL.GNKG_AS_XLSX.GET_FONT(P_BOLD => FALSE, P_FONTSIZE => 8, P_NAME => 'LKLUG', P_RGB => 'FFFFFF'),
@@ -2194,11 +2195,11 @@ EXCEPTION
     END LOOP;
     CLOSE Lr_SysRefcursor;
 
-    --Fin de la creaci�n del Archivo.
+    --Fin de la creación del Archivo.
     Lv_NombreArchivo := 'REPORTE_SLA_DETALLADO_DEL_'||Lv_RangoDesde||'_AL_'||Lv_RangoHasta||'.xlsx';
     DB_GENERAL.GNKG_AS_XLSX.SAVE(Lv_NombreDirectorio,Lv_NombreArchivo);
 
-    --Ejecuci�n del comando para crear el archivo comprimido.
+    --Ejecución del comando para crear el archivo comprimido.
     DBMS_OUTPUT.PUT_LINE(NAF47_TNET.JAVARUNCOMMAND('gzip'||' '||Lv_RutaDirectorio||Lv_NombreArchivo));
 
     Lr_Plantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA(Lv_CodigoPlantilla);
@@ -2217,7 +2218,7 @@ EXCEPTION
       Lv_Remitente := Lr_Plantilla.ALIAS_CORREOS;
     END IF;
 
-    --Env�o del archivo comprimido por correo.
+    --Envío del archivo comprimido por correo.
     DB_GENERAL.GNRLPCK_UTIL.SEND_EMAIL_ATTACH(Lv_Remitente,
                                               Lv_Para||',',
                                              'REPORTE SLA DETALLADO - '||Lv_Cliente,
@@ -2225,14 +2226,14 @@ EXCEPTION
                                               Lv_NombreDirectorio,
                                               Lv_NombreArchivo||Lv_Extension);
 
-    --Eliminaci�n del archivo xlsx.
+    --Eliminación del archivo xlsx.
     UTL_FILE.FGETATTR(Lv_NombreDirectorio, Lv_NombreArchivo, Lb_Fexists, Ln_FileLength, Lbi_BlockSize);
     IF Lb_Fexists THEN
       UTL_FILE.FREMOVE(Lv_NombreDirectorio,Lv_NombreArchivo);
       DBMS_OUTPUT.PUT_LINE('Archivo '||Lv_NombreArchivo||' eliminado.');
     END IF;
 
-    --Eliminaci�n del archivo gz.
+    --Eliminación del archivo gz.
     UTL_FILE.FGETATTR(Lv_NombreDirectorio, Lv_NombreArchivo||Lv_Extension, Lb_Fexists, Ln_FileLength, Lbi_BlockSize);
     IF Lb_Fexists THEN
       UTL_FILE.FREMOVE(Lv_NombreDirectorio,Lv_NombreArchivo||Lv_Extension);
@@ -2545,7 +2546,7 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE(Lcl_Query);
     OPEN Pr_DispCliente FOR Lcl_Query;
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacci�n exitosa';
+    Pv_Mensaje := 'Transacción exitosa';
 
   EXCEPTION
     WHEN OTHERS THEN
@@ -2710,7 +2711,7 @@ EXCEPTION
     --DBMS_OUTPUT.PUT_LINE(Lcl_Query);
     OPEN Pr_DispDetCliente FOR Lcl_Query;
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transacci�n exitosa';
+    Pv_Mensaje := 'Transacción exitosa';
 
   EXCEPTION
     WHEN OTHERS THEN
@@ -2883,7 +2884,7 @@ EXCEPTION
 
     IF Lv_TipoEnlace IS NOT NULL THEN
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
       Pv_TipoEnlace :=  Lv_TipoEnlace;
       RETURN;
     END IF;
@@ -2894,7 +2895,7 @@ EXCEPTION
 
     IF Lv_TipoEnlace IS NOT NULL THEN
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
       Pv_TipoEnlace :=  Lv_TipoEnlace;
       RETURN;
     END IF;
@@ -2904,7 +2905,7 @@ EXCEPTION
     CLOSE C_TipoEnlacesPorPunto;
 
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacci�n exitosa';
+    Pv_Mensaje    := 'Transacción exitosa';
     Pv_TipoEnlace :=  Lv_TipoEnlace;
 
   EXCEPTION
@@ -2925,9 +2926,9 @@ EXCEPTION
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|&|<|>|/|;|.|%|"]|+$',' ')
-              ,'[^A-Za-z0-9������������&()-_ ]',' ')
-              ,'������������','AEIOUNaeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|&|<|>|/|;|.|%|"]|+$',' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]',' ')
+              ,'ÁÉÍÓÚÑáéíóúñ','AEIOUNaeioun')
               , Chr(9) ,' ')
               , Chr(10),' ')
               , Chr(13),' ')

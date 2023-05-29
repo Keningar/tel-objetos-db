@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
 
   /*
-  * Documentaci�n para TYPE 'TypeDetalleRecaudacion'.
-  * Tipo de datos para procesar contabilidad pagos por recaudaci�n.
+  * Documentación para TYPE 'TypeDetalleRecaudacion'.
+  * Tipo de datos para procesar contabilidad pagos por recaudación.
   *
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 04-01-2018
@@ -35,18 +35,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
   );
 
   /*
-  * Documentaci�n para PROCEDURE 'P_CONTABILIZAR'.
-  * Procedimiento que permigre generar contabilizaci�n de Pagos en Linea y recaudaciones MD
+  * Documentación para PROCEDURE 'P_CONTABILIZAR'.
+  * Procedimiento que permigre generar contabilización de Pagos en Linea y recaudaciones MD
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 06-01-2018
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.1 13-09-2018 - Se modifica para cambiar contabilizaci�n sumarizada a detallada
+  * @version 1.1 13-09-2018 - Se modifica para cambiar contabilización sumarizada a detallada
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.2 27-09-2018 - Se modifica filtrar fecha ultima modificaci�n y no por fecha creaci�n de tabla pago en Linea
+  * @version 1.2 27-09-2018 - Se modifica filtrar fecha ultima modificación y no por fecha creación de tabla pago en Linea
   *
-  * @Param varchar2 Pv_NoCia        IN  Empresa que procesa contabilizaci�n
+  * @Param varchar2 Pv_NoCia        IN  Empresa que procesa contabilización
   * @Param varchar2 Pv_Fecha        IN  Fecha a procesar
   * @Param varchar2 Pv_MensajeError OUT Retorna mensaje de error
   */
@@ -55,13 +55,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
                              Pv_MensajeError  IN OUT VARCHAR2);
 
   /*
-  * Documentaci�n para PROCEDURE 'P_CONTABILIZAR_ASIGNA_ANT_PTO'.
-  * Procedimiento que permigre generar contabilizaci�n de asignaci�n de punto cliente a anticipos sin cliente.
+  * Documentación para PROCEDURE 'P_CONTABILIZAR_ASIGNA_ANT_PTO'.
+  * Procedimiento que permigre generar contabilización de asignación de punto cliente a anticipos sin cliente.
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 06-01-2018
 
-  * @Param varchar2 Pv_NoCia        IN  Empresa que procesa contabilizaci�n
-  * @Param number   Pn_IdPagoCab    IN  C�digo de pago a procesar
+  * @Param varchar2 Pv_NoCia        IN  Empresa que procesa contabilización
+  * @Param number   Pn_IdPagoCab    IN  Código de pago a procesar
   * @Param varchar2 Pv_MensajeError OUT Retorna mensaje de error
   */
   PROCEDURE P_CONTABILIZAR_ASIGNA_ANT_PTO ( Pv_NoCia        IN VARCHAR2,
@@ -82,8 +82,8 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
   Gv_ParamTipoDocCruce      DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE := 'TIPO_DOC_CRUCE_CLIENTE';
   
  /*
- * Documentaci�n para FUNCION 'F_OBTENER_VALOR_PARAMETRO'.
- * FUNCION QUE OBTIENE PARAMETROS DE ECUANET PARA MIGRACION A COMPA�IA MEGADATOS
+ * Documentación para FUNCION 'F_OBTENER_VALOR_PARAMETRO'.
+ * FUNCION QUE OBTIENE PARAMETROS DE ECUANET PARA MIGRACION A COMPAÑIA MEGADATOS
  * @author Jimmy Gilces <jgilces@telconet.ec>
  * @version 1.0
  * @since 27/03/2023
@@ -120,7 +120,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
  END;
   --
   /*
-  * Documentaci�n para PROCEDIMIENTO P_CADENA_ARREGLO
+  * Documentación para PROCEDIMIENTO P_CADENA_ARREGLO
   * Funcion que divide en cadenas segun caracter de division
   * @Param in varchar2     Pv_Cadena (cadena a dividir)
   * @Param in varchar2     Pv_Caracter (cadena de division)
@@ -148,13 +148,13 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
 
   --
   /**
-  * Documentacion para la Funci�n F_GENERA_COMENTARIO
-  * Procedimiento que genera comentario para registro de asiento en repositorio de migraci�n
+  * Documentacion para la Función F_GENERA_COMENTARIO
+  * Procedimiento que genera comentario para registro de asiento en repositorio de migración
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 04-01-2018
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.1 13-09-2018 - Se modifica para agregar configuraci�n de campos para conceptos documentos MD
+  * @version 1.1 13-09-2018 - Se modifica para agregar configuración de campos para conceptos documentos MD
   *
   * @param Pr_DetallePago     IN DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION.TypeDetalleRecaudacion recibe variable registro detalle de pago
   * @param Pv_CadenaAdicional IN VARCHAR2      recibe cadena a procesar
@@ -294,7 +294,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PAGO_LINEA_RECAUDACION AS
   END F_GENERA_COMENTARIO;
 
   /*
-  * Documentaci�n para FUNCION 'GENERA_NO_DOCU_ASIENTO'.
+  * Documentación para FUNCION 'GENERA_NO_DOCU_ASIENTO'.
   * FUNCION QUE GENERA EL NUMERO DE DOCUMENTO O EL NUMERO DE ASIENTO PARA MIGRA_ARCKMM o MIGRA_ARCGAE respectivamente
   * @author Andres Montero amontero@telconet.ec
   * @version 1.0
@@ -926,11 +926,11 @@ PROCEDURE P_CREA_DEBITO_CREDITO ( Pr_CabPlantillaCon IN DB_FINANCIERO.FNKG_TRANS
         Lr_MigraArckmm := NULL;
 
         IF Lr_DetallePago.CUENTA_CONTABLE_ID IS NOT NULL THEN
-          -- se recupera informaci�n de cuenta bancaria
+          -- se recupera información de cuenta bancaria
           Lr_CuentaContable := DB_FINANCIERO.FNKG_CONTABILIZAR_PAGO_MANUAL.GET_CUENTA_CONTABLE( Lr_DetallePago.CUENTA_CONTABLE_ID );
 
         ELSIF Lr_DetallePago.Banco_Tipo_Cuenta_Id IS NOT NULL THEN
-          -- se recupera informaci�n de cuenta bancaria
+          -- se recupera información de cuenta bancaria
           Lr_CuentaContable := FNKG_CONTABILIZAR_DEBITOS.F_GET_CUENTA_CONTABLE_POR_TIPO( Lr_DetallePago.Banco_Tipo_Cuenta_Id,
                                  'ID_BANCO_TIPO_CUENTA',
                                  'BANCOS DEBITOS MD',
@@ -1002,7 +1002,7 @@ PROCEDURE P_CREA_DEBITO_CREDITO ( Pr_CabPlantillaCon IN DB_FINANCIERO.FNKG_TRANS
         end if;
         --
 
-        -- generaci�n detalle de Contabilizaci�n.
+        -- generación detalle de Contabilización.
         P_CREA_DEBITO_CREDITO( Lr_CabPlantillaCon,
                                Lr_DetallePago,
                                Lr_MigraArckmm,
@@ -1261,7 +1261,7 @@ PROCEDURE P_CREA_DEBITO_CREDITO ( Pr_CabPlantillaCon IN DB_FINANCIERO.FNKG_TRANS
       FOR Lr_CruceCliente IN C_CRUCE_CLIENTES  LOOP
         --
         IF Lr_CruceCliente.Login IS NULL THEN
-          Pv_MensajeError := 'Pare el pago '||Pn_IdPagoCab||' no se encuentra asociado nig�n punto';
+          Pv_MensajeError := 'Pare el pago '||Pn_IdPagoCab||' no se encuentra asociado nigún punto';
           RAISE Le_Error;
         END IF;
 
@@ -1335,7 +1335,7 @@ PROCEDURE P_CREA_DEBITO_CREDITO ( Pr_CabPlantillaCon IN DB_FINANCIERO.FNKG_TRANS
           end if;
         END IF;
 
-        -- generaci�n detalle de Contabilizaci�n.
+        -- generación detalle de Contabilización.
         P_CREA_DEBITO_CREDITO( Lr_CabPlantillaCon,
                                Lr_CruceCliente,
                                Lr_MigraArckmm,

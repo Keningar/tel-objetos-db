@@ -1,16 +1,16 @@
 CREATE OR REPLACE PACKAGE NAF47_TNET.AFKG_CONSULTA AS 
 
     /**
-      * Documentaci�n para el paquete 'AFKG_CONSULTA'
-      * Paquete que contiene procedimientos para consultar informaci�n.
+      * Documentación para el paquete 'AFKG_CONSULTA'
+      * Paquete que contiene procedimientos para consultar información.
       *
       * @author Kevin Baque Puya <kbaque@telconet.ec>
       * @version 1.0 11-11-2021
     */
 
     /**
-      * Documentaci�n para el procedimiento 'P_CONTROL_CUSTODIO'.
-      * Procedimiento que retorna informaci�n del control custodio seg�n los par�metros enviado.
+      * Documentación para el procedimiento 'P_CONTROL_CUSTODIO'.
+      * Procedimiento que retorna información del control custodio según los parámetros enviado.
       *
       * @author Kevin Baque Puya <kbaque@telconet.ec>
       * @version 1.0 11-11-2021
@@ -33,7 +33,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFKG_CONSULTA AS
         PV_MENSAJE        OUT  VARCHAR2,
         PCL_RESULTADO     OUT  CLOB
     ) IS
-        --Cursor para obtener informaci�n de la serie.
+        --Cursor para obtener información de la serie.
         CURSOR C_GET_SERIE (
             CV_SERIE           VARCHAR2,
             CN_COD_EMPRESA     NUMBER,
@@ -71,7 +71,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFKG_CONSULTA AS
                 AND ARPLME.NO_CIA  = CN_COD_EMPRESA
         WHERE
             IPER.ID_PERSONA_ROL = CV_ID_PERSONA_ROL;
-        --Cursor para obtener informaci�n del empleado
+        --Cursor para obtener información del empleado
         CURSOR C_GET_EMPLEADO (
             CV_EMPLE VARCHAR2
         ) IS
@@ -81,7 +81,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFKG_CONSULTA AS
             NAF47_TNET.V_EMPLEADOS_EMPRESAS NVEE
         WHERE
             NVEE.NO_EMPLE = CV_EMPLE;
-        --Declaraci�n de variables
+        --Declaración de variables
         LR_VISTA_EMPLEADO       NAF47_TNET.V_EMPLEADOS_EMPRESAS%ROWTYPE;
         LR_EMPLEADO             NAF47_TNET.ARPLME%ROWTYPE;
         TYPE T_ARRAY_INFO_SERIE IS
@@ -94,7 +94,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFKG_CONSULTA AS
         LV_ESTADO_EMPLEADO      VARCHAR(50);
         LV_STATUS_ERROR         VARCHAR(50)    := 'EXITO';
         LV_IP_CREACION          VARCHAR2(100)  := '127.0.1.1';
-        LV_MENSAJE_ERROR        VARCHAR2(32767):='Se consult� la informaci�n, correctamente.';
+        LV_MENSAJE_ERROR        VARCHAR2(32767):='Se consultó la información, correctamente.';
         LN_COD_EMPRESA          NUMBER;
         LN_INDICE               NUMBER         := 1;
         LV_JSON                 CLOB           := NULL;

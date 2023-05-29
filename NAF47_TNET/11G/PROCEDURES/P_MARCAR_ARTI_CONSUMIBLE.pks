@@ -1,7 +1,7 @@
 CREATE OR REPLACE PROCEDURE NAF47_TNET.P_MARCAR_ARTI_CONSUMIBLE AS 
 
 /**
- * Procedimiento que marca los art�culos consumibles en la tabla NAF47_TNET.ARINDA
+ * Procedimiento que marca los articulos consumibles en la tabla NAF47_TNET.ARINDA
  * 
  * @author afayala <afayala@telconet.ec>
  * @version 1.0 03/01/2020 

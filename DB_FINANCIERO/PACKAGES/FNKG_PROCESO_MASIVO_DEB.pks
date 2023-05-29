@@ -26,36 +26,36 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_PROCESAR_DEBITOS_P
   *
-  * M�todo principal que procesa los debitos pendientes.
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * Método principal que procesa los debitos pendientes.
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
-  * @version 1.1 30-11-2017 - Se modifica la llamada a la funci�n F_INSERT_DEBITO_GENERAL_HIST.
+  * @version 1.1 30-11-2017 - Se modifica la llamada a la función F_INSERT_DEBITO_GENERAL_HIST.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.2 17-04-2020 - Se modifica cursor 'C_Facturas' y a�ade query que permita obtener las NDI con caracter�stica de  
-  *                            diferido, y si corresponde a la misma fecha de creaci�n con las facturas, se presente en el listado 
+  * @version 1.2 17-04-2020 - Se modifica cursor 'C_Facturas' y añade query que permita obtener las NDI con característica de  
+  *                            diferido, y si corresponde a la misma fecha de creación con las facturas, se presente en el listado 
   *                            como prioridad la NDI.
   * Costo query C_Facturas: 69
   *
-  * @author H�ctor Lozano <hlozano@telconet.ec>
+  * @author Héctor Lozano <hlozano@telconet.ec>
   * @version 1.3 02-05-2020 - Se modifica para obtener el Tipo de Escenario y Filtro correspondiente al proceso.
-  *                           ESCENARIO_BASE: Escenario basado en la generaci�n de los d�bitos de los clientes con saldo pendiente 
+  *                           ESCENARIO_BASE: Escenario basado en la generación de los débitos de los clientes con saldo pendiente 
   *                            de sus facturas activas.               
-  *                           ESCENARIO_1: Escenario basado en la generaci�n de los d�bitos de los clientes que tengan un saldo pendiente 
+  *                           ESCENARIO_1: Escenario basado en la generación de los débitos de los clientes que tengan un saldo pendiente 
   *                            de su factura recurrente mensual, emitida de acuerdo con cada ciclo.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.4 03-07-2020 - Se agrega sentencia CLOSE para cerrar el cursor de los documentos obtenidos para realizar los pagos.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.5 07-07-2020 - Se modifica validaci�n de escenario 1, para consultar facturas por cliente. Se elimina bucle For que
+  * @version 1.5 07-07-2020 - Se modifica validación de escenario 1, para consultar facturas por cliente. Se elimina bucle For que
   *                            consultaba facturas por punto.
   *                         - Se modifica consulta de los puntos que van hacer reactivados considerando el valor permisible con
   *                            respecto al saldo.
   *                         - Se modifica para obtener el Tipo de Escenario y Filtro correspondiente al proceso.
-  *                           ESCENARIO_3: Escenario basado en la generaci�n de los d�bitos de los clientes que tengan un saldo de las NDI Diferidas,
+  *                           ESCENARIO_3: Escenario basado en la generación de los débitos de los clientes que tengan un saldo de las NDI Diferidas,
   *                                        que se encuentren pendiente de pago.
   *
   * Costo Query C_InfoPunto: 222
@@ -66,19 +66,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_GET_NUMERACION
+  * Documentacion para la función F_GET_NUMERACION
   *
-  * M�todo encargado de obtener la numeraci�n respectiva del pago a realizar.
+  * Método encargado de obtener la numeración respectiva del pago a realizar.
   *
   * @param Fn_IdEmpresa     IN  NUMBER Recibe el id de la empresa
   * @param Fn_IdOficina     IN  NUMBER Recibe el id de la oficina
-  * @param Fv_Parametro     IN  VARCHAR2 Recibe el c�digo del parametro 
+  * @param Fv_Parametro     IN  VARCHAR2 Recibe el código del parametro 
   * @param Fv_NombreProceso OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Fv_Error         OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @return VARCHAR2 Retorna la numeraci�n
+  * @return VARCHAR2 Retorna la numeración
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */
   FUNCTION F_GET_NUMERACION(
@@ -91,18 +91,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_GET_TIPO_DOCUMENTO
+  * Documentacion para la función F_GET_TIPO_DOCUMENTO
   *
-  * M�todo encargado de obtener el tipo de documento
+  * Método encargado de obtener el tipo de documento
   *
-  * @param Fv_TipoDocumento IN  VARCHAR2 Recibe el c�digo del tipo de documento
+  * @param Fv_TipoDocumento IN  VARCHAR2 Recibe el código del tipo de documento
   * @param Fv_Estado        IN  VARCHAR2 Recibe el estado sea este Activo o Inactivo
   * @param Fv_NombreProceso OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Fv_Error         OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
   * @return NUMBER Retorna el id del tipo de documento
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */  
   FUNCTION F_GET_TIPO_DOCUMENTO(
@@ -114,9 +114,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_INSERT_DEBITO_GENERAL_HIST
+  * Documentacion para la función F_INSERT_DEBITO_GENERAL_HIST
   *
-  * M�todo encargado de crear el historial del debito general y retornar el id respectivo
+  * Método encargado de crear el historial del debito general y retornar el id respectivo
   *
   * @param Fr_InfoDebitoGeneralHist IN  DB_FINANCIERO.INFO_DEBITO_GENERAL_HISTORIAL%ROWTYPE.
   * @param Fv_NombreProceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
@@ -124,12 +124,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   *
   * @return NUMBER Retorna el id del historial del debito general creado
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
-  * @version 1.1 29-11-2017 - Se cambia el nombre de la funci�n.
-  *                         - Se cambian los par�metros de la funci�n.
+  * @version 1.1 29-11-2017 - Se cambia el nombre de la función.
+  *                         - Se cambian los parámetros de la función.
   */ 
   FUNCTION F_INSERT_DEBITO_GENERAL_HIST(
       Fr_InfoDebitoGeneralHist  IN  DB_FINANCIERO.INFO_DEBITO_GENERAL_HISTORIAL%ROWTYPE,
@@ -139,9 +139,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_GET_TOTAL_PAG_NC
+  * Documentacion para la función F_GET_TOTAL_PAG_NC
   *
-  * M�todo encargado de obtener la sumatoria de los pagos realizados por el cliente y las notas de creditos creadas
+  * Método encargado de obtener la sumatoria de los pagos realizados por el cliente y las notas de creditos creadas
   *
   * @param Fn_IdFactura     IN  NUMBER Recibe el id de la factura
   * @param Fv_NombreProceso OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
@@ -149,7 +149,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   *
   * @return NUMBER Retorna la sumatoria de los pagos + las notas de credito
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */   
   FUNCTION F_GET_TOTAL_PAG_NC(
@@ -162,14 +162,14 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_SET_FACTURA_ESTADO
   *
-  * M�todo encargado de actualizar el estado de la factura
+  * Método encargado de actualizar el estado de la factura
   *
   * @param Pn_IdFactura     IN  NUMBER   Recibe el id de la factura
   * @param Pv_Estado        IN  VARCHAR2 Recibe el estado
   * @param Pv_NombreProceso OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error         OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */   
   PROCEDURE P_SET_FACTURA_ESTADO(
@@ -182,7 +182,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_CREA_FACTURA_HISTORIAL
   *
-  * M�todo encargado de crear el historial de la factura
+  * Método encargado de crear el historial de la factura
   *
   * @param Pn_IdFactura       IN  NUMBER   Recibe el id de la factura
   * @param Pv_Estado          IN  VARCHAR2 Recibe el estado
@@ -190,7 +190,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @param Pv_NombreProceso   OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */     
   PROCEDURE P_CREA_FACTURA_HISTORIAL(
@@ -202,9 +202,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_CREA_PAGO
+  * Documentacion para la función F_CREA_PAGO
   *
-  * M�todo encargado de crear el pago
+  * Método encargado de crear el pago
   *
   * @param Fn_PuntoId           IN  NUMBER Recibe el punto id del cliente
   * @param Fn_OficinaId         IN  NUMBER Recibe la oficina
@@ -222,7 +222,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   *
   * @return NUMBER Retorna el id del pago realizado
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */    
   FUNCTION F_CREA_PAGO(
@@ -245,7 +245,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_CREA_DETALLE_PAGO
   *
-  * M�todo encargado de crear el detalle del pago
+  * Método encargado de crear el detalle del pago
   *
   * @param Pn_IdPago            IN  NUMBER Recibe el id del pago
   * @param Pv_FechaProceso      IN  DATE Recibe la fecha del proceso
@@ -261,7 +261,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @param Pv_NombreProceso     OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error             OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */     
   PROCEDURE P_CREA_DETALLE_PAGO(
@@ -281,9 +281,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_GET_FORMA_PAGO
+  * Documentacion para la función F_GET_FORMA_PAGO
   *
-  * M�todo encargado de obtener la forma de pago
+  * Método encargado de obtener la forma de pago
   *
   * @param Fv_CodigoFormaPago IN  NUMBER Recibe el codigo de la forma de pago
   * @param Fv_Estado          IN  NUMBER Recibe el estado
@@ -292,7 +292,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   *
   * @return NUMBER Retorna el id de la forma de pago
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */     
   FUNCTION F_GET_FORMA_PAGO(
@@ -306,13 +306,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_SEPARA_TRAMA_OBSERVACION
   *
-  * M�todo encargado de separar la observacion que viene separa por  | desde el telcos
+  * Método encargado de separar la observacion que viene separa por  | desde el telcos
   *
   * @param Pv_Trama_Obs     IN  VARCHAR2 Recibe la trama
   * @param Pv_NombreProceso OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error         OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */    
   PROCEDURE P_SEPARA_TRAMA_OBSERVACION(
@@ -324,7 +324,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_CREA_HISTORIAL_PAGO
   *
-  * M�todo encargado de crear el historial del pago
+  * Método encargado de crear el historial del pago
   *
   * @param Pn_IdPago          IN  VARCHAR2 Recibe el id del pago
   * @param Pv_Estado          IN  VARCHAR2 Recibe el estado
@@ -334,7 +334,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @param Pv_NombreProceso   OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */    
   PROCEDURE P_CREA_HISTORIAL_PAGO(
@@ -350,14 +350,14 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_SET_VALOR_TOTAL_PAGO
   *
-  * M�todo encargado de actualizar el valor total del pago
+  * Método encargado de actualizar el valor total del pago
   *
   * @param Pn_IdPago          IN  VARCHAR2 Recibe el id del pago
   * @param Pn_ValorTotal      IN  VARCHAR2 Recibe el valor total del pago que se debe actualizar
   * @param Pv_NombreProceso   OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */  
   PROCEDURE P_SET_VALOR_TOTAL_PAGO(
@@ -368,9 +368,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   
   
   /**
-  * Documentacion para la funci�n F_GET_PADRE_FACTURACION
+  * Documentacion para la función F_GET_PADRE_FACTURACION
   *
-  * M�todo encargado de obtener el padre de facturacion del cliente
+  * Método encargado de obtener el padre de facturacion del cliente
   *
   * @param Fn_PersonaEmpRolId IN  NUMBER Recibe el id de la persona empresa rol
   * @param Fv_NombreProceso   OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
@@ -378,7 +378,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   *
   * @return NUMBER Retorna el id del punto
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */   
   FUNCTION F_GET_PADRE_FACTURACION(
@@ -391,7 +391,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_SET_DEBITO_DET
   *
-  * M�todo encargado de actualizar la informacion del detalle del debito
+  * Método encargado de actualizar la informacion del detalle del debito
   *
   * @param Pn_IdDebitoDet     IN  NUMBER Recibe el id del detalle del debito
   * @param Pv_Estado          IN  VARCHAR2 Recibe el estado
@@ -400,7 +400,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @param Fv_NombreProceso   OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Fv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */
   PROCEDURE P_SET_DEBITO_DET(
@@ -415,7 +415,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_CONTABILIZA_DEB
   *
-  * M�todo encargado de actualizar la informacion del detalle del debito
+  * Método encargado de actualizar la informacion del detalle del debito
   *
   * @param Pv_PrefijoEmpresa    IN  NUMBER Recibe el prefijo de la empresa
   * @param Pn_DebitoGeneralHist IN  VARCHAR2 Recibe el id del historial del debito general
@@ -423,7 +423,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @param Pv_NombreProceso     OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error             OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */    
   PROCEDURE P_CONTABILIZA_DEB(
@@ -437,14 +437,14 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_SET_PROCESO_MASI_EST
   *
-  * M�todo encargado de actualizar el estado del proceso masivo
+  * Método encargado de actualizar el estado del proceso masivo
   *
   * @param Pn_IdProcesoMasivo IN  NUMBER Recibe el id del proceso masivo
   * @param Pv_Estado          IN  VARCHAR2 Recibe el estado
   * @param Pv_NombreProceso   OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   */      
   PROCEDURE P_SET_PROCESO_MASI_EST(
@@ -457,7 +457,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   /**
   * Documentacion para el procedimiento P_REACTIVAR_PUNTOS
   *
-  * M�todo encargado de la reactivacion de los puntos por medio de un Web Service
+  * Método encargado de la reactivacion de los puntos por medio de un Web Service
   *
   * @param PT_PUNTO               IN T_ArrayTrama   Recibe el id de la factura
   * @param Pv_PrefijoEmpresa      IN VARCHAR2 Recibe el estado
@@ -468,7 +468,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @param Pn_DebitoCabId         IN VARCHAR2 Retorna un mensaje de error en caso de existir
   * @param Pn_ProcesoMasivoCabId  IN NUMBER Recibe el Id de Info_Proceso_Masivo_Cab
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -485,11 +485,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
       Pn_ProcesoMasivoCabId IN NUMBER);
 
   /**
-  * Documentaci�n para la funci�n F_GET_FORMATO_CUENTA
+  * Documentación para la función F_GET_FORMATO_CUENTA
   *
-  * Funci�n encargada de realizar el formato definido en el reporte tributario Banco Guayaquil.
+  * Función encargada de realizar el formato definido en el reporte tributario Banco Guayaquil.
   *
-  * @param Fv_CuentaEncriptada   IN NUMBER Recibe el n�mero de cuenta del cliente encriptada.
+  * @param Fv_CuentaEncriptada   IN NUMBER Recibe el número de cuenta del cliente encriptada.
   * @param Fv_ClaveDescencriptar IN VARCHAR2 Recibe la clave secreta para desecriptar tarjetas.
   * @param Fn_idPersonaRol       IN NUMBER Recibe el id persona rol del cliente.
   *
@@ -505,13 +505,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
     RETURN VARCHAR2;   
     
   /**
-  * Documentaci�n para el procedimiento P_REPORTE_TRIBUTARIO.
+  * Documentación para el procedimiento P_REPORTE_TRIBUTARIO.
   *
-  * Procedimiento que me permite generar el reporte tributario para banco Guayaquil seg�n  
-  * par�metros enviados.
+  * Procedimiento que me permite generar el reporte tributario para banco Guayaquil según  
+  * parámetros enviados.
   *
-  * @param Pv_FechaReporteDesde IN VARCHAR2 Recibe rango inicial para consulta por fecha de creaci�n.
-  * @param Pv_FechaReporteHasta IN VARCHAR2 Recibe rango final para consulta por fecha de creaci�n.
+  * @param Pv_FechaReporteDesde IN VARCHAR2 Recibe rango inicial para consulta por fecha de creación.
+  * @param Pv_FechaReporteHasta IN VARCHAR2 Recibe rango final para consulta por fecha de creación.
   * @param Pv_EmpresaCod        IN VARCHAR2 Recibe empresa a generar el reporte.
   * @param Pv_UsuarioSesion     IN VARCHAR2 Recibe usuario en sesion.
   * @param Pv_ClaveSecret       IN VARCHAR2 Recibe la clave secreta para desencriptar tarjetas.
@@ -531,10 +531,10 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
       Pv_ClaveSecret       IN VARCHAR2);   
 
  /**
-  * Documentaci�n para la funci�n P_GET_FACT_MENS_FILTRO_FECHA.
+  * Documentación para la función P_GET_FACT_MENS_FILTRO_FECHA.
   *
-  * Procedimiento encargado de retornar el listado de facturas abiertas mensuales autom�ticas por filtro 
-  * de fecha para el escenario 1 para la subida de respuesta de d�bitos.
+  * Procedimiento encargado de retornar el listado de facturas abiertas mensuales automáticas por filtro 
+  * de fecha para el escenario 1 para la subida de respuesta de débitos.
   *
   * @param Pn_IdPersonaRol IN  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE  (Recibe id_persona_rol del cliente).
   * @param Pv_FiltroFecha  IN  VARCHAR2     (Recibe el filtro de fecha para el escenario 1).
@@ -557,30 +557,30 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                          Pr_Facturas     OUT SYS_REFCURSOR); 
 
 /**
-  * Documentaci�n para la funci�n P_CLIENTES_DEBITO_FACT_MENS.
+  * Documentación para la función P_CLIENTES_DEBITO_FACT_MENS.
   *
   * Procedimiento encargado de retornar el listado de clientes que tengan un saldo pendiente de su factura recurrente mensual 
-  * emitida de acuerdo con cada ciclo, �sta fecha ser� recibida como par�metro de acuerdo al filtro correspondiente al escenario 1
-  * para la generaci�n de los d�bitos.  
+  * emitida de acuerdo con cada ciclo, ésta fecha será recibida como parámetro de acuerdo al filtro correspondiente al escenario 1
+  * para la generación de los débitos.  
   *
   * @param Pv_IdEmpresa              IN  VARCHAR2       Recibe IdEmpresa.
-  * @param Pn_IdBancoTipoCuenta      IN  NUMBER         Recibe IdBancoTipoCuenta, Id del Banco tipo cuenta del cu�l se va a crear el d�bito.
-  * @param Pn_IdBancoTipoCuentaGrupo IN  NUMBER         Recibe IdBancoTipoCuentaGrupo,grupo al cu�l pertenece el banco con el que se crea el d�bito.
-  * @param Pn_IdOficina              IN  NUMBER         Recibe IdOficina, a la cu�l pertenece el debito.
+  * @param Pn_IdBancoTipoCuenta      IN  NUMBER         Recibe IdBancoTipoCuenta, Id del Banco tipo cuenta del cuál se va a crear el débito.
+  * @param Pn_IdBancoTipoCuentaGrupo IN  NUMBER         Recibe IdBancoTipoCuentaGrupo,grupo al cuál pertenece el banco con el que se crea el débito.
+  * @param Pn_IdOficina              IN  NUMBER         Recibe IdOficina, a la cuál pertenece el debito.
   * @param Pn_IdCiclo                IN  NUMBER         Recibe id del ciclo del cliente.
   * @param Pv_FiltroFecha            IN  VARCHAR2       Recibe filtro de fecha para el escenario 1.
-  * @param Pr_Clientes               OUT SYS_REFCURSOR  Retorna listado de clientes para d�bito.
+  * @param Pr_Clientes               OUT SYS_REFCURSOR  Retorna listado de clientes para débito.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 27-05-2020
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.1 19-06-2020 - Se agrega estado �PorAutorizar� en el where del estado de Contrato del Cliente del query principal,
-  *                           para excluir al cliente con ese estado de contrato al momento de generar los D�bitos.
+  * @version 1.1 19-06-2020 - Se agrega estado PorAutorizar en el where del estado de Contrato del Cliente del query principal,
+  *                           para excluir al cliente con ese estado de contrato al momento de generar los Débitos.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.2 30-11-2020 - Se modifica y agrega subconsulta de los estados de contrato parametrizados en el where del query principal
-  *                           para excluir al cliente con ese estado de contrato al momento de generar los D�bitos. 
+  *                           para excluir al cliente con ese estado de contrato al momento de generar los Débitos. 
   *
   * Costo del query C_CicloCaract: 2 
   * Costo del query C_GetImpuesto: 2 
@@ -595,7 +595,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                         Pr_Clientes               OUT SYS_REFCURSOR );  
 
  /**
-  * Documentaci�n para TYPE 'Lr_FacturasProcesar'.
+  * Documentación para TYPE 'Lr_FacturasProcesar'.
   */
   TYPE Lr_FacturasProcesar IS RECORD (
     ID_DOCUMENTO            DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -609,7 +609,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
 
 
  /**
-  * Documentaci�n para TYPE 'T_FacturasProcesar'.
+  * Documentación para TYPE 'T_FacturasProcesar'.
   * Record para almacenar la data enviada al BULK.
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 02-05-2020
@@ -617,22 +617,22 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   TYPE T_FacturasProcesar IS TABLE OF Lr_FacturasProcesar INDEX BY PLS_INTEGER;     
 
  /**
-  * Documentaci�n para la funci�n F_PROCESA_DOC_VALOR_PAGADO.
+  * Documentación para la función F_PROCESA_DOC_VALOR_PAGADO.
   *
-  * Funci�n encargada de procesar las facturas.
+  * Función encargada de procesar las facturas.
   *
   * @param Frf_Facturas           IN SYS_REFCURSOR Recibe las facturas a procesar.
-  * @param Fn_ValorPagado         IN NUMBER        Recibe el valor de pago del d�bito.
+  * @param Fn_ValorPagado         IN NUMBER        Recibe el valor de pago del débito.
   * @param Fv_EmpresaId           IN NUMBER        Recibe el id_empresa.
   * @param Fv_IdOficina           IN VARCHAR2      Recibe el id_oficina.
   * @param Fn_IdDebitoDet         IN NUMBER        Recibe el id_debito_det.
   * @param Fn_IdFormaPago         IN NUMBER        Recibe el id_forma_pago.
-  * @param Fv_UsrCreacion         IN VARCHAR2      Recibe el usuario de creaci�n.
+  * @param Fv_UsrCreacion         IN VARCHAR2      Recibe el usuario de creación.
   * @param Fn_IdDebitoGeneralH    IN NUMBER        Recibe el id_debito_general_historial.
   * @param Fn_IdBancoTipoCuenta   IN NUMBER        Recibe el id_banco_tipo_cuenta.
-  * @param Fv_NumeroTarjetaCuenta IN VARCHAR2      Recibe el n�mero de tarjeta del cliente.
+  * @param Fv_NumeroTarjetaCuenta IN VARCHAR2      Recibe el número de tarjeta del cliente.
   *
-  * @author H�ctor Lozano <hlozano@telconet.ec>
+  * @author Héctor Lozano <hlozano@telconet.ec>
   * @version 1.0 02-05-2020
   */                             
   FUNCTION F_PROCESA_DOC_VALOR_PAGADO(Frf_Facturas             IN SYS_REFCURSOR,
@@ -649,14 +649,14 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   RETURN NUMBER;        
   
  /**
-  * Documentaci�n para PROCEDURE P_GET_FACTURAS_X_CLIENTE.
+  * Documentación para PROCEDURE P_GET_FACTURAS_X_CLIENTE.
   *
-  * Funci�n encargada de consultar las facturas del cliente.
+  * Función encargada de consultar las facturas del cliente.
   *
   * @param Fn_EmpresaId    IN NUMBER  Recibe el id de la empresa.
   * @param Fn_PersonaRolId IN NUMBER  Recibe el id_persona_rol del cliente.
   *
-  * @author H�ctor Lozano <hlozano@telconet.ec>
+  * @author Héctor Lozano <hlozano@telconet.ec>
   * @version 1.0 02-05-2020
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
@@ -677,19 +677,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                      Prf_FactCliente OUT SYS_REFCURSOR);
 
  /**
-  * Documentaci�n para funci�n 'F_ULT_FACT_DIF_VALOR_CLIENTE'.
-  * Funci�n que obtiene valor � id_documento � subtotal de la �ltima Factura diferida de un cliente.
+  * Documentación para función 'F_ULT_FACT_DIF_VALOR_CLIENTE'.
+  * Función que obtiene valor ó id_documento ó subtotal de la última Factura diferida de un cliente.
   *
-  * Costo del query dentro de funci�n.
+  * Costo del query dentro de función.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 18-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Fn_IdPersona     IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE   (Recibe el id_persona)
   * @param Fv_CampoConsulta IN VARCHAR2 (Recibe campo que se desea consultar)
-  * @param Fn_EmpresaCod    IN NUMBER   (Recibe c�digo de empresa)
-  * @return NUMBER  Retorna el valor que dese� consultar.
+  * @param Fn_EmpresaCod    IN NUMBER   (Recibe código de empresa)
+  * @return NUMBER  Retorna el valor que deseó consultar.
   */
   FUNCTION F_ULT_FACT_DIF_VALOR_CLIENTE(Fn_IdPersona     IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE, 
                                         Fv_CampoConsulta IN VARCHAR2, 
@@ -697,19 +697,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   RETURN NUMBER;
   
  /**
-  * Documentaci�n para funci�n 'F_ULT_FACT_DIF_CADENA_CLIENTE'.
-  * Funci�n que obtiene n�mero de factura sri de la �ltima Factura diferida de un cliente.
+  * Documentación para función 'F_ULT_FACT_DIF_CADENA_CLIENTE'.
+  * Función que obtiene número de factura sri de la última Factura diferida de un cliente.
   *
-  * Costo del query dentro de funci�n.
+  * Costo del query dentro de función.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 18-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Fn_IdPersona     IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE   (id_persona del cliente)
-  * @param Fn_EmpresaCod    IN NUMBER   (c�digo de la empresa)
+  * @param Fn_EmpresaCod    IN NUMBER   (código de la empresa)
   * @param Fv_CampoConsulta IN VARCHAR2 (campo que se desea consultar)
-  * @return VARCHAR2  Retorna el valor que dese� consultar.
+  * @return VARCHAR2  Retorna el valor que deseó consultar.
   */
   FUNCTION F_ULT_FACT_DIF_CADENA_CLIENTE(Fn_IdPersona     IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE,
                                          Fn_EmpresaCod    IN NUMBER,
@@ -717,53 +717,53 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   RETURN VARCHAR2;
 
  /**
-  * Documentaci�n para funci�n 'F_ULT_FACT_DIF_FECHA_CLIENTE'.
-  * Funci�n que obtiene fecha de emisi�n de la �ltima Factura diferida de un cliente.
+  * Documentación para función 'F_ULT_FACT_DIF_FECHA_CLIENTE'.
+  * Función que obtiene fecha de emisión de la última Factura diferida de un cliente.
   *
-  * Costo del query dentro de funci�n.
+  * Costo del query dentro de función.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 18-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Fn_IdPersona  IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE   (id_persona del cliente)
-  * @param Fn_EmpresaCod IN NUMBER   (c�digo de Empresa)
-  * @return DATE  Retorna la fecha de la �ltima factura diferida.
+  * @param Fn_EmpresaCod IN NUMBER   (código de Empresa)
+  * @return DATE  Retorna la fecha de la última factura diferida.
   */
   FUNCTION F_ULT_FACT_DIF_FECHA_CLIENTE(Fn_IdPersona  IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE,
                                         Fn_EmpresaCod IN NUMBER)
   RETURN DATE;
 
  /**
-  * Documentaci�n para FUNCION 'F_ULT_FACT_DIF_NUMAUT_CLIENTE'.
-  * Funci�n que obtiene n�mero autorizaci�n de la �ltima Factura diferida de un cliente.
+  * Documentación para FUNCION 'F_ULT_FACT_DIF_NUMAUT_CLIENTE'.
+  * Función que obtiene número autorización de la última Factura diferida de un cliente.
   *
   * Costo del query: 10
   * 
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 18-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Fn_IdPersona   IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE   (id_persona del cliente)
-  * @param Fn_EmpresaCod  IN NUMBER   (c�digo de Empresa)
-  * @return VARCHAR2  Retorna n�mero autorizaci�n de la �ltima factura diferida de un cliente.
+  * @param Fn_EmpresaCod  IN NUMBER   (código de Empresa)
+  * @return VARCHAR2  Retorna número autorización de la última factura diferida de un cliente.
   */
   FUNCTION F_ULT_FACT_DIF_NUMAUT_CLIENTE(Fn_IdPersona  IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE,
                                          Fn_EmpresaCod IN NUMBER)
   RETURN VARCHAR2;
 
  /**
-  * Documentaci�n para FUNCION 'F_PORCENTAJE_IMP_PROC_DIF'.
-  * Funci�n que obtiene el porcentaje de impuesto Iva.
+  * Documentación para FUNCION 'F_PORCENTAJE_IMP_PROC_DIF'.
+  * Función que obtiene el porcentaje de impuesto Iva.
   *
   * Costo del query C_GetPorcentajeImp: 8
   * 
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 23-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Fn_IdPersona IN NUMBER     (id_persona del cliente)
-  * @param Fn_EmpresaCod  IN NUMBER   (c�digo de Empresa)
+  * @param Fn_EmpresaCod  IN NUMBER   (código de Empresa)
   * @return NUMBER  Retorna porcentaje de impuesto a calcular.
   */
   FUNCTION F_PORCENTAJE_IMP_PROC_DIF(Fn_IdPersona  IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE,
@@ -771,10 +771,10 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   RETURN NUMBER;
 
  /**
-  * Documentaci�n para la funci�n P_CLIENTES_DEBITO_NDI.
+  * Documentación para la función P_CLIENTES_DEBITO_NDI.
   *
   * Procedimiento encargado de retornar el listado de clientes que tengan saldo de las NDI Diferida que se encuentren pendiente de pago, 
-  * se env�a como par�metro adicional el n�mero de cuotas NDI Diferida para debitar el saldo correspondiente.
+  * se envía como parámetro adicional el número de cuotas NDI Diferida para debitar el saldo correspondiente.
   *
   * Costo del query C_CicloCaract: 2 
   * Costo del query C_GetImpuesto: 2 
@@ -782,23 +782,23 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   *
   * @param Pv_IdEmpresa              IN  VARCHAR2       Recibe IdEmpresa.
   * @param Pn_IdBancoTipoCuenta      IN  DB_FINANCIERO.ADMI_BANCO_TIPO_CUENTA.ID_BANCO_TIPO_CUENTA%TYPE  
-  *                                      (Recibe IdBancoTipoCuenta, Id del Banco tipo cuenta del cu�l se va a crear el d�bito.)
+  *                                      (Recibe IdBancoTipoCuenta, Id del Banco tipo cuenta del cuál se va a crear el débito.)
   * @param Pn_IdBancoTipoCuentaGrupo IN  DB_FINANCIERO.ADMI_GRUPO_ARCHIVO_DEBITO_CAB.ID_GRUPO_DEBITO%TYPE
-  *                                      (Recibe IdBancoTipoCuentaGrupo,grupo al cu�l pertenece el banco con el que se crea el d�bito.)
+  *                                      (Recibe IdBancoTipoCuentaGrupo,grupo al cuál pertenece el banco con el que se crea el débito.)
   * @param Pn_IdOficina              IN  DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE
-  *                                      (Recibe IdOficina, a la cu�l pertenece el d�bito.)
+  *                                      (Recibe IdOficina, a la cuál pertenece el débito.)
   * @param Pn_IdCiclo                IN  DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE       
   *                                      (Recibe id del ciclo del cliente.)
-  * @param Pv_FiltroNumCuotas        IN  VARCHAR2       Recibe filtro de n�mero de cuotas NDI diferidas a procesar para el escenario 3.
+  * @param Pv_FiltroNumCuotas        IN  VARCHAR2       Recibe filtro de número de cuotas NDI diferidas a procesar para el escenario 3.
   *
-  * @param Pr_Clientes               OUT SYS_REFCURSOR  Retorna listado de clientes para d�bito.
+  * @param Pr_Clientes               OUT SYS_REFCURSOR  Retorna listado de clientes para débito.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 18-06-2020
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.1 30-11-2020 - Se modifica y agrega subconsulta de los estados de contrato parametrizados en el where del query principal 
-  *                           para excluir al cliente con ese estado de contrato al momento de generar los D�bitos.
+  *                           para excluir al cliente con ese estado de contrato al momento de generar los Débitos.
   */     
   PROCEDURE P_CLIENTES_DEBITO_NDI_DIF(Pv_IdEmpresa              IN VARCHAR2,
                                       Pn_IdBancoTipoCuenta      IN DB_FINANCIERO.ADMI_BANCO_TIPO_CUENTA.ID_BANCO_TIPO_CUENTA%TYPE,
@@ -809,19 +809,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                       Pr_Clientes               OUT SYS_REFCURSOR); 
 
  /**
-  * Documentaci�n para PROCEDURE 'P_GET_NDI_DIF_FILTRO_CUOTAS'.
-  * Procedimiento que obtiene listado por n�mero de cuotas de los documentos NDI diferidas.
+  * Documentación para PROCEDURE 'P_GET_NDI_DIF_FILTRO_CUOTAS'.
+  * Procedimiento que obtiene listado por número de cuotas de los documentos NDI diferidas.
   *
   * Costo query: 15
   * 
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 23-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Pn_IdPersonaRol    IN DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE (id del cliente a procesar)
-  * @param Pv_FiltroNumCuotas IN VARCHAR2   (n�mero de cuotas de NDI diferidas)
+  * @param Pv_FiltroNumCuotas IN VARCHAR2   (número de cuotas de NDI diferidas)
   * @param Pv_EmpresaId       IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (id de la empresa)
-  * @param Pr_DocNdiDiferidas OUT SYS_REFCURSOR (Retorna listado de NDI diferidas por n�mero de cuotas)
+  * @param Pr_DocNdiDiferidas OUT SYS_REFCURSOR (Retorna listado de NDI diferidas por número de cuotas)
   */
   PROCEDURE P_GET_NDI_DIF_FILTRO_CUOTAS(Pn_IdPersonaRol    IN  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE,
                                         Pv_FiltroNumCuotas IN  VARCHAR2,
@@ -829,7 +829,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                         Pr_DocNdiDiferidas OUT SYS_REFCURSOR);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_GET_NDI_DIFERIDAS'.
+  * Documentación para PROCEDURE 'P_GET_NDI_DIFERIDAS'.
   * Procedimiento que obtiene listado de documentos NDI diferidas.
   *
   * Costo query: 15
@@ -837,7 +837,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 23-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Pn_IdPersonaRol IN  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE  (id del cliente a procesar)
   * @param Pv_EmpresaId    IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (id de la empresa)
   * @param Pr_NdiDiferidas OUT SYS_REFCURSOR (listado de NDI diferidas)
@@ -847,7 +847,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                 Pr_NdiDiferidas OUT SYS_REFCURSOR); 
 
  /**
-  * Documentaci�n para PROCEDURE 'P_GET_PTO_CLIENTE_ACTIVO'.
+  * Documentación para PROCEDURE 'P_GET_PTO_CLIENTE_ACTIVO'.
   * Procedimiento que obtiene un punto en estado 'Activo' y sea padre de facturacion por id_persona_rol del cliente.
   *
   * Costo query: 7
@@ -855,7 +855,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 23-06-2020
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Pn_IdPersonaRol IN  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE    (id del cliente a procesar)
   * @param Pv_Estado       IN  DB_COMERCIAL.INFO_PUNTO.ESTADO%TYPE   (Recibe el estado del punto a consultar)
   * @param Pn_IdPunto      OUT DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE (Retorna el punto)
@@ -866,9 +866,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
 
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_CRUCE_ANTICIPO_PUNTO_CLIENTE'.
+  * Documentación para PROCEDURE 'P_CRUCE_ANTICIPO_PUNTO_CLIENTE'.
   * Procedimiento encargado de realizar el cruce de anticipos entre puntos con Factura o NDI de diferido activa.
-  * Se verifica que el cliente posea m�s de 1 punto y se verifica que el cliente tenga puntos padre de facturaci�n.
+  * Se verifica que el cliente posea más de 1 punto y se verifica que el cliente tenga puntos padre de facturación.
   * Se asigna el anticipo al punto de la factura y se crea el historial del pago.
   * Se crea logs en la info_error para seguimiento de los anticipos cruzados al login.
   *
@@ -879,7 +879,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
   * Costo query C_GetFacturasPorPunto: 10 
   * Costo query C_GetDatosPunto: 3
   *
-  * PAR�METROS:
+  * PARÁMETROS:
   * @param Pv_EstadoAnticipo  IN VARCHAR2  (Recibe el estado del anticipo)
   * @param Pv_PrefijoEmpresa  IN VARCHAR2  (Recibe el prefijo empresa )
   * @param Pv_TipoDocAnt      IN VARCHAR2  (Recibe el anticipo ANT)
@@ -981,7 +981,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
         AND VISTA.SALDO                <= Cv_ValorPermisible
       GROUP BY VISTA.PUNTO_ID;
 
-    /* Cursor para obtener el valor permisble para reactivaci�n del punto */
+    /* Cursor para obtener el valor permisble para reactivación del punto */
     CURSOR C_ObtieneValorPermisible(Cv_NombreParametro   VARCHAR2,
                                     Cv_ValorParametroDet VARCHAR2,
                                     Cv_EmpresaId         VARCHAR2) 
@@ -2581,7 +2581,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
     WHEN OTHERS THEN 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNKG_PROCESO_MASIVO_DEB.F_GET_FORMATO_CUENTA', 
-                                           'Error al obtener informaci�n de CuentaFomateada del cliente
+                                           'Error al obtener información de CuentaFomateada del cliente
                                            (IdPersonaRol: '||Fn_IdPersonaRol||', Cuenta: ' ||Lv_CuentaFomateada|| ') - '
                                            || SQLCODE || ' -ERROR- ' || SQLERRM, 
                                            NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
@@ -2844,7 +2844,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
     --                                      
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte tributario banco GYE.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte tributario banco GYE.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNKG_PROCESO_MASIVO_DEB.P_REPORTE_TRIBUTARIO', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -4459,7 +4459,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
             FETCH C_ValidaCantPuntos INTO Lc_PuntoPersonaEmpresaRol;
             CLOSE C_ValidaCantPuntos; 
             
-            --Valido que el cliente tenga m�s de 1 punto
+            --Valido que el cliente tenga más de 1 punto
             IF Lc_PuntoPersonaEmpresaRol.persona_empresa_rol_id IS NOT NULL THEN
                 Lc_PuntoFactura := NULL;
                 
@@ -4482,7 +4482,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                     
                     END LOOP;
                 ELSE
-                    --Contin�a siguiente registro en caso de no existir facturas abiertas en el punto
+                    --Continúa siguiente registro en caso de no existir facturas abiertas en el punto
                     CONTINUE;
                 
                 END IF; 
@@ -4521,8 +4521,8 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
                    
                    --Se guarda log de historial del anticipo cruzado
                    Lv_MensajeHist := NULL;
-                   Lv_MensajeHist := 'IdPago: '||Anticipos.ID_PAGO|| ' N�meroPago: '||Anticipos.NUMERO_PAGO|| ' Valor: '||Anticipos.VALOR_TOTAL||
-                                     ' Estado: '||Anticipos.ESTADO_PAGO||' Observaci�n: ' ||Lv_ComentarioPagoAnt;
+                   Lv_MensajeHist := 'IdPago: '||Anticipos.ID_PAGO|| ' NúmeroPago: '||Anticipos.NUMERO_PAGO|| ' Valor: '||Anticipos.VALOR_TOTAL||
+                                     ' Estado: '||Anticipos.ESTADO_PAGO||' Observación: ' ||Lv_ComentarioPagoAnt;
                    
                    DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('FNKG_PROCESO_MASIVO_DEB',
                                                         'DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB.P_CRUCE_ANTICIPO_PUNTO_CLIENTE',
@@ -4549,7 +4549,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_PROCESO_MASIVO_DEB AS
         
         END LOOP;
     
-       Pv_Mensaje := 'Se realiz� el proceso de actualizaci�n de anticipo por cruce entre puntos del cliente. Cantidad de anticipos cruzados: '||Ln_ContCantidadAnticipo;
+       Pv_Mensaje := 'Se realizó el proceso de actualización de anticipo por cruce entre puntos del cliente. Cantidad de anticipos cruzados: '||Ln_ContCantidadAnticipo;
 
     --
   EXCEPTION

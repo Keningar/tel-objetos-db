@@ -23,15 +23,15 @@ DECLARE
   *
   * Se agrega Verificacion al momento de reenviar el documento Rechazado
   * se verifica si documento Factura tiene Saldo pendiente, en caso de no tener Saldo, documento pasa a Cerrado
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.4 07-02-2018
   *
-  * Se agregan logs de monitoreo 'LOG AFTER_DML_INFO_COMP_ELEC' debido a falta de generaci�n de
-  * NDI y ANTC en el ambiente de producci�n.
+  * Se agregan logs de monitoreo 'LOG AFTER_DML_INFO_COMP_ELEC' debido a falta de generación de
+  * NDI y ANTC en el ambiente de producción.
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.5 28-05-2019
   *
-  * Se agrega validaci�n para activar el documento financiero cuando el SRI devuelve estado autorizado.
+  * Se agrega validación para activar el documento financiero cuando el SRI devuelve estado autorizado.
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.6 12-01-2021
   */
@@ -89,7 +89,7 @@ DECLARE
       FNCK_COM_ELECTRONICO_TRAN.INSERT_COMP_ELECTRONICO_HIST(Lrf_ComprobanteElectronico, Lv_MsnError);
       -- 
       FNCK_TRANSACTION.INSERT_ERROR('LOG AFTER_DML_INFO_COMP_ELEC', 'DB_FINANCIERO.AFTER_DML_INFO_COMP_ELEC', '1. INGRESA A LA VALIDACION UPDATING - Crea el historial de la tabla '
-                                     || ' ID_DOCUMENTO: '|| :OLD.DOCUMENTO_ID || ' N� FACTURA: '|| :OLD.NUMERO_FACTURA_SRI || ' TIPO DOCUMENTO: '|| :OLD.TIPO_DOCUMENTO_ID);
+                                     || ' ID_DOCUMENTO: '|| :OLD.DOCUMENTO_ID || ' N° FACTURA: '|| :OLD.NUMERO_FACTURA_SRI || ' TIPO DOCUMENTO: '|| :OLD.TIPO_DOCUMENTO_ID);
       --Si existe un error envia un correo
       IF Lv_MsnError IS NOT NULL THEN
             --
@@ -108,7 +108,7 @@ DECLARE
       FNCK_TRANSACTION.INSERT_ERROR('LOG AFTER_DML_INFO_COMP_ELEC', 'DB_FINANCIERO.AFTER_DML_INFO_COMP_ELEC', '3. UPDATING - Antes de Obtener el tipo de documento y Estado '
                                     || ' DOCUMENTO ID: '|| :OLD.DOCUMENTO_ID ||' TIPO DOC: ' ||Lr_AdmiTipoDocFinanciero.CODIGO_TIPO_DOCUMENTO || ' Estado: ' ||:OLD.ESTADO );
       --NEW
-      FNCK_TRANSACTION.INSERT_ERROR('LOG AFTER_DML_INFO_COMP_ELEC', 'DB_FINANCIERO.AFTER_DML_INFO_COMP_ELEC', '3. UPDATING - Despu�s de Obtener el tipo de documento y Estado '
+      FNCK_TRANSACTION.INSERT_ERROR('LOG AFTER_DML_INFO_COMP_ELEC', 'DB_FINANCIERO.AFTER_DML_INFO_COMP_ELEC', '3. UPDATING - Después de Obtener el tipo de documento y Estado '
                                     || ' DOCUMENTO ID: '|| :OLD.DOCUMENTO_ID ||' TIPO DOC: ' ||Lr_AdmiTipoDocFinanciero.CODIGO_TIPO_DOCUMENTO|| ' Estado: ' ||:NEW.ESTADO);
 
       --Si es estado 5 activa la factura o aplica la nota de credito
@@ -191,7 +191,7 @@ DECLARE
           FNCK_CONSULTS.P_APLICA_NOTA_CREDITO(Lr_InfoDocumentoFinancieroNc.ID_DOCUMENTO, NULL, Lr_InfoDocumentoFinancieroNc.OFICINA_ID, Lv_MsnError);            
 
           --LOG PARA MONITOREO DE BUG
-          FNCK_TRANSACTION.INSERT_ERROR('LOG AFTER_DML_INFO_COMP_ELEC', 'DB_FINANCIERO.AFTER_DML_INFO_COMP_ELEC', '8. Ingres� a FNCK_CONSULTS.P_APLICA_NOTA_CREDITO y se Aplico NC  ID_DOCUMENTO: '|| :OLD.DOCUMENTO_ID || 
+          FNCK_TRANSACTION.INSERT_ERROR('LOG AFTER_DML_INFO_COMP_ELEC', 'DB_FINANCIERO.AFTER_DML_INFO_COMP_ELEC', '8. Ingresó a FNCK_CONSULTS.P_APLICA_NOTA_CREDITO y se Aplico NC  ID_DOCUMENTO: '|| :OLD.DOCUMENTO_ID || 
                                         ' OFICINA_ID: ' || Lr_InfoDocumentoFinancieroNc.OFICINA_ID || ' ESTADO: '||:NEW.ESTADO ||' Lv_MsnError: '||Lv_MsnError);            
           IF Lv_MsnError IS NOT NULL THEN
             --

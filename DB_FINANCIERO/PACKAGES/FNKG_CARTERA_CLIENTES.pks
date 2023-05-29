@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CARTERA_CLIENTES
 AS 
   --
   /*
-  * Documentaci�n para TYPE 'Lr_InfoAnticiposClienteNDI'.
+  * Documentación para TYPE 'Lr_InfoAnticiposClienteNDI'.
   *
   * Tipo de datos para el retorno de la informacion correspondiente al reporte de anticipos no asociados a una factura
   *
@@ -45,7 +45,7 @@ AS
   -- 
   --
   /*
-  * Documentaci�n para TYPE 'Lr_InfoAnticiposCliente'.
+  * Documentación para TYPE 'Lr_InfoAnticiposCliente'.
   *
   * Tipo de datos para el retorno de la informacion correspondiente al reporte de anticipos
   *
@@ -90,7 +90,7 @@ AS
       RETURN Lr_InfoAnticiposCliente;
   -- 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoCarteraCliente'.
+  * Documentación para TYPE 'Lr_InfoCarteraCliente'.
   * Tipo de datos para el retorno de la informacion correspondiente al reporte, segun la data solictada por el usuario
   *
   * PARAMETROS:
@@ -100,10 +100,10 @@ AS
   * @version 1.1 16-03-2016
   * since  1.0
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 23-06-2016 - Se agregan las columnas de Usuario de Cobranzas solicitado por TN, y el motivo de rechazo del d�bito solicitado por 
+  * @version 1.2 23-06-2016 - Se agregan las columnas de Usuario de Cobranzas solicitado por TN, y el motivo de rechazo del débito solicitado por 
   *                           MD
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 27-06-2016 - Se agrega la columna que indica la fecha en que fue rechazado el d�bito bancario al cliente.
+  * @version 1.3 27-06-2016 - Se agrega la columna que indica la fecha en que fue rechazado el débito bancario al cliente.
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.4 26-07-2016 - Se agrega la columna 'DESCRIPCION_TIPO_ROL' que indica el tipo rol correspondiente al 
   *                           ejemplo Pre-cliente|Cliente|Empleado, etc
@@ -174,13 +174,13 @@ AS
   --
   --
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_ANTICIPOS_NDI'.
+  * Documentación para PROCEDURE 'P_REPORTE_ANTICIPOS_NDI'.
   *
-  * Procedure que retorna el listado de los anticipos creados de los clientes para una empresa que no est� asociados a una factura
+  * Procedure que retorna el listado de los anticipos creados de los clientes para una empresa que no está asociados a una factura
   *
   * PARAMETROS:
-  * @param  Pv_CodEmpresa          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa a realizar el reporte)
-  * @param  Pv_FeConsultaHasta     IN VARCHAR2  (Contendr� la fecha hasta la cual se desea consultar los anticipos de los clientes)
+  * @param  Pv_CodEmpresa          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa a realizar el reporte)
+  * @param  Pv_FeConsultaHasta     IN VARCHAR2  (Contendrá la fecha hasta la cual se desea consultar los anticipos de los clientes)
   * @return Prf_AnticiposCliente   OUT C_AnticiposCliente  (Cursor con los anticipos de los clientes para el reporte)
   *
   * @author Edson Franco <efranco@telconet.ec>
@@ -196,34 +196,34 @@ AS
   --
   --
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_ANTICIPOS'.
+  * Documentación para PROCEDURE 'P_REPORTE_ANTICIPOS'.
   *
   * Procedure que retorna el listado de los anticipos creados de los clientes para una empresa.
   *
   * PARAMETROS:
-  * @param  Pv_CodEmpresa          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa a realizar el reporte)
-  * @param  Pv_FeConsultaHasta     IN VARCHAR2  (Contendr� la fecha hasta la cual se desea consultar los anticipos de los clientes)
+  * @param  Pv_CodEmpresa          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa a realizar el reporte)
+  * @param  Pv_FeConsultaHasta     IN VARCHAR2  (Contendrá la fecha hasta la cual se desea consultar los anticipos de los clientes)
   * @return Prf_AnticiposCliente   OUT C_AnticiposCliente  (Cursor con los anticipos de los clientes para el reporte)
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 16-11-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 05-12-2016 - Se usa la funci�n 'TO_CHAR' para cambiar el formato de SYSDATE a 'DD-MM-YYYY' y as� pueda ser evaluado de forma
-  *                           correcta para que retorne la informaci�n de anticipos.
+  * @version 1.1 05-12-2016 - Se usa la función 'TO_CHAR' para cambiar el formato de SYSDATE a 'DD-MM-YYYY' y así pueda ser evaluado de forma
+  *                           correcta para que retorne la información de anticipos.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 13-12-2016 - Se agrega a la funci�n 'F_ESTADO_INTERNET' el par�metro 'Pv_FeConsultaHasta' para obtener el estado del servicio de 
+  * @version 1.2 13-12-2016 - Se agrega a la función 'F_ESTADO_INTERNET' el parámetro 'Pv_FeConsultaHasta' para obtener el estado del servicio de 
   *                           INTERNET hasta esa fecha.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 13-01-2017 - Se agrega la funci�n 'DB_FINANCIERO.FNCK_CONSULTS.F_ESTADO_PUNTO' para obtener el estado del punto dependiendo de la 
+  * @version 1.3 13-01-2017 - Se agrega la función 'DB_FINANCIERO.FNCK_CONSULTS.F_ESTADO_PUNTO' para obtener el estado del punto dependiendo de la 
   *                           fecha de consulta del reporte
   * @author Ricardo Coello Quezada <efranco@telconet.ec>
   * @version 1.4 23-06-2017 - Se agrega filtro adicional por descripcion tipo rol: 'Cliente' y 'Pre-cliente'.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.5 - 07-05-2018 - Se agrega condici�n para que consulta retorne un solo ciclo de facturaci�n.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.5 - 07-05-2018 - Se agrega condición para que consulta retorne un solo ciclo de facturación.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.6 - 10-01-2020 - Se agrega filtro de M�xima FE_CREACION en la consulta del estado del Historial de Pago. 
+  * @version 1.6 - 10-01-2020 - Se agrega filtro de Máxima FE_CREACION en la consulta del estado del Historial de Pago. 
   *                           
   * Costo del query - Anticipos: 116943
   *
@@ -235,9 +235,9 @@ AS
   --
   --
   /*
-  * Documentaci�n para FUNCION 'F_SALDO_X_PAGO'.
+  * Documentación para FUNCION 'F_SALDO_X_PAGO'.
   *
-  * Funcion que permite obtener el saldo de un pago o anticipo que no est� asociado a una factura
+  * Funcion que permite obtener el saldo de un pago o anticipo que no está asociado a una factura
   *
   * PARAMETROS:
   * @param Fn_IdPagoCab       IN DB_FINANCIERO.INFO_PAGO_CAB.ID_PAGO%TYPE  Id del pago cabecera que se desea obtener el saldo
@@ -258,7 +258,7 @@ AS
     RETURN NUMBER;
   --
   /*
-  * Documentaci�n para FUNCION 'F_SALDO_X_FACTURA'.
+  * Documentación para FUNCION 'F_SALDO_X_FACTURA'.
   * Funcion que permite obtener el saldo del documento.
   *
   * PARAMETROS:
@@ -267,9 +267,9 @@ AS
   * @author Gina Villalba <gvillalba@telconet.ec>
   * since  1.0
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 19-10-2016 - Se a�ade par�metro 'Fv_FeConsultaHasta' que contendr� la fecha hasta la cual se desea consultar el saldo de la factura
+  * @version 1.1 19-10-2016 - Se añade parámetro 'Fv_FeConsultaHasta' que contendrá la fecha hasta la cual se desea consultar el saldo de la factura
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 15-09-2017 - Se agrega el par�metro 'Fv_TipoConsulta' para obtener el tipo de consulta o valor a retornar de la funci�n
+  * @version 1.2 15-09-2017 - Se agrega el parámetro 'Fv_TipoConsulta' para obtener el tipo de consulta o valor a retornar de la función
   */
   FUNCTION F_SALDO_X_FACTURA(
       Fn_IdDocumento     IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -279,7 +279,7 @@ AS
     --
 
     /*
-    * Documentaci�n para FUNCION 'F_NOMBRE_VENDEDOR'.
+    * Documentación para FUNCION 'F_NOMBRE_VENDEDOR'.
     * Funcion que permite obtener el nombre del vendedor asociado al punto cliente.
     *
     * PARAMETROS:
@@ -291,7 +291,7 @@ AS
     FUNCTION F_NOMBRE_VENDEDOR(usr_vendedor IN INFO_PUNTO.USR_VENDEDOR%TYPE) RETURN VARCHAR2;
 
     /*
-    * Documentaci�n para FUNCION 'F_CONTRATO_CANCELADO'.
+    * Documentación para FUNCION 'F_CONTRATO_CANCELADO'.
     * Funcion que permite obtener la forma de pago del contrato para los clientes con estado Cancelado
     *
     * PARAMETROS:
@@ -305,20 +305,20 @@ AS
   --
   --
   /*
-  * Documentaci�n para FUNCION 'F_INFORMACION_CONTRATO'.
+  * Documentación para FUNCION 'F_INFORMACION_CONTRATO'.
   * Funcion que permite obtener las cuentas bancarias asociadas al contrato
   *
   * PARAMETROS:
-  * @return VARCHAR2  Fv_TipoInformacion  (tipo de informaci�n que se desea consultar)
+  * @return VARCHAR2  Fv_TipoInformacion  (tipo de información que se desea consultar)
   * @Param  INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE  Fn_IdPersonaRol  (id_persona_rol del cliente)
-  * @return VARCHAR2  Retorna la informaci�n solicitada
+  * @return VARCHAR2  Retorna la información solicitada
   * @author Gina Villalba <gvillalba@telconet.ec>
   * since  1.0
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 28-10-2016 - Se a�ade cursor 'C_TramiteLegal' para obtener si el cliente esta en tr�mite legal
+  * @version 1.1 28-10-2016 - Se añade cursor 'C_TramiteLegal' para obtener si el cliente esta en trámite legal
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.2 13-09-2018 - Se a�ade cursor 'C_TiempoEsperaMesesCorte' para obtener el tiempo de espera meses corte
+  * @version 1.2 13-09-2018 - Se añade cursor 'C_TiempoEsperaMesesCorte' para obtener el tiempo de espera meses corte
   */
   FUNCTION F_INFORMACION_CONTRATO(
       Fv_TipoInformacion IN VARCHAR2,
@@ -327,7 +327,7 @@ AS
   --
   --
     /*
-    * Documentaci�n para FUNCION 'F_INFORMACION_SERVICIO'.
+    * Documentación para FUNCION 'F_INFORMACION_SERVICIO'.
     * Funcion que permite obtener referente al servicio de internet asociado al punto de facturacion
     *
     * PARAMETROS:
@@ -335,9 +335,9 @@ AS
     * @Param  varchar2  Fn_IdPuntoFacturacion (punto del facturacion del cliente)
     * @return varchar2 
     *
-    * @author  Edgar Holgu�n <eholguin@telconet.ec>
-    * @version 1.1 26-01-2017 Se realiza creaci�n de cursores que ejecutan consultas de elemento, tipo de medio, fecha de activaci�n, fecha de corte, 
-    *                         fecha de cancelaci�n, n�mero de cortes, realizando la consulta por producto.
+    * @author  Edgar Holguín <eholguin@telconet.ec>
+    * @version 1.1 26-01-2017 Se realiza creación de cursores que ejecutan consultas de elemento, tipo de medio, fecha de activación, fecha de corte, 
+    *                         fecha de cancelación, número de cortes, realizando la consulta por producto.
     *                       
     * @author Gina Villalba <gvillalba@telconet.ec>
     * since  1.0
@@ -348,7 +348,7 @@ AS
   --
   --
   /*
-  * Documentaci�n para FUNCION 'F_ESTADO_INTERNET'.
+  * Documentación para FUNCION 'F_ESTADO_INTERNET'.
   * Funcion que permite obtener el estado del servicio relacionado al internet
   *
   * PARAMETROS:
@@ -360,11 +360,11 @@ AS
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.0 16-03.2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 13-12-2016 - Se agrega el par�metro 'Fv_FeConsultaHasta' para obtener el estado del servicio de internet que ten�a hasta esa fecha de
+  * @version 1.1 13-12-2016 - Se agrega el parámetro 'Fv_FeConsultaHasta' para obtener el estado del servicio de internet que tenía hasta esa fecha de
   *                           consulta.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 13-01-2017 - Se consulta el m�ximo servicio de internet para obtener el estado del servicio correcto asociado al punto de
-  *                           facturaci�n del cliente
+  * @version 1.2 13-01-2017 - Se consulta el máximo servicio de internet para obtener el estado del servicio correcto asociado al punto de
+  *                           facturación del cliente
   */
   FUNCTION F_ESTADO_INTERNET(
       Fn_IdPuntoFacturacion IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -373,7 +373,7 @@ AS
   --
   --
     /*
-    * Documentaci�n para FUNCION 'GET_ADITIONAL_DATA_BYPUNTO'.
+    * Documentación para FUNCION 'GET_ADITIONAL_DATA_BYPUNTO'.
     * Funcion que permite obtener el listado de telefonos del punto
     *
     * PARAMETROS:
@@ -383,8 +383,8 @@ AS
     * @author Gina Villalba <gvillalba@telconet.ec>
     * @version 1.0 16-03.2016
     *
-    * @author Edgar Holgu�n <eholguin@telconet.ec>
-    * @version 1.1 - 28-05-2018 - Se reliza consulta de forma de contacto tel�fono adicional s�lo cuando no exista a  nivel de cliente o punto.
+    * @author Edgar Holguín <eholguin@telconet.ec>
+    * @version 1.1 - 28-05-2018 - Se reliza consulta de forma de contacto teléfono adicional sólo cuando no exista a  nivel de cliente o punto.
     */
     FUNCTION GET_ADITIONAL_DATA_BYPUNTO(
       Fn_IdPunto  IN INFO_PUNTO.ID_PUNTO%TYPE,
@@ -393,40 +393,40 @@ AS
   --
   --    
   /*
-  * Documentaci�n para PROCEDURE 'P_CARTERA_POR_FACTURA'.
+  * Documentación para PROCEDURE 'P_CARTERA_POR_FACTURA'.
   * Procedure que retorna el listado de clientes usados para el reporte de cartera.
   *
   * PARAMETROS:
-  * @Param INFO_EMPRESA_GRUPO.PREFIJO%TYPE Pv_Empresa    (C�digo de la empresa a realizar el reporte)
-  * @Param VARCHAR2   Pv_FeConsultaHasta  (Fecha de consulta que se validar� contra la fecha de emisi�n para las NDI o autorizaci�n para las
+  * @Param INFO_EMPRESA_GRUPO.PREFIJO%TYPE Pv_Empresa    (Código de la empresa a realizar el reporte)
+  * @Param VARCHAR2   Pv_FeConsultaHasta  (Fecha de consulta que se validará contra la fecha de emisión para las NDI o autorización para las
   *                                        FACTURAS)
   * @return P_ClientesCartera              C_GetClientes (Cursor con los clientes del reporte)
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.1 23-06-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 27-06-2016 - Se agrega columna de 'FE_RECHAZO_DEBITO' el cual contiene la fecha de rechazo del d�bito del cliente
+  * @version 1.2 27-06-2016 - Se agrega columna de 'FE_RECHAZO_DEBITO' el cual contiene la fecha de rechazo del débito del cliente
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.3 26-07-2016 - Se agrega columna 'DESCRIPCION_TIPO_ROL' el cual contiene el tipo rol ejemplo
   *                           Pre-cliente|Cliente|Empleado, etc
   *                         - Se agrega validacion de la FE_AUTORIZACION y FE_EMISION ya que los documentos que no sean
   *                           electronicos no van a poseer esta fecha y se vera afectado el calculo de los dias
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 20-10-2016 - Se agrega par�metro 'Pv_FeConsultaHasta' para saber hasta que fecha se requiere consultar los documentos que se
-  *                           mostrar�n en el reporte de cartera.
+  * @version 1.4 20-10-2016 - Se agrega parámetro 'Pv_FeConsultaHasta' para saber hasta que fecha se requiere consultar los documentos que se
+  *                           mostrarán en el reporte de cartera.
   *                         - Adicional se agregan al reporte los documentos NDI que no tienen ligado un pago inicial en sus detalles
   *                         - Adicional se agrega campo TRAMITE_LEGAL
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.2 18-11-2016 - Se valida que al traer las Facturas y Facturas Proporcionales verifique con la fecha de consulta enviado en el 
-  *                           par�metro 'Pv_FeConsultaHasta', lo siguiente:
+  *                           parámetro 'Pv_FeConsultaHasta', lo siguiente:
   *                           - Que se presente la FAC o FACP si el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_AUTORIZACION' se encuentra
   *                             dentro del rango de fecha enviado.
   *                           - Que se presente la FAC o FACP si el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_AUTORIZACION' es 'NULL' y 
   *                             el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_EMISION' se encuentra dentro del rango de fecha enviado.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 13-12-2016 - Se agrega a la funci�n 'F_ESTADO_INTERNET' el par�metro 'Pv_FeConsultaHasta' para obtener el estado del servicio de 
+  * @version 1.3 13-12-2016 - Se agrega a la función 'F_ESTADO_INTERNET' el parámetro 'Pv_FeConsultaHasta' para obtener el estado del servicio de 
   *                           INTERNET hasta esa fecha.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 13-01-2017 - Se agrega la funci�n 'DB_FINANCIERO.FNCK_CONSULTS.F_ESTADO_PUNTO' para obtener el estado del punto dependiendo de la
+  * @version 1.4 13-01-2017 - Se agrega la función 'DB_FINANCIERO.FNCK_CONSULTS.F_ESTADO_PUNTO' para obtener el estado del punto dependiendo de la
   *                           fecha de consulta del reporte
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.5 15-09-2017 - Se agregan las columnas 'totalPagos', 'totalNotasCredito', 'totalNotasDebitoInternas' para obtener un detallado de los
@@ -434,14 +434,14 @@ AS
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.6 17-10-2017 - Se quitan los valores en cero del reporte de cartera.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.7 17-01-2018 - Se modifica  para que c�lculo de d�as de referencia se calcule a partir de la fecha enviada como par�metro.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.7 17-01-2018 - Se modifica  para que cálculo de días de referencia se calcule a partir de la fecha enviada como parámetro.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.8 12-03-2018 - Se modifica para se consulte por FeEmision de la Factura y ya no por FeAutorizacion.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.9 - 07-05-2018 - Se agrega condici�n para que consulta retorne un solo ciclo de facturaci�n.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.9 - 07-05-2018 - Se agrega condición para que consulta retorne un solo ciclo de facturación.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.10 13-09-2018 - Se agregan las columnas 'nombre_tipo_negocio', 'TIEMPO_MESES_CORTE' para obtener un detalle de los
@@ -454,7 +454,7 @@ AS
   --
   --
     /*
-     * Documentaci�n para FUNCION 'F_NOMBRE_EJECUTIVO_COBRANZAS'.
+     * Documentación para FUNCION 'F_NOMBRE_EJECUTIVO_COBRANZAS'.
      * Funcion que permite obtener el nombre del ejecutivo de cobranzas asociado al punto cliente.
      *
      * PARAMETROS:
@@ -466,15 +466,15 @@ AS
     FUNCTION F_NOMBRE_EJECUTIVO_COBRANZAS(usr_cobranzas IN INFO_PUNTO.USR_COBRANZAS%TYPE) RETURN VARCHAR2;
 
     /*
-     * Documentaci�n para FUNCION 'F_GET_DEBITO'.
-     * Funcion que permite obtener informaci�n del debito de un cliente.
+     * Documentación para FUNCION 'F_GET_DEBITO'.
+     * Funcion que permite obtener información del debito de un cliente.
      *
      * PARAMETROS:
      * @Param integer    Pn_IdPersonaEmpresaRol (idPersonaEmpresaRol del cliente)
      * @Param varchar2   Pv_Columna             (columna a obtener)
      * @Param varchar2   Pv_EstadoDebito        (estado del debito)
      *
-     * @return varchar2  Fv_Resutado           (resultado obtenido de la funci�n)
+     * @return varchar2  Fv_Resutado           (resultado obtenido de la función)
      *
      * @author Edson Franco <efranco@telconet.ec>
      * @version 1.0 - 27-06-2016
@@ -485,7 +485,7 @@ AS
     RETURN VARCHAR2;
 
     /*
-     * Documentaci�n para PROCEDURE 'P_EJEC_REP_CART_ANTIC_MD'.
+     * Documentación para PROCEDURE 'P_EJEC_REP_CART_ANTIC_MD'.
      * Procedimiento que realiza la generacion de los reportes de cartera y anticipo en un archivo CSV.
      * Se realiza la revision y se optimiza el query principal de Cartera (C_ClienteCartera) en conjunto con el DBA.
      * Costo del query C_ClienteCartera: 33275
@@ -495,19 +495,19 @@ AS
      * @author Edson Franco <efranco@telconet.ec>
      * @version 1.1 - 17-10-2017 - Se cambia a que se muestre el saldo en las columnas que marcan los dias que lleva la cartera vencida.
      * @author Luis Lindao <llindao@telconet.ec>
-     * @version 1.2 - 17-10-2017 - se quita join con regi�n y empresa pues Megadatos no tiene registradas todas las regiones
+     * @version 1.2 - 17-10-2017 - se quita join con región y empresa pues Megadatos no tiene registradas todas las regiones
      *
-     * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+     * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
      * @version 1.3 12-03-2018 - Se modifica para se consulte por FeEmision de la Factura y ya no por FeAutorizacion.
      *
      * @author Jorge Guerrero <jguerrerop@telconet.ec>
      * @version 1.4 - 1-12-2017 - Se agrega el campo ciclo en el reporte de anticipo y de cartera
      *
-     * @author Edgar Holgu�n <eholguin@telconet.ec>
-     * @version 1.5 - 07-05-2018 - Se agrega condici�n para que consulta retorne un solo ciclo de facturaci�n.
+     * @author Edgar Holguín <eholguin@telconet.ec>
+     * @version 1.5 - 07-05-2018 - Se agrega condición para que consulta retorne un solo ciclo de facturación.
      *
-     * @author Edgar Holgu�n <eholguin@telconet.ec>
-     * @version 1.6 - 28-05-2018 - Se agrega registro adicional de detalle de error al generarse una excepci�n.
+     * @author Edgar Holguín <eholguin@telconet.ec>
+     * @version 1.6 - 28-05-2018 - Se agrega registro adicional de detalle de error al generarse una excepción.
      *
      * @author Hector Lozano <hlozano@telconet.ec>
      * @version 1.7 - 13-09-2018 - Se agregan las columnas 'nombre_tipo_negocio', 'TIEMPO_MESES_CORTE' para obtener un detalle de los
@@ -519,7 +519,7 @@ AS
     PROCEDURE P_EJEC_REP_CART_ANTIC_MD;
 
     /*
-     * Documentaci�n para FUNCTION 'F_FORMAT_TEXT'.
+     * Documentación para FUNCTION 'F_FORMAT_TEXT'.
      * PARAMETROS:
      * @Param VARCHAR2    Pv_Text (Texto a ser formateado)
      * Funcion para validar textos, recorta el texto y elimina los caracteres especiales ENTER
@@ -532,7 +532,7 @@ AS
     --
     --
     /*
-     * Documentaci�n para FUNCTION 'F_GET_FORMA_PAGO'.
+     * Documentación para FUNCTION 'F_GET_FORMA_PAGO'.
      * PARAMETROS:
      * @Param DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE   Fn_IdPersonaRol  (Id personaEmpresaRol)
      * @Param DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE   Fn_IdPunto       (Id punto)
@@ -546,7 +546,7 @@ AS
     RETURN VARCHAR2;
 
     /*
-     * Documentaci�n para FUNCTION 'F_HTTPPOSTMULTIPART'.
+     * Documentación para FUNCTION 'F_HTTPPOSTMULTIPART'.
      * PARAMETROS:
      * @Param VARCHAR2    Fv_UrlMicro (Url del microservicio)
      * @Param VARCHAR2    Fv_FileName (Path del File a enviar)
@@ -565,7 +565,7 @@ AS
 
 
    /*
-     * Documentaci�n para FUNCTION 'F_CONTAINS'.
+     * Documentación para FUNCTION 'F_CONTAINS'.
      * PARAMETROS:
      * @Param VARCHAR2    PV_TEXTO (texto de la cadena a comparar)
      * @Param VARCHAR2    PV_COMPARAR (texto del contenido a comparar)
@@ -1242,7 +1242,7 @@ WHEN OTHERS THEN
   --
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                         'FNKG_CARTERA_CLIENTES.F_INFORMACION_CONTRATO', 
-                                        'Error al obtener la informaci�n de contrato (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
+                                        'Error al obtener la información de contrato (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
                                         || SQLCODE || ' -ERROR- ' || SQLERRM, 
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
                                         SYSDATE, 
@@ -1262,7 +1262,7 @@ IS
   --
   Lv_InfoError            VARCHAR2(4000);
 
-  --Cursor para obtener la informaci�n del elemento
+  --Cursor para obtener la información del elemento
   CURSOR C_Elemento(Cn_IdPuntoFacturacion DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE) IS
     SELECT TO_CHAR(IE.NOMBRE_ELEMENTO)
     from db_comercial.INFO_SERVICIO iser
@@ -1619,7 +1619,7 @@ END;
     --Variable con el id del historial del servicio
     Ln_IdServicioHistorial DB_COMERCIAL.INFO_SERVICIO_HISTORIAL.ID_SERVICIO_HISTORIAL%TYPE;
     --
-    --Consulta el m�nimo historial del servicio de INTERNET dependiendo del plan asociado
+    --Consulta el mínimo historial del servicio de INTERNET dependiendo del plan asociado
     CURSOR C_GetMinHistorialByPlan( Cn_IdPuntoFacturacion DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE, 
                                     Cv_Estado DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE, 
                                     Cv_FeConsultaHasta VARCHAR2 )
@@ -1659,7 +1659,7 @@ END;
       WHERE
         ROWNUM = 1;
     --
-    --Consulta el m�nimo historial del servicio de INTERNET dependiendo del producto asociado
+    --Consulta el mínimo historial del servicio de INTERNET dependiendo del producto asociado
     CURSOR C_GetMinHistorialByProducto( Cn_IdPuntoFacturacion DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE, 
                                         Cv_Estado DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE, 
                                         Cv_FeConsultaHasta VARCHAR2 )
@@ -2097,7 +2097,7 @@ END P_CARTERA_POR_FACTURA;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_NOMBRE_EJECUTIVO_COBRANZAS'.
+ * Documentación para FUNCION 'F_NOMBRE_EJECUTIVO_COBRANZAS'.
  * Funcion que permite obtener el nombre del ejecutivo de cobranzas asociado al punto cliente.
  *
  * PARAMETROS:
@@ -2128,15 +2128,15 @@ END;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_DEBITO'.
- * Funcion que permite obtener informaci�n del debito de un cliente.
+ * Documentación para FUNCION 'F_GET_DEBITO'.
+ * Funcion que permite obtener información del debito de un cliente.
  *
  * PARAMETROS:
  * @Param integer    Pn_IdPersonaEmpresaRol (idPersonaEmpresaRol del cliente)
  * @Param varchar2   Pv_Columna             (columna a obtener)
  * @Param varchar2   Pv_EstadoDebito        (estado del debito)
  *
- * @return varchar2  Fv_Resutado           (resultado obtenido de la funci�n)
+ * @return varchar2  Fv_Resutado           (resultado obtenido de la función)
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 - 27-06-2016

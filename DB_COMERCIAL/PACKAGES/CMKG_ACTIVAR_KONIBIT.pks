@@ -1,17 +1,17 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ACTIVAR_KONIBIT AS
 
   /**
-   * Documentaci�n para el procedimiento 'P_ACTIVAR_NETLIFECLOUD'
+   * Documentación para el procedimiento 'P_ACTIVAR_NETLIFECLOUD'
    * Proceso que sirve para Activar los servicios con productos Netlife Assistance Pro,
    * NetlifeCloud y ECOMMERCE BASIC que se encuentren en estado Pendiente.
-   * Adicional se envia la notificaci�n de Activaci�n al web-service de konibit.
+   * Adicional se envia la notificación de Activación al web-service de konibit.
    *
-   * @author Germ�n Valezuela <gvalenzuela@telconet.ec>
+   * @author Germán Valezuela <gvalenzuela@telconet.ec>
    * @version 1.0 24-06-2021
    *
-   * @author Germ�n Valezuela <gvalenzuela@telconet.ec>
-   * @version 1.1 29-06-2021 - Se mueve el commit por cada transacci�n que se realiza y se valida
-   *                           para que el producto NetlifeCloud no envie la notificaci�n.
+   * @author Germán Valezuela <gvalenzuela@telconet.ec>
+   * @version 1.1 29-06-2021 - Se mueve el commit por cada transacción que se realiza y se valida
+   *                           para que el producto NetlifeCloud no envie la notificación.
    */
   PROCEDURE P_ACTIVAR_NETLIFECLOUD;
 
@@ -90,7 +90,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_ACTIVAR_KONIBIT AS
 
       COMMIT;
 
-      --Proceso para notificar la Activaci�n del servicio konibit.
+      --Proceso para notificar la Activación del servicio konibit.
       IF UPPER(SERVICIO.DESCRIPCION_PRODUCTO) IN ('NETLIFE ASSISTANCE PRO','ECOMMERCE BASIC') THEN
 
         DB_INFRAESTRUCTURA.INFRKG_KONIBIT.P_ENVIA_NOTIFICACION(Pn_idServicio  =>  SERVICIO.ID_SERVICIO,

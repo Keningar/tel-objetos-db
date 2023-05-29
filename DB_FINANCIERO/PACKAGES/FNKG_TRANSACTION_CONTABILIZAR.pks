@@ -308,9 +308,9 @@ PROCEDURE INSERT_PAGO_HISTORIAL_DEPENCIA(
 );
 --
  /**
-  * Documentaci�n para FUNCTION 'F_GET_ID_PAGO_RELACIONADO'.
+  * Documentación para FUNCTION 'F_GET_ID_PAGO_RELACIONADO'.
   *
-  * Funci�n que devuelve los idPagos relacionados a la anulacion del documento. 
+  * Función que devuelve los idPagos relacionados a la anulacion del documento. 
   *
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
   * @version 1.0 12-08-2017
@@ -329,9 +329,9 @@ PROCEDURE INSERT_PAGO_HISTORIAL_DEPENCIA(
     RETURN Type_IdPagosAsociados;
 
   /**
-  * Documentaci�n para FUNCTION 'F_GET_ID_ANTICIPO_PADRE'.
+  * Documentación para FUNCTION 'F_GET_ID_ANTICIPO_PADRE'.
   *
-  * Funci�n que devuelve los idPagos relacionados a la anulacion del documento. 
+  * Función que devuelve los idPagos relacionados a la anulacion del documento. 
   *
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
   * @version 1.0 12-08-2017
@@ -352,9 +352,9 @@ PROCEDURE INSERT_PAGO_HISTORIAL_DEPENCIA(
     RETURN DB_FINANCIERO.INFO_PAGO_CAB.ID_PAGO%TYPE;
 
   /**
-  * Documentaci�n para FUNCTION 'F_AGREGA_PADRES_RELACIONADOS'.
+  * Documentación para FUNCTION 'F_AGREGA_PADRES_RELACIONADOS'.
   *
-  * Funci�n que inclute ANT y PAG a los registros de los pagos asociados
+  * Función que inclute ANT y PAG a los registros de los pagos asociados
   *
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
   * @version 1.0 14-08-2017
@@ -825,7 +825,7 @@ END UPDATE_MIGRA_ARCGAE;
   * @version 1.0 29-01-2015
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.1 23-04-2018 - Se modifica para asignar ip creaci�n 127.0.0.1 por defecto pues cuando se ejecuta por JOB no recupera IP
+  * @version 1.1 23-04-2018 - Se modifica para asignar ip creación 127.0.0.1 por defecto pues cuando se ejecuta por JOB no recupera IP
                               y genera error porque no puede insertar valor nulo
   */
 PROCEDURE INSERT_INFO_PROCESO_MASIVO_CAB
@@ -914,7 +914,7 @@ END INSERT_INFO_PROCESO_MASIVO_CAB;
   * @version 1.0 29-01-2015
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.1 23-04-2018 - Se modifica para asignar ip creaci�n 127.0.0.1 por defecto pues cuando se ejecuta por JOB no recupera IP
+  * @version 1.1 23-04-2018 - Se modifica para asignar ip creación 127.0.0.1 por defecto pues cuando se ejecuta por JOB no recupera IP
                               y genera error porque no puede insertar valor nulo
   */
 PROCEDURE INSERT_INFO_PROCESO_MASIVO_DET
@@ -1176,7 +1176,7 @@ BEGIN
         FETCH C_Get_IdPago INTO Lr_Get_IdPago;
         CLOSE C_Get_IdPago;
         --
-        --Verifico que sea un PAG, este documento ya est� ANULADO
+        --Verifico que sea un PAG, este documento ya está ANULADO
         IF Lr_Get_IdPago.ANTICIPO_ID IS NULL AND 
            Lr_Get_IdPago.PAGO_ID     IS NULL AND
            Lr_Get_IdPago.ID_PAGO     IS NOT NULL THEN
@@ -1582,7 +1582,7 @@ BEGIN
      Fn_Idx       IS NOT NULL AND
      Fn_EmpresaId IS NOT NULL THEN
      --
-     --Recupero el registro ANT para obtener el PAG (PAGO_ID) que lo gener�.
+     --Recupero el registro ANT para obtener el PAG (PAGO_ID) que lo generó.
       IF C_Get_IdPago%ISOPEN THEN
         CLOSE C_Get_IdPago;
       END IF;

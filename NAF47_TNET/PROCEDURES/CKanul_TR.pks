@@ -251,7 +251,7 @@ BEGIN
   -------------------------------------------------------
     IF vrce.no_prove IS NOT NULL THEN
     -- llindao: 03/09/2012
-    -- Actualziaci�n de Ordenes de Compras Locales
+    -- Actualziacion de Ordenes de Compras Locales
     FOR Lr_Origen IN C_ORDEN_COMPRA_LOCAL(pno_transa, vrce.tipo_docu, pno_cia) LOOP
       -- se verifica saldo de Orden de compra.
       IF C_SALDO_OC_LOCAL%ISOPEN THEN
@@ -285,7 +285,7 @@ BEGIN
     -- ACTUAZIACION DE SALDO PAGADO ORDEN COMPRA
 
     -- llindao: 03/09/2012
-    -- Actualziaci�n de Ordenes de Compras Locales accesando por facturas relacionadas al cheque
+    -- Actualziacion de Ordenes de Compras Locales accesando por facturas relacionadas al cheque
     FOR Lr_Origen IN C_FACTURAS_ORDENES(pno_transa, vrce.tipo_docu, pno_cia) LOOP
       -- se verifica saldo de Orden de compra.
       IF C_SALDO_OC_LOCAL%ISOPEN THEN
@@ -321,7 +321,7 @@ BEGIN
 
   ELSIF vrce.id_prov_orden IS NOT NULL THEN
     -- llindao: 03/09/2012
-    -- Actualziaci�n de Ordenes de Compras Locales
+    -- Actualziacion de Ordenes de Compras Locales
     FOR Lr_Origen IN C_ORDEN_COMPRA_LOCAL(pno_transa, vrce.tipo_docu, pno_cia) LOOP
       -- se verifica saldo de Orden de compra.
       IF C_SALDO_OC_LOCAL%ISOPEN THEN

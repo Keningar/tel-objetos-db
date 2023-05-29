@@ -12,7 +12,7 @@ job_type=>'PLSQL_BLOCK', job_action=>
                                       Lv_CodigoEmpresa    DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE;
                        
                                     BEGIN
-                                      Lv_Observacion     := ''Inactivaci�n autom�tica por fechas de vigencias'';
+                                      Lv_Observacion     := ''Inactivación automática por fechas de vigencias'';
                                       Lv_Usuario         := ''telcos'';
                                       Lv_IpCreacion      := ''172.17.0.1'';
                                       Lv_TipoPma         := ''InactivaJob'';
@@ -28,10 +28,10 @@ start_date=>TO_TIMESTAMP_TZ('14-MAY-2023 02.04.19.529473000 AM AMERICA/GUAYAQUIL
 'FREQ=DAILY;BYHOUR=0;BYMINUTE=0;BYSECOND=0'
 , end_date=>NULL,
 job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
-'Job que ejecuta procesos masivos de Inactivaci�n de Promociones por fecha de vigencia'
+'Job que ejecuta procesos masivos de Inactivación de Promociones por fecha de vigencia'
 );
 sys.dbms_scheduler.set_attribute('"JOB_INACTIVA_VIGENCIA_PROMO"','NLS_ENV','NLS_LANGUAGE=''AMERICAN'' NLS_TERRITORY=''AMERICA'' NLS_CURRENCY=''$'' NLS_ISO_CURRENCY=''AMERICA'' NLS_NUMERIC_CHARACTERS=''.,'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD-MON-RR'' NLS_DATE_LANGUAGE=''AMERICAN'' NLS_SORT=''BINARY'' NLS_TIME_FORMAT=''HH.MI.SSXFF AM'' NLS_TIMESTAMP_FORMAT=''DD-MON-RR HH.MI.SSXFF AM'' NLS_TIME_TZ_FORMAT=''HH.MI.SSXFF AM TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD-MON-RR HH.MI.SSXFF AM TZR'' NLS_DUAL_CURRENCY=''$'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
 dbms_scheduler.enable('"JOB_INACTIVA_VIGENCIA_PROMO"');
 COMMIT; 
 END; 
-/
+/ 

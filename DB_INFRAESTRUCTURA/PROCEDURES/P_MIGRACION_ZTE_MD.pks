@@ -2,9 +2,9 @@ CREATE OR REPLACE Procedure DB_INFRAESTRUCTURA.P_Migracion_Zte_Md(
     Pv_Tipo_Proceso In Varchar2)
 Is
   /*
-  * Procedimiento que realiza la migraci�n de servicios de Internet
+  * Procedimiento que realiza la migración de servicios de Internet
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
+  * @author Jesús Bozada <jbozada@telconet.ec>
   * @version 1.0 23-01-2021
   */
   Procedure P_Migracion_Internet_Zte_Md
@@ -178,7 +178,7 @@ Is
         End If;
         Close C_Getolt;
         If Ln_Idoltnuevo > 0 Then
-          Lv_Mensaje    := 'Migraci�n de Data ZTE<br>';
+          Lv_Mensaje    := 'Migración de Data ZTE<br>';
           Lv_Mensaje    := Lv_Mensaje || '<b>Olt Anterior</b>:         ';
           Lv_Mensaje    := Lv_Mensaje || Lv_Nombreolt || '<br>';
           Lv_Mensaje    := Lv_Mensaje || '<b>Puerto olt Anterior</b>:      ';
@@ -261,13 +261,13 @@ Is
         Else
           Update Db_Infraestructura.Tmp_Migra_Olt_Zte
           Set Estado        = 'Error',
-            Observacion     = 'No existe informaci�n en Telcos del nuevo OLT y Puerto Pon a migrar.'
+            Observacion     = 'No existe información en Telcos del nuevo OLT y Puerto Pon a migrar.'
           Where Id_Registro = I_Data.Id_Registro;
         End If;
       Else
         Update Db_Infraestructura.Tmp_Migra_Olt_Zte
         Set Estado        = 'Error',
-          Observacion     = 'No existe informaci�n en Telcos del login o n�mero de serie que se encuentra en el reporte.'
+          Observacion     = 'No existe información en Telcos del login o número de serie que se encuentra en el reporte.'
         Where Id_Registro = I_Data.Id_Registro;
       End If;
       Commit;
@@ -277,9 +277,9 @@ Is
     Db_General.Gnrlpck_Util.Insert_Error('P_MIGRACION_INTERNET_ZTE_MD', 'P_MIGRACION_INTERNET_ZTE_MD', Sqlerrm, 'DB_INFRAESTRUCTURA', Sysdate, Nvl(Sys_Context('USERENV','IP_ADDRESS'), '127.0.0.1'));
   End P_Migracion_Internet_Zte_Md;
 /*
-* Procedimiento que realiza la migraci�n de Ips de servicios
+* Procedimiento que realiza la migración de Ips de servicios
 *
-* @author Jes�s Bozada <jbozada@telconet.ec>
+* @author Jesús Bozada <jbozada@telconet.ec>
 * @version 1.0 23-01-2021
 */
   Procedure P_Migracion_Ip_Zte_Md
@@ -367,7 +367,7 @@ Is
         End If;
         Close C_Getcantidadipmigrar;
         If Ln_Cantidadips = 1 Then
-          Lv_Mensaje     := 'Migraci�n de Data ZTE<br>';
+          Lv_Mensaje     := 'Migración de Data ZTE<br>';
           Lv_Mensaje     := Lv_Mensaje || '<b>Ip anterior</b>: ';
           Lv_Mensaje     := Lv_Mensaje || I_Data.Ip_Antigua || '<br>';
           Lv_Mensaje     := Lv_Mensaje || '<b>Ip nueva</b>: ';
@@ -424,13 +424,13 @@ Is
         Else
           Update Db_Infraestructura.Tmp_Migra_Olt_Zte
           Set Estado        = 'Error',
-            Observacion     = 'Existe m�s de una IP Activa, no se puede realizar la migraci�n por inconsistencia de data.'
+            Observacion     = 'Existe más de una IP Activa, no se puede realizar la migración por inconsistencia de data.'
           Where Id_Registro = I_Data.Id_Registro;
         End If;
       Else
         Update Db_Infraestructura.Tmp_Migra_Olt_Zte
         Set Estado        = 'Error',
-          Observacion     = 'No existe informaci�n en Telcos de la ip anterior a migrar.'
+          Observacion     = 'No existe información en Telcos de la ip anterior a migrar.'
         Where Id_Registro = I_Data.Id_Registro;
       End If;
       Commit;
@@ -440,9 +440,9 @@ Is
     Db_General.Gnrlpck_Util.Insert_Error('P_MIGRACION_IP_ZTE_MD', 'P_MIGRACION_IP_ZTE_MD', Sqlerrm, 'DB_INFRAESTRUCTURA', Sysdate, Nvl(Sys_Context('USERENV','IP_ADDRESS'), '127.0.0.1'));
   End P_Migracion_Ip_Zte_Md;
 /*
-* Procedimiento que realiza la migraci�n de enlaces de olts
+* Procedimiento que realiza la migración de enlaces de olts
 *
-* @author Jes�s Bozada <jbozada@telconet.ec>
+* @author Jesús Bozada <jbozada@telconet.ec>
 * @version 1.0 04-02-2021
 */
   Procedure P_Migracion_Enlaces_Zte_Md
@@ -570,7 +570,7 @@ Is
           Else
             Update Db_Infraestructura.Tmp_Migra_Olt_Zte
             Set Estado        = 'Error',
-              Observacion     = 'No existe informaci�n en Telcos del nombre de olt y puerto nuevo a migrar.',
+              Observacion     = 'No existe información en Telcos del nombre de olt y puerto nuevo a migrar.',
               Fe_Ult_Mod      = Sysdate,
               Usr_Ult_Mod     = 'MIGRA_ZTE'
             Where Id_Registro = I_Data.Id_Registro;
@@ -578,7 +578,7 @@ Is
         Else
           Update Db_Infraestructura.Tmp_Migra_Olt_Zte
           Set Estado        = 'Error',
-            Observacion     = 'No existe informaci�n en Telcos del enlace asociado al nombre de olt y puerto connected anterior a migrar.',
+            Observacion     = 'No existe información en Telcos del enlace asociado al nombre de olt y puerto connected anterior a migrar.',
             Fe_Ult_Mod      = Sysdate,
             Usr_Ult_Mod     = 'MIGRA_ZTE'
           Where Id_Registro = I_Data.Id_Registro;
@@ -590,9 +590,9 @@ Is
       Db_General.Gnrlpck_Util.Insert_Error('P_MIGRACION_ENLACES_ZTE_MD', 'P_MIGRACION_ENLACES_ZTE_MD', Sqlerrm, 'DB_INFRAESTRUCTURA', Sysdate, Nvl(Sys_Context('USERENV','IP_ADDRESS'), '127.0.0.1'));
     End P_Migracion_Enlaces_Zte_Md;
     /*
-    * Procedimiento que realiza la migraci�n de enlaces y nombres de splitters de servicio
+    * Procedimiento que realiza la migración de enlaces y nombres de splitters de servicio
     *
-    * @author Jes�s Bozada <jbozada@telconet.ec>
+    * @author Jesús Bozada <jbozada@telconet.ec>
     * @version 1.0 04-02-2021
     */
     Procedure P_Migracion_Splitter_Zte_Md
@@ -654,7 +654,7 @@ Is
               Ln_Idelemento,
               'Activo',
               Null,
-              'Se actualiz� el nombre el elemento correctamente. Nombre anterior: '
+              'Se actualizó el nombre el elemento correctamente. Nombre anterior: '
               ||I_Data.Nombre_Elemento_Antiguo
               || ', Nombre Nuevo: '
               || I_Data.Nombre_Elemento_Nuevo,
@@ -671,7 +671,7 @@ Is
         Else
           Update Db_Infraestructura.Tmp_Migra_Olt_Zte
           Set Estado        = 'Error',
-            Observacion     = 'No existe informaci�n en Telcos con el nombre del elemento splitter anterior en estado Activo a migrar.',
+            Observacion     = 'No existe información en Telcos con el nombre del elemento splitter anterior en estado Activo a migrar.',
             Fe_Ult_Mod      = Sysdate,
             Usr_Ult_Mod     = 'MIGRA_ZTE'
           Where Id_Registro = I_Data.Id_Registro;

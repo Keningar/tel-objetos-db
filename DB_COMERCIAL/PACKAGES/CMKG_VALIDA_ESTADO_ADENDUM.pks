@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_VALIDA_ESTADO_ADENDUM AS 
     /**
-      * Documentaci�n para el procedimiento P_VALIDA_ESTADO
+      * Documentación para el procedimiento P_VALIDA_ESTADO
       *
-      * M�todo que se encarga de actualizar el estado de los adendums a Activo cuando el servicio se encuentra PrePlanificada
+      * Método que se encarga de actualizar el estado de los adendums a Activo cuando el servicio se encuentra PrePlanificada
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -19,9 +19,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_VALIDA_ESTADO_ADENDUM AS
 
 
     /**
-      * Documentaci�n para el procedimiento P_VALIDA_ESTADO
+      * Documentación para el procedimiento P_VALIDA_ESTADO
       *
-      * M�todo que se encarga de actualizar el estado de los adendums a Activo cuando el servicio se encuentra PrePlanificada cuando es contrato
+      * Método que se encarga de actualizar el estado de los adendums a Activo cuando el servicio se encuentra PrePlanificada cuando es contrato
       *
       * author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 02-12-2019
@@ -31,9 +31,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_VALIDA_ESTADO_ADENDUM AS
                                 Pn_Numero   IN NUMBER,
                                 Pv_Estado   IN VARCHAR2);
     /**
-      * Documentaci�n para el procedimiento P_VALIDA_ESTADO
+      * Documentación para el procedimiento P_VALIDA_ESTADO
       *
-      * M�todo que se encarga de actualizar el estado de los adendums a Activo cuando el servicio se encuentra PrePlanificada cuando es adendum
+      * Método que se encarga de actualizar el estado de los adendums a Activo cuando el servicio se encuentra PrePlanificada cuando es adendum
       *
       * author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 02-12-2019

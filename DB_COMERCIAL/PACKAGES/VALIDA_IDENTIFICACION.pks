@@ -8,9 +8,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.VALIDA_IDENTIFICACION is
 --
 
   /**
-  * Documentaci�n para el procedimiento VALIDA_CEDULA
-  * @param varchar2   cedula: n�mero de c�dula
-  * @param varchar2   mensaje: vac�o en caso que sea correcta la c�dula ingresada
+  * Documentación para el procedimiento VALIDA_CEDULA
+  * @param varchar2   cedula: número de cédula
+  * @param varchar2   mensaje: vacío en caso que sea correcta la cédula ingresada
   * @author telcos
   * @version 1.0 09-04-2016
   *
@@ -27,25 +27,25 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.VALIDA_IDENTIFICACION is
   PROCEDURE VALIDA_RUC9(RUC VARCHAR2, MENSAJE OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el procedimiento VALIDA
-  * @param varchar2   p_tipo_ident: Tipo de identificaci�n
-  * @param varchar2   p_identificacion: Identificaci�n a validar
-  * @param varchar2   p_mensaje: '' en caso que la identificaci�n est� correcta.
+  * Documentación para el procedimiento VALIDA
+  * @param varchar2   p_tipo_ident: Tipo de identificación
+  * @param varchar2   p_identificacion: Identificación a validar
+  * @param varchar2   p_mensaje: '' en caso que la identificación esté correcta.
   * @author telcos
   * @version 1.0 09-04-2016
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.1 28-06-2017
-  * Se agrega la validaci�n para llamar al procedimiento de Panam�
+  * Se agrega la validación para llamar al procedimiento de Panamá
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.2 21-09-2017
-  * Se separa la l�gica para validar �nicamente a las identificaciones ecuatorianas.
+  * Se separa la lógica para validar únicamente a las identificaciones ecuatorianas.
   *
   * @author Walther Joao Gaibor C <wgaibor@telconet.ec>
   * @version 1.3 10-01-2022
   * Se adiciona el parametro empresa para poder determinar si la misma debe realizar las validaciones correspondiente
-  * a la identificaci�n ingresada.
+  * a la identificación ingresada.
   */
   PROCEDURE VALIDA(p_tipo_ident       varchar2,
                  p_identificacion     varchar2,
@@ -54,39 +54,39 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.VALIDA_IDENTIFICACION is
                  p_mensaje            in out varchar2);
 
   /**
-  * Documentaci�n para el procedimiento VALIDA
-  * @param varchar2   p_tipo_ident: Tipo de identificaci�n
-  * @param varchar2   p_identificacion: Identificaci�n a validar
-  * @param varchar2   p_mensaje: '' en caso que la identificaci�n est� correcta.
+  * Documentación para el procedimiento VALIDA
+  * @param varchar2   p_tipo_ident: Tipo de identificación
+  * @param varchar2   p_identificacion: Identificación a validar
+  * @param varchar2   p_mensaje: '' en caso que la identificación esté correcta.
   * @author telcos
   * @version 1.0 09-04-2016
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.1 28-06-2017
-  * Se agrega la validaci�n para llamar al procedimiento de Panam�
+  * Se agrega la validación para llamar al procedimiento de Panamá
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.2 21-09-2017
-  * Se separa la l�gica para validar �nicamente a las identificaciones ecuatorianas.
+  * Se separa la lógica para validar únicamente a las identificaciones ecuatorianas.
   */
   PROCEDURE VALIDA(p_tipo_ident     varchar2,
                  p_identificacion varchar2,
                  p_mensaje        in out varchar2);
   /**
-  * Documentaci�n para el procedimiento P_VALIDA_FORMATO_PANAMA
-  * Procedimiento que valida la c�dula paname�a en base a los par�metros registrados en la tabla ADMI_PARAMETRO_CAB y ADMI_PARAMETRO_DET
-  * @param varchar2   pv_identificacion: Identificaci�n a validar
-  * @param varchar2   pv_tipo_identificacion: Tipo de identificaci�n 'CED' o 'RUC'
-  * @param varchar2   Pv_mensaje: 'OK' en caso que la c�dula est� correcta en base a los par�metros registrados, caso contrario se env�a un mensaje.
+  * Documentación para el procedimiento P_VALIDA_FORMATO_PANAMA
+  * Procedimiento que valida la cédula panameña en base a los parámetros registrados en la tabla ADMI_PARAMETRO_CAB y ADMI_PARAMETRO_DET
+  * @param varchar2   pv_identificacion: Identificación a validar
+  * @param varchar2   pv_tipo_identificacion: Tipo de identificación 'CED' o 'RUC'
+  * @param varchar2   Pv_mensaje: 'OK' en caso que la cédula esté correcta en base a los parámetros registrados, caso contrario se envía un mensaje.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.0 28-06-2017
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
-  * @version 1.1 20-09-2017 Se modifica la validaci�n a nivel de RUC y PASAPORTE. Debido a que no existe un formato predeterminado.
+  * @version 1.1 20-09-2017 Se modifica la validación a nivel de RUC y PASAPORTE. Debido a que no existe un formato predeterminado.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.2 09-02-2018 Se aumenta longitud de variable que almacena valor de la identificaci�n.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.2 09-02-2018 Se aumenta longitud de variable que almacena valor de la identificación.
   */
   PROCEDURE P_VALIDA_FORMATO_PANAMA(
       Pv_identificacion VARCHAR2,
@@ -94,10 +94,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.VALIDA_IDENTIFICACION is
       Pv_mensaje OUT VARCHAR2) ;
 
   /**
-  * Documentaci�n para la funci�n IS_NUMBER
-  * Funci�n que valida si una cadena ingresada es un n�mero.
+  * Documentación para la función IS_NUMBER
+  * Función que valida si una cadena ingresada es un número.
   * @param varchar2   pv_string: cadena a evaluar
-  * @return int       Devuelve 1 si la validaci�n es verdadera, 0 si es falso.
+  * @return int       Devuelve 1 si la validación es verdadera, 0 si es falso.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.0 28-06-2017
@@ -107,12 +107,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.VALIDA_IDENTIFICACION is
     RETURN INT;
 
   /**
-  * Documentaci�n para el procedimiento P_VALIDA_NIT
-  * Procedimiento que valida el formato del n�mero de identificaci�n tributaria NIT (Guatemala).
+  * Documentación para el procedimiento P_VALIDA_NIT
+  * Procedimiento que valida el formato del número de identificación tributaria NIT (Guatemala).
   * @param varchar2   Pv_Identificacion: Numero de nit a validar
-  * @param varchar2   Pv_Mensaje: 'OK' en caso que el nit est� correcto , caso contrario se env�a un mensaje.
+  * @param varchar2   Pv_Mensaje: 'OK' en caso que el nit esté correcto , caso contrario se envía un mensaje.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 14-03-2019
   */
   PROCEDURE P_VALIDA_NIT(
@@ -120,12 +120,12 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.VALIDA_IDENTIFICACION is
       Pv_Mensaje        OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el procedimiento P_VALIDA_DPI
-  * Procedimiento que valida el formato del c�digo �nico de identificaci�n del DPI (Guatemala).
+  * Documentación para el procedimiento P_VALIDA_DPI
+  * Procedimiento que valida el formato del código único de identificación del DPI (Guatemala).
   * @param varchar2   Pv_Identificacion: Numero de nit a validar
-  * @param varchar2   Pv_Mensaje: 'OK' en caso que el nit est� correcto , caso contrario se env�a un mensaje.
+  * @param varchar2   Pv_Mensaje: 'OK' en caso que el nit esté correcto , caso contrario se envía un mensaje.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 14-03-2019
   */
   PROCEDURE P_VALIDA_DPI(
@@ -190,7 +190,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.VALIDA_IDENTIFICACION is
     WHEN error_proceso THEN
       mensaje := NVL(mensaje, ' en VALIDA_CEDULA');
     WHEN OTHERS THEN
-      mensaje := 'Documento de identificaci�n incorrecto';
+      mensaje := 'Documento de identificación incorrecto';
   END;
 
   --***********
@@ -406,7 +406,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.VALIDA_IDENTIFICACION is
       RETURN;
     End if;
 
-    -- Validaci�n de empresas que deben realizar estas validaciones
+    -- Validación de empresas que deben realizar estas validaciones
     Lv_QueryValidaEmpresa   := 'SELECT COUNT(*)
                                 FROM   DB_GENERAL.ADMI_PARAMETRO_DET DET
                                 INNER JOIN DB_GENERAL.ADMI_PARAMETRO_CAB CAB
@@ -593,7 +593,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.VALIDA_IDENTIFICACION is
                                     Pv_mensaje        OUT VARCHAR2) AS
     LV_PREFIJO             VARCHAR2(5)   := NULL;
     LV_IDENTIFICACION      VARCHAR2(100) := TRIM(' ' FROM UPPER(PV_IDENTIFICACION));
-    LV_MENSAJE             VARCHAR2(50)  := 'Documento de identificaci�n incorrecto.';
+    LV_MENSAJE             VARCHAR2(50)  := 'Documento de identificación incorrecto.';
     LV_SEPARADOR           VARCHAR2(1)   := '-';
     LV_NOMBRE_PARAMETRO    VARCHAR2(30)  := '''CEDULA_PANAMA''';
     LN_POSICION            NUMBER := 0;
@@ -641,11 +641,11 @@ AND C.NOMBRE_PARAMETRO = ';
         RAISE LE_NO_CEDULA;
       END IF;
       IF (PV_TIPO_IDENTIFICACION = 'RUC') THEN
-        --No existe un formato para regirse de �l. En caso que exista utilizar como nombre de par�metro 'RUC_PANAMA'
-        --VALIDO �NICAMENTE EL TAMA�O DE LOS CARACTERES
+        --No existe un formato para regirse de él. En caso que exista utilizar como nombre de parámetro 'RUC_PANAMA'
+        --VALIDO ÚNICAMENTE EL TAMAÑO DE LOS CARACTERES
         OPEN LC_CURSOR FOR LV_QUERY_FORMATO || '''RUC_PANAMA_GENERAL''';
         FETCH LC_CURSOR
-          --VALOR1 = M�NIMO, VALOR2= M�XIMO, VALOR3 = EXPRESI�N REGULAR
+          --VALOR1 = MÍNIMO, VALOR2= MÁXIMO, VALOR3 = EXPRESIÓN REGULAR
           INTO LV_VALOR1, LV_VALOR2, LV_VALOR3, LV_DESCRIPCION, LN_ID_PARAMETRO;
         CLOSE LC_CURSOR;
         IF(REGEXP_COUNT(LV_IDENTIFICACION, LV_VALOR3, 1, 'i') > 0) THEN
@@ -710,7 +710,7 @@ AND C.NOMBRE_PARAMETRO = ';
             EXIT;
           END IF;
           IF (LN_VECES_REGISTRO != LN_VECES_SEPARADOR) THEN
-            LV_MENSAJE := 'Documento de identificaci�n incorrecto.';
+            LV_MENSAJE := 'Documento de identificación incorrecto.';
 
             EXIT;
           END IF;
@@ -819,7 +819,7 @@ AND C.NOMBRE_PARAMETRO = ';
     Ln_LongitudNit := TO_NUMBER(NVL(Lc_ParamLongitudNit.VALOR3,0));
 
     IF LENGTH(Pv_Identificacion) > Ln_LongitudNit THEN
-      Lv_Mensaje := 'El n�mero documento de identificaci�n no debe ser mayor a '||Ln_LongitudNit;
+      Lv_Mensaje := 'El número documento de identificación no debe ser mayor a '||Ln_LongitudNit;
       RAISE Le_Exception;
     END IF;
 
@@ -847,7 +847,7 @@ AND C.NOMBRE_PARAMETRO = ';
                       OR  (Ln_DigitoVerificador = SUBSTR(Lv_Identificacion,LENGTH(Lv_Identificacion))) THEN
         Lv_Mensaje := 'OK';
       ELSE
-        Lv_Mensaje := 'Documento de identificaci�n incorrecto';
+        Lv_Mensaje := 'Documento de identificación incorrecto';
       END IF;
 
     END IF;
@@ -984,7 +984,7 @@ AND C.NOMBRE_PARAMETRO = ';
            ((Ln_Departamento = 0 OR Ln_Municipio = 0) OR (Ln_Departamento = 0 AND Ln_Municipio = 0) )  OR 
            (Ln_Departamento > Ln_NumDptos) OR
            (Ln_Municipio    > Ln_NumMunDptoParam) THEN
-      Lv_Mensaje := 'Documento de identificaci�n incorrecto';
+      Lv_Mensaje := 'Documento de identificación incorrecto';
       RAISE Le_Exception;
     ELSE
 
@@ -999,7 +999,7 @@ AND C.NOMBRE_PARAMETRO = ';
     IF (Ln_Valor = Ln_DigVerificador) THEN
       Lv_Mensaje := 'OK';
     ELSE
-      Lv_Mensaje := 'Documento de identificaci�n incorrecto';
+      Lv_Mensaje := 'Documento de identificación incorrecto';
     END IF;
 
 

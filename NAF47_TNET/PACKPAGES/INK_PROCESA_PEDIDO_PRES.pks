@@ -136,7 +136,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INK_PROCESA_PEDIDO_PRES is
   /**
   * Documentacion para P_PROCESA_RESERVA_PRODUCTO
   * Procedure que hace reserva de pedidos asociados a un proyecto
-  * en base a un ingreso de art�culos por ordenes de compra
+  * en base a un ingreso de artículos por ordenes de compra
   * @author Byron Anton <banton@telconet.ec>
   * @version 1.0 25/05/2022
   *

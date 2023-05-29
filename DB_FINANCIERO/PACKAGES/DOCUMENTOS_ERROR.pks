@@ -37,7 +37,7 @@ PROCEDURE P_PAGOS_DEPENDIENTES(
   * Pn_EmpresaId         IN VARCHAR2,
   * Pr_ListadoPagosDep   OUT DocumentoErrorCur
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 23-10-2018
 */
   PROCEDURE P_PAGOS_ERROR_ESTADO_CTA(

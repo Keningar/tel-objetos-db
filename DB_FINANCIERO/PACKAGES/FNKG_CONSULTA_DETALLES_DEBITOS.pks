@@ -29,16 +29,16 @@ AS
 END FNKG_CONSULTA_DETALLES_DEBITOS;
 /
 
-CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_CONSULTA_DETALLES_DEBITOS                    
+CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_CONSULTA_DETALLES_DEBITOS
 AS
     /*
-    * Documentaci�n para FUNCION 'F_DESENCRIPTA_NUMERO_TARJ_CTA'.
+    * Documentación para FUNCION 'F_DESENCRIPTA_NUMERO_TARJ_CTA'.
     * FUNCION QUE OBTIENE EL NUMERO DE TARJETA O CUENTA DESENCRIPTADO
     * PARAMETROS:
     * @Param varchar2 lv_numero_tarjeta (numero de tarjeta o cuenta que se desea desencriptar)
     * @Param varchar2 lv_clave_desencriptar (secret para desencriptar el numero de tarjeta o cuenta)    
-    * @return varchar2 lv_campo_retorna (campo desencriptado) se utiliza la cl�usa DETERMINISTIC debido a que se est� usando esta funci�n 
-                                        dentro de una columna virtual basada en funci�n INFO_CONTRATO_FORMA_PAGO.BIN_VIRTUAL
+    * @return varchar2 lv_campo_retorna (campo desencriptado) se utiliza la cláusa DETERMINISTIC debido a que se está usando esta función 
+                                        dentro de una columna virtual basada en función INFO_CONTRATO_FORMA_PAGO.BIN_VIRTUAL
     */
     FUNCTION F_DESENCRIPTA_NUMERO_TARJ_CTA(
         lv_numero_tarjeta VARCHAR2, lv_clave_desencriptar VARCHAR2)
@@ -53,7 +53,7 @@ AS
 
 
   /*
-  * Documentaci�n para FUNCION 'ULTIMO_CONTRATO_CLIENTE'.
+  * Documentación para FUNCION 'ULTIMO_CONTRATO_CLIENTE'.
   * FUNCION QUE OBTIENE datos de la tarjeta del cliente
   * PARAMETROS:
   * @Param number id_per (id_persona_empresa_rol del cliente)
@@ -101,7 +101,7 @@ AS
   END;
 
     /*
-    * Documentaci�n para PROCEDIMIENTO 'CONSULTA_DETALLE_DEBITO'.
+    * Documentación para PROCEDIMIENTO 'CONSULTA_DETALLE_DEBITO'.
     * PROCEDIMIENTO QUE BUSCA LOS DETALLES DE DEBITO SEGUN ID CABECERA
     * INCLUYE LA DESENCRIPTACION DEL NUMERO DE TARJETA O CUENTA 
     * EL PROCEDIMIENTO RECIBE LOS PARAMETROS:
@@ -143,14 +143,14 @@ AS
 END P_CONSULTA_DETALLE_DEBITO;
 
   /**
-   * Documentaci�n para PROCEDIMIENTO 'P_PROCESA_DEBITO_GENERAL'.
-   * PROCEDIMIENTO QUE CAMBIA DE ESTADO DE INFO_DEBITO_CAB E INFO_DEBITO_GENERAL EN BASE AL PAR�METRO: 'JOB_PROCESA_DEBITO_GENERAL'.
+   * Documentación para PROCEDIMIENTO 'P_PROCESA_DEBITO_GENERAL'.
+   * PROCEDIMIENTO QUE CAMBIA DE ESTADO DE INFO_DEBITO_CAB E INFO_DEBITO_GENERAL EN BASE AL PARÁMETRO: 'JOB_PROCESA_DEBITO_GENERAL'.
    * EL PROCEDIMIENTO RECIBE LOS PARAMETROS:
-   * @Param Pv_Usuario  IN   (Usuario que ejecuta la transacci�n)
+   * @Param Pv_Usuario  IN   (Usuario que ejecuta la transacción)
    * @Param Pv_Mensaje  OUT  (Mensaje de error)
    *
    * @author Luis Cabrera <lcabrera@telconet.ec>
-   * @version 1.0 06-12-2017 - Versi�n inicial
+   * @version 1.0 06-12-2017 - Versión inicial
    */
   PROCEDURE P_PROCESA_DEBITO_GENERAL (Pv_Usuario IN  VARCHAR2,
                                       Pv_Mensaje OUT VARCHAR2)
@@ -192,27 +192,27 @@ END P_CONSULTA_DETALLE_DEBITO;
                 AND CAB.EMPRESA_ID          = Cv_EmpresaCod
                 AND CAB.FE_CREACION        <= TO_TIMESTAMP(SYSDATE - Cn_Dias);
     BEGIN
-        --OBTENGO LOS PAR�METROS CON LAS EMPRESAS QUE APLICAN AL PROCESO DEL JOB.
+        --OBTENGO LOS PARÁMETROS CON LAS EMPRESAS QUE APLICAN AL PROCESO DEL JOB.
         Lrf_AdmiParametroDet := DB_GENERAL.GNRLPCK_UTIL.F_GET_PARAMS_DETS('JOB_PROCESA_DEBITO_GENERAL');
         LOOP
             FETCH Lrf_AdmiParametroDet INTO Lr_AdmiParametroDet;
             EXIT WHEN Lrf_AdmiParametroDet%NOTFOUND;
 
-            --BUSCO LOS D�BITOS GENERALES CON CABECERAS SEG�N LOS PAR�METROS.
+            --BUSCO LOS DÉBITOS GENERALES CON CABECERAS SEGÚN LOS PARÁMETROS.
             FOR Lr_DebitoGeneral IN  C_BuscaDebitos (Lr_AdmiParametroDet.VALOR3,
                                                      Lr_AdmiParametroDet.EMPRESA_COD,
                                                      Lr_AdmiParametroDet.VALOR1,
                                                      Lr_AdmiParametroDet.VALOR2)
             LOOP
                 Ln_ContadorCabeceras := 0;
-                --BUSCO LAS CABECERAS SEG�N LOS PAR�METROS
+                --BUSCO LAS CABECERAS SEGÚN LOS PARÁMETROS
                 FOR Lr_CabecerasPorAnular IN  C_CabecerasDebitoGen (Lr_DebitoGeneral.DEBITO_GENERAL_ID,
                                                                     Lr_AdmiParametroDet.VALOR3,
                                                                     Lr_AdmiParametroDet.EMPRESA_COD,
                                                                     Lr_AdmiParametroDet.VALOR1,
                                                                     Lr_AdmiParametroDet.VALOR2)
                 LOOP
-                    Lv_Observacion := 'SE ACTUALIZA LA CABECERA DEL D�BITO: ' || Lr_CabecerasPorAnular.ID_DEBITO_CAB || ' | ESTADO ANTERIOR:'
+                    Lv_Observacion := 'SE ACTUALIZA LA CABECERA DEL DÉBITO: ' || Lr_CabecerasPorAnular.ID_DEBITO_CAB || ' | ESTADO ANTERIOR:'
                                       || Lr_CabecerasPorAnular.ESTADO_CAB || ' -> ESTADO ACTUAL:' || Lr_AdmiParametroDet.VALOR4
                                       || ' | VALOR_TOTAL= ' || NVL(Lr_CabecerasPorAnular.VALOR_TOTAL,0);
 
@@ -235,12 +235,12 @@ END P_CONSULTA_DETALLE_DEBITO;
                     
                 END LOOP;
                 --END LOOP C_CabecerasDebitoGen
-                --CUENTO TODAS LAS CABECERAS DEL D�BITO
+                --CUENTO TODAS LAS CABECERAS DEL DÉBITO
                 SELECT COUNT(*) INTO Ln_ContadorCabeceras
                   FROM DB_FINANCIERO.INFO_DEBITO_CAB
                  WHERE DEBITO_GENERAL_ID = Lr_DebitoGeneral.DEBITO_GENERAL_ID;
 
-                --SI SE PROCESARON TODAS LAS CABECERAS DEL D�BITO, �STE CAMBIA A 'INACTIV0'.
+                --SI SE PROCESARON TODAS LAS CABECERAS DEL DÉBITO, ÉSTE CAMBIA A 'INACTIV0'.
                 IF (Ln_ContadorCabeceras = Lr_DebitoGeneral.CANTIDAD) THEN
                     Lr_InfoDebitoGeneral.ID_DEBITO_GENERAL := Lr_DebitoGeneral.DEBITO_GENERAL_ID;
                     Lr_InfoDebitoGeneral.ESTADO            := 'Inactivo';
@@ -250,9 +250,9 @@ END P_CONSULTA_DETALLE_DEBITO;
                         RAISE Le_Exception;
                     END IF;
 
-                    --REGISTRO EN EL HISTORIAL LA ACTUALIZACI�N DEL CAMBIO DE ESTADO
+                    --REGISTRO EN EL HISTORIAL LA ACTUALIZACIÓN DEL CAMBIO DE ESTADO
                     Lr_InfoDebitoGeneralHist.DEBITO_GENERAL_ID           := Lr_DebitoGeneral.DEBITO_GENERAL_ID;
-                    Lr_InfoDebitoGeneralHist.OBSERVACION                 := 'Se Inactiva el D�bito General por proceso autom�tico. ('
+                    Lr_InfoDebitoGeneralHist.OBSERVACION                 := 'Se Inactiva el Débito General por proceso automático. ('
                                                                             || 'VALOR: ' || Lr_AdmiParametroDet.VALOR1
                                                                             || ' | DIAS: ' || Lr_AdmiParametroDet.VALOR2 || ')';
                     Lr_InfoDebitoGeneralHist.ESTADO                      := Lr_InfoDebitoGeneral.ESTADO;
@@ -297,19 +297,19 @@ END P_CONSULTA_DETALLE_DEBITO;
   END P_PROCESA_DEBITO_GENERAL;
 
   /**
-   * Documentaci�n para PROCEDIMIENTO 'P_UPDATE_INFODEBITOCAB_PARAM'.
-   * PROCEDIMIENTO QUE ANULA LAS CABECERAS, APLICADO A LOS D�BITOS EN BASE A UN RANGO DE FECHAS PARAMETRIZADOS.
+   * Documentación para PROCEDIMIENTO 'P_UPDATE_INFODEBITOCAB_PARAM'.
+   * PROCEDIMIENTO QUE ANULA LAS CABECERAS, APLICADO A LOS DÉBITOS EN BASE A UN RANGO DE FECHAS PARAMETRIZADOS.
    * EL PROCEDIMIENTO RECIBE LOS PARAMETROS:
-   * @Param Pv_Usuario      IN  (Usuario que ejecuta la transacci�n)
-   * @Param Pv_EmpresaCod   IN  (C�digo de la empresa)
-   * @Param Pv_EstadoAct    IN  (Estado antes de la actualizaci�n)
+   * @Param Pv_Usuario      IN  (Usuario que ejecuta la transacción)
+   * @Param Pv_EmpresaCod   IN  (Código de la empresa)
+   * @Param Pv_EstadoAct    IN  (Estado antes de la actualización)
    * @Param Pv_EstadoNuevo  IN  (Nuevo estado)
    * @Param Pn_ValorTotal   IN  (Valor por el que se realiza el filtro)
-   * @Param Pn_Dias         IN  (D�as que son restados de la fecha actual)
+   * @Param Pn_Dias         IN  (Días que son restados de la fecha actual)
    * @Param Pv_Mensaje      OUT (Mensaje de error)
    *
    * @author Luis Cabrera <lcabrera@telconet.ec>
-   * @version 1.0 03-12-2017 - Versi�n inicial.
+   * @version 1.0 03-12-2017 - Versión inicial.
    */
   PROCEDURE P_UPDATE_INFODEBITOCAB_PARAM (Pv_Usuario     IN  VARCHAR2,
                                           Pv_EmpresaCod  IN  VARCHAR2,
@@ -333,7 +333,7 @@ END P_CONSULTA_DETALLE_DEBITO;
     EXCEPTION
       WHEN OTHERS THEN
         ROLLBACK;
-        Pv_Mensaje := 'ERROR AL ACTUALIZAR LAS CABECERAS DE LOS D�BITOS. ';
+        Pv_Mensaje := 'ERROR AL ACTUALIZAR LAS CABECERAS DE LOS DÉBITOS. ';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                              'P_UPDATE_INFODEBITOCAB_PARAM',
                                              'Error: ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK ||
@@ -344,10 +344,10 @@ END P_CONSULTA_DETALLE_DEBITO;
   END P_UPDATE_INFODEBITOCAB_PARAM;
 
   /**
-   * Documentaci�n para P_UPDATE_INFO_DEBITO_GENERAL.
+   * Documentación para P_UPDATE_INFO_DEBITO_GENERAL.
    * Actualiza el registro por ID_DEBITO_GENERAL.
    * @author Luis Cabrera <lcabrera@telconet.ec>
-   * @version 1.0 06-12-2017 - Versi�n inicial.
+   * @version 1.0 06-12-2017 - Versión inicial.
    */
   PROCEDURE P_UPDATE_INFO_DEBITO_GENERAL (Pr_InfoDebitoGeneral IN  INFO_DEBITO_GENERAL%ROWTYPE,
                                           Pv_Mensaje           OUT VARCHAR2)
@@ -367,7 +367,7 @@ END P_CONSULTA_DETALLE_DEBITO;
   EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        Pv_Mensaje := 'ERROR AL ACTUALIZAR EL D�BITO GENERAL.';
+        Pv_Mensaje := 'ERROR AL ACTUALIZAR EL DÉBITO GENERAL.';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                              'P_UPDATE_INFO_DEBITO_GENERAL',
                                              'Error: ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK ||

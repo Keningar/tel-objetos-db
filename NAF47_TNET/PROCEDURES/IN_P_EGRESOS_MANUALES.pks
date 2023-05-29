@@ -16,16 +16,16 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.IN_P_EGRESOS_MANUALES (Pv_NoCia          
   * @author banton <banton@telconet.ec>
   * @version 1.1 02/05/2022
   *
-  * @param Pv_NoCia          IN VARCHAR2     Recibe Identificaci�n de compa��a
+  * @param Pv_NoCia          IN VARCHAR2     Recibe Identificación de compañía
   * @param Pv_TipoDocumento  IN VARCHAR2     Recibe Tipo de documento a procesar
-  * @param Pv_NoDocumento    IN VARCHAR2     Recibe Identificaci�n de documento
+  * @param Pv_NoDocumento    IN VARCHAR2     Recibe Identificación de documento
   * @param Pv_TipoMovimiento IN VARCHAR2     Recibe el tipo Movimiento: Entrada / Salida
   * @param Pv_CtaDocumento   IN VARCHAR2     Recibe Cuenta contable asociada al tipo de documento
   * @param Pd_FechaProceso   IN VARCHAR2     Recibe Fecha de proceso del documento
   * @param Pv_MensajeError   IN OUT VARCHAR2 Retorna mensaje error Retorna mensaje error
   */  
   
-  -- Declaraci�n de constantes  
+  -- Declaración de constantes  
   FLUJO_ANTERIOR  CONSTANT VARCHAR2(14) := 'FLUJO_ANTERIOR';
   --
   CURSOR c_documento IS
@@ -307,7 +307,7 @@ BEGIN
     -- movimiento contable a la cuenta de inventario
     INinserta_dc(rd.no_cia, rd.centro, rd.tipo_doc, rd.no_docu, vtmov_ctaInv, vcta_inv, Lr_Detalle.monto, vcentro_costo, Lr_Detalle.monto_dol, rd.tipo_cambio, vtercero_dc);
     --
-    -- llindao: Se genera cuenta contrapartida cuando no se contabiliz� por proyecto
+    -- llindao: Se genera cuenta contrapartida cuando no se contabilizó por proyecto
     -- llindao: si tiene pedido y login aux se busca si el servicio esta asociado a proyecto y vertical
     --          para recuperar la cuenta contable
     IF rd.no_pedido is not null AND rd.login is not null THEN

@@ -2,10 +2,10 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.BEFORE_INFO_SERVICIO_REC_CAB
   BEFORE UPDATE ON DB_COMERCIAL.INFO_SERVICIO_RECURSO_CAB FOR EACH ROW
 
   /**
-   * Documentaci�n para el trigger BEFORE_INFO_SERVICIO_REC_CAB'.
+   * Documentación para el trigger BEFORE_INFO_SERVICIO_REC_CAB'.
    * Trigger que actualiza los campos de auditoria.
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-   * @versi�n 1.0 02-04-2020
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+   * @versión 1.0 02-04-2020
    */ 
 BEGIN
   :NEW.USR_ULT_MOD := NVL(:NEW.USR_ULT_MOD,NVL(SYS_CONTEXT('USERENV','OS_USER'),USER));

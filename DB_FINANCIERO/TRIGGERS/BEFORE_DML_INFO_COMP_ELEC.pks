@@ -14,7 +14,7 @@ DECLARE
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.2 29-01-2020 - Se modifica el proceso de saldo disponible, se invoca al procedimiento 
   *                           'FNCK_FACTURACION.P_GET_VALOR_TOTAL_NC_BY_FACT' para obtener el saldo por factura 
-  *                           s�lo considerando las notas de cr�ditos.
+  *                           sólo considerando las notas de créditos.
   *
   */
   --
@@ -48,7 +48,7 @@ DECLARE
         --
           FNCK_FACTURACION.P_GET_VALOR_TOTAL_NC_BY_FACT(:OLD.DOCUMENTO_ID, Ln_Saldo);
           --
-          --Si el saldo <= 0 no permite la actualizaci�n del comprobante para su env�o al SRI
+          --Si el saldo <= 0 no permite la actualización del comprobante para su envío al SRI
           IF ROUND(Ln_Saldo, 2) <= 0 THEN
           --
             RAISE Lex_Exception;

@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.GeneraInformacionExcel AS
 
 /*
-MODULO: Planificaci�n - Reporte General
-DESCRIPCION: Procedimiento encargado de procesar la informaci�n a exportar en excel 
-CREADO POR: Jes�s Bozada
+MODULO: Planificación - Reporte General
+DESCRIPCION: Procedimiento encargado de procesar la información a exportar en excel 
+CREADO POR: Jesús Bozada
 */
   PROCEDURE generarInfoExcelReporteGeneral(estado               IN VARCHAR2,
                                            tipoSolicitud        IN VARCHAR2,
@@ -20,8 +20,8 @@ CREADO POR: Jes�s Bozada
                                            mensajeError         OUT VARCHAR2);
       
 /*
-MODULO: Planificaci�n - Reporte Asigandas
-DESCRIPCION: Procedimiento encargado de procesar la informaci�n a exportar en excel 
+MODULO: Planificación - Reporte Asigandas
+DESCRIPCION: Procedimiento encargado de procesar la información a exportar en excel 
 CREADO POR: Richard Cabrera
 */
   PROCEDURE generarInfoExcelReporteAsigna(estado               IN VARCHAR2, 
@@ -64,7 +64,7 @@ PROCEDURE generarInfoExcelReporteGeneral(estado               IN VARCHAR2,
                                          identificadorArchivo OUT VARCHAR2,
                                          mensajeError OUT VARCHAR2 ) IS
 
---Cursor para generar tipo de datos a recorrer luego de recuperar informaci�n del query dinamico
+--Cursor para generar tipo de datos a recorrer luego de recuperar información del query dinamico
   CURSOR queryTipoDeCampos
   IS
     SELECT ds.ID_DETALLE_SOLICITUD                       AS idDetalleSolicitud,
@@ -304,7 +304,7 @@ PROCEDURE generarInfoExcelReporteGeneral(estado               IN VARCHAR2,
       strsql := strsql || strwhere;
       strsql := strsql || '  ORDER BY ds.estado ASC   ';
         
-      --se ejecuta el query generado dinamicamente, en caso de traer registros se  recorrer y procesa la informaci�n 
+      --se ejecuta el query generado dinamicamente, en caso de traer registros se  recorrer y procesa la información 
 
       OPEN emp_tbl FOR strsql;
       
@@ -419,7 +419,7 @@ PROCEDURE generarInfoExcelReporteGeneral(estado               IN VARCHAR2,
               END IF;
             END IF;
             
-            --se insertan registros luego de procesar la informaci�n de cada campo utilizado
+            --se insertan registros luego de procesar la información de cada campo utilizado
             INSERT
             INTO Info_registro_excel
               (
@@ -499,7 +499,7 @@ PROCEDURE generarInfoExcelReporteAsigna(estado               IN VARCHAR2,
                                         mensajeError         OUT VARCHAR2) IS
 
         
-  --Cursor para generar tipo de datos a recorrer luego de recuperar informaci�n del query dinamico
+  --Cursor para generar tipo de datos a recorrer luego de recuperar información del query dinamico
   CURSOR queryTipoDeCampos IS
   SELECT  d.ID_DETALLE                                         as idDetalle, 
           da.ID_DETALLE_ASIGNACION                             as idDetalleAsignacion, 
@@ -1193,7 +1193,7 @@ PROCEDURE generarInfoExcelReporteAsigna(estado               IN VARCHAR2,
           END IF;
 
 
-          --se insertan registros luego de procesar la informaci�n de cada campo utilizado
+          --se insertan registros luego de procesar la información de cada campo utilizado
             INSERT
             INTO Info_registro_excel
               (

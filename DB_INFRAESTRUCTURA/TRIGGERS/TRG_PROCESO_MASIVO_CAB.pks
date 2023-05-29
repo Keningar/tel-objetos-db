@@ -1,13 +1,12 @@
--- new object type path: SCHEMA_EXPORT/TABLE/TRIGGER
 CREATE OR REPLACE TRIGGER DB_INFRAESTRUCTURA.TRG_PROCESO_MASIVO_CAB
   BEFORE INSERT ON DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB 
   REFERENCING OLD AS OLD NEW AS NEW FOR EACH ROW 
 DECLARE
  /**
-  * Documentaci�n para trigger DB_COMERCIAL.TRG_PROCESO_MASIVO_CAB
+  * Documentación para trigger DB_COMERCIAL.TRG_PROCESO_MASIVO_CAB
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 10-10-2019  Se crea trigger para cambiar a un estado intermedio los procesos masivos de reactivaci�n MD
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 10-10-2019  Se crea trigger para cambiar a un estado intermedio los procesos masivos de reactivación MD
   *                          que deben validar las promociones de BW en la que pueden estar aplicando.
   * @since 1.0
   */

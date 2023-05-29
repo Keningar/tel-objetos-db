@@ -4,17 +4,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FOX_PREMIUM AS
     TYPE T_ARRAY_OF_VARCHAR IS TABLE OF VARCHAR2(2000) INDEX BY BINARY_INTEGER;
 
   /**
-   * Record necesario en los par�metros para la creaci�n de solicitudes de instalaci�n.
+   * Record necesario en los parámetros para la creación de solicitudes de instalación.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 23-11-2018
    *     REQUEST_URL          => URL del WS consumir.
-   *     REQUEST_METHOD       => M�todo del WS a consumir.
+   *     REQUEST_METHOD       => Método del WS a consumir.
    *     HEADER_AUTHORIZATION => Cabecera Authorization del Request a consumir.
    *     URL_FILE_DIGITAL     => (Oracle Wallet) Ruta del archivo de certificado.
-   *     PASSWD_FILE_DIGITAL  => (Oracle Wallet) Contrase�a del archivo del certificado.
-   *     KEY_STATUS_OK        => Tag que contiene el valor booleano por respuesta true en caso de �xito. *Requerido*
-   *     KEY_VALUE_OK         => Tag y valor que se eval�a por un texto. tag=valor
+   *     PASSWD_FILE_DIGITAL  => (Oracle Wallet) Contraseña del archivo del certificado.
+   *     KEY_STATUS_OK        => Tag que contiene el valor booleano por respuesta true en caso de éxito. *Requerido*
+   *     KEY_VALUE_OK         => Tag y valor que se evalúa por un texto. tag=valor
    *     KEYS_ERROR           => Tags de error mapeados para poder obtener los mensajes de error. tagError|tagError2|..|tagErrorN
    */
   TYPE Lr_ConsumoWebService IS RECORD (
@@ -29,7 +29,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FOX_PREMIUM AS
     );
 
     /**
-     * Funci�n que devuelve la configuraci�n para el consumo del WS de FOX.
+     * Función que devuelve la configuración para el consumo del WS de FOX.
      * @author Luis Cabrera <lcabrera@telconet.ec>
      * @version 1.0
      * @since 17-12-2018
@@ -51,9 +51,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FOX_PREMIUM AS
                                             Pv_Mensaje        OUT VARCHAR2);
 
     /**
-     * Procedimiento que obtiene la informaci�n necesaria para el webService de ToolBox y posteriormente realiza el consumo.
-     * Crea historial por �xito o error.
-     * Si la petici�n tiene errores, se crea un proceso masivo seg�n la bandera Pv_CreaProcMasivo para posteriormente hacer un reintento.
+     * Procedimiento que obtiene la información necesaria para el webService de ToolBox y posteriormente realiza el consumo.
+     * Crea historial por éxito o error.
+     * Si la petición tiene errores, se crea un proceso masivo según la bandera Pv_CreaProcMasivo para posteriormente hacer un reintento.
      * @author Luis Cabrera <lcabrera@telconet.ec>
      * @version 1.0
      * @since 11-12-2018
@@ -85,7 +85,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FOX_PREMIUM AS
                                      Pv_Error           OUT VARCHAR2);
 
     /**
-     * Funci�n que realiza el split de una cadena.
+     * Función que realiza el split de una cadena.
      * @author Luis Cabrera <lcabrera@telconet.ec>
      * @version 1.0
      * @since 12-12-2018
@@ -97,7 +97,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_FOX_PREMIUM AS
     /**
      * Procedimiento que crea los procesos masivos por error en el consumo de fox.
      * Flujo del PMA:
-     *               1) Pendiente  => Cuando se crea el registro por alg�n error.
+     *               1) Pendiente  => Cuando se crea el registro por algún error.
      *               2) Finalizado => Cuando se realiza el reintento al WS.
      * @author Luis Cabrera <lcabrera@telconet.ec>
      * @version 1.0
@@ -229,7 +229,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
         FETCH C_GetSubscriberFox INTO Lv_SubscriberId;
         CLOSE C_GetSubscriberFox;
 
-        --Se Obtiene la configuraci�n del WS.
+        --Se Obtiene la configuración del WS.
         Lr_Configuracion := DB_COMERCIAL.CMKG_FOX_PREMIUM.F_GET_WS_CLEAR_CACHE;
 
         --Si se obtiene el usuario, se realiza el consumo clearCache.
@@ -248,7 +248,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
             Lr_InfoServicioHistorial.USR_CREACION := 'telcosFox';
             Lr_InfoServicioHistorial.FE_CREACION  := SYSDATE;
             Lr_InfoServicioHistorial.IP_CREACION  := '127.0.0.1';
-            Lr_InfoServicioHistorial.OBSERVACION  := 'No es posible establecer la comunicaci�n con Netlifeplay debido a que no tiene un usuario Activo.';
+            Lr_InfoServicioHistorial.OBSERVACION  := 'No es posible establecer la comunicación con Netlifeplay debido a que no tiene un usuario Activo.';
             DB_COMERCIAL.COMEK_TRANSACTION.P_INSERT_SERVICIO_HISTORIAL(Pr_servicioHistorial => Lr_InfoServicioHistorial,
                                                                        Lv_MensaError        => Pv_Mensaje);
         END IF;
@@ -296,7 +296,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
     BEGIN
 
         IF Lv_Url IS NULL OR Lv_Method IS NULL THEN
-            Pv_Mensaje := 'No se ha encontrado una configuraci�n v�lida para la comunicaci�n con Toolbox (Netlifeplay).';
+            Pv_Mensaje := 'No se ha encontrado una configuración válida para la comunicación con Toolbox (Netlifeplay).';
             RAISE Le_Exception;
         END IF;
 
@@ -327,14 +327,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
             Lv_MensajeError := 'Error al obtener una respuesta de Toolbox (Netlifeplay). ' || Lv_MensajeError;
         END IF;
 
-        --Si ocurri� un error al realizar la petici�n del WS, escribe historial en el servicio y crea el proceso masivo.
+        --Si ocurrió un error al realizar la petición del WS, escribe historial en el servicio y crea el proceso masivo.
         Lr_InfoServicioHistorial              := NULL;
         IF Lv_MensajeError IS NOT NULL THEN
-            Lr_InfoServicioHistorial.OBSERVACION  := 'No es posible establecer la comunicaci�n con Netlifeplay: El usuario no ha sido actualizado.'
+            Lr_InfoServicioHistorial.OBSERVACION  := 'No es posible establecer la comunicación con Netlifeplay: El usuario no ha sido actualizado.'
                                                      || Lv_MensajeError;
 
             IF 'S' = Pv_CreaProcMasivo THEN
-                --Se crea el Proceso Masivo para el reintento por error de conexi�n.
+                --Se crea el Proceso Masivo para el reintento por error de conexión.
                 DB_COMERCIAL.CMKG_FOX_PREMIUM.P_CREA_PMA_X_ERROR (Pn_IdServicio    => Pn_IdServicio,
                                                                   Pv_SubscriberId  => Pv_SubscriberId,
                                                                   Pv_TipoProceso   => 'ReintentoFox',
@@ -344,7 +344,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
                 END IF;
             END IF;
         ELSE
-            Lr_InfoServicioHistorial.OBSERVACION  := 'Se ha realizado la actualizaci�n en Netlifeplay de manera satisfactoria.';
+            Lr_InfoServicioHistorial.OBSERVACION  := 'Se ha realizado la actualización en Netlifeplay de manera satisfactoria.';
         END IF;
 
         Lr_InfoServicioHistorial.SERVICIO_ID  := Pn_IdServicio;
@@ -405,7 +405,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
             UTL_HTTP.set_wallet(Pv_UrlFileDigital, Pv_PassFileDigital);
         END IF;
 
-        --Se crea la petici�n
+        --Se crea la petición
         Lhttp_Request := UTL_HTTP.BEGIN_REQUEST(Pv_Url, Pv_Method);
 
         --Se agregan las cabeceras necesarias.
@@ -430,7 +430,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
 
         IF Lhttp_Response.STATUS_CODE <> 200 THEN
             Pcl_Response := NULL;
-            Pv_Error     := 'Problemas al realizar la petici�n. STATUS_CODE:' || Lhttp_Response.STATUS_CODE;
+            Pv_Error     := 'Problemas al realizar la petición. STATUS_CODE:' || Lhttp_Response.STATUS_CODE;
             RAISE Le_Exception;
         END IF;
 
@@ -459,7 +459,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
                                                  SYSDATE,
                                                  '127.0.0.1');
         WHEN OTHERS THEN
-            Pv_Error := 'Error inesperado al realizar la petici�n entre servidores.';
+            Pv_Error := 'Error inesperado al realizar la petición entre servidores.';
 
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Oracle-WebService',
                                                  'CMKG_FOX_PREMIUM.P_CONSUME_WEB_SERVICE', 
@@ -507,7 +507,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
             END LOOP;
 
             IF TRIM(Lv_RespuestaError) IS NULL THEN
-                Lv_RespuestaError := 'Error inesperado en la comunicaci�n.';
+                Lv_RespuestaError := 'Error inesperado en la comunicación.';
             END IF;
         END IF;
         RETURN TRIM(Lv_RespuestaError);
@@ -664,7 +664,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
         Lr_Configuracion DB_COMERCIAL.CMKG_FOX_PREMIUM.Lr_ConsumoWebService;
         Le_GenException  EXCEPTION;
 
-        --Se obtienen todos los servicios que no se realiz� correctamente el m�todo clearCache
+        --Se obtienen todos los servicios que no se realizó correctamente el método clearCache
         --Costo del query 9
         CURSOR C_GetServiciosFox (Cv_EstadoCab   DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ESTADO%TYPE,
                                   Cv_EstadoDet   DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ESTADO%TYPE,
@@ -687,10 +687,10 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
                AND ISER.ID_SERVICIO = DET.SERVICIO_ID;
 
     BEGIN
-        --Se Obtiene la configuraci�n del WS.
+        --Se Obtiene la configuración del WS.
         Lr_Configuracion := DB_COMERCIAL.CMKG_FOX_PREMIUM.F_GET_WS_CLEAR_CACHE;
         IF Lr_Configuracion.REQUEST_URL IS NULL THEN
-            Pv_Mensaje   := 'No se encontr� una configuraci�n v�lida para el consumo del WS.';
+            Pv_Mensaje   := 'No se encontró una configuración válida para el consumo del WS.';
             RAISE Le_GenException;
         END IF;
 
@@ -787,7 +787,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_FOX_PREMIUM AS
                AND DET.ESTADO = Cv_EstadoActivo;
     BEGIN
 
-        --Se obtiene la configuraci�n de la URL para saber a qu� ambiente apuntar.
+        --Se obtiene la configuración de la URL para saber a qué ambiente apuntar.
         OPEN  C_GetConfiguracion (Cv_NombreParametro => Pv_NombreParametro);
         FETCH C_GetConfiguracion INTO Lr_Retorno.REQUEST_URL,
                                       Lr_Retorno.HEADER_AUTHORIZATION,

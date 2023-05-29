@@ -4,10 +4,10 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL."AFTER_DML_INFO_PERSONA"
  /**
   * Documentacion para trigger AFTER_DML_INFO_PERSONA
   * @author Telcos
-  * @version 1.0 Trigger que valida si ya existe registrada la persona seg�n su identificaci�n.
+  * @version 1.0 Trigger que valida si ya existe registrada la persona según su identificación.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
-  * @version 1.1 21-09-2017 Se elimina la validaci�n de la identificaci�n en esta instancia.
+  * @version 1.1 21-09-2017 Se elimina la validación de la identificación en esta instancia.
   */
 DECLARE
   v_mensaje      VARCHAR2(1500);

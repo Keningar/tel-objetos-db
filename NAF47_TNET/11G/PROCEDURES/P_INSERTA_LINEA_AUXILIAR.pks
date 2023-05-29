@@ -7,7 +7,7 @@ CREATE OR REPLACE procedure NAF47_TNET.P_INSERTA_LINEA_AUXILIAR (Pv_cia         
 /**
 Documentacion para P_INSERTA_LINEA_AUXILIAR
 Procedimiento que realiza la creacion de linea contable para armar auxiliar 
-en la genracion del asiento contable por depreciaci�n.
+en la genracion del asiento contable por depreciación.
 
 @author  Martha Navarrete Martinez <mnavarrete@telconet.ec>
 @version 1.0  15/05/2017

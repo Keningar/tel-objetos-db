@@ -1,3 +1,4 @@
+
 BEGIN 
 dbms_scheduler.create_job('"JOB_RPT_DOC_DIFERIDOS_MENSUAL"',
 job_type=>'PLSQL_BLOCK', job_action=>
@@ -53,7 +54,7 @@ job_type=>'PLSQL_BLOCK', job_action=>
                                                                   LV_TIPDOC,
                                                                   REPLACE(LC_ALIASPLANTILLA.ALIAS_CORREOS,'';'','',''),
                                                                   LV_USUARIO,
-                                                                  ''Ejecuci�n reporte de documentos NCI y NDI diferidos'',
+                                                                  ''Ejecución reporte de documentos NCI y NDI diferidos'',
                                                                   ''DB_FINANCIERO'' );                                                               
     END;'
 , number_of_arguments=>0,

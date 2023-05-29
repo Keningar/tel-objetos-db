@@ -3,8 +3,8 @@ CREATE OR REPLACE TRIGGER NAF47_TNET.TR_EXCEDENTE_INSTALACIONES
   on NAF47_TNET.ARINDA 
   for each row
   /*
-  *Documentaci�n para el trigger TR_EXCEDENTE_INSTALACIONES
-  * Trigger que se ejecuta despues de realizar inserci�n de nuevo registro en catalogo de art�culos
+  *Documentación para el trigger TR_EXCEDENTE_INSTALACIONES
+  * Trigger que se ejecuta despues de realizar inserción de nuevo registro en catalogo de artículos
   * para asignar datos en la tabla DB_SOPORTE.ADMI_TAREA_MATERIAL importante para calculo de valores a cobrar a clientes 
   * por concepto de instalaciones o soporte
   *
@@ -41,7 +41,7 @@ declare
   --
 begin
   --
-  -- se recupera parametro cantidad instalaci�n
+  -- se recupera parametro cantidad instalación
   IF C_PARAMETRO_EXCEDENTE_INST%ISOPEN THEN 
     CLOSE C_PARAMETRO_EXCEDENTE_INST;
   END IF;

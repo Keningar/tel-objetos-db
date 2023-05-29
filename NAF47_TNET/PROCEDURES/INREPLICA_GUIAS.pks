@@ -14,11 +14,11 @@ FEM 07-05-2009 Se modifica, el procedimiento para que grabe la cedula y el desti
 */
 
 /*
-  * Documentaci�n para INREPLICA_GUIAS
+  * Documentación para INREPLICA_GUIAS
   * Se modifica insert a tabla ARINDETREMISION ya que no se declaran campos en el into
-  * y se agregaron campos a la tabla por lo que daba error en compilaci�n
+  * y se agregaron campos a la tabla por lo que daba error en compilación
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.1 10/07/2019
 */
 Cursor c_noLineas Is

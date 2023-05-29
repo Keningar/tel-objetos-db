@@ -9,7 +9,7 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.AFACTUALIZA ( pCia             arcgae.no_
   * @author NN 
   * @version 1.0 NN
   *
-  * @author Elvis Mu�oz emunoz@telconet.net 
+  * @author Elvis Muñoz emunoz@telconet.net 
   * Se procede al cambio de la funcion GEK_CONSULTA.F_RECUPERA_LOGIN por la sentencoa LOWER(USER)
   * @version 1.1 15/01/2023
   */

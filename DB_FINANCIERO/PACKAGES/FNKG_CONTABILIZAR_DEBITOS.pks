@@ -16,7 +16,7 @@ type tb_debitos_oficinas is table of FNKG_TRANSACTION_CONTABILIZAR.TypeDebitosOf
 type tb_pagos_debitos is table of FNKG_TRANSACTION_CONTABILIZAR.TypePagosDebito index by pls_integer;
 
   /*
-  * Documentaci�n para FUNCION 'PROCESAR_DEBITOS'.
+  * Documentación para FUNCION 'PROCESAR_DEBITOS'.
   * PROCEDIMIENTO QUE CREA ASIENTOS CONTABLES PARA LOS DEBITOS
   * PARAMETROS:
   * @Param in  varchar2  v_no_cia (id de la empresa)
@@ -27,7 +27,7 @@ type tb_pagos_debitos is table of FNKG_TRANSACTION_CONTABILIZAR.TypePagosDebito 
   * @version 1.0 Version Inicial
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 24-08-2017 - Se agrega al query principal la validaci�n para que no retorne los pagos que ya hayan sido migrados al NAF.
+  * @version 1.1 24-08-2017 - Se agrega al query principal la validación para que no retorne los pagos que ya hayan sido migrados al NAF.
   *                           Se agregan las funciones implementadas en NAF 'NAF47_TNET.GEK_MIGRACION.P_INSERTA_MIGRA_ARCKMM' para insertar en la
   *                           tabla 'MIGRA_ARCKMM'
   * @author Edson Franco <efranco@telconet.ec>
@@ -35,7 +35,7 @@ type tb_pagos_debitos is table of FNKG_TRANSACTION_CONTABILIZAR.TypePagosDebito 
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.3 13-09-2017 - Se modifica el 'NO_DOCU' para que sea diferente en cada proceso de debito migrado.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 05-10-2017 - Se agrega segmentaci�n en dos plantillas contables para PAGOS y ANTICIPOS cuando se procesan los debitos masivos.
+  * @version 1.4 05-10-2017 - Se agrega segmentación en dos plantillas contables para PAGOS y ANTICIPOS cuando se procesan los debitos masivos.
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.5 05-02-2018 - Se modifica para considerar cuenta bancaria registrada en tabla debito general
   */
@@ -74,7 +74,7 @@ FUNCTION GET_PORCENTAJE_RETENCIONES(p_empresa_cod varchar2,p_valor1 varchar2) RE
 FUNCTION GET_CUENTA_CONTABLE_POR_DESC(p_descripcion_cuenta VARCHAR2, p_tipo_cuenta VARCHAR2, p_empresa_cod VARCHAR2) RETURN VARCHAR2;
 
 /*
-* Documentaci�n para FUNCION 'F_GET_CUENTA_CONTABLE_POR_TIPO'.
+* Documentación para FUNCION 'F_GET_CUENTA_CONTABLE_POR_TIPO'.
 * FUNCION QUE OBTIENE LA CUENTA CONTABLE POR TIPO CUENTA
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.0
@@ -82,7 +82,7 @@ FUNCTION GET_CUENTA_CONTABLE_POR_DESC(p_descripcion_cuenta VARCHAR2, p_tipo_cuen
 *
 * @Param in varchar2 Pv_NombreCampoRef (descripcion cuenta contable)
 * @Param in number   Pv_NombreCampoRef (id tipo cuenta contable)
-* @Param in varchar2 Pv_NombreTipoCtaCble (Descripci�n de tipo cuenta contable)
+* @Param in varchar2 Pv_NombreTipoCtaCble (Descripción de tipo cuenta contable)
 * @Param in varchar2 Pv_NoCia (empresa)
 *@Return FNKG_TRANSACTION_CONTABILIZAR.TypeCuentaContable retorna datos de la cuenta contable
 */
@@ -94,8 +94,8 @@ FUNCTION GET_CUENTA_CONTABLE_POR_DESC(p_descripcion_cuenta VARCHAR2, p_tipo_cuen
 
 
 /*
-* Documentaci�n para FUNCION 'P_DEBITOS_MASIVOS_MD'.
-* Procedimiento que migra masivamente los debitos del d�a
+* Documentación para FUNCION 'P_DEBITOS_MASIVOS_MD'.
+* Procedimiento que migra masivamente los debitos del día
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.0
 * @since 07/02/2018
@@ -297,7 +297,7 @@ AS
     Lr_MigraDocumentoAsociado NAF47_TNET.MIGRA_DOCUMENTO_ASOCIADO%ROWTYPE;
     --
     --
-    --CURSOR C_GetParametrosDet obtiene los detalles de los parametros segun los par�metros enviados por el usuario
+    --CURSOR C_GetParametrosDet obtiene los detalles de los parametros segun los parámetros enviados por el usuario
     --COSTO QUERY: 9 
     CURSOR C_GetDetalleParametros( Cv_NombreParameteroCab DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE,
                                    Cv_EstadoParametroCab  DB_GENERAL.ADMI_PARAMETRO_DET.ESTADO%TYPE,
@@ -534,7 +534,7 @@ AS
               --
               IF Lv_MensajeError IS NOT NULL THEN
                 --
-                raise_application_error( -20010, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+                raise_application_error( -20010, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                  ' DETALLE_PAGO ( ' || lr_debito.ID_PAGO_DET || '). MENSAJE ERROR NAF (' || Lv_MensajeError ||
                                                  ' ).');
                 --
@@ -542,7 +542,7 @@ AS
               --
             ELSE
               --
-              raise_application_error( -20010, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+              raise_application_error( -20010, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || lr_debito.ID_PAGO_DET || '). MENSAJE ERROR ( NO EXISTE ID_MIGRACION ).');
               --
             END IF;
@@ -711,7 +711,7 @@ AS
   END PROCESAR_DEBITOS;
 
 /*
-* Documentaci�n para FUNCION 'CREA_ASIENTO_DEBITO_DEBITOS'.
+* Documentación para FUNCION 'CREA_ASIENTO_DEBITO_DEBITOS'.
 * PROCEDIMIENTO QUE CREA LOS DETALLES DE ASIENTOS TIPO DEBITO PARA LOS DEBITOS
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -719,7 +719,7 @@ AS
 *
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.1 06-01-2018
-* Se modifica para agregar parametro p_cuenta_contable recuperada la buscar la cuenta bancaria y no hacer doble b�squeda
+* Se modifica para agregar parametro p_cuenta_contable recuperada la buscar la cuenta bancaria y no hacer doble búsqueda
 *
 * @Param in FNKG_TRANSACTION_CONTABILIZAR.TypePlantillaContableCab pt_plantilla_contable_cab (plantilla de cabecera)
 * @Param in MIGRA_ARCKMM%ROWTYPE p_migra_arckmm (cabecera de asiento)
@@ -990,7 +990,7 @@ END CREA_ASIENTO_DEBITO_DEBITOS;
 
 
 /*
-* Documentaci�n para FUNCION 'CREA_ASIENTO_CREDITO_DEBITOS'.
+* Documentación para FUNCION 'CREA_ASIENTO_CREDITO_DEBITOS'.
 * PROCEDIMIENTO QUE CREA LOS DETALLES DE ASIENTOS TIPO CREDITO PARA LOS DEBITOS
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -1005,7 +1005,7 @@ END CREA_ASIENTO_DEBITO_DEBITOS;
 * @Param in FNKG_TRANSACTION_CONTABILIZAR.TypeDatosDebito lr_datos_debito (datos del debito)
 * @Param in tb_debitos_oficinas lr_debitos_oficina (oficinas del debito)
 * @Param out varchar2 msg_ret (string que retorna con resultado de procedimiento)
-* @Param in varchar2 Pn_IdDebitoGeneral (string solo viene llena cuando se contabiliza por debito general y no por historial d�bito)
+* @Param in varchar2 Pn_IdDebitoGeneral (string solo viene llena cuando se contabiliza por debito general y no por historial débito)
 */
 PROCEDURE CREA_ASIENTO_CREDITO_DEBITOS(
 
@@ -1203,7 +1203,7 @@ END CREA_ASIENTO_CREDITO_DEBITOS;
 
 
 /*
-* Documentaci�n para PROCEDIMIENTO 'MARCA_CONTABILIZADO_PAGO'.
+* Documentación para PROCEDIMIENTO 'MARCA_CONTABILIZADO_PAGO'.
 * PROCEDIMIENTO QUE ACTUALIZA LOS DETALLES DE PAGOS COMO YA CONTABILIZADO
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -1235,7 +1235,7 @@ END MARCA_CONTABILIZADO_PAGO;
 
 
 /*
-* Documentaci�n para FUNCION 'GET_PORCENTAJE_RETENCIONES'.
+* Documentación para FUNCION 'GET_PORCENTAJE_RETENCIONES'.
 * FUNCION QUE OBTIENE EL PORCENTAJE DE RETENCION PARA DEBITOS
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -1271,7 +1271,7 @@ END;
 
 
 /*
-* Documentaci�n para FUNCION 'GET_CUENTA_CONTABLE_POR_DESC'.
+* Documentación para FUNCION 'GET_CUENTA_CONTABLE_POR_DESC'.
 * FUNCION QUE OBTIENE LA CUENTA CONTABLE POR DESCRIPCION, TIPO CUENTA, EMPRESA y ESTADO
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0

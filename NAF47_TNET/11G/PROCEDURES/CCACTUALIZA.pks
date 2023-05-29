@@ -1198,7 +1198,7 @@ BEGIN
 
 
     IF  Ptipo_Doc = Cc_Trx_Portal.f_Parametro(Pno_Cia,'TDOC_NCRED') THEN
-      --Integraci�n con Inventario. Edgar Mu�oz (YOVERI). 10-julio-2020
+      --Integración con Inventario. Edgar Muñoz (YOVERI). 10-julio-2020
       cc_trx_portal.cc_p_genera_ingreso_inv(pv_no_cia      => Pno_Cia,
                                             pv_no_docu_nc  => Pno_Docu,
                                             pv_msgerror    => Perror);

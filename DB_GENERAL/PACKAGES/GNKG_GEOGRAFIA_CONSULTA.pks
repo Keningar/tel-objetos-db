@@ -1,8 +1,8 @@
-CREATE OR REPLACE package DB_SEGURIDAD.GNKG_GEOGRAFIA_CONSULTA is
+CREATE OR REPLACE package DB_GENERAL.GNKG_GEOGRAFIA_CONSULTA is
   /**
-  * Documentaci�n para el procedimiento P_PROVINCIA_POR_PAIS
+  * Documentación para el procedimiento P_PROVINCIA_POR_PAIS
   *
-  * M�todo encargado de retornar la lista de provincias por pais.
+  * Método encargado de retornar la lista de provincias por pais.
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
@@ -10,11 +10,11 @@ CREATE OR REPLACE package DB_SEGURIDAD.GNKG_GEOGRAFIA_CONSULTA is
   *   paisId              := Id de pais
   *   nombrePais          := Nombre de pais
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 02-03-2020
   */
   PROCEDURE P_PROVINCIA_POR_PAIS(Pcl_Request  IN  CLOB,
@@ -48,7 +48,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_GEOGRAFIA_CONSULTA is
 
     -- VALIDACIONES
     IF Ln_paisId IS NULL AND Lv_NombrePais IS NULL THEN
-      Pv_Mensaje := 'El par�metro paisId o nombrePais est� vac�o';
+      Pv_Mensaje := 'El parámetro paisId o nombrePais está vacío';
       RAISE Le_Errors;
     END IF;
     IF Lv_Estado IS NULL THEN
@@ -78,7 +78,7 @@ CREATE OR REPLACE package body DB_GENERAL.GNKG_GEOGRAFIA_CONSULTA is
     OPEN Pcl_Response FOR Lcl_Query;
 
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacci�n exitosa';
+    Pv_Mensaje    := 'Transacción exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       Pv_Status  := 'ERROR';

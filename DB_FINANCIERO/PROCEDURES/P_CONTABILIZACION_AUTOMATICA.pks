@@ -3,7 +3,7 @@ CREATE OR REPLACE procedure DB_FINANCIERO.P_CONTABILIZACION_AUTOMATICA ( Pd_Fech
                                                                          Pv_NoCia        IN VARCHAR2) is
 /**
 * Documentacion para procedimiento P_CONTABILIZACION_AUTOMATICA
-* Proceso que genera migraci�n de detalle contable al sistema NAF en background
+* Proceso que genera migración de detalle contable al sistema NAF en background
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.0 13-09-2018
 *
@@ -12,7 +12,7 @@ CREATE OR REPLACE procedure DB_FINANCIERO.P_CONTABILIZACION_AUTOMATICA ( Pd_Fech
 *
 * @Param Pd_FechaProceso IN DATE  Recibe fecha que se va a procesar
 * @Param Pv_Proceso      IN DATE  Recibe tipo de proceso a ejecutar [FACTURACION][PAGOS][TODOS]
-* @Param Pd_NoCia        IN DATE  Recibe C�digo de compania a procesar
+* @Param Pd_NoCia        IN DATE  Recibe Código de compania a procesar
 */
 
   --
@@ -103,7 +103,7 @@ begin
     END;
   END IF;
   
-  -- Proceso Migraci�n detalle contable de pagos de retenciones
+  -- Proceso Migración detalle contable de pagos de retenciones
   IF Pv_Proceso IN (Lr_Proceso.RETENCIONES, Lr_Proceso.PAGOS, Lr_Proceso.TODOS) THEN
     --
     Lr_ParFacturacion.FECHA_PROCESO := TO_CHAR(Pd_FechaProceso, 'DD/MM/YYYY');
@@ -144,7 +144,7 @@ begin
     END IF;
   END IF;
   
-  -- Proceso migraci�n detalle contable Recaudaciones TN
+  -- Proceso migración detalle contable Recaudaciones TN
   IF Pv_Proceso IN (Lr_Proceso.RECAUDACIONES, Lr_Proceso.PAGOS, Lr_Proceso.TODOS) AND Lr_ParFacturacion.PREFIJO = Lr_Empresa.TELCONET THEN
     BEGIN
       Lr_ParFacturacion.FECHA_PROCESO := TO_CHAR(Pd_FechaProceso, 'DD/MM/YYYY');
@@ -163,7 +163,7 @@ begin
     END;
   END IF;
   
-  -- Proceso migraci�n detalle contable Recaudaciones MD
+  -- Proceso migración detalle contable Recaudaciones MD
   IF Pv_Proceso IN (Lr_Proceso.RECAUDACIONES, Lr_Proceso.PAGOS, Lr_Proceso.TODOS) AND Lr_ParFacturacion.PREFIJO IN (Lr_Empresa.MEGADATOS, Lr_Empresa.ECUANET) THEN
     BEGIN
       Lr_ParFacturacion.FECHA_PROCESO := TO_CHAR(Pd_FechaProceso, 'DD/MM/YYYY');
@@ -182,7 +182,7 @@ begin
     END;
   END IF;
   
-  -- Proceso migraci�n detalle contable D�bitos Masivos MD
+  -- Proceso migración detalle contable Débitos Masivos MD
   IF Pv_Proceso IN (Lr_Proceso.DEBITOS, Lr_Proceso.PAGOS, Lr_Proceso.TODOS) AND Lr_ParFacturacion.PREFIJO IN (Lr_Empresa.MEGADATOS, Lr_Empresa.ECUANET) THEN
     BEGIN
       Lr_ParFacturacion.FECHA_PROCESO := TO_CHAR(Pd_FechaProceso, 'DD/MM/YYYY');
@@ -201,7 +201,7 @@ begin
     END;
   END IF;
   --
-  -- Proceso migraci�n FACTURAS
+  -- Proceso migración FACTURAS
   IF Pv_Proceso IN (Lr_Proceso.FACTURAS, Lr_Proceso.FACTURACION, Lr_Proceso.TODOS) THEN
     BEGIN
       Lr_ParFacturacion.TIPO_DOCUMENTO := 'FAC';
@@ -228,7 +228,7 @@ begin
     END;
   END IF;
   
-  -- Proceso migraci�n ANULACIONES FACTURAS
+  -- Proceso migración ANULACIONES FACTURAS
   IF Pv_Proceso in (Lr_Proceso.ANULA_FACTURA, Lr_Proceso.FACTURACION, Lr_Proceso.TODOS) THEN
     BEGIN
       --
@@ -257,7 +257,7 @@ begin
     END;
   END IF;
   
-  -- Proceso migraci�n NOTAS CREDITOS
+  -- Proceso migración NOTAS CREDITOS
   IF Pv_Proceso IN (Lr_Proceso.NOTAS_CREDITOS, Lr_Proceso.FACTURACION, Lr_Proceso.TODOS) THEN
     BEGIN
       Lr_ParFacturacion.TIPO_DOCUMENTO := 'NC';
@@ -284,7 +284,7 @@ begin
     END;
   END IF;
   
-  -- Proceso migraci�n ANULACIONES NOTAS CREDITOS
+  -- Proceso migración ANULACIONES NOTAS CREDITOS
   IF Pv_Proceso in (Lr_Proceso.ANULA_NOTAS_CREDITOS, Lr_Proceso.FACTURACION, Lr_Proceso.TODOS) THEN
     BEGIN
       --

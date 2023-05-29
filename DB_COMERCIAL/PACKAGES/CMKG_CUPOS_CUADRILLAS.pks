@@ -2,19 +2,19 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CUPOS_CUADRILLAS AS
     /**
       * Documentacion para el procedimiento P_SET_CUPOS_CUADRILLAS
       *
-      * M�todo encargado de Generar cupos para planificacion en linea por un tiempo determinado
+      * Método encargado de Generar cupos para planificacion en linea por un tiempo determinado
       *
-      * @param Pd_FeInicio     IN  DATE     Recibe la fecha desde, para la generaci�n de los cupos.
-      * @param Pd_FeFin        IN  DATE     Recibe la fecha hasta, para la generaci�n de los cupos.
-      * @param Pn_Jurisdiccion IN NUMBER    Recibe el Id de la jurisdicci�n.
+      * @param Pd_FeInicio     IN  DATE     Recibe la fecha desde, para la generación de los cupos.
+      * @param Pd_FeFin        IN  DATE     Recibe la fecha hasta, para la generación de los cupos.
+      * @param Pn_Jurisdiccion IN NUMBER    Recibe el Id de la jurisdicción.
       * @param Pn_IdPlantilla  IN NUMBER    Recibe el Id de la cabecera de la agenda para el formato de los horarios
       * @param Pn_Resul        OUT NUMBER   Retorna un codigo de resultado (0=Exito, 1=Error)
-      * @param Pv_Resul        OUT VARCHAR2 Retorna el mensaje de resultado de la transacci�n
+      * @param Pv_Resul        OUT VARCHAR2 Retorna el mensaje de resultado de la transacción
       *
       * @author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 16-03-2018
       *
-      * @Modificaci�n: Se reestructura el procedimiento para ser consumido desde el telcos
+      * @Modificación: Se reestructura el procedimiento para ser consumido desde el telcos
       * @Autor Juan Romero Aguilar <jromero@telconet.ec>
       * @Version 1.1 06/06/2018
       */
@@ -28,22 +28,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CUPOS_CUADRILLAS AS
     /**
       * Documentacion para el procedimiento P_GENERA_CUPOS_CUADRILLA
       *
-      * Procedimiento para la generaci�n de cupos de un d�a espec�fico
+      * Procedimiento para la generación de cupos de un día específico
       *
-      * @param Pt_FeRegistro   IN  DATE      Recibe la fecha para la cual se crear�n los cupos
+      * @param Pt_FeRegistro   IN  DATE      Recibe la fecha para la cual se crearán los cupos
       * @param Pn_IdPlantilla  IN  NUMBER    Recibe el Id de la agenda para el formato de los horarios
-      * @param Pn_Tiempo       IN  NUMBER    Recibe el n�mero de minutos de intervalo para registrar (formato HAL)
-      * @param Pn_Jurisdiccion IN  NUMBER    Recibe el Id de la jurisdicci�n.
+      * @param Pn_Tiempo       IN  NUMBER    Recibe el número de minutos de intervalo para registrar (formato HAL)
+      * @param Pn_Jurisdiccion IN  NUMBER    Recibe el Id de la jurisdicción.
       * @param Pn_Cupo         IN  NUMBER    Recibe total de cupos a generar por horario
-      * @param Pv_UsrCreacion  IN  VARCHAR2  Recibe login del usuario que ejecuta la transacci�n
-      * @param PV_IpCreacion   IN  VARCHAR2  Recibe Ip desde la cual se ejecuta la transacci�n
+      * @param Pv_UsrCreacion  IN  VARCHAR2  Recibe login del usuario que ejecuta la transacción
+      * @param PV_IpCreacion   IN  VARCHAR2  Recibe Ip desde la cual se ejecuta la transacción
       * @param Pn_Resul        OUT NUMBER    Retorna un codigo de resultado (0=Exito, 1=Error)
-      * @param Pv_Resul        OUT VARCHAR2  Retorna el mensaje de resultado de la transacci�n
+      * @param Pv_Resul        OUT VARCHAR2  Retorna el mensaje de resultado de la transacción
       *
       * @author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 28-03-2018
       *
-      * @Modificaci�n: Se reestructura el procedimiento para que genere los cupos segun la fecha y plantilla recibida.
+      * @Modificación: Se reestructura el procedimiento para que genere los cupos segun la fecha y plantilla recibida.
       * @Autor Juan Romero Aguilar <jromero@telconet.ec>
       * @Version 1.1 06/06/2018
       */
@@ -65,11 +65,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CUPOS_CUADRILLAS AS
       *
       * @param Pd_HoraInicio       IN DATE      Recibe Fecha y hora desde, del horario al cual se le crearan los cupos
       * @param Pd_HoraFin          IN DATE      REcibe Fecha y hora hasta, del horario al cual se le crearan los cupos
-      * @param Pn_IdJurisdiccion   IN NUMBER    Recibe Id de la jurisdicci�n
-      * @param Pn_CuposIngresar    IN NUMBER    Recibe n�mero de Cupos a generar
+      * @param Pn_IdJurisdiccion   IN NUMBER    Recibe Id de la jurisdicción
+      * @param Pn_CuposIngresar    IN NUMBER    Recibe número de Cupos a generar
       * @param Pn_TotalCupos       IN NUMBER    Recibe total de cupos para la plantilla
       * @param Pn_Resul            OUT NUMBER   Retorna un codigo de resultado (0=Exito, 1=Error)
-      * @param Pv_Resul            OUT VARCHAR2 Retorna el mensaje de resultado de la transacci�n
+      * @param Pv_Resul            OUT VARCHAR2 Retorna el mensaje de resultado de la transacción
       *
       * @author Juan Romero <jromero@telconet.ec>
       * @version 1.0 07-06-2018
@@ -87,22 +87,22 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CUPOS_CUADRILLAS AS
     /**
       * Documentacion para el procedimiento P_INSERTA_CUPOS_CUADRILLA
       *
-      * M�todo encargado de solicitar la inserci�n de los registros en la tabla DB_COMERCIAL.INFO_CUPO_PLANIFICACION
+      * Método encargado de solicitar la inserción de los registros en la tabla DB_COMERCIAL.INFO_CUPO_PLANIFICACION
       *
-      * @param Pd_HoraInicio        IN  DATE      Recibe la fecha desde, para la cual se crear�n los cupos
-      * @param Pd_HoraFin           IN  DATE      Recibe la fecha hasta, para la cual se crear�n los cupos
-      * @param Pn_Jurisdiccion      IN  NUMBER    Recibe el Id de la jurisdicci�n.
+      * @param Pd_HoraInicio        IN  DATE      Recibe la fecha desde, para la cual se crearán los cupos
+      * @param Pd_HoraFin           IN  DATE      Recibe la fecha hasta, para la cual se crearán los cupos
+      * @param Pn_Jurisdiccion      IN  NUMBER    Recibe el Id de la jurisdicción.
       * @param Pn_TotalCupos        IN  NUMBER    Recibe total de cupos a generar por horario
-      * @param Pv_UsrCreacion       IN  VARCHAR2  Recibe login del usuario que ejecuta la transacci�n
-      * @param PV_IpCreacion        IN  VARCHAR2  Recibe Ip desde la cual se ejecuta la transacci�n
-      * @param Pb_ValidaInsercion   IN BOOLEAN    Recibe instrucci�n si debe o no validar el m�ximo de registros a insertar por horario
+      * @param Pv_UsrCreacion       IN  VARCHAR2  Recibe login del usuario que ejecuta la transacción
+      * @param PV_IpCreacion        IN  VARCHAR2  Recibe Ip desde la cual se ejecuta la transacción
+      * @param Pb_ValidaInsercion   IN BOOLEAN    Recibe instrucción si debe o no validar el máximo de registros a insertar por horario
       * @param Pn_Resul             OUT NUMBER    Retorna un codigo de resultado (0=Exito, 1=Error)
-      * @param Pv_Resul             OUT VARCHAR2  Retorna el mensaje de resultado de la transacci�n
+      * @param Pv_Resul             OUT VARCHAR2  Retorna el mensaje de resultado de la transacción
       *
       * @author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 28-03-2018
       *
-      * @Modificaci�n: Se cambia los parametros del procedimiento, de acuerdo a la nueva logica del resto de procedimientos.
+      * @Modificación: Se cambia los parametros del procedimiento, de acuerdo a la nueva logica del resto de procedimientos.
       * @Autor Juan Romero Aguilar <jromero@telconet.ec>
       * @Version 1.1 06/06/2018
       */
@@ -155,7 +155,7 @@ AS
             WHERE DESCRIPCION = Cv_Descripcion;
     --**************************************************
     BEGIN
-    --************************Validaci�n y obtencion de par�metros******************************     
+    --************************Validación y obtencion de parámetros******************************     
         IF(Pn_Jurisdiccion IS NULL)THEN
             Pn_Resul :=1;
             Pv_Resul := 'Pn_Jurisdiccion no puede ser nula';
@@ -170,7 +170,7 @@ AS
         CLOSE C_Jurisdiccion;
         IF(Ln_jurisdiccion IS NULL)THEN
             Pn_Resul :=1;
-            Pv_Resul := 'No se encontr� informaci�n para la jurisdicci�n: '||Pn_Jurisdiccion;
+            Pv_Resul := 'No se encontró información para la jurisdicción: '||Pn_Jurisdiccion;
             RETURN;        
         END IF;
 
@@ -182,7 +182,7 @@ AS
         CLOSE C_Parametros;
         IF(Ln_Tiempo IS NULL)THEN
             Pn_Resul :=1;
-            Pv_Resul := 'No se encontr� el par�metro Ln_Tiempo';
+            Pv_Resul := 'No se encontró el parámetro Ln_Tiempo';
             RETURN;        
         END IF;   
 
@@ -219,7 +219,7 @@ AS
         select SYS_CONTEXT('USERENV', 'IP_ADDRESS', 15)into lv_IpLocal from dual;
         Ld_FeBarrido := Ld_FeInicio;
         WHILE (Ld_FeBarrido <= Ld_FeFin) LOOP
-            --Para procesar para cada uno de los d�as
+            --Para procesar para cada uno de los días
             DB_COMERCIAL.CMKG_CUPOS_CUADRILLAS.P_GENERA_CUPOS_CUADRILLA(Ld_FeBarrido,
                                                                             Ln_IdPlantilla,
                                                                             Ln_Tiempo,
@@ -299,7 +299,7 @@ AS
     --*************************************
 
    BEGIN
-    --*******************Validaci�n de parametros****************
+    --*******************Validación de parametros****************
         IF (Pd_FeRegistro IS NULL) THEN
             Pn_Resul :=1;
             Pv_Resul := 'Pd_FeRegistro no puede ser nula';
@@ -343,7 +343,7 @@ AS
             CLOSE C_CuposTotales;
             IF (Ln_TotCupo<=0) THEN
                 Pn_Resul :=1;
-                Pv_Resul :=Lv_Programa||' : No se encontr� agenda para la fecha y jurisdicci�n enviadas';
+                Pv_Resul :=Lv_Programa||' : No se encontró agenda para la fecha y jurisdicción enviadas';
                 RETURN;
             END IF;
             --------
@@ -390,7 +390,7 @@ AS
             Pv_Resul :='OK';
         ELSE
             Pn_Resul :=1;
-            Pv_Resul :=Lv_Programa||' : '||'No se encuentra informaci�n de la agenda enviada!!!';        
+            Pv_Resul :=Lv_Programa||' : '||'No se encuentra información de la agenda enviada!!!';        
         END IF;
     EXCEPTION
         WHEN OTHERS THEN
@@ -440,7 +440,7 @@ AS
     --*****************************************************  
 
     BEGIN       
-    --*******************Validaci�n de par�metros***********
+    --*******************Validación de parámetros***********
         IF (Pd_HoraInicio IS NULL) THEN
             Pn_Resul :=1;
             Pv_Resul := 'Pd_HoraInicio no puede ser nula';
@@ -479,7 +479,7 @@ AS
         CLOSE C_Parametros;
         IF(Ln_Tiempo IS NULL)THEN
             Pn_Resul :=1;
-            Pv_Resul := 'No se encontr� el par�metro Ln_Tiempo';
+            Pv_Resul := 'No se encontró el parámetro Ln_Tiempo';
             RETURN;        
         END IF; 
 
@@ -495,7 +495,7 @@ AS
         CLOSE C_CuposTotales;
         IF (Ln_TotCupo<=0) THEN
             Pn_Resul :=1;
-            Pv_Resul :=Lv_Programa||' : No se encontr� agenda para la fecha y jurisdicci�n enviadas';
+            Pv_Resul :=Lv_Programa||' : No se encontró agenda para la fecha y jurisdicción enviadas';
             RETURN;
         END IF;
         --------       
@@ -555,7 +555,7 @@ AS
     --*****************************************************
 
     BEGIN
-    --*******************Validaci�n de parametros****************
+    --*******************Validación de parametros****************
         IF (Pd_HoraInicio IS NULL) THEN
             Pn_Resul :=1;
             Pv_Resul := 'Pv_HoraInicio no puede ser nula';

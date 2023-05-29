@@ -1,27 +1,27 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
 
   /**
-  * Documentaci�n para el Procedimiento P_REINGRESO_ORDEN_SERVICIO
+  * Documentación para el Procedimiento P_REINGRESO_ORDEN_SERVICIO
   *
-  * M�todo encargado de realizar el proceso autom�tico de
+  * Método encargado de realizar el proceso automático de
   * reingreso de orden de servicio.
   *
-  * @param Pcl_Json    IN  CLOB     Recibe el JSON con la informaci�n a considerar en el proceso autom�tico.
+  * @param Pcl_Json    IN  CLOB     Recibe el JSON con la información a considerar en el proceso automático.
   * @param Pv_Mensaje  OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 03-09-2019
 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 20-03-2020  Se realiza la llamada al webservice putReingresoOrdenServicio que se encargar� de :
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 20-03-2020  Se realiza la llamada al webservice putReingresoOrdenServicio que se encargará de :
   *                          Guardar las modificaciones realizadas en (info_punto, info_punto_forma_contacto, info_punto_dato_adicional)
   *                          Guardar historial de la modificaciones realizadas (info_servicio_historial, info_punto_historial, 
   *                          info_persona_empresa_rol_hist)
-  *                          Guardar la caracter�stica del servicio que entr� como proceso de reingreso autom�tico en info_servicio_caracteristica 
-  *                          Caracter�stica: "ID_SERVICIO_REINGRESO" 
-  *                          Llamada a los procesos sigts para Factibilidad y PrePlanificaci�n .
+  *                          Guardar la característica del servicio que entró como proceso de reingreso automático en info_servicio_caracteristica 
+  *                          Característica: "ID_SERVICIO_REINGRESO" 
+  *                          Llamada a los procesos sigts para Factibilidad y PrePlanificación .
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.2 27-07-2021 Se habilita Flujo de Reingreso de ordenes de servicio para servicios con tipo de orden T: Traslado, se valida que exista
   *                         el ID_SERVICIO origen del traslado.
   *
@@ -32,7 +32,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                        Pv_Mensaje OUT VARCHAR2);
 
  /**
-  * Documentaci�n para F_GET_CARACT_SERVICIO
+  * Documentación para F_GET_CARACT_SERVICIO
   * Retorna el valor de la Caracteristica del Servicio.
   * 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -41,7 +41,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
   * Costo CURSOR C_GetCaractServicio: 4
   *
   * @param   Fn_IdServicio    IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
-  * @param   Fv_DesCaract     IN VARCHAR2 Descripci�n de Caracteristica
+  * @param   Fv_DesCaract     IN VARCHAR2 Descripción de Caracteristica
   * @return VARCHAR2   Retorna Valor de la Caracteristica.
   */
   FUNCTION F_GET_CARACT_SERVICIO(Fn_IdServicio    IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -51,16 +51,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
   /**
   * Documentacion para el Procedimiento P_SET_CLON_SERVICIO
   *
-  * M�todo encargado de clonar un servicio.
+  * Método encargado de clonar un servicio.
   *
   * @param Pn_IdServicio      IN  NUMBER   Recibe el id del servicio a clonar
-  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonaci�n.
-  * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de creaci�n del servicio a clonar.
+  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonación.
+  * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de creación del servicio a clonar.
   * @param Pn_IdServicioNuevo OUT NUMBER   Retorna Id del servicio nuevo o clonado.
   * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
   * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.    
   *
-  * @author Anebelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anebelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 20-03-2020
   */
 
@@ -72,18 +72,18 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                 Pv_Mensaje         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el Procedimiento P_SET_CLON_SERVICIO_TECNICO
+  * Documentación para el Procedimiento P_SET_CLON_SERVICIO_TECNICO
   *
-  * M�todo encargado de clonar la informaci�n t�cnica de un servicio.
+  * Método encargado de clonar la información técnica de un servicio.
   *
   * @param Pn_IdServicioClon  IN  NUMBER   Recibe el id del servicio a clonar
   * @param Pn_IdServicioNuevo IN  NUMBER   Recibe el id del Servicio clonado.
-  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonaci�n.
-  * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de creaci�n del servicio a clonar.
+  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonación.
+  * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de creación del servicio a clonar.
   * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
   * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 03-09-2019
   */
   PROCEDURE P_SET_CLON_SERVICIO_TECNICO(Pn_IdServicioClon  IN  NUMBER,
@@ -94,20 +94,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                         Pv_Mensaje         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el Procedimiento P_SET_CLON_SERVICIO_PLAN
+  * Documentación para el Procedimiento P_SET_CLON_SERVICIO_PLAN
   *
-  * M�todo encargado de clonar las caracter�sticas de un servicio.
+  * Método encargado de clonar las características de un servicio.
   *
   * @param Pn_IdServicioClon  IN  NUMBER   Recibe el id del servicio a clonar
   * @param Pn_IdServicioNuevo IN  NUMBER   Recibe el id del Servicio clonado.
-  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonaci�n.
+  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonación.
   * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
   * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 03-09-2019
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 20-03-2020  - Se cambia Insert de caracteristicas por plan con sentencia FORALL
   */
   PROCEDURE P_SET_CLON_SERVICIO_PLAN(Pn_IdServicioClon  IN  NUMBER,
@@ -117,21 +117,21 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                      Pv_Mensaje         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el Procedimiento P_SET_HISTORIAL_SERVICIO
+  * Documentación para el Procedimiento P_SET_HISTORIAL_SERVICIO
   *
-  * M�todo de ingresar un historial del servicio.
+  * Método de ingresar un historial del servicio.
   *
   * @param Pn_IdServicio      IN  NUMBER   Recibe el id del servicio.
   * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario de quien ingresa el historial.
   * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de quien ingresa el historial.
   * @param Pv_Estado          IN  VARCHAR2 Recibe el estado del servicio.
   * @param Pn_IdMotivo        IN  NUMBER   Recibe el motivo.
-  * @param Pv_Observacion     IN  VARCHAR2 Recibe la observaci�n.
-  * @param Pv_Accion          IN  VARCHAR2 Recibe la acci�n.
+  * @param Pv_Observacion     IN  VARCHAR2 Recibe la observación.
+  * @param Pv_Accion          IN  VARCHAR2 Recibe la acción.
   * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
   * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 03-09-2019
   */
   PROCEDURE P_SET_HISTORIAL_SERVICIO(Pn_IdServicio      IN  NUMBER,
@@ -144,17 +144,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                      Pv_Proceso         OUT VARCHAR2,
                                      Pv_Mensaje         OUT VARCHAR2);
   /**
-  * Documentaci�n para el Procedimiento P_SET_NOTIFICA_USUARIO
+  * Documentación para el Procedimiento P_SET_NOTIFICA_USUARIO
   *
-  * M�todo encargado de notificar al usuario vendedor la culminaci�n del proceso de reingreso de OS.
+  * Método encargado de notificar al usuario vendedor la culminación del proceso de reingreso de OS.
   *
   * @param Pn_IdServicio IN  VARCHAR2  Recibe el id del servicio.
-  * @param Pv_Mensaje    IN  VARCHAR2  Recibe la observaci�n del mensaje.
-  * @param Pv_Usuario    IN  VARCHAR2  Recibe el usuario quien realiza la acci�n.
-  * @param Pv_Ip         IN  VARCHAR2  Recibe la ip del usuario quien realiza la acci�n.
+  * @param Pv_Mensaje    IN  VARCHAR2  Recibe la observación del mensaje.
+  * @param Pv_Usuario    IN  VARCHAR2  Recibe el usuario quien realiza la acción.
+  * @param Pv_Ip         IN  VARCHAR2  Recibe la ip del usuario quien realiza la acción.
   * @param Pv_Error      OUT VARCHAR2  Retorna un mensaje de error en caso de existir.
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 03-09-2019
   */
   PROCEDURE P_SET_NOTIFICA_USUARIO(Pn_IdServicio      IN  VARCHAR2,
@@ -164,20 +164,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                    Pv_Error           OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el Procedimiento P_SET_CARACTERISTICA_REINGRESO
+  * Documentación para el Procedimiento P_SET_CARACTERISTICA_REINGRESO
   *
-  * M�todo encargado de Guardar la caracter�stica del servicio que entr� como proceso de reingreso autom�tico en info_servicio_caracteristica 
-  * Caracter�stica: "ID_SERVICIO_REINGRESO" 
+  * Método encargado de Guardar la característica del servicio que entró como proceso de reingreso automático en info_servicio_caracteristica 
+  * Característica: "ID_SERVICIO_REINGRESO" 
   *
   * @param Pn_IdServicio             IN  NUMBER, Recibe el id del servicio Origen del Reingreso.
   * @param Pn_IdServicioNuevo        IN  NUMBER, Recibe el id del servicio Destino o clonado por el reingreso.
-  * @param Pv_CaracteristicaReing    IN  VARCHAR2  Recibe la descripci�n de la caracteristica.
-  * @param Pv_UsuarioCreacion        IN  VARCHAR2  Recibe el usuario quien realiza la acci�n.
-  * @param Pv_IpCreacion             IN  VARCHAR2 Recibe la Ip de creaci�n.
+  * @param Pv_CaracteristicaReing    IN  VARCHAR2  Recibe la descripción de la caracteristica.
+  * @param Pv_UsuarioCreacion        IN  VARCHAR2  Recibe el usuario quien realiza la acción.
+  * @param Pv_IpCreacion             IN  VARCHAR2 Recibe la Ip de creación.
   * @param Pv_Proceso                OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
   * @param Pv_Mensaje                OUT VARCHAR2  Retorna un mensaje de error en caso de existir.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 20-03-2020
   */                                 
   PROCEDURE P_SET_CARACTERISTICA_REINGRESO(Pn_IdServicio           IN  NUMBER,
@@ -189,15 +189,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                            Pv_Mensaje              OUT VARCHAR2); 
 
   /**
-   * Documentaci�n para el Procedimiento P_FACTURACION_INSTAL_REINGRESO
+   * Documentación para el Procedimiento P_FACTURACION_INSTAL_REINGRESO
    *
-   * Procedimiento que realiza el Flujo de Facturaci�n por Instalaci�n por servicio con reingreso de orden de servicio autom�tica,
-   * se considera el proceso de Mapeo y Aplicaci�n de Promociones de Instalaci�n.   
+   * Procedimiento que realiza el Flujo de Facturación por Instalación por servicio con reingreso de orden de servicio automática,
+   * se considera el proceso de Mapeo y Aplicación de Promociones de Instalación.   
    *   
-   * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+   * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
    * @version 1.0 25-03-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec> 
+   * @author José Candelario <jcandelario@telconet.ec> 
    * @version 1.1 19-01-2021 -Se modifica proceso por el nuevo parametro de salida que se agrego al proceso P_FACTURACION_INSTAL_REINGRESO
    *                          para evitar descompilaciones al ejecutar.
    *
@@ -216,89 +216,89 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                               Pv_Mensaje       OUT VARCHAR2);    
 
   /**
-   * Documentaci�n para el Procedimiento P_EJECUTA_SERVICIOS_PREFACT
+   * Documentación para el Procedimiento P_EJECUTA_SERVICIOS_PREFACT
    *
-   * M�todo encargado de retomar las ordenes de servicios reingresadas en estado factible y que tienen un historial de prefactible,
-   * para continuar el flujo de facturaci�n y convertir a OT.
+   * Método encargado de retomar las ordenes de servicios reingresadas en estado factible y que tienen un historial de prefactible,
+   * para continuar el flujo de facturación y convertir a OT.
    *
    * Costo Query C_Servicio:144
    * Costo Query C_PARAMETROS_WS:4
    * Costo Query C_ObtieneDias:4
    *
-   * @param Pv_CodEmpresa IN  VARCHAR2 C�digo de la empresa.
+   * @param Pv_CodEmpresa IN  VARCHAR2 Código de la empresa.
    *
-   * @author Jos� candelario <jcandelario@telconet.ec>
+   * @author José candelario <jcandelario@telconet.ec>
    * @version 1.0 05-03-2020
    */
    
   PROCEDURE P_EJECUTA_SERVICIOS_PREFACT(Pv_CodEmpresa IN  VARCHAR2);
 
   /**
-   * Documentaci�n para el Procedimiento P_EJECUTA_SERVICIOS_FACT
+   * Documentación para el Procedimiento P_EJECUTA_SERVICIOS_FACT
    *
-   * M�todo encargado de retomar las ordenes de servicios reingresadas en estado factible que no culminaron correctamente el flujo de
-   * facturaci�n, para continuar el flujo de facturaci�n y convertir a OT.
+   * Método encargado de retomar las ordenes de servicios reingresadas en estado factible que no culminaron correctamente el flujo de
+   * facturación, para continuar el flujo de facturación y convertir a OT.
    *
    * Costo Query C_Servicio:144
    * Costo Query C_PARAMETROS_WS:4
    * Costo Query C_ObtieneDias:4
    *
-   * @param Pv_CodEmpresa IN  VARCHAR2 C�digo de la empresa.
+   * @param Pv_CodEmpresa IN  VARCHAR2 Código de la empresa.
    *
-   * @author Jos� candelario <jcandelario@telconet.ec>
+   * @author José candelario <jcandelario@telconet.ec>
    * @version 1.0 05-03-2020
    */
 
   PROCEDURE P_EJECUTA_SERVICIOS_FACT(Pv_CodEmpresa IN  VARCHAR2);
 
   /**
-   * Documentaci�n para el Procedimiento P_PENDIENTE_CONVERTIR_OT
+   * Documentación para el Procedimiento P_PENDIENTE_CONVERTIR_OT
    *
-   * M�todo encargado de retomar las ordenes de servicios reingresadas que pasaron correctamente el flujo de facturaci�n, pero a�n no
+   * Método encargado de retomar las ordenes de servicios reingresadas que pasaron correctamente el flujo de facturación, pero aún no
    * pasan las validaciones para convertir a OT.
    *
    * Costo Query C_Servicio:144
    * Costo Query C_PARAMETROS_WS:4
    *
-   * @param Pv_CodEmpresa IN  VARCHAR2 C�digo de la empresa.
+   * @param Pv_CodEmpresa IN  VARCHAR2 Código de la empresa.
    *
-   * @author Jos� candelario <jcandelario@telconet.ec>
+   * @author José candelario <jcandelario@telconet.ec>
    * @version 1.0 05-03-2020
    */
 
   PROCEDURE P_PENDIENTE_CONVERTIR_OT(Pv_CodEmpresa IN  VARCHAR2);
 
   /**
-   * Documentaci�n para el Procedimiento P_REPORTE_REINGRESO
+   * Documentación para el Procedimiento P_REPORTE_REINGRESO
    *
-   * M�todo encargado de generar un reporte diario de los servicios reingresados que se convirtieron correctamente en OT del d�a anterior.
+   * Método encargado de generar un reporte diario de los servicios reingresados que se convirtieron correctamente en OT del día anterior.
    *
    * Costo Query C_GetDatosServicios: 1000
    * Costo Query C_ObtieneDias:4
    *
-   * @param Pv_CodEmpresa IN  VARCHAR2 C�digo de la empresa.
+   * @param Pv_CodEmpresa IN  VARCHAR2 Código de la empresa.
    *
-   * @author Jos� candelario <jcandelario@telconet.ec>
+   * @author José candelario <jcandelario@telconet.ec>
    * @version 1.0 05-03-2020
    *
-   * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-   * @version 1.1 05-02-2021 - Se realiza correcci�n debido a que no se esta mostrando el motivo de anulaci�n de la orden de servicio
-   *                           Se realiza la correcci�n para obtener la fecha minima de preplanifcaci�n debido al error presentado en servicios 
-   *                           con doble historial de preplanificaci�n.
+   * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+   * @version 1.1 05-02-2021 - Se realiza corrección debido a que no se esta mostrando el motivo de anulación de la orden de servicio
+   *                           Se realiza la corrección para obtener la fecha minima de preplanifcación debido al error presentado en servicios 
+   *                           con doble historial de preplanificación.
    */
 
   PROCEDURE P_REPORTE_REINGRESO (Pv_CodEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_SERVICIO'.
+   * Documentación para PROCEDURE 'P_UPDATE_INFO_SERVICIO'.
    *
    * Procedimiento que actualiza un registro en la tabla de Info_Servicio
    *
    * PARAMETROS:
-   * @Param Pr_InfoServicio   IN  DB_COMERCIAL.INFO_SERVICIO%ROWTYPE  Recibe un registro con la informaci�n para actualizar.
-   * @Param Pv_MsjResultado   OUT VARCHAR2                            Devuelve un mensaje del resultado de ejecuci�n.
+   * @Param Pr_InfoServicio   IN  DB_COMERCIAL.INFO_SERVICIO%ROWTYPE  Recibe un registro con la información para actualizar.
+   * @Param Pv_MsjResultado   OUT VARCHAR2                            Devuelve un mensaje del resultado de ejecución.
    * 
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 05-03-2020
    */
    
@@ -306,15 +306,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                    Pv_MsjResultado   OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOL'.
+   * Documentación para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOL'.
    *
    * Procedimiento que actualiza un registro en la tabla de Info_Detalle_Solicitud
    *
    * PARAMETROS:
-   * @Param Pr_InfoDetalleSolicitud  IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE  Recibe un registro con la informaci�n para actualizar.
-   * @Param Pv_MsjResultado          OUT VARCHAR2                            Devuelve un mensaje del resultado de ejecuci�n.
+   * @Param Pr_InfoDetalleSolicitud  IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE  Recibe un registro con la información para actualizar.
+   * @Param Pv_MsjResultado          OUT VARCHAR2                            Devuelve un mensaje del resultado de ejecución.
    * 
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 05-03-2020
    */
    
@@ -427,7 +427,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
         CLOSE C_GetIdServOrigenTraslado;
 
         IF Lv_IdServicioTraslado IS NULL THEN
-          Lv_Error := 'OS No procede para Reingreso Autom�tico: No se encontro servicio origen del traslado.';
+          Lv_Error := 'OS No procede para Reingreso Automático: No se encontro servicio origen del traslado.';
           DB_COMERCIAL.CMKG_REINGRESO.P_SET_HISTORIAL_SERVICIO(Lv_IdServicio,
                                                                Lv_UsuarioReingreso,
                                                                Lv_Ip,
@@ -497,7 +497,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
                                                            Lv_Ip,
                                                            Lv_Estado,
                                                            NULL,
-                                                           'Se ejecut� proceso de reingreso de orden de servicio autom�tico, '||
+                                                           'Se ejecutó proceso de reingreso de orden de servicio automático, '||
                                                            'por favor verificar la nueva orden clonada',
                                                            'reingresoAutomatico',
                                                            Lv_Proceso,
@@ -523,7 +523,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       COMMIT;
       
        Lc_Json := '';    
-      --Se arma el json que ser� enviado al web service.      
+      --Se arma el json que seré enviado al web service.      
       Lc_Json := '{"data": Pcl_Json, "op":"opWS"}';            
       Lc_Json := REPLACE(Lc_Json,'Pcl_Json'            ,Pcl_Json);
       Lc_Json := REPLACE(Lc_Json,'Ln_IdServicioNuevo'  ,Ln_IdServicioNuevo);
@@ -605,7 +605,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
   EXCEPTION
     WHEN OTHERS THEN
       --
-      Lv_MsnError := 'Error al obtener la caracter�stica: ' || Fv_DesCaract || ' IdServicio: '|| Fn_IdServicio ||
+      Lv_MsnError := 'Error al obtener la característica: ' || Fv_DesCaract || ' IdServicio: '|| Fn_IdServicio ||
                      ' - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
@@ -663,7 +663,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       CLOSE C_Caracteristica;
 
       IF Ln_IdCaracteristica IS NULL THEN
-        Lv_Mensaje:= 'Hubo un error al obtener la caracter�stica ID_SERVICIO_REINGRESO';
+        Lv_Mensaje:= 'Hubo un error al obtener la característica ID_SERVICIO_REINGRESO';
         RAISE Le_Exception;
       END IF;
       
@@ -746,7 +746,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
           CLOSE C_Servicio;
         END IF;
 
-        --Procedemos con la clonaci�n del servicio
+        --Procedemos con la clonación del servicio
         OPEN C_Servicio(Pn_IdServicio);
           FETCH C_Servicio INTO Lc_Servicio;
         CLOSE C_Servicio;
@@ -1238,7 +1238,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
                                            WHERE CAB.NOMBRE_PARAMETRO = Cv_NombreParametro
                                            AND CAB.ESTADO             = Cv_EstadoActivo
                                            AND CAB.ID_PARAMETRO       = DET.PARAMETRO_ID
-                                           AND DET.ESTADO             <> Cv_EstadoEliminado); --Tambi�n considera los inactivos        
+                                           AND DET.ESTADO             <> Cv_EstadoEliminado); --También considera los inactivos        
 
       --Costo: 5
       CURSOR C_GetUltMillaServ (Cn_ServicioId DB_COMERCIAL.INFO_SERVICIO_TECNICO.SERVICIO_ID%TYPE) 
@@ -1345,7 +1345,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
         CLOSE C_GetParamNumDiasFecAlcance;
       END IF;
 
-      --Se verifica si la empresa aplica al proceso de facturaci�n de instalaci�n de puntos adicionales por estado factible.        
+      --Se verifica si la empresa aplica al proceso de facturación de instalación de puntos adicionales por estado factible.        
       Lv_AplicaProceso := DB_GENERAL.GNRLPCK_UTIL.F_EMPRESA_APLICA_PROCESO('FACTURACION_INSTALACION_PUNTOS_ADICIONALES', Pv_EmpresaCod);
 
       --Si no aplica el proceso, se finaliza inmediatamente
@@ -1360,27 +1360,27 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
        
       --Se verifica que el cliente no sea Canal
       IF DB_COMERCIAL.COMEK_CONSULTAS.F_GET_DESCRIPCION_ROL(Pn_PersonaEmpRolId => Ln_PersonaEmpRolId) = 'Cliente Canal' THEN
-        Lv_Observacion := 'Cliente Canal no genera facturas de instalaci�n';
+        Lv_Observacion := 'Cliente Canal no genera facturas de instalación';
         Lv_AplicaProceso := 'N';
         RAISE Le_Exception;
       END IF;
                
-      --Se obtiene el tipo de origen del punto para saber si es mandatorio crear una factura de instalaci�n.
+      --Se obtiene el tipo de origen del punto para saber si es mandatorio crear una factura de instalación.
       Lv_AplicaProceso := DB_COMERCIAL.COMEK_CONSULTAS.F_APLICA_FACT_INST_ORIGEN_PTO (Pv_EmpresaCod => Pv_EmpresaCod,
                                                                                       Pn_PuntoId    => Pn_PuntoId);
 
       --Si no aplica el proceso porque el tipo de origen no debe generar factura, se finaliza inmediatamente
       IF Lv_AplicaProceso = 'N' THEN
-        Lv_Observacion := 'El tipo de origen del punto no genera facturas de instalaci�n';
+        Lv_Observacion := 'El tipo de origen del punto no genera facturas de instalación';
         RAISE Le_Exception;
       END IF;
 
-      --Se verifica si se debe generar factura de instalaci�n a ese servicio en ese punto.
+      --Se verifica si se debe generar factura de instalación a ese servicio en ese punto.
       Lv_AplicaProceso := DB_FINANCIERO.FNCK_CONSULTS.F_APLICA_CREAR_FACT_INST (Pn_PuntoId => Pn_PuntoId);
 
       --Si no aplica el proceso, se finaliza inmediatamente
       IF Lv_AplicaProceso = 'N' THEN
-        Lv_Observacion := 'El punto ya tiene generada una factura de instalaci�n';
+        Lv_Observacion := 'El punto ya tiene generada una factura de instalación';
         RAISE Le_Exception;
       END IF;
       --
@@ -1439,7 +1439,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       FETCH C_GetParametro INTO Lr_Parametro;
       CLOSE C_GetParametro;                
       --
-      --Verifico si existen Solicitudes de Instalaci�n Pendientes o Finalizadas
+      --Verifico si existen Solicitudes de Instalación Pendientes o Finalizadas
       Lr_GetSolicitudInstalacion := NULL;
       IF C_GetSolicitudInstalacion%ISOPEN THEN
         CLOSE C_GetSolicitudInstalacion;
@@ -1449,11 +1449,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       FETCH C_GetSolicitudInstalacion INTO Lr_GetSolicitudInstalacion;
       CLOSE C_GetSolicitudInstalacion;        
       --
-      --Si no existen solicitudes de Instalaci�n verifico promociones y genero solicitudes de Facturaci�n de Instalaci�n.                       
+      --Si no existen solicitudes de Instalación verifico promociones y genero solicitudes de Facturación de Instalación.                       
       IF ( NVL(Ln_IdServicio, 0) > 0 AND NVL(Lr_GetSolicitudInstalacion.ID_DETALLE_SOLICITUD, 0) = 0 ) THEN                              
         Lv_MensajeError := '';
         --             
-        --Si posee plan con restricci�n debo generar la Solicitud de Facturaci�n con el valor base por FO y con el Descuento obtenido
+        --Si posee plan con restricción debo generar la Solicitud de Facturación con el valor base por FO y con el Descuento obtenido
         --del parametro RESTRICCION_PLANES_X_INSTALACION
         DB_COMERCIAL.COMEK_TRANSACTION.P_GET_RESTRIC_PLAN_INST(Pv_NombrePlan           => Lv_NombrePlan,
                                                                Pv_EmpresaCod           => Pv_EmpresaCod,
@@ -1465,7 +1465,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
           FETCH C_GetUltMillaServ INTO Lv_UltimaMilla;
           CLOSE C_GetUltMillaServ;
         ELSE
-          --Si tiene plan con restricci�n se fija por defecto FO.
+          --Si tiene plan con restricción se fija por defecto FO.
           Lv_UltimaMilla := 'FO';  
         END IF;
         --
@@ -1477,23 +1477,23 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
                                                                                             Pv_NombreMotivo         => Lr_Parametro.VALOR5,
                                                                                             Pv_UltimaMilla          => Lv_UltimaMilla);
           IF Lr_SolicitudInstalacion.ID_TIPO_SOLICITUD IS NULL THEN
-            Lv_MensajeError := 'No fue encontrada la informaci�n requerida para crear las solicitudes de instalaci�n.';
+            Lv_MensajeError := 'No fue encontrada la información requerida para crear las solicitudes de instalación.';
             RAISE Le_Exception;
           END IF;
           --
           Lr_SolicitudInstalacion.USR_CREACION:= Lr_Parametro.VALOR6;
           --
-          --Si no posee plan con restricci�n debo ejecutar el mapeo promocional por instalaci�n para verificar si aplica a alguna promoci�n
-          --y poder generar la solicitud de Facturaci�n con el descuento y diferido de ser el caso.
+          --Si no posee plan con restricción debo ejecutar el mapeo promocional por instalación para verificar si aplica a alguna promoción
+          --y poder generar la solicitud de Facturación con el descuento y diferido de ser el caso.
           IF NOT Lb_PlanConRestriccion THEN
-            --Proceso que genera el mapeo promocional en el caso que el servicio cumpla alguna Promoci�n por Instalaci�n.
+            --Proceso que genera el mapeo promocional en el caso que el servicio cumpla alguna Promoción por Instalación.
             DB_COMERCIAL.CMKG_PROMOCIONES_INS.P_PROCESO_MAPEO_PROM_INS(Pn_IdServicio            =>Ln_IdServicio,
                                                                        Pv_CodigoGrupoPromocion  =>'PROM_INS',
                                                                        Pv_CodEmpresa            =>Pv_EmpresaCod,
                                                                        Pv_Mensaje               =>Lv_MensajeError);
             --  
             Lv_MensajeError := '';
-            --Proceso genera solicitud de Facturaci�n de Instalaci�n en base a la promoci�n aplicada.
+            --Proceso genera solicitud de Facturación de Instalación en base a la promoción aplicada.
             DB_COMERCIAL.CMKG_PROMOCIONES.P_APLICA_PROMOCION(Pv_CodEmpresa   =>Pv_EmpresaCod,  
                                                              Pv_TipoPromo    =>'PROM_INS',
                                                              Pn_IdServicio   =>Ln_IdServicio, 
@@ -1503,8 +1503,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
             ELSE 
               Ln_PorcentajeDescuento:=0;
               Lo_ServicioHistorial  := NULL;
-              Lv_Observacion        := 'No se Aplic� promoci�n de Instalaci�n para el servicio, se generar� Factura de Instalaci�n por el '||
-                                       'valor base de Instalaci�n';
+              Lv_Observacion        := 'No se Aplicó promoción de Instalación para el servicio, se generará Factura de Instalación por el '||
+                                       'valor base de Instalación';
               --VERIFICO SI YA SE INGRESO EL HISTORIAL EN EL SERVICIO PARA NO VOLVERLO A INGRESAR
               OPEN  C_GetServicioHistorial(Cv_Observacion => Lv_Observacion,
                                            Cn_IdServicio  => Ln_IdServicio);
@@ -1529,9 +1529,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
           --FIN NOT Lb_PlanConRestriccion 
           --
           --
-          --Si posee plan con restricci�n debo generar la Solicitud de Facturaci�n con el valor base por FO y con el Descuento obtenido
+          --Si posee plan con restricción debo generar la Solicitud de Facturación con el valor base por FO y con el Descuento obtenido
           --del parametro RESTRICCION_PLANES_X_INSTALACION
-          --Si no Aplic� a ninguna Promoci�n por Instalaci�n debo generar la Solicitud de Facturaci�n por el valor base para FO, CO 
+          --Si no Aplicó a ninguna Promoción por Instalación debo generar la Solicitud de Facturación por el valor base para FO, CO 
           --y sin descuento.
           IF Lb_PlanConRestriccion OR NOT Lb_AplicaPromo THEN                         
             --                
@@ -1555,7 +1555,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
           END IF;-- FIN Lb_PlanConRestriccion OR NOT Lb_AplicaPromo
           --
           --
-          --Se llama a Proceso que genera las Facturas en base a las solicitudes de Fact. de Instalaci�n.  
+          --Se llama a Proceso que genera las Facturas en base a las solicitudes de Fact. de Instalación.  
           Lv_MensajeError :=NULL;  
           DB_FINANCIERO.FNCK_TRANSACTION.P_GENERAR_FAC_SOLI_X_SERVICIO(Pn_IdServicio           => Ln_IdServicio,
                                                                        Pv_Estado               => 'Pendiente',
@@ -1570,11 +1570,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
           -- 
           --
         ELSE
-          --Insert� Historial del servicio si la �ltima milla no es FO,CO
+          --Insertó Historial del servicio si la Última milla no es FO,CO
           --Lo_ServicioHistorial := NULL;
          
-          Lv_Observacion       := 'No se genera solicitud de descuento ni factura de instalaci�n puesto'||
-                                  ' que el servicio no tiene asociado una �ltima milla de Fibra o Cobre';
+          Lv_Observacion       := 'No se genera solicitud de descuento ni factura de instalación puesto'||
+                                  ' que el servicio no tiene asociado una última milla de Fibra o Cobre';
           Lv_AplicaProceso := 'N';
           RAISE Le_Exception;        
           --
@@ -1608,7 +1608,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
         FETCH C_GetServicioHistorial INTO Lo_ServicioHistorial.ID_SERVICIO_HISTORIAL;
         CLOSE C_GetServicioHistorial;
 
-        --INSERTO HISTORIAL DEL SERVICIO SI EXISTE LA OBSERVACION Y SI NO APLIC� A GENERAR FACTURA DE INSTALACI�N
+        --INSERTO HISTORIAL DEL SERVICIO SI EXISTE LA OBSERVACION Y SI NO APLICÓ A GENERAR FACTURA DE INSTALACIÓN
         IF Lv_AplicaProceso = 'N' AND Lv_Observacion IS NOT NULL  
            AND  NVL(Lo_ServicioHistorial.ID_SERVICIO_HISTORIAL, 0) = 0 THEN
           Lo_ServicioHistorial                       := NULL;
@@ -1842,14 +1842,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                              'CMKG_REINGRESO.P_EJECUTA_SERVICIOS_PREFACT',
-                                             'Ocurri� un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
+                                             'Ocurrió un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
                                              ' -' || Lv_Error,
                                              Lv_Usuario,
                                              SYSDATE,
                                              Lv_IpCreacion);
       WHEN OTHERS THEN
 
-        Lv_Error := 'Ocurri� un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
+        Lv_Error := 'Ocurrió un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
                     ' para retomar las ordene de servicio reingresada.';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                              'CMKG_REINGRESO.P_EJECUTA_SERVICIOS_PREFACT',
@@ -1863,7 +1863,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
   EXCEPTION
     WHEN OTHERS THEN
 
-    Lv_Error := 'Ocurri� un error al ejecutar el proceso masivo para retomar las ordenes de servicios reingresadas.';
+    Lv_Error := 'Ocurrió un error al ejecutar el proceso masivo para retomar las ordenes de servicios reingresadas.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                          'CMKG_REINGRESO.P_EJECUTA_SERVICIOS_PREFACT',
                                          Lv_Error || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -2086,14 +2086,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                              'CMKG_REINGRESO.P_EJECUTA_SERVICIOS_FACT',
-                                             'Ocurri� un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
+                                             'Ocurrió un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
                                              ' -' || Lv_Error,
                                              Lv_Usuario,
                                              SYSDATE,
                                              Lv_IpCreacion);
       WHEN OTHERS THEN
 
-        Lv_Error := 'Ocurri� un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO || 
+        Lv_Error := 'Ocurrió un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO || 
                     ' para retomar las ordene de servicio reingresada.';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                              'CMKG_REINGRESO.P_EJECUTA_SERVICIOS_FACT',
@@ -2107,7 +2107,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
   EXCEPTION
     WHEN OTHERS THEN
 
-    Lv_Error := 'Ocurri� un error al ejecutar el proceso masivo para retomar las ordenes de servicios reingresadas.';
+    Lv_Error := 'Ocurrió un error al ejecutar el proceso masivo para retomar las ordenes de servicios reingresadas.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_REINGRESO.P_EJECUTA_SERVICIOS_FACT', 
                                          Lv_Error || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -2312,14 +2312,14 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                              'CMKG_REINGRESO.P_PENDIENTE_CONVERTIR_OT',
-                                             'Ocurri� un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
+                                             'Ocurrió un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
                                              ' -' || Lv_Error,
                                              Lv_Usuario,
                                              SYSDATE,
                                              Lv_IpCreacion);
       WHEN OTHERS THEN
 
-        Lv_Error := 'Ocurri� un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
+        Lv_Error := 'Ocurrió un error al ejecutar el servicio ' || Lr_Servicio.ID_SERVICIO ||
                     ' para retomar las ordene de servicio reingresada.';
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                              'CMKG_REINGRESO.P_PENDIENTE_CONVERTIR_OT',
@@ -2333,7 +2333,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
   EXCEPTION
     WHEN OTHERS THEN
 
-    Lv_Error := 'Ocurri� un error al ejecutar el proceso masivo para retomar las ordenes de servicios reingresadas.';
+    Lv_Error := 'Ocurrió un error al ejecutar el proceso masivo para retomar las ordenes de servicios reingresadas.';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'CMKG_REINGRESO.P_PENDIENTE_CONVERTIR_OT', 
                                          Lv_Error || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -2530,9 +2530,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
     utl_file.put_line(Lfile_Archivo,'CLIENTE'||Lv_Delimitador
                       ||'IDENTIFICACION'||Lv_Delimitador
                       ||'LOGIN'||Lv_Delimitador
-                      ||'FE_CREACI�N O/S INICIAL'||Lv_Delimitador
+                      ||'FE_CREACIÓN O/S INICIAL'||Lv_Delimitador
                       ||'MOTIVO DE RECHAZO DE O/S INICIAL'||Lv_Delimitador
-                      ||'FE_CREACI�N DE O/S REINGRESO'||Lv_Delimitador
+                      ||'FE_CREACIÓN DE O/S REINGRESO'||Lv_Delimitador
                       ||'OBSERVACION REINGRESO'||Lv_Delimitador
                       ||'ESTADO REINGRESO'||Lv_Delimitador
                       ||'FECHA PRE-PLANIFICACION'||Lv_Delimitador
@@ -2585,7 +2585,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
   EXCEPTION
     WHEN OTHERS THEN
       --
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte de ordenes de servicios reingresados.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte de ordenes de servicios reingresados.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'CMKG_REINGRESO.P_REPORTE_REINGRESO', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,

@@ -7,7 +7,7 @@ start_date=>TO_TIMESTAMP_TZ('16-SEP-2019 11.45.00.000000000 PM AMERICA/GUAYAQUIL
 'FREQ=DAILY;BYHOUR=23;BYMINUTE=15;BYSECOND=0'
 , end_date=>NULL,
 job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
-'Proceso que se ejecuta una vez al d�a para notificar los servicios que presentaron error al cancelar licencias kaspersky'
+'Proceso que se ejecuta una vez al día para notificar los servicios que presentaron error al cancelar licencias kaspersky'
 );
 sys.dbms_scheduler.set_attribute('"JOB_SERVICIOS_KASPERSKY_ERROR"','NLS_ENV','NLS_LANGUAGE=''AMERICAN'' NLS_TERRITORY=''AMERICA'' NLS_CURRENCY=''$'' NLS_ISO_CURRENCY=''AMERICA'' NLS_NUMERIC_CHARACTERS=''.,'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD-MON-RR'' NLS_DATE_LANGUAGE=''AMERICAN'' NLS_SORT=''BINARY'' NLS_TIME_FORMAT=''HH.MI.SSXFF AM'' NLS_TIMESTAMP_FORMAT=''DD-MON-RR HH.MI.SSXFF AM'' NLS_TIME_TZ_FORMAT=''HH.MI.SSXFF AM TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD-MON-RR HH.MI.SSXFF AM TZR'' NLS_DUAL_CURRENCY=''$'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
 dbms_scheduler.enable('"JOB_SERVICIOS_KASPERSKY_ERROR"');

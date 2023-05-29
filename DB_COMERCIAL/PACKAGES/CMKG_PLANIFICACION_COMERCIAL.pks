@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL
 AS
     /**
-      * Documentaci�n para el procedimiento P_GRID_COORDINAR
+      * Documentación para el procedimiento P_GRID_COORDINAR
       *
-      * M�todo que se encarga de devolver los registros para el grid de coordinar
+      * Método que se encarga de devolver los registros para el grid de coordinar
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -16,9 +16,9 @@ AS
                                 Pcl_Response OUT SYS_REFCURSOR);
 
      /**
-      * Documentaci�n para el procedimiento P_COORDINAR_PLANIFICACION
+      * Documentación para el procedimiento P_COORDINAR_PLANIFICACION
       *
-      * M�todo que se encarga de coordinar solicitudes
+      * Método que se encarga de coordinar solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -32,9 +32,9 @@ AS
                                          );                                    
 
      /**
-      * Documentaci�n para el procedimiento P_ASIGNAR_PLANIFICACION
+      * Documentación para el procedimiento P_ASIGNAR_PLANIFICACION
       *
-      * M�todo que se encarga de asignar responsables de solicitudes
+      * Método que se encarga de asignar responsables de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -49,9 +49,9 @@ AS
 
 
      /**
-      * Documentaci�n para el procedimiento P_JSON_SERVICIOS_GESTION
+      * Documentación para el procedimiento P_JSON_SERVICIOS_GESTION
       *
-      * M�todo que se encargar de devolver un json con los servicios adicionales de gestion simultanea
+      * Método que se encargar de devolver un json con los servicios adicionales de gestion simultanea
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -64,9 +64,9 @@ AS
     RETURN CLOB;  
     
      /**
-      * Documentaci�n para el procedimiento P_JSON_SERVICIOS_GESTION
+      * Documentación para el procedimiento P_JSON_SERVICIOS_GESTION
       *
-      * M�todo que se encargar de devolver un json con los servicios adicionales de gestion simultanea
+      * Método que se encargar de devolver un json con los servicios adicionales de gestion simultanea
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -82,6 +82,7 @@ AS
 
 END CMKG_PLANIFICACION_COMERCIAL;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
   PROCEDURE P_GRID_COORDINAR (Pcl_Request  IN  CLOB,
                               Pv_Status    OUT VARCHAR2,
@@ -128,12 +129,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
                       AND IER.ROL_ID = AR.ID_ROL AND IPER.PERSONA_ID = IP.ID_PERSONA AND P.SECTOR_ID = ASE.ID_SECTOR AND ASE.PARROQUIA_ID = AP.ID_PARROQUIA AND AP.CANTON_ID = AC.ID_CANTON AND AJ.ID_JURISDICCION = P.PUNTO_COBERTURA_ID AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL AND IST.ELEMENTO_CONTENEDOR_ID = ILEM.ID_ELEMENTO
                       AND IER.EMPRESA_COD = ''' ||Lv_CodEmpresa ||''' AND ROWNUM < 500
                       AND SYSDATE <= IDS.FE_CREACION + (to_number((SELECT VALOR1 FROM DB_GENERAL.ADMI_PARAMETRO_DET WHERE PARAMETRO_ID = (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = ''TIEMPO_BANDEJA_PLAN_AUTOMATICA'' AND MODULO = ''COMERCIAL'' AND ESTADO = ''Activo'')
-                                                        AND DESCRIPCION = ''TIEMPO M�XIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACI�N AUTOM�TICA'' AND EMPRESA_COD = ''' ||Lv_CodEmpresa ||'''))/1440 )
+                                                        AND DESCRIPCION = ''TIEMPO MÁXIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACIÓN AUTOMÁTICA'' AND EMPRESA_COD = ''' ||Lv_CodEmpresa ||'''))/1440 )
                       AND (IDS.MOTIVO_ID NOT IN ' || '(SELECT REGEXP_SUBSTR(T1.VALOR1,''[^,]+'', 1, LEVEL) AS VALOR FROM(SELECT VALOR1
                              FROM DB_GENERAL.admi_parametro_Det where PARAMETRO_ID = (SELECT ID_PARAMETRO FROM DB_GENERAL.ADMI_PARAMETRO_CAB WHERE NOMBRE_PARAMETRO = ''PROGRAMAR_MOTIVO_HAL'') AND EMPRESA_COD = ''' ||Lv_CodEmpresa ||''') T1
                              CONNECT BY REGEXP_SUBSTR(T1.VALOR1, ''[^,]+'', 1, LEVEL) IS NOT NULL ) OR IDS.MOTIVO_ID IS NULL) 
                        AND not exists(SELECT servicio_id FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL WHERE SERVICIO_ID = IDS.SERVICIO_ID AND ESTADO = ''PrePlanificada''
-      AND cast(OBSERVACION as VARCHAR(1000)) = ''La solicitud no aplica para Planificaci�n comercial. Se env�a la solicitud a PYL.'') ';
+      AND cast(OBSERVACION as VARCHAR(1000)) = ''La solicitud no aplica para Planificación comercial. Se envía la solicitud a PYL.'') ';
       
       Lv_Ciudad           := '';
       apex_json.parse(j, Pcl_Request);
@@ -250,7 +251,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
       OPEN Pcl_Response FOR Lcl_Query; 
       
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
     EXCEPTION
       WHEN Le_Errors THEN
         Pv_Status  := 'ERROR';
@@ -422,7 +423,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
         RAISE Le_Errors;
       END IF;
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
       COMMIT;
       EXCEPTION
       WHEN Le_Errors THEN
@@ -830,7 +831,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
                   IF (Ln_CuantosServAdicional > 0) THEN
                     DB_COMERCIAL.TECNK_SERVICIOS.P_VERIFICA_EQUIPO_ENLAZADO(Ln_IdServicio, NULL, NULL, NULL, NULL, Pv_Status, Pv_Mensaje, Lv_TieneAlgunEquipoEnlazado, Lv_InfoEquipoEncontrado, Lcl_TrazaElementos);
                     IF Pv_status = 'ERROR' THEN
-                      Pv_Mensaje := 'No se ha podido verificar los equipos enlazados. Por favor comun�quese con Sistemas!';
+                      Pv_Mensaje := 'No se ha podido verificar los equipos enlazados. Por favor comuníquese con Sistemas!';
                       RAISE Le_Errors;
                     END IF;  
                   END IF;
@@ -864,7 +865,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
                 INSERT INTO DB_SOPORTE.INFO_TAREA_SEGUIMIENTO(ID_SEGUIMIENTO, DETALLE_ID, OBSERVACION, USR_CREACION, ESTADO_TAREA, FE_CREACION, INTERNO, DEPARTAMENTO_ID, PERSONA_EMPRESA_ROL_ID, EMPRESA_COD)
                 VALUES (DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL, Ln_IdDetalle, Lv_ObservacionCoordina, Lv_UsrCreacion, 'AsignadoTarea', sysdate, 'N', Ln_IdDepartamento, Ln_PersonaEmpRolAsig, Lv_CodEmpresa);
                 INSERT INTO DB_COMUNICACION.INFO_DOCUMENTO (ID_DOCUMENTO, MENSAJE, NOMBRE_DOCUMENTO, CLASE_DOCUMENTO_ID, FE_CREACION, ESTADO, USR_CREACION, IP_CREACION, EMPRESA_COD)
-                VALUES (DB_COMUNICACION.SEQ_INFO_DOCUMENTO.NEXTVAL, 'Tarea generada autom�ticamente por el sistema Telcos', 'Registro de llamada.', 24, sysdate, 'Activo', Lv_UsrCreacion, Lv_IpCreacion, Lv_CodEmpresa)
+                VALUES (DB_COMUNICACION.SEQ_INFO_DOCUMENTO.NEXTVAL, 'Tarea generada automáticamente por el sistema Telcos', 'Registro de llamada.', 24, sysdate, 'Activo', Lv_UsrCreacion, Lv_IpCreacion, Lv_CodEmpresa)
                 RETURNING ID_DOCUMENTO INTO Ln_IdDocumento;
                 INSERT INTO DB_COMUNICACION.INFO_COMUNICACION (ID_COMUNICACION, FORMA_CONTACTO_ID, REMITENTE_ID, REMITENTE_NOMBRE, CLASE_COMUNICACION, DETALLE_ID, FECHA_COMUNICACION, ESTADO, FE_CREACION, USR_CREACION, IP_CREACION, EMPRESA_COD)
                 VALUES (DB_COMUNICACION.SEQ_INFO_COMUNICACION.NEXTVAL, 5, Ln_IdPunto, Lv_LoginPunto, 'Recibido', Ln_IdDetalle, sysdate, 'Activo', sysdate, Lv_UsrCreacion, Lv_IpCreacion, Lv_CodEmpresa)
@@ -885,7 +886,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PLANIFICACION_COMERCIAL AS
                                    Lv_DireccionPunto     as direccion, Lv_NombrePlan as descripcionProducto, sysdate as feCreacion, Lv_UsrCreacion as usrCreacion, Ld_FechaIniPlan as fechaPlanificacion, Lv_UsrCreacion as usrPlanificacion,
                                    Lv_ObservacionCoordina as observacion, 'Planificada' as estado, Ln_IdDetalle as idDetalle, Ln_IdComunicacion as idComunicacion, Pn_IdServicioHistorial as idServicioHistorial FROM DUAL;
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
       COMMIT;
       EXCEPTION
       WHEN Le_Errors THEN

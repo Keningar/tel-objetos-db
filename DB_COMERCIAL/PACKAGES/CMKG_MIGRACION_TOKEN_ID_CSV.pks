@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
 
    /**
-    * Documentaci�n para el procedimiento valida_cadena
+    * Documentación para el procedimiento valida_cadena
     *
-    * M�todo encargado para validar la cadena del archivo
+    * Método encargado para validar la cadena del archivo
     *
     * @param pv_cadena_parametros    IN  VARCHAR2 cadena a validar
     * @param pv_separador            IN  VARCHAR2 separador de campos
@@ -14,9 +14,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
   FUNCTION valida_cadena(pv_cadena_parametros IN VARCHAR2,
                          pv_separador         IN VARCHAR2) RETURN VARCHAR2 ;
                             /**
-    * Documentaci�n para el procedimiento P_MIGRAR_TOKEN_ID_CSV
+    * Documentación para el procedimiento P_MIGRAR_TOKEN_ID_CSV
     *
-    * M�todo encargado para validar la cadena del archivo
+    * Método encargado para validar la cadena del archivo
     *
     * @param pv_cadena_parametros    IN  VARCHAR2 cadena de parametros
     * @param pv_separador            IN  VARCHAR2 deparador de campos
@@ -30,13 +30,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_MIGRACION_TOKEN_ID_CSV IS
                                pn_pos_campo         IN NUMBER) RETURN VARCHAR2 ;
 
    /**
-    * Documentaci�n para el procedimiento P_MIGRAR_TOKEN_ID_CSV
+    * Documentación para el procedimiento P_MIGRAR_TOKEN_ID_CSV
     *
-    * M�todo encargado de leer un archivo .CSV y extraer el campo TOKEN e insertarlos
+    * Método encargado de leer un archivo .CSV y extraer el campo TOKEN e insertarlos
     * en la tabla INFO_PERSONA_EMPRESA_ROL_CARAC
     *
     * @param Pv_FileName    IN  VARCHAR2 ruta y nombre del archivo cvs
-    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+    * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
     *
     * @author Pedro Velez <psvelez@telconet.ec>
     * @version 1.0 24-04-2022

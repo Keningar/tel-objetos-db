@@ -1,10 +1,10 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_HISTORIAL_SERV_PLANF AS 
 
      /**
-      * Documentaci�n para el procedimiento P_INSERTA_HISTORIAL
+      * Documentación para el procedimiento P_INSERTA_HISTORIAL
       *
-      * M�todo que se encarga de insertar en el historial de servicio cuando una solicitud ya no se puede
-      * planificar desde la planificaci�n comercial
+      * Método que se encarga de insertar en el historial de servicio cuando una solicitud ya no se puede
+      * planificar desde la planificación comercial
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -56,12 +56,12 @@ PROCEDURE P_INSERTA_HISTORIAL (Pv_CodEmpresa  IN  VARCHAR2,
                                                                               WHERE NOMBRE_PARAMETRO = 'TIEMPO_BANDEJA_PLAN_AUTOMATICA' 
                                                                                 AND MODULO = 'COMERCIAL' 
                                                                                 AND ESTADO = 'Activo')
-                                                        AND DESCRIPCION = 'TIEMPO M�XIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACI�N AUTOM�TICA'))/1440)
+                                                        AND DESCRIPCION = 'TIEMPO MÁXIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACIÓN AUTOMÁTICA'))/1440)
 AND not exists(SELECT servicio_id
                FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
                WHERE SERVICIO_ID = IDS.SERVICIO_ID
                 AND ESTADO = 'PrePlanificada'
-                AND cast(SUBSTR(OBSERVACION, 0 , 48) as VARCHAR(100)) = 'Se env�a la solicitud a PYL ya que se excedieron')
+                AND cast(SUBSTR(OBSERVACION, 0 , 48) as VARCHAR(100)) = 'Se envía la solicitud a PYL ya que se excedieron')
       AND ADE.TIPO != 'AS' ;
                 
 
@@ -96,7 +96,7 @@ AND not exists(SELECT servicio_id
                      FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
                      WHERE SERVICIO_ID = SER.ID_SERVICIO
                       AND ESTADO = 'PrePlanificada'
-                      AND cast(SUBSTR(OBSERVACION, 0 , 48) as VARCHAR(100)) = 'Se env�a la solicitud a PYL ya que se excedieron')
+                      AND cast(SUBSTR(OBSERVACION, 0 , 48) as VARCHAR(100)) = 'Se envía la solicitud a PYL ya que se excedieron')
   
       AND ADE.TIPO != 'AS';    
        
@@ -151,10 +151,10 @@ AND not exists(SELECT servicio_id
     
   BEGIN
   dbms_output.put_line('100');
-    OPEN C_GET_PARAMETRO('TIEMPO_BANDEJA_PLAN_AUTOMATICA', 'Activo', 'TIEMPO M�XIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACI�N AUTOM�TICA');
+    OPEN C_GET_PARAMETRO('TIEMPO_BANDEJA_PLAN_AUTOMATICA', 'Activo', 'TIEMPO MÁXIMO A MOSTRAR EN LA BANDEJA DE PLANIFICACIÓN AUTOMÁTICA');
     FETCH C_GET_PARAMETRO INTO Lv_Tiempo, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;
     CLOSE C_GET_PARAMETRO;
-    Lv_Observacion := 'Se env�a la solicitud a PYL ya que se excedieron los ' || Lv_Tiempo || ' minutos de la planificaci�n comercial';
+    Lv_Observacion := 'Se envía la solicitud a PYL ya que se excedieron los ' || Lv_Tiempo || ' minutos de la planificación comercial';
     dbms_output.put_line(Lv_Observacion);
     OPEN C_GET_PARAMETRO('PRODUCTOS ADICIONALES MANUALES', 'Activo', 'Productos adicionales manuales para activar');
     FETCH C_GET_PARAMETRO INTO Lv_ParamV1, Lv_ParamV2, Lv_ParamV3, Lv_ParamV4;

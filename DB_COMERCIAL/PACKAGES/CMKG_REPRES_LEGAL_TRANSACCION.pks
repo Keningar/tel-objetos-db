@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPRES_LEGAL_TRANSACCION  AS
  
   /**
-    * Documentaci�n para P_VERIFICAR
+    * Documentación para P_VERIFICAR
     * VERIFICAR SI EL REPRESENTANTE LEGALE ESTA DISPONIBLE
     * 
     * @param  Pcl_Request       -  Json,
@@ -15,7 +15,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPRES_LEGAL_TRANSACCION  AS
 
 
     /**
-    * Documentaci�n para P_CONSULTAR
+    * Documentación para P_CONSULTAR
     * LISTAR REPRESENTANTE LEGAL RELACIONADO A PERSONA JURIDICA
     * 
     * @param  Pcl_Request       -  Json,
@@ -29,7 +29,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPRES_LEGAL_TRANSACCION  AS
 
 
     /**
-    * Documentaci�n para P_ACTUALIZAR
+    * Documentación para P_ACTUALIZAR
     * INSERTA Y ACTUALIZA REPRESENTANTE LEGAL RELACIONADO A PERSONA JURIDICA
     * 
     * @param  Pcl_Request       -  Json,
@@ -152,7 +152,7 @@ PROCEDURE P_VERIFICAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT 
         END IF; 
 
         IF  Lv_TipoIdentificacion = Lv_TipoIdentificacionRepre AND Lv_Identificacion = Lv_IdentificacionRepre   THEN  
-            PV_MENSAJE :='La identificaci�n del representante legal no debe ser igual que la persona jur�dica'; 
+            PV_MENSAJE :='La identificación del representante legal no debe ser igual que la persona jurídica'; 
             dbms_output.put_line( PV_MENSAJE );  
             RAISE_APPLICATION_ERROR(-20101,PV_MENSAJE );
         END IF; 
@@ -178,13 +178,13 @@ PROCEDURE P_VERIFICAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT 
         CLOSE C_GetPersonaRepresentante;  
 
         IF   Pcl_DataPersona.ID_PERSONA  IS  NULL THEN
-             PV_MENSAJE :='La identificaci�n del representante '||Lv_IdentificacionRepre||' aun no ha sido registrada.'; 
+             PV_MENSAJE :='La identificación del representante '||Lv_IdentificacionRepre||' aun no ha sido registrada.'; 
              dbms_output.put_line( PV_MENSAJE );  
       
         ELSE
         
         IF   Pcl_DataPersona.ESTADO = 'Eliminado'  THEN
-             PV_MENSAJE :='La identificaci�n del representante '||Lv_IdentificacionRepre||' ya existe pero se encuentra en estado Eliminado.'; 
+             PV_MENSAJE :='La identificación del representante '||Lv_IdentificacionRepre||' ya existe pero se encuentra en estado Eliminado.'; 
              dbms_output.put_line( PV_MENSAJE );  
              RAISE_APPLICATION_ERROR(-20101,PV_MENSAJE );
         END IF; 
@@ -519,7 +519,7 @@ PROCEDURE P_ACTUALIZAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT
         END IF; 
         
         IF  Lv_Identificacion  IS NULL THEN  
-           PV_MENSAJE :='El campo identificaci�n  es requerida.';
+           PV_MENSAJE :='El campo identificación  es requerida.';
            RAISE_APPLICATION_ERROR(-20101,PV_MENSAJE);
         END IF; 
 
@@ -536,7 +536,7 @@ PROCEDURE P_ACTUALIZAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT
         CLOSE C_GetPersona;  
 
         IF   Pcl_DataPersona.ID_PERSONA  IS  NULL THEN
-             PV_MENSAJE :='La identificaci�n  '||Lv_Identificacion||' requiere ser (Pre-cliente o Cliente).'; 
+             PV_MENSAJE :='La identificación  '||Lv_Identificacion||' requiere ser (Pre-cliente o Cliente).'; 
              dbms_output.put_line( PV_MENSAJE );  
              RAISE_APPLICATION_ERROR(-20101,PV_MENSAJE);
         ELSE
@@ -567,7 +567,7 @@ PROCEDURE P_ACTUALIZAR(PCL_REQUEST IN CLOB,PV_MENSAJE OUT VARCHAR2,PV_STATUS OUT
                 END IF; 
             
                 IF Pcl_InfoPersona.IDENTIFICACION_CLIENTE =  Lv_Identificacion THEN  
-                PV_MENSAJE :='La identificacion '|| Pcl_InfoPersona.IDENTIFICACION_CLIENTE ||' no debe ser igual que la persona jur�dica.'; 
+                PV_MENSAJE :='La identificacion '|| Pcl_InfoPersona.IDENTIFICACION_CLIENTE ||' no debe ser igual que la persona jurídica.'; 
                 dbms_output.put_line( PV_MENSAJE );                 
                 RAISE_APPLICATION_ERROR(-20101,PV_MENSAJE);                
                 END IF;  

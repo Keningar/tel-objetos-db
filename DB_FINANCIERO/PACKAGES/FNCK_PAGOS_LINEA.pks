@@ -1,6 +1,6 @@
-CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS 
+CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_LINEA AS 
     /**
-    * Documentaci�n para P_CONSULTAR_SALDO_POR_IDENTIFICACION
+    * Documentación para P_CONSULTAR_SALDO_POR_IDENTIFICACION
     * Procedimiento que realiza la consulta de saldo por identificacion
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -9,7 +9,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.1 17/06/2022 - Cambio de parametros de entrada y salida
     *
-    * @param Pcl_Request IN CLOB (identificaci�n de cliente y c�digo de empresa)
+    * @param Pcl_Request IN CLOB (identificación de cliente y código de empresa)
     * @param Pv_Status OUT VARCHAR2 estado
     * @param Pv_Mensaje OUT VARCHAR2 Devuelve el mensaje de respuesta
     * @param Pcl_Response OUT CLOB Devuelve respuesta con data
@@ -22,11 +22,11 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para la funcion F_OBTENER_SUMA_VALOR_PENDIENTE
     *
-    * La funcion retorna la suma de los valores pendientes de un cliente dependiendo de su c�digo de Empresa e  
-    * identificaci�n
+    * La funcion retorna la suma de los valores pendientes de un cliente dependiendo de su código de Empresa e  
+    * identificación
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Fv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Fv_EmpresaCod IN VARCHAR2 código de empresa
     * return Fn_ValorPendiente NUMBER
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -38,11 +38,11 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para la funcion F_BUSCAR_NUM_CONTRATO
     *
-    * La funcion retorna el numero de contrato de un cliente dependiendo de su c�digo de Empresa,  
-    * identificaci�n, y/o estado del contrato
+    * La funcion retorna el numero de contrato de un cliente dependiendo de su código de Empresa,  
+    * identificación, y/o estado del contrato
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Fv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Fv_EmpresaCod IN VARCHAR2 código de empresa
     * @param Fv_Estado IN VARCHAR2 estado de contrato del cliente
     * return Fv_NumeroContrato VARCHAR2
     * 
@@ -55,11 +55,11 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para el procedimiento P_BUSCAR_INFO_CONTRATO
     *
-    * El procedimiento retorna el numero de contrato, forma de pago y id de contrato de un cliente, dependiendo de su c�digo de Empresa,  
-    * identificaci�n, y/o estado del contrato
+    * El procedimiento retorna el numero de contrato, forma de pago y id de contrato de un cliente, dependiendo de su código de Empresa,  
+    * identificación, y/o estado del contrato
     *
-    * @param Pv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Pv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Pv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Pv_EmpresaCod IN VARCHAR2 código de empresa
     * @param Pv_Estado IN VARCHAR2 estado de contrato del cliente
     * @param Pv_NumeroContrato OUT VARCHAR2
     * @param Pv_FormaPago OUT VARCHAR2
@@ -75,11 +75,11 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para la funcion F_OBTENER_SALDOS_POR_IDENTIF
     *
-    * La funcion retorna la registros (cursor) de un cliente y su saldo dependiendo de su c�digo de Empresa e  
-    * identificaci�n
+    * La funcion retorna la registros (cursor) de un cliente y su saldo dependiendo de su código de Empresa e  
+    * identificación
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Fv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Fv_EmpresaCod IN VARCHAR2 código de empresa
     * return Fc_GetSaldoPendiente SYS_REFCURSOR
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -118,7 +118,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     RETURN SYS_REFCURSOR;
 
     /**
-    * Documentaci�n para TYPE 'Lr_PuntoCliente'.
+    * Documentación para TYPE 'Lr_PuntoCliente'.
     *  
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 11/07/2022
@@ -127,7 +127,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       ID_PUNTO          DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE);
 
     /**
-    * Documentaci�n para TYPE 'T_PuntoCliente'.
+    * Documentación para TYPE 'T_PuntoCliente'.
     *  
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 11/07/2022
@@ -135,7 +135,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     TYPE T_PuntoCliente IS TABLE OF Lr_PuntoCliente INDEX BY PLS_INTEGER;
 
     /**
-    * Documentaci�n para TYPE 'Lr_Persona'.
+    * Documentación para TYPE 'Lr_Persona'.
     *  
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 11/07/2022
@@ -144,7 +144,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       ID_PERSONA          DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE);
 
     /**
-    * Documentaci�n para TYPE 'T_Persona'.
+    * Documentación para TYPE 'T_Persona'.
     *  
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.0 11/07/2022
@@ -152,7 +152,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     TYPE T_Persona IS TABLE OF Lr_Persona INDEX BY PLS_INTEGER;
 
     /**
-    * Documentaci�n para P_PROCESAR_PAGO_LINEA
+    * Documentación para P_PROCESAR_PAGO_LINEA
     * Procedimiento que realiza pago en linea
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -224,7 +224,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     *
     * La funcion retorna Mail y/o Telefono del cliente 
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
     * @param Fn_NumCarac IN VARCHAR2 Limite de caracteres
     * @param Fv_TipoData IN VARCHAR2 Tipo de Data
     * @param Fv_Todos IN VARCHAR2 Variable Todos
@@ -242,7 +242,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     RETURN CLOB;
 
     /**
-    * Documentaci�n para P_CONCILIAR_PAGO_LINEA
+    * Documentación para P_CONCILIAR_PAGO_LINEA
     * Procedimiento que realiza pago en linea
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -259,7 +259,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                     Pcl_Response OUT CLOB);
 
     /**
-    * Documentaci�n para F_REAC_SERVICIO_X_PAGO_LINEA
+    * Documentación para F_REAC_SERVICIO_X_PAGO_LINEA
     * Funcion que realiza reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -271,7 +271,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     FUNCTION F_REAC_SERVICIO_X_PAGO_LINEA(Fcl_Request IN CLOB) RETURN CLOB;
 
     /**
-    * Documentaci�n para F_OBTENER_PUNTOS_REACTIVAR
+    * Documentación para F_OBTENER_PUNTOS_REACTIVAR
     * Funcion que realiza reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -286,7 +286,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
 
     /**
-    * Documentaci�n para F_OBTENER_SALDOS_PUNTOS_REAC
+    * Documentación para F_OBTENER_SALDOS_PUNTOS_REAC
     * Funcion que sirve para obtener los servicios a reactivar
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -300,7 +300,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     FUNCTION F_OBTENER_SALDOS_PUNTOS_REAC(Fv_id_Recaudacion IN VARCHAR2, Fv_id_Pago_Linea IN VARCHAR2) RETURN SYS_REFCURSOR ;
 
     /**
-    * Documentaci�n para F_OBTENER_PUNTOS_X_ULT_MILLA
+    * Documentación para F_OBTENER_PUNTOS_X_ULT_MILLA
     * Funcion que realiza reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -312,7 +312,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     FUNCTION F_OBTENER_PUNTOS_X_ULT_MILLA(Fv_Id_Punto IN VARCHAR2) RETURN CLOB;
 
     /**
-    * Documentaci�n para F_GUARDAR_PUNTOS_REACT_MASIVO
+    * Documentación para F_GUARDAR_PUNTOS_REACT_MASIVO
     * Funcion que guardado en los esquemas de reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -324,7 +324,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     FUNCTION F_GUARDAR_PUNTOS_REACT_MASIVO(fr_request IN CLOB)  RETURN NUMBER; 
 
     /**
-    * Documentaci�n para F_REACTIVAR_SERVICIOS_TTCO
+    * Documentación para F_REACTIVAR_SERVICIOS_TTCO
     * Funcion para reactivacion TTCO
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -339,7 +339,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     FUNCTION F_REACTIVAR_SERVICIOS_TTCO(Fv_Punto_Reactivar IN  varchar2, Fv_Usr_Creacion IN varchar2, Fv_Cliente_Ip  IN varchar2, Fv_Proceso IN varchar2) RETURN boolean;
 
     /*
-    * Documentaci�n para TYPE 'Lr_DocumentosFinancieros'.
+    * Documentación para TYPE 'Lr_DocumentosFinancieros'.
     *  
     * @author Erick Melgar <emelgar@telconet.ec>
     * @version 1.0 11/07/2022
@@ -380,7 +380,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         SALDO_FACTURA                 NUMBER);
 
     /*
-    * Documentaci�n para TYPE 'T_DocumentosFiancieros'.
+    * Documentación para TYPE 'T_DocumentosFiancieros'.
     *  
     * @author Erick Melgar <emelgar@telconet.ec>
     * @version 1.0 11/07/2022
@@ -388,7 +388,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     TYPE T_DocumentosFiancieros IS TABLE OF Lr_DocumentosFinancieros INDEX BY PLS_INTEGER;
 
     /*
-    * Documentaci�n para TYPE 'Lr_InfoCliente'.
+    * Documentación para TYPE 'Lr_InfoCliente'.
     *  
     * @author Erick Melgar <emelgar@telconet.ec>
     * @version 1.0 11/07/2022
@@ -403,7 +403,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     );
 
     /*
-    * Documentaci�n para TYPE 'T_InfoCliente'.
+    * Documentación para TYPE 'T_InfoCliente'.
     *  
     * @author Erick Melgar <emelgar@telconet.ec>
     * @version 1.0 11/07/2022
@@ -411,7 +411,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     TYPE T_InfoCliente IS TABLE OF Lr_InfoCliente INDEX BY PLS_INTEGER;
 
     /**
-    * Documentaci�n para F_OBTENER_SALDOS_PUNTOS
+    * Documentación para F_OBTENER_SALDOS_PUNTOS
     * Procedimiento que realiza la consulta de saldo por id_persona
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -425,7 +425,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN SYS_REFCURSOR;
 
     /**
-    * Documentaci�n para F_OBTENER_FACTURAS_ABIERTAS
+    * Documentación para F_OBTENER_FACTURAS_ABIERTAS
     * Procedimiento que realiza la consulta de las facturas abiertas y el saldo por los puntos del cliente
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -439,7 +439,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN SYS_REFCURSOR;
 
     /**
-    * Documentaci�n para F_VALIDAR_PAGO_EXISTENTE
+    * Documentación para F_VALIDAR_PAGO_EXISTENTE
     * Procedimiento que realiza la validacion de si existe un pago
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -452,7 +452,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN BOOLEAN;
 
     /**
-    * Documentaci�n para F_OBTENER_INFORMACION_CLIENTE
+    * Documentación para F_OBTENER_INFORMACION_CLIENTE
     * Procedimiento que realiza la consulta de la informacion del cliente
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -468,7 +468,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN SYS_REFCURSOR;
 
     /**
-    * Documentaci�n para F_OBTENER_RECAUDACION_CARACT
+    * Documentación para F_OBTENER_RECAUDACION_CARACT
     * Procedimiento que realiza la consulta de la caracteristica de la recaudacion
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -484,7 +484,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         RETURN SYS_REFCURSOR;
 
     /**
-    * Documentaci�n para F_GENERAR_PAGO_ANTICIPO
+    * Documentación para F_GENERAR_PAGO_ANTICIPO
     * Procedimiento que realiza el pago de anticipo
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -552,7 +552,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                 Pv_MensajeError OUT VARCHAR2);
 
      /**
-    * Documentaci�n para P_REVERSAR_CONCIL_PAGO_LINEA
+    * Documentación para P_REVERSAR_CONCIL_PAGO_LINEA
     * Procedimiento que reversar un pago conciliado en linea
     * 
     * @author Milen Ortega <mortega1@telconet.ec>
@@ -569,7 +569,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                            Pcl_Response OUT CLOB);                              
 
    /**
-   * Documentaci�n para el procedure 'P_ENVIA_CORTAR_CLIENTE'
+   * Documentación para el procedure 'P_ENVIA_CORTAR_CLIENTE'
    * Realiza la logica para enviar a cortar un cliente por reverso de un pago
    *
    * @author Milen Ortega <mortega1@telconet.ec>
@@ -588,7 +588,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                      Pv_Error        OUT VARCHAR2);
 
     /**
-   * Documentaci�n para el procedure 'P_CORTA_CLIENTE'
+   * Documentación para el procedure 'P_CORTA_CLIENTE'
    * Inserta punto en las tablas de procesos masivos de clientes a cortar.
    * El proceso de corte lee de la tabla de procesos masivos para realizar el corte de los clientes
    *
@@ -614,8 +614,8 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                     Pv_Error                OUT VARCHAR2); 
 
    /**
-   * Documentaci�n para el procedure 'P_GUARDAR_PUNTOS_X_CORTE_MASIVO'
-   * Metodo para realizar la generaci�n de cabecera y detalle de procesos masivos de corte
+   * Documentación para el procedure 'P_GUARDAR_PUNTOS_X_CORTE_MASIVO'
+   * Metodo para realizar la generación de cabecera y detalle de procesos masivos de corte
    *
    * @author Milen Ortega <mortega1@telconet.ec>
    * @version 1.0 28/12/2022 
@@ -637,7 +637,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                                     Pv_ClienteIp            IN  VARCHAR2);
 
      /**
-   * Documentaci�n para la funcion 'F_GET_PUNTO_X_ULT_MILLA'
+   * Documentación para la funcion 'F_GET_PUNTO_X_ULT_MILLA'
    *
    * @author Milen Ortega <mortega1@telconet.ec>
    * @version 1.0 28/12/2022 
@@ -651,7 +651,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     **************************************************************************/
 
     /**
-    * Documentaci�n para P_ELIMINA_PAGO_LINEA
+    * Documentación para P_ELIMINA_PAGO_LINEA
     * Procedimiento que elimina pago en linea
     * 
     * @author Milen Ortega <mortega1@telconet.ec>
@@ -668,7 +668,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                    Pcl_Response OUT CLOB);
 
     /**
-   * Documentaci�n para el procedure 'P_CREAR_HIST_BY_REVERSO'
+   * Documentación para el procedure 'P_CREAR_HIST_BY_REVERSO'
    * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
    * y regulariza los documentos financieros asociados a estos pagos.
    *
@@ -686,7 +686,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                             Pv_Error         OUT VARCHAR2);
 
     /**
-   * Documentaci�n para el procedure 'P_INSERT_HIST_PAGO_LINEA'
+   * Documentación para el procedure 'P_INSERT_HIST_PAGO_LINEA'
    * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
    * y regulariza los documentos financieros asociados a estos pagos.
    *
@@ -706,7 +706,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                             Pv_Error         OUT VARCHAR2);
 
      /**
-   * Documentaci�n para el procedure 'P_INACTIVA_PAL_REGULARIZA_DF'
+   * Documentación para el procedure 'P_INACTIVA_PAL_REGULARIZA_DF'
    * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
    * y regulariza los documentos financieros asociados a estos pagos.
    *
@@ -726,7 +726,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                             Pv_Error         OUT VARCHAR2);
 
      /**
-   * Documentaci�n para el procedure 'P_REGULARIZA_DOCS_INACT_PC'
+   * Documentación para el procedure 'P_REGULARIZA_DOCS_INACT_PC'
    * Regulariza un documento que este relacionado al pago anulado.
    *
    * @author Milen Ortega <mortega1@telconet.ec>
@@ -745,7 +745,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                           Pv_Error         OUT VARCHAR2) ;
 
      /**
-   * Documentaci�n para el procedure 'P_CAMBIA_ESTADO_DOCUMENTO'
+   * Documentación para el procedure 'P_CAMBIA_ESTADO_DOCUMENTO'
    *
    * Cambia el estado del documento financiero
    *
@@ -761,7 +761,7 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                          Pv_Error          OUT VARCHAR2);
 
     /**
-    * Documentaci�n para P_CONCILIAR_PAGO_WSDL
+    * Documentación para P_CONCILIAR_PAGO_WSDL
     * Procedimiento que realiza pago en linea
     * 
     * @author Milen Ortega <mortega1@telconet.ec>
@@ -772,13 +772,13 @@ CREATE OR REPLACE PACKAGE  DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 END FNCK_PAGOS_LINEA;
 /
 
-CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS 
+CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_LINEA AS 
     /**************************************************************************
     **************************CONSULTAR PAGO***********************************
     **************************************************************************/
 
     /**
-    * Documentaci�n para P_CONSULTAR_SALDO_POR_IDENTIFICACION
+    * Documentación para P_CONSULTAR_SALDO_POR_IDENTIFICACION
     * Procedimiento que realiza la consulta de saldo por identificacion
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -787,7 +787,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
     * @version 1.1 17/06/2022 - Cambio de parametros de entrada y salida
     *
-    * @param Pcl_Request IN CLOB (identificaci�n de cliente y c�digo de empresa)
+    * @param Pcl_Request IN CLOB (identificación de cliente y código de empresa)
     * @param Pv_Status OUT VARCHAR2 estado
     * @param Pv_Mensaje OUT VARCHAR2 Devuelve el mensaje de respuesta
     * @param Pcl_Response OUT CLOB Devuelve respuesta con data
@@ -854,12 +854,12 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
             Lv_TipoProducto := APEX_JSON.get_varchar2(p_path => 'tipoProducto'); 
 
             IF Lv_Identificacion IS NULL THEN
-               Pv_Mensaje := 'El par�metro identificaci�n est� vac�o';
+               Pv_Mensaje := 'El parámetro identificación está vacío';
                RAISE Le_Errors;
             END IF;
 
             IF Lv_EmpresaCod IS NULL THEN
-               Pv_Mensaje := 'El par�metro EmpresaCod est� vac�o';
+               Pv_Mensaje := 'El parámetro EmpresaCod está vacío';
                RAISE Le_Errors;
             END IF;
 
@@ -941,7 +941,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                             || '}';
 
                 Pv_Status     := 'OK';
-                Pv_Mensaje    := 'Transacci�n exitosa';
+                Pv_Mensaje    := 'Transacción exitosa';
 
             END IF;
 
@@ -980,7 +980,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_CONSULTAR_SALDO_POR_IDENTIF',
-                                          'No se encontr� saldo del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se encontró saldo del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -992,11 +992,11 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para la funcion F_OBTENER_SUMA_VALOR_PENDIENTE
     *
-    * La funcion retorna la suma de los valores pendientes de un cliente dependiendo de su c�digo de Empresa e  
-    * identificaci�n
+    * La funcion retorna la suma de los valores pendientes de un cliente dependiendo de su código de Empresa e  
+    * identificación
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Fv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Fv_EmpresaCod IN VARCHAR2 código de empresa
     * return Fn_ValorPendiente NUMBER
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -1032,7 +1032,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_SUMA_VALOR_PENDIENTE',
-                                          'No se encontr� suma de saldos del cliente. Parametros (Identidicacion_cliente: '||Fv_Identificacion||', Codigo_empresa: '
+                                          'No se encontró suma de saldos del cliente. Parametros (Identidicacion_cliente: '||Fv_Identificacion||', Codigo_empresa: '
                                           ||Fv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1045,11 +1045,11 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para la funcion F_BUSCAR_NUM_CONTRATO
     *
-    * La funcion retorna el numero de contrato de un cliente dependiendo de su c�digo de Empresa,  
-    * identificaci�n, y/o estado del contrato
+    * La funcion retorna el numero de contrato de un cliente dependiendo de su código de Empresa,  
+    * identificación, y/o estado del contrato
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Fv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Fv_EmpresaCod IN VARCHAR2 código de empresa
     * @param Fv_Estado IN VARCHAR2 estado de contrato del cliente
     * return Fv_NumeroContrato VARCHAR2
     * 
@@ -1095,7 +1095,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_BUSCAR_NUM_CONTRATO',
-                                          'No se encontr� numero de contrato del cliente. Parametros (Identidicacion_cliente: '||Fv_Identificacion||', Codigo_empresa: '
+                                          'No se encontró numero de contrato del cliente. Parametros (Identidicacion_cliente: '||Fv_Identificacion||', Codigo_empresa: '
                                           ||Fv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1109,11 +1109,11 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para el procedimiento P_BUSCAR_INFO_CONTRATO
     *
-    * El procedimiento retorna el numero de contrato, forma de pago y id de contrato de un cliente, dependiendo de su c�digo de Empresa,  
-    * identificaci�n, y/o estado del contrato
+    * El procedimiento retorna el numero de contrato, forma de pago y id de contrato de un cliente, dependiendo de su código de Empresa,  
+    * identificación, y/o estado del contrato
     *
-    * @param Pv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Pv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Pv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Pv_EmpresaCod IN VARCHAR2 código de empresa
     * @param Pv_Estado IN VARCHAR2 estado de contrato del cliente
     * @param Pv_NumeroContrato OUT VARCHAR2
     * @param Pv_FormaPago OUT VARCHAR2
@@ -1184,7 +1184,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_BUSCAR_INFO_CONTRATO',
-                                          'No se encontr� info de contrato del cliente. Parametros (Identidicacion_cliente: '||Pv_Identificacion||', Codigo_empresa: '
+                                          'No se encontró info de contrato del cliente. Parametros (Identidicacion_cliente: '||Pv_Identificacion||', Codigo_empresa: '
                                           ||Pv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1199,11 +1199,11 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     /**
     * Documentacion para la funcion F_OBTENER_SALDOS_POR_IDENTIF
     *
-    * La funcion retorna la registros (cursor) de un cliente y su saldo dependiendo de su c�digo de Empresa e  
-    * identificaci�n
+    * La funcion retorna la registros (cursor) de un cliente y su saldo dependiendo de su código de Empresa e  
+    * identificación
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
-    * @param Fv_EmpresaCod IN VARCHAR2 c�digo de empresa
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
+    * @param Fv_EmpresaCod IN VARCHAR2 código de empresa
     * return Fc_GetSaldoPendiente SYS_REFCURSOR
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -1266,7 +1266,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_SALDOS_POR_IDENTIF',
-                                          'No se encontr� registros del cliente. Parametros (Identidicacion_cliente: '||Fv_Identificacion||', Codigo_empresa: '
+                                          'No se encontró registros del cliente. Parametros (Identidicacion_cliente: '||Fv_Identificacion||', Codigo_empresa: '
                                           ||Fv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1326,7 +1326,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_PAGO_LINEA',
-                                          'No se encontr� pago en linea. Parametros (Nombre_canal: '||Fv_NombreCanal||', Numero_referencia: '
+                                          'No se encontró pago en linea. Parametros (Nombre_canal: '||Fv_NombreCanal||', Numero_referencia: '
                                           ||Fv_NumeroRef||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1366,7 +1366,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_CANAL_PAGO_LINEA',
-                                          'No se encontr� registros del canal. Parametros (Nombre_canal: '||Fv_NombreCanal||')' || ' - ' 
+                                          'No se encontró registros del canal. Parametros (Nombre_canal: '||Fv_NombreCanal||')' || ' - ' 
                                           || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -1378,7 +1378,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_CANAL_PAGO_LINEA;
 
     /**
-    * Documentaci�n para P_PROCESAR_PAGO_LINEA
+    * Documentación para P_PROCESAR_PAGO_LINEA
     * Procedimiento que realiza pago en linea
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -1670,7 +1670,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                             || '}';
 
                             Pv_Status     := 'OK';
-                            Pv_Mensaje    := 'Transacci�n exitosa';
+                            Pv_Mensaje    := 'Transacción exitosa';
 
                         END IF;
                     END IF;
@@ -1730,7 +1730,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_PROCESAR_PAGO_LINEA',
-                                          'No se realiz� pago del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se realizó pago del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -1917,7 +1917,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_VALIDAR_CREDENCIALES',
-                                          'No se encontr� registros. Parametros (Request Validar: '||Pcl_Request||')' || ' - ' 
+                                          'No se encontró registros. Parametros (Request Validar: '||Pcl_Request||')' || ' - ' 
                                           || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -2007,7 +2007,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_VALIDAR_PROCESO',
-                                          'No se encontr� registros. Parametros (Request Validar: '||Pcl_Request||')' || ' - ' 
+                                          'No se encontró registros. Parametros (Request Validar: '||Pcl_Request||')' || ' - ' 
                                           || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -2082,7 +2082,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     *
     * La funcion retorna Mail y/o Telefono del cliente 
     *
-    * @param Fv_Identificacion IN VARCHAR2 identificaci�n de cliente
+    * @param Fv_Identificacion IN VARCHAR2 identificación de cliente
     * @param Fn_NumCarac IN VARCHAR2 Limite de caracteres
     * @param Fv_TipoData IN VARCHAR2 Tipo de Data
     * @param Fv_Todos IN VARCHAR2 Variable Todos
@@ -2193,7 +2193,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_MAIL_FONO_POR_IDENT',
-                                          'No se encontr� registros del mail o fono. Parametros (Identificacion: '||Fv_Identificacion||')' || ' - ' 
+                                          'No se encontró registros del mail o fono. Parametros (Identificacion: '||Fv_Identificacion||')' || ' - ' 
                                           || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -2209,7 +2209,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     **************************************************************************/
 
     /**
-    * Documentaci�n para P_CONCILIAR_PAGO_LINEA
+    * Documentación para P_CONCILIAR_PAGO_LINEA
     * Procedimiento que realiza pago en linea
     * 
     * @author Javier Hidalgo <jihidalgo@telconet.ec>
@@ -2495,7 +2495,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                                         || '}';
                         --dbms_output.put_line(Pcl_Response);
                         Pv_Status     := 'OK';
-                        Pv_Mensaje    := 'Transacci�n exitosa';
+                        Pv_Mensaje    := 'Transacción exitosa';
 
                     END IF;     
                 END IF;
@@ -2540,7 +2540,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_LINEA',
-                                          'No se realiz� conciliacion del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se realizó conciliacion del cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -2563,7 +2563,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END P_CONCILIAR_PAGO_LINEA;
 
     /**
-    * Documentaci�n para F_REAC_SERVICIO_X_PAGO_LINEA
+    * Documentación para F_REAC_SERVICIO_X_PAGO_LINEA
     * Funcion que realiza reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -2795,7 +2795,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_REAC_SERVICIO_X_PAGO_LINEA; 
 
     /**
-    * Documentaci�n para F_OBTENER_PUNTOS_REACTIVAR
+    * Documentación para F_OBTENER_PUNTOS_REACTIVAR
     * Funcion que realiza reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -2969,7 +2969,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_PUNTOS_REACTIVAR',
-                                          'No se encontr� registros PUNTOS A REACTIVAR . Parametros (Id_recaudacion: '||Fv_Id_Recaudacion||','||'Id_pago_linea:'||Fv_Id_Pago_Linea||','||'Id_empresa:'||Fv_Empresa_Id  ||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se encontró registros PUNTOS A REACTIVAR . Parametros (Id_recaudacion: '||Fv_Id_Recaudacion||','||'Id_pago_linea:'||Fv_Id_Pago_Linea||','||'Id_empresa:'||Fv_Empresa_Id  ||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -2980,7 +2980,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_PUNTOS_REACTIVAR; 
 
     /**
-    * Documentaci�n para F_OBTENER_SALDOS_PUNTOS_REAC
+    * Documentación para F_OBTENER_SALDOS_PUNTOS_REAC
     * Funcion que sirve para obtener los servicios a reactivar
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -3077,7 +3077,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_SALDOS_PUNTOS_REAC',
-                                          'No se encontr� registros del cliente. Parametros (id_recaudacion: '||Fv_id_Recaudacion||', id_pago_linea: '
+                                          'No se encontró registros del cliente. Parametros (id_recaudacion: '||Fv_id_Recaudacion||', id_pago_linea: '
                                           ||Fv_id_Pago_Linea||')' 
                                           || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
@@ -3091,7 +3091,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
 
     /**
-    * Documentaci�n para F_OBTENER_PUNTOS_X_ULT_MILLA
+    * Documentación para F_OBTENER_PUNTOS_X_ULT_MILLA
     * Funcion que realiza reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -3198,7 +3198,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                       'FNCK_PAGOS_LINEA.F_OBTENER_PUNTOS_X_ULT_MILLA',
-                                      'No se encontr� registros ultima milla . Parametros (id_punto: '||Fv_Id_Punto||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                      'No se encontró registros ultima milla . Parametros (id_punto: '||Fv_Id_Punto||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                       NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                       SYSDATE,
                                       NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3209,7 +3209,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_PUNTOS_X_ULT_MILLA;
 
     /**
-    * Documentaci�n para F_GUARDAR_PUNTOS_REACT_MASIVO
+    * Documentación para F_GUARDAR_PUNTOS_REACT_MASIVO
     * Funcion que guardado en los esquemas de reactivacion masiva
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -3359,7 +3359,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_GUARDAR_PUNTOS_REACT_MASIVO;
 
     /**
-    * Documentaci�n para F_REACTIVAR_SERVICIOS_TTCO
+    * Documentación para F_REACTIVAR_SERVICIOS_TTCO
     * Funcion para reactivacion TTCO
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -3521,7 +3521,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_REACTIVAR_SERVICIOS_TTCO;
 
     /**
-    * Documentaci�n para F_OBTENER_SALDOS_PUNTOS
+    * Documentación para F_OBTENER_SALDOS_PUNTOS
     * Procedimiento que realiza la consulta de saldo por id_persona
     * 
     * @author William Sanchez <wdsanchez@telconet.ec>
@@ -3600,7 +3600,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_SALDOS_PUNTOS',
-                                          'No se encontr� registros del cliente. Parametros (persona_id: '||Fv_IdPersona||', Codigo_empresa: '
+                                          'No se encontró registros del cliente. Parametros (persona_id: '||Fv_IdPersona||', Codigo_empresa: '
                                           ||Fv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -3612,7 +3612,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_SALDOS_PUNTOS;
 
     /**
-    * Documentaci�n para F_OBTENER_FACTURAS_ABIERTAS
+    * Documentación para F_OBTENER_FACTURAS_ABIERTAS
     * Procedimiento que realiza la consulta de las facturas abiertas y el saldo por los puntos del cliente
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -3716,7 +3716,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
            DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                             'FNCK_PAGOS_LINEA.F_OBTENER_FACTURAS_ABIERTAS',
-                                            'No se encontr� registros del cliente. Parametros (Fv_EmpresaCod: '||Fv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                            'No se encontró registros del cliente. Parametros (Fv_EmpresaCod: '||Fv_EmpresaCod||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3726,7 +3726,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_FACTURAS_ABIERTAS;
 
     /**
-    * Documentaci�n para F_VALIDAR_PAGO_EXISTENTE
+    * Documentación para F_VALIDAR_PAGO_EXISTENTE
     * Procedimiento que realiza la validacion de si existe un pago
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -3798,7 +3798,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         END IF;   
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_VALIDAR_PAGO_EXISTENTE',
-                                          'No se encontr� registros del canal. Parametros (Secuencial: ' || Lv_NumeroReferencia || '-'
+                                          'No se encontró registros del canal. Parametros (Secuencial: ' || Lv_NumeroReferencia || '-'
                                           || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -3809,7 +3809,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_VALIDAR_PAGO_EXISTENTE;
 
     /**
-    * Documentaci�n para F_OBTENER_INFORMACION_CLIENTE
+    * Documentación para F_OBTENER_INFORMACION_CLIENTE
     * Procedimiento que realiza la consulta de la informacion del cliente
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -3849,7 +3849,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         BEGIN
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                         'FNCK_PAGOS_LINEA.F_OBTENER_INFORMACION_CLIENTE',
-                                        'No se encontr� registros del cliente. Parametros (Fv_PersonaId: '||Fv_persona_id||')-'|| SQLCODE || ' -ERROR- ' || SQLERRM,
+                                        'No se encontró registros del cliente. Parametros (Fv_PersonaId: '||Fv_persona_id||')-'|| SQLCODE || ' -ERROR- ' || SQLERRM,
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                         SYSDATE,
                                         NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3859,7 +3859,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_INFORMACION_CLIENTE;
 
     /**
-    * Documentaci�n para F_OBTENER_RECAUDACION_CARACT
+    * Documentación para F_OBTENER_RECAUDACION_CARACT
     * Procedimiento que realiza la consulta de la caracteristica de la recaudacion
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -3893,7 +3893,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         BEGIN
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                         'FNCK_PAGOS_LINEA.F_OBTENER_CANAL_RECAUDACION_CARACTERISTICA',
-                                        'No se encontr� registros del cliente. Parametros (Fv_EmpresaCod: '|| SQLCODE || ' -ERROR- ' || SQLERRM,
+                                        'No se encontró registros del cliente. Parametros (Fv_EmpresaCod: '|| SQLCODE || ' -ERROR- ' || SQLERRM,
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                         SYSDATE,
                                         NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3902,7 +3902,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END F_OBTENER_RECAUDACION_CARACT;
 
     /**
-    * Documentaci�n para F_GENERAR_PAGO_ANTICIPO
+    * Documentación para F_GENERAR_PAGO_ANTICIPO
     * Procedimiento que realiza el pago de anticipo
     * 
     * @author Erick Melgar <emelgar@telconet.ec>
@@ -4048,7 +4048,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
         Lv_CodigoNumeracionPago := 'PREC';
         Lv_CodigoNumeracionAnticipo := 'AREC';
       ELSIF  Lv_FormaPago='PAL' THEN 
-        Lv_TipoTransaccion := 'Pago en l�nea';
+        Lv_TipoTransaccion := 'Pago en línea';
         Lv_CodigoNumeracionPago := 'PPAL';
         Lv_CodigoNumeracionAnticipo := 'APAL';
       ELSE
@@ -4588,7 +4588,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     WHEN OTHERS THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.F_OBTENER_PTO_PADRE_PER_ID',
-                                          'No se encontr� Id Punto padre del cliente. Parametros (Id Persona Empresa Rol: '||Fn_IdPersonaEmpresaRol||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se encontró Id Punto padre del cliente. Parametros (Id Persona Empresa Rol: '||Fn_IdPersonaEmpresaRol||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -4882,7 +4882,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END P_GENERAR_TOKEN;
 
    /**
-    * Documentaci�n para P_REVERSAR_CONCIL_PAGO_LINEA
+    * Documentación para P_REVERSAR_CONCIL_PAGO_LINEA
     * Procedimiento que reversar un pago conciliado en linea
     * 
     * @author Milen Ortega <mortega1@telconet.ec>
@@ -5188,7 +5188,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                               || '}';
 
             Pv_Status     := 'OK';
-            Pv_Mensaje    := 'Transacci�n exitosa';
+            Pv_Mensaje    := 'Transacción exitosa';
             COMMIT;
       ELSE
 
@@ -5246,7 +5246,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA',
-                                          'No se realiz� EL reverso post conciliaci�n cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se realizó EL reverso post conciliación cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -5276,7 +5276,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END P_REVERSAR_CONCIL_PAGO_LINEA;
 
    /**
-   * Documentaci�n para el procedure 'P_ENVIA_CORTAR_CLIENTE'
+   * Documentación para el procedure 'P_ENVIA_CORTAR_CLIENTE'
    * Realiza la logica para enviar a cortar un cliente por reverso de un pago
    *
    * @author Milen Ortega <mortega1@telconet.ec>
@@ -5425,7 +5425,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
      END P_ENVIA_CORTAR_CLIENTE;   
      /**
-   * Documentaci�n para el procedure 'P_CORTA_CLIENTE'
+   * Documentación para el procedure 'P_CORTA_CLIENTE'
    * Inserta punto en las tablas de procesos masivos de clientes a cortar.
    * El proceso de corte lee de la tabla de procesos masivos para realizar el corte de los clientes
    *
@@ -5576,8 +5576,8 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
 
     /**
-   * Documentaci�n para el procedure 'P_GUARDAR_PUNTOS_X_CORTE_MASIVO'
-   * Metodo para realizar la generaci�n de cabecera y detalle de procesos masivos de corte
+   * Documentación para el procedure 'P_GUARDAR_PUNTOS_X_CORTE_MASIVO'
+   * Metodo para realizar la generación de cabecera y detalle de procesos masivos de corte
    *
    * @author Milen Ortega <mortega1@telconet.ec>
    * @version 1.0 28/12/2022 
@@ -5698,7 +5698,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END P_GUARDAR_PUNTO_X_CORTE_MASIVO; 
 
    /**
-   * Documentaci�n para la funcion 'F_GET_PUNTO_X_ULT_MILLA'
+   * Documentación para la funcion 'F_GET_PUNTO_X_ULT_MILLA'
    *
    * @author Milen Ortega <mortega1@telconet.ec>
    * @version 1.0 28/12/2022 
@@ -5785,7 +5785,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     **************************************************************************/
 
     /**
-    * Documentaci�n para P_ELIMINA_PAGO_LINEA
+    * Documentación para P_ELIMINA_PAGO_LINEA
     * Procedimiento que elimina pago en linea
     * 
     * @author Milen Ortega <mortega1@telconet.ec>
@@ -6020,7 +6020,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
                               || '}';
 
               Pv_Status     := 'OK';
-              Pv_Mensaje    := 'Transacci�n exitosa';
+              Pv_Mensaje    := 'Transacción exitosa';
 
           END IF;     
 
@@ -6058,7 +6058,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       ROLLBACK;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                           'FNCK_PAGOS_LINEA.P_REVERSAR_CONCIL_PAGO_LINEA',
-                                          'No se realiz� EL reverso post conciliaci�n cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'No se realizó EL reverso post conciliación cliente. Parametros ('||Pcl_Request||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -6086,7 +6086,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END P_ELIMINA_PAGO_LINEA;
 
     /**
-   * Documentaci�n para el procedure 'P_CREAR_HIST_BY_REVERSO'
+   * Documentación para el procedure 'P_CREAR_HIST_BY_REVERSO'
    * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
    * y regulariza los documentos financieros asociados a estos pagos.
    *
@@ -6146,7 +6146,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     END  P_CREAR_HIST_BY_REVERSO;    
 
     /**
-   * Documentaci�n para el procedure 'P_INSERT_HIST_PAGO_LINEA'
+   * Documentación para el procedure 'P_INSERT_HIST_PAGO_LINEA'
    * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
    * y regulariza los documentos financieros asociados a estos pagos.
    *
@@ -6228,7 +6228,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
 
    /**
-   * Documentaci�n para el procedure 'P_INACTIVA_PAL_REGULARIZA_DF'
+   * Documentación para el procedure 'P_INACTIVA_PAL_REGULARIZA_DF'
    * Lista los pagos generados por un pago en linea, envia a inactivar estos pagos
    * y regulariza los documentos financieros asociados a estos pagos.
    *
@@ -6320,7 +6320,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
 
    /**
-   * Documentaci�n para el procedure 'P_REGULARIZA_DOCS_INACT_PC'
+   * Documentación para el procedure 'P_REGULARIZA_DOCS_INACT_PC'
    * Regulariza un documento que este relacionado al pago anulado.
    *
    * @author Milen Ortega <mortega1@telconet.ec>
@@ -6593,7 +6593,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
      END P_REGULARIZA_DOCS_INACT_PC;  
 
     /**
-   * Documentaci�n para el procedure 'P_CAMBIA_ESTADO_DOCUMENTO'
+   * Documentación para el procedure 'P_CAMBIA_ESTADO_DOCUMENTO'
    *
    * Cambia el estado del documento financiero
    *
@@ -6735,7 +6735,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
     **************************************************************************/
 
     /**
-    * Documentaci�n para P_CONCILIAR_PAGO_WSDL
+    * Documentación para P_CONCILIAR_PAGO_WSDL
     * Procedimiento que realiza pago en linea
     * 
     * @author Milen Ortega <mortega1@telconet.ec>
@@ -6961,7 +6961,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
       --Lv_ClaveConciliacion := 'Desa2530$$1';
       --Lv_FechaConciliacion := '2021-10-05T12:52:00'; 
 
-      Lc_soap_request:= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tran="http://transferunion.com/"><soapenv:Header/><soapenv:Body><tran:ConsultaMovimientos><tran:usuario>'||Lv_UsuarioConciliacion||'</tran:usuario><tran:contrase�a>'||Lv_ClaveConciliacion||'</tran:contrase�a><tran:fecha>'||Lv_FechaConciliacion||'</tran:fecha></tran:ConsultaMovimientos></soapenv:Body></soapenv:Envelope>';
+      Lc_soap_request:= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tran="http://transferunion.com/"><soapenv:Header/><soapenv:Body><tran:ConsultaMovimientos><tran:usuario>'||Lv_UsuarioConciliacion||'</tran:usuario><tran:contraseña>'||Lv_ClaveConciliacion||'</tran:contraseña><tran:fecha>'||Lv_FechaConciliacion||'</tran:fecha></tran:ConsultaMovimientos></soapenv:Body></soapenv:Envelope>';
 
       Lh_http_req:= utl_http.begin_request(Lv_UrlProxy, 'POST', 'HTTP/1.1');
 
@@ -7308,7 +7308,7 @@ CREATE OR REPLACE PACKAGE BODY               DB_FINANCIERO.FNCK_PAGOS_LINEA AS
 
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'BUSPAGOS',
                                             'FNCK_PAGOS_LINEA.P_CONCILIAR_PAGO_WSDL',
-                                            'Error en Conciliaci�n de pagos WSDL de activa ecuador' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                            'Error en Conciliación de pagos WSDL de activa ecuador' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                             SYSDATE,
                                             NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );

@@ -1,3 +1,633 @@
+CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS
+AS
+
+/*
+  * Documentación para TYPE 'Lr_InfoServicioMiddleware'.
+  *
+  * Tipo de datos para el retorno de la información correspondiente al servicio de internet middleware
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 05-09-2022
+  */
+  TYPE Lr_InfoServicioMiddleware IS RECORD
+  (
+    Id_Cab                  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE,
+    Id_Det                  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ID_PROCESO_MASIVO_DET%TYPE,
+    Tipo_Proceso            DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.TIPO_PROCESO%TYPE,
+    Estado                  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ESTADO%TYPE,
+    Punto_Id                DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
+    Login                   DB_COMERCIAL.INFO_PUNTO.LOGIN%TYPE,
+    Tipo_Negocio            VARCHAR2(100),
+    Prefijo_Empresa         DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE,
+    Elemento_Id             DB_INFRAESTRUCTURA.INFO_ELEMENTO.ID_ELEMENTO%TYPE,
+    Nombre_Elemento_Olt     DB_INFRAESTRUCTURA.INFO_ELEMENTO.NOMBRE_ELEMENTO%TYPE,
+    Serie_Ont               DB_INFRAESTRUCTURA.INFO_ELEMENTO.SERIE_FISICA%TYPE,
+    Elemento_Cliente_Id     DB_INFRAESTRUCTURA.INFO_SERVICIO_TECNICO.ELEMENTO_CLIENTE_ID%TYPE,
+    Servicio_Id             DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
+    Servicio_Estado         DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE,
+    Punto_Estado            DB_COMERCIAL.INFO_PUNTO.ESTADO%TYPE,
+    Servicio_Tecnico_Id     DB_INFRAESTRUCTURA.INFO_SERVICIO_TECNICO.ID_SERVICIO_TECNICO%TYPE,
+    Modelo_Elemento_Id      DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO.ID_MODELO_ELEMENTO%TYPE,
+    Modelo_Elemento_Nombre  DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO.NOMBRE_MODELO_ELEMENTO%TYPE,
+    Marca_Elemento_Nombre   DB_INFRAESTRUCTURA.ADMI_MARCA_ELEMENTO.NOMBRE_MARCA_ELEMENTO%TYPE,
+    Accion                  VARCHAR2(100),
+    Script                  DB_COMUNICACION.INFO_DOCUMENTO.MENSAJE%TYPE,
+    Ip                      DB_INFRAESTRUCTURA.INFO_IP.IP%TYPE,
+    Puerto                  DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO.NOMBRE_INTERFACE_ELEMENTO%TYPE,
+    Caract_Perfil           DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Caract_Indice           DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Caract_Mac              DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Spid                    DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Vlan                    DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Gemport                 DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Traffic                 DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Profile_Name            DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Service                 DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Capacidad_Up            DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Capacidad_Down          DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
+    Ip_Fijas_Adicionales    NUMBER
+  );
+
+  /*
+  * Documentación para TYPE 'Lt_InfoServicioMiddleware'.
+  *
+  * Tabla para almacenar la data enviada con la información correspondiente al servicio de internet middleware
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 06-09-2022
+  */
+  TYPE Lt_InfoServicioMiddleware
+  IS
+    TABLE OF Lr_InfoServicioMiddleware INDEX BY PLS_INTEGER;  
+    
+ /*
+  * Documentación para TYPE 'Lr_DataServiciosKonibit'.
+  *
+  * Tipo de datos para servicios konibit de un punto
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 20-10-2022
+  */
+  TYPE Lr_DataServiciosKonibit IS RECORD
+  (
+    Id_Punto                  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
+    Id_Servicio               DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
+    Operacion                 VARCHAR2(30)
+  );
+
+  /*
+  * Documentación para TYPE 'Lt_DataServiciosKonibit'.
+  * Tabla para almacenar la data enviada con la información de servicios konibit de punto
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 20-10-2022
+  */
+  TYPE Lt_DataServiciosKonibit  IS
+    TABLE OF Lr_DataServiciosKonibit INDEX BY PLS_INTEGER;
+    
+ /*
+  * Documentación para TYPE 'Lr_DataCabecerasPm'.
+  *
+  * Tipo de datos para el registro de cabeceras de PM
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 07-09-2022
+  */
+  TYPE Lr_DataCabecerasPM IS RECORD
+  (
+    Id_Cab NUMBER
+  );
+
+  /*
+  * Documentación para TYPE 'Lt_DataCabecerasPm'.
+  * Tabla para almacenar la data enviada con la información de cabeceras PM
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 07-09-2022
+  */
+  TYPE Lt_DataCabecerasPm
+  IS
+    TABLE OF Lr_DataCabecerasPm INDEX BY PLS_INTEGER;
+    
+ /*
+  * Documentación para TYPE 'Lr_DataServiciosPunto'.
+  *
+  * Tipo de datos para servicios de un punto
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 07-09-2022
+  */
+  TYPE Lr_DataServiciosPunto IS RECORD
+  (
+    Id_Servicio      NUMBER
+  );
+
+  /*
+  * Documentación para TYPE 'Lt_DataServiciosPunto'.
+  * Tabla para almacenar la data enviada con la información de servicios de punto
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 07-09-2022
+  */
+  TYPE Lt_DataServiciosPunto
+  IS
+    TABLE OF Lr_DataServiciosPunto INDEX BY PLS_INTEGER;
+    
+/*
+  * Documentación para TYPE 'Lr_DataServiciosAdicPunto'.
+  *
+  * Tipo de datos para servicios adicionales de un punto
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 07-09-2022
+  */
+  TYPE Lr_DataServiciosAdicPunto IS RECORD
+  (
+    Id_Servicio               DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
+    Estado_Servicio           DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE,
+    Id_Producto               DB_COMERCIAL.ADMI_PRODUCTO.ID_PRODUCTO%TYPE,
+    Descripcion_Producto      DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE,
+    Tipo_Servicio             VARCHAR2(10)
+  );
+
+  /*
+  * Documentación para TYPE 'Lt_DataServiciosAdicPunto'.
+  * Tabla para almacenar la data enviada con la información de servicios adicionales de punto
+  *
+  * @author Jesús Bozada <jbozada@telconet.ec>
+  * @version 1.0 07-09-2022
+  */
+  TYPE Lt_DataServiciosAdicPunto  IS
+    TABLE OF Lr_DataServiciosAdicPunto INDEX BY PLS_INTEGER;
+
+  /**
+   * P_Obtener_Detalles_Info_Pm
+   * Procedimiento que genera json con información de detalles de procesos masivos
+   *
+   * @param  Pn_IdProcesoMasivoDet IN  Db_Infraestructura.Info_Proceso_Masivo_Det.Id_Proceso_Masivo_Det%Type    Id detalle proceso masivo
+   * @param  Pn_IdPunto            OUT Db_Comercial.Info_Punto.Id_Punto%Type                                    Id punto del servicio procesado
+   * @param  Pn_CantidadIntentos   Out Db_Infraestructura.Info_Proceso_Masivo_Det.Cantidad_Intentos%Type        Cantidad de reintentos de ejecución
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_OBTENER_DETALLES_INFO_PM(
+    Pn_IdProcesoMasivoDet   IN  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ID_PROCESO_MASIVO_DET%TYPE,
+    Pn_IdPunto              OUT DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
+    Pn_CantidadIntentos     OUT DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.CANTIDAD_INTENTOS%TYPE);
+    
+  /**
+   * Documentación para PROCEDURE 'P_INSERT_INFO_SERVICIO_HISTO'.
+   *
+   * Procedimiento que inserta registro en la tabla de historial de servicio INFO_SERVICIO_HISTORIAL
+   *
+   * PARAMETROS:
+   * @Param Pr_InfoServicioHisto     IN  DB_COMERCIAL.INFO_SERVICIO_HISTORIAL%ROWTYPE  Recibe un registro con la información necesaria para ingresar
+   * @Param Pv_MsjResultado         OUT  VARCHAR2                                      Devuelve un mensaje del resultado de ejecución
+   * 
+   * @author Hector Lozano <hlozano@telconet.ec>
+   * @version 1.0 02-07-2019
+   */
+  PROCEDURE P_INSERT_INFO_SERVICIO_HISTO(
+    Pr_InfoServicioHisto   IN DB_COMERCIAL.INFO_SERVICIO_HISTORIAL%ROWTYPE,
+    Pv_MsjResultado        OUT VARCHAR2);
+    
+  /**
+   * P_VALIDAR_CAB_ID
+   * Procedimiento que valida las cabeceras en listado de cabs
+   *
+   * @param  Pn_IdCab                   IN  NUMBER    IdCab a validar en listado
+   * @param  Pt_TRegsDataCabecerasPm    IN  DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS.Lt_DataCabecerasPm  Listado de IdCab's actuales
+   * @param  Pv_Existe                  OUT VARCHAR2  Existe o no IdCab
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_VALIDAR_CAB_ID(
+    Pn_IdCab                 IN  NUMBER,
+    Pt_TregsDataCabecerasPm  IN  DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS.LT_DATACABECERASPM,
+    Pv_Existe                OUT VARCHAR2);
+    
+  /**
+   * P_OBTENER_CABECERAS_PM
+   * Procedimiento que obtiene las cabeceras de procesos masivos a procesar en estado Pendiente
+   *
+   * @param  Pv_TipoProceso     IN VARCHAR2  Tipo proceso con el cual se realizará la consulta
+   * @param  Pv_EmpresaCod      IN VARCHAR2  Tipo proceso con el cual se realizará la consulta
+   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
+   * @param  Pcl_Response       OUT CLOB      Respuesta en formato json de la consulta
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   * @author Jessenia Piloso <jpiloso@telconet.ec>
+   * @version 1.8 07-03-2023     Se incluye validaciones para considerar a la empresa de Ecuanet en el proceso masivo de corte.
+   *
+   *
+   */
+  PROCEDURE P_OBTENER_CABECERAS_PM(
+    Pv_TipoProceso      IN VARCHAR2,
+    Pv_EmpresaCod       IN VARCHAR2,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2,
+    Pcl_Response        OUT CLOB,
+    Pn_CantidadCab      OUT NUMBER);
+    
+  /**
+   * P_OBTENER_DETALLES_PM
+   * Procedimiento que obtiene las cabeceras de procesos masivos a procesar en estado Pendiente
+   *
+   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizará la consulta
+   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
+   * @param  Prf_Registros      OUT SYS_REFCURSOR  Respuesta en formato json de la consulta
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_OBTENER_DETALLES_PM(
+    Pcl_Cabeceras       IN CLOB,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2,
+    Prf_Registros       OUT SYS_REFCURSOR);
+
+  /**
+   * P_ACTUALIZA_INCONSISTENCIA_PM
+   * Procedimiento que actualiza procesos masivos con inconsistencias en estado de servicio de internet
+   *
+   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizará la consulta
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 24-10-2022
+   *
+   */
+  PROCEDURE P_ACTUALIZA_INCONSISTENCIA_PM(
+    Pcl_Cabeceras       IN  CLOB);
+
+  /**
+   * P_ACTUALIZA_REGULARIZA_CAB_PM
+   * Procedimiento que actualiza procesos masivos cab que han finalizado todos sus detalles y aún se
+   * encuentran con estado Procesando
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 10-01-2022
+   *
+   */
+  PROCEDURE P_ACTUALIZA_REGULARIZA_CAB_PM;
+
+
+  /**
+   * P_Obtener_Serv_Adic_Punto
+   * Procedimiento que obtiene los productos adicionales solicitados
+   *
+   * @param  Pn_PuntoId      IN  Number         Id Punto del cliente procesado
+   * @param  Pv_Estado       IN  VARCHAR2       Estado de servicios a buscar
+   * @param  Pv_OpIntProt    IN  VARCHAR2       Operación ejecutada
+   * @param  Prf_Registros   OUT SYS_REFCURSOR  Respuesta de información consultada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_OBTENER_SERV_ADIC_PUNTO(
+    Pn_PuntoId       IN NUMBER,
+    Pv_Estado        IN VARCHAR2,
+    Pv_OpIntProt     IN VARCHAR2,
+    Prf_Registros    OUT SYS_REFCURSOR);
+
+  /**
+   * P_Ejecuta_Proceso_Logico
+   * Procedimiento que ejecuta operaciones lógicas en el servicio procesado
+   *
+   * @param  Pn_IdServicio          IN  Number           Id servicio del cliente procesado
+   * @param  Pv_TipoServicio        IN  Varchar2         Tipo de servicio procesado
+   * @param  Pv_Accion              IN  Varchar2         Accion a setear
+   * @param  Pv_EstadoServicio      IN  Varchar2         Estado de servicio a actualizar
+   * @param  Pv_ObservacionHist     IN  Varchar2         Observación a ingresar
+   * @param  Pb_RequiereCaract      IN  Boolean          Bandera que indica si requiere creación de caracteristica o no
+   * @param  Pn_IdProducto          IN  Number           Id producto del servicio del cliente procesado
+   * @param  Pv_DescripcionCaract   IN  Varchar2         Descripción de caracteristica a usar
+   * @param  Pv_Valor               IN  Varchar2         Valor de caracteristica a setear  
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_EJECUTA_PROCESO_LOGICO( 
+    Pn_IdServicio          IN NUMBER,
+    Pv_TipoServicio        IN VARCHAR2,
+    Pv_Accion              IN VARCHAR2,
+    Pv_EstadoServicio      IN VARCHAR2,
+    Pv_ObservacionHist     IN VARCHAR2,
+    Pb_RequiereCaract      IN BOOLEAN,
+    Pn_IdProducto          IN NUMBER,
+    Pv_DescripcionCaract   IN VARCHAR2,
+    Pv_Valor               IN VARCHAR2);
+    
+  /**
+   * P_Actualizar_Cabeceras_Pm
+   * Procedimiento que actualiza las cabeceras de procesos masivos a procesar en estado Procesando
+   *
+   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizará la actualización
+   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_ACTUALIZAR_CABECERAS_PM(
+    Pcl_Cabeceras       IN CLOB,
+    Pv_EstadoNuevo      IN VARCHAR2,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2);
+    
+  /**
+   * P_Actualizar_Detalles_Pm
+   * Procedimiento que actualiza las detalles de procesos masivos a procesar en estado Procesando
+   *
+   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizará la actualización
+   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_ACTUALIZAR_DETALLES_PM(
+    Pcl_Cabeceras       IN CLOB,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2);
+    
+  /**
+   * P_Actualizar_Detalle_Pm
+   * Procedimiento que actualiza las detalles de procesos masivos a procesar en estado Procesando
+   *
+   * @param  Pv_Estado           IN  Varchar2      Estado a colocar el proceso masivo
+   * @param  Pv_Usuario          IN  Varchar2      Usuario de modificación
+   * @param  Pv_Observacion      IN  Varchar2      Observación de PM
+   * @param  Pn_IpDetPm          IN  Number        Id detalle PM
+   * @param  Pn_PuntoId          IN  Number        Id de punto de proceso masivo detalle
+   * @param  Pn_CantidadIntentos IN  Number        Cantidad de intentos de ejecución
+   * @param  Pv_Status           OUT VARCHAR2      Estado del procedimiento
+   * @param  Pv_Mensaje          OUT VARCHAR2      Mensaje de error del procedimiento
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_ACTUALIZAR_DETALLE_PM(
+    Pv_Estado           IN VARCHAR2,
+    Pv_Usuario          IN VARCHAR2,
+    Pv_Observacion      IN VARCHAR2,
+    Pn_IpDetPm          IN NUMBER,
+    Pn_PuntoId          IN NUMBER,
+    Pn_CantidadIntentos IN NUMBER,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2);
+    
+  /**
+   * P_Gestionar_Serv_Int_Prot
+   * Procedimiento que gestiona los servicios de internet protegido
+   *
+   * @param  Pn_PuntoId         IN  Number        Id Punto del cliente a procesar
+   * @param  Pn_IdServicio      IN  Number        Id Servicio de internet del cliente a procesar
+   * @param  Pv_OpIntProt       IN  Varchar2      Operación procesada
+   * @param  Pv_Status          OUT VARCHAR2      Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2      Mensaje de error del procedimiento
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_GESTIONAR_SERV_INT_PROT(
+    Pn_PuntoId      IN NUMBER,
+    Pn_IdServicio   IN NUMBER,
+    Pv_OpIntProt    IN VARCHAR2,
+    Pv_Status       OUT VARCHAR2,
+    Pv_Mensaje      OUT VARCHAR2);
+
+  /**
+   * P_Gestionar_Serv_Konibit
+   * Procedimiento que gestiona los servicios konibit
+   *
+   * @param  Pn_PuntoId         IN  Number        Id Punto del cliente a procesar
+   * @param  Pn_IdServicio      IN  Number        Id Servicio de internet del cliente a procesar
+   * @param  Pv_OpIntProt       IN  Varchar2      Operación procesada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_GESTIONAR_SERV_KONIBIT(
+    Pn_PuntoId      IN NUMBER,
+    Pn_IdServicio   IN NUMBER,
+    Pv_OpIntProt    IN VARCHAR2);
+
+  /**
+   * P_Recupera_Serv_Adic_Int_Pro
+   * Procedimiento que recupera servicios adicionales de internet protegido
+   *
+   * @param  Pn_PuntoId           IN  Number             Id Punto del cliente a procesar
+   * @param  Pv_Estado            IN  Varchar2           Estado a consultar
+   * @param  Pv_Descripcion       IN  Varchar2           Descripción de producto a consultar
+   * @param  Pv_LikeDescripcion   IN  Varchar2           Like Descripción de producto a consultar
+   * @param  Pv_DescCaractServ    IN  Varchar2           Descripcion caracteristica servicio
+   * @param  Prf_Registros        OUT Sys_Refcursor      Información recuperada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_RECUPERA_SERV_ADIC_INT_PRO(
+    Pn_PuntoId           IN NUMBER,
+    Pv_Estado            IN VARCHAR2,
+    Pv_Descripcion       IN VARCHAR2,
+    Pv_LikeDescripcion   IN VARCHAR2,
+    Pv_DescCaractServ    IN VARCHAR2,
+    Prf_Registros        OUT SYS_REFCURSOR);
+    
+  /**
+   * P_Recupera_Serv_Adic_Konibit
+   * Procedimiento que recupera servicios adicionales konibit
+   *
+   * @param  Pn_PuntoId           IN  Number             Id Punto del cliente a procesar
+   * @param  Pv_Estado            IN  Varchar2           Estado a consultar
+   * @param  Pv_Descripcion       IN  Varchar2           Descripción de producto a consultar
+   * @param  Pv_LikeDescripcion   IN  Varchar2           Like Descripción de producto a consultar
+   * @param  Pv_DescCaractServ    IN  Varchar2           Descripcion caracteristica servicio
+   * @param  Prf_Registros        OUT Sys_Refcursor      Información recuperada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_RECUPERA_SERV_ADIC_KONIBIT(
+    Pn_PuntoId           IN NUMBER,
+    Pv_Estado            IN VARCHAR2,
+    Pv_Descripcion       IN VARCHAR2,
+    Pv_LikeDescripcion   IN VARCHAR2,
+    Pv_DescCaractServ    IN VARCHAR2,
+    Prf_Registros        OUT SYS_REFCURSOR);
+    
+  /**
+   * P_Recupera_Serv_Plan_Int_Pro
+   * Procedimiento que recupera servicios en plan de internet protegido
+   *
+   * @param  Pn_IdServicio              IN  Number          Id servicio del cliente a procesar
+   * @param  Pv_Descripcion             IN  Varchar2        Descripción de producto a consultar
+   * @param  Pv_LikeDescripcion         IN  Varchar2        Like Descripción de producto a consultar
+   * @param  Pv_NombreTecnicoProducto   IN  Varchar2        Nombre Técnico del producto a revisar
+   * @param  Pv_DescCaractServ          IN  Varchar2        Descripcion caracteristica servicio
+   * @param  Prf_Registros              OUT Sys_Refcursor   Información recuperada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_RECUPERA_SERV_PLAN_INT_PRO(
+    Pn_IdServicio             IN NUMBER,
+    Pv_Descripcion            IN VARCHAR2,
+    Pv_LikeDescripcion        IN VARCHAR2,
+    Pv_NombreTecnicoProducto  IN VARCHAR2,
+    Pv_DescCaractServ         IN VARCHAR2,
+    Prf_Registros             OUT SYS_REFCURSOR);
+    
+  /**
+   * P_Recupera_Serv_Plan_Konibit
+   * Procedimiento que recupera servicios en plan de konibit
+   *
+   * @param  Pn_IdServicio              IN  Number          Id servicio del cliente a procesar
+   * @param  Pv_Descripcion             IN  Varchar2        Descripción de producto a consultar
+   * @param  Pv_LikeDescripcion         IN  Varchar2        Like Descripción de producto a consultar
+   * @param  Pv_NombreTecnicoProducto   IN  Varchar2        Nombre Técnico del producto a revisar
+   * @param  Pv_DescCaractServ          IN  Varchar2        Descripcion caracteristica servicio
+   * @param  Prf_Registros              OUT Sys_Refcursor   Información recuperada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_RECUPERA_SERV_PLAN_KONIBIT(
+    Pn_IdServicio             IN NUMBER,
+    Pv_Descripcion            IN VARCHAR2,
+    Pv_LikeDescripcion        IN VARCHAR2,
+    Pv_NombreTecnicoProducto  IN VARCHAR2,
+    Pv_DescCaractServ         IN VARCHAR2,
+    Prf_Registros             OUT SYS_REFCURSOR);
+    
+  /**
+   * P_Actualizar_Servicios_Punto
+   * Procedimiento que actualiza las detalles de procesos masivos a procesar en estado Procesando
+   *
+   * @param  Pv_Estado_Nuevo    IN  Varchar2       Estado nuevo de servicios
+   * @param  Pv_Estado_Actual   IN  Varchar2       Estado Actual de servicios
+   * @param  Pv_OpIntProt       IN  Varchar2       Operación ejecutada en el proceso
+   * @param  Pn_Punto_Id        IN  Number         Punto Id que tiene servicios adicionales a actualizar
+   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 12-09-2022
+   *
+   */
+  PROCEDURE P_ACTUALIZAR_SERVICIOS_PUNTO(
+    Pv_Estado_Nuevo     IN VARCHAR2,
+    Pv_Estado_Actual    IN VARCHAR2,
+    Pv_OpIntProt        IN VARCHAR2,
+    Pn_Punto_Id         IN NUMBER,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2);
+    
+  /**
+   * P_OBTENER_PM
+   * Procedimiento que obtiene la respuesta en formato json utilizado posteriormente en consultas de MW
+   *
+   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
+   * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_OBTENER_PM(
+    Pcl_JsonRequest     IN CLOB,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2,
+    Pcl_JsonResponse    OUT CLOB);
+    
+  /**
+   * P_PROCESAR_MW
+   * Procedimiento que procesa la información de clientes de1 olt en MW
+   *
+   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
+   * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_PROCESAR_MW (
+    Pcl_JsonRequest     IN CLOB,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2,
+    Pcl_JsonResponse    OUT CLOB);
+
+  /**
+   * P_PROCESAR_TELCOS
+   * Procedimiento que procesa la información de clientes de1 olt en TELCOS
+   *
+   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
+   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   * @author Jessenia Piloso <jpiloso@telconet.ec>
+   * @version 1.8 07-03-2023     Se incluye validaciones para considerar a la empresa de Ecuanet en el proceso masivo de corte.
+   *
+   */
+  PROCEDURE P_PROCESAR_TELCOS (
+    Pcl_JsonRequest     IN CLOB,
+    Pv_Status           OUT VARCHAR2,
+    Pv_Mensaje          OUT VARCHAR2);
+      
+  /**
+   * P_PROCESAR_CABECERAS_PM
+   * Procedimiento que procesa la información de clientes de1 olt en TELCOS
+   *
+   * @param  Pcl_JsonRequest    IN CLOB Parámetros por los cuáles se realizará la consulta
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 05-09-2022
+   *
+   */
+  PROCEDURE P_PROCESAR_CABECERAS_PM (PCL_JSONREQUEST     IN CLOB);
+  
+  /**
+   * P_CANTIDAD_INTENTOS
+   * Procedimiento que obtiene la cantidad máxima de intentos parametrizada
+   *
+   * @param  Pn_CantidadIntentos    OUT NUMBER Cantidad máxima de intentos parametrizada
+   *
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.0 26-09-2022
+   *
+   */
+  PROCEDURE P_CANTIDAD_INTENTOS(Pn_CantidadIntentos OUT NUMBER);
+
+END INKG_PROCESOS_MASIVOS;
+/
+
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS
 AS
   PROCEDURE P_VALIDAR_CAB_ID(
@@ -233,7 +863,7 @@ AS
   BEGIN
     EXECUTE IMMEDIATE ' UPDATE db_infraestructura.info_proceso_masivo_det pmd
                         SET pmd.estado                   =''Finalizada'',
-                          pmd.observacion                =''Servicio de Internet con Estado Trasladado, se finaliza registro autom�ticamente''
+                          pmd.observacion                =''Servicio de Internet con Estado Trasladado, se finaliza registro automáticamente''
                         WHERE pmd.id_proceso_masivo_det IN
                           (SELECT db_infraestructura.info_proceso_masivo_det.id_proceso_masivo_det
                           FROM db_infraestructura.info_proceso_masivo_det,
@@ -489,7 +1119,7 @@ AS
     Lv_EmpresaCod           := TRIM(APEX_JSON.GET_VARCHAR2(P_PATH => 'empresaCod'));
     Lv_Opcion               := TRIM(APEX_JSON.GET_VARCHAR2(P_PATH => 'opcion'));
     IF Lv_TipoProceso IS NULL OR Lv_EmpresaCod IS NULL OR Lv_Opcion IS NULL THEN
-      Lv_Mensaje := 'No se han enviado los par�metros obligatorios';
+      Lv_Mensaje := 'No se han enviado los parámetros obligatorios';
       RAISE Le_Exception;
     END IF;
     APEX_JSON.INITIALIZE_CLOB_OUTPUT;
@@ -1358,7 +1988,7 @@ AS
       Lv_EstadoNuevoServAdi       := Lv_EstadoInCorte;                                
       Lv_ObsHistoServErrorToken   := 'Internet Protegido no pudo ser cortado ya que existieron problemas al generar Token';
       Lv_ObsHistoServErrorWs      := 'Internet Protegido no pudo ser cortado ya que existieron problemas al ejecutar el web service';
-      Lv_ObservacionProcesoLogico := 'Se ha realizado el corte del Internet Protegido de manera l�gica';
+      Lv_ObservacionProcesoLogico := 'Se ha realizado el corte del Internet Protegido de manera lógica';
       Lv_DescCaractProcesoLogico  := 'ERROR_CORTE_INTERNET_PROTEGIDO';
       Lv_DescripcionProducto      := 'I. PROTEGIDO MULTI PAID';
       Lv_DescCaracServicio        := 'SUSCRIBER_ID';
@@ -1832,8 +2462,8 @@ AS
                 Ln_IdServicioTmp,
                 Ln_IdSecHist,
                 'CORTE',
-                'Caracter�stica ingresada desde un corte masivo con el �ltimo historial '||
-                'In-Corte v�lido para la cancelaci�n masiva',
+                'Característica ingresada desde un corte masivo con el último historial '||
+                'In-Corte válido para la cancelación masiva',
                 Lv_UsuarioCreacion,
                 Lv_IpCreacion,
                 Lv_Status,
@@ -1889,11 +2519,11 @@ AS
       END IF;
     END IF;
     Pv_Status := 'OK';
-    Pv_Mensaje := 'Proceso termin� de ejecutarse';
+    Pv_Mensaje := 'Proceso terminó de ejecutarse';
   EXCEPTION
   WHEN OTHERS THEN
     Pv_Status := 'ERROR';
-    Pv_Mensaje := 'Ocurri� un error no controlado en la ejecuci�n';
+    Pv_Mensaje := 'Ocurrió un error no controlado en la ejecución';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                          'INKG_PROCESOS_MASIVOS.P_PROCESAR_TELCOS',
                                          SUBSTR(SQLCODE || ' -ERROR- ' || SQLERRM,0,4000),
@@ -1974,635 +2604,5 @@ AS
                                           SYSDATE, 
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
   END P_CANTIDAD_INTENTOS;
-END INKG_PROCESOS_MASIVOS;
-/
-
-CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS
-AS
-
-/*
-  * Documentaci�n para TYPE 'Lr_InfoServicioMiddleware'.
-  *
-  * Tipo de datos para el retorno de la informaci�n correspondiente al servicio de internet middleware
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 05-09-2022
-  */
-  TYPE Lr_InfoServicioMiddleware IS RECORD
-  (
-    Id_Cab                  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE,
-    Id_Det                  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ID_PROCESO_MASIVO_DET%TYPE,
-    Tipo_Proceso            DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.TIPO_PROCESO%TYPE,
-    Estado                  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ESTADO%TYPE,
-    Punto_Id                DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
-    Login                   DB_COMERCIAL.INFO_PUNTO.LOGIN%TYPE,
-    Tipo_Negocio            VARCHAR2(100),
-    Prefijo_Empresa         DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE,
-    Elemento_Id             DB_INFRAESTRUCTURA.INFO_ELEMENTO.ID_ELEMENTO%TYPE,
-    Nombre_Elemento_Olt     DB_INFRAESTRUCTURA.INFO_ELEMENTO.NOMBRE_ELEMENTO%TYPE,
-    Serie_Ont               DB_INFRAESTRUCTURA.INFO_ELEMENTO.SERIE_FISICA%TYPE,
-    Elemento_Cliente_Id     DB_INFRAESTRUCTURA.INFO_SERVICIO_TECNICO.ELEMENTO_CLIENTE_ID%TYPE,
-    Servicio_Id             DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
-    Servicio_Estado         DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE,
-    Punto_Estado            DB_COMERCIAL.INFO_PUNTO.ESTADO%TYPE,
-    Servicio_Tecnico_Id     DB_INFRAESTRUCTURA.INFO_SERVICIO_TECNICO.ID_SERVICIO_TECNICO%TYPE,
-    Modelo_Elemento_Id      DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO.ID_MODELO_ELEMENTO%TYPE,
-    Modelo_Elemento_Nombre  DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO.NOMBRE_MODELO_ELEMENTO%TYPE,
-    Marca_Elemento_Nombre   DB_INFRAESTRUCTURA.ADMI_MARCA_ELEMENTO.NOMBRE_MARCA_ELEMENTO%TYPE,
-    Accion                  VARCHAR2(100),
-    Script                  DB_COMUNICACION.INFO_DOCUMENTO.MENSAJE%TYPE,
-    Ip                      DB_INFRAESTRUCTURA.INFO_IP.IP%TYPE,
-    Puerto                  DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO.NOMBRE_INTERFACE_ELEMENTO%TYPE,
-    Caract_Perfil           DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Caract_Indice           DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Caract_Mac              DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Spid                    DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Vlan                    DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Gemport                 DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Traffic                 DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Profile_Name            DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Service                 DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Capacidad_Up            DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Capacidad_Down          DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.VALOR%TYPE,
-    Ip_Fijas_Adicionales    NUMBER
-  );
-
-  /*
-  * Documentaci�n para TYPE 'Lt_InfoServicioMiddleware'.
-  *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al servicio de internet middleware
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 06-09-2022
-  */
-  TYPE Lt_InfoServicioMiddleware
-  IS
-    TABLE OF Lr_InfoServicioMiddleware INDEX BY PLS_INTEGER;  
-    
- /*
-  * Documentaci�n para TYPE 'Lr_DataServiciosKonibit'.
-  *
-  * Tipo de datos para servicios konibit de un punto
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 20-10-2022
-  */
-  TYPE Lr_DataServiciosKonibit IS RECORD
-  (
-    Id_Punto                  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
-    Id_Servicio               DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
-    Operacion                 VARCHAR2(30)
-  );
-
-  /*
-  * Documentaci�n para TYPE 'Lt_DataServiciosKonibit'.
-  * Tabla para almacenar la data enviada con la informaci�n de servicios konibit de punto
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 20-10-2022
-  */
-  TYPE Lt_DataServiciosKonibit  IS
-    TABLE OF Lr_DataServiciosKonibit INDEX BY PLS_INTEGER;
-    
- /*
-  * Documentaci�n para TYPE 'Lr_DataCabecerasPm'.
-  *
-  * Tipo de datos para el registro de cabeceras de PM
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 07-09-2022
-  */
-  TYPE Lr_DataCabecerasPM IS RECORD
-  (
-    Id_Cab NUMBER
-  );
-
-  /*
-  * Documentaci�n para TYPE 'Lt_DataCabecerasPm'.
-  * Tabla para almacenar la data enviada con la informaci�n de cabeceras PM
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 07-09-2022
-  */
-  TYPE Lt_DataCabecerasPm
-  IS
-    TABLE OF Lr_DataCabecerasPm INDEX BY PLS_INTEGER;
-    
- /*
-  * Documentaci�n para TYPE 'Lr_DataServiciosPunto'.
-  *
-  * Tipo de datos para servicios de un punto
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 07-09-2022
-  */
-  TYPE Lr_DataServiciosPunto IS RECORD
-  (
-    Id_Servicio      NUMBER
-  );
-
-  /*
-  * Documentaci�n para TYPE 'Lt_DataServiciosPunto'.
-  * Tabla para almacenar la data enviada con la informaci�n de servicios de punto
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 07-09-2022
-  */
-  TYPE Lt_DataServiciosPunto
-  IS
-    TABLE OF Lr_DataServiciosPunto INDEX BY PLS_INTEGER;
-    
-/*
-  * Documentaci�n para TYPE 'Lr_DataServiciosAdicPunto'.
-  *
-  * Tipo de datos para servicios adicionales de un punto
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 07-09-2022
-  */
-  TYPE Lr_DataServiciosAdicPunto IS RECORD
-  (
-    Id_Servicio               DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
-    Estado_Servicio           DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE,
-    Id_Producto               DB_COMERCIAL.ADMI_PRODUCTO.ID_PRODUCTO%TYPE,
-    Descripcion_Producto      DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE,
-    Tipo_Servicio             VARCHAR2(10)
-  );
-
-  /*
-  * Documentaci�n para TYPE 'Lt_DataServiciosAdicPunto'.
-  * Tabla para almacenar la data enviada con la informaci�n de servicios adicionales de punto
-  *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
-  * @version 1.0 07-09-2022
-  */
-  TYPE Lt_DataServiciosAdicPunto  IS
-    TABLE OF Lr_DataServiciosAdicPunto INDEX BY PLS_INTEGER;
-
-  /**
-   * P_Obtener_Detalles_Info_Pm
-   * Procedimiento que genera json con informaci�n de detalles de procesos masivos
-   *
-   * @param  Pn_IdProcesoMasivoDet IN  Db_Infraestructura.Info_Proceso_Masivo_Det.Id_Proceso_Masivo_Det%Type    Id detalle proceso masivo
-   * @param  Pn_IdPunto            OUT Db_Comercial.Info_Punto.Id_Punto%Type                                    Id punto del servicio procesado
-   * @param  Pn_CantidadIntentos   Out Db_Infraestructura.Info_Proceso_Masivo_Det.Cantidad_Intentos%Type        Cantidad de reintentos de ejecuci�n
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_OBTENER_DETALLES_INFO_PM(
-    Pn_IdProcesoMasivoDet   IN  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.ID_PROCESO_MASIVO_DET%TYPE,
-    Pn_IdPunto              OUT DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
-    Pn_CantidadIntentos     OUT DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET.CANTIDAD_INTENTOS%TYPE);
-    
-  /**
-   * Documentaci�n para PROCEDURE 'P_INSERT_INFO_SERVICIO_HISTO'.
-   *
-   * Procedimiento que inserta registro en la tabla de historial de servicio INFO_SERVICIO_HISTORIAL
-   *
-   * PARAMETROS:
-   * @Param Pr_InfoServicioHisto     IN  DB_COMERCIAL.INFO_SERVICIO_HISTORIAL%ROWTYPE  Recibe un registro con la informaci�n necesaria para ingresar
-   * @Param Pv_MsjResultado         OUT  VARCHAR2                                      Devuelve un mensaje del resultado de ejecuci�n
-   * 
-   * @author Hector Lozano <hlozano@telconet.ec>
-   * @version 1.0 02-07-2019
-   */
-  PROCEDURE P_INSERT_INFO_SERVICIO_HISTO(
-    Pr_InfoServicioHisto   IN DB_COMERCIAL.INFO_SERVICIO_HISTORIAL%ROWTYPE,
-    Pv_MsjResultado        OUT VARCHAR2);
-    
-  /**
-   * P_VALIDAR_CAB_ID
-   * Procedimiento que valida las cabeceras en listado de cabs
-   *
-   * @param  Pn_IdCab                   IN  NUMBER    IdCab a validar en listado
-   * @param  Pt_TRegsDataCabecerasPm    IN  DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS.Lt_DataCabecerasPm  Listado de IdCab's actuales
-   * @param  Pv_Existe                  OUT VARCHAR2  Existe o no IdCab
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_VALIDAR_CAB_ID(
-    Pn_IdCab                 IN  NUMBER,
-    Pt_TregsDataCabecerasPm  IN  DB_INFRAESTRUCTURA.INKG_PROCESOS_MASIVOS.LT_DATACABECERASPM,
-    Pv_Existe                OUT VARCHAR2);
-    
-  /**
-   * P_OBTENER_CABECERAS_PM
-   * Procedimiento que obtiene las cabeceras de procesos masivos a procesar en estado Pendiente
-   *
-   * @param  Pv_TipoProceso     IN VARCHAR2  Tipo proceso con el cual se realizar� la consulta
-   * @param  Pv_EmpresaCod      IN VARCHAR2  Tipo proceso con el cual se realizar� la consulta
-   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
-   * @param  Pcl_Response       OUT CLOB      Respuesta en formato json de la consulta
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   * @author Jessenia Piloso <jpiloso@telconet.ec>
-   * @version 1.8 07-03-2023     Se incluye validaciones para considerar a la empresa de Ecuanet en el proceso masivo de corte.
-   *
-   *
-   */
-  PROCEDURE P_OBTENER_CABECERAS_PM(
-    Pv_TipoProceso      IN VARCHAR2,
-    Pv_EmpresaCod       IN VARCHAR2,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2,
-    Pcl_Response        OUT CLOB,
-    Pn_CantidadCab      OUT NUMBER);
-    
-  /**
-   * P_OBTENER_DETALLES_PM
-   * Procedimiento que obtiene las cabeceras de procesos masivos a procesar en estado Pendiente
-   *
-   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizar� la consulta
-   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
-   * @param  Prf_Registros      OUT SYS_REFCURSOR  Respuesta en formato json de la consulta
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_OBTENER_DETALLES_PM(
-    Pcl_Cabeceras       IN CLOB,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2,
-    Prf_Registros       OUT SYS_REFCURSOR);
-
-  /**
-   * P_ACTUALIZA_INCONSISTENCIA_PM
-   * Procedimiento que actualiza procesos masivos con inconsistencias en estado de servicio de internet
-   *
-   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizar� la consulta
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 24-10-2022
-   *
-   */
-  PROCEDURE P_ACTUALIZA_INCONSISTENCIA_PM(
-    Pcl_Cabeceras       IN  CLOB);
-
-  /**
-   * P_ACTUALIZA_REGULARIZA_CAB_PM
-   * Procedimiento que actualiza procesos masivos cab que han finalizado todos sus detalles y a�n se
-   * encuentran con estado Procesando
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 10-01-2022
-   *
-   */
-  PROCEDURE P_ACTUALIZA_REGULARIZA_CAB_PM;
-
-
-  /**
-   * P_Obtener_Serv_Adic_Punto
-   * Procedimiento que obtiene los productos adicionales solicitados
-   *
-   * @param  Pn_PuntoId      IN  Number         Id Punto del cliente procesado
-   * @param  Pv_Estado       IN  VARCHAR2       Estado de servicios a buscar
-   * @param  Pv_OpIntProt    IN  VARCHAR2       Operaci�n ejecutada
-   * @param  Prf_Registros   OUT SYS_REFCURSOR  Respuesta de informaci�n consultada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_OBTENER_SERV_ADIC_PUNTO(
-    Pn_PuntoId       IN NUMBER,
-    Pv_Estado        IN VARCHAR2,
-    Pv_OpIntProt     IN VARCHAR2,
-    Prf_Registros    OUT SYS_REFCURSOR);
-
-  /**
-   * P_Ejecuta_Proceso_Logico
-   * Procedimiento que ejecuta operaciones l�gicas en el servicio procesado
-   *
-   * @param  Pn_IdServicio          IN  Number           Id servicio del cliente procesado
-   * @param  Pv_TipoServicio        IN  Varchar2         Tipo de servicio procesado
-   * @param  Pv_Accion              IN  Varchar2         Accion a setear
-   * @param  Pv_EstadoServicio      IN  Varchar2         Estado de servicio a actualizar
-   * @param  Pv_ObservacionHist     IN  Varchar2         Observaci�n a ingresar
-   * @param  Pb_RequiereCaract      IN  Boolean          Bandera que indica si requiere creaci�n de caracteristica o no
-   * @param  Pn_IdProducto          IN  Number           Id producto del servicio del cliente procesado
-   * @param  Pv_DescripcionCaract   IN  Varchar2         Descripci�n de caracteristica a usar
-   * @param  Pv_Valor               IN  Varchar2         Valor de caracteristica a setear  
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_EJECUTA_PROCESO_LOGICO( 
-    Pn_IdServicio          IN NUMBER,
-    Pv_TipoServicio        IN VARCHAR2,
-    Pv_Accion              IN VARCHAR2,
-    Pv_EstadoServicio      IN VARCHAR2,
-    Pv_ObservacionHist     IN VARCHAR2,
-    Pb_RequiereCaract      IN BOOLEAN,
-    Pn_IdProducto          IN NUMBER,
-    Pv_DescripcionCaract   IN VARCHAR2,
-    Pv_Valor               IN VARCHAR2);
-    
-  /**
-   * P_Actualizar_Cabeceras_Pm
-   * Procedimiento que actualiza las cabeceras de procesos masivos a procesar en estado Procesando
-   *
-   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizar� la actualizaci�n
-   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_ACTUALIZAR_CABECERAS_PM(
-    Pcl_Cabeceras       IN CLOB,
-    Pv_EstadoNuevo      IN VARCHAR2,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2);
-    
-  /**
-   * P_Actualizar_Detalles_Pm
-   * Procedimiento que actualiza las detalles de procesos masivos a procesar en estado Procesando
-   *
-   * @param  Pcl_Cabeceras      IN  CLOB           Tipo proceso con el cual se realizar� la actualizaci�n
-   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_ACTUALIZAR_DETALLES_PM(
-    Pcl_Cabeceras       IN CLOB,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2);
-    
-  /**
-   * P_Actualizar_Detalle_Pm
-   * Procedimiento que actualiza las detalles de procesos masivos a procesar en estado Procesando
-   *
-   * @param  Pv_Estado           IN  Varchar2      Estado a colocar el proceso masivo
-   * @param  Pv_Usuario          IN  Varchar2      Usuario de modificaci�n
-   * @param  Pv_Observacion      IN  Varchar2      Observaci�n de PM
-   * @param  Pn_IpDetPm          IN  Number        Id detalle PM
-   * @param  Pn_PuntoId          IN  Number        Id de punto de proceso masivo detalle
-   * @param  Pn_CantidadIntentos IN  Number        Cantidad de intentos de ejecuci�n
-   * @param  Pv_Status           OUT VARCHAR2      Estado del procedimiento
-   * @param  Pv_Mensaje          OUT VARCHAR2      Mensaje de error del procedimiento
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_ACTUALIZAR_DETALLE_PM(
-    Pv_Estado           IN VARCHAR2,
-    Pv_Usuario          IN VARCHAR2,
-    Pv_Observacion      IN VARCHAR2,
-    Pn_IpDetPm          IN NUMBER,
-    Pn_PuntoId          IN NUMBER,
-    Pn_CantidadIntentos IN NUMBER,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2);
-    
-  /**
-   * P_Gestionar_Serv_Int_Prot
-   * Procedimiento que gestiona los servicios de internet protegido
-   *
-   * @param  Pn_PuntoId         IN  Number        Id Punto del cliente a procesar
-   * @param  Pn_IdServicio      IN  Number        Id Servicio de internet del cliente a procesar
-   * @param  Pv_OpIntProt       IN  Varchar2      Operaci�n procesada
-   * @param  Pv_Status          OUT VARCHAR2      Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2      Mensaje de error del procedimiento
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_GESTIONAR_SERV_INT_PROT(
-    Pn_PuntoId      IN NUMBER,
-    Pn_IdServicio   IN NUMBER,
-    Pv_OpIntProt    IN VARCHAR2,
-    Pv_Status       OUT VARCHAR2,
-    Pv_Mensaje      OUT VARCHAR2);
-
-  /**
-   * P_Gestionar_Serv_Konibit
-   * Procedimiento que gestiona los servicios konibit
-   *
-   * @param  Pn_PuntoId         IN  Number        Id Punto del cliente a procesar
-   * @param  Pn_IdServicio      IN  Number        Id Servicio de internet del cliente a procesar
-   * @param  Pv_OpIntProt       IN  Varchar2      Operaci�n procesada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_GESTIONAR_SERV_KONIBIT(
-    Pn_PuntoId      IN NUMBER,
-    Pn_IdServicio   IN NUMBER,
-    Pv_OpIntProt    IN VARCHAR2);
-
-  /**
-   * P_Recupera_Serv_Adic_Int_Pro
-   * Procedimiento que recupera servicios adicionales de internet protegido
-   *
-   * @param  Pn_PuntoId           IN  Number             Id Punto del cliente a procesar
-   * @param  Pv_Estado            IN  Varchar2           Estado a consultar
-   * @param  Pv_Descripcion       IN  Varchar2           Descripci�n de producto a consultar
-   * @param  Pv_LikeDescripcion   IN  Varchar2           Like Descripci�n de producto a consultar
-   * @param  Pv_DescCaractServ    IN  Varchar2           Descripcion caracteristica servicio
-   * @param  Prf_Registros        OUT Sys_Refcursor      Informaci�n recuperada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_RECUPERA_SERV_ADIC_INT_PRO(
-    Pn_PuntoId           IN NUMBER,
-    Pv_Estado            IN VARCHAR2,
-    Pv_Descripcion       IN VARCHAR2,
-    Pv_LikeDescripcion   IN VARCHAR2,
-    Pv_DescCaractServ    IN VARCHAR2,
-    Prf_Registros        OUT SYS_REFCURSOR);
-    
-  /**
-   * P_Recupera_Serv_Adic_Konibit
-   * Procedimiento que recupera servicios adicionales konibit
-   *
-   * @param  Pn_PuntoId           IN  Number             Id Punto del cliente a procesar
-   * @param  Pv_Estado            IN  Varchar2           Estado a consultar
-   * @param  Pv_Descripcion       IN  Varchar2           Descripci�n de producto a consultar
-   * @param  Pv_LikeDescripcion   IN  Varchar2           Like Descripci�n de producto a consultar
-   * @param  Pv_DescCaractServ    IN  Varchar2           Descripcion caracteristica servicio
-   * @param  Prf_Registros        OUT Sys_Refcursor      Informaci�n recuperada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_RECUPERA_SERV_ADIC_KONIBIT(
-    Pn_PuntoId           IN NUMBER,
-    Pv_Estado            IN VARCHAR2,
-    Pv_Descripcion       IN VARCHAR2,
-    Pv_LikeDescripcion   IN VARCHAR2,
-    Pv_DescCaractServ    IN VARCHAR2,
-    Prf_Registros        OUT SYS_REFCURSOR);
-    
-  /**
-   * P_Recupera_Serv_Plan_Int_Pro
-   * Procedimiento que recupera servicios en plan de internet protegido
-   *
-   * @param  Pn_IdServicio              IN  Number          Id servicio del cliente a procesar
-   * @param  Pv_Descripcion             IN  Varchar2        Descripci�n de producto a consultar
-   * @param  Pv_LikeDescripcion         IN  Varchar2        Like Descripci�n de producto a consultar
-   * @param  Pv_NombreTecnicoProducto   IN  Varchar2        Nombre T�cnico del producto a revisar
-   * @param  Pv_DescCaractServ          IN  Varchar2        Descripcion caracteristica servicio
-   * @param  Prf_Registros              OUT Sys_Refcursor   Informaci�n recuperada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_RECUPERA_SERV_PLAN_INT_PRO(
-    Pn_IdServicio             IN NUMBER,
-    Pv_Descripcion            IN VARCHAR2,
-    Pv_LikeDescripcion        IN VARCHAR2,
-    Pv_NombreTecnicoProducto  IN VARCHAR2,
-    Pv_DescCaractServ         IN VARCHAR2,
-    Prf_Registros             OUT SYS_REFCURSOR);
-    
-  /**
-   * P_Recupera_Serv_Plan_Konibit
-   * Procedimiento que recupera servicios en plan de konibit
-   *
-   * @param  Pn_IdServicio              IN  Number          Id servicio del cliente a procesar
-   * @param  Pv_Descripcion             IN  Varchar2        Descripci�n de producto a consultar
-   * @param  Pv_LikeDescripcion         IN  Varchar2        Like Descripci�n de producto a consultar
-   * @param  Pv_NombreTecnicoProducto   IN  Varchar2        Nombre T�cnico del producto a revisar
-   * @param  Pv_DescCaractServ          IN  Varchar2        Descripcion caracteristica servicio
-   * @param  Prf_Registros              OUT Sys_Refcursor   Informaci�n recuperada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_RECUPERA_SERV_PLAN_KONIBIT(
-    Pn_IdServicio             IN NUMBER,
-    Pv_Descripcion            IN VARCHAR2,
-    Pv_LikeDescripcion        IN VARCHAR2,
-    Pv_NombreTecnicoProducto  IN VARCHAR2,
-    Pv_DescCaractServ         IN VARCHAR2,
-    Prf_Registros             OUT SYS_REFCURSOR);
-    
-  /**
-   * P_Actualizar_Servicios_Punto
-   * Procedimiento que actualiza las detalles de procesos masivos a procesar en estado Procesando
-   *
-   * @param  Pv_Estado_Nuevo    IN  Varchar2       Estado nuevo de servicios
-   * @param  Pv_Estado_Actual   IN  Varchar2       Estado Actual de servicios
-   * @param  Pv_OpIntProt       IN  Varchar2       Operaci�n ejecutada en el proceso
-   * @param  Pn_Punto_Id        IN  Number         Punto Id que tiene servicios adicionales a actualizar
-   * @param  Pv_Status          OUT VARCHAR2       Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2       Mensaje de error del procedimiento
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 12-09-2022
-   *
-   */
-  PROCEDURE P_ACTUALIZAR_SERVICIOS_PUNTO(
-    Pv_Estado_Nuevo     IN VARCHAR2,
-    Pv_Estado_Actual    IN VARCHAR2,
-    Pv_OpIntProt        IN VARCHAR2,
-    Pn_Punto_Id         IN NUMBER,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2);
-    
-  /**
-   * P_OBTENER_PM
-   * Procedimiento que obtiene la respuesta en formato json utilizado posteriormente en consultas de MW
-   *
-   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
-   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
-   * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_OBTENER_PM(
-    Pcl_JsonRequest     IN CLOB,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2,
-    Pcl_JsonResponse    OUT CLOB);
-    
-  /**
-   * P_PROCESAR_MW
-   * Procedimiento que procesa la informaci�n de clientes de1 olt en MW
-   *
-   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
-   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
-   * @param  Pcl_JsonResponse   OUT CLOB Respuesta en formato json de la consulta
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_PROCESAR_MW (
-    Pcl_JsonRequest     IN CLOB,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2,
-    Pcl_JsonResponse    OUT CLOB);
-
-  /**
-   * P_PROCESAR_TELCOS
-   * Procedimiento que procesa la informaci�n de clientes de1 olt en TELCOS
-   *
-   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
-   * @param  Pv_Status          OUT VARCHAR2 Estado del procedimiento
-   * @param  Pv_Mensaje         OUT VARCHAR2 Mensaje de error del procedimiento
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   * @author Jessenia Piloso <jpiloso@telconet.ec>
-   * @version 1.8 07-03-2023     Se incluye validaciones para considerar a la empresa de Ecuanet en el proceso masivo de corte.
-   *
-   */
-  PROCEDURE P_PROCESAR_TELCOS (
-    Pcl_JsonRequest     IN CLOB,
-    Pv_Status           OUT VARCHAR2,
-    Pv_Mensaje          OUT VARCHAR2);
-      
-  /**
-   * P_PROCESAR_CABECERAS_PM
-   * Procedimiento que procesa la informaci�n de clientes de1 olt en TELCOS
-   *
-   * @param  Pcl_JsonRequest    IN CLOB Par�metros por los cu�les se realizar� la consulta
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 05-09-2022
-   *
-   */
-  PROCEDURE P_PROCESAR_CABECERAS_PM (PCL_JSONREQUEST     IN CLOB);
-  
-  /**
-   * P_CANTIDAD_INTENTOS
-   * Procedimiento que obtiene la cantidad m�xima de intentos parametrizada
-   *
-   * @param  Pn_CantidadIntentos    OUT NUMBER Cantidad m�xima de intentos parametrizada
-   *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.0 26-09-2022
-   *
-   */
-  PROCEDURE P_CANTIDAD_INTENTOS(Pn_CantidadIntentos OUT NUMBER);
-
 END INKG_PROCESOS_MASIVOS;
 /

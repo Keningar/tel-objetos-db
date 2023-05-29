@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
   /**
-  * Documentaci�n para TYPE 'Lr_AnticiposDet'.
+  * Documentación para TYPE 'Lr_AnticiposDet'.
   *  
-  * @author Edgar Holgu�n <eholgu�n@telconet.ec>
+  * @author Edgar Holguín <eholguín@telconet.ec>
   * @version 1.0 04-05-2021
   */
   TYPE Lr_AnticiposDet IS RECORD (
@@ -16,24 +16,24 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
   );
 
   /**
-  * Documentaci�n para TYPE 'T_AnticiposDet'.
+  * Documentación para TYPE 'T_AnticiposDet'.
   * Tabla para almacenar la data de anticipos a generar.
-  * @author Edgar Holgu�n <eholgu�n@telconet.ec>
+  * @author Edgar Holguín <eholguín@telconet.ec>
   * @version 1.0 04-05-2021
   */
   TYPE T_AnticiposDet IS TABLE OF Lr_AnticiposDet INDEX BY PLS_INTEGER;
 
 
   /*
-  * Documentaci�n para TYPE 'T_DatosRptRetExistentes'.
+  * Documentación para TYPE 'T_DatosRptRetExistentes'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 16-09-2021
   */
   TYPE T_DatosRptRetExistentes IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_RptRetExistente INDEX BY PLS_INTEGER;
 
  /**
-  * Documentaci�n para TYPE 'Lr_FacturasProcesar'.
+  * Documentación para TYPE 'Lr_FacturasProcesar'.
   * Record para almacenar la data enviada al BULK.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-04-2021
@@ -52,7 +52,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
   );
 
  /**
-  * Documentaci�n para TYPE 'T_FacturasProcesar'.
+  * Documentación para TYPE 'T_FacturasProcesar'.
   * Record para almacenar la data enviada al BULK.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-04-2021
@@ -60,11 +60,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
   TYPE T_FacturasProcesar IS TABLE OF Lr_FacturasProcesar INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para TYPE 'TpInfoPagosAutomaticoCab'.
+  * Documentación para TYPE 'TpInfoPagosAutomaticoCab'.
   *
-  * Tipo de datos para el retorno de la informaci�n de retenciones.
+  * Tipo de datos para el retorno de la información de retenciones.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 15-08-2019
   */
   TYPE TpInfoPagosAutomaticoCab
@@ -80,11 +80,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
       );
 
   /**
-  * Documentaci�n para TYPE 'TpInfoPagosAutomaticoDet'.
+  * Documentación para TYPE 'TpInfoPagosAutomaticoDet'.
   *
-  * Tipo de datos para el retorno de la informaci�n de detalles de retenciones.
+  * Tipo de datos para el retorno de la información de detalles de retenciones.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 22-06-2021
   */
   TYPE TpInfoPagosAutomaticoDet
@@ -111,27 +111,27 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
       );
 
   /*
-  * Documentaci�n para TYPE 'T_InfoPagoAutomaticoCab'.
+  * Documentación para TYPE 'T_InfoPagoAutomaticoCab'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 26-04-2021
   */
   TYPE T_InfoPagoAutomaticoCab IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.TpInfoPagosAutomaticoCab INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'T_InfoPagosAutomaticoDet'.
+  * Documentación para TYPE 'T_InfoPagosAutomaticoDet'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 22-06-2021
   */
   TYPE T_InfoPagosAutomaticoDet IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.TpInfoPagosAutomaticoDet INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para TYPE 'TpInfoFactPagAutomaticoDet'.
+  * Documentación para TYPE 'TpInfoFactPagAutomaticoDet'.
   *
-  * Tipo de dato para el retorno de la informaci�n de n�mero de facturas en detalles de retenci�n.
+  * Tipo de dato para el retorno de la información de número de facturas en detalles de retención.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 15-08-2019
   */
   TYPE TpInfoFactPagAutomaticoDet
@@ -142,20 +142,20 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
     );
 
   /*
-  * Documentaci�n para TYPE 'T_InfoPagoAutomaticoDet'.
+  * Documentación para TYPE 'T_InfoPagoAutomaticoDet'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 26-04-2021
   */
   TYPE T_InfoPagoAutomaticoDet IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.TpInfoFactPagAutomaticoDet INDEX BY PLS_INTEGER;
 
 
   /**
-  * Documentaci�n para TYPE 'TpInfoPagDet'.
+  * Documentación para TYPE 'TpInfoPagDet'.
   *
-  * Tipo de dato para el retorno de la informaci�n del id del detalle del pago.
+  * Tipo de dato para el retorno de la información del id del detalle del pago.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 23-06-2021
   */
   TYPE TpInfoPagDet
@@ -166,28 +166,28 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
     );
 
   /*
-  * Documentaci�n para TYPE 'T_InfoPagDet'.
+  * Documentación para TYPE 'T_InfoPagDet'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 23-06-2021
   */
   TYPE T_InfoPagDet IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.TpInfoPagDet INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'T_ArrayIds'.
+  * Documentación para TYPE 'T_ArrayIds'.
   * Almacena array de ids
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 26-04-2021
   */
   TYPE T_ArrayIds IS TABLE OF VARCHAR2(4000) INDEX BY BINARY_INTEGER;
 
 
 /**
-  * Documentaci�n para la funci�n 'P_PROCESAR_RETENCIONES'.
+  * Documentación para la función 'P_PROCESAR_RETENCIONES'.
   *
-  * Procedimiento que procesa las retenciones enviadas como par�metros.
+  * Procedimiento que procesa las retenciones enviadas como parámetros.
   *
-  * @param  Pv_IdsRetSelecionadas    IN  VARCHAR2  recibe el c�digo de la empresa.
+  * @param  Pv_IdsRetSelecionadas    IN  VARCHAR2  recibe el código de la empresa.
   * @param  Pv_EmpresaCod            IN  VARCHAR2  recibe el id del punto.
   * @param  Pv_UsrCreacion           IN  VARCHAR2  recibe el id del servicio.
   * @param  Pv_Ip                    IN  VARCHAR2  recibe el id del contrato.
@@ -196,7 +196,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_PAGO_AUTOMATICO AS
   * @param  Fn_BancoTipoCuentaId     IN  VARCHAR2  recibe el id del BancoTipoCuenta.
   * @return NUMBER
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 27-05-2020
   * @author Gustavo Narea <gnarea@telconet.ec>
   * @version 1.01 20-08-2021 Los anticipos se los crea dentro de p_genera_pago
@@ -209,9 +209,9 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
                                   Pv_Status               OUT VARCHAR2,
                                   Pv_Mensaje              OUT VARCHAR2);
   /**
-  * Documentaci�n para el procedimiento P_GET_INFO_DOCUMENTO
+  * Documentación para el procedimiento P_GET_INFO_DOCUMENTO
   *
-  * Procedimiento que retorna informaci�n de la factura asociada enviada como par�metro.
+  * Procedimiento que retorna información de la factura asociada enviada como parámetro.
   *
   * Costo 10
   *
@@ -219,7 +219,7 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
   * @param Pv_NumFactura             IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.NUMERO_FACTURA_SRI%TYPE
   * @param Prf_InfoDocumento         OUT SYS_REFCURSOR  Retorna cursor con informacion de documento.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 27-04-2021
   */
 
@@ -230,17 +230,17 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
 
 
   /**
-  * Documentaci�n para el procedimiento P_GET_LIST_INFO_PAG_AUT_CAB
+  * Documentación para el procedimiento P_GET_LIST_INFO_PAG_AUT_CAB
   *
-  * Procedimiento que retorna cursor con las retenciones (INFO_PAGO_AUTOMATICO_CAB) con ids enviados como par�metro.
+  * Procedimiento que retorna cursor con las retenciones (INFO_PAGO_AUTOMATICO_CAB) con ids enviados como parámetro.
   *
   * Costo 10
   *
-  * @param Pv_CodEmpresa             IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa.
-  * @param Pv_IdsRetSelecionadas     IN  VARCHAR2 Ids de retenciones seleccionadas para generaci�n de pagos
+  * @param Pv_CodEmpresa             IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa.
+  * @param Pv_IdsRetSelecionadas     IN  VARCHAR2 Ids de retenciones seleccionadas para generación de pagos
   * @param Prf_InfoDocumento         OUT SYS_REFCURSOR  Retorna cursor con informacion de las retenciones.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 27-04-2021
   */
   PROCEDURE P_GET_LIST_INFO_PAG_AUT_CAB(
@@ -250,17 +250,17 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
 
 
   /**
-  * Documentaci�n para el procedimiento P_GET_LIST_FACT_SELECT
+  * Documentación para el procedimiento P_GET_LIST_FACT_SELECT
   *
-  * Procedimiento que retorna cursor con las facturas asociadas a la retenci�n con id enviado como par�metro.
+  * Procedimiento que retorna cursor con las facturas asociadas a la retención con id enviado como parámetro.
   *
   * Costo 50
   *
-  * @param Pv_CodEmpresa             IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE C�digo de la empresa.
-  * @param Pv_IdPagoAutomaticoCab    IN  DB_FINANCIERO.INFO_PAGO_AUTOMATICO_CAB.ID_PAGO_AUTOMATICO%TYPE Id de la retenci�n
-  * @param Prf_ListFacturasSelect    OUT SYS_REFCURSOR  Retorna cursor de facturas asociadas a la retenci�n.
+  * @param Pv_CodEmpresa             IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Código de la empresa.
+  * @param Pv_IdPagoAutomaticoCab    IN  DB_FINANCIERO.INFO_PAGO_AUTOMATICO_CAB.ID_PAGO_AUTOMATICO%TYPE Id de la retención
+  * @param Prf_ListFacturasSelect    OUT SYS_REFCURSOR  Retorna cursor de facturas asociadas a la retención.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 27-04-2021
   */
   PROCEDURE P_GET_LIST_FACT_SELECT(
@@ -268,25 +268,25 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
     Pv_IdPagoAutomaticoCab        IN  DB_FINANCIERO.INFO_PAGO_AUTOMATICO_CAB.ID_PAGO_AUTOMATICO%TYPE,
     Prf_ListFacturasSelect        OUT SYS_REFCURSOR);
   /**
-  * Documentaci�n para la funci�n P_GENERA_PAGO
+  * Documentación para la función P_GENERA_PAGO
   * 
-  * Procedimiento que genera un pago  asociado a los datos enviados como par�metro.
+  * Procedimiento que genera un pago  asociado a los datos enviados como parámetro.
   *
   * Costo 50
   *
   * @param Fn_ValorPagado      IN DB_FINANCIERO.INFO_PAGO_CAB.VALOR_TOTAL%TYPE                   Valor total del pago.
-  * @param Fv_EmpresaId        IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE               C�digo de la empres
-  * @param Fv_UsrCreacion      IN DB_FINANCIERO.INFO_PAGO_CAB.USR_CREACION%TYPE                  Usuario de creaci�n.
-  * @param Fn_IdPagoAutomatico IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.PAGO_AUTOMATICO_ID%TYPE Id de la retenci�n.
-  * @param Fn_NumDocSustento   IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.NUMERO_FACTURA%TYPE     N�mero de actura asociada en el xml
-  * @param Frf_Facturas        IN SYS_REFCURSOR                                                  Informaci�n de la factura asociada.
+  * @param Fv_EmpresaId        IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE               Código de la empres
+  * @param Fv_UsrCreacion      IN DB_FINANCIERO.INFO_PAGO_CAB.USR_CREACION%TYPE                  Usuario de creación.
+  * @param Fn_IdPagoAutomatico IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.PAGO_AUTOMATICO_ID%TYPE Id de la retención.
+  * @param Fn_NumDocSustento   IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.NUMERO_FACTURA%TYPE     Número de actura asociada en el xml
+  * @param Frf_Facturas        IN SYS_REFCURSOR                                                  Información de la factura asociada.
   * @param Fn_ValorPagoDif     OUT DB_FINANCIERO.INFO_PAGO_CAB.VALOR_TOTAL%TYPE                  Valor total de anticipo
-  * @param Ft_InfoAnticiposDet OUT T_AnticiposDet                                                Informaci�n de detalles de anticipos
+  * @param Ft_InfoAnticiposDet OUT T_AnticiposDet                                                Información de detalles de anticipos
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 27-04-2021
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.01 13-07-2021 Se excluye consulta de detalles con estado No Procesa.
   *
   * @author Gustavo Narea <eholguin@telconet.ec>
@@ -305,19 +305,19 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
                          );
 
   /**
-  * Documentaci�n para el procedimiento P_CREA_PAGO_AUT_DET_HIST
+  * Documentación para el procedimiento P_CREA_PAGO_AUT_DET_HIST
   *
-  * Proceso que genera el registro de un historial con los datos enviados como par�metro.
+  * Proceso que genera el registro de un historial con los datos enviados como parámetro.
   *
   * @param Fv_EmpresaId        Pn_IdPagoAutDet        IN  NUMBER    Id de detalle de pago automatico asociado     
-  * @param Fv_UsrCreacion      Pv_Observacion         IN  VARCHAR2  Observaci�n
+  * @param Fv_UsrCreacion      Pv_Observacion         IN  VARCHAR2  Observación
   * @param Fn_IdPagoAutomatico Pv_Estado              IN  VARCHAR2  Estado
-  * @param Fn_NumDocSustento   Pv_UsuarioCreacion     IN  VARCHAR2  Usuario de creaci�n  
-  * @param Frf_Facturas        Pv_IpCreacion          IN  VARCHAR2  Ip de creaci�n
+  * @param Fn_NumDocSustento   Pv_UsuarioCreacion     IN  VARCHAR2  Usuario de creación  
+  * @param Frf_Facturas        Pv_IpCreacion          IN  VARCHAR2  Ip de creación
   * @param Fn_NumDocSustento   Pv_NombreProceso       OUT VARCHAR2  
   * @param Frf_Facturas        Pv_Error               OUT VARCHAR2      
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 29-04-2021
   */
   PROCEDURE P_CREA_PAGO_AUT_DET_HIST(Pn_IdPagoAutDet        IN  NUMBER,
@@ -331,14 +331,14 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
   /**
   * Documentacion para el procedimiento P_CREA_DETALLE_PAGO
   *
-  * M�todo encargado de crear el detalle del pago
+  * Método encargado de crear el detalle del pago
   *
   * @param Pn_IdPago            IN  NUMBER Recibe el id del pago
   * @param Pr_InfoPagoAutDet    IN  DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET%ROWTYPE Recibe un objeto de tipo (INFO_PAGO_AUTOMATICO_DET)
   * @param Pv_NombreProceso     OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error
   * @param Pv_Error             OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 27-04-2021
   */     
   PROCEDURE P_CREA_DETALLE_PAGO(
@@ -349,7 +349,7 @@ PROCEDURE P_PROCESAR_RETENCIONES( Pv_IdsRetSelecionadas   IN  VARCHAR2,
 
     /**
    * Documentacion para la funcion F_GET_VARCHAR_CLEAN
-   * Funcion que limpia ciertos caracteres especiales de la cadena enviada como par�metro.
+   * Funcion que limpia ciertos caracteres especiales de la cadena enviada como parámetro.
    * Fv_Cadena IN VARCHAR2   Recibe la cadena a limpiar
    * Retorna:
    * En tipo varchar2 la cadena sin caracteres especiales
@@ -363,19 +363,19 @@ FUNCTION GET_VARCHAR_CLEAN(
 
 
   /**
-  * Documentaci�n para P_PROCESA_RPT_TRIBUTACION
-  * Procedimiento que procesa y genera reporte de salida a partir de reporte de tributaci�n almacenado en la ruta enviada como par�metro.
+  * Documentación para P_PROCESA_RPT_TRIBUTACION
+  * Procedimiento que procesa y genera reporte de salida a partir de reporte de tributación almacenado en la ruta enviada como parámetro.
   * 
-  * @author Edgar Holgu�n <eholguin@telcos.ec>
+  * @author Edgar Holguín <eholguin@telcos.ec>
   * @version 1.0 10-08-2021
   *
-  * @author Edgar Holgu�n <eholguin@telcos.ec>
-  * @version 1.1 10-11-2021 Se agregan columnas de reporte de tributaci�n de entrada al reporte de retenciones existentes (salida).
+  * @author Edgar Holguín <eholguin@telcos.ec>
+  * @version 1.1 10-11-2021 Se agregan columnas de reporte de tributación de entrada al reporte de retenciones existentes (salida).
   * 
   * @param Pn_IdEmpresa IN NUMBER Id de empresa que esta relacionada a la lista de pagos
-  * @param  Pv_UrlFile               IN  VARCHAR2  Recibe la ruta del archivo o reporte de tributaci�n almacenado con nfs.
-  * @param  Pv_EmpresaCod            IN  VARCHAR2  Recibe el c�digo de la empresa.
-  * @param  Pv_UsrCreacion           IN  VARCHAR2  Recibe el user de creaci�n.
+  * @param  Pv_UrlFile               IN  VARCHAR2  Recibe la ruta del archivo o reporte de tributación almacenado con nfs.
+  * @param  Pv_EmpresaCod            IN  VARCHAR2  Recibe el código de la empresa.
+  * @param  Pv_UsrCreacion           IN  VARCHAR2  Recibe el user de creación.
   * @param  Pv_Ip                    IN  VARCHAR2  Recibe la ip.
   * @param  Pv_Status                OUT VARCHAR2  Status de salida.
   * @param  Pv_Mensaje               OUT VARCHAR2  Mensaje de salida.
@@ -387,30 +387,30 @@ FUNCTION GET_VARCHAR_CLEAN(
                                       Pv_Status               OUT VARCHAR2,
                                       Pv_Mensaje              OUT VARCHAR2);
   /**
-  * Documentaci�n para P_ANULA_RETENCIONES_AUT
+  * Documentación para P_ANULA_RETENCIONES_AUT
   * Procedimiento que anula retenciones con estado Error.
   * 
-  * @author Edgar Holgu�n <eholguin@telcos.ec>
+  * @author Edgar Holguín <eholguin@telcos.ec>
   * @version 1.0 16-09-2021
   *
-  * @author Edgar Holgu�n <eholguin@telcos.ec>
-  * @version 1.1 26-05-2022 Se agrega inserci�n de historial de eliminacion a nivel de tabla  INFO_PAGO_AUTOMATICO_HIST. 
+  * @author Edgar Holguín <eholguin@telcos.ec>
+  * @version 1.1 26-05-2022 Se agrega inserción de historial de eliminacion a nivel de tabla  INFO_PAGO_AUTOMATICO_HIST. 
   * 
-  * @param  Pv_EmpresaCod IN  VARCHAR2  Recibe el c�digo de la empresa.
+  * @param  Pv_EmpresaCod IN  VARCHAR2  Recibe el código de la empresa.
   */
   PROCEDURE P_ANULA_RETENCIONES_AUT(Pv_EmpresaCod           IN  VARCHAR2);
 
   /**
   * Documentacion para el procedimiento P_REPORTE_RET_ANULADAS
   *
-  * Procedimiento que env�a un correo notificando a los usuarios de los retenciones anuladas existentes.
+  * Procedimiento que envía un correo notificando a los usuarios de los retenciones anuladas existentes.
   * Costo del query 39
   *
-  * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa de la cual se va a obtener 
-  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla de notificaci�n
-  * @param Pv_TipoEnvio              IN VARCHAR2  Tipo de env�o (M --> Mensual, D---> Diario)
+  * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa de la cual se va a obtener 
+  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla de notificación
+  * @param Pv_TipoEnvio              IN VARCHAR2  Tipo de envío (M --> Mensual, D---> Diario)
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 07-09-2021 
   */
   PROCEDURE P_REPORTE_RET_ANULADAS(Pv_EmpresaCod       IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.EMPRESA_COD%TYPE,
@@ -418,9 +418,9 @@ FUNCTION GET_VARCHAR_CLEAN(
                                    Pv_TipoEnvio        IN VARCHAR2); 
 
   /**
-   * Documentaci�n para TYPE 'Lr_PagoAutomatico'.
+   * Documentación para TYPE 'Lr_PagoAutomatico'.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 09-06-2022
    */   
   TYPE Lr_PagoAutomatico
@@ -437,26 +437,26 @@ FUNCTION GET_VARCHAR_CLEAN(
     );    
    
   /**
-   * Documentaci�n para TYPE 'T_PagosAutomaticos'.
+   * Documentación para TYPE 'T_PagosAutomaticos'.
    *
-   * @author Edgar Holgu�n <atarreaga@telconet.ec>
+   * @author Edgar Holguín <atarreaga@telconet.ec>
    * @version 1.0 09-06-2022
    */  
   TYPE T_PagosAutomaticos IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.Lr_PagoAutomatico INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para el procedimiento P_GET_PAG_AUTOMATICOS
+  * Documentación para el procedimiento P_GET_PAG_AUTOMATICOS
   *
-  * Procedimiento que retorna cursor de pagos automaticos seg�n filtros enviados como par�metros.
+  * Procedimiento que retorna cursor de pagos automaticos según filtros enviados como parámetros.
   *
   * Costo del query 1105
   *
   * @param Pv_PrejifoEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Prefijo de la empresa.
-  * @param Pr_ParamRptPagAut             IN IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  Par�metros  para filtrar rangos de fecha.
-  * @param Pv_Estado                     IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.ESTADO%TYPE  Par�metro  para filtrar consulta por estado.
-  * @param Prf_PagosAutomaticos          OUT VARCHAR2  Retorna cursor de pagos autom�ticos.
+  * @param Pr_ParamRptPagAut             IN IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  Parámetros  para filtrar rangos de fecha.
+  * @param Pv_Estado                     IN DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.ESTADO%TYPE  Parámetro  para filtrar consulta por estado.
+  * @param Prf_PagosAutomaticos          OUT VARCHAR2  Retorna cursor de pagos automáticos.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 09-06-2022
   */
   PROCEDURE P_GET_PAG_AUTOMATICOS(
@@ -468,13 +468,13 @@ FUNCTION GET_VARCHAR_CLEAN(
   /**
   * Documentacion para el procedimiento P_RPT_PAG_AUT_PENDIENTES
   *
-  * Procedimiento que env�a un correo con el reporte adjunto de pagos no procesados.
+  * Procedimiento que envía un correo con el reporte adjunto de pagos no procesados.
   *
-  * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa de la cual se va a obtener 
+  * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa de la cual se va a obtener 
   * @param Pv_PrefijoEmpresa         IN DB_COMERCIAL.INFO_OFICINA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa. 
-  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla de notificaci�n
+  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla de notificación
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 10-06-2022 
   */
   PROCEDURE P_RPT_PAG_AUT_PENDIENTES(
@@ -483,9 +483,9 @@ FUNCTION GET_VARCHAR_CLEAN(
     Pv_CodigoPlantilla   IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE);
 
   /**
-   * Documentaci�n para TYPE 'Lr_InfoPagoAut'.
+   * Documentación para TYPE 'Lr_InfoPagoAut'.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 09-06-2022
    */   
   TYPE Lr_InfoRptPagoAut
@@ -520,18 +520,18 @@ FUNCTION GET_VARCHAR_CLEAN(
     );    
    
   /**
-   * Documentaci�n para TYPE 'T_PagosAutProcesados'.
+   * Documentación para TYPE 'T_PagosAutProcesados'.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 13-06-2022
    */  
   TYPE T_PagosAutProcesados IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.Lr_InfoRptPagoAut INDEX BY PLS_INTEGER;
 
 
   /**
-   * Documentaci�n para TYPE 'Lr_InfoPagoNdi'.
+   * Documentación para TYPE 'Lr_InfoPagoNdi'.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 18-06-2022
    */   
   TYPE Lr_InfoPagoNdi
@@ -548,24 +548,24 @@ FUNCTION GET_VARCHAR_CLEAN(
     ); 
 
   /**
-   * Documentaci�n para TYPE 'T_InfoNdiPagAut'.
+   * Documentación para TYPE 'T_InfoNdiPagAut'.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 18-06-2022
    */  
   TYPE T_InfoNdiPagAut IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.Lr_InfoPagoNdi INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para el procedimiento P_GET_PAG_AUTOMATICOS
+  * Documentación para el procedimiento P_GET_PAG_AUTOMATICOS
   *
-  * Procedimiento que retorna cursor de pagos creados por procesamiento de pagos automaticos seg�n filtros enviados como par�metros.
+  * Procedimiento que retorna cursor de pagos creados por procesamiento de pagos automaticos según filtros enviados como parámetros.
   *
   * Costo del query 22
   *
   * @param Pv_PrejifoEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Prefijo de la empresa.
-  * @param Prf_PagosAutomaticos          OUT VARCHAR2  Retorna cursor de pagos autom�ticos.
+  * @param Prf_PagosAutomaticos          OUT VARCHAR2  Retorna cursor de pagos automáticos.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 13-06-2022
   *
   * @author Kevin Villegas <kmvillegas@telconet.ec>
@@ -578,13 +578,13 @@ FUNCTION GET_VARCHAR_CLEAN(
   /**
   * Documentacion para el procedimiento P_RPT_PAG_AUT_PPROCESADOS
   *
-  * Procedimiento que env�a un correo con el reporte adjunto de pagos procesados.
+  * Procedimiento que envía un correo con el reporte adjunto de pagos procesados.
   *
-  * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa de la cual se va a obtener 
+  * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa de la cual se va a obtener 
   * @param Pv_PrefijoEmpresa         IN DB_COMERCIAL.INFO_OFICINA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa. 
-  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla de notificaci�n
+  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla de notificación
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 13-06-2022 
   */
   PROCEDURE P_RPT_PAG_AUT_PPROCESADOS(
@@ -593,9 +593,9 @@ FUNCTION GET_VARCHAR_CLEAN(
     Pv_CodigoPlantilla   IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE);
 
   /**
-   * Documentaci�n para TYPE 'Lr_InfoPagoAut'  que almacena informaci�n de Ndi, pago asociado a un pago autom�tico reversado.
+   * Documentación para TYPE 'Lr_InfoPagoAut'  que almacena información de Ndi, pago asociado a un pago automático reversado.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 15-06-2022
    */   
   TYPE Lr_InfoPagoAsociado
@@ -612,15 +612,15 @@ FUNCTION GET_VARCHAR_CLEAN(
     );
 
   /**
-   * Documentaci�n para TYPE 'T_InfoNdiPagosAsociados'.
+   * Documentación para TYPE 'T_InfoNdiPagosAsociados'.
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
+   * @author Edgar Holguín <eholguin@telconet.ec>
    * @version 1.0 15-06-2022
    */  
   TYPE T_InfoNdiPagosAsociados IS TABLE OF DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.Lr_InfoPagoAsociado INDEX BY PLS_INTEGER;
 
  /**
-   * Documentaci�n para TYPE 'Lr_NdiReversoPago'.
+   * Documentación para TYPE 'Lr_NdiReversoPago'.
    *
    * @author Kevin Villegas <kmvillegas@telconet.ec>
    * @version 1.0 01-09-2022
@@ -642,7 +642,7 @@ FUNCTION GET_VARCHAR_CLEAN(
     ); 
 
   /**
-   * Documentaci�n para TYPE 'T_NdiReversoPago'.
+   * Documentación para TYPE 'T_NdiReversoPago'.
    *
    * @author Kevin Villegas <kmvillegas@telconet.ec>
    * @version 1.0 18-06-2022
@@ -722,7 +722,7 @@ IS
   Lr_InfoFactPagAutomaticoDet DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.TpInfoFactPagAutomaticoDet;
   Lr_InfoPagoAutomaticoDet    DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET%ROWTYPE;
   Ln_NumFactura               DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.NUMERO_FACTURA_SRI%TYPE;
-  Lv_ComentarioAnticipo       VARCHAR2(100) := 'Anticipo generado por pago autom�tico  ';
+  Lv_ComentarioAnticipo       VARCHAR2(100) := 'Anticipo generado por pago automático  ';
   Lr_IdTipoDocumento          DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.ID_TIPO_DOCUMENTO%TYPE;
   Lr_NumeroPago               DB_FINANCIERO.INFO_PAGO_CAB.NUMERO_PAGO%TYPE;
   Lr_IdPago                   DB_FINANCIERO.INFO_PAGO_CAB.ID_PAGO%TYPE;
@@ -765,7 +765,7 @@ BEGIN
           IF Lrf_InfoFacturasSelect%ISOPEN THEN
             CLOSE Lrf_InfoFacturasSelect;
           END IF;
-          -- Obtengo los n�meros de facturas asociadas
+          -- Obtengo los números de facturas asociadas
           DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.P_GET_LIST_FACT_SELECT(Pv_EmpresaCod,
                                                                     Lr_InfoPagoAutomaticoCab.ID_PAGO_AUTOMATICO,
                                                                     Lrf_InfoFacturasSelect);
@@ -1020,8 +1020,8 @@ BEGIN
     Lt_InfoPagosAutomaticoDet   T_InfoPagosAutomaticoDet;
     Lt_InfoPagDet               T_InfoPagDet;
     Lv_Error                    VARCHAR2(500);
-    Lv_ComentarioPago           VARCHAR2(100)  := 'Pago generado por proceso autom�tico.';
-    Lv_ComentarioAntc           VARCHAR2(100)  := 'Anticipo generado por proceso autom�tico.';
+    Lv_ComentarioPago           VARCHAR2(100)  := 'Pago generado por proceso automático.';
+    Lv_ComentarioAntc           VARCHAR2(100)  := 'Anticipo generado por proceso automático.';
     Lv_EstadoFactura            VARCHAR2(200);
     Ln_SaldoFactura             NUMBER;
     Ln_TotalPagNc               NUMBER;
@@ -1226,7 +1226,7 @@ BEGIN
                             /* Crea el historial del pago */
 
                             DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.P_CREA_PAGO_AUT_DET_HIST(Lr_InfoPagoAutomaticoDet.ID_DETALLE_PAGO_AUTOMATICO,
-                                                                                        'Se actualiza detalle retenci�n a estado Procesado.',
+                                                                                        'Se actualiza detalle retención a estado Procesado.',
                                                                                         'Procesado',
                                                                                         Fv_UsrCreacion,
                                                                                         '127.0.0.1',
@@ -1630,7 +1630,7 @@ BEGIN
   * Fv_Cadena IN VARCHAR2   Recibe la cadena a limpiar
   * Retorna:
   * En tipo varchar2 la cadena sin caracteres especiales
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 14-07-2021
   */
 FUNCTION GET_VARCHAR_CLEAN(
@@ -1644,9 +1644,9 @@ BEGIN
             REPLACE(
             TRANSLATE(
             REGEXP_REPLACE(
-            REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|%|"]|[)]+$', '')
-            ,'[^A-Za-z0-9������������&()-_ ]' ,'')
-            ,'������,������', 'AEIOUN aeioun')
+            REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|%|"]|[)]+$', '')
+            ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,'')
+            ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
             , Chr(9), '')
             , Chr(10), '')
             , Chr(13), ''));    --
@@ -2012,7 +2012,7 @@ EXCEPTION
   BEGIN
     FOR Lr_RetPorAnular IN C_RetPorAnular(Pv_EmpresaCod)
     LOOP
-        Lv_Observacion := 'Se elimina retenci�n autom�tica mediante ejecuci�n del job:' || Lv_NombreJob || ' ID: '||Lr_RetPorAnular.ID_PAGO_AUTOMATICO || '"';
+        Lv_Observacion := 'Se elimina retención automática mediante ejecución del job:' || Lv_NombreJob || ' ID: '||Lr_RetPorAnular.ID_PAGO_AUTOMATICO || '"';
         --SE ANULA LA CABECERA DEL PAGO AUTOMATICO
         UPDATE DB_FINANCIERO.INFO_PAGO_AUTOMATICO_CAB
            SET ESTADO = 'Eliminado',
@@ -2024,7 +2024,7 @@ EXCEPTION
            SET ESTADO = 'Eliminado',
                FE_ULT_MOD = SYSDATE,
                USR_ULT_MOD = 'telcos_pagAut',
-               OBSERVACION = 'Se da de baja por proceso autom�tico de eliminaci�n de retenciones '
+               OBSERVACION = 'Se da de baja por proceso automático de eliminación de retenciones '
                               ||Lv_Observacion
          WHERE PAGO_AUTOMATICO_ID = Lr_RetPorAnular.ID_PAGO_AUTOMATICO
            AND ESTADO NOT IN ('Pendiente','Procesado');
@@ -2032,7 +2032,7 @@ EXCEPTION
         FOR Lr_RetDetPorAnular IN C_RetDetPorAnular(Lr_RetPorAnular.ID_PAGO_AUTOMATICO)
         LOOP
             DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.P_CREA_PAGO_AUT_DET_HIST(Lr_RetDetPorAnular.ID_DETALLE_PAGO_AUTOMATICO,
-                                                                        'Se da de baja por proceso autom�tico de eliminaci�n de retenciones ',
+                                                                        'Se da de baja por proceso automático de eliminación de retenciones ',
                                                                         'Eliminado',
                                                                         'telcos_pagAut',
                                                                         '127.0.0.1',
@@ -2208,7 +2208,7 @@ EXCEPTION
 
   EXCEPTION
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al generar el reporte de Retenciones Anuladas. '
+    Lv_MsjResultado := 'Ocurrió un error al generar el reporte de Retenciones Anuladas. '
                        ||'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' ERROR_BACKTRACE: ' 
                        || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
 
@@ -2309,7 +2309,7 @@ EXCEPTION
     Ln_Indr                  NUMBER := 0;
   BEGIN
 
-     --Se obtiene los par�metros para enviar el correo
+     --Se obtiene los parámetros para enviar el correo
     OPEN C_GetParametro(Lv_NombreParametroCab, Lv_DescripcionParamDet,Lv_EstadoActivo, Lv_EstadoActivo, Pv_CodEmpresa);
     FETCH C_GetParametro INTO Lr_ParametroNotificacion;
     CLOSE C_GetParametro;
@@ -2320,11 +2320,11 @@ EXCEPTION
         Lr_ParamRptPagAut.valor4 := Lr_ParametroNotificacion.valor4;
         Lr_ParamRptPagAut.valor5 := Lr_ParametroNotificacion.valor5;
 
-      --Se obtiene el alias y la plantilla donde se enviar� la notificaci�n
+      --Se obtiene el alias y la plantilla donde se enviará la notificación
         Lc_GetAliasPlantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA(Pv_CodigoPlantilla);
    
-      --Si no esta configurado la plantilla con alias y el par�metro con los datos del remitente y asunto
-      --no se enviar� la notificaci�n
+      --Si no esta configurado la plantilla con alias y el parámetro con los datos del remitente y asunto
+      --no se enviará la notificación
         IF Lc_GetAliasPlantilla.PLANTILLA        IS NOT NULL AND
            Lc_GetAliasPlantilla.ALIAS_CORREOS    IS NOT NULL THEN
 
@@ -2391,7 +2391,7 @@ EXCEPTION
   END IF;
   EXCEPTION
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte de pagos automaticos no procesados.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte de pagos automaticos no procesados.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNKG_PAGO_AUTOMATICO.P_RPT_PAG_AUT_PENDIENTES', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -2513,18 +2513,18 @@ EXCEPTION
     Ln_Indr                  NUMBER := 0;
   BEGIN
 
-     --Se obtiene los par�metros para enviar el correo
+     --Se obtiene los parámetros para enviar el correo
     OPEN C_GetParametro(Lv_NombreParametroCab, Lv_DescripcionParamDet,Lv_EstadoActivo, Lv_EstadoActivo, Pv_CodEmpresa);
     FETCH C_GetParametro INTO Lr_ParametroNotificacion;
     CLOSE C_GetParametro;
     
     IF Lr_ParametroNotificacion.ID_PARAMETRO_DET IS NOT NULL THEN
 
-      --Se obtiene el alias y la plantilla donde se enviar� la notificaci�n
+      --Se obtiene el alias y la plantilla donde se enviará la notificación
         Lc_GetAliasPlantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA(Pv_CodigoPlantilla);
    
-      --Si no esta configurado la plantilla con alias y el par�metro con los datos del remitente y asunto
-      --no se enviar� la notificaci�n
+      --Si no esta configurado la plantilla con alias y el parámetro con los datos del remitente y asunto
+      --no se enviará la notificación
         IF Lc_GetAliasPlantilla.PLANTILLA        IS NOT NULL AND
            Lc_GetAliasPlantilla.ALIAS_CORREOS    IS NOT NULL THEN
 
@@ -2627,7 +2627,7 @@ EXCEPTION
   END IF;
   EXCEPTION
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte de pagos automaticos procesados.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte de pagos automaticos procesados.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNKG_PAGO_AUTOMATICO.P_RPT_PAG_AUT_PPROCESADOS', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,

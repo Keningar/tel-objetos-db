@@ -1,18 +1,18 @@
 CREATE OR REPLACE PACKAGE NAF47_TNET.ARCC_CONSULTA IS 
 
  /**
-  * Documentaci�n para NAF47_TNET.ARCC_CONSULTA
+  * Documentación para NAF47_TNET.ARCC_CONSULTA
   * Paquete que contiene procedimiento para consulta de documentos por cobrar
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 05/12/2020 
   */
 
   /**
-  * Documentaci�n para Gt_CobrosHist
+  * Documentación para Gt_CobrosHist
   * Tabla tipo record que contiene campos de documentos por cobrar
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 05/12/2020
   */
 
@@ -46,10 +46,10 @@ IS
 
 
  /**
-  * Documentaci�n para PRC_CONSULTA_HISTORICO_CORTE
+  * Documentación para PRC_CONSULTA_HISTORICO_CORTE
   * Procedimiento de documentos pendiente de cobro a fecha corte
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 05/12/2020
   * 
   * @param Pn_Cia        NAF47_TNET.ARCCMD.NO_CIA%TYPE Compania a consultar

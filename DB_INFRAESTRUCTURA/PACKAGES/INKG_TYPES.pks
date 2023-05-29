@@ -2,9 +2,9 @@ CREATE OR REPLACE PACKAGE DB_INFRAESTRUCTURA.INKG_TYPES
 AS
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoCorreoCliente'.
+  * Documentacion para TYPE 'Lr_InfoCorreoCliente'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los correos del cliente
+  * Tipo de datos para el retorno de la informacion correspondiente a los correos del cliente
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -16,8 +16,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoCorreoCliente'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los correos del cliente
+  * Documentacion para TYPE 'Lt_InfoCorreoCliente'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente a los correos del cliente
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -27,9 +27,9 @@ AS
     TABLE OF Lr_InfoCorreoCliente INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_PuntoInternetXOlt'.
+  * Documentacion para TYPE 'Lr_PuntoInternetXOlt'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los puntos asociados a un plan de Internet por olt
+  * Tipo de datos para el retorno de la informacion correspondiente a los puntos asociados a un plan de Internet por olt
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -69,8 +69,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_PuntosInternetXOlt'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los puntos asociados a un plan de Internet por olt
+  * Documentacion para TYPE 'Lt_PuntosInternetXOlt'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente a los puntos asociados a un plan de Internet por olt
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -80,9 +80,9 @@ AS
     TABLE OF Lr_PuntoInternetXOlt INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_ServIProtegidoAdicsXPto'.
+  * Documentacion para TYPE 'Lr_ServIProtegidoAdicsXPto'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los servicios adicionales de Internet Protegido asociados a un punto
+  * Tipo de datos para el retorno de la informacion correspondiente a los servicios adicionales de Internet Protegido asociados a un punto
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -100,8 +100,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_ServIProtegidoAdicsXPto'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los servicios adicionales de Internet Protegido asociados a un punto
+  * Documentacion para TYPE 'Lt_ServIProtegidoAdicsXPto'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente a los servicios adicionales de Internet Protegido asociados a un punto
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -111,9 +111,9 @@ AS
     TABLE OF Lr_ServIProtegidoAdicsXPto INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoServIProtegidoKaspersky'.
+  * Documentacion para TYPE 'Lr_InfoServIProtegidoKaspersky'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los nuevos servicios adicionales de Internet Protegido kaspersky
+  * Tipo de datos para el retorno de la informacion correspondiente a los nuevos servicios adicionales de Internet Protegido kaspersky
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -127,8 +127,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoServIProtegidoKaspersky'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los nuevos servicios adicionales de Internet Protegido kaspersky
+  * Documentacion para TYPE 'Lt_InfoServIProtegidoKaspersky'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente a los nuevos servicios adicionales de Internet Protegido kaspersky
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -138,9 +138,9 @@ AS
     TABLE OF Lr_InfoServIProtegidoKaspersky INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_ServicioIProtegidoXActivar'.
+  * Documentacion para TYPE 'Lr_ServicioIProtegidoXActivar'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los servicios de Internet Protegido que ser�n migrados a Kaspersky
+  * Tipo de datos para el retorno de la informacion correspondiente a los servicios de Internet Protegido que seran migrados a Kaspersky
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -155,8 +155,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_ServiciosIProtegidoXActivar'.
-  * Tabla para almacenar los servicios de Internet Protegido que ser�n migrados a Kaspersky
+  * Documentacion para TYPE 'Lt_ServiciosIProtegidoXActivar'.
+  * Tabla para almacenar los servicios de Internet Protegido que seran migrados a Kaspersky
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -166,7 +166,7 @@ AS
     TABLE OF Lr_ServicioIProtegidoXActivar INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lt_ArrayOfVarchar'.
+  * Documentacion para TYPE 'Lt_ArrayOfVarchar'.
   * Tabla para almacenar la data en un array
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -175,9 +175,9 @@ AS
   TYPE Lt_ArrayOfVarchar IS TABLE OF VARCHAR2(2000) INDEX BY BINARY_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoServicioWsGms'.
+  * Documentacion para TYPE 'Lr_InfoServicioWsGms'.
   *
-  * Tipo de datos para la informaci�n necesaria para el env�o al web service de Gms
+  * Tipo de datos para la informacion necesaria para el envio al web service de Gms
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -193,9 +193,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lr_RegistroOltCpm'.
+  * Documentacion para TYPE 'Lr_RegistroOltCpm'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los olts que ejecutar�n el cambio de plan masivo
+  * Tipo de datos para el retorno de la informacion correspondiente a los olts que ejecutaron el cambio de plan masivo
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-12-2019
@@ -209,8 +209,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_OltsCpm'.
-  * Tabla para almacenar los olts que ejecutar�n el cambio de plan masivo
+  * Documentacion para TYPE 'Lt_OltsCpm'.
+  * Tabla para almacenar los olts que ejecutaron el cambio de plan masivo
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-12-2019
@@ -220,9 +220,9 @@ AS
     TABLE OF Lr_OltCpm INDEX BY PLS_INTEGER;
 
  /*
-  * Documentaci�n para TYPE 'Lt_ArrayKeyValue'.
+  * Documentacion para TYPE 'Lt_ArrayKeyValue'.
   *
-  * Tipo de datos para mapear los par�metros enviados en un array asociativo
+  * Tipo de datos para mapear los parametros enviados en un array asociativo
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 05-12-2019
@@ -230,9 +230,9 @@ AS
   TYPE Lt_ArrayKeyValue IS TABLE OF VARCHAR2(500) INDEX BY VARCHAR2(500);
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataPorProcesarCpm'.
+  * Documentacion para TYPE 'Lr_DataPorProcesarCpm'.
   *
-  * Tipo de datos para el registro del archivo csv subido en el cambio de plan masivo mapeado con la informaci�n en la base de datos
+  * Tipo de datos para el registro del archivo csv subido en el cambio de plan masivo mapeado con la informacion en la base de datos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -251,9 +251,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_DataPorProcesarCpm'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al archivo csv subido en el cambio de plan masivo
-  * mapeada con la informaci�n en la base de datos
+  * Documentacion para TYPE 'Lt_DataPorProcesarCpm'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente al archivo csv subido en el cambio de plan masivo
+  * mapeada con la informacion en la base de datos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-10-2019
@@ -263,15 +263,15 @@ AS
     TABLE OF Lr_DataPorProcesarCpm INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataClientesVerificaEquipos'.
+  * Documentacion para TYPE 'Lr_DataClientesVerificaEquipos'.
   *
-  * Tipo de datos de los clientes a los cuales se les verificar� los detalles del plan vs los equipos
+  * Tipo de datos de los clientes a los cuales se les verificar los detalles del plan vs los equipos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 11-06-2020
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.1 14-07-2020 Se modifica el tipo de datos para obtener informaci�n adicional del servicio
+  * @version 1.1 14-07-2020 Se modifica el tipo de datos para obtener informacion adicional del servicio
   */
   TYPE Lr_DataClientesVerificaEquipos IS RECORD
   (
@@ -295,8 +295,8 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_DataClientesVerificaEquipos'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los clientes que pasar�n por el proceso de verificaci�n de equipos
+  * Documentacion para TYPE 'Lt_DataClientesVerificaEquipos'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente a los clientes que pasaron por el proceso de verificacion de equipos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 11-06-2020
@@ -307,8 +307,8 @@ AS
 
 
   /*
-  * Documentaci�n para TYPE 'Lt_SolValidaGestionEquipos'.
-  * Tipo de datos de la solicitud v�lida para gestionar equipos Wifi Dual Band y Extender Dual Band
+  * Documentacion para TYPE 'Lt_SolValidaGestionEquipos'.
+  * Tipo de datos de la solicitud valida para gestionar equipos Wifi Dual Band y Extender Dual Band
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 12-06-2020
@@ -323,9 +323,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataGeneralCliente'.
+  * Documentacion para TYPE 'Lr_DataGeneralCliente'.
   *
-  * Tipo de datos de los clientes que se usar� para el env�o de correo
+  * Tipo de datos de los clientes que se usara para el envio de correo
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 27-07-2020
@@ -352,15 +352,15 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lr_PuntosCorteMasivo'.
+  * Documentacion para TYPE 'Lr_PuntosCorteMasivo'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los puntos consultados desde el corte masivo
+  * Tipo de datos para el retorno de la informacion correspondiente a los puntos consultados desde el corte masivo
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 12-08-2020
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * @version 1.0 01-10-2021 Se modifica el tipo de dato ya que al cambiarse la longitud de una de las tablas, podr�a verse afectado este record
+  * @version 1.0 01-10-2021 Se modifica el tipo de dato ya que al cambiarse la longitud de una de las tablas, podría verse afectado este record
   *
   * @author Javier Hidalgo <jihidalgo@telconet.ec>
   * @version 1.1 11-10-2022 Se agregan variables FECHA_ACTIVACION, IDENTIFICACION_CLIENTE, ES_EXCLUIDO
@@ -384,8 +384,8 @@ AS
       ES_EXCLUIDO            VARCHAR2(5));
 
   /*
-  * Documentaci�n para TYPE 'Lt_PuntosCorteMasivo'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los puntos que se desea cortar
+  * Documentacion para TYPE 'Lt_PuntosCorteMasivo'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente a los puntos que se desea cortar
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 12-08-2018
@@ -395,9 +395,9 @@ AS
     TABLE OF Lr_PuntosCorteMasivo INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoCreacionServicioDb'.
+  * Documentacion para TYPE 'Lr_InfoCreacionServicioDb'.
   *
-  * Tipo de datos para la informaci�n adicional de creaci�n de un servicio Dual Band
+  * Tipo de datos para la informacion adicional de creacion de un servicio Dual Band
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 28-09-2020
@@ -415,9 +415,9 @@ AS
       OBSERVACION_EJECUTANTE    VARCHAR2(500));
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoServicioInternet'.
+  * Documentacion para TYPE 'Lr_InfoServicioInternet'.
   *
-  * Tipo de datos para la informaci�n de un servicio de Internet
+  * Tipo de datos para la informacion de un servicio de Internet
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 15-01-2021
@@ -440,9 +440,9 @@ AS
     );
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoServicioProdAdicional'.
+  * Documentacion para TYPE 'Lr_InfoServicioProdAdicional'.
   *
-  * Tipo de datos para la informaci�n del un servicio adicional
+  * Tipo de datos para la informacion del un servicio adicional
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 18-01-2021
@@ -465,9 +465,9 @@ AS
     );
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataPorProcesarPsm'.
+  * Documentacion para TYPE 'Lr_DataPorProcesarPsm'.
   *
-  * Tipo de datos para el registro del archivo csv subido para la genraci�n de scopes y policy
+  * Tipo de datos para el registro del archivo csv subido para la genracion de scopes y policy
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 03-03-2021
@@ -492,9 +492,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_DataPorProcesarPsm'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al archivo csv subido
-  * mapeada con la informaci�n en la base de datos
+  * Documentacion para TYPE 'Lt_DataPorProcesarPsm'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente al archivo csv subido
+  * mapeada con la informacion en la base de datos
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 03-03-2021
@@ -504,9 +504,9 @@ AS
     TABLE OF Lr_DataPorProcesarPsm INDEX BY PLS_INTEGER; 
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataPorProcesarRutas'.
+  * Documentacion para TYPE 'Lr_DataPorProcesarRutas'.
   *
-  * Tipo de datos para el registro del archivo csv subido para la generaci�n de rutas
+  * Tipo de datos para el registro del archivo csv subido para la generacion de rutas
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 01-06-2021
@@ -531,9 +531,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_DataPorProcesarRutas'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al archivo csv subido
-  * mapeada con la informaci�n en la base de datos
+  * Documentacion para TYPE 'Lt_DataPorProcesarRutas'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente al archivo csv subido
+  * mapeada con la informacion en la base de datos
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 01-06-2021
@@ -543,9 +543,9 @@ AS
     TABLE OF Lr_DataPorProcesarRutas INDEX BY PLS_INTEGER; 
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoClienteInternetWs'.
+  * Documentación para TYPE 'Lr_InfoClienteInternetWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente al cliente y su respectivo servicio de Internet asociado
+  * Tipo de datos para el retorno de la información correspondiente al cliente y su respectivo servicio de Internet asociado
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -565,9 +565,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoClienteInternetWs'.
+  * Documentación para TYPE 'Lt_InfoClienteInternetWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al cliente y al punto de Internet
+  * Tabla para almacenar la data enviada con la información correspondiente al cliente y al punto de Internet
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -577,9 +577,9 @@ AS
     TABLE OF Lr_InfoClienteInternetWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoClientePuntoWs'.
+  * Documentación para TYPE 'Lr_InfoClientePuntoWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente al punto que tiene un servicio de Internet 
+  * Tipo de datos para el retorno de la información correspondiente al punto que tiene un servicio de Internet 
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -602,9 +602,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoClientePuntoWs'.
+  * Documentación para TYPE 'Lt_InfoClientePuntoWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al punto que tiene un servicio de Internet
+  * Tabla para almacenar la data enviada con la información correspondiente al punto que tiene un servicio de Internet
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -614,9 +614,9 @@ AS
     TABLE OF Lr_InfoClientePuntoWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoClienteServicioWs'.
+  * Documentación para TYPE 'Lr_InfoClienteServicioWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los servicios 
+  * Tipo de datos para el retorno de la información correspondiente a los servicios 
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -637,9 +637,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoClienteServicioWs'.
+  * Documentación para TYPE 'Lt_InfoClienteServicioWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los servicios
+  * Tabla para almacenar la data enviada con la información correspondiente a los servicios
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -649,9 +649,9 @@ AS
     TABLE OF Lr_InfoClienteServicioWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoDataTecnicaWs'.
+  * Documentación para TYPE 'Lr_InfoDataTecnicaWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a la data t�cnica del servicio de Internet
+  * Tipo de datos para el retorno de la información correspondiente a la data técnica del servicio de Internet
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -687,9 +687,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoDataTecnicaWs'.
+  * Documentación para TYPE 'Lt_InfoDataTecnicaWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a la data t�cnica del servicio de Internet
+  * Tabla para almacenar la data enviada con la información correspondiente a la data técnica del servicio de Internet
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -699,9 +699,9 @@ AS
     TABLE OF Lr_InfoDataTecnicaWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoDataTecnicaWs'.
+  * Documentación para TYPE 'Lr_InfoDataTecnicaWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a la factura
+  * Tipo de datos para el retorno de la información correspondiente a la factura
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -716,9 +716,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoFacturaPuntoWs'.
+  * Documentación para TYPE 'Lt_InfoFacturaPuntoWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a la factura
+  * Tabla para almacenar la data enviada con la información correspondiente a la factura
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -728,9 +728,9 @@ AS
     TABLE OF Lr_InfoFacturaPuntoWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoPagoPuntoWs'.
+  * Documentación para TYPE 'Lr_InfoPagoPuntoWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente al pago
+  * Tipo de datos para el retorno de la información correspondiente al pago
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -744,9 +744,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoPagoPuntoWs'.
+  * Documentación para TYPE 'Lt_InfoPagoPuntoWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al pago
+  * Tabla para almacenar la data enviada con la información correspondiente al pago
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -756,9 +756,9 @@ AS
     TABLE OF Lr_InfoPagoPuntoWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoCasoPuntoWs'.
+  * Documentación para TYPE 'Lr_InfoCasoPuntoWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a casos
+  * Tipo de datos para el retorno de la información correspondiente a casos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -774,9 +774,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoCasoPuntoWs'.
+  * Documentación para TYPE 'Lt_InfoCasoPuntoWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a casos
+  * Tabla para almacenar la data enviada con la información correspondiente a casos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -786,9 +786,9 @@ AS
     TABLE OF Lr_InfoCasoPuntoWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoTareaPuntoWs'.
+  * Documentación para TYPE 'Lr_InfoTareaPuntoWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a tareas
+  * Tipo de datos para el retorno de la información correspondiente a tareas
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -803,9 +803,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoTareaPuntoWs'.
+  * Documentación para TYPE 'Lt_InfoTareaPuntoWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a tareas
+  * Tabla para almacenar la data enviada con la información correspondiente a tareas
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -815,9 +815,9 @@ AS
     TABLE OF Lr_InfoTareaPuntoWs INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoIpPuntoWs'.
+  * Documentación para TYPE 'Lr_InfoIpPuntoWs'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a ips
+  * Tipo de datos para el retorno de la información correspondiente a ips
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -832,9 +832,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoIpPuntoWs'.
+  * Documentación para TYPE 'Lt_InfoIpPuntoWs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a ips
+  * Tabla para almacenar la data enviada con la información correspondiente a ips
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 04-06-2021
@@ -844,14 +844,14 @@ AS
     TABLE OF Lr_InfoIpPuntoWs INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoClienteInternetWsAcs'.
+  * Documentación para TYPE 'Lr_InfoClienteInternetWsAcs'.
   *
-  * Tipo de datos para el retorno de la informaci�n de cliente, servicio de Internet y dem�s data solicitada
+  * Tipo de datos para el retorno de la información de cliente, servicio de Internet y demás data solicitada
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
+  * @author Jesús Bozada <jbozada@telconet.ec>
   * @version 1.0 22-08-2021
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
+  * @author Jesús Bozada <jbozada@telconet.ec>
   * @version 1.1 24-10-2021   Se agregan nuevos campos solicitados en fase 2 del proyecto WS ACS
   */
   TYPE Lr_InfoClienteInternetWsAcs IS RECORD
@@ -885,11 +885,11 @@ AS
   );
 
 /*
-  * Documentaci�n para TYPE 'Lt_InfoClienteInternetWsAcs'.
+  * Documentación para TYPE 'Lt_InfoClienteInternetWsAcs'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n de cliente, punto de Internet y dem�s campos solicitados
+  * Tabla para almacenar la data enviada con la información de cliente, punto de Internet y demás campos solicitados
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
+  * @author Jesús Bozada <jbozada@telconet.ec>
   * @version 1.0 21-08-2021
   */
   TYPE Lt_InfoClienteInternetWsAcs
@@ -897,7 +897,7 @@ AS
     TABLE OF Lr_InfoClienteInternetWsAcs INDEX BY PLS_INTEGER;
 
  /*
-  * Documentaci�n para TYPE 'Lr_RptSecureCpe'.
+  * Documentación para TYPE 'Lr_RptSecureCpe'.
   * Record que me permite devolver los valores para setear columnas de reportes de secure cpe
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 03-09-2021
@@ -915,8 +915,8 @@ AS
   );
 
  /*
-  * Documentaci�n para TYPE 'Lt_PuntosCorteMasivo'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los puntos que se desea cortar
+  * Documentación para TYPE 'Lt_PuntosCorteMasivo'.
+  * Tabla para almacenar la data enviada con la información correspondiente a los puntos que se desea cortar
   *
   * @author Antonio Ayala <afayala@telconet.ec>
   * @version 1.0 13-09-2021
@@ -926,9 +926,9 @@ AS
     TABLE OF Lr_RptSecureCpe INDEX BY PLS_INTEGER;  
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoCortePmEjecutado'.
+  * Documentación para TYPE 'Lr_InfoCortePmEjecutado'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a un proceso de corte ejecutado
+  * Tipo de datos para el retorno de la información correspondiente a un proceso de corte ejecutado
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 29-09-2021
@@ -947,9 +947,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoCortePmEjecutado'.
+  * Documentación para TYPE 'Lt_InfoCortePmEjecutado'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a un proceso de corte ejecutado
+  * Tabla para almacenar la data enviada con la información correspondiente a un proceso de corte ejecutado
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 29-09-2021
@@ -959,9 +959,9 @@ AS
     TABLE OF Lr_InfoCortePmEjecutado INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_InfoProcesosCorteDarDeBaja'.
+  * Documentación para TYPE 'Lr_InfoProcesosCorteDarDeBaja'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a los procesos de corte masivo por lotes que hay que dar de baja
+  * Tipo de datos para el retorno de la información correspondiente a los procesos de corte masivo por lotes que hay que dar de baja
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 29-09-2021
@@ -983,9 +983,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_InfoProcesosCorteDarDeBaja'.
+  * Documentación para TYPE 'Lt_InfoProcesosCorteDarDeBaja'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los procesos de corte masivo por lotes que hay que dar de baja
+  * Tabla para almacenar la data enviada con la información correspondiente a los procesos de corte masivo por lotes que hay que dar de baja
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 29-09-2021
@@ -996,9 +996,9 @@ AS
 
 
   /*
-  * Documentaci�n para TYPE 'Lr_ReporteCorteMasivoXLotes'.
+  * Documentación para TYPE 'Lr_ReporteCorteMasivoXLotes'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente al corte masivo por lotes que formar� parte del reporte en formato CSV
+  * Tipo de datos para el retorno de la información correspondiente al corte masivo por lotes que formará parte del reporte en formato CSV
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 29-09-2021
@@ -1020,9 +1020,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_ReporteCorteMasivoXLotes'.
+  * Documentación para TYPE 'Lt_ReporteCorteMasivoXLotes'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al corte masivo por lotes que formar� parte del reporte en formato CSV
+  * Tabla para almacenar la data enviada con la información correspondiente al corte masivo por lotes que formará parte del reporte en formato CSV
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 29-09-2021
@@ -1032,9 +1032,9 @@ AS
     TABLE OF Lr_ReporteCorteMasivoXLotes INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_ReporteCorteMasivoXLotes'.
+  * Documentación para TYPE 'Lr_ReporteCorteMasivoXLotes'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente al proceso masivo a dar de baja
+  * Tipo de datos para el retorno de la información correspondiente al proceso masivo a dar de baja
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 07-12-2021
@@ -1052,9 +1052,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_PmCabDetDarBaja'.
+  * Documentación para TYPE 'Lt_PmCabDetDarBaja'.
   *
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al proceso masivo a dar de baja
+  * Tabla para almacenar la data enviada con la información correspondiente al proceso masivo a dar de baja
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 07-12-2021
@@ -1064,9 +1064,9 @@ AS
     TABLE OF Lr_PmCabDetDarBaja INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataLoginesPorProcesar'.
+  * Documentación para TYPE 'Lr_DataLoginesPorProcesar'.
   *
-  * Tipo de datos para el registro de logines subidos en un archivo csv mapeado con la informaci�n en la base de datos
+  * Tipo de datos para el registro de logines subidos en un archivo csv mapeado con la información en la base de datos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 17-01-2022
@@ -1077,9 +1077,9 @@ AS
   );
 
   /*
-  * Documentaci�n para TYPE 'Lt_DataPorProcesarCpm'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente a los logines subidos en un archivo csv
-  * mapeada con la informaci�n en la base de datos
+  * Documentación para TYPE 'Lt_DataPorProcesarCpm'.
+  * Tabla para almacenar la data enviada con la información correspondiente a los logines subidos en un archivo csv
+  * mapeada con la información en la base de datos
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.0 17-01-2022
@@ -1089,9 +1089,9 @@ AS
     TABLE OF Lr_DataLoginesPorProcesar INDEX BY PLS_INTEGER;
 
   /*
-  * Documentaci�n para TYPE 'Lr_DataPorProcesarHilos'.
+  * Documentacion para TYPE 'Lr_DataPorProcesarHilos'.
   *
-  * Tipo de datos para el registro del archivo csv subido para la generaci�n de hilo
+  * Tipo de datos para el registro del archivo csv subido para la generacion de hilo
   *
   * @author Anthony Santillan <asantillany@telconet.ec>
   * @version 1.0 01-06-2021
@@ -1117,9 +1117,9 @@ AS
     TIPO_FIBRA DB_INFRAESTRUCTURA.ADMI_CLASE_TIPO_MEDIO.NOMBRE_CLASE_TIPO_MEDIO%TYPE
   );
   /*
-  * Documentaci�n para TYPE 'Lt_DataPorProcesarHilos'.
-  * Tabla para almacenar la data enviada con la informaci�n correspondiente al archivo csv subido
-  * mapeada con la informaci�n en la base de datos
+  * Documentacion para TYPE 'Lt_DataPorProcesarHilos'.
+  * Tabla para almacenar la data enviada con la informacion correspondiente al archivo csv subido
+  * mapeada con la informacion en la base de datos
   *
   * @author Anthony Santillan <asantillany@telconet.ec>
   * @version 1.0 01-06-2021
@@ -1130,6 +1130,4 @@ AS
 
 END INKG_TYPES;
 /
-
-
 

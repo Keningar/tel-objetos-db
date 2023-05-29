@@ -49,15 +49,15 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_CONSULTA AS
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
    * [
-   *  codEmpresa          C�digo empresa,
+   *  codEmpresa          Código empresa,
    *  fechaAperturaDesde  Fecha de apertura inicial para consultar por rango,
    *  fechaAperturaHasta  Fecha de apertura final para consultar por rango,
    *  fechaCierreDesde    Fecha de cierre inicial para consultar por rango,
    *  fechaCierreHasta    Fecha de cierre final para consultar por rango,
    *  estado              Estado del caso,
-   *  nombreAfectado      Nombre del afectado por el cual se cre� el caso,
+   *  nombreAfectado      Nombre del afectado por el cual se creó el caso,
    *  idCaso              Id del caso,
-   *  numeroCaso          N�mero del caso
+   *  numeroCaso          Número del caso
    * ]
    * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la consulta
    * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la consulta
@@ -75,7 +75,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_CONSULTA AS
   /**
    * Documentacion para proceso 'P_GET_CANT_CASOS_SEGUN_TAREAS'
    *
-   * Procedimiento para consultar cantidad de casos seg�n criterio de tareas
+   * Procedimiento para consultar cantidad de casos según criterio de tareas
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
    * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la consulta
@@ -94,6 +94,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_CASOS_CONSULTA AS
 END SPKG_CASOS_CONSULTA;
 
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
 
   PROCEDURE P_GET_ADMI_TIPO_CASO(Pv_NombreTipoCaso IN  ADMI_TIPO_CASO.NOMBRE_TIPO_CASO%TYPE,
@@ -216,7 +217,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
       ORDER BY Fe_Cambio_Estado ASC;
 
     /**
-     * C_GetAsignacionCaso, obtiene informaci�n de asignaci�n del caso
+     * C_GetAsignacionCaso, obtiene información de asignación del caso
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   6, cardinalidad 1
@@ -231,7 +232,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
         Idh.Caso_Id = Cn_IdCaso;
 
     /**
-     * C_GetAfectadosCaso, obtiene informaci�n de afectados del caso
+     * C_GetAfectadosCaso, obtiene información de afectados del caso
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   29, cardinalidad 1
@@ -255,7 +256,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
         AND Ipa.Afectado_Nombre = NVL(Cv_NombreAfectado,Ipa.Afectado_Nombre);
 
     /**
-     * C_GetAfectadosCasoCliente, obtiene informaci�n de afectados del caso por cliente
+     * C_GetAfectadosCasoCliente, obtiene información de afectados del caso por cliente
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   24, cardinalidad 1
@@ -283,7 +284,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
         AND Ipe.Identificacion_Cliente = Cv_IdentCliente;        
 
     /**
-     * C_GetInfoPunto, obtiene informaci�n del punto afectado
+     * C_GetInfoPunto, obtiene información del punto afectado
      * @author  David De La Cruz <ddelacruz@telconet.ec>
      * @version 1.0 11-11-2021
      * @costo   3, cardinalidad 1
@@ -731,7 +732,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_CASOS_CONSULTA AS
     EXCEPTION
       WHEN OTHERS THEN
         Pv_Status := 'ERROR';
-        Pv_Mensaje := 'Al menos un par�metro no tiene el valor correcto, por favor verificar.';
+        Pv_Mensaje := 'Al menos un parámetro no tiene el valor correcto, por favor verificar.';
         RETURN;
     END;
 

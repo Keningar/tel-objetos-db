@@ -28,9 +28,9 @@ CREATE OR REPLACE package NAF47_TNET.INKG_TRANSFERENCIAS is
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 30/01/2021
   *
-  * @param Pv_NoCia          IN VARCHAR2     C�digo que identifica a la empresa de la transferencia
+  * @param Pv_NoCia          IN VARCHAR2     Código que identifica a la empresa de la transferencia
   * @param Pv_ObsInfoDetalle IN VARCHAR2     Detalle de las transferencias pendientes por bodegas
-  * @param Pv_Login          IN VARCHAR2     Login sobre el cual se crear� la tarea.
+  * @param Pv_Login          IN VARCHAR2     Login sobre el cual se creará la tarea.
   * @param Pv_MensajeError   IN OUT VARCHAR2 Retorna mensaje de error
   */
   PROCEDURE P_CREA_TAREA_TRANSFERENCIAS ( Pv_NoCia              IN VARCHAR2,
@@ -55,11 +55,11 @@ CREATE OR REPLACE package NAF47_TNET.INKG_TRANSFERENCIAS is
   * @version 1.0 24/12/2020
   *
   * @author Luis Lindao <llindao@telconet.ec>
-  * @version 1.1 01/03/2022 - Se agrega validaci�n detalle art�culos procesados.
+  * @version 1.1 01/03/2022 - Se agrega validación detalle artículos procesados.
   *
-  * @param Pv_NoDocu       IN VARCHAR2     N�mero de identificaci�n de Transferencia
-  * @param Pv_Centro       IN VARCHAR2     C�digo centro distribuci�n a la que pertenece la transferencia
-  * @param Pv_NoCia        IN VARCHAR2     C�digo que identifica a la empresa de la transferencia
+  * @param Pv_NoDocu       IN VARCHAR2     Número de identificación de Transferencia
+  * @param Pv_Centro       IN VARCHAR2     Código centro distribución a la que pertenece la transferencia
+  * @param Pv_NoCia        IN VARCHAR2     Código que identifica a la empresa de la transferencia
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje de error
   */
   PROCEDURE P_SALIDA_BODEGA_ORIGEN (Pv_NoDocu       IN VARCHAR2,
@@ -77,10 +77,10 @@ CREATE OR REPLACE package NAF47_TNET.INKG_TRANSFERENCIAS is
   * @version 1.1 02/09/2022
   * Se agrega reserva para el caso de que el detalle de la transferencia tenga relacionado un pedido 
   *
-  * @param Pv_NoDespacho    IN VARCHAR2          N�mero de identificaci�n de despacho bodega de salida
-  * @param Pv_Centro        IN VARCHAR2          C�digo centro distribuci�n a la que pertenece la transferencia
-  * @param Pt_DetalleTransf IN Gt_Detalle_Transf Detalle de art�culos a procesar.
-  * @param Pv_NoCia         IN VARCHAR2          C�digo que identifica a la empresa de la transferencia
+  * @param Pv_NoDespacho    IN VARCHAR2          Número de identificación de despacho bodega de salida
+  * @param Pv_Centro        IN VARCHAR2          Código centro distribución a la que pertenece la transferencia
+  * @param Pt_DetalleTransf IN Gt_Detalle_Transf Detalle de artículos a procesar.
+  * @param Pv_NoCia         IN VARCHAR2          Código que identifica a la empresa de la transferencia
   * @param Pv_MensajeError  IN OUT VARCHAR2      Retorna mensaje de error
   */
   PROCEDURE P_RECIBE_TRANSFERENCIA (Pv_NoDespacho    IN VARCHAR2,
@@ -92,14 +92,14 @@ CREATE OR REPLACE package NAF47_TNET.INKG_TRANSFERENCIAS is
   --
   /**
   * Documentacion para P_RECHAZA_TRANSFERENCIA
-  * Procedure crea registro de transferencia hacia bodega origen/da�ados de los articulos rechazados en las transferencia inicial
+  * Procedure crea registro de transferencia hacia bodega origen/dañados de los articulos rechazados en las transferencia inicial
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 24/12/2020
   *
-  * @param Pv_NoDespacho    IN VARCHAR2          N�mero de identificaci�n de despacho bodega de salida
-  * @param Pv_Centro        IN VARCHAR2          C�digo centro distribuci�n a la que pertenece la transferencia
-  * @param Pt_DetalleTransf IN Gt_Detalle_Transf Detalle de art�culos a procesar.
-  * @param Pv_NoCia         IN VARCHAR2          C�digo que identifica a la empresa de la transferencia
+  * @param Pv_NoDespacho    IN VARCHAR2          Número de identificación de despacho bodega de salida
+  * @param Pv_Centro        IN VARCHAR2          Código centro distribución a la que pertenece la transferencia
+  * @param Pt_DetalleTransf IN Gt_Detalle_Transf Detalle de artículos a procesar.
+  * @param Pv_NoCia         IN VARCHAR2          Código que identifica a la empresa de la transferencia
   * @param Pv_MensajeError  IN OUT VARCHAR2      Retorna mensaje de error
   */
   PROCEDURE P_RECHAZA_TRANSFERENCIA ( Pv_NoDespacho    IN VARCHAR2,
@@ -110,7 +110,6 @@ CREATE OR REPLACE package NAF47_TNET.INKG_TRANSFERENCIAS is
                                   
 end INKG_TRANSFERENCIAS;
 /
-
 
 CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
   
@@ -266,7 +265,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
     Ln_PersonaRol         DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE:=0; 
     Ld_Fecha              Date:= SYSDATE;
     Lv_MensajeError       Varchar2(500);
-    Lv_Asunto             Varchar2(150):= 'Nueva Tarea, Transferencias pendientes recepci�n - Actividad #';
+    Lv_Asunto             Varchar2(150):= 'Nueva Tarea, Transferencias pendientes recepción - Actividad #';
     Lr_OficinaPunto       C_OFICINA_PUNTO%ROWTYPE;
     Le_Error              Exception;
     Lv_Asignada           Varchar2(10):='Asignada';
@@ -681,7 +680,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
           --
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('NAF',
                                                'GEK_TRANSFERENCIA.P_NOTIFICACION_TRANSFERENCIA',
-                                               'No se ha definido Jefe Regional de Bodega para empresa: '||Lr_Horas.No_Cia||', region: '||Lr_Region.No_Region||'. No es posible generar notificaci�n.',
+                                               'No se ha definido Jefe Regional de Bodega para empresa: '||Lr_Horas.No_Cia||', region: '||Lr_Region.No_Region||'. No es posible generar notificación.',
                                                GEK_CONSULTA.F_RECUPERA_LOGIN,
                                                SYSDATE,
                                                GEK_CONSULTA.F_RECUPERA_IP);
@@ -910,7 +909,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
     WHERE NO_CIA  = Pv_NoCia 
     AND NO_DOCU = Pv_NoDocu;
     --
-    -- A�adir proceso por Transferencia de Consignaci�n
+    -- Añadir proceso por Transferencia de Consignación
     -- INCONSIGNACION.PU_VALIDAR se corre al inicio ya que ACTUALIZA pone 
     -- en 0 el detalle de ARINTL
     IF NVL(Lr_Arinte.Interfaz,'X') = 'CS'  THEN
@@ -937,7 +936,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
                           Pv_NoCia);
     FETCH C_DATOS_PERIODO INTO Gr_DatosPeriodo;
     IF C_DATOS_PERIODO%NOTFOUND THEN
-      Pv_MensajeError := 'La definici�n del calendario del inventario es incorrecta.';
+      Pv_MensajeError := 'La definición del calendario del inventario es incorrecta.';
       RAISE Le_Error;
     END IF;
     CLOSE C_DATOS_PERIODO;
@@ -1083,7 +1082,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
       CLOSE C_ARTICULO_BODEGA;
       --
       IF Gr_ArticuloBodeg.Costo_Uni IS NULL THEN
-        Pv_MensajeError := 'El art�culo '||Lr_DetalleDoc.No_Arti||' no existe en la bodega ORIGEN: '||Lr_Arinte.Bod_Orig;
+        Pv_MensajeError := 'El artículo '||Lr_DetalleDoc.No_Arti||' no existe en la bodega ORIGEN: '||Lr_Arinte.Bod_Orig;
         Raise Le_Error;
       END IF;
       --
@@ -1099,7 +1098,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
         Gr_Arinmn.Costo_Uni := nvl(Gr_ArticuloBodeg.Costo_Uni,0);
       ELSE
         IF Lr_DetalleDoc.Metodo_Costo = 'E' AND NVL(Lr_DetalleDoc.Costo_Estandar,0) = 0 THEN
-          Pv_MensajeError := 'El art�culo '|| Lr_DetalleDoc.No_Arti ||' no tiene definido costo estandar';
+          Pv_MensajeError := 'El artículo '|| Lr_DetalleDoc.No_Arti ||' no tiene definido costo estandar';
           Raise Le_Error;
         END IF;
         --
@@ -1230,7 +1229,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
     --
     --
     IF NVL(Gr_Arinml.linea,0) = 0 THEN
-      Pv_mensajeError := 'Existe inconsistencia de informaci�n entre cabecera y detalle del documento, favor eliminar el detalle articulos y vuelva a ingresar.';
+      Pv_mensajeError := 'Existe inconsistencia de información entre cabecera y detalle del documento, favor eliminar el detalle articulos y vuelva a ingresar.';
       Raise Le_Error;
     END IF;
     --
@@ -1390,7 +1389,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
     CLOSE C_TRANSFERENCIA_SALIDA;
     --
     IF Lr_DatosDespacho.No_Cia IS NULL THEN
-      Pv_mensajeError := 'No se encontr� trasnferencia de salida '||Pv_NoDespacho||', favor revisar ';
+      Pv_mensajeError := 'No se encontró trasnferencia de salida '||Pv_NoDespacho||', favor revisar ';
       RAISE Le_Error;
     END IF;
     --
@@ -1400,7 +1399,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
                           Pv_NoCia);
     FETCH C_DATOS_PERIODO INTO Gr_DatosPeriodo;
     IF C_DATOS_PERIODO%NOTFOUND THEN
-      Pv_MensajeError := 'La definici�n del calendario del inventario es incorrecta.';
+      Pv_MensajeError := 'La definición del calendario del inventario es incorrecta.';
       RAISE Le_Error;
     END IF;
     CLOSE C_DATOS_PERIODO;
@@ -1575,7 +1574,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
                                                          Gr_Arinml.Bodega);
       ELSE
         IF Lr_DatosArticulo.Metodo_Costo = 'E' AND NVL(Lr_DatosArticulo.Costo_Estandar,0) = 0 THEN
-          Pv_MensajeError := 'El art�culo '|| Gr_Arinml.No_Arti ||' no tiene definido costo estandar';
+          Pv_MensajeError := 'El artículo '|| Gr_Arinml.No_Arti ||' no tiene definido costo estandar';
           Raise Le_Error;
         END IF;
         --
@@ -1688,7 +1687,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
                   AND B.COMPANIA = MN.NO_CIA
                   );
       --
-      -- Se asigna documento traslado entrada en pre ingreso, temporalemte se asign� con documento despacho
+      -- Se asigna documento traslado entrada en pre ingreso, temporalemte se asignó con documento despacho
       UPDATE NAF47_TNET.INV_PRE_INGRESO_NUMERO_SERIE B
       SET B.NO_DOCUMENTO = Gr_Arinml.No_Docu,
           B.LINEA = Gr_Arinml.Linea,
@@ -1939,7 +1938,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
     CLOSE C_TRANSFERENCIA_SALIDA;
     --
     IF Lr_DatosDespacho.No_Cia IS NULL THEN
-      Pv_mensajeError := 'No se encontr� trasnferencia de salida '||Pv_NoDespacho||', favor revisar ';
+      Pv_mensajeError := 'No se encontró trasnferencia de salida '||Pv_NoDespacho||', favor revisar ';
       RAISE Le_Error;
     END IF;
     --
@@ -1949,7 +1948,7 @@ CREATE OR REPLACE package body NAF47_TNET.INKG_TRANSFERENCIAS is
                           Pv_NoCia);
     FETCH C_DATOS_PERIODO INTO Gr_DatosPeriodo;
     IF C_DATOS_PERIODO%NOTFOUND THEN
-      Pv_MensajeError := 'La definici�n del calendario del inventario es incorrecta.';
+      Pv_MensajeError := 'La definición del calendario del inventario es incorrecta.';
       RAISE Le_Error;
     END IF;
     CLOSE C_DATOS_PERIODO;

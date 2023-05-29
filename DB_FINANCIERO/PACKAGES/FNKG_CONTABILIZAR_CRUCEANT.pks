@@ -1,7 +1,8 @@
-CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
+CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT
+AS  --
   /**
   *
-  * Documentaci�n para PROCESO 'PROCESA_CRUCE_ANTICIPO'.
+  * Documentación para PROCESO 'PROCESA_CRUCE_ANTICIPO'.
   * PROCEDIMIENTO QUE PROCESA ASIENTO CONTABLE PARA EL CRUCE DE UN ANTICIPO
   * @author Andres Montero amontero@telconet.ec
   * @version 1.0
@@ -16,13 +17,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
   * @author Andres Montero <amontero@telconet.ec>
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 17-03-2017 - Se quita la funci�n SUBSTR de las columnas 'l_no_fisico' y 'l_serie_fisico' para que el valor ingresado por el usuario
-  *                           se pase en su totalidad y se pueda realizar la comparaci�n de lo guardado en TELCOS+ con lo migrado al NAF por el n�mero
+  * @version 1.3 17-03-2017 - Se quita la función SUBSTR de las columnas 'l_no_fisico' y 'l_serie_fisico' para que el valor ingresado por el usuario
+  *                           se pase en su totalidad y se pueda realizar la comparación de lo guardado en TELCOS+ con lo migrado al NAF por el número
   *                           de referencia.
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 10-09-2017 - Se agrega la variable 'Pv_EmpresaCod' con el c�digo de la empresa que va a contabilizar el cruce del anticipo.
-  *                           Se agrega la funci�n 'NAF47_TNET.GEK_MIGRACION.P_PROCESA_MIGRA_DOC_ASOCIADO' el cual guarda la relaci�n del detalle del
+  * @version 1.4 10-09-2017 - Se agrega la variable 'Pv_EmpresaCod' con el código de la empresa que va a contabilizar el cruce del anticipo.
+  *                           Se agrega la función 'NAF47_TNET.GEK_MIGRACION.P_PROCESA_MIGRA_DOC_ASOCIADO' el cual guarda la relación del detalle del
   *                           pago migrado con las tablas del NAF.
   *
   * @author Edson Franco <efranco@telconet.ec>
@@ -32,9 +33,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
   * @param Pn_IdPago     IN DB_FINANCIERO.INFO_PAGO_CAB.ID_PAGO%TYPE  Id del pago que se requiere cruzar
   * @param Pv_MensajeError OUT VARCHAR2  Variable que retorna el mensaje de error en caso de existir
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.6 27-12-2019 - Se cambia la forma de abrir el cursor C_GetPagos, se corrige error cuando el cursor trae un solo registro e intenta
-  *                           continuar con la siguiente interacci�n.
+  *                           continuar con la siguiente interacción.
   */
   PROCEDURE PROCESA_CRUCE_ANTICIPO(
       Pv_EmpresaCod IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE,
@@ -43,7 +44,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
 
   /**
   *
-  * Documentaci�n para PROCESO 'CREA_MIGRA_ARCKMM'.
+  * Documentación para PROCESO 'CREA_MIGRA_ARCKMM'.
   * PROCEDIMIENTO QUE INSERTA DATOS EN TABLA DE NAF MIGRA_ARCKMM
   * @author Andres Montero amontero@telconet.ec
   * @version 1.0
@@ -54,8 +55,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
   * @author Andres Montero <amontero@telconet.ec>
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 12-01-2016 - Se modifica la funci�n para enviar la fecha de cruce del pago la cual se usar� al procesar la contabilidad. Para ello
-  *                           se obtiene la fecha de cruce con la funci�n 'DB_FINANCIERO.FNCK_CONSULTS.F_GET_FECHA_CRUCE_PAGO'
+  * @version 1.2 12-01-2016 - Se modifica la función para enviar la fecha de cruce del pago la cual se usará al procesar la contabilidad. Para ello
+  *                           se obtiene la fecha de cruce con la función 'DB_FINANCIERO.FNCK_CONSULTS.F_GET_FECHA_CRUCE_PAGO'
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.3 10-08-2017 - Se agregan la funcion implementada en NAF 'NAF47_TNET.GEK_MIGRACION.P_INSERTA_MIGRA_ARCKMM' para insertar en la tabla
   *                          'MIIGRA_ARCKMM'.
@@ -78,7 +79,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
       msg_ret OUT VARCHAR2 );
 
   /**
-  * Documentaci�n para PROCESO 'CREA_MIGRA_ARCGAE'.
+  * Documentación para PROCESO 'CREA_MIGRA_ARCGAE'.
   * PROCEDIMIENTO QUE INSERTA DATOS EN TABLA DE NAF MIGRA_ARCGAE
   * @author Andres Montero amontero@telconet.ec
   * @version 1.0
@@ -89,8 +90,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
   * @author Andres Montero <amontero@telconet.ec>
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 12-01-2016 - Se modifica la funci�n para enviar la fecha de cruce del pago la cual se usar� al procesar la contabilidad. Para ello
-  *                           se obtiene la fecha de cruce con la funci�n 'DB_FINANCIERO.FNCK_CONSULTS.F_GET_FECHA_CRUCE_PAGO'
+  * @version 1.2 12-01-2016 - Se modifica la función para enviar la fecha de cruce del pago la cual se usará al procesar la contabilidad. Para ello
+  *                           se obtiene la fecha de cruce con la función 'DB_FINANCIERO.FNCK_CONSULTS.F_GET_FECHA_CRUCE_PAGO'
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.3 10-08-2017 - Se agregan la funcion implementada en NAF 'NAF47_TNET.GEK_MIGRACION.P_INSERTA_MIGRA_ARCGAE' para insertar en las tabla
   *                          'MIGRA_ARCGAE'.
@@ -109,7 +110,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_CRUCEANT AS  --
 
 /**
 *
-* Documentaci�n para PROCESO 'CREA_MIGRA_ARCKML'.
+* Documentación para PROCESO 'CREA_MIGRA_ARCKML'.
 * PROCEDIMIENTO QUE INSERTA DATOS EN TABLA DE NAF MIGRA_ARCKML
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -136,7 +137,7 @@ PROCEDURE CREA_MIGRA_ARCKML(
 
 /**
 *
-* Documentaci�n para PROCESO 'CREA_MIGRA_ARCGAL'.
+* Documentación para PROCESO 'CREA_MIGRA_ARCGAL'.
 * PROCEDIMIENTO QUE INSERTA DATOS EN TABLA DE NAF MIGRA_ARCGAL
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -170,7 +171,7 @@ PROCEDURE CREA_MIGRA_ARCGAL(
 
 /**
 * 
-* Documentaci�n para FUNCION 'CREA_DEBITO_CREDITO'.
+* Documentación para FUNCION 'CREA_DEBITO_CREDITO'.
 * PROCEDIMIENTO QUE CREA EL DEBITO Y CREDITO DEL ASIENTO CONTABLE
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -187,7 +188,7 @@ PROCEDURE CREA_MIGRA_ARCGAL(
 *
 * @author Luis Lindao <llindao@telconet.ec> 
 * @version 1.3 06-01-2018
-* Se modifica para cambiar tipo de dato de variables que recuperan n�mero fisico y serie f�sico pues longitud 
+* Se modifica para cambiar tipo de dato de variables que recuperan número fisico y serie físico pues longitud 
 * estaba definida de 20 caracteres y en la tabla es de 40 caracteres.
 *
 * @since 17/03/2016 
@@ -521,7 +522,7 @@ AS
             --
             IF Pv_MensajeError IS NOT NULL THEN
               --
-              raise_application_error( -20010, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+              raise_application_error( -20010, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || lr_detalle_pago.ID_PAGO_DET || '). MENSAJE ERROR NAF (' || Pv_MensajeError ||
                                                ' ).');
               --
@@ -529,7 +530,7 @@ AS
             --
           ELSE
             --
-            raise_application_error( -20010, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+            raise_application_error( -20010, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || lr_detalle_pago.ID_PAGO_DET || '). MENSAJE ERROR ( NO EXISTE ID_MIGRACION ).');
             --
           END IF;
@@ -537,7 +538,7 @@ AS
         --
       END IF;--Lr_GetValidaPagoMigrado.MIGRACION_ID IS NULL
       --
-      ----Si la compa�ia es Ecuanet replica a MD
+      ----Si la compañia es Ecuanet replica a MD
       IF nvl(Lv_BanderaReplicar,'N') = 'S' AND Pv_EmpresaCod = Lv_EmpresaOrigen THEN--EN migra contabilizacion a MD
       
       lr_detalle_pago.cod_empresa :=  Lv_EmpresaDestino;
@@ -685,7 +686,7 @@ AS
             --
             IF Pv_MensajeError IS NOT NULL THEN
               --
-              raise_application_error( -20010, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+              raise_application_error( -20010, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || lr_detalle_pago.ID_PAGO_DET || '). MENSAJE ERROR NAF (' || Pv_MensajeError ||
                                                ' ).');
               --
@@ -693,7 +694,7 @@ AS
             --
           ELSE
             --
-            raise_application_error( -20010, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+            raise_application_error( -20010, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                                ' DETALLE_PAGO ( ' || lr_detalle_pago.ID_PAGO_DET || '). MENSAJE ERROR ( NO EXISTE ID_MIGRACION ).');
             --
           END IF;

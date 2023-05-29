@@ -27,8 +27,8 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.CPACT_ANULACION (
  * @version 1.0 01/01/2007
  *
  * @author llindao <llindao@telconet.ec>
- * @version 1.1 17/12/2019 Se modifica para considerar los nuevos campos de anulaci�n de comprobantes electronicos 
- *                         y anulaci�n de retenciones electr�nicas.
+ * @version 1.1 17/12/2019 Se modifica para considerar los nuevos campos de anulación de comprobantes electronicos 
+ *                         y anulación de retenciones electrónicas.
  * 
  * @param pCia            IN arcpmd.no_cia%TYPE recibe codigo de compania
  * @param pTipo_doc       IN arcpmd.tipo_doc%TYPE recibe tipo de documento
@@ -193,7 +193,7 @@ BEGIN
          archivo_comp_elect = decode(documento_id_comp_elect, null, archivo_comp_elect, null)
    WHERE rowid = rDocu.rowid;
   --
-  -- si documento anular tiene retenci�n electronica, se debe anular en comprobantes
+  -- si documento anular tiene retención electronica, se debe anular en comprobantes
   UPDATE DB_COMPROBANTES.INFO_DOCUMENTO IDC
   SET IDC.ESTADO_DOC_ID = 8
   WHERE EXISTS (SELECT NULL

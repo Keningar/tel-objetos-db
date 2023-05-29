@@ -12,7 +12,7 @@ job_type=>'PLSQL_BLOCK', job_action=>
                                       Lv_CodigoEmpresa    DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE;
                        
                                     BEGIN
-                                      Lv_Observacion     := ''Inactivaci�n autom�tica por fechas de vigencias'';
+                                      Lv_Observacion     := ''Inactivación automática por fechas de vigencias'';
                                       Lv_Usuario         := ''telcos'';
                                       Lv_IpCreacion      := ''172.17.0.1'';
                                       Lv_TipoPma         := ''InactivaJob'';
@@ -28,9 +28,9 @@ start_date=>TO_TIMESTAMP_TZ('02-APR-2023 12.42.47.613821000 AM AMERICA/GUAYAQUIL
 'FREQ=DAILY;BYHOUR=0;BYMINUTE=0;BYSECOND=0'
 , end_date=>NULL,
 job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
-'Job que ejecuta procesos masivos de Inactivaci�n de Promociones por fecha de vigencia'
+'Job que ejecuta procesos masivos de Inactivación de Promociones por fecha de vigencia'
 );
-sys.dbms_scheduler.set_attribute('"JOB_INA_VIGENCIA_PROMO_EN"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY=''�'' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY=''�'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
+sys.dbms_scheduler.set_attribute('"JOB_INA_VIGENCIA_PROMO_EN"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY='''' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY='''' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
 dbms_scheduler.enable('"JOB_INA_VIGENCIA_PROMO_EN"');
 COMMIT; 
 END; 

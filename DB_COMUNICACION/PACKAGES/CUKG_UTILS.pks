@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_UTILS AS
 
 /**
- * Documentaci�n para F_CLOB_REPLACE_VARS
- * Funci�n que devuelve el contenido de la plantilla con los valores de las variables ya reemplazados
+ * Documentación para F_CLOB_REPLACE_VARS
+ * Función que devuelve el contenido de la plantilla con los valores de las variables ya reemplazados
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 24/09/2017
@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_UTILS AS
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.1 26/12/2017 Se elimina el reemplazo de la variable SALDO_CLIENTE
  *
- * @param Fr_EnvioMasivo IN DB_COMUNICACION.CUKG_TYPES.Lr_EnvioMasivo Registro del env�o masivo
+ * @param Fr_EnvioMasivo IN DB_COMUNICACION.CUKG_TYPES.Lr_EnvioMasivo Registro del envío masivo
  * @param Fcl_ToSearch IN CLOB Recibe el contenido
  * @param Fv_Vars IN VARCHAR2 Cadena con las variables que contiene la plantilla
  * @return CLOB
@@ -22,14 +22,14 @@ FUNCTION F_CLOB_REPLACE_VARS(
   RETURN CLOB;
 
 /**
- * Documentaci�n para F_CLOB_INSTR
- * Funci�n que permite verificar si existe cierta cadena de caracteres en un contenido
+ * Documentación para F_CLOB_INSTR
+ * Función que permite verificar si existe cierta cadena de caracteres en un contenido
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 24/09/2017
  *
  * @param Fcl_ToSearch IN CLOB Recibe el contenido en el que se desea buscar Fv_Search
- * @param Fv_Search IN VARCHAR2 Cadena de caracteres que se buscar� en Fcl_ToSearch
+ * @param Fv_Search IN VARCHAR2 Cadena de caracteres que se buscará en Fcl_ToSearch
  * @return PLS_INTEGER
  */
 FUNCTION F_CLOB_INSTR(
@@ -38,15 +38,15 @@ FUNCTION F_CLOB_INSTR(
   RETURN PLS_INTEGER;
 
 /**
- * Documentaci�n para F_CLOB_REPLACE
- * Funci�n que devuelve el contenido con el valor reemplazado de acuerdo a los par�metros enviados
+ * Documentación para F_CLOB_REPLACE
+ * Función que devuelve el contenido con el valor reemplazado de acuerdo a los parámetros enviados
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 24/09/2017
  *
  * @param Fcl_ToSearch IN CLOB Recibe el contenido en el que se desea buscar Fv_Search
- * @param Fv_Search IN VARCHAR2 Cadena de caracteres que se buscar� en Fcl_ToSearch
- * @param Fv_Replace IN VARCHAR2 Valor con el que se reemplazar� la cadena de caracteres encontradas en el contenido
+ * @param Fv_Search IN VARCHAR2 Cadena de caracteres que se buscará en Fcl_ToSearch
+ * @param Fv_Replace IN VARCHAR2 Valor con el que se reemplazará la cadena de caracteres encontradas en el contenido
  * @return CLOB
  */
 FUNCTION F_CLOB_REPLACE(
@@ -56,10 +56,10 @@ FUNCTION F_CLOB_REPLACE(
   RETURN CLOB;
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_INFO_DOCUMENTO'
+  * Documentación para procedimiento 'P_INSERT_INFO_DOCUMENTO'
   * Procedimiento para insertar un registro en la DB_COMUNICACION.INFO_DOCUMENTO
   *
-  * @param  Pr_InfoDocumento    IN DB_COMUNICACION.INFO_DOCUMENTO%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoDocumento    IN DB_COMUNICACION.INFO_DOCUMENTO%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError         OUT VARCHAR2 Mensaje de error
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -72,13 +72,13 @@ FUNCTION F_CLOB_REPLACE(
 
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_INFO_DOCUMENTO_RELAC'
+  * Documentación para procedimiento 'P_INSERT_INFO_DOCUMENTO_RELAC'
   * Procedimiento para insertar un registro en la DB_COMUNICACION.INFO_DOCUMENTO_RELACION
   *
-  * @param  Pr_InfoDocumentoRelac    IN DB_COMUNICACION.INFO_DOCUMENTO_RELACION%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoDocumentoRelac    IN DB_COMUNICACION.INFO_DOCUMENTO_RELACION%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError         OUT VARCHAR2 Mensaje de error
   *
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 16-05-2022
   */  
   PROCEDURE P_INSERT_INFO_DOCUMENTO_RELAC(
@@ -86,10 +86,10 @@ FUNCTION F_CLOB_REPLACE(
     Pv_MsjError         OUT VARCHAR2);
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_INFO_COMUNICACION'
+  * Documentación para procedimiento 'P_INSERT_INFO_COMUNICACION'
   * Procedimiento para insertar un registro en la DB_COMUNICACION.INFO_COMUNICACION
   *
-  * @param  Pr_InfoDocumento    IN DB_COMUNICACION.INFO_COMUNICACION%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoDocumento    IN DB_COMUNICACION.INFO_COMUNICACION%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError         OUT VARCHAR2 Mensaje de error
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -100,10 +100,10 @@ FUNCTION F_CLOB_REPLACE(
     Pv_MsjError          OUT VARCHAR2);
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_INFO_DOC_COMUNICACION'
+  * Documentación para procedimiento 'P_INSERT_INFO_DOC_COMUNICACION'
   * Procedimiento para insertar un registro en la DB_COMUNICACION.INFO_DOCUMENTO_COMUNICACION
   *
-  * @param  Pr_InfoDocComunicacion  IN DB_COMUNICACION.INFO_DOCUMENTO_COMUNICACION%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoDocComunicacion  IN DB_COMUNICACION.INFO_DOCUMENTO_COMUNICACION%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError             OUT VARCHAR2 Mensaje de error
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>

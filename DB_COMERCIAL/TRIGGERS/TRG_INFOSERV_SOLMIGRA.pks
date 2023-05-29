@@ -13,12 +13,12 @@ DECLARE
   * @version 1.1 15-05-2017
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * Para el caso de servicios con el plan Netlifecam se agrega validaci�n para los servicios de clientes MD que pasan de estado 'In-Corte' a 'Activo'
+  * Para el caso de servicios con el plan Netlifecam se agrega validación para los servicios de clientes MD que pasan de estado 'In-Corte' a 'Activo'
   * de acuerdo a las solicitudes parametrizadas en TIPOS_SOLICITUDES_CAMBIO_ESTADO_SERVICIO
   * @version 1.2 06-04-2017
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
-  * Se agrega IP por defecto al agregar historial de comisi�n cuando la sentencia se ejecuta desde el servidor
+  * Se agrega IP por defecto al agregar historial de comisión cuando la sentencia se ejecuta desde el servidor
   * @version 1.3 24-10-2017
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
@@ -28,37 +28,37 @@ DECLARE
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.5
   * @since 22-11-2018
-  * Se agrega la validaci�n para crear facturas de instalaci�n.
+  * Se agrega la validación para crear facturas de instalación.
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * En el caso de Activacion del Servicio se verifica si existe solicitud de Facturacion unica por Detalle y se actualiza el estado de 
-  * Creada a Pendiente, para que quede habilitado para la Facturaci�n y se genera registro de Historial por cambio de estado de la Solicitud.
+  * Creada a Pendiente, para que quede habilitado para la Facturación y se genera registro de Historial por cambio de estado de la Solicitud.
   * @version 1.6 26-11-2018
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.0
   * @since 14-12-2018
-  * Se agrega el flujo de limpiar cach� con Toolbox (Fox Premium) cuando se actualiza el estado del servicio.
+  * Se agrega el flujo de limpiar caché con Toolbox (Fox Premium) cuando se actualiza el estado del servicio.
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.7 30-09-2019 
-  * Se elimina llamada a procedimiento P_CREA_FACT_INS_PTO_ADICIONAL que genera Factura de Instalaci�n para el punto (Login) cuando el servicio pasa 
+  * Se elimina llamada a procedimiento P_CREA_FACT_INS_PTO_ADICIONAL que genera Factura de Instalación para el punto (Login) cuando el servicio pasa 
   * a estado Factible, el proceso es reemplazado por dos Jobs:
-  * Se agrega al proceso actual de M�vil la generaci�n de Facturas de Instalaci�n para contratos WEB en estado Pendiente con servicio Factible 
-  * el cual se ejecutar� mediante JOB_CREAR_FACTURA_INSTALACION.
-  * Se crea Job JOB_FACT_INS_PTO_ADICIONAL para generar Facturas de Instalaci�n (origen WEB o MOVIL) a puntos adicionales o a clientes con contratos
+  * Se agrega al proceso actual de Móvil la generación de Facturas de Instalación para contratos WEB en estado Pendiente con servicio Factible 
+  * el cual se ejecutará mediante JOB_CREAR_FACTURA_INSTALACION.
+  * Se crea Job JOB_FACT_INS_PTO_ADICIONAL para generar Facturas de Instalación (origen WEB o MOVIL) a puntos adicionales o a clientes con contratos
   * Activos que han realizado rechazo de orden en P&L y realizan reingreso de Orden de servicio en el mismo Login.
-  * Adicional se agreg� a los procesos de generaci�n de Fact. de Instalaci�n la verificaci�n de promociones en Instalaci�n.  
+  * Adicional se agregó a los procesos de generación de Fact. de Instalación la verificación de promociones en Instalación.  
   * 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.8 09-09-2020
-  * Se agrega liberaci�n de beneficio por discapacidad, se Eliminan solicitudes de descuento fijo en caso de existir cuando el servicio pasa a
+  * Se agrega liberación de beneficio por discapacidad, se Eliminan solicitudes de descuento fijo en caso de existir cuando el servicio pasa a
   * estados como Eliminado, Anulado, Rechazado, Trasladado, Reubicado, etc, 
   * (Estados parametrizados nombre parametro: PARAM_FLUJO_SOLICITUD_DESC_DISCAPACIDAD detalle: ESTADOS_SERVICIO_LIBERA_BENEFICIO)   
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.9 08-02-2021
-  * Se agrega liberaci�n de beneficio por "Beneficio 3era Edad / Adulto Mayor", se Eliminan solicitudes de descuento fijo en caso de existir cuando 
+  * Se agrega liberación de beneficio por "Beneficio 3era Edad / Adulto Mayor", se Eliminan solicitudes de descuento fijo en caso de existir cuando 
   * el servicio pasa a estados como Eliminado, Anulado, Rechazado, Trasladado, Reubicado, etc,   
   *
   * Costo de query C_GetSolicitudDescuentoFijo: 11
@@ -67,7 +67,7 @@ DECLARE
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 2.0 17-08-2021
   * Se agrega sentencia de valor en la subconsulta del cursor C_GetSolicitudDescuentoFijo para obtener el valor de proceso parametrizado para  
-  * la liberaci�n de beneficio por motivo de adulto mayor.
+  * la liberación de beneficio por motivo de adulto mayor.
   *
   * @author Edgar Pin Villavicencio<epin@telconet.ec>
   * @version 2.1 01-03-2023
@@ -258,7 +258,7 @@ BEGIN
            DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL,
            Lr_GetSolicitudDescuentoFijo.ID_DETALLE_SOLICITUD ,
            'Eliminada',
-           'Se realiza liberaci�n de Beneficio: ' || Lr_GetSolicitudDescuentoFijo.NOMBRE_MOTIVO,
+           'Se realiza liberación de Beneficio: ' || Lr_GetSolicitudDescuentoFijo.NOMBRE_MOTIVO,
            'telcos_pvulnera',
            SYSDATE,
            NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS', 15),'127.0.0.1'),
@@ -295,7 +295,7 @@ BEGIN
            DB_COMERCIAL.SEQ_INFO_DETALLE_SOL_HIST.NEXTVAL,
            Lr_GetSolicitudDescuentoFijo.ID_DETALLE_SOLICITUD ,
            'Eliminada',
-           'Se realiza liberaci�n de Beneficio: ' || Lr_GetSolicitudDescuentoFijo.NOMBRE_MOTIVO ,
+           'Se realiza liberación de Beneficio: ' || Lr_GetSolicitudDescuentoFijo.NOMBRE_MOTIVO ,
            'telcos_pvulnera',
            SYSDATE,
            NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS', 15),'127.0.0.1'),
@@ -323,7 +323,7 @@ BEGIN
            NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS', 15),'127.0.0.1'),
            :NEW.ESTADO,
            NULL,
-           'Se realiza liberaci�n de Beneficio',
+           'Se realiza liberación de Beneficio',
            'liberacionBeneficio'        
           ); 
         END IF; 
@@ -377,7 +377,7 @@ BEGIN
 
    END IF;
 
-   --Solo cuando el servicio es Activado la primera vez obtengo si el servicio posee Solicitud de Facturaci�n Unica
+   --Solo cuando el servicio es Activado la primera vez obtengo si el servicio posee Solicitud de Facturación Unica
    IF :NEW.ESTADO = 'Activo' AND :OLD.ESTADO <> 'In-Corte' THEN
    -- 
      IF C_GetSolicitudFactUnica%ISOPEN THEN
@@ -422,7 +422,7 @@ BEGIN
    --
    END IF;
 
-    --Flujo de FoxPremium para eliminar la cach� en Toolbox
+    --Flujo de FoxPremium para eliminar la caché en Toolbox
     IF UPDATING('ESTADO') AND :NEW.ESTADO <> :OLD.ESTADO THEN
         --Si ocurren errores no debe afectar el flujo del cambio del estado del servicio.
         DB_COMERCIAL.CMKG_FOX_PREMIUM.P_PROCESA_CLEAR_CACHE_TOOLBOX (Pn_IdServicio     => :NEW.ID_SERVICIO,

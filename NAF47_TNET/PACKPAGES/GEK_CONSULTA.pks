@@ -12,8 +12,8 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.GEK_CONSULTA IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 26/04/2015
   *
-  * Documentaci�n para GEF_ELIMINA_CARACTER_ESP
-  * Se hace el llamado a la tabla DB_GENERAL.ADMI_PARAMETRO_DET la cu�l contiene en la columna
+  * Documentación para GEF_ELIMINA_CARACTER_ESP
+  * Se hace el llamado a la tabla DB_GENERAL.ADMI_PARAMETRO_DET la cuál contiene en la columna
   * valor1 con los caracteres especiales que se desean reemplazar por espacios en blanco y se	
   * recorre cada uno de ellos por medio de un ciclo for loop.	
   * @author Douglas Natha <dnatha@telconet.ec>
@@ -52,7 +52,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.GEK_CONSULTA IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 15/02/2017
   *
-  * @return VARCHAR2 retorna direcci�n IP del equipo que invoca a la funcion
+  * @return VARCHAR2 retorna dirección IP del equipo que invoca a la funcion
   */
   FUNCTION F_RECUPERA_IP RETURN VARCHAR2;
 
@@ -95,7 +95,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.GEK_CONSULTA IS
 
   /**
   * Documentacion para F_VALIDA_NUMEROS
-  * Funcion que valida si el dato es num�rico
+  * Funcion que valida si el dato es numérico
   * @author afayala <afayala@telconet.ec>
   * @version 1.0 23/04/2019
   *
@@ -110,8 +110,8 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.GEK_CONSULTA IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 03/05/2020
   *
-  * @param  Pv_Identificacion IN  varchar2  Recibe identificaci�n de proveedor
-  * @param  Pv_NoCia          IN  varchar2  Recibe c�digo de compa��a
+  * @param  Pv_Identificacion IN  varchar2  Recibe identificación de proveedor
+  * @param  Pv_NoCia          IN  varchar2  Recibe código de compañía
   * @param  Pv_Status         OUT varchar2  retorna estado a webservice api-naf
   * @param  Pv_Mensaje        OUT varchar2  retorna mensaje de error a webservice api-naf
   * @return CLOB                            retorna JSON con datos de proveedor
@@ -282,7 +282,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.GEK_CONSULTA IS
     Lv_Texto VARCHAR2(50) :=  NULL;
   BEGIN
     	IF LENGTH(TRIM(TRANSLATE(Pv_Texto , '0123456789',' '))) >= 1 THEN
-        Lv_Texto:= 'Se deben ingresar s�lo n�meros enteros';
+        Lv_Texto:= 'Se deben ingresar sólo números enteros';
       END IF;
       Pv_Error:= Lv_Texto;
   END F_VALIDA_NUMEROS;
@@ -330,7 +330,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.GEK_CONSULTA IS
     --
   BEGIN
     --
-    Pv_Mensaje := 'Transacci�n realizada con exito';
+    Pv_Mensaje := 'Transacción realizada con exito';
     Pv_Status  := '200';
     --
     Lv_Jason := '{'||chr(10);

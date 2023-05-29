@@ -1,7 +1,7 @@
-CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REPORTE_VENDEDORES_VENTAS
+CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_VENDEDORES_VENTAS
 AS
   /**
-  * Documentaci�n para F_R_TOTAL_TIPO_VENTAS
+  * Documentación para F_R_TOTAL_TIPO_VENTAS
   * Obtiene el total de ventas de un vendedor de acuerdo a un tipo de venta
   *
   * @author Jorge Veliz <jlveliz@telconet.ec>
@@ -11,7 +11,54 @@ AS
   * @Fv_tipoVenta   El tipo de la venta 'activas','cancel','rechazada','brutas'
   * @Fv_vendedor    Usuario vendedor
   * @Fv_empresa     Codigo de la empresa
-  * @Fv_anio        A�o de consulta
+  * @Fv_anio        Año de consulta
+  * @Fv_mes         Mes de consulta
+  */
+  FUNCTION F_R_TOTAL_TIPO_VENTAS(
+      Fv_tipoVenta VARCHAR2,
+      Fv_vendedor  VARCHAR2,
+      Fv_empresa   VARCHAR2,
+      Fv_anio      VARCHAR2,
+      Fv_mes       VARCHAR2)
+    RETURN FLOAT ;
+  /**
+  * Documentación para F_R_COUNT_TIPO_VENTAS
+  * Obtiene el conteo de ventas de un vendedor de acuerdo a un tipo de venta
+  *
+  * @author Jorge Veliz <jlveliz@telconet.ec>
+  * @version 1.0 20/10/2021
+  *
+  * PARAMETROS:
+  * @Fv_tipoVenta   El tipo de la venta 'activas','cancel','rechazada','brutas'
+  * @Fv_vendedor    Usuario vendedor
+  * @Fv_empresa     Codigo de la empresa
+  * @Fv_anio        Año de consulta
+  * @Fv_mes         Mes de consulta
+  */
+  FUNCTION F_R_COUNT_TIPO_VENTAS(
+      Fv_tipoVenta VARCHAR2,
+      Fv_vendedor  VARCHAR2,
+      Fv_empresa   VARCHAR2,
+      Fv_anio      VARCHAR2,
+      Fv_mes       VARCHAR2)
+    RETURN NUMBER ;
+END CMKG_REPORTE_VENDEDORES_VENTAS;
+/
+
+CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REPORTE_VENDEDORES_VENTAS
+AS
+  /**
+  * Documentación para F_R_TOTAL_TIPO_VENTAS
+  * Obtiene el total de ventas de un vendedor de acuerdo a un tipo de venta
+  *
+  * @author Jorge Veliz <jlveliz@telconet.ec>
+  * @version 1.0 20/10/2021
+  *
+  * PARAMETROS:
+  * @Fv_tipoVenta   El tipo de la venta 'activas','cancel','rechazada','brutas'
+  * @Fv_vendedor    Usuario vendedor
+  * @Fv_empresa     Codigo de la empresa
+  * @Fv_anio        Año de consulta
   * @Fv_mes         Mes de consulta
   */
 FUNCTION F_R_TOTAL_TIPO_VENTAS(
@@ -311,7 +358,7 @@ IS
       RETURN 0;
 END F_R_TOTAL_TIPO_VENTAS;
 /**
-* Documentaci�n para F_R_COUNT_TIPO_VENTAS
+* Documentación para F_R_COUNT_TIPO_VENTAS
 * Obtiene el conteo de ventas de un vendedor de acuerdo a un tipo de venta
 *
 * @author Jorge Veliz <jlveliz@telconet.ec>
@@ -321,7 +368,7 @@ END F_R_TOTAL_TIPO_VENTAS;
 * @Fv_tipoVenta   El tipo de la venta 'activas','cancel','rechazada','brutas'
 * @Fv_vendedor    Usuario vendedor
 * @Fv_empresa     Codigo de la empresa
-* @Fv_anio        A�o de consulta
+* @Fv_anio        Año de consulta
 * @Fv_mes         Mes de consulta
 */
 FUNCTION F_R_COUNT_TIPO_VENTAS(
@@ -622,4 +669,3 @@ IS
         END F_R_COUNT_TIPO_VENTAS;
 END CMKG_REPORTE_VENDEDORES_VENTAS;
 /
-

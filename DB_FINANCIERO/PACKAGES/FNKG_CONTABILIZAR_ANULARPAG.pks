@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_ANULARPAG
 AS
   --
   /*
-  * Documentaci�n para PROCESO 'PROCESA_ANULACION'.
+  * Documentación para PROCESO 'PROCESA_ANULACION'.
   *
   * PROCEDIMIENTO QUE PROCESA LA ANULACION DEL ASIENTO CONTABLE DE UN PAGO
   *
@@ -11,10 +11,10 @@ AS
   * @since 19/06/2016 
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 09-03-2017 - Se quita la validaci�n en el query principal de que el pago tenga en el campo 'CONTABILIZADO' el valor de 'S', es decir
-  *                           se debe procesar la anulaci�n del pago sin importar si se ha contabilizado o no. Adicional se implementan los
+  * @version 1.1 09-03-2017 - Se quita la validación en el query principal de que el pago tenga en el campo 'CONTABILIZADO' el valor de 'S', es decir
+  *                           se debe procesar la anulación del pago sin importar si se ha contabilizado o no. Adicional se implementan los
   *                           procedimientos 'NAF47_TNET.GEK_MIGRACION.P_ELIMINA_MIGRA_CG' y 'NAF47_TNET.GEK_MIGRACION.P_ELIMINA_MIGRA_CK' para 
-  *                           eliminar la informaci�n migrada al NAF.
+  *                           eliminar la información migrada al NAF.
   *
   * @Param in number        Pn_IdPago       (id del pago a anular)
   * @Param out varchar2     Pv_MensajeError (mensaje que retorna al finalizar proceso o cuando se produza un error) 
@@ -30,7 +30,7 @@ AS
   * @version 1.0 09-08-2017
   *
   * @param Pn_PagoDetId    IN NUMER        recibe numero de transaccion
-  * @param Pv_UsrAnula     IN VARCHAR2     Recibe usuario que realiza anulaci�n
+  * @param Pv_UsrAnula     IN VARCHAR2     Recibe usuario que realiza anulación
   * @param Pv_MensajeError IN OUT VARCHAR2 retorna mensaje de errores
   */
 
@@ -191,7 +191,7 @@ AS
           --
           IF TRIM(Pv_MensajeError) IS NOT NULL THEN
             --
-            Pv_MensajeError := 'Hubo un inconveniente al eliminar la informaci�n del NAF del la MIGRA_ARCGAE del pago: ' || Pn_IdPago || ' - ' 
+            Pv_MensajeError := 'Hubo un inconveniente al eliminar la información del NAF del la MIGRA_ARCGAE del pago: ' || Pn_IdPago || ' - ' 
                                || Pv_MensajeError;
             --
             RAISE Lex_Exception;
@@ -200,7 +200,7 @@ AS
           --
         ELSE
           --
-          Pv_MensajeError := 'No se ha encontrado un n�mero de asiento v�lido para eliminar la informacion correspondiente al pago: ' || Pn_IdPago;
+          Pv_MensajeError := 'No se ha encontrado un número de asiento válido para eliminar la informacion correspondiente al pago: ' || Pn_IdPago;
           --
           RAISE Lex_Exception;
           --
@@ -233,7 +233,7 @@ AS
           --
           IF TRIM(Pv_MensajeError) IS NOT NULL THEN
             --
-            Pv_MensajeError := 'Hubo un inconveniente al eliminar la informaci�n del NAF del la MIGRA_ARCKMM del pago: ' || Pn_IdPago || ' - '
+            Pv_MensajeError := 'Hubo un inconveniente al eliminar la información del NAF del la MIGRA_ARCKMM del pago: ' || Pn_IdPago || ' - '
                                || Pv_MensajeError;
             --
             RAISE Lex_Exception;
@@ -242,7 +242,7 @@ AS
           --
         ELSE
           --
-          Pv_MensajeError := 'No se ha encontrado un n�mero de documento v�lido para eliminar la informacion correspondiente al pago: ' || Pn_IdPago;
+          Pv_MensajeError := 'No se ha encontrado un número de documento válido para eliminar la informacion correspondiente al pago: ' || Pn_IdPago;
           --
           RAISE Lex_Exception;
           --

@@ -2,17 +2,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
 
 
 /**
- * Documentaci�n para el procedimiento P_OBTENER_SERVICIOS
+ * Documentación para el procedimiento P_OBTENER_SERVICIOS
  *Metodo se encargara de consultar los  servicios y los datos necesarios como forma de pago
     * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   idServicio              := Id del servicio //opcional
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
  * @author Joel Broncano<jbroncano@telconet.ec>
- * @version 1.0 06-06-2022 - Versi�n Inicial.
+ * @version 1.0 06-06-2022 - Versión Inicial.
  */
  PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                                   Pv_Status    OUT VARCHAR2,
@@ -20,14 +20,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
                                   Pcl_Response OUT SYS_REFCURSOR);
 
 /**
- * Documentaci�n para el procedimiento P_TER_COND_PRODUCTO
+ * Documentación para el procedimiento P_TER_COND_PRODUCTO
  *Metodo se encargara de consultar los  terminos y condiciones actuales de los productos
  * vendidos durante el dia 
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
  * @author Joel Broncano<jbroncano@telconet.ec>
- * @version 1.0 06-06-2022 - Versi�n Inicial.
+ * @version 1.0 06-06-2022 - Versión Inicial.
  */
  PROCEDURE P_TER_COND_PRODUCTO(    Pcl_Request  IN  VARCHAR2,
                                    Pv_Status    OUT VARCHAR2,
@@ -35,17 +35,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
                                    Pcl_Response OUT SYS_REFCURSOR);
 
 /**
- * Documentaci�n para el procedimiento P_OBTENER_DOC_DIGITALES
+ * Documentación para el procedimiento P_OBTENER_DOC_DIGITALES
  *Metodo se encargara de consultar la ruta de los docuementos digitales del serviciol
    * @param Pcl_Request    IN   CLOB Recibe json request
   * [
   *   idServicio              := Id del servicio
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
  * @author Joel Broncano<jbroncano@telconet.ec>
- * @version 1.0 06-06-2022 - Versi�n Inicial.
+ * @version 1.0 06-06-2022 - Versión Inicial.
  */
   PROCEDURE P_OBTENER_DOC_DIGITALES(Pcl_Request  IN  VARCHAR2,
                                    Pv_Status    OUT VARCHAR2,
@@ -53,17 +53,17 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
                                    Pcl_Response OUT SYS_REFCURSOR);
 
     /**
-  * Documentaci�n para el procedimiento P_OBTENER_PROMOCION_SERVICIO
+  * Documentación para el procedimiento P_OBTENER_PROMOCION_SERVICIO
   *
-  * M�todo encargado de retornar las promociones del servicio en la tabla INFO_SERVICIO_HISTORIAL
+  * Método encargado de retornar las promociones del servicio en la tabla INFO_SERVICIO_HISTORIAL
   *
   * @param Pcl_Request    IN   CLOB Recibe json request
   * [
-  *   servicioId            := n�mero de servicios
+  *   servicioId            := número de servicios
   * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
   *
   * @author Joel Broncano<jbroncano@telconet.ec>
   * @version 1.0 10-06-2022
@@ -74,7 +74,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ENVIO_RESUMEN_COMPRA IS
                                  Pcl_Response OUT SYS_REFCURSOR);
 
      /**
-    * Documentaci�n para la funci�n P_GENERAR_SECUENCIA
+    * Documentación para la función P_GENERAR_SECUENCIA
     * Procedimiento que genera secuencia adendum
     *
     * @param  
@@ -209,7 +209,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
           AND  INSTR(ISVH.ACCION ,'feOrigServicioTrasladado') >0)
           AND DB_COMERCIAL.CMKG_REGULARIZACION_MASIVA_DOC.F_ES_CRS(ISV.PUNTO_ID)='N';
          Pv_Status     := 'OK';
-         Pv_Mensaje    := 'Transacci�n exitosa';
+         Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
      WHEN OTHERS THEN 
       Pv_Status     := 'Error';
@@ -267,7 +267,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
 
                  );
            Pv_Status     := 'OK';
-         Pv_Mensaje    := 'Transacci�n exitosa';
+         Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
      WHEN OTHERS THEN 
       Pv_Status     := 'Error';
@@ -347,7 +347,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
         END IF;
 
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
       WHEN OTHERS THEN 
       Pv_Status     := 'Error';
@@ -398,7 +398,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
                      );       
       END IF;
          Pv_Status     := 'OK';
-         Pv_Mensaje    := 'Transacci�n exitosa';
+         Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
      WHEN OTHERS THEN 
       Pv_Status     := 'Error';
@@ -442,7 +442,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
 
         IF Pn_Secuencia IS NOT NULL AND Lv_NumeracionUno IS NOT NULL AND Lv_NumeracionDos IS NOT NULL
         THEN
-            --Actualizaci�n de la n�meracion
+            --Actualización de la númeracion
             Lv_SecuenciaAsig  := LPAD(Pn_Secuencia,7,'0');
             Pn_Secuencia      := Pn_Secuencia + 1;
 
@@ -507,7 +507,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
             CLOSE C_OBTENER_FORMA_PAGO;
       Pv_Descripcion :=Ln_FormaPago;
        Pv_Status     := 'OK';
-         Pv_Mensaje    := 'Transacci�n exitosa';
+         Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
      WHEN OTHERS THEN 
       Pv_Status     := 'Error';
@@ -530,7 +530,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
 
       SELECT DB_COMERCIAL.CMKG_PROMOCIONES.F_VALIDA_SERVICIO(Lv_servicios,Ln_TipoPromo,Ln_CodEmpresa) INTO Pv_Descripcion FROM DUAL;
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';
+      Pv_Mensaje    := 'Transacción exitosa';
       EXCEPTION
       WHEN OTHERS THEN 
         Pv_Status     := 'Error';
@@ -563,7 +563,7 @@ PROCEDURE P_OBTENER_SERVICIOS(   Pcl_Request  IN  VARCHAR2,
              AND IFD.EMPRESA_COD =Ln_CodEmpresa
              and IDR.SERVICIO_ID =DECODE(Lv_servicios,null,IDR.SERVICIO_ID,Lv_servicios);
       Pv_Status     := 'OK';
-      Pv_Mensaje    := 'Transacci�n exitosa';      
+      Pv_Mensaje    := 'Transacción exitosa';      
       EXCEPTION
       WHEN OTHERS THEN 
         Pv_Status     := 'Error';

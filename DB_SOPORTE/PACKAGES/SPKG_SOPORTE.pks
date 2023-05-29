@@ -1,17 +1,17 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_SOPORTE AS
 
     /**
-    * Documentaci�n para el procedimiento P_DETECTAR_CLIENTES_CASOS
+    * Documentación para el procedimiento P_DETECTAR_CLIENTES_CASOS
     *
     * Proceso encargado de detectar y reportar los clientes que ya cuentan con un caso creado,
     * previo al caso masivo que se esta creando.
     *
     * @param Pn_IdCaso     IN  NUMBER Recibe el id del caso masivo.
-    * @param Pb_Notificar  IN  BOOLEAN Recibe un valor booleano para validar el envio de notificaci�n.
+    * @param Pb_Notificar  IN  BOOLEAN Recibe un valor booleano para validar el envio de notificación.
     * @param Pc_ResultJson OUT CLOB Retorna en formato Json el error o los clientes con casos aperturados.
     * @param Pv_Error      OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
     *
-    * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+    * @author Germán Valenzuela <gvalenzuela@telconet.ec>
     * @version 1.0 26-04-2019
     */
     PROCEDURE P_DETECTAR_CLIENTES_CASOS(Pn_IdCaso     IN  NUMBER,
@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_SOPORTE AS
   /**
    * P_CAMBIAR_ESTADO_TAREA_RECHAZA_SERVICIOS
    *
-   * Procedimiento que cambia el estado de la tarea por ejecuci�n del job_rechaza_servicios
+   * Procedimiento que cambia el estado de la tarea por ejecución del job_rechaza_servicios
    *
    * @author Jean Pierre Nazareno <jnazareno@telconet.ec>
    * @version 1.0 03/10/2019
@@ -199,6 +199,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_SOPORTE AS
    
 END SPKG_SOPORTE;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_SOPORTE AS
  PROCEDURE P_DETECTAR_CLIENTES_CASOS(Pn_IdCaso     IN  NUMBER,
                                         Pb_Notificar  IN  BOOLEAN,
@@ -273,7 +274,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_SOPORTE AS
               AND LOWER(IPAF.AFECTADO_NOMBRE) = LOWER(Cv_LoginAfectado)
             ORDER BY FE_APERTURA ASC;
 
-        --Cursor para obtener el n�mero de caso
+        --Cursor para obtener el número de caso
         CURSOR C_GetNumeroCaso(Cn_IdCaso NUMBER) IS
             SELECT ICA.*
                 FROM DB_SOPORTE.INFO_CASO ICA
@@ -335,7 +336,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_SOPORTE AS
                 DB_FINANCIERO.FNKG_NOTIFICACIONES.P_NOTIF_PROCESO_MASIVO_DEBITOS(Lv_HtmlCab,
                                                                                  'CCCLIENTE',
                                                                                  'notificaciones_telcos@telconet.ec',
-                                                                                 'DETECCI�N DE CASOS ABIERTOS - #CASO: '||Lc_Caso.NUMERO_CASO,
+                                                                                 'DETECCIÓN DE CASOS ABIERTOS - #CASO: '||Lc_Caso.NUMERO_CASO,
                                                                                  '{{ informacionCasosCreados }}',
                                                                                  'text/html; charset=UTF-8',
                                                                                   Lv_Error);
@@ -1055,7 +1056,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_SOPORTE AS
     Ln_TipoDocNC            DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.ID_TIPO_DOCUMENTO%TYPE;
     Lr_Parametros           C_GetObtenerNC%ROWTYPE;
     
-    --Variables de configuraci�n
+    --Variables de configuración
     Lv_NombreArchivoComprimir    VARCHAR2(100)  := '';
     Lv_Gzip                      VARCHAR2(500)  := '';
     Lv_NombreArchivo             VARCHAR2(100) := 'ReporteNC_Indisp_'||to_char(SYSDATE,'YYYYMMDD')||'.csv';

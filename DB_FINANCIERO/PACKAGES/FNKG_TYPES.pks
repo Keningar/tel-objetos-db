@@ -4,9 +4,9 @@ AS
 
   --
   /*
-  * Documentaci�n para TYPE 'Lr_ClienteRptBuro'.
+  * Documentación para TYPE 'Lr_ClienteRptBuro'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a un cliente del reporte de buro
+  * Tipo de datos para el retorno de la información correspondiente a un cliente del reporte de buro
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 07-08-2017
@@ -14,7 +14,7 @@ AS
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
   * @version 1.1 01-12-2017 Se agrega la Columna de Ciclo
 
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.2 02-09-2019 Se agrega la Columna CANCEL_VOLUNTARIA
   */
   TYPE Lr_ClienteRptBuro
@@ -55,7 +55,7 @@ AS
       RETURN Lr_ClienteRptBuro;
   --
   /*
-  * Documentaci�n para TYPE 'Lr_NotificacionDocumentos'.
+  * Documentación para TYPE 'Lr_NotificacionDocumentos'.
   *
   * Tipo de datos para el retorno de la informacion correspondiente a los documentos a notificar a los usuarios
   *
@@ -207,7 +207,7 @@ IS
     RETURN Lr_AdmiNumeracion;
  --
  /*
-  * Documentaci�n para TYPE 'T_Numeraciones'.
+  * Documentación para TYPE 'T_Numeraciones'.
   * Record para almacenar la data enviada al BULK.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -263,7 +263,7 @@ IS
 
 
   /*
-  * Documentaci�n para TYPE 'Lr_Cobranza'.
+  * Documentación para TYPE 'Lr_Cobranza'.
   * Record que me permite devolver los valores para setear columnas de reportes de cobranzas (pagos, anticipos, etc)
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-09-2015
@@ -274,9 +274,9 @@ IS
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.3 11-01-2017 - Se agrega la columna 'NUMERO_COMPROBANTE' la cual ayuda a realizar la cuadratura de los anticipos por parte del usuario
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 03-02-2017 - Se agrega la columna 'DESCRIPCION_CTA_CONTABLE' la cual obtendra la descripci�n de la cuenta contable registrada en el
+  * @version 1.4 03-02-2017 - Se agrega la columna 'DESCRIPCION_CTA_CONTABLE' la cual obtendra la descripción de la cuenta contable registrada en el
   *                           detalle del pago en el campo 'DB_FINANCIERO.INFO_PAGO_DET.CUENTA_CONTABLE_ID'. Adicional se agrega la columna 
-  *                           'FECHA_DOCUMENTO' la cual retorna la fecha cuando se ha procesado el d�bito.
+  *                           'FECHA_DOCUMENTO' la cual retorna la fecha cuando se ha procesado el débito.
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.5 15-08-2017 - Se agrega la columna 'FECHA_CREACION_DEBITO' la cual obtendra la fecha de creacion del debito.
   *                           Se agrega la columna 'FECHA_CREACION_DEPOSITO' la cual obtendra la fecha de creacion del deposito.
@@ -319,7 +319,7 @@ IS
           ID_FORMA_PAGO              DB_GENERAL.ADMI_FORMA_PAGO.ID_FORMA_PAGO%TYPE,
           DESCRIPCION_FORMA_PAGO     DB_GENERAL.ADMI_FORMA_PAGO.DESCRIPCION_FORMA_PAGO %TYPE,
           ES_DEPOSITABLE             DB_GENERAL.ADMI_FORMA_PAGO.ES_DEPOSITABLE%TYPE,
-          CODIGO_TIPO_DOCUMENTO      DB_FINANCIERO.FNKG_PAGO_AUTOMATICO.CODIGO_TIPO_DOCUMENTO%TYPE,
+          CODIGO_TIPO_DOCUMENTO      DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE,
           NOMBRE_TIPO_DOCUMENTO      DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.NOMBRE_TIPO_DOCUMENTO%TYPE,
           ID_PUNTO                   DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
           LOGIN                      DB_COMERCIAL.INFO_PUNTO.LOGIN%TYPE,
@@ -362,7 +362,7 @@ IS
     );
 
   /*
-  * Documentaci�n para TYPE 'Lr_Pago'.
+  * Documentación para TYPE 'Lr_Pago'.
   * Record que me permite devolver los valores para setear columnas de reportes de cobranzas (ANTS)
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-09-2015
@@ -418,12 +418,12 @@ IS
     );
 
   /*
-  * Documentaci�n para TYPE 'Lr_Facturacion'.
+  * Documentación para TYPE 'Lr_Facturacion'.
   * Record que me permite devolver los valores para setear columnas de reportes de facturacion (facturas, notas de debito, notas de credito, etc)
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-09-2015
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 12-10-2015 Se actualiza longitud en variable utilizada para visualizaci�n de rpt NDI.
+  * @version 1.1 12-10-2015 Se actualiza longitud en variable utilizada para visualización de rpt NDI.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.2 18-10-2015 Se agregan campos para nuevas columnas del reporte financiero.
   * @author Edson Franco <efranco@telconet.ec>
@@ -443,7 +443,7 @@ IS
   * @version 1.6 1-12-2017
   * Se agrega columna SERVICIOS
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.7 04-09-2021
   * Se agregan columnas USR_ULT_MOD,FE_ULT_MOD
   */
@@ -516,7 +516,7 @@ IS
 
 );
   /*
-  * Documentaci�n para TYPE 'Lr_RptPagosVendedor'.
+  * Documentación para TYPE 'Lr_RptPagosVendedor'.
   * Record que me permite devolver los valores para setear columnas de reportes de pagos por vendedor
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 01-10-2016
@@ -538,7 +538,7 @@ IS
     );
 
   /**
-  * Documentaci�n para TYPE 'Lr_DocumentosRechazados'.
+  * Documentación para TYPE 'Lr_DocumentosRechazados'.
   *
   * Tipo de datos para el retorno de la informacion correspondiente a los documentos rechazados a notificar a los usuarios
   *
@@ -577,8 +577,8 @@ IS
 
 
   /*
-  * Documentaci�n para TYPE 'Lr_AdmiFormatoRecaudacion'.
-  * Record que ser� utilizado para setear registros del formato de env�o de recaudaci�n
+  * Documentación para TYPE 'Lr_AdmiFormatoRecaudacion'.
+  * Record que será utilizado para setear registros del formato de envío de recaudación
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 20-11-2017
   */
@@ -592,8 +592,8 @@ IS
     );
 
   /*
-  * Documentaci�n para TYPE 'Lr_ClienteRecaudacion'.
-  * Record que ser� utilizado para setear columnas en el archivo formato de env�o de recaudaci�n
+  * Documentación para TYPE 'Lr_ClienteRecaudacion'.
+  * Record que será utilizado para setear columnas en el archivo formato de envío de recaudación
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 20-11-2017
   */
@@ -608,11 +608,11 @@ IS
 
 
   /**
-  * Documentaci�n para TYPE 'Lr_PtosNoFacturados'.
+  * Documentación para TYPE 'Lr_PtosNoFacturados'.
   *
-  * Tipo de datos para el retorno de la informaci�n a notificar de los puntos no facturados.
+  * Tipo de datos para el retorno de la información a notificar de los puntos no facturados.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 15-08-2019
   */
   TYPE Lr_PtosNoFacturados
@@ -635,11 +635,11 @@ IS
 
 
   /**
-  * Documentaci�n para TYPE 'Lr_FacturasPto'.
+  * Documentación para TYPE 'Lr_FacturasPto'.
   *
-  * Tipo de dato para el retorno de la informaci�n de puntos facturados a marcar.
+  * Tipo de dato para el retorno de la información de puntos facturados a marcar.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 15-08-2019
   */
   TYPE Lr_FacturasPto
@@ -657,11 +657,11 @@ IS
 
 
   /**
-  * Documentaci�n para TYPE 'Lr_PtosCambioFormaPago'.
+  * Documentación para TYPE 'Lr_PtosCambioFormaPago'.
   *
-  * Tipo de datos para el retorno de la informaci�n a notificar de los puntos que han sufrido cambio de forma de pago.
+  * Tipo de datos para el retorno de la información a notificar de los puntos que han sufrido cambio de forma de pago.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 13-09-2019
   */
   TYPE Lr_PtosCambioFormaPago
@@ -689,11 +689,11 @@ IS
 
 
   /**
-  * Documentaci�n para TYPE 'Lr_ValorTotal'.
+  * Documentación para TYPE 'Lr_ValorTotal'.
   *
-  * Tipo de dato para el retorno de la informaci�n del campo valor total mediante bulk collect.
+  * Tipo de dato para el retorno de la información del campo valor total mediante bulk collect.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 05-02-2020
   */
   TYPE Lr_ValorTotal
@@ -710,11 +710,11 @@ IS
       RETURN Lr_ValorTotal;
 
   /**
-  * Documentaci�n para TYPE 'Lr_PtosFacturarInst'.
+  * Documentación para TYPE 'Lr_PtosFacturarInst'.
   *
-  * Tipo de datos para el retorno de la informaci�n a notificar de los puntos a facturar.
+  * Tipo de datos para el retorno de la información a notificar de los puntos a facturar.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 11-06-2020
   */
   TYPE Lr_PtosFacturarInst
@@ -749,11 +749,11 @@ IS
 
 
   /**
-  * Documentaci�n para TYPE 'Lr_DocumentoRegularizaNc'.
+  * Documentación para TYPE 'Lr_DocumentoRegularizaNc'.
   *
-  * Tipo de dato para regularizaci�n de notas de cr�dito.
+  * Tipo de dato para regularización de notas de crédito.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 24-06-2020
   */
   TYPE Lr_DocumentoRegularizaNc
@@ -772,7 +772,7 @@ IS
       RETURN Lr_DocumentoRegularizaNc;
 
   /*
-  * Documentaci�n para TYPE 'Lr_RptRetExistente'.
+  * Documentación para TYPE 'Lr_RptRetExistente'.
   * Record que me permite devolver los valores para setear columnas de reporte de retenciones existentes.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 11-08-2021
@@ -785,7 +785,7 @@ IS
           NUMERO_REFERENCIA          DB_FINANCIERO.INFO_PAGO_AUTOMATICO_DET.NUMERO_REFERENCIA%TYPE
     );
   /*
-  * Documentaci�n para TYPE 'Lr_RptRetAnulada'.
+  * Documentación para TYPE 'Lr_RptRetAnulada'.
   * Record que me permite devolver los valores para setear columnas de reporte de retenciones anuladas.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 13-08-2021

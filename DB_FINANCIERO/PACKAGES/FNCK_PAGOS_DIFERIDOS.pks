@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS 
 
   /**
-  * Documentaci�n para TYPE 'Lr_SolicDiferidos'.
+  * Documentación para TYPE 'Lr_SolicDiferidos'.
   *  
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 16-04-2020
   */
   TYPE Lr_SolicDiferidos IS RECORD (
@@ -14,21 +14,21 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   );
 
   /**
-  * Documentaci�n para TYPE 'T_SolicDiferidos'.
+  * Documentación para TYPE 'T_SolicDiferidos'.
   * Record para almacenar la data enviada al BULK.
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 16-04-2020
   */
   TYPE T_SolicDiferidos IS TABLE OF Lr_SolicDiferidos INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para TYPE 'Lr_NciProcesoDiferidos'.
+  * Documentación para TYPE 'Lr_NciProcesoDiferidos'.
   *  
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 24-04-2020
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 23-05-2020 Se Modifica estructura principal debido a que se realiza Proceso de Generaci�n de NDI agrupadas
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 23-05-2020 Se Modifica estructura principal debido a que se realiza Proceso de Generación de NDI agrupadas
   */
   TYPE Lr_NciProcesoDiferidos IS RECORD (
     ID_PROCESO_MASIVO       DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE,
@@ -39,19 +39,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     CANTIDAD_NCI            NUMBER
   );
   /**
-  * Documentaci�n para TYPE 'T_NciProcesoDiferidos'.
+  * Documentación para TYPE 'T_NciProcesoDiferidos'.
   * Record para almacenar la data enviada al BULK.
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 24-04-2020
   */
   TYPE T_NciProcesoDiferidos IS TABLE OF Lr_NciProcesoDiferidos INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_GRUPOS_PROC_DIFERIDO'.
+  * Documentación para PROCEDURE 'P_OBTIENE_GRUPOS_PROC_DIFERIDO'.
   *
-  * El Procedimiento P_OBTIENE_GRUPOS_PROC_DIFERIDO obtiene los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturaci�n 
+  * El Procedimiento P_OBTIENE_GRUPOS_PROC_DIFERIDO obtiene los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturación 
   * para filtrar las solicitudes de tipo: 'SOLICITUD DIFERIDO DE FACTURA POR EMERGENCIA SANITARIA'
-  * que procesar�n los diferidos para Facturas con saldo pendiente.
+  * que procesarán los diferidos para Facturas con saldo pendiente.
   *
   * Costo Query C_GruposEjecucion:6
   *
@@ -67,12 +67,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                            Pv_UsrCreacion IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_OBTIENE_GRUPOS_NDI_DIFERIDO'.
+  * Documentación para PROCEDURE 'P_OBTIENE_GRUPOS_NDI_DIFERIDO'.
   *
-  * El Procedimiento P_OBTIENE_GRUPOS_NDI_DIFERIDO obtiene los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturaci�n 
-  * para filtrar las Notas de Cr�dito Interna generadas por el proceso de diferido de Facturas por emergencia sanitaria, se generar�n las
+  * El Procedimiento P_OBTIENE_GRUPOS_NDI_DIFERIDO obtiene los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturación 
+  * para filtrar las Notas de Crédito Interna generadas por el proceso de diferido de Facturas por emergencia sanitaria, se generarán las
   * NDI en base a las cuotas diferidas.
-  * El proceso se ejecutar� el dia de inicio de Ciclo de Facturaci�n.
+  * El proceso se ejecutará el dia de inicio de Ciclo de Facturación.
   * 
   * Costo Query C_GruposEjecucion:5
   * Costo Query C_GetCiclosDiaProceso: 2
@@ -89,12 +89,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                           Pv_UsrCreacion IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_EJECUTA_SOL_DIFERIDO'.
+  * Documentación para PROCEDURE 'P_EJECUTA_SOL_DIFERIDO'.
   *
-  * Procedimiento P_EJECUTA_SOL_DIFERIDO Proceso de ejecuci�n masiva que lee las solicitudes de tipo: 
+  * Procedimiento P_EJECUTA_SOL_DIFERIDO Proceso de ejecución masiva que lee las solicitudes de tipo: 
   * 'SOLICITUD DIFERIDO DE FACTURA POR EMERGENCIA SANITARIA' y procesa los diferidos para Facturas con saldo pendiente en base a 
-  * los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturaci�n, se encarga de generar NCI a las facturas registradas en la
-  * Solicitud registrando los periodos a diferir que posteriormente generar�n NDI por cada cuota diferida seg�n el ciclo de Facturaci�n de cliente
+  * los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturación, se encarga de generar NCI a las facturas registradas en la
+  * Solicitud registrando los periodos a diferir que posteriormente generarán NDI por cada cuota diferida según el ciclo de Facturación de cliente
   * en los procesos que se ejecutaran mensualmente.
   *
   * Costo Query C_GetSolCarac: 5
@@ -109,17 +109,17 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * @Param Pv_UsrCreacion           IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE
   * @Param Pv_DescripcionSolicitud  IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE
   * @Param Pv_FormaPago             IN VARCHAR2 DEFAULT NULL Descripcion de la forma de pago
-  * @Param Pn_IdCiclo               IN DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE DEFAULT NULL Id del ciclo de Facturaci�n
+  * @Param Pn_IdCiclo               IN DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE DEFAULT NULL Id del ciclo de Facturación
   * @Param Pv_IdsFormasPagoEmisores IN VARCHAR2 DEFAULT NULL Contiene Ids de Formas de Pagos o de emisores (Banco_tipo_cuenta_id) separados por coma.
   * @Param Pn_IdPunto               IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE (Id de Punto Cliente) DEFAULT NULL
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 16-04-2020
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 28-06-2020  - Se agrega par�metro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesi�n
-  *                            y se agrega par�metro de salida Pv_MsjResultado
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 28-06-2020  - Se agrega parámetro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesión
+  *                            y se agrega parámetro de salida Pv_MsjResultado
   */
   PROCEDURE P_EJECUTA_SOL_DIFERIDO(Pv_Empresa               IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                    Pv_UsrCreacion           IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE,
@@ -131,12 +131,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                    Pv_MsjResultado          OUT VARCHAR2);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_EJECUTA_NDI_DIFERIDO'.
+  * Documentación para PROCEDURE 'P_EJECUTA_NDI_DIFERIDO'.
   *
-  * Procedimiento P_EJECUTA_NDI_DIFERIDO Proceso de ejecuci�n masiva que lee las NCI generadas por el Proceso de Diferido de Facturas por emergencia 
-  * Sanitaria, procesa en base a los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturaci�n, se encarga de generar las NDI 
-  * (Notas de d�bito interna) por las cuotas diferidas que se encuentran definidas en las NCI.
-  * Proceso se ejecutar� seg�n el ciclo de Facturaci�n de cliente el d�a que le corresponde al inicio de ciclo.
+  * Procedimiento P_EJECUTA_NDI_DIFERIDO Proceso de ejecución masiva que lee las NCI generadas por el Proceso de Diferido de Facturas por emergencia 
+  * Sanitaria, procesa en base a los grupos parametrizados por banco_tipo_cuenta_id y por ciclo de facturación, se encarga de generar las NDI 
+  * (Notas de débito interna) por las cuotas diferidas que se encuentran definidas en las NCI.
+  * Proceso se ejecutará según el ciclo de Facturación de cliente el día que le corresponde al inicio de ciclo.
   * 
   * Costo Query C_GetMotivoNc: 2
   * Costo Query C_GetCaracterist: 2
@@ -146,24 +146,24 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * @Param Pv_Empresa               IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Pv_UsrCreacion           IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE
   * @Param Pv_FormaPago             IN VARCHAR2 DEFAULT NULL Descripcion de la forma de pago
-  * @Param Pn_IdCiclo               IN DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE DEFAULT NULL Id del ciclo de Facturaci�n
+  * @Param Pn_IdCiclo               IN DB_FINANCIERO.ADMI_CICLO.ID_CICLO%TYPE DEFAULT NULL Id del ciclo de Facturación
   * @Param Pv_IdsFormasPagoEmisores IN VARCHAR2 DEFAULT NULL Contiene Ids de Formas de Pagos o de emisores (Banco_tipo_cuenta_id) separados por coma.
   * @Param Pn_IdPunto               IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE (Id de Punto Cliente) DEFAULT NULL
   * @Param Pn_IdProcesoMasivoCab    IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE DEFAULT NULL
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 23-04-2020
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 23-05-2020 Se Modifica estructura principal debido a que se realiza Proceso de Generaci�n de NDI agrupadas.
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 23-05-2020 Se Modifica estructura principal debido a que se realiza Proceso de Generación de NDI agrupadas.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.2 19-06-2020 Se modifica para que se guarde el campo de subtotal de la NDI.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.3 28-06-2020  - Se agrega par�metro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesi�n
-  *                            y se agrega par�metro de salida Pv_MsjResultado y Pn_IdProcesoMasivoCab
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.3 28-06-2020  - Se agrega parámetro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesión
+  *                            y se agrega parámetro de salida Pv_MsjResultado y Pn_IdProcesoMasivoCab
   */
   PROCEDURE P_EJECUTA_NDI_DIFERIDO(Pv_Empresa               IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                    Pv_UsrCreacion           IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE,
@@ -175,18 +175,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                    Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el procedimiento P_CREA_NOTA_CREDITO_INTERNA
-  * El procedimiento P_CREA_NOTA_CREDITO_INTERNA crea una nota de cr�dito interna por proceso de diferido 
+  * Documentación para el procedimiento P_CREA_NOTA_CREDITO_INTERNA
+  * El procedimiento P_CREA_NOTA_CREDITO_INTERNA crea una nota de crédito interna por proceso de diferido 
   *
   *
   * @param  Pn_IdDocumento            IN  INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  Recibe el ID_DOCUMENTO
   * @param  Pn_ValorFactura           IN  NUMBER Valor minimo de Saldo que debe tener la Factura para poder diferirse.
-  * @param  Pv_Observacion            IN  INFO_DOCUMENTO_FINANCIERO_CAB.OBSERVACION%TYPE  Recibe la OBSERVACI�N
+  * @param  Pv_Observacion            IN  INFO_DOCUMENTO_FINANCIERO_CAB.OBSERVACION%TYPE  Recibe la OBSERVACIÓN
   * @param  Pn_IdMotivo               IN  ADMI_MOTIVO.ID_MOTIVO%TYPE                      Recibe el ID_MOTIVO
   * @param  Pv_UsrCreacion            IN  INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE Recibe el USR_CREACION
   * @param  Pv_IdEmpresa              IN  INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Recibe el COD_EMPRESA
-  * @param  Pn_IdDocumentoNC          OUT INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE Retorna el ID de la nota de cr�dito interna
-  * @param  Pv_ObservacionCreacion    OUT VARCHAR2 Retorna la observaci�n del proceso de creaci�n de la NCI
+  * @param  Pn_IdDocumentoNC          OUT INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE Retorna el ID de la nota de crédito interna
+  * @param  Pv_ObservacionCreacion    OUT VARCHAR2 Retorna la observación del proceso de creación de la NCI
   * @param  Pbool_Done                OUT BOOLEAN Retorna TRUE si se hizo la NCI, FALSE en caso de no hacerse la NCI
   * @param  Pv_MessageError           OUT VARCHAR2 Recibe un mensaje de error en caso de existir
   *  
@@ -199,7 +199,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * Costo Query C_GetDocumentoHistorial: 11
   * Costo Query C_GetInfoDocFinancieroDet: 4
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 07-04-2020
   */
   PROCEDURE P_CREA_NOTA_CREDITO_INTERNA(Pn_IdDocumento            IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -213,7 +213,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                         Pbool_Done                OUT BOOLEAN,
                                         Pv_MessageError           OUT VARCHAR2);
   /**
-  * Documentaci�n para el procedimiento P_CREA_NOTA_DEBITO_INTERNA
+  * Documentación para el procedimiento P_CREA_NOTA_DEBITO_INTERNA
   * El procedimiento P_CREA_NOTA_DEBITO_INTERNA crea una nota de debito interna por proceso de diferido 
   *
   *
@@ -229,11 +229,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   *   
   * Costo Query C_GetNumeracion: 2
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 23-04-2020
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 25-05-2020 Se Modifica estructura principal debido a que se realiza Proceso de Generaci�n de NDI agrupadas
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 25-05-2020 Se Modifica estructura principal debido a que se realiza Proceso de Generación de NDI agrupadas
   */
   PROCEDURE P_CREA_NOTA_DEBITO_INTERNA(Pn_IdPunto                IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE, 
                                        Pn_ValorTotal             IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.VALOR_TOTAL%TYPE, 
@@ -246,16 +246,16 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                        Pv_MessageError           OUT VARCHAR2);
 
   /**
-  * Documentaci�n para la funci�n F_GET_VALOR_CUOTA_DIFERIDA
-  * la funci�n F_GET_VALOR_CUOTA_DIFERIDA Obtiene el valor de la cuota Diferida en base a la NCI y el numero de meses del diferido, 
+  * Documentación para la función F_GET_VALOR_CUOTA_DIFERIDA
+  * la función F_GET_VALOR_CUOTA_DIFERIDA Obtiene el valor de la cuota Diferida en base a la NCI y el numero de meses del diferido, 
   * realiza el ajuste a la ultima cuota y devuelve el valor total de cuota diferida ajustada de ser el caso.
   *
   * @param Fn_IdDocumentoNci    IN  INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  Obtiene el id factura
   * @param Fn_NumCuotaDiferida  IN  NUMBER,
   * @param Fn_MesesDiferido     IN  NUMBER
-  * @return NUMBER Retorna el valor de la NCI simulada seg�n los par�metros de entrada.
+  * @return NUMBER Retorna el valor de la NCI simulada según los parámetros de entrada.
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 07-04-2020
   */
   FUNCTION F_GET_VALOR_CUOTA_DIFERIDA(Fn_IdDocumentoNci    IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -264,20 +264,20 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n F_GET_VALOR_SIMULADO_NCI
-  * la funci�n F_GET_VALOR_SIMULADO_NCI Simula la creaci�n de una nota de cr�dito interna por el porcentaje del saldo pendiente de la Factura
+  * Documentación para la función F_GET_VALOR_SIMULADO_NCI
+  * la función F_GET_VALOR_SIMULADO_NCI Simula la creación de una nota de crédito interna por el porcentaje del saldo pendiente de la Factura
   * y devuelve el valor total.
   *
   * @param Fn_IdDocumento         IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  Obtiene el id factura
   * @param Fn_Porcentaje          IN NUMBER   Obtiene el porcentaje a aplicarse
-  * @return NUMBER Retorna el valor de la NCI simulada seg�n los par�metros de entrada.
+  * @return NUMBER Retorna el valor de la NCI simulada según los parámetros de entrada.
   *
   * Costo Query C_GetInfoDocFinancieroDet: 4
   * Costo Query C_GetInfoPlanCab: 2
   * Costo Query C_GetInfoProductoImpuesto: 2
   * Costo Query C_GetAdmiImpuesto: 4    
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 07-04-2020
   */
   FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento  IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -285,8 +285,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n F_GET_PORCENTAJE_SALDO
-  * la funci�n F_GET_PORCENTAJE_SALDO Obtiene el porcentaje que representa el saldo de la Factura sobre el cual se calcular� la NCI.
+  * Documentación para la función F_GET_PORCENTAJE_SALDO
+  * la función F_GET_PORCENTAJE_SALDO Obtiene el porcentaje que representa el saldo de la Factura sobre el cual se calculará la NCI.
   *
   * @param Fn_IdDocumento         IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  Obtiene el id factura  
   * @return NUMBER  Retorna Porcentaje a calcularse para NCI.
@@ -295,15 +295,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * Costo Query C_GetAdmiProducto: 2
   * Costo Query C_GetImpuestoDetalle: 3
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 13-04-2020
   */
   FUNCTION F_GET_PORCENTAJE_SALDO(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE)
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n F_GET_SUM_DETALLES_NCI
-  * la funci�n F_GET_SUM_DETALLES_NCI obtiene la sumatoria de detalles de NC o NCI generadas por detalle de Factura.
+  * Documentación para la función F_GET_SUM_DETALLES_NCI
+  * la función F_GET_SUM_DETALLES_NCI obtiene la sumatoria de detalles de NC o NCI generadas por detalle de Factura.
   *
   * @param Fn_IdDocumento         IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  Obtiene el id factura  
   * @param Fn_IdDocDetalle        IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.ID_DOC_DETALLE%TYPE Obtiene id detalle de Factura
@@ -314,7 +314,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * Costo Query C_GetSumDetalleNcProd: 31
   * Costo Query C_GetInfoDocFinancieroDet: 3
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 14-04-2020
   */
   FUNCTION F_GET_SUM_DETALLES_NCI(Fn_IdDocumento  IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -322,7 +322,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para el procedimiento P_NUMERA_NOTA_CREDITO_INTERNA
+  * Documentación para el procedimiento P_NUMERA_NOTA_CREDITO_INTERNA
   * El procedimiento P_NUMERA_NOTA_CREDITO_INTERNA Se encarga de numerar y activar una NCI.
   *
   *
@@ -337,7 +337,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * Costo Query C_GetParamNumeraNci: 4
   * Costo Query C_GetNumeracionNci: 2 
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 14-04-2020
   */ 
   PROCEDURE P_NUMERA_NOTA_CREDITO_INTERNA (Pn_IdDocumento    IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -349,99 +349,99 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                            Pv_Mensaje        OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_DOCUMENTO_CARACT'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_DOCUMENTO_CARACT'.
   *
   * Procedimiento que inserta registro de caracteristica para el Documento en INFO_DOCUMENTO_CARACTERISTICA
   *
-  * @Param Pr_InfoDocumentoCaract  IN   DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE Recibe un registro con la informaci�n necesaria.
-  * @Param Pv_MsnError             OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDocumentoCaract  IN   DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE Recibe un registro con la información necesaria.
+  * @Param Pv_MsnError             OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-04-2020
   */
   PROCEDURE P_INSERT_INFO_DOCUMENTO_CARACT(Pr_InfoDocumentoCaract IN  DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE,
                                            Pv_MsnError            OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DOCUMENTO_CARACT'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DOCUMENTO_CARACT'.
   *
   * Procedimiento que actualiza registro de caracteristica para el Documento en INFO_DOCUMENTO_CARACTERISTICA
   *
-  * @Param Pr_InfoDocumentoCaract  IN  DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE Recibe un registro con la informaci�n
-  * @Param Pv_MsnError             OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDocumentoCaract  IN  DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE Recibe un registro con la información
+  * @Param Pv_MsnError             OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-04-2020
   */
   PROCEDURE P_UPDATE_INFO_DOCUMENTO_CARACT(Pr_InfoDocumentoCaract IN  DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE,
                                            Pv_MsnError            OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_DETALLE_SOL_HIST'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_DETALLE_SOL_HIST'.
   *
   * Procedimiento que inserta registro de historial en la solicitud en INFO_DETALLE_SOL_HIST
   *
-  * @Param Pr_InfoDetalleSolHist  IN   DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE Recibe un registro con la informaci�n necesaria para ingresar
-  * @Param Pv_MsnError            OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDetalleSolHist  IN   DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE Recibe un registro con la información necesaria para ingresar
+  * @Param Pv_MsnError            OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-04-2020
   */
   PROCEDURE P_INSERT_INFO_DETALLE_SOL_HIST(Pr_InfoDetalleSolHist   IN DB_COMERCIAL.INFO_DETALLE_SOL_HIST%ROWTYPE,
                                            Pv_MsnError             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOLIC'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOLIC'.
   *
   * Procedimiento que actualiza registro de la solicitud en INFO_DETALLE_SOLICITUD
   *
-  * @Param Pr_InfoDetalleSolicitud  IN   DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE Recibe un registro con la informaci�n
-  * @Param Pv_MsnError              OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDetalleSolicitud  IN   DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE Recibe un registro con la información
+  * @Param Pv_MsnError              OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-04-2020
   */
   PROCEDURE P_UPDATE_INFO_DETALLE_SOLIC(Pr_InfoDetalleSolicitud IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE,
                                             Pv_MsnError             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOL_CARA'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_DETALLE_SOL_CARA'.
   *
   * Procedimiento que actualiza registro de la caracteristica asociada a la solicitud en INFO_DETALLE_SOL_CARACT
   *
-  * @Param Pr_InfoDetalleSolCaract  IN   DB_COMERCIAL.INFO_DETALLE_SOL_CARACT%ROWTYPE Recibe un registro con la informaci�n
-  * @Param Pv_MsnError              OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pr_InfoDetalleSolCaract  IN   DB_COMERCIAL.INFO_DETALLE_SOL_CARACT%ROWTYPE Recibe un registro con la información
+  * @Param Pv_MsnError              OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-04-2020
   */
   PROCEDURE P_UPDATE_INFO_DETALLE_SOL_CARA(Pr_InfoDetalleSolCaract IN  DB_COMERCIAL.INFO_DETALLE_SOL_CARACT%ROWTYPE,
                                            Pv_MsnError             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'UPDATE_INFO_DOC_FINANCIERO_DET'.
+  * Documentación para PROCEDURE 'UPDATE_INFO_DOC_FINANCIERO_DET'.
   *
-  * Procedimiento que actualiza registro detalle de documento, actualiza precio y observaci�n.
+  * Procedimiento que actualiza registro detalle de documento, actualiza precio y observación.
   *
   * @Param Pn_IdDocumento                IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
   * @Param Pr_InfoDocumentoFinancieroDet IN INFO_DOCUMENTO_FINANCIERO_DET%ROWTYPE,
-  * @Param Pv_MsnError                   OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecuci�n
+  * @Param Pv_MsnError                   OUT  VARCHAR2  Devuelve un mensaje del resultado de ejecución
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-04-2020
   */
   PROCEDURE UPDATE_INFO_DOC_FINANCIERO_DET( Pn_IdDocumento                IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
                                             Pr_InfoDocumentoFinancieroDet IN INFO_DOCUMENTO_FINANCIERO_DET%ROWTYPE,
                                             Pv_MsnError                   OUT VARCHAR2);
   /**
-  * Documentaci�n para F_GET_CARACT_DOCUMENTO
+  * Documentación para F_GET_CARACT_DOCUMENTO
   * Retorna el valor de la Caracteristica del Documento.
   * 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 26-04-2020
   *
   * @param   Fn_IdDocumento   IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE Id Documento
-  * @param   Fv_DesCaract     IN VARCHAR2 Descripci�n de Caracteristica
+  * @param   Fv_DesCaract     IN VARCHAR2 Descripción de Caracteristica
   * @return VARCHAR2   Retorna Valor de la Caracteristica.
   */
   FUNCTION F_GET_CARACT_DOCUMENTO(
@@ -450,15 +450,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     RETURN VARCHAR2;
 
  /**
-  * Documentaci�n para la funci�n F_GET_TOTAL_DIFERIDO
-  * La funci�n F_GET_TOTAL_DIFERIDO Obtiene valor Total Diferido = Total de la Deuda(Los valores diferidos en cada proceso).  
+  * Documentación para la función F_GET_TOTAL_DIFERIDO
+  * La función F_GET_TOTAL_DIFERIDO Obtiene valor Total Diferido = Total de la Deuda(Los valores diferidos en cada proceso).  
   *
   * Costo Query C_GetTotalDiferido: 9
   *
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna el valor total de la Deuda Diferida por Punto.
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 16-06-2020
   */
   FUNCTION F_GET_TOTAL_DIFERIDO(Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE)
@@ -466,15 +466,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
  /**
-  * Documentaci�n para la funci�n F_GET_DIFERIDO_PAGADO
-  * La funci�n F_GET_DIFERIDO_PAGADO Obtiene el Total de Diferido Pagado = Pagos de las NDI que se generaron por la Opci�n de Emergencia. 
+  * Documentación para la función F_GET_DIFERIDO_PAGADO
+  * La función F_GET_DIFERIDO_PAGADO Obtiene el Total de Diferido Pagado = Pagos de las NDI que se generaron por la Opción de Emergencia. 
   *
   * Costo Query C_GetDiferidoPagado: 39
   *
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna el valor Total de Diferido Pagado
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 17-06-2020
   */
   FUNCTION F_GET_DIFERIDO_PAGADO(Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE)
@@ -482,8 +482,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
  /**
-  * Documentaci�n para la funci�n F_GET_DIFERIDO_POR_VENCER
-  * La funci�n F_GET_DIFERIDO_POR_VENCER Obtiene el valor diferido por vencer, corresponde al valor total de  diferido 
+  * Documentación para la función F_GET_DIFERIDO_POR_VENCER
+  * La función F_GET_DIFERIDO_POR_VENCER Obtiene el valor diferido por vencer, corresponde al valor total de  diferido 
   * pendientes de generarse.
   * 
   * Costo Query C_GetDiferidoPorVencer: 11
@@ -491,7 +491,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna el valor Total de Diferido por vencer
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 18-06-2020
   */
   FUNCTION F_GET_DIFERIDO_POR_VENCER(Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE)
@@ -499,15 +499,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n F_GET_DIFERIDO_VENCIDO
-  * La funci�n F_GET_DIFERIDO_VENCIDO Obtiene el valor total de NDI impagas a la fecha. 
+  * Documentación para la función F_GET_DIFERIDO_VENCIDO
+  * La función F_GET_DIFERIDO_VENCIDO Obtiene el valor total de NDI impagas a la fecha. 
   * 
   * Costo Query C_GetDiferidoVencido: 13
   *
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna el valor total de NDI impagas a la fecha. 
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 19-06-2020
   *
   * @author Gustavo Narea <gnarea@telconet.ec>
@@ -519,15 +519,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n F_GET_TOTAL_SALDO_FACTPTO
-  * La funci�n F_GET_TOTAL_SALDO_FACTPTO Obtiene el total de saldo de Facturas por Punto.
+  * Documentación para la función F_GET_TOTAL_SALDO_FACTPTO
+  * La función F_GET_TOTAL_SALDO_FACTPTO Obtiene el total de saldo de Facturas por Punto.
   * 
   * Costo Query C_TotalSaldoFactPorPto: 13
   *
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna el valor el total de saldo de Facturas por Punto.
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 24-06-2020
   */
   FUNCTION F_GET_TOTAL_SALDO_FACTPTO(Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE)
@@ -535,16 +535,16 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n F_GET_CANTIDAD_NC_PORPUNTO
-  * La funci�n F_GET_CANTIDAD_NC_PORPUNTO Obtiene la Cantidad de Notas de Cr�dito o de Notas de Cr�dito internas
-  * que existen en proceso o Flujo de Activaci�n asociadas a las Facturas del Punto en sesi�n y que entran al Proceso de Diferido.
+  * Documentación para la función F_GET_CANTIDAD_NC_PORPUNTO
+  * La función F_GET_CANTIDAD_NC_PORPUNTO Obtiene la Cantidad de Notas de Crédito o de Notas de Crédito internas
+  * que existen en proceso o Flujo de Activación asociadas a las Facturas del Punto en sesión y que entran al Proceso de Diferido.
   * 
   * Costo Query C_CantidadNcPorPunto 34
   *
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna la cantidad de Facturas por Punto que entraran al Proceso de Diferido y que poseen NC o NCI
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 26-06-2020
   */
   FUNCTION F_GET_CANTIDAD_NC_PORPUNTO(Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE)
@@ -552,8 +552,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   RETURN NUMBER;
 
  /**
-  * Documentaci�n para la funci�n F_GET_CANTPROC_DIFERIDO_PORPTO
-  * La funci�n F_GET_CANTPROC_DIFERIDO_PORPTO Obtiene la cantidad de Procesos de Diferidos de Facturas que se han generado por punto, se 
+  * Documentación para la función F_GET_CANTPROC_DIFERIDO_PORPTO
+  * La función F_GET_CANTPROC_DIFERIDO_PORPTO Obtiene la cantidad de Procesos de Diferidos de Facturas que se han generado por punto, se 
   * considera en estado Pendiente y Finalizado
   * 
   * Costo Query C_CantProcDiferidoPorPto 23
@@ -561,12 +561,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   * @param Fn_IdPunto IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @return NUMBER Retorna la cantidad de Procesos de Diferidos de Facturas por Punto 
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 26-06-2020
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.1 18-08-2020 - Se procedi� a modificar el query del cursor C_CantProcDiferidoPorPto, para excluir los procesos masivos 
-  *                           que tienen en la NDI el valor carater�stica 'PRECANCELACION_DEUDA_DIFERIDA'.
+  * @version 1.1 18-08-2020 - Se procedió a modificar el query del cursor C_CantProcDiferidoPorPto, para excluir los procesos masivos 
+  *                           que tienen en la NDI el valor caraterística 'PRECANCELACION_DEUDA_DIFERIDA'.
   * 
   * Costo Query C_CantProcDiferidoPorPto: 31
   */
@@ -577,9 +577,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
 
 
   /**
-   * Documentaci�n para TYPE 'Lr_RegistrosPersonas'.
+   * Documentación para TYPE 'Lr_RegistrosPersonas'.
    *  
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-04-2020
    */
   TYPE Lr_RegistrosPersonas IS RECORD (ID_PERSONA  DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE,
@@ -587,33 +587,33 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                        SALDO       NUMBER);
 
   /**
-   * Documentaci�n para TYPE 'T_RegistrosPersonas'.
+   * Documentación para TYPE 'T_RegistrosPersonas'.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-04-2020
    */                     
   TYPE T_RegistrosPersonas IS TABLE OF Lr_RegistrosPersonas INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_CREA_PM_EMER_SANIT'.
+   * Documentación para PROCEDURE 'P_CREA_PM_EMER_SANIT'.
    *
-   * Procedure que genera un Proceso Masivo que puede ser por reporte previo, o ejecuci�n de NCI por emergencia sanitaria, 
-   * en base a par�metros enviados.
+   * Procedure que genera un Proceso Masivo que puede ser por reporte previo, o ejecución de NCI por emergencia sanitaria, 
+   * en base a parámetros enviados.
    *
    * PARAMETROS:
-   * @Param Pv_Observacion          IN  VARCHAR2 ( Par�metros para evaluaci�n de diferido por emergencia sanitaria )
-   * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesi�n)
-   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
-   * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creaci�n)
-   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Reporte previo � Ejecuci�n de NCI.)    
+   * @Param Pv_Observacion          IN  VARCHAR2 ( Parámetros para evaluación de diferido por emergencia sanitaria )
+   * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesión)
+   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
+   * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creación)
+   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Reporte previo ó Ejecución de NCI.)    
    * @Param Pn_IdPunto              IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE (Id de Punto Cliente) DEFAULT NULL,
-   * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+   * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-04-2020
    *
-   * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-   * @version 1.1 26-06-2020  - Se agrega par�metro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesi�n.
+   * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+   * @version 1.1 26-06-2020  - Se agrega parámetro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesión.
    */
   PROCEDURE P_CREA_PM_EMER_SANIT(Pv_Observacion              IN  VARCHAR2,
                                  Pv_UsrCreacion              IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE,
@@ -624,10 +624,10 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                  Pv_MsjResultado             OUT VARCHAR2); 
 
   /**
-   * Documentaci�n para PROCEDURE 'P_REPORTE_EMERGENCIA_SANIT'.
+   * Documentación para PROCEDURE 'P_REPORTE_EMERGENCIA_SANIT'.
    *
-   * Procedure que genera un reporte previo de una futura ejecuci�n de NCI por emergencia sanitaria en base a par�metros enviados, 
-   * el reporte ser� enviado a los correos configurados en la plantilla "RPT_EMER_SANIT".
+   * Procedure que genera un reporte previo de una futura ejecución de NCI por emergencia sanitaria en base a parámetros enviados, 
+   * el reporte será enviado a los correos configurados en la plantilla "RPT_EMER_SANIT".
    *
    * Costo Query C_GetProcesoMasivo: 6
    * Costo Query C_GetPersonaSaldo:25411876
@@ -637,15 +637,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
    * Costo Query C_Ciclos:6
    *
    * PARAMETROS:
-   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Inactivaci�n, Clonaci�n o Dada de baja.)
-   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
+   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Inactivación, Clonación o Dada de baja.)
+   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
    * @Param Pv_Estado               IN  VARCHAR2 (Estado del Proceso)
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-04-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.1 04-07-2020 - Se elimina el cursor C_SaldoPunto para evitar lentitud en la ejecuci�n del proceso.
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.1 04-07-2020 - Se elimina el cursor C_SaldoPunto para evitar lentitud en la ejecución del proceso.
    *
    */
   PROCEDURE P_REPORTE_EMERGENCIA_SANIT (Pv_TipoPma    IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.TIPO_PROCESO%TYPE,
@@ -654,9 +654,9 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                         Pv_Error      OUT VARCHAR2);
 
   /**
-   * Documentaci�n para PROCEDURE 'P_CREA_SOLICITUDES_NCI'.
+   * Documentación para PROCEDURE 'P_CREA_SOLICITUDES_NCI'.
    *
-   * Procedure que genera las solicitudes "SOLICITUD DIFERIDO DE FACTURA POR EMERGENCIA SANITARIA", para la creaci�n de NCI
+   * Procedure que genera las solicitudes "SOLICITUD DIFERIDO DE FACTURA POR EMERGENCIA SANITARIA", para la creación de NCI
    * de las facturas diferidas.
    *
    * Costo Query C_GetProcesoMasivo: 6
@@ -670,22 +670,22 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
    * Costo Query C_TotalSaldoFactPorPto:15
    *
    * PARAMETROS:
-   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Inactivaci�n, Clonaci�n o Dada de baja.)
-   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
+   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Inactivación, Clonación o Dada de baja.)
+   * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
    * @Param Pv_Estado               IN  VARCHAR2 (Estado del Proceso)
    * @Param Pn_IdPunto              IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE (Id de Punto Cliente) DEFAULT NULL
-   * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+   * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
    * @Param Pn_IdProcesoMasivoCab   OUT DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-04-2020
    *
-   * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-   * @version 1.1 26-06-2020  - Se agrega par�metro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesi�n
-   *                            y se agrega par�metro de salida Pv_MsjResultado y Pn_IdProcesoMasivoCab
+   * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+   * @version 1.1 26-06-2020  - Se agrega parámetro intIdPunto para crear proceso individual de Diferido de Facturas por Punto en sesión
+   *                            y se agrega parámetro de salida Pv_MsjResultado y Pn_IdProcesoMasivoCab
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.2 04-07-2020 - Se elimina el cursor C_SaldoPunto para evitar lentitud en la ejecuci�n del proceso.
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.2 04-07-2020 - Se elimina el cursor C_SaldoPunto para evitar lentitud en la ejecución del proceso.
    */
 PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.TIPO_PROCESO%TYPE,
                                   Pv_CodEmpresa         IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -695,15 +695,15 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
                                   Pn_IdProcesoMasivoCab OUT DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE);
 
   /**
-   * Documentaci�n para TYPE 'Lr_RegistrosDocumentos'.
+   * Documentación para TYPE 'Lr_RegistrosDocumentos'.
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 19-05-2020 Se agregan columnas Proceso y Solicitud.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.2 28-06-2020 Se agrega columna Proceso_Ejecucion.
    */   
   TYPE Lr_RegistrosDocumentos
@@ -731,7 +731,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     );    
 
   /**
-   * Documentaci�n para TYPE 'T_RegistrosDocumentos'.
+   * Documentación para TYPE 'T_RegistrosDocumentos'.
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
@@ -739,26 +739,26 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
   TYPE T_RegistrosDocumentos IS TABLE OF Lr_RegistrosDocumentos INDEX BY PLS_INTEGER; 
 
   /**
-   * Documentaci�n para PROCEDURE 'P_REPORTE_NCI_DIFERIDOS'.
+   * Documentación para PROCEDURE 'P_REPORTE_NCI_DIFERIDOS'.
    * 
    * Procedimiento encargado de generar el reporte de los documentos NCI por Emergencia Sanitaria.
    *
-   * @param Pv_FechaReporteDesde    IN VARCHAR2 Recibe la fecha de creaci�n Desde del reporte a generar.
-   * @param Pv_FechaReporteHasta    IN VARCHAR2 Recibe la fecha de creaci�n Hasta del reporte a generar.
+   * @param Pv_FechaReporteDesde    IN VARCHAR2 Recibe la fecha de creación Desde del reporte a generar.
+   * @param Pv_FechaReporteHasta    IN VARCHAR2 Recibe la fecha de creación Hasta del reporte a generar.
    * @param Pv_EmpresaCod           IN VARCHAR2 Recibe el id de la empresa.
    * @param Pv_Usuario              IN VARCHAR2 Recibe el usuario que genera el reporte.
    * @param Pv_PrefijoEmpresa       IN VARCHAR2 Recibe el prefijo empresa.
-   * @param Pv_EmailUsuario         IN VARCHAR2 Recibe email para env�o de reporte.
+   * @param Pv_EmailUsuario         IN VARCHAR2 Recibe email para envío de reporte.
    *
    * Costo query C_documentosNci: 25
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 19-05-2020 Se agregar filtro y columnas de proceso y solicitud atada a la NCI
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.2 28-06-2020 Se agrega columna Proceso_Ejecucion.
    */      
   PROCEDURE P_REPORTE_NCI_DIFERIDOS(
@@ -771,29 +771,29 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
       );
 
   /**
-   * Documentaci�n para PROCEDURE 'P_REPORTE_NDI_DIFERIDOS'.
+   * Documentación para PROCEDURE 'P_REPORTE_NDI_DIFERIDOS'.
    * 
    * Procedimiento encargado de generar el reporte de los documentos NDI por Emergencia Sanitaria.
    *
-   * @param Pv_FechaReporteDesde    IN VARCHAR2 Recibe la fecha de creaci�n Desde del reporte a generar.
-   * @param Pv_FechaReporteHasta    IN VARCHAR2 Recibe la fecha de creaci�n Hasta del reporte a generar.
+   * @param Pv_FechaReporteDesde    IN VARCHAR2 Recibe la fecha de creación Desde del reporte a generar.
+   * @param Pv_FechaReporteHasta    IN VARCHAR2 Recibe la fecha de creación Hasta del reporte a generar.
    * @param Pv_EmpresaCod           IN VARCHAR2 Recibe el id de la empresa.
    * @param Pv_Usuario              IN VARCHAR2 Recibe el usuario que genera el reporte.
    * @param Pv_PrefijoEmpresa       IN VARCHAR2 Recibe el prefijo empresa.
-   * @param Pv_EmailUsuario         IN VARCHAR2 Recibe email para env�o de reporte.
+   * @param Pv_EmailUsuario         IN VARCHAR2 Recibe email para envío de reporte.
    *
    * Costo query C_documentosNdi: 29
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 19-05-2020 Se agregar filtro y columnas de proceso y solicitud atada a la NDI
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.2 30-05-2020 Se realizan cambios en el query principal por agrupaci�n de NDI, el costo del query C_documentosNdi: 85
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.2 30-05-2020 Se realizan cambios en el query principal por agrupación de NDI, el costo del query C_documentosNdi: 85
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.3 28-06-2020 Se agrega columna Proceso_Ejecucion.
    */      
   PROCEDURE P_REPORTE_NDI_DIFERIDOS(
@@ -806,15 +806,15 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
       );
 
   /**
-   * Documentaci�n para TYPE 'Lr_RegistrosDocPagosNdi'.
+   * Documentación para TYPE 'Lr_RegistrosDocPagosNdi'.
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 19-05-2020 Se agregan columnas Proceso y Solicitud
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.2 28-06-2020 Se agrega columna Proceso_Ejecucion.
    */   
   TYPE Lr_RegistrosDocPagosNdi
@@ -840,7 +840,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     );    
 
   /**
-   * Documentaci�n para TYPE 'T_RegistrosDocPagosNdi'.
+   * Documentación para TYPE 'T_RegistrosDocPagosNdi'.
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
@@ -848,32 +848,32 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
   TYPE T_RegistrosDocPagosNdi IS TABLE OF Lr_RegistrosDocPagosNdi INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_REPORTE_NDI_PAG_DIFERIDOS'.
+   * Documentación para PROCEDURE 'P_REPORTE_NDI_PAG_DIFERIDOS'.
    * 
    * Procedimiento encargado de generar el reporte de pagos de los documentos NDI, por Emergencia Sanitaria.
    *
-   * @param Pv_FechaReporteDesde    IN VARCHAR2 Recibe la fecha de creaci�n Desde del reporte a generar.
-   * @param Pv_FechaReporteHasta    IN VARCHAR2 Recibe la fecha de creaci�n Hasta del reporte a generar.
+   * @param Pv_FechaReporteDesde    IN VARCHAR2 Recibe la fecha de creación Desde del reporte a generar.
+   * @param Pv_FechaReporteHasta    IN VARCHAR2 Recibe la fecha de creación Hasta del reporte a generar.
    * @param Pv_EmpresaCod           IN VARCHAR2 Recibe el id de la empresa.
    * @param Pv_Usuario              IN VARCHAR2 Recibe el usuario que genera el reporte.
    * @param Pv_PrefijoEmpresa       IN VARCHAR2 Recibe el prefijo empresa.
-   * @param Pv_EmailUsuario         IN VARCHAR2 Recibe email para env�o de reporte.
+   * @param Pv_EmailUsuario         IN VARCHAR2 Recibe email para envío de reporte.
    *
    * Costo query C_documentosPagosNdi: 192
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.0 23-04-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 19-05-2020 Se agregar filtro y columnas de proceso y solicitud atada a la NDI
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
-   * @version 1.2 30-05-2020 Se realizan cambios en el query principal por agrupaci�n de NDI
+   * @author José Candelario <jcandelario@telconet.ec>
+   * @version 1.2 30-05-2020 Se realizan cambios en el query principal por agrupación de NDI
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.3 28-06-2020 Se agrega columna Proceso_Ejecucion.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.4 05-10-2020 Se realiza mejora de respuesta en el query principal.
    */      
   PROCEDURE P_REPORTE_NDI_PAG_DIFERIDOS(
@@ -886,20 +886,20 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
       );            
 
   /**
-   * Documentaci�n para FUNCI�N 'F_CANTIDAD_FACTURA'.
+   * Documentación para FUNCIÓN 'F_CANTIDAD_FACTURA'.
    *
-   * Funci�n que devuelde la cantidad total de facturas por punto que cumplan con un valor m�nimo de costo de factura.
+   * Función que devuelde la cantidad total de facturas por punto que cumplan con un valor mínimo de costo de factura.
    *
    * Costo Query C_TotalFacturas:15
    *
    * PARAMETROS:
    * @Param Fn_IdPunto          IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE (id punto)
-   * @Param Fv_CodEmpresa       IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (c�digo de empresa)
-   * @Param Fv_Caracteristica   IN  DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE (caracter�stica que marca 
+   * @Param Fv_CodEmpresa       IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (código de empresa)
+   * @Param Fv_Caracteristica   IN  DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE (característica que marca 
    *                                un documento por el proyecto diferidos por emergencia sanitaria)
-   * @Param Fn_CostoMininoFact  IN  NUMBER (costo m�nimo por factura)
+   * @Param Fn_CostoMininoFact  IN  NUMBER (costo mínimo por factura)
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-05-2020
    *
    */
@@ -909,7 +909,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
                               Fn_CostoMininoFact IN NUMBER)
     RETURN NUMBER;
   /**
-   * Documentaci�n para PROCEDURE 'P_REPORTE_CREACION_SOL'.
+   * Documentación para PROCEDURE 'P_REPORTE_CREACION_SOL'.
    *
    * Proceso que genera un reporte final de las creaciones de solicitudes por cada proceso masivo.
    *
@@ -917,15 +917,15 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
    *
    * PARAMETROS:
    * @Param Pn_IdProceso  IN  DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ID_PROCESO_MASIVO_CAB%TYPE (id proceso masivo)
-   * @Param Pv_Ciclos     IN  VARCHAR2 (ciclos de facturaci�n de MD)
+   * @Param Pv_Ciclos     IN  VARCHAR2 (ciclos de facturación de MD)
    * @Param Pv_Meses      IN  VARCHAR2 (meses a diferir una factura)
    * @Param Pv_Estados    IN  VARCHAR2 (estados de un servicio mandatorio)
    * @Param Pv_SaldoDesde IN  VARCHAR2 (saldo desde de un Cliente)
    * @Param Pv_SaldoHasta IN  VARCHAR2 (saldo hasta de un Cliente)
-   * @Param Pv_Usuario    IN  VARCHAR2 (Usuario de la persona que ejecut� el proceso.)
+   * @Param Pv_Usuario    IN  VARCHAR2 (Usuario de la persona que ejecutó el proceso.)
    * @Param Pv_Error      OUT VARCHAR2 (mensaje de error)
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-05-2020
    *
    */    
@@ -939,9 +939,9 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
                                     Pv_Error       OUT VARCHAR2);
 
   /**
-   * Documentaci�n para TYPE 'Lr_RegistrosDatosRpt'.
+   * Documentación para TYPE 'Lr_RegistrosDatosRpt'.
    *  
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 18-05-2020
    */
   TYPE Lr_RegistrosDatosRpt IS RECORD (CLIENTE         VARCHAR2(3200),
@@ -955,24 +955,24 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
                                        SALDO           NUMBER);
 
   /**
-   * Documentaci�n para TYPE 'T_RegistrosDatosRpt'.
+   * Documentación para TYPE 'T_RegistrosDatosRpt'.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 18-05-2020
    */                     
   TYPE T_RegistrosDatosRpt IS TABLE OF Lr_RegistrosDatosRpt INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para FUNCI�N 'F_CANTIDAD_NC_FACT'.
+   * Documentación para FUNCIÓN 'F_CANTIDAD_NC_FACT'.
    *
-   * Funci�n que devuelde la cantidad de NC que tiene la factura en estado pendiente o aprobada.
+   * Función que devuelde la cantidad de NC que tiene la factura en estado pendiente o aprobada.
    *
    * Costo Query C_GetNotaCreditoNoActiva:5
    *
    * PARAMETROS:
    * @Param Fn_IdDocumento DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE (id documento)
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-05-2020
    *
    */  
@@ -980,9 +980,9 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     RETURN NUMBER;
 
   /**
-   * Documentaci�n para FUNCI�N 'F_OBSERVACION_NDI'.
+   * Documentación para FUNCIÓN 'F_OBSERVACION_NDI'.
    *
-   * Funci�n que devuelde la observaci�n de la NDI que sera utilizada para guardar en las estructuras 
+   * Función que devuelde la observación de la NDI que sera utilizada para guardar en las estructuras 
    * DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET y DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.
    *
    * Costo Query C_GetNotasDeCredito:9
@@ -990,7 +990,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
    * PARAMETROS:
    * @Param Fn_IdDocumento DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE (id documento)
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 30-05-2020
    *
    */
@@ -998,12 +998,12 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     RETURN CLOB;
 
   /**
-   * Documentaci�n para TYPE 'Lr_RegistrosDocumentosNDI'.
+   * Documentación para TYPE 'Lr_RegistrosDocumentosNDI'.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 04-06-2020
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.1 28-06-2020 Se agrega columna Proceso_Ejecucion.
    */   
   TYPE Lr_RegistrosDocumentosNDI
@@ -1031,17 +1031,17 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     );    
 
   /**
-   * Documentaci�n para TYPE 'T_RegistrosDocumentosNDI'.
+   * Documentación para TYPE 'T_RegistrosDocumentosNDI'.
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 04-06-2020
    */  
   TYPE T_RegistrosDocumentosNDI IS TABLE OF Lr_RegistrosDocumentosNDI INDEX BY PLS_INTEGER;
 
   /**
-   *  Documentaci�n para TYPE 'Lr_DatosNCI'.
+   *  Documentación para TYPE 'Lr_DatosNCI'.
    *  
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 17-06-2020
   */      
   TYPE Lr_DatosNCI IS RECORD (
@@ -1056,15 +1056,15 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
   ); 
 
   /**
-   * Documentaci�n para TYPE 'T_DatosNCI'.  
+   * Documentación para TYPE 'T_DatosNCI'.  
    * 
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 17-06-2020
   */
   TYPE T_DatosNCI IS TABLE OF Lr_DatosNCI INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para FUNCI�N 'F_CUOTA_X_VENCER_NDI', retorna la cuota por vencer de la siguiente NDI a diferir.
+   * Documentación para FUNCIÓN 'F_CUOTA_X_VENCER_NDI', retorna la cuota por vencer de la siguiente NDI a diferir.
    *
    * PARAMETROS:
    * @Param Fn_IdDocumento  IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE
@@ -1072,7 +1072,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
    * Costo Query C_CuotasXVencerDoc:8
    * Costo Query C_NDIDiferido:8
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 17-06-2020
    *
    */
@@ -1080,7 +1080,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     RETURN NUMBER;
 
   /**
-   * Documentaci�n para FUNCI�N 'F_SALDO_X_DIFERIR_NDI', retorna el saldo total de las NDI pendientes de diferir.
+   * Documentación para FUNCIÓN 'F_SALDO_X_DIFERIR_NDI', retorna el saldo total de las NDI pendientes de diferir.
    *
    * PARAMETROS:
    * @Param Fn_IdDocumento  IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE
@@ -1088,7 +1088,7 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
    * Costo Query C_CuotasXVencerDoc:8
    * Costo Query C_NDIDiferido:8
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 17-06-2020
    *
    */    
@@ -1096,14 +1096,14 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     RETURN NUMBER; 
 
   /**
-   * Documentaci�n para FUNCI�N 'F_SALDO_X_DIFERIR_PTO', retorna el saldo pendiente de las NDI a diferir por punto.
+   * Documentación para FUNCIÓN 'F_SALDO_X_DIFERIR_PTO', retorna el saldo pendiente de las NDI a diferir por punto.
    *
    * PARAMETROS:
    * @Param Fn_IdPunto  IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
    *
    * Costo Query C_CuotasXVencerDoc:33
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 17-06-2020
    *
    */    
@@ -1111,14 +1111,14 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     RETURN NUMBER;
 
   /**
-   * Documentaci�n para FUNCI�N 'F_TABLA_NCI_X_PTO', retorna una tabla de las NCI pendientes a diferir por punto.
+   * Documentación para FUNCIÓN 'F_TABLA_NCI_X_PTO', retorna una tabla de las NCI pendientes a diferir por punto.
    *
    * PARAMETROS:
    * @Param Fn_IdPunto  IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
    *
    * Costo Query C_CuotasXVencerDoc:33
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 17-06-2020
    *
    */    
@@ -1127,9 +1127,9 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
     RETURN T_DatosNCI;
 
   /**
-   * Documentaci�n para PROCEDURE 'P_GENERAR_NDI_CANCELACION'.
+   * Documentación para PROCEDURE 'P_GENERAR_NDI_CANCELACION'.
    *
-   * Proceso que se encarga de generar las NDI agrupadas por punto y proceso masivo, desde el evento de cancelaci�n voluntaria.
+   * Proceso que se encarga de generar las NDI agrupadas por punto y proceso masivo, desde el evento de cancelación voluntaria.
    *
    * Costo Query C_PuntoServicio:3
    * Costo Query C_NCIPorPunto:18
@@ -1139,17 +1139,17 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
    *
    * PARAMETROS:
    * @Param Pn_IdServicio  IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE (id del servicio mandatorio)
-   * @Param Pv_CodEmpresa  IN VARCHAR2 (c�digo de la empresa)
+   * @Param Pv_CodEmpresa  IN VARCHAR2 (código de la empresa)
    * @Param Pv_TipoProceso IN VARCHAR2  (tipo de proceso)
    * @Param Pv_Error       OUT VARCHAR2 (mensaje de error)
    *
-   * @author Jos� Candelario <jcandelario@telconet.ec>
+   * @author José Candelario <jcandelario@telconet.ec>
    * @version 1.0 08-05-2020
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
-   * @version 1.1 17-08-2020 - Se agrega par�metro de tipo de proceso donde se realiza las validaciones correspondiente
+   * @version 1.1 17-08-2020 - Se agrega parámetro de tipo de proceso donde se realiza las validaciones correspondiente
    *                           para permitir generar las NDI agrupadas por punto y procesos desde el evento de 
-   *                           PreCancelaci�n de deuda diferida.
+   *                           PreCancelación de deuda diferida.
    *
    * @author Alex Arreaga <atarreaga@telconet.ec>
    * @version 1.2 25-11-2020 - Se parametriza valores para agrupar las NDI diferidas, utilizados por diferentes procesos.
@@ -1163,9 +1163,9 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
                                       Pv_Error       OUT VARCHAR2);
 
   /**
-   * Documentaci�n para la funci�n F_GET_VALOR_VENCER_PRECAN_DIF
-   * La funci�n F_GET_VALOR_VENCER_PRECAN_DIF Obtiene el valor diferido por vencer, corresponde al valor total de diferido 
-   * pendientes de generarse por proceso masivo (masivo � individual).
+   * Documentación para la función F_GET_VALOR_VENCER_PRECAN_DIF
+   * La función F_GET_VALOR_VENCER_PRECAN_DIF Obtiene el valor diferido por vencer, corresponde al valor total de diferido 
+   * pendientes de generarse por proceso masivo (masivo ó individual).
    * 
    * Costo Query C_GetDifPorVencerMasivo: 15
    *
@@ -1182,8 +1182,8 @@ PROCEDURE P_CREA_SOLICITUDES_NCI (Pv_TipoPma            IN DB_INFRAESTRUCTURA.IN
   RETURN NUMBER;     
 
   /**
-   * Documentaci�n para FUNCI�N 'F_SALDO_DIF_X_PTO_PROC_MASIVO', retorna el saldo pendiente de las NDI a diferir 
-   * por punto y proceso masivo (masivo � individual).
+   * Documentación para FUNCIÓN 'F_SALDO_DIF_X_PTO_PROC_MASIVO', retorna el saldo pendiente de las NDI a diferir 
+   * por punto y proceso masivo (masivo ó individual).
    *
    * PARAMETROS:
    * @Param Fn_IdPunto         IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
@@ -1327,7 +1327,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
   WHEN OTHERS THEN
     --
     ROLLBACK;
-    Lv_MsjResultado:= 'Ocurrio un error al obtener los Grupos parametrizados para ejecutar el Proceso de Generaci�n de Notas de D�bito Internas  '||
+    Lv_MsjResultado:= 'Ocurrio un error al obtener los Grupos parametrizados para ejecutar el Proceso de Generación de Notas de Débito Internas  '||
                       'por Diferido de Facturas por Emergencia Sanitaria';
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'FNCK_PAGOS_DIFERIDOS.P_OBTIENE_GRUPOS_NDI_DIFERIDO', 
@@ -1608,7 +1608,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     FETCH C_GetMotivo INTO Lc_GetMotivo;
     IF C_GetMotivo%NOTFOUND THEN
-      Lv_MsnError := 'No existe motivo configurado para la creaci�n de Documentos NDI';
+      Lv_MsnError := 'No existe motivo configurado para la creación de Documentos NDI';
       RAISE Le_Exception;       
     END IF;
     Ln_IdMotivo:=Lc_GetMotivo.ID_MOTIVO;
@@ -1805,7 +1805,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                 CLOSE C_GetDocumentoCaract;    
               END IF;  
               --
-              --Obtengo caracter�stica ES_CONT_DIFERIDO del id_documento NCI para actualizaci�n de la cuota generada por ndi.
+              --Obtengo característica ES_CONT_DIFERIDO del id_documento NCI para actualización de la cuota generada por ndi.
               --
               OPEN C_GetDocumentoCaract(Ln_IdDocumentoNci,Lv_CaractContDiferido,Lv_EstadoActivo);
               FETCH C_GetDocumentoCaract INTO Lc_GetDocumentoCaract;          
@@ -1838,7 +1838,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
               --
               Ln_ValorTotalNdi := Ln_ValorTotalNdi + Ln_ValorCuotaDiferida;
               --
-              --Se guardan las siguientes caracter�sticas por cada NCI que se agrupe en la NDI:
+              --Se guardan las siguientes características por cada NCI que se agrupe en la NDI:
               --ID_REFERENCIA_NCI(id_documento NCI que origino la NDI Agrupada),
               --NUM_CUOTA_DIFERIDA (#cuota por NCI correspondiente a la NDI Agrupada)                
               --VALOR_CUOTA_DIFERIDA (Valor de la Cuota correspondiente a la NCI)                                        
@@ -1893,7 +1893,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                 RAISE Le_ExceptionNci;
               END IF;             
               -- 
-              --Inserto Historial en la NCI indicando que se proces� con exito la NDI por Diferido indicando numero de cuota y # NDI generada.
+              --Inserto Historial en la NCI indicando que se procesó con exito la NDI por Diferido indicando numero de cuota y # NDI generada.
               --            
               Lr_InfoDocumentoFinanHst := NULL;
               Lr_InfoDocumentoFinanHst.ID_DOCUMENTO_HISTORIAL := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
@@ -1914,7 +1914,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
             EXCEPTION
               WHEN Le_ExceptionNci THEN
                 --
-                Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
+                Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
                                   ' - ' || Lv_MsnError;
                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                      'FNCK_PAGOS_DIFERIDOS.P_EJECUTA_NDI_DIFERIDO', 
@@ -1924,7 +1924,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                                      NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
               WHEN OTHERS THEN
                 --
-                Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria.' ||
+                Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria.' ||
                                   ' - ' || Lv_MsnError;
                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                      'FNCK_PAGOS_DIFERIDOS.P_EJECUTA_NDI_DIFERIDO', 
@@ -1986,7 +1986,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
         EXCEPTION
           WHEN Le_ExceptionAgrupoNci THEN
             --
-            Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
+            Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
                               ' - ' || Lv_MsnError;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                  'FNCK_PAGOS_DIFERIDOS.P_EJECUTA_NDI_DIFERIDO', 
@@ -1996,7 +1996,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                                                  NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
           WHEN OTHERS THEN
             --
-            Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria.' ||
+            Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria.' ||
                               ' - ' || Lv_MsnError;
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                  'FNCK_PAGOS_DIFERIDOS.P_EJECUTA_NDI_DIFERIDO', 
@@ -2024,7 +2024,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     WHEN Le_Exception THEN
       --
       ROLLBACK;
-      Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
+      Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
                         ' - ' || Lv_MsnError;
       Pv_MsjResultado := Lv_MsjResultado; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -2037,7 +2037,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     WHEN OTHERS THEN
       --
       ROLLBACK;
-      Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria.' ||
+      Lv_MsjResultado:= 'Ocurrio un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria.' ||
                         ' - ' || Lv_MsnError;
       Pv_MsjResultado := Lv_MsjResultado;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -2182,7 +2182,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     Ln_IdSolCaracIdProcMasivo   NUMBER;
     Ln_IdDocumentoFac           NUMBER:=0;
     Ln_IdTipoDocumento          DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.ID_TIPO_DOCUMENTO%TYPE;
-    Lv_ObservacionNc            VARCHAR2(200):='Se cre� la nota de cr�dito interna por proceso de Pagos Diferidos.';
+    Lv_ObservacionNc            VARCHAR2(200):='Se creó la nota de crédito interna por proceso de Pagos Diferidos.';
     Ln_IdMotivo                 DB_GENERAL.ADMI_MOTIVO.ID_MOTIVO%TYPE;
     Lv_NombreMotivo             DB_GENERAL.ADMI_MOTIVO.NOMBRE_MOTIVO%TYPE:='Saldo a Diferir en cuotas';
     Ln_IdDocumentoNC            DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE;
@@ -2302,7 +2302,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     FETCH C_GetMotivoNc INTO Lc_GetMotivoNc;
     IF C_GetMotivoNc%NOTFOUND THEN
-      Lv_MsnError := 'No existe motivo configurado para la creaci�n de Documentos NCI';
+      Lv_MsnError := 'No existe motivo configurado para la creación de Documentos NCI';
       RAISE Le_Exception;       
     END IF;
     Ln_IdMotivo:=Lc_GetMotivoNc.ID_MOTIVO;
@@ -2313,7 +2313,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                       Lv_EstadoActivo);
     FETCH C_Parametros INTO Ln_ValorFactura;
     IF C_Parametros%NOTFOUND THEN
-      Lv_MsnError := 'Error al recuperar el par�metro para evaluaci�n de facturas con un valor m�nimo de saldo.';
+      Lv_MsnError := 'Error al recuperar el parámetro para evaluación de facturas con un valor mínimo de saldo.';
       RAISE Le_Exception;  
     END IF;
     CLOSE C_Parametros;   
@@ -2323,7 +2323,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                       Lv_EstadoActivo);
     FETCH C_Parametros INTO Ln_CantidadFacturas;
     IF C_Parametros%NOTFOUND THEN
-      Lv_MsnError := 'Error al recuperar el par�metro para evaluaci�n de minimo de facturas permitidas para el proceso';
+      Lv_MsnError := 'Error al recuperar el parámetro para evaluación de minimo de facturas permitidas para el proceso';
       RAISE Le_Exception;  
     END IF;
     CLOSE C_Parametros;   
@@ -2375,7 +2375,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     La_SolicDiferidos.DELETE();
     --
-    -- Obtengo las Solicitudes Pendientes de ejecuci�n para el Proceso de Diferido de Facturas por Emergencia Sanitaria.
+    -- Obtengo las Solicitudes Pendientes de ejecución para el Proceso de Diferido de Facturas por Emergencia Sanitaria.
     -- Se realiza commit por cada registro debido a que debe actualizarse de forma imnediata el saldo del Documento.
     OPEN Lrf_SolicDiferidos FOR Lv_Consulta;
     LOOP
@@ -2465,7 +2465,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
               RAISE Le_ExceptionSol;
             END IF;  
             -- 
-            --Se procede a pasar a estado 'Fallo' las caracter�sticas asociadas a la solicitud
+            --Se procede a pasar a estado 'Fallo' las características asociadas a la solicitud
             --
             Lr_InfoDetalleSolCaract.DETALLE_SOLICITUD_ID   := Lr_DetalleSolicDiferido.ID_DETALLE_SOLICITUD;
             Lr_InfoDetalleSolCaract.ESTADO                 := Lv_EstadoFallo;
@@ -2613,7 +2613,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
                 END IF;
                 --
                 --Se actualiza a estado 'Finalizada' la caracteristica ES_SOL_FACTURA en INFO_DETALLE_SOL_CARACT que contenia el ID de la Factura a 
-                --la cual se aplic� la NCI por diferido.
+                --la cual se aplicó la NCI por diferido.
                 --  
                 Lr_InfoDetalleSolCaract := NULL;
                 Lr_InfoDetalleSolCaract.ID_SOLICITUD_CARACTERISTICA := Lr_GetSolCarac.ID_SOLICITUD_CARACTERISTICA;
@@ -2628,7 +2628,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
               ELSIF (NOT Lbool_Done AND Lv_ObservacionCreacion IS NOT NULL) THEN                
                 --
                 --Se actualiza a estado 'Fallo' la caracteristica ES_SOL_FACTURA en INFO_DETALLE_SOL_CARACT que contenia el ID de la Factura a 
-                --la cual no se podr� aplicar NCI por diferido por no constar con saldo la Factura.
+                --la cual no se podrá aplicar NCI por diferido por no constar con saldo la Factura.
                 --  
                 Lr_InfoDetalleSolCaract := NULL;
                 Lr_InfoDetalleSolCaract.ID_SOLICITUD_CARACTERISTICA := Lr_GetSolCarac.ID_SOLICITUD_CARACTERISTICA;
@@ -2674,7 +2674,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
           FETCH C_GetCantidadSolCarac INTO Ln_CantidadSolCarac;
           CLOSE C_GetCantidadSolCarac;
           --
-          --Si no hay Facturas Pendientes de procesar en la Solicitud, verifico si al menos 1 se Finaliz�.
+          --Si no hay Facturas Pendientes de procesar en la Solicitud, verifico si al menos 1 se Finalizó.
           IF Ln_CantidadSolCarac = 0 THEN
             --
             OPEN C_GetCantidadSolCarac(Lr_DetalleSolicDiferido.ID_DETALLE_SOLICITUD,Lv_CaractSolFactura,Lv_EstadoFinalizada);
@@ -2988,7 +2988,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
       Ln_SaldoPorFactura := NVL(ROUND(DB_FINANCIERO.FNKG_CARTERA_CLIENTES.F_SALDO_X_FACTURA(Pn_IdDocumento, 
                                                                                             TO_CHAR(SYSDATE,'DD-MM-RRRR'), 'saldo'),2),0 );
     --
-    --Genero NCI por Pago Diferido si la Factura posee saldo pendiente mayor al m�nimo permitido parametrizado para el proceso.
+    --Genero NCI por Pago Diferido si la Factura posee saldo pendiente mayor al mínimo permitido parametrizado para el proceso.
     IF Ln_SaldoPorFactura>Pn_ValorFactura THEN
       --
       IF C_GetNotaCreditoNoActiva%ISOPEN THEN        
@@ -3004,7 +3004,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
       --Si no tiene NC O NCI en estado Pendiente o Aprobada puede generar la NCI por Proceso de Diferido.
       IF Lc_GetNotaCreditoNoActiva.TIENE_NC_PENDIENTE_APROBADA IS NULL THEN        
         --
-        --Obtengo el % del saldo pendiente de la Factura sobre el cual se generar� la NCI
+        --Obtengo el % del saldo pendiente de la Factura sobre el cual se generará la NCI
         Ln_Porcentaje := FNCK_PAGOS_DIFERIDOS.F_GET_PORCENTAJE_SALDO(Pn_IdDocumento);
         --
         --Obtengo Valor total simulado de la NCI.
@@ -3297,7 +3297,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
         --
         Lb_TieneNcPendAprob    := TRUE;
         Pv_ObservacionCreacion := 'Esta factura tiene una nota de credito en estado ' || Lc_GetNotaCreditoNoActiva.ESTADO_IMPRESION_FACT
-                                 || ', por favor ' || Lv_EstadoDocumento || ' para proceder a la creaci�n de una nueva Nota de Credito Interna'||
+                                 || ', por favor ' || Lv_EstadoDocumento || ' para proceder a la creación de una nueva Nota de Credito Interna'||
                                  ' por proceso de Pagos Diferidos';
 
       END IF; --Lc_GetNotaCreditoNoActiva
@@ -3309,13 +3309,13 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
       --     
     END IF; -- FIN Ln_SaldoPorFactura>=Pn_ValorFactura
     --
-    --Si se gener� con exito la NCI procedo a Numerar y Activar el documento.
+    --Si se generó con exito la NCI procedo a Numerar y Activar el documento.
     IF ( Pbool_Done ) THEN 
       --
       FNCK_PAGOS_DIFERIDOS.P_NUMERA_NOTA_CREDITO_INTERNA (Pn_IdDocumentoNC,
                                                           Pv_IdEmpresa,
                                                           Ln_IdOficina,
-                                                          'Se activa la nota de cr�dito interna generada.',
+                                                          'Se activa la nota de crédito interna generada.',
                                                           Pv_UsrCreacion,
                                                           Lv_NumeroFacturaSriNci,    
                                                           Lv_MsnError);    
@@ -3350,7 +3350,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
         Lr_InfoDocumentoFinanHst.FE_CREACION            := SYSDATE;
         Lr_InfoDocumentoFinanHst.USR_CREACION           := Pv_UsrCreacion;
         Lr_InfoDocumentoFinanHst.ESTADO                 := 'Cerrado';
-        Lr_InfoDocumentoFinanHst.OBSERVACION            := 'La factura se cerr� por la nota de cr�dito interna #'||Lv_NumeroFacturaSriNci ||
+        Lr_InfoDocumentoFinanHst.OBSERVACION            := 'La factura se cerró por la nota de crédito interna #'||Lv_NumeroFacturaSriNci ||
                                                            ' generada por Proceso de Pagos Diferidos';
         --
         DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoFinanHst, Lv_MsnError);
@@ -3365,7 +3365,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
       --
     ELSIF (NOT Pbool_Done AND Pv_ObservacionCreacion IS NOT NULL) THEN
       --
-      -- Si no se gener� NCI y tengo mensaje de observaci�n registro Historial en la Factura indicando que no se gener� NCI.
+      -- Si no se generó NCI y tengo mensaje de observación registro Historial en la Factura indicando que no se generó NCI.
       --
       Lr_InfoDocumentoFinanHst  := NULL;
       OPEN  C_GetDocumentoHistorial(Cv_Observacion => Pv_ObservacionCreacion,
@@ -3395,8 +3395,8 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
       END IF; --Fin Lr_InfoDocumentoFinanHst
 
       -- Pbool_Done = FALSE AND Pv_ObservacionCreacion IS NOT NULL no se genera NCI y la solicitud pasa a estado Fallo.
-      -- Si la Factura tiene NC o NCI Pendiente de Aprobaci�n o de Autorizaci�n del SRI no se procesa la Solicitud de Pagos Diferidos
-      -- la Solicitud se mantiene Pendiente hasta que se Activen las NC que est�n en flujo.
+      -- Si la Factura tiene NC o NCI Pendiente de Aprobación o de Autorización del SRI no se procesa la Solicitud de Pagos Diferidos
+      -- la Solicitud se mantiene Pendiente hasta que se Activen las NC que están en flujo.
       IF Lb_TieneNcPendAprob THEN
         --
         Pv_ObservacionCreacion := NULL;
@@ -3492,7 +3492,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     FETCH C_GetNumeracion INTO Lc_GetNumeracion;
     IF C_GetNumeracion%NOTFOUND THEN
-      Lv_MsnError := 'No existe numeraci�n para la Nota de D�bito Interna, oficina #'||Ln_IdOficina;
+      Lv_MsnError := 'No existe numeración para la Nota de Débito Interna, oficina #'||Ln_IdOficina;
       RAISE Lex_Exception;
     END IF;    
     --
@@ -3501,7 +3501,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     CLOSE C_GetNumeracion;
     --    
-    --Se incrementa la numeraci�n
+    --Se incrementa la numeración
     Lc_GetNumeracion.SECUENCIA:=Lc_GetNumeracion.SECUENCIA+1;
     DB_FINANCIERO.FNCK_TRANSACTION.UPDATE_ADMI_NUMERACION(Lc_GetNumeracion.ID_NUMERACION,Lc_GetNumeracion,Lv_MsnError);
     IF Lv_MsnError IS NOT NULL THEN
@@ -3572,7 +3572,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     Lr_InfoDocumentoFinDetNdi.PRODUCTO_ID                   := NULL;
     Lr_InfoDocumentoFinDetNdi.MOTIVO_ID                     := Pn_IdMotivo;
     Lr_InfoDocumentoFinDetNdi.PAGO_DET_ID                   := NULL;
-    --Crea el detalle de la nota de D�bito Interna
+    --Crea el detalle de la nota de Débito Interna
     DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinDetNdi, Lv_MsnError);
     --
     IF Lv_MsnError IS NOT NULL THEN
@@ -3638,7 +3638,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     Ln_ValorTotalNci       := Lr_InfoDocumentoFinanCab.VALOR_TOTAL;
     Ln_ValorCuotaDiferida  := ROUND((Ln_ValorTotalNci / Fn_MesesDiferido),2);
     --
-    --Si es la �ltima cuota diferida verifico si es necesario hacer ajuste por cuadre.
+    --Si es la última cuota diferida verifico si es necesario hacer ajuste por cuadre.
     IF Fn_NumCuotaDiferida = Fn_MesesDiferido THEN
       --
       Ln_ValorAjuste := Ln_ValorTotalNci - (Ln_ValorCuotaDiferida * Fn_MesesDiferido);
@@ -3741,7 +3741,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     CLOSE C_GetParamNumeraNci;
 
     IF Ln_IdOficinaParam IS NULL OR Ln_IdOficinaParam = 0 THEN
-      Lv_MsnError := 'No se encontr� par�metro ' || Lv_NombreParametro || ' para definir la numeraci�n de las NCI para la Oficina: ' || Pn_IdOficina;
+      Lv_MsnError := 'No se encontró parámetro ' || Lv_NombreParametro || ' para definir la numeración de las NCI para la Oficina: ' || Pn_IdOficina;
       RAISE Le_Error;
     END IF;
 
@@ -3750,7 +3750,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     FETCH C_GetNumeracionNci INTO Lc_GetNumeracionNci;
     IF C_GetNumeracionNci%NOTFOUND THEN
-      Lv_MsnError := 'No existe numeraci�n para la Nota de Cr�dito Interna';
+      Lv_MsnError := 'No existe numeración para la Nota de Crédito Interna';
       RAISE Le_Error;
     END IF;
     Lv_Secuencia := LPAD(Lc_GetNumeracionNci.SECUENCIA,9,'0');
@@ -3771,7 +3771,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
       RAISE Le_Error;
     END IF;
 
-    --Se incrementa la numeraci�n
+    --Se incrementa la numeración
     Lc_GetNumeracionNci.SECUENCIA:=Lc_GetNumeracionNci.SECUENCIA+1;
     DB_FINANCIERO.FNCK_TRANSACTION.UPDATE_ADMI_NUMERACION(Lc_GetNumeracionNci.ID_NUMERACION,Lc_GetNumeracionNci,Lv_MsnError);
     IF Lv_MsnError IS NOT NULL THEN
@@ -3780,7 +3780,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
     --
     Pv_Numeracion:=Lv_Numeracion; 
     --
-    --Se ingresa historial de Aprobaci�n de NCI
+    --Se ingresa historial de Aprobación de NCI
     Lr_InfoDocumentoFinancieroHis                       := NULL;
     Lr_InfoDocumentoFinancieroHis.ID_DOCUMENTO_HISTORIAL:= DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
     Lr_InfoDocumentoFinancieroHis.DOCUMENTO_ID          := Lr_InfoDocumentoFinancieroCab.ID_DOCUMENTO;
@@ -3793,7 +3793,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS AS
         RAISE Le_Error;
     END IF;
     --   
-    --Se ingresa historial de Activaci�n de NCI
+    --Se ingresa historial de Activación de NCI
     Lr_InfoDocumentoFinancieroHis                       := NULL;
     Lr_InfoDocumentoFinancieroHis.ID_DOCUMENTO_HISTORIAL:= DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
     Lr_InfoDocumentoFinancieroHis.DOCUMENTO_ID          := Lr_InfoDocumentoFinancieroCab.ID_DOCUMENTO;
@@ -4229,7 +4229,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     --
   BEGIN
     --
-    --Se prorratea sobre % del saldo pendiente de la Factura sobre el cual se generar� la NCI
+    --Se prorratea sobre % del saldo pendiente de la Factura sobre el cual se generará la NCI
     Ln_ValorProrrateo := (NVL(Fn_Porcentaje, 0) / 100); 
     --
     --Itera el detalle de la factura
@@ -4363,7 +4363,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   EXCEPTION
     WHEN OTHERS THEN
       --            
-      Pv_MsnError := 'Error al insertar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+      Pv_MsnError := 'Error al insertar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNCK_PAGOS_DIFERIDOS.P_INSERT_INFO_DOCUMENTO_CARACT', 
@@ -4384,7 +4384,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   BEGIN
     --
     IF (NVL(Pr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA, 0) = 0) THEN
-      Pv_MsnError := 'Error al actualizar la caracter�stica. Par�metro Pr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA vac�o.';
+      Pv_MsnError := 'Error al actualizar la característica. Parámetro Pr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA vacío.';
       RAISE Le_Exception;
     END IF;
 
@@ -4408,7 +4408,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                            SYSDATE,
                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
     WHEN OTHERS THEN         
-      Pv_MsnError := 'Error al actualizar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+      Pv_MsnError := 'Error al actualizar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            'FNCK_PAGOS_DIFERIDOS.P_UPDATE_INFO_DOCUMENTO_CARAC',
@@ -4500,7 +4500,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     --
   EXCEPTION    
     WHEN OTHERS THEN         
-      Pv_MsnError := 'Error al actualizar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+      Pv_MsnError := 'Error al actualizar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            'FNCK_PAGOS_DIFERIDOS.P_UPDATE_INFO_DETALLE_SOL_CARA',
@@ -4521,7 +4521,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   BEGIN
     --
     IF (NVL(Pr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD, 0) = 0) THEN
-      Pv_MsnError := 'Error al actualizar Solicitud. Par�metro Pr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD vac�o.';
+      Pv_MsnError := 'Error al actualizar Solicitud. Parámetro Pr_InfoDetalleSolicitud.ID_DETALLE_SOLICITUD vacío.';
       RAISE Le_Exception;
     END IF;
     UPDATE DB_COMERCIAL.INFO_DETALLE_SOLICITUD
@@ -4538,7 +4538,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                            SYSDATE,
                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
     WHEN OTHERS THEN         
-      Pv_MsnError := 'Error al actualizar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+      Pv_MsnError := 'Error al actualizar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                            'FNCK_PAGOS_DIFERIDOS.P_UPDATE_INFO_DETALLE_SOLIC',
@@ -4615,7 +4615,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   EXCEPTION
     WHEN OTHERS THEN
       --
-      Lv_MsnError := 'Error al obtener la caracter�stica: ' || Fv_DesCaract || ' IdDocumento: '|| Fn_IdDocumento ||
+      Lv_MsnError := 'Error al obtener la característica: ' || Fv_DesCaract || ' IdDocumento: '|| Fn_IdDocumento ||
                      ' - ' || SQLCODE || ' - ERROR_STACK: '
                      || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
@@ -5042,7 +5042,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     FETCH C_Parametros INTO Ln_ValorFactura;
 
     IF C_Parametros%NOTFOUND THEN
-      Lv_MsnError := 'Error al recuperar el par�metro para evaluaci�n de facturas con un valor m�nimo de saldo.';
+      Lv_MsnError := 'Error al recuperar el parámetro para evaluación de facturas con un valor mínimo de saldo.';
       RAISE Lex_Exception;  
     END IF;
     CLOSE C_Parametros;
@@ -5361,7 +5361,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
       WHEN OTHERS THEN
       --
-        Pv_MsjResultado      := 'Ocurri� un error al guardar el Proceso Masivo '||Pv_TipoPma; 
+        Pv_MsjResultado      := 'Ocurrió un error al guardar el Proceso Masivo '||Pv_TipoPma; 
 
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                              'P_CREA_PM_EMER_SANIT.P_CREA_PM_PROMOCIONES', 
@@ -5651,7 +5651,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Lv_ValorFormaPago;
 
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar el par�metro para evaluaci�n de formas de pagos.';
+        Lv_MsjResultado := 'Error al recuperar el parámetro para evaluación de formas de pagos.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -5663,7 +5663,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_CantidadFacturas;
 
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar el par�metro para evaluaci�n de la cantidad m�nima de facturas por punto.';
+        Lv_MsjResultado := 'Error al recuperar el parámetro para evaluación de la cantidad mínima de facturas por punto.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -5675,7 +5675,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_ValorFactura;
 
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar el par�metro para evaluaci�n de facturas con un valor m�nimo de saldo.';
+        Lv_MsjResultado := 'Error al recuperar el parámetro para evaluación de facturas con un valor mínimo de saldo.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -5745,7 +5745,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
       IF Lv_SaldoDesde IS NULL OR Lv_SaldoHasta IS NULL OR Lv_MesDiferido IS NULL
          OR Lv_Ciclos IS NULL OR Lv_Estados IS NULL THEN
-        Lv_MsjResultado := 'Error al recuperar los par�metros para evaluaci�n de diferido por emergencia sanitaria. '
+        Lv_MsjResultado := 'Error al recuperar los parámetros para evaluación de diferido por emergencia sanitaria. '
                            || 'Lv_SaldoDesde: '|| Lv_SaldoDesde || ',Lv_SaldoHasta: '|| Lv_SaldoHasta
                            || ',Lv_MesDiferido: '|| Lv_MesDiferido || ',Lv_Ciclos: '|| Lv_Ciclos
                            || ',Lv_Estados: '|| Lv_Estados;
@@ -5764,8 +5764,8 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
       ELSE
         Lv_NombreReporte := 'RptPrevioCreacionSol_'||Lc_GetProcesoMasivo.ID_PROCESO_MASIVO_CAB||'_';
-        Lv_DescReporte   := 'REPORTE PREVIO DE CREACI�N DE SOLICITUDES POR EMERGENCIA SANITARIA';
-        Lv_Asunto        := 'Reporte Previo de Creaci�n de Solicitudes por Emergencia Sanitaria';
+        Lv_DescReporte   := 'REPORTE PREVIO DE CREACIÓN DE SOLICITUDES POR EMERGENCIA SANITARIA';
+        Lv_Asunto        := 'Reporte Previo de Creación de Solicitudes por Emergencia Sanitaria';
       END IF;
 
       Lv_NombreArchivo     := Lv_NombreReporte||Lc_GetProcesoMasivo.USR_CREACION||'_'||Lv_FechaReporte||'.csv';
@@ -5781,34 +5781,34 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       utl_file.put_line(Lfile_Archivo,'SALDO DESDE: '||Lv_SaldoDesde||Lv_Delimitador
                         ||''||Lv_Delimitador
                         ||'SALDO HASTA: '||Lv_SaldoHasta);
-      utl_file.put_line(Lfile_Archivo,'CICLO FACTURACI�N: '||REPLACE(Lv_DescCiclos,',',' ')||Lv_Delimitador
+      utl_file.put_line(Lfile_Archivo,'CICLO FACTURACIÓN: '||REPLACE(Lv_DescCiclos,',',' ')||Lv_Delimitador
                          ||''||Lv_Delimitador
                         ||'MESES A DIFERIR: '||Lv_MesDiferido);
       utl_file.put_line(Lfile_Archivo,'ESTADO SERVICIO: '||REPLACE(Lv_Estados,',',' '));
       utl_file.put_line(Lfile_Archivo,''||Lv_Delimitador);
 
       IF Pv_TipoPma = 'ReporteEmerSanit' THEN
-        utl_file.put_line(Lfile_Archivo,'IDENTIFICACI�N'||Lv_Delimitador 
+        utl_file.put_line(Lfile_Archivo,'IDENTIFICACIÓN'||Lv_Delimitador 
                         ||'LOGIN'||Lv_Delimitador  
                         ||'NOMBRE'||Lv_Delimitador 
                         ||'ESTADO SERVICIO'||Lv_Delimitador     
-                        ||'JURISDICCI�N'||Lv_Delimitador 
+                        ||'JURISDICCIÓN'||Lv_Delimitador 
                         ||'FORMA DE PAGO'||Lv_Delimitador
                         ||'BANCO'||Lv_Delimitador
                         ||'TIPO CUENTA'||Lv_Delimitador                   
                         ||'SALDO A DIFERIR'||Lv_Delimitador
-                        ||'N�MERO DIFERIDO'||Lv_Delimitador);
+                        ||'NÚMERO DIFERIDO'||Lv_Delimitador);
       ELSE
-        utl_file.put_line(Lfile_Archivo,'IDENTIFICACI�N'||Lv_Delimitador 
+        utl_file.put_line(Lfile_Archivo,'IDENTIFICACIÓN'||Lv_Delimitador 
                         ||'LOGIN'||Lv_Delimitador  
                         ||'NOMBRE'||Lv_Delimitador 
                         ||'ESTADO SERVICIO'||Lv_Delimitador     
-                        ||'JURISDICCI�N'||Lv_Delimitador 
+                        ||'JURISDICCIÓN'||Lv_Delimitador 
                         ||'FORMA DE PAGO'||Lv_Delimitador
                         ||'BANCO'||Lv_Delimitador
                         ||'TIPO CUENTA'||Lv_Delimitador                   
                         ||'SALDO A DIFERIR'||Lv_Delimitador
-                        ||'N�MERO DIFERIDO'||Lv_Delimitador
+                        ||'NÚMERO DIFERIDO'||Lv_Delimitador
                         ||'PROCESO MASIVO'||Lv_Delimitador);
       END IF;     
 
@@ -5931,7 +5931,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
     WHEN OTHERS THEN
       --
-      Lv_MsjResultado := 'Ocurri� un error al ejecutar el Proceso Masivo '||Pv_TipoPma;
+      Lv_MsjResultado := 'Ocurrió un error al ejecutar el Proceso Masivo '||Pv_TipoPma;
       Pv_Error        := Lv_MsjResultado;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNCK_PAGOS_DIFERIDOS.P_REPORTE_EMERGENCIA_SANIT', 
@@ -6305,7 +6305,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_ValorFactura;
 
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar el par�metro para evaluaci�n de facturas con un valor m�nimo de saldo.';
+        Lv_MsjResultado := 'Error al recuperar el parámetro para evaluación de facturas con un valor mínimo de saldo.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -6317,7 +6317,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Lv_ValorFormaPago;
 
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar el par�metro para evaluaci�n de formas de pagos.';
+        Lv_MsjResultado := 'Error al recuperar el parámetro para evaluación de formas de pagos.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -6329,7 +6329,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_CantidadFacturas;
 
       IF C_Parametros%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar el par�metro para evaluaci�n de la cantidad m�nima de facturas por punto.';
+        Lv_MsjResultado := 'Error al recuperar el parámetro para evaluación de la cantidad mínima de facturas por punto.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_Parametros;
@@ -6362,7 +6362,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_IdCaracFactura;
 
       IF C_ObtieneIdCarac%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar la caracter�stica de facturas a diferir por solicitud.';
+        Lv_MsjResultado := 'Error al recuperar la característica de facturas a diferir por solicitud.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_ObtieneIdCarac;
@@ -6373,7 +6373,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_IdCaracCuota;
 
       IF C_ObtieneIdCarac%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar la caracter�stica de cuotas a diferir por solicitud.';
+        Lv_MsjResultado := 'Error al recuperar la característica de cuotas a diferir por solicitud.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_ObtieneIdCarac;
@@ -6384,7 +6384,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       INTO Ln_IdCaracPM;
 
       IF C_ObtieneIdCarac%NOTFOUND THEN
-        Lv_MsjResultado := 'Error al recuperar la caracter�stica de proceso masivo por solicitud.';
+        Lv_MsjResultado := 'Error al recuperar la característica de proceso masivo por solicitud.';
         RAISE Lex_Exception;  
       END IF;
     CLOSE C_ObtieneIdCarac;
@@ -6444,14 +6444,14 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
       IF Pn_IdPunto IS NOT NULL THEN
         IF Lv_MesDiferido IS NULL THEN
-          Lv_MsjResultado := 'Error al recuperar los par�metros para evaluaci�n de diferido por emergencia sanitaria. '                             
+          Lv_MsjResultado := 'Error al recuperar los parámetros para evaluación de diferido por emergencia sanitaria. '                             
                              || 'Lv_MesDiferido: '|| Lv_MesDiferido;                             
           RAISE Lex_Exception;   
         END IF;
       ELSE
         IF Lv_SaldoDesde IS NULL OR Lv_SaldoHasta IS NULL OR Lv_MesDiferido IS NULL
           OR Lv_Ciclos IS NULL OR Lv_Estados IS NULL THEN
-          Lv_MsjResultado := 'Error al recuperar los par�metros para evaluaci�n de diferido por emergencia sanitaria. '
+          Lv_MsjResultado := 'Error al recuperar los parámetros para evaluación de diferido por emergencia sanitaria. '
                              || 'Lv_SaldoDesde: '|| Lv_SaldoDesde || ',Lv_SaldoHasta: '|| Lv_SaldoHasta
                              || ',Lv_MesDiferido: '|| Lv_MesDiferido || ',Lv_Ciclos: '|| Lv_Ciclos
                              || ',Lv_Estados: '|| Lv_Estados;
@@ -6618,7 +6618,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                   DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_DET_SOLICITUD(Lr_InfoDetalleSolicitud, Lv_MensajeError); 
 
                   IF TRIM(Lv_MensajeError) IS NOT NULL THEN
-                    Lv_MsjResultado := 'Ocurri� un error al insertar la solicitud para el Id_Punto: ' 
+                    Lv_MsjResultado := 'Ocurrió un error al insertar la solicitud para el Id_Punto: ' 
                                        || Lr_DatosCliente.ID_PUNTO || ' - ' ||Lv_MensajeError;
                     RAISE Le_Exception;
                   END IF;
@@ -6640,7 +6640,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                     DB_COMERCIAL.CMKG_PROMOCIONES.P_INSERT_INFO_DETALLE_SOL_HIST(Lr_InfoDetalleSolHist, Lv_MensajeError);
                     --
                     IF TRIM(Lv_MensajeError) IS NOT NULL THEN
-                      Lv_MsjResultado := 'Ocurri� un error al insertar el historial de la solicitud : ' 
+                      Lv_MsjResultado := 'Ocurrió un error al insertar el historial de la solicitud : ' 
                                          || Ln_IdDeTalleSolicitud || ' - ' ||Lv_MensajeError;
                       RAISE Le_Exception;
                     END IF;
@@ -6665,7 +6665,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                     IF TRIM(Lv_MensajeError) IS NULL THEN
                       Lb_Cabecera := TRUE;
                     ELSE
-                     Lv_MsjResultado := 'No se gener� correctamente la caracter�stica de factura para el id_documento: '
+                     Lv_MsjResultado := 'No se generó correctamente la característica de factura para el id_documento: '
                                          ||Lr_Facturas.ID_DOCUMENTO;
                       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                            'FNCK_PAGOS_DIFERIDOS.P_CREA_SOLICITUDES_NCI', 
@@ -6689,7 +6689,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                     DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_DETALLE_SOL_CARAC( Lr_InfoDetalleSolCaract, Lv_MensajeError );
 
                     IF TRIM(Lv_MensajeError) IS NOT NULL THEN
-                      Lv_MsjResultado := 'No se gener� correctamente la caracter�stica de proceso masivo para el id_solicitud: '
+                      Lv_MsjResultado := 'No se generó correctamente la característica de proceso masivo para el id_solicitud: '
                                           ||Ln_IdDeTalleSolicitud;
                       RAISE Lef_Exception;
                     END IF;
@@ -6704,7 +6704,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                     DB_COMERCIAL.COMEK_MODELO.COMEP_INSERT_DETALLE_SOL_CARAC( Lr_InfoDetalleSolCaract, Lv_MensajeError );
 
                     IF TRIM(Lv_MensajeError) IS NOT NULL THEN
-                      Lv_MsjResultado := 'No se gener� correctamente la caracter�stica de meses diferido para el id_solicitud: '
+                      Lv_MsjResultado := 'No se generó correctamente la característica de meses diferido para el id_solicitud: '
                                          ||Ln_IdDeTalleSolicitud;
                       RAISE Lef_Exception;
                     END IF;
@@ -6724,7 +6724,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                                          NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
                   WHEN OTHERS THEN
                   --
-                  Lv_MsjResultado      := 'Ocurri� un error al procesar las caracter�ticas atadas a la solicitud: '
+                  Lv_MsjResultado      := 'Ocurrió un error al procesar las caracteríticas atadas a la solicitud: '
                                           || Ln_IdDeTalleSolicitud; 
                   Pv_MsjResultado      := Lv_MsjResultado;
                   Pn_IdProcesoMasivoCab := NULL;
@@ -6751,7 +6751,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                                        NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
                 WHEN OTHERS THEN
                 --
-                  Lv_MsjResultado      := 'Ocurri� un error al procesar las caracter�ticas atadas a la solicitud: '
+                  Lv_MsjResultado      := 'Ocurrió un error al procesar las caracteríticas atadas a la solicitud: '
                                           || Ln_IdDeTalleSolicitud; 
                   Pv_MsjResultado      := Lv_MsjResultado;
                   Pn_IdProcesoMasivoCab := NULL;
@@ -6769,7 +6769,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
           EXCEPTION
             WHEN OTHERS THEN
             --
-            Lv_MsjResultado      := 'Ocurri� un error al procesar el Id_Persona: '||La_RegistrosPersonas(Ln_Indx).ID_PERSONA; 
+            Lv_MsjResultado      := 'Ocurrió un error al procesar el Id_Persona: '||La_RegistrosPersonas(Ln_Indx).ID_PERSONA; 
             DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                  'FNCK_PAGOS_DIFERIDOS.P_CREA_SOLICITUDES_NCI', 
                                                  Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM, 
@@ -6782,7 +6782,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
           IF Lb_Cabecera THEN
 
-            Lv_ObsPersonaRol    := 'El Cliente entr� en el proceso de diferido por emergencia sanitaria, saldo: '
+            Lv_ObsPersonaRol    := 'El Cliente entró en el proceso de diferido por emergencia sanitaria, saldo: '
                                    ||Ln_SaldoTotal || ' a: ' || Lv_MesDiferido || ' diferido.';
 
             Lr_PersonaRolHistorial                              := NULL;
@@ -6870,7 +6870,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     WHEN OTHERS THEN
       --
       ROLLBACK;
-      Lv_MsjResultado      := 'Ocurri� un error al ejecutar el Proceso Masivo '||Pv_TipoPma; 
+      Lv_MsjResultado      := 'Ocurrió un error al ejecutar el Proceso Masivo '||Pv_TipoPma; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNCK_PAGOS_DIFERIDOS.P_CREA_SOLICITUDES_NCI', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM, 
@@ -7103,7 +7103,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
   EXCEPTION
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte NCI diferidos.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte NCI diferidos.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNCK_PAGOS_DIFERIDOS.P_REPORTE_NCI_DIFERIDOS', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -7364,7 +7364,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
   EXCEPTION
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte NDI diferidos.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte NDI diferidos.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNCK_PAGOS_DIFERIDOS.P_REPORTE_NDI_DIFERIDOS', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -7592,7 +7592,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
   EXCEPTION
     WHEN OTHERS THEN
-      Lv_MsjResultado := 'Ocurri� un error al generar el reporte de pagos NDI diferidos.';
+      Lv_MsjResultado := 'Ocurrió un error al generar el reporte de pagos NDI diferidos.';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'FNCK_PAGOS_DIFERIDOS.P_REPORTE_NDI_PAG_DIFERIDOS', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -7749,7 +7749,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     Lv_Directorio             VARCHAR2(50)    := 'DIR_REPGERENCIA';
     Lv_Delimitador            VARCHAR2(1)     := ',';
     Lv_Remitente              VARCHAR2(100)   := 'notificaciones_telcos@telconet.ec';
-    Lv_Asunto                 VARCHAR2(300)   := 'Reporte Final de Creaci�n de NCI por Emergencia Sanitaria';
+    Lv_Asunto                 VARCHAR2(300)   := 'Reporte Final de Creación de NCI por Emergencia Sanitaria';
     Lv_Cuerpo                 VARCHAR2(9999); 
     Lv_FechaReporte           VARCHAR2(50)    := TO_CHAR(sysdate, 'YYYYMMDDHH24MISS');
     Lv_NombreArchivo          VARCHAR2(150);
@@ -7785,26 +7785,26 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     utl_file.put_line(Lfile_Archivo,''||Lv_Delimitador||
                       ''||Lv_Delimitador||
                       ''||Lv_Delimitador||
-                      'REPORTE FINAL DE CREACI�N DE NCI POR EMERGENCIA SANITARIA'||Lv_Delimitador);
+                      'REPORTE FINAL DE CREACIÓN DE NCI POR EMERGENCIA SANITARIA'||Lv_Delimitador);
     utl_file.put_line(Lfile_Archivo,''||Lv_Delimitador);
     utl_file.put_line(Lfile_Archivo,'SALDO DESDE: '||Pv_SaldoDesde||Lv_Delimitador
                       ||''||Lv_Delimitador
                       ||'SALDO HASTA: '||Pv_SaldoHasta);
-    utl_file.put_line(Lfile_Archivo,'CICLO FACTURACI�N: '||REPLACE(Pv_Ciclos,',',' ')||Lv_Delimitador
+    utl_file.put_line(Lfile_Archivo,'CICLO FACTURACIÓN: '||REPLACE(Pv_Ciclos,',',' ')||Lv_Delimitador
                       ||''||Lv_Delimitador
                       ||'MESES A DIFERIR: '||Pv_Meses);
     utl_file.put_line(Lfile_Archivo,'ESTADO SERVICIO: '||REPLACE(Pv_Estados,',',' '));
     utl_file.put_line(Lfile_Archivo,''||Lv_Delimitador);
-    utl_file.put_line(Lfile_Archivo,'IDENTIFICACI�N'||Lv_Delimitador 
+    utl_file.put_line(Lfile_Archivo,'IDENTIFICACIÓN'||Lv_Delimitador 
                       ||'LOGIN'||Lv_Delimitador  
                       ||'NOMBRE'||Lv_Delimitador 
                       ||'ESTADO SERVICIO'||Lv_Delimitador     
-                      ||'JURISDICCI�N'||Lv_Delimitador 
+                      ||'JURISDICCIÓN'||Lv_Delimitador 
                       ||'FORMA DE PAGO'||Lv_Delimitador
                       ||'BANCO'||Lv_Delimitador
                       ||'TIPO CUENTA'||Lv_Delimitador
                       ||'SALDO A DIFERIR'||Lv_Delimitador
-                      ||'N�MERO DIFERIDO'||Lv_Delimitador
+                      ||'NÚMERO DIFERIDO'||Lv_Delimitador
                       ||'PROCESO MASIVO'||Lv_Delimitador);  
 
     OPEN C_GetDatosReporte(Pn_IdProceso);
@@ -7854,7 +7854,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   EXCEPTION
     WHEN OTHERS THEN
       --
-      Lv_MsjResultado := 'Ocurri� un error al ejecutar el reporte final de creaci�n de solicitudes para el id_Proceso: '
+      Lv_MsjResultado := 'Ocurrió un error al ejecutar el reporte final de creación de solicitudes para el id_Proceso: '
                          ||Pn_IdProceso;
       Pv_Error        := Lv_MsjResultado;
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -8023,7 +8023,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   WHEN OTHERS THEN
   --
     Lc_Observacion  := NULL;
-    Lv_MsjResultado := 'Error al Obtener la observaci�n del id_documento: '|| Fn_IdDocumento ||' .'; 
+    Lv_MsjResultado := 'Error al Obtener la observación del id_documento: '|| Fn_IdDocumento ||' .'; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'FNCK_PAGOS_DIFERIDOS.F_OBSERVACION_NDI', 
                                          Lv_MsjResultado ||  ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -8656,16 +8656,16 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       CLOSE C_GetParamAgrupaNdiDif;    
     END IF; 
 
-    --Se obtiene par�metros por el tipo de proceso para agrupar las NDI diferidas.
+    --Se obtiene parámetros por el tipo de proceso para agrupar las NDI diferidas.
     OPEN C_GetParamAgrupaNdiDif(Lv_NombreParametroCab, Lv_EstadoActivo, Pv_CodEmpresa, Pv_TipoProceso);
     FETCH C_GetParamAgrupaNdiDif INTO Lc_ParamAgrupaNdiDif;
         IF C_GetParamAgrupaNdiDif%NOTFOUND THEN
-            Lv_MsnError := 'No existe par�metro configurado para la creaci�n de NDI agrupada';
+            Lv_MsnError := 'No existe parámetro configurado para la creación de NDI agrupada';
             RAISE Le_Exception;       
         END IF;
     CLOSE C_GetParamAgrupaNdiDif;
 
-    --Se obtiene par�metro de: tipo de proceso, usuario de creaci�n, mensaje resultado del proceso y observaci�n de la Ndi
+    --Se obtiene parámetro de: tipo de proceso, usuario de creación, mensaje resultado del proceso y observación de la Ndi
     Lv_TipoProceso         := Lc_ParamAgrupaNdiDif.VALOR1;
     Lv_User                := Lc_ParamAgrupaNdiDif.VALOR2;
     Lv_MsgResultadoProceso := Lc_ParamAgrupaNdiDif.VALOR3;
@@ -8700,7 +8700,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     --
     FETCH C_GetMotivo INTO Lc_GetMotivo;
     IF C_GetMotivo%NOTFOUND THEN
-      Lv_MsnError := 'No existe motivo configurado para la creaci�n de Documentos NDI';
+      Lv_MsnError := 'No existe motivo configurado para la creación de Documentos NDI';
       RAISE Le_Exception;       
     END IF;
     Ln_IdMotivo := Lc_GetMotivo.ID_MOTIVO;
@@ -8744,7 +8744,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     IF Ln_IdCaractProcesoDiferido IS NULL OR Ln_IdCaractNumCuotaDiferida IS NULL OR Ln_IdCaractReferenciaNci IS NULL 
         OR Ln_IdCaractIdSolicitud IS NULL OR Ln_IdCaractProcesoMasivo IS NULL OR Ln_IdCaractValorCuotaDiferida IS NULL 
         OR Ln_IdCaractProcesoDeEjecucion IS NULL THEN
-      Lv_MsjResultado := 'Error al recuperar caracter�sticas necesarias para el proceso ' || Lv_CaractProcesoDiferido || ' - ' ||
+      Lv_MsjResultado := 'Error al recuperar características necesarias para el proceso ' || Lv_CaractProcesoDiferido || ' - ' ||
                      Lv_CaractNumCuotaDiferida || ' - ' || Lv_CaractReferenciaNci || ' - ' ||
                      Lv_CaractIdSolicitud || ' - ' || Lv_CaractProcesoMasivo || '-' || Lv_CaractValorCuotaDiferida || ' - ' ||
                      Lv_CaractProcesoDeEjecucion;
@@ -8773,18 +8773,18 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
         Lv_MsnError               := NULL;
 
         IF Lr_NCIPorPunto.ID_PROCESO_MASIVO = 0 OR Lr_NCIPorPunto.ID_PROCESO_MASIVO IS NULL THEN
-          Lv_MsnError := 'Error al recuperar caracter�stica necesaria para el proceso '|| Lv_CaractProcesoMasivo ||
+          Lv_MsnError := 'Error al recuperar característica necesaria para el proceso '|| Lv_CaractProcesoMasivo ||
                          ' para el Punto#'|| Ln_IdPunto;
           RAISE Le_ExceptionAgrupoNci;       
         END IF;      
 
         IF Lr_NCIPorPunto.ID_DETALLE_SOLICITUD = 0 OR Lr_NCIPorPunto.ID_DETALLE_SOLICITUD IS NULL THEN
-          Lv_MsnError := 'Error al recuperar caracter�stica necesaria para el proceso '|| Lv_CaractIdSolicitud ||
+          Lv_MsnError := 'Error al recuperar característica necesaria para el proceso '|| Lv_CaractIdSolicitud ||
                          ' para el Punto#'|| Ln_IdPunto;
           RAISE Le_ExceptionAgrupoNci;       
         END IF;
 
-        --Se obtiene par�metro observaci�n Ndi Agrupada
+        --Se obtiene parámetro observación Ndi Agrupada
         IF Lv_TipoProceso = 'CancelacionVoluntaria' THEN
             Lv_ObservacionNdiAgrupada := Lc_ParamAgrupaNdiDif.VALOR5; 
         ELSE
@@ -8809,11 +8809,11 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
         IF Lbool_Done THEN      
         --
-          --Se insertan caracter�sticas por NDI Agrupada:
+          --Se insertan características por NDI Agrupada:
           --PROCESO_DIFERIDO (en S), 
           --ES_PROCESO_MASIVO (id_proceso_masivo PMA de diferido del origen), 
           --ES_ID_SOLICITUD (id_detalle_solicitud de diferido del origen),
-          --PROCESO_DE_EJECUCION (aplicaci�n que origin� la NDI)
+          --PROCESO_DE_EJECUCION (aplicación que originó la NDI)
           Lr_InfoDocumentoCaract := NULL;
           Lr_InfoDocumentoCaract.DOCUMENTO_ID                := Ln_IdDocumentoNdi;
           Lr_InfoDocumentoCaract.FE_CREACION                 := SYSDATE;
@@ -8851,7 +8851,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
           Lr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_CARACT.NEXTVAL;
           Lr_InfoDocumentoCaract.CARACTERISTICA_ID           := Ln_IdCaractProcesoDeEjecucion;
 
-          --Se obtiene par�metro valor caracter�stica para los diferentes procesos
+          --Se obtiene parámetro valor característica para los diferentes procesos
           Lr_InfoDocumentoCaract.VALOR := Lc_ParamAgrupaNdiDif.VALOR6;
 
           Lr_InfoDocumentoCaract.DOCUMENTO_CARACTERISTICA_ID := NULL;
@@ -8881,12 +8881,12 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
               CLOSE C_GetDocumentoCaract;    
             END IF;       
             --
-            --Obtengo caracter�stica ES_CONT_DIFERIDO del id_documento NCI para actualizaci�n de la cuota generada por ndi.
+            --Obtengo característica ES_CONT_DIFERIDO del id_documento NCI para actualización de la cuota generada por ndi.
             --
             OPEN C_GetDocumentoCaract(Ln_IdDocumentoNci,Lv_CaractContDiferido,Lv_EstadoActivo);
             FETCH C_GetDocumentoCaract INTO Lc_GetDocumentoCaract;          
             IF C_GetDocumentoCaract%NOTFOUND THEN
-              Lv_MsnError := 'Error al recuperar caracter�stica necesaria para el proceso '|| Lv_CaractContDiferido ||
+              Lv_MsnError := 'Error al recuperar característica necesaria para el proceso '|| Lv_CaractContDiferido ||
                              ' para la NCI #'|| Ln_IdDocumentoNci;
               RAISE Le_ExceptionNci;       
             END IF;
@@ -8904,7 +8904,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
 
             Ln_ValorTotalNdi := Ln_ValorTotalNdi + Lr_NCIPendientes(Ln_Indice).SALDO;          
             --
-            --Se guardan las siguientes caracter�sticas por cada NCI que se agrupe en la NDI:
+            --Se guardan las siguientes características por cada NCI que se agrupe en la NDI:
             --ID_REFERENCIA_NCI(id_documento NCI que origino la NDI Agrupada),
             --NUM_CUOTA_DIFERIDA (#cuota por NCI correspondiente a la NDI Agrupada)                
             --VALOR_CUOTA_DIFERIDA (Valor de la Cuota correspondiente a la NCI)                                        
@@ -8944,7 +8944,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
               RAISE Le_ExceptionNci;
             END IF;
             --
-            --Actualizo el valor de la caracter�stica ES_CONT_DIFERIDO en la NCI en INFO_DOCUMENTO_CARACTERISTICA para registrar el #cuota
+            --Actualizo el valor de la característica ES_CONT_DIFERIDO en la NCI en INFO_DOCUMENTO_CARACTERISTICA para registrar el #cuota
             -- o NDI generada por el proceso.            
             Lr_InfoDocumentoCaract                              := NULL;
             Lr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA  := Ln_IdDocCaracContDiferido;
@@ -8958,7 +8958,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
               RAISE Le_ExceptionNci;
             END IF; 
             -- 
-            --Inserto Historial en la NCI indicando que se proces� con exito la NDI por Diferido indicando n�mero de cuota y # NDI generada.
+            --Inserto Historial en la NCI indicando que se procesó con exito la NDI por Diferido indicando número de cuota y # NDI generada.
             --            
             Lr_InfoDocumentoFinanHst                        := NULL;
             Lr_InfoDocumentoFinanHst.ID_DOCUMENTO_HISTORIAL := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_HISTORIAL.NEXTVAL;
@@ -8978,7 +8978,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
           EXCEPTION
             WHEN Le_ExceptionNci THEN
               --
-              Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de generaci�n de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
+              Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de generación de NDI por Diferido de Facturas por Emergencia Sanitaria' ||
                                 ' - ' || Lv_MsnError;
               DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                    'FNCK_PAGOS_DIFERIDOS.P_GENERAR_NDI_CANCELACION', 
@@ -8988,7 +8988,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                                    NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
             WHEN OTHERS THEN
               --
-              Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de generaci�n de NDI por '||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
+              Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de generación de NDI por '||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
                                 ' - ' || Lv_MsnError;
               DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                    'FNCK_PAGOS_DIFERIDOS.P_GENERAR_NDI_CANCELACION', 
@@ -9052,7 +9052,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
       EXCEPTION
         WHEN Le_ExceptionAgrupoNci THEN
           --
-          Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de generaci�n de NDI por ' ||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
+          Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de generación de NDI por ' ||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
                             ' - ' || Lv_MsnError;
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                'FNCK_PAGOS_DIFERIDOS.P_GENERAR_NDI_CANCELACION', 
@@ -9062,7 +9062,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
                                                NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
         WHEN OTHERS THEN
           --
-          Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de generaci�n de NDI por ' ||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
+          Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de generación de NDI por ' ||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
                             ' - ' || Lv_MsnError;
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                                'FNCK_PAGOS_DIFERIDOS.P_GENERAR_NDI_CANCELACION', 
@@ -9090,7 +9090,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
     WHEN Le_Exception THEN
       --
       ROLLBACK;
-      Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de generaci�n de NDI por ' ||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
+      Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de generación de NDI por ' ||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso) ||
                         ' - ' || Lv_MsnError;
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
@@ -9108,7 +9108,7 @@ FUNCTION F_GET_VALOR_SIMULADO_NCI(Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO
   WHEN OTHERS THEN
     --
     ROLLBACK;
-    Lv_MsjResultado:= 'Ocurri� un error al ejecutar el Proceso de generaci�n de NDI por '||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso);
+    Lv_MsjResultado:= 'Ocurrió un error al ejecutar el Proceso de generación de NDI por '||NVL(Lv_MsgResultadoProceso, Pv_TipoProceso);
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'FNCK_PAGOS_DIFERIDOS.P_GENERAR_NDI_CANCELACION', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM, 

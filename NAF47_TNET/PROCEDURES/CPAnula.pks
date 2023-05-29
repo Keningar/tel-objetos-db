@@ -21,13 +21,13 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.CPAnula(
  * @version 1.0 01/01/2007
  *
  * @author llindao <llindao@telconet.ec>
- * @version 1.1 17/12/2019 Se modifica anular retenci�n electr�nica asociadas al documento que se reversa
+ * @version 1.1 17/12/2019 Se modifica anular retencion electronica asociadas al documento que se reversa
  * 
  * @param pCia         IN VARCHAR2     recibe codigo de compania
  * @param pTipo        IN VARCHAR2     recibe tipo de documento
  * @param pProve       IN VARCHAR2     recibe codigo de proveedor
- * @param pFecha_anula IN DATE         recibe fecha de anulaci�n
- * @param pMotivo      IN VARCHAR2     recibe texto del motivo de anulaci�n
+ * @param pFecha_anula IN DATE         recibe fecha de anulacion
+ * @param pMotivo      IN VARCHAR2     recibe texto del motivo de anulacion
  * @param pmsg_Error   IN OUT VARCHAR2 retorma mensaje de erro
  */
 

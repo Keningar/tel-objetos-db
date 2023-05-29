@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_COM_ELECTRONICO_TRAN 
 AS
 /**
-  * Documentaci�n para PROCEDURE  P_Update_Info_Documento_NAF'.
+  * Documentación para PROCEDURE  P_Update_Info_Documento_NAF'.
   * Procedure que me permite actualizar info_documento de los registros procedentes del sistema NAF
   *
   * PARAMETROS:
@@ -60,7 +60,7 @@ AS
             Pv_MsnError OUT VARCHAR2);
     --  
     /**
-    * Documentaci�n para el procedimiento INSERT_ERROR
+    * Documentación para el procedimiento INSERT_ERROR
     *
     * Realiza un insert en la tabla DB_FINANCIERO.INFO_ERROR
     *

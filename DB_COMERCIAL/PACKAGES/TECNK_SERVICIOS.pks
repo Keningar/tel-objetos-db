@@ -14,9 +14,9 @@ IS
 TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     --
     /**
-     * Documentaci�n para TYPE 'Lt_ArrayAsociativo'.
+     * Documentación para TYPE 'Lt_ArrayAsociativo'.
      *
-     * Tipo de datos para mapear los par�metros enviados en un array asociativo
+     * Tipo de datos para mapear los parámetros enviados en un array asociativo
      *
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
      * @version 1.0 18-10-2017
@@ -24,13 +24,13 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     TYPE Lt_ArrayAsociativo IS TABLE OF VARCHAR2(30) INDEX BY VARCHAR2(30);
     --
     /**
-     * Documentaci�n para TYPE 'COMP_LISTADO_SERVICIO'.
+     * Documentación para TYPE 'COMP_LISTADO_SERVICIO'.
      *
-     * M�todo que sirve para retornar el listado de servicios de un punto.
+     * Método que sirve para retornar el listado de servicios de un punto.
      *
      * @since 1.12
      *
-     * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+     * @author Germán Valenzuela <gvalenzuela@telconet.ec>
      * @version 1.13 15-07-2020 - En el query se suprime la parte que se obtiene el secuencial del grupo y
      *                            se suprime el order by por secuencial del grupo.
      *
@@ -106,7 +106,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * GET_IP_SERVICIO
      *
-     * Funci�n que permite obtener la ip del servicio
+     * Función que permite obtener la ip del servicio
      *
      * @author Kenneth Jimenez <kjimenez@telconet.ec>
      * @param number Fn_idServicio
@@ -117,7 +117,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * GET_DATO_SUBRED_SERVICIO
      *
-     * Funci�n que permite obtener la ip del servicio
+     * Función que permite obtener la ip del servicio
      *
      * @author Modificado: Allan Suarez C. <arsuarez@telconet.ec>
      * @version 1.1 2017-03-03 Se agrega consulta por tipo de subred seleccionado
@@ -134,7 +134,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * GET_RD_ID
      *
-     * Funci�n que permite obtener la ip del servicio
+     * Función que permite obtener la ip del servicio
      *
      * @author Kenneth Jimenez <kjimenez@telconet.ec>
      * @param number Fn_idServicio
@@ -199,14 +199,14 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * GET_OBSERVACION_DETALLE
      *
-     * Funci�n que permite obtener la observaci�n del id del detalle enviado 
+     * Función que permite obtener la observación del id del detalle enviado 
      *
      * @author Lizbeth Cruz<mlcruz@telconet.ec>
      * @param number Fn_IdDetalle
      * @return string Lv_Resultado
 
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
-     * @version 1.1 10-01-2019 Se aumenta el tama�o para la cadena que retorna la funci�n
+     * @version 1.1 10-01-2019 Se aumenta el tamaño para la cadena que retorna la función
      */
     FUNCTION GET_OBSERVACION_DETALLE(
     Fn_IdDetalle  IN DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE DEFAULT NULL)
@@ -228,7 +228,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * FNC_GET_MEDIO_POR_PUNTO
      *
-     * Funci�n que devuelve el nombre de la ultima milla que est� relacionada al punto del cliente
+     * Función que devuelve el nombre de la ultima milla que está relacionada al punto del cliente
      * @author John Vera <javera@telconet.ec>
      * @param number Pn_IdPunto
      * @param string Pv_NomTecnico
@@ -240,7 +240,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * FNC_GET_SERV_ELE_PTO
      *
-     * Funci�n que devuelve el/los servicios por elemento e interface (dslam, olt, radio, caja, splitter)
+     * Función que devuelve el/los servicios por elemento e interface (dslam, olt, radio, caja, splitter)
      * @author Francisco Adum <fadum@telconet.ec>
      * @param number Fn_IdElemento
      * @param number Fn_IdInterface
@@ -280,7 +280,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * F_GET_VALOR_DET_ELE_FILTROS
-     * Funcion que retorna informaci�n acerca del cliente segun los parametros enviados
+     * Funcion que retorna información acerca del cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  INFO_DETALLE_ELEMENTO.ELEMENTO_ID%TYPE    IN  Fn_ElementoId
@@ -294,7 +294,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
     * F_GET_BW_TOTAL_INTERFACE
-    * Funci�n que obtiene la capacidad total de los servicios de una interface
+    * Función que obtiene la capacidad total de los servicios de una interface
     *
     * @author Felix Caicedo <facaicedo@telconet.ec>
     * @version 1.0 18-06-2020
@@ -311,7 +311,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_ROL_CLIENTE
-     * Funcion que retorna informaci�n acerca del cliente segun los parametros enviados
+     * Funcion que retorna información acerca del cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_COMERCIAL.INFO_EMPRESA_ROL.EMPRESA_COD%TYPE        IN Pv_EmpresaCod
@@ -334,7 +334,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_ROL_CLIENTE_EXT
-     * Funcion que retorna informaci�n acerca del cliente segun los parametros enviados, y estados parametrizados
+     * Funcion que retorna información acerca del cliente segun los parametros enviados, y estados parametrizados
      * para extranet
      * @author Jose Bedon <jobedon@telconet.ec>
      * @version 1.0 22-04-2020
@@ -364,7 +364,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_PUNTOS_CLIENTE
-     * Funcion que retorna informaci�n acerca de puntos de un cliente segun los parametros enviados
+     * Funcion que retorna información acerca de puntos de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE     IN Pv_EmpresaCod
@@ -383,7 +383,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_SERVICIOS_PTO_CLIENTE
-     * Funci�n que retorna informaci�n acerca de servicios delpunto de un cliente segun los parametros enviados
+     * Función que retorna información acerca de servicios delpunto de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_COMERCIAL.INFO_SERVICIO.PUNTO_ID%TYPE     IN  Pn_IdPuntoCliente
@@ -407,7 +407,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_INF_SERVICIO_INTERNET
-     * Funcion que retorna informaci�n tecnica del servicio de internet del punto de un cliente segun los parametros enviados
+     * Funcion que retorna información tecnica del servicio de internet del punto de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE     IN  Pn_IdServicioInternet
@@ -422,7 +422,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_IPS_POR_PUNTO
-     * Funcion que retorna informaci�n acerca de Ips del punto de un cliente segun los parametros enviados
+     * Funcion que retorna información acerca de Ips del punto de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_COMERCIAL.INFO_SERVICIO.PUNTO_ID%TYPE     IN  Pn_IdPuntoCliente
@@ -437,7 +437,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_CASOS_POR_PUNTO
-     * Funcion que retorna informaci�n acerca de casos del punto de un cliente segun los parametros enviados
+     * Funcion que retorna información acerca de casos del punto de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_SOPORTE.INFO_PARTE_AFECTADA.AFECTADO_NOMBRE%TYPE   IN  Pv_Login
@@ -452,7 +452,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_TAREAS_POR_PUNTO
-     * Funcion que retorna informaci�n acerca de tareas del punto de un cliente segun los parametros enviados
+     * Funcion que retorna información acerca de tareas del punto de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @param  DB_SOPORTE.INFO_PARTE_AFECTADA.AFECTADO_NOMBRE%TYPE   IN  Pv_Login
@@ -467,7 +467,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_ONT_ID_POR_PUNTO
-     * Funcion que retorna informaci�n acerca del ont id de un cliente segun los parametros enviados
+     * Funcion que retorna información acerca del ont id de un cliente segun los parametros enviados
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 20-10-2016
      * @author Lizbeth Cruz<mlcruz@telconet.ec>
@@ -477,7 +477,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
      * @version 1.2 11-02-2019 Se modifica la consulta para obtener servicios TelcoHome
      *    
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
-     * @version 1.3 12-10-2021 Se parametrizan los nombres t�cnicos de los productos usados en la consulta
+     * @version 1.3 12-10-2021 Se parametrizan los nombres técnicos de los productos usados en la consulta
      * 
      * @param  DB_COMERCIAL.INFO_PUNTO.LOGIN%TYPE   IN  Pv_Login
      * @param  Lrf_Result OUT Prf_Result
@@ -491,12 +491,12 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_WS_GET_LOGINES_POR_OLT
-     * Funcion que retorna informaci�n acerca de los logines asociados a un puerto del olt filtrado
+     * Funcion que retorna información acerca de los logines asociados a un puerto del olt filtrado
      * mediante parametros
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 30-09-2016
      * @author Jesus Bozada <jbozada@telconet.ec>
-     * @version 1.1 20-10-2016   Se agrega validaci�n para que solo se recupere informaci�n servicios con planes
+     * @version 1.1 20-10-2016   Se agrega validación para que solo se recupere información servicios con planes
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
      * @version 1.2 18-05-2018 Se modifica la consulta para obtener servicios Small Business
      *                         Costo = 201
@@ -505,7 +505,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
      * @version 1.3 11-02-2019 Se modifica la consulta para obtener servicios TelcoHome
      *
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
-     * @version 1.4 12-10-2021 Se parametrizan los nombres t�cnicos de los productos usados en la consulta
+     * @version 1.4 12-10-2021 Se parametrizan los nombres técnicos de los productos usados en la consulta
      * 
      * @param  DB_INFRAESTRUCTURA.INFO_ELEMENTO.NOMBRE_ELEMENTO%TYPE                       IN  Pv_Olt
      * @param  DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO.NOMBRE_INTERFACE_ELEMENTO%TYPE   IN  Pv_PuertoOlt
@@ -521,7 +521,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * P_GET_SERVICIOS_MISMA_UM
-     * Funcion que retorna informaci�n acerca de los servicios asociados a una misma UM segun los parametros enviados
+     * Funcion que retorna información acerca de los servicios asociados a una misma UM segun los parametros enviados
      * 
      * @author Jesus Bozada <jbozada@telconet.ec>
      * @version 1.0 25-10-2016
@@ -558,7 +558,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
   /**
     * GET_EXISTE_AS_PRIVADO
 
-    * Funci�n que permite obtener si un asprivado existe o no dentro de otro servicio ( internet mpls ) o dentro de otro
+    * Función que permite obtener si un asprivado existe o no dentro de otro servicio ( internet mpls ) o dentro de otro
     * cliente ( l3mpls )
     * @param number    Fn_idPersonalRol   persona rol del cliente en sesion
     * @param varchar2  Fn_asPrivado       as privado a ser verficado
@@ -574,7 +574,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
      * F_GET_SERVICIOS_LIBERA_FACTIB
-     * Funci�n que retorna el listado de servicios de los que se liberar� los recursos de factibilidad con la informaci�n respectiva
+     * Función que retorna el listado de servicios de los que se liberará los recursos de factibilidad con la información respectiva
      * Costo = 338
      * 
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -584,11 +584,11 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
      * @version 1.1 01-11-2017 Se modifica la consulta eliminando el filtro por estado del producto en TN y el filtro del estado 
      *                         del plan para MD para que incluso se liberen servicios cuyo producto o plan ya no se encuentre 'Activo'
      *
-     * @param  Fv_CodigoEmpresa             IN VARCHAR2 Recibe el c�digo de la empresa
+     * @param  Fv_CodigoEmpresa             IN VARCHAR2 Recibe el código de la empresa
      * @param  Fv_PrefijoEmpresa            IN VARCHAR2 Recibe el prefijo d ela empresa
-     * @param  Fv_Region                    IN VARCHAR2 Recibe la regi�n R1 y R2
-     * @param  Fv_CodigoUltimaMilla         IN VARCHAR2 Recibe el c�digo de la �ltima milla del servicio
-     * @param  Fn_DiasLiberaFactib          IN NUMBER Recibe el n�mero de d�as m�nimos de un servicio en factible
+     * @param  Fv_Region                    IN VARCHAR2 Recibe la región R1 y R2
+     * @param  Fv_CodigoUltimaMilla         IN VARCHAR2 Recibe el código de la última milla del servicio
+     * @param  Fn_DiasLiberaFactib          IN NUMBER Recibe el número de días mínimos de un servicio en factible
      * @param  Fn_TotalRegistros            OUT NUMBER Recibe el total de registros del listado de servicios
      * @return Frf_ServiciosLiberaFactib    OUT SYS_REFCURSOR Cursor que retorna el listado de servicios
      */
@@ -604,13 +604,13 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     /**
      * F_GET_VALIDACION_IP_FIJA_TN
      *
-     * Funci�n que obtiene la informaci�n 
+     * Función que obtiene la información 
      * 
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
      * @version 1.0 26-04-2018
      * 
      * @author Lizbeth Cruz <mlcruz@telconet.ec>
-     * @version 1.1 24-04-2020 Se modifica la obtenci�n de la informaci�n de ips para considerar los productos relacionados de Internet e ips
+     * @version 1.1 24-04-2020 Se modifica la obtención de la información de ips para considerar los productos relacionados de Internet e ips
      *
      * @author Felix Caicedo <facaicedo@telconet.ec>
      * @version 1.2 08-07-2022 Se recibe el id del servicio, para validar las ip relacionadas con el servicio principal.
@@ -638,9 +638,9 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * F_SPLIT_VARCHAR2
-   * Funci�n que obtiene el arreglo resultante de realizar el split de una cadena
+   * Función que obtiene el arreglo resultante de realizar el split de una cadena
    * 
-   * @param  Fv_Cadena      IN VARCHAR2 Cadena a la que se buscar� el delimitador
+   * @param  Fv_Cadena      IN VARCHAR2 Cadena a la que se buscará el delimitador
    * @param  Fv_Delimiter   IN VARCHAR2 Caracter que delimita la cadena
    * @return OUT VARCHAR2
    *
@@ -655,10 +655,10 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * F_GET_CORREOS_LICENCIAS
-   * Funci�n que obtiene el correo asociado al punto para la activaci�n de licencias
+   * Función que obtiene el correo asociado al punto para la activación de licencias
    *
    * @param  Fv_IdPunto             IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE Id del punto
-   * @param  Fv_ObtienePrimerCorreo IN VARCHAR2 SI O NO se obtiene s�lo el primer correo
+   * @param  Fv_ObtienePrimerCorreo IN VARCHAR2 SI O NO se obtiene sólo el primer correo
    * @return OUT DB_INFRAESTRUCTURA.INKG_TYPES.Lt_ArrayOfVarchar
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -693,7 +693,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_SERV_ADICS_I_PROTEGIDO
-   * Procedimiento que retorna el listado de servicios adicionales de Internet Protegido de tecnolog�a McAfee de un determinado punto
+   * Procedimiento que retorna el listado de servicios adicionales de Internet Protegido de tecnología McAfee de un determinado punto
    *
    * @param  Pn_IdPunto     IN NUMBER Recibe el id del punto
    * @param  Prf_Registros  OUT SYS_REFCURSOR Cursor que retorna el listado de servicios
@@ -715,7 +715,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * P_GET_OLTS_INICIO_CPM
    * Procedimiento que retorna el listado de olts que tienen solicitudes de cambio de plan masivo en estado Pendiente asociada a un servicio
    *
-   * @param  Pv_RetornaDataOltsCpm      IN VARCHAR2 SI o NO se necesita la informaci�n de los olts
+   * @param  Pv_RetornaDataOltsCpm      IN VARCHAR2 SI o NO se necesita la información de los olts
    * @param  Pv_RetornaTotalOltsCpm     IN VARCHAR2 SI o NO se necesita el total de olts
    * @param  Pn_IdOlt                   IN NUMBER Id del Olt
    * @param  Pn_Start                   IN NUMBER Inicio del rownum
@@ -723,7 +723,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @param  Pv_Status                  OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error
    * @param  Prf_OltsCpm                OUT SYS_REFCURSOR Cursor que retorna el listado de olts
-   * @param  Pn_TotalOltsCpm            OUT NUMBER N�mero total de olts
+   * @param  Pn_TotalOltsCpm            OUT NUMBER Número total de olts
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 27-11-2019
@@ -747,12 +747,12 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * y las Ips de los servicios Small Business e Ips Small Business en TN
    *
    * @param  Pn_IdElementoOlt           IN NUMBER Recibe el id del olt
-   * @param  Pv_RetornaDataServicios    IN VARCHAR2 SI o NO se necesita la informaci�n de los servicios,
+   * @param  Pv_RetornaDataServicios    IN VARCHAR2 SI o NO se necesita la información de los servicios,
    * @param  Pv_RetornaTotalServicios   IN VARCHAR2 SI o NO se necesita el total de servicios,
    * @param  Pv_Status                  OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error
    * @param  Prf_ServiciosIps           OUT SYS_REFCURSOR Cursor que retorna el listado de servicios ips
-   * @param  Pn_TotalServiciosIps       OUT NUMBER N�mero total de servicios Ips
+   * @param  Pn_TotalServiciosIps       OUT NUMBER Número total de servicios Ips
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 28-10-2019
@@ -790,12 +790,12 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_VALIDA_LINEA_CSV_CPM
-   * Procedimiento para validar una l�nea de un archivo csv por cambio de plan masivo
+   * Procedimiento para validar una línea de un archivo csv por cambio de plan masivo
    * 
-   * @param Pv_ContenidoLinea       IN VARCHAR2 Contenido de la l�nea
-   * @param Pv_DelimitadorCampo     IN VARCHAR2 Delimitador de los campos de la l�nea CSV
-   * @param Pv_Status               OUT VARCHAR2 Status de la ejecuci�n del procedimiento
-   * @param Pv_TipoError            OUT VARCHAR2 Tipo de error de la l�nea
+   * @param Pv_ContenidoLinea       IN VARCHAR2 Contenido de la línea
+   * @param Pv_DelimitadorCampo     IN VARCHAR2 Delimitador de los campos de la línea CSV
+   * @param Pv_Status               OUT VARCHAR2 Status de la ejecución del procedimiento
+   * @param Pv_TipoError            OUT VARCHAR2 Tipo de error de la línea
    * @param Pr_RegDataPorProcesar   OUT DB_INFRAESTRUCTURA.INKG_TYPES.Lr_DataPorProcesarCpm Registro para procesar el cambio de plan masivo
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -834,27 +834,27 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * F_GET_ITEM_PROD_EN_PLAN
-   * Funci�n que verifica si un producto se encuentra como detalle de un plan
+   * Función que verifica si un producto se encuentra como detalle de un plan
    *
    * @param  Fn_IdPlan              IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE Id del plan
-   * @param  Fv_NombreTecnicoProd   IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Nombre t�cnico del producto a verificar en el plan
+   * @param  Fv_NombreTecnicoProd   IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Nombre técnico del producto a verificar en el plan
    * @param  Fn_IdProducto          IN DB_COMERCIAL.ADMI_PRODUCTO.ID_PRODUCTO%TYPE Id del producto a verificar en el plan
-   * @param  Fv_DescripcionProd     IN DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE Descripci�n del producto a verificar en el plan
+   * @param  Fv_DescripcionProd     IN DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE Descripción del producto a verificar en el plan
    * @return OUT DB_COMERCIAL.INFO_PLAN_DET.ID_ITEM%TYPE
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 11-06-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 30-06-2020 Se agrega el par�metro Fv_DescripcionProd para buscar un producto con dicha descripci�n dentro de un plan
+   * @version 1.1 30-06-2020 Se agrega el parámetro Fv_DescripcionProd para buscar un producto con dicha descripción dentro de un plan
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.2 25-07-2020 Se elimina la creaci�n del registro en la info_error por no obtener la informaci�n del item del plan,
-   *                         ya que est podr�a pasar frecuentemente cuando el plan no tenga detalles dual band
+   * @version 1.2 25-07-2020 Se elimina la creación del registro en la info_error por no obtener la información del item del plan,
+   *                         ya que est podría pasar frecuentemente cuando el plan no tenga detalles dual band
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.3 13-01-2021 Se modifica funci�n para excluir �nicamente los detalles del plan en estado Eliminado con el fin de unificar 
-   *                         la validaci�n de esta funci�n con la usada en Telcos+  
+   * @version 1.3 13-01-2021 Se modifica función para excluir únicamente los detalles del plan en estado Eliminado con el fin de unificar 
+   *                         la validación de esta función con la usada en Telcos+  
    *
    */
   FUNCTION F_GET_ITEM_PROD_EN_PLAN(
@@ -878,7 +878,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @version 1.0 11-06-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 30-06-2020 Se agrega el par�metro Lv_DescripcionProducto por modificaci�n de la funci�n F_GET_ITEM_PROD_EN_PLAN
+   * @version 1.1 30-06-2020 Se agrega el parámetro Lv_DescripcionProducto por modificación de la función F_GET_ITEM_PROD_EN_PLAN
    *
    */
   PROCEDURE P_VERIF_DET_PLAN_W_Y_EXTENDER(  
@@ -890,9 +890,9 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * F_GET_PARAMS_SERVICIOS_MD
-   * Funci�n que obtiene los par�metros de diferentes opciones para servicios de MD
+   * Función que obtiene los parámetros de diferentes opciones para servicios de MD
    *
-   * @param  Fr_ParametroDetalleBusqueda IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Registro con los par�metros de b�squeda
+   * @param  Fr_ParametroDetalleBusqueda IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE Registro con los parámetros de búsqueda
    * @return OUT DB_INFRAESTRUCTURA.INKG_TYPES.Lt_ArrayOfVarchar
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -912,7 +912,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @param  Pv_TecnologiaServicio      IN DB_INFRAESTRUCTURA.ADMI_MARCA_ELEMENTO.NOMBRE_MARCA_ELEMENTO%TYPE 'HUAWEI', 'TELLION', 'ZTE'
    * @param  Pv_NombreModeloOlt         IN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO.NOMBRE_MODELO_ELEMENTO%TYPE 'MA5608T', 'EP-3116', 'C320', 'C610'
    * @param  Pv_NombreModeloOnt         IN DB_INFRAESTRUCTURA.ADMI_MODELO_ELEMENTO.NOMBRE_MODELO_ELEMENTO%TYPE Nombre del modelo del Ont que se 
-   *                                                                                                           verificar�
+   *                                                                                                           verificará
    * @param  Pn_IdInterfaceOnt          IN DB_INFRAESTRUCTURA.INFO_INTERFACE_ELEMENTO.ID_INTERFACE_ELEMENTO%TYPE Id de la interface del ont
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
@@ -927,8 +927,8 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @version 1.0 12-06-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 25-06-2020 Se agrega validaci�n por tecnolog�a del servicio, ya que ahora ser� usada desde el cambio de plan individual y no s�lo
-   *                         de la regularizaci�n de servicios Huawei y adicional se retorna la informaci�n del elemento atado en el siguiente enlace
+   * @version 1.1 25-06-2020 Se agrega validación por tecnología del servicio, ya que ahora será usada desde el cambio de plan individual y no sólo
+   *                         de la regularización de servicios Huawei y adicional se retorna la información del elemento atado en el siguiente enlace
    *
    */
   PROCEDURE P_VERIF_EQUIPOS_W_Y_EXTENDER(   
@@ -948,7 +948,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * F_GET_SOL_VALIDA_DUAL_BAND
-   * Funci�n que obtiene la �ltima SOLICITUD AGREGAR EQUIPO o SOLICITUD AGREGAR EQUIPO MASIVO que permite gestionar equipos Wifi o Extender Dual Band
+   * Función que obtiene la última SOLICITUD AGREGAR EQUIPO o SOLICITUD AGREGAR EQUIPO MASIVO que permite gestionar equipos Wifi o Extender Dual Band
    *
    * @param  Fn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id del servicio
    *
@@ -956,7 +956,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @version 1.0 16-06-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 08-07-2020 Se modifica el procedimiento, ya que ahora se utilizar� para servicios sin equipos Dual Band
+   * @version 1.1 08-07-2020 Se modifica el procedimiento, ya que ahora se utilizará para servicios sin equipos Dual Band
    *
    */
   FUNCTION F_GET_SOL_VALIDA_DUAL_BAND(  
@@ -969,7 +969,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * Procedimiento que valida el flujo de servicios de Internet Protegido
    *
    * @param  Pv_LoginPunto              IN DB_COMERCIAL.INFO_PUNTO.LOGIN%TYPE Login del punto
-   * @param  Pv_OpcionConsulta          IN VARCHAR2 Opci�n desde la que se invoca el procedimiento 'CREAR_PLAN' o 'CLONAR_PLAN'
+   * @param  Pv_OpcionConsulta          IN VARCHAR2 Opción desde la que se invoca el procedimiento 'CREAR_PLAN' o 'CLONAR_PLAN'
    * @param  Pv_Valor1ParamAntivirus    IN VARCHAR2 'NUEVO'
    * @param  Pv_Valor2LoginesAntivirus  IN VARCHAR2 'INDIVIDUAL' o 'MASIVO'
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
@@ -1004,8 +1004,8 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @version 1.0 30-06-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 16-12-2021 Se agrega validaci�n para que los planes que incluyen Wifi y Extender dual band con tecnolog�a ZTE no contin�en con
-   *                         el flujo existente de Huawei. Adem�s, se corrigen los caracteres especiales por las tildes correspondientes ya que 
+   * @version 1.1 16-12-2021 Se agrega validación para que los planes que incluyen Wifi y Extender dual band con tecnología ZTE no continúen con
+   *                         el flujo existente de Huawei. Además, se corrigen los caracteres especiales por las tildes correspondientes ya que 
    *                         nuevamente el paquete tiene caracteres especiales
    *
    * @author Emmanuel Martillo <emartillo@telconet.ec>
@@ -1021,22 +1021,22 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_PUNTOS_MD_ASOCIADOS
-   * Procedimiento que realiza la b�squeda de logines MD que podr�an asociarse a un servicio de TN
+   * Procedimiento que realiza la búsqueda de logines MD que podrían asociarse a un servicio de TN
    *
-   * @param  Pv_CedulaCliente       IN VARCHAR2 C�dula del cliente
+   * @param  Pv_CedulaCliente       IN VARCHAR2 Cédula del cliente
    * @param  Pv_LoginPunto          IN VARCHAR2 Login del punto
    * @param  Pn_Start               IN NUMBER Inicio del rownum
    * @param  Pn_Limit               IN NUMBER Fin del rownum
    * @param  Pv_Status              OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError            OUT VARCHAR2 Mensaje de error
    * @param  Prf_PuntosMd           OUT SYS_REFCURSOR Cursor que retorna el listado de puntos
-   * @param  Pn_TotalPuntosMd       OUT NUMBER N�mero total de puntos
+   * @param  Pn_TotalPuntosMd       OUT NUMBER Número total de puntos
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 19-07-2020
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 29-07-2020 Se agrega la obtenci�n del ID_PERSONA_ROL de la consulta de puntos MD
+   * @version 1.1 29-07-2020 Se agrega la obtención del ID_PERSONA_ROL de la consulta de puntos MD
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.2 20-09-2020 Se eliminan variables que no son usadas en el procedimiento
@@ -1054,19 +1054,19 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
  /**
    * P_ENVIO_CORREO_CREA_SOL_PYL
-   * Procedimiento que env�a el correo a PYL por creaci�n de una solicitud
+   * Procedimiento que envía el correo a PYL por creación de una solicitud
    * 
-   * @param Pr_DataGeneralCliente       IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_DataGeneralCliente Registro con la informaci�n del servicio
-   * @param Pv_DescripcionSolicitud     IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE Descripci�n de la solicitud
-   * @param Pv_Observacion              IN VARCHAR2 Observaci�n del correo
-   * @param Pv_Status                   OUT VARCHAR2 Status de la ejecuci�n del procedimiento
-   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error de la ejecuci�n del procedimiento
+   * @param Pr_DataGeneralCliente       IN DB_INFRAESTRUCTURA.INKG_TYPES.Lr_DataGeneralCliente Registro con la información del servicio
+   * @param Pv_DescripcionSolicitud     IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE Descripción de la solicitud
+   * @param Pv_Observacion              IN VARCHAR2 Observación del correo
+   * @param Pv_Status                   OUT VARCHAR2 Status de la ejecución del procedimiento
+   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error de la ejecución del procedimiento
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 27-07-2020
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 24-09-2020 Se realiza validaci�n para env�o de correo por creaci�n de solicitud de agregar equipo para servicios W + AP
+   * @version 1.1 24-09-2020 Se realiza validación para envío de correo por creación de solicitud de agregar equipo para servicios W + AP
    *
    */
   PROCEDURE P_ENVIO_CORREO_CREA_SOL_PYL(
@@ -1078,18 +1078,18 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
     
   /**
    * P_GET_PUNTOS_CORTE_MASIVO
-   * Procedimiento que retorna el listado de puntos que se cortar�n de acuerdo a los par�metros enviados
+   * Procedimiento que retorna el listado de puntos que se cortarán de acuerdo a los parámetros enviados
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 07-08-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 08-09-2020 Se agregan a la consulta los filtros por tipo de documento(se considera usuario de creaci�n para FAC Y FACP) 
-   *                         y por fecha de creaci�n del documento.
+   * @version 1.1 08-09-2020 Se agregan a la consulta los filtros por tipo de documento(se considera usuario de creación para FAC Y FACP) 
+   *                         y por fecha de creación del documento.
    *
    * @author Javier Hidalgo <jihidalgo@telconet.ec>
    * @version 1.2 12-09-2022 - Se agregan a la consulta filtros por identificaciones excluidas 
-   *                            y por fecha de activaci�n del servicio.
+   *                            y por fecha de activación del servicio.
    *
    * @author Javier Hidalgo <jihidalgo@telconet.ec>
    * @version 1.3 15-11-2022 - Se agrega condicional y mejora en consulta para obtener puntos a cortar
@@ -1099,7 +1099,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @version 1.4 15-03-2023 - Se cambio el procedimiento para insertar el Query de consulta de puntos de corte masivo de insert_error a insert_log .
    *
    * @author Andrea Orellana <adorellana@telconet.ec>
-   * @version 1.5 16-04-2023 - Se agrega comillas simples en el ciclo ID por error al comparar varchar con number luego de la actualizaci�n de base a 19c.
+   * @version 1.5 16-04-2023 - Se agrega comillas simples en el ciclo ID por error al comparar varchar con number luego de la actualización de base a 19c.
    *
    * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Json con los filtros para la consulta
    * @param  Pv_ConsultaTotalRegistros  IN VARCHAR2 'SI' o 'NO' se realiza consulta del total de registros
@@ -1127,7 +1127,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    *
    * @author Javier Hidalgo <jihidalgo@telconet.ec>
    * @version 1.1 12-09-2022 - Se agregan a la consulta filtros por identificaciones excluidas 
-   *                            y por fecha de activaci�n del servicio.
+   *                            y por fecha de activación del servicio.
    *
    * @author Jessenia Piloso <jpiloso@telconet.ec>
    * @version 1.2 15-03-2023 - Se cambio el procedimiento para insertar el Query de consulta de resumen de corte masivo de insert_error a insert_log .
@@ -1136,7 +1136,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Json con los filtros para la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error
-   * @param  Prf_Registros              OUT SYS_REFCURSOR Cursor que retorna la informaci�n de conteo
+   * @param  Prf_Registros              OUT SYS_REFCURSOR Cursor que retorna la información de conteo
    *
    */
   PROCEDURE P_GET_RESUMEN_CORTE_MASIVO(
@@ -1147,14 +1147,14 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_VERIFICA_TECNOLOGIA_DB
-   * Procedimiento que verifica si la tecnolog�a est� permitida para los dual band
+   * Procedimiento que verifica si la tecnología está permitida para los dual band
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 15-09-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 31-03-2021 Se modifica funci�n para permitir buscar los modelos por tipo de ont y no s�lo los modelos Wifi Dual Band,
-   *                         as� como los modelos de extenders permitidos para cada uno
+   * @version 1.1 31-03-2021 Se modifica función para permitir buscar los modelos por tipo de ont y no sólo los modelos Wifi Dual Band,
+   *                         así como los modelos de extenders permitidos para cada uno
    *
    * @param  Pv_MarcaOlt                    IN VARCHAR2 Marca del olt
    * @param  Pv_ModeloOlt                   IN VARCHAR2 Modelo del olt
@@ -1163,7 +1163,7 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * @param  Pv_Status                      OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError                    OUT VARCHAR2 Mensaje de error
    * @param  Pv_ModelosEquiposOntXTipoOnt   OUT VARCHAR2 Modelos de onts que no son Wifi Dual Band y que permiten conectar un extender
-   * @param  Pv_ModelosEquiposEdbXTipoOnt   OUT VARCHAR2 Modelos de extenders que est�n conectados a onts que no son Wifi Dual Band
+   * @param  Pv_ModelosEquiposEdbXTipoOnt   OUT VARCHAR2 Modelos de extenders que están conectados a onts que no son Wifi Dual Band
    * @param  Pv_ModelosEquiposWdb           OUT VARCHAR2 Modelos de equipos Wifi Dual Band
    * @param  Pv_ModelosEquiposEdb           OUT VARCHAR2 Mensaje de equipos Extender Dual Band
    *
@@ -1182,27 +1182,27 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_VERIFICA_EQUIPO_ENLAZADO
-   * Procedimiento que verifica si un equipo est� enlazado o no
+   * Procedimiento que verifica si un equipo está enlazado o no
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 15-09-2020
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.1 31-03-2021 Se modifica funci�n para permitir buscar el equipo enlazado en caso de ser V5 y se agrega el par�metro 
-   *                         Pv_TieneAlgunEquipoEnlazado para saber si existe alg�n equipo del cliente conectado en el servicio
+   * @version 1.1 31-03-2021 Se modifica función para permitir buscar el equipo enlazado en caso de ser V5 y se agrega el parámetro 
+   *                         Pv_TieneAlgunEquipoEnlazado para saber si existe algún equipo del cliente conectado en el servicio
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
-   * @version 1.2 26-01-2022 Se modifica funci�n para permitir buscar los tipos de equipos parametrizados, ya sea WIFI DUAL BAND, EXTENDER DUAL BAND,
+   * @version 1.2 26-01-2022 Se modifica función para permitir buscar los tipos de equipos parametrizados, ya sea WIFI DUAL BAND, EXTENDER DUAL BAND,
    *                         ONT V5 y ONT ZTE PARA EXTENDER
    *
    * @param  Pn_IdServicioInternet      IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id del servicio de Internet
-   * @param  Pn_IdInterfaceElementoIni  IN NUMBER Id de la interface del elemento inicial para realizar b�squeda de enlace
+   * @param  Pn_IdInterfaceElementoIni  IN NUMBER Id de la interface del elemento inicial para realizar búsqueda de enlace
    * @param  Pv_TipoEquipoABuscar       IN VARCHAR2 Tipo de equipo a buscar
    * @param  Pv_ModeloEquipoABuscar     IN VARCHAR2 Modelo de equipo a buscar
    * @param  Pv_ProcesoEjecutante       IN VARCHAR2 Tipo de proceso que ejecuta
    * @param  Pv_Status                  OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error
-   * @param  Pv_InfoEquipoEncontrado    OUT VARCHAR2 Informaci�n del equipo encontrado
+   * @param  Pv_InfoEquipoEncontrado    OUT VARCHAR2 Información del equipo encontrado
    * @param  Pcl_TrazaElementos         OUT CLOB Traza de los elementos
    *
    */
@@ -1226,8 +1226,8 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * 
    * @param Pv_Login    		            IN DB_COMERCIAL.INFO_PUNTO.LOGIN%TYPE login usuario
    * @param Pv_Observacion              IN VARCHAR2 login
-   * @param Pv_Status                   OUT VARCHAR2 Status de la ejecuci�n del procedimiento
-   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error de la ejecuci�n del procedimiento
+   * @param Pv_Status                   OUT VARCHAR2 Status de la ejecución del procedimiento
+   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error de la ejecución del procedimiento
    * 
    * @author Kevin Ortiz <kcortiz@telconet.ec>
    * @version 1.0 27-08-2020
@@ -1240,13 +1240,13 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
                                 
   /**
    * P_WS_PUT_SUBSCRIBER
-   * Procedimiento de cambio de estado de productos kaspersky a trav�s de suscriber_id
+   * Procedimiento de cambio de estado de productos kaspersky a través de suscriber_id
    * 
    * 
    * @param Pv_Login    		            IN DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE estado 
    * @param Pv_Observacion              IN VARCHAR2 ID_SUBSCRIBER
-   * @param Pv_Status                   OUT VARCHAR2 Status de la ejecuci�n del procedimiento
-   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error de la ejecuci�n del procedimiento
+   * @param Pv_Status                   OUT VARCHAR2 Status de la ejecución del procedimiento
+   * @param Pv_MsjError                 OUT VARCHAR2 Mensaje de error de la ejecución del procedimiento
    * 
    * @author Kevin Ortiz <kcortiz@telconet.ec>
    * @version 1.0 27-08-2020
@@ -1261,12 +1261,12 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * F_GET_ULT_SERV_ADIC_X_PUNTO
-   * Funci�n que obtiene un servicio adicional de acuerdo a los par�metros enviados
+   * Función que obtiene un servicio adicional de acuerdo a los parámetros enviados
    *
    * @param  Fn_IdPunto             IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE Id del punto
-   * @param  Fv_NombreTecnicoProd   IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Nombre t�cnico del producto a verificar en el punto
+   * @param  Fv_NombreTecnicoProd   IN DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE Nombre técnico del producto a verificar en el punto
    * @param  Fv_EstadoServicio      IN VARCHAR2 Estado del servicio
-   * @param  Fv_ProcesoEjecutante   IN VARCHAR2 Nombre del proceso que invoca la funci�n
+   * @param  Fv_ProcesoEjecutante   IN VARCHAR2 Nombre del proceso que invoca la función
    * @return OUT DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -1282,13 +1282,13 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_REGISTRO_SPC
-   * Funci�n que obtiene un servicio adicional de acuerdo a los par�metros enviados
+   * Función que obtiene un servicio adicional de acuerdo a los parámetros enviados
    *
    * @param  Pn_IdSpc                       IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ID_SERVICIO_PROD_CARACT%TYPE Id del registro
    * @param  Pn_IdServicio                  IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Id del servicio
-   * @param  Pv_DescripcionCaracteristica   IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Descripci�n de la caracter�stica
-   * @param  Pv_ValorSpc                    IN DB_COMERCIAL.ADMI_CARACTERISTICA.VALOR%TYPE Valor de la caracter�stica asociada al servicio
-   * @param  Pv_EstadoSpc                   IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ESTADO%TYPE Estado de la caracter�stica asociada al servicio
+   * @param  Pv_DescripcionCaracteristica   IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Descripción de la característica
+   * @param  Pv_ValorSpc                    IN DB_COMERCIAL.ADMI_CARACTERISTICA.VALOR%TYPE Valor de la característica asociada al servicio
+   * @param  Pv_EstadoSpc                   IN DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ESTADO%TYPE Estado de la característica asociada al servicio
    * @param  Pv_OrdenarDescPorIdSpc         IN VARCHAR2 'SI' o 'NO' se ordena descendentemente por el campo ID_SERVICIO_PROD_CARACT
    * @param  Pv_Status                      OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                    OUT VARCHAR2 Mensaje de error del procedimiento
@@ -1311,20 +1311,20 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
      *
-     *  Documentaci�n para el procedimiento P_ROOLBACK_TRASLADO_SERVICIO.
+     *  Documentación para el procedimiento P_ROOLBACK_TRASLADO_SERVICIO.
      *  Metodo encargado de realizar roolback para el proceso de traslado de servicios
      * @param Pcl_Request    IN   CLOB Recibe json request
      * [
      *   listadoServicios    := listado de servicios del punto de origen,
      *   intIdPuntoCliente   := id del punto de destino,
      *   intIdPuntoOrigen    := id del punto de origen,
-     *   strIpCreacion       := ip de creaci�n
-     *   strUsuarioCreacion  := usuario de creaci�n
+     *   strIpCreacion       := ip de creación
+     *   strUsuarioCreacion  := usuario de creación
      *
      * ]
      *
-     * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-     * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+     * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+     * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
      *
      * @author Ivan Mata <imata@telconet.ec>
      * @version 1.0 12-03-2021
@@ -1336,13 +1336,13 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
    /**
    * F_GET_ID_DET_SOL_CARACT_VALIDA
-   * Funci�n que retorna el id del detalle solicitud caracter�stica
+   * Función que retorna el id del detalle solicitud característica
    *
    * @param  Fn_IdSolicitud             IN DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE Recibe el id de la solicitud
    * @param  Fn_IdServicio              IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE Recibe el id del servicio
-   * @param  Fv_CampoBusqueda           IN VARCHAR2 Nombre del campo por el cual se va a realizar la b�squeda
-   * @param  Fv_DescripcionCaract       IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Descripci�n de la caracter�stica
-   * @param  Fv_ValorDetSolCaract       IN DB_COMERCIAL.INFO_DETALLE_SOL_CARACT.VALOR%TYPE Valor del detalle solicitud caracter�stica
+   * @param  Fv_CampoBusqueda           IN VARCHAR2 Nombre del campo por el cual se va a realizar la búsqueda
+   * @param  Fv_DescripcionCaract       IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE Descripción de la característica
+   * @param  Fv_ValorDetSolCaract       IN DB_COMERCIAL.INFO_DETALLE_SOL_CARACT.VALOR%TYPE Valor del detalle solicitud característica
    * 
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 14-04-2021
@@ -1361,8 +1361,8 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
    * Procedimiento que retorna el listado de puntos asociados a un plan de Internet en un determinado OLT
    *
    * @param  Pn_IdSolicitud                 IN DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD Recibe el id de la solicitud a gestionarse
-   * @param  Pv_ParamProdGestionSimultanea  IN VARCHAR2 Parametro por el cual se filtrar� los productos
-   * @param  Pv_OpcionGestionSimultanea     IN VARCHAR2 Opci�n desde la que se invoca al procedimiento
+   * @param  Pv_ParamProdGestionSimultanea  IN VARCHAR2 Parametro por el cual se filtrará los productos
+   * @param  Pv_OpcionGestionSimultanea     IN VARCHAR2 Opción desde la que se invoca al procedimiento
    * @param  Pv_Status                      OUT VARCHAR2 Status de procedimiento
    * @param  Pv_MsjError                    OUT VARCHAR2 Mensaje de error
    * @param  Prf_RegistrosGestionSimultanea OUT SYS_REFCURSOR Cursor que retorna el listado de servicios
@@ -1382,9 +1382,9 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_INFOCLIENTE_INTERNET_WS
-   * Funci�n que obtiene la informaci�n de cliente y el servicio de Internet de acuerdo a los par�metros enviados en el json
+   * Función que obtiene la información de cliente y el servicio de Internet de acuerdo a los parámetros enviados en el json
    *
-   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Par�metros por los cu�les se realizar� la consulta
+   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Parámetros por los cuáles se realizará la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Prf_Registros              OUT SYS_REFCURSOR Cursor con los registros de la consulta
@@ -1406,9 +1406,9 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_INFOCLIENTE_PUNTO_WS
-   * Funci�n que obtiene la informaci�n del punto de acuerdo a los par�metros enviados en el json
+   * Función que obtiene la información del punto de acuerdo a los parámetros enviados en el json
    *
-   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Par�metros por los cu�les se realizar� la consulta
+   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Parámetros por los cuáles se realizará la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Prf_Registros              OUT SYS_REFCURSOR Cursor con los registros de la consulta
@@ -1425,9 +1425,9 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_INFOCLIENTE_SERVICIO_WS
-   * Funci�n que obtiene la informaci�n de los servicios de acuerdo a los par�metros enviados en el json
+   * Función que obtiene la información de los servicios de acuerdo a los parámetros enviados en el json
    *
-   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Par�metros por los cu�les se realizar� la consulta
+   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Parámetros por los cuáles se realizará la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Prf_Registros              OUT SYS_REFCURSOR Cursor con los registros de la consulta
@@ -1444,9 +1444,9 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_RESPUESTA_INFOCLIENTE_WS
-   * Funci�n que obtiene la respuesta en formato json de la consulta de la informaci�n de cliente, puntos y servicios en estado Activo e In-Corte
+   * Función que obtiene la respuesta en formato json de la consulta de la información de cliente, puntos y servicios en estado Activo e In-Corte
    *
-   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Par�metros por los cu�les se realizar� la consulta
+   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Parámetros por los cuáles se realizará la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Pcl_JsonRespuesta          OUT CLOB Respuesta en formato json de la consulta
@@ -1463,20 +1463,20 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
   /**
    * P_GET_INFOCLIENTE_INTERNET_ACS
-   * Funci�n que obtiene la informaci�n de cliente, el servicio de Internet y dem�s informaci�n de acuerdo a los par�metros enviados en el json
+   * Función que obtiene la información de cliente, el servicio de Internet y demás información de acuerdo a los parámetros enviados en el json
    *
-   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Par�metros por los cu�les se realizar� la consulta
+   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Parámetros por los cuáles se realizará la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Prf_Registros              OUT SYS_REFCURSOR Cursor con los registros de la consulta
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
+   * @author Jesús Bozada <jbozada@telconet.ec>
    * @version 1.0 21-08-2021
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.1 24-10-2021   Se agrega filtrado por empresa y se retornan nuevos campos de informaci�n solicitados
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.1 24-10-2021   Se agrega filtrado por empresa y se retornan nuevos campos de información solicitados
    *
-   * @author Jonathan Maz�n S�nchez <jmazon@telconet.ec>
+   * @author Jonathan Mazón Sánchez <jmazon@telconet.ec>
    * @version 1.2 28-02-2023   Se agrega filtrado por empresa ECUANET para la busqueda de parametros.
    *
    */
@@ -1488,18 +1488,18 @@ TYPE Lt_PametrosBind IS TABLE OF VARCHAR2(50) INDEX BY BINARY_INTEGER;
 
     /**
    * P_GET_INFOCLIENTE_ACS
-   * Funci�n que obtiene la informaci�n de cliente para la implementaci�n de la nueva plataforma unificada ACS
+   * Función que obtiene la información de cliente para la implementación de la nueva plataforma unificada ACS
    *
-   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Par�metros por los cu�les se realizar� la consulta
+   * @param  Pcl_JsonFiltrosBusqueda    IN CLOB Parámetros por los cuáles se realizará la consulta
    * @param  Pv_Status                  OUT VARCHAR2 Estado del procedimiento
    * @param  Pv_MsjError                OUT VARCHAR2 Mensaje de error del procedimiento
    * @param  Pcl_JsonRespuesta          OUT CLOB Respuesta en formato json de la consulta
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
+   * @author Jesús Bozada <jbozada@telconet.ec>
    * @version 1.0 20-08-2021
    *
-   * @author Jes�s Bozada <jbozada@telconet.ec>
-   * @version 1.1 24-10-2021   Se agrega filtrado por empresa y se retornan nuevos campos de informaci�n solicitados
+   * @author Jesús Bozada <jbozada@telconet.ec>
+   * @version 1.1 24-10-2021   Se agrega filtrado por empresa y se retornan nuevos campos de información solicitados
    *
    */
   PROCEDURE P_GET_INFOCLIENTE_ACS(
@@ -1521,7 +1521,7 @@ AS
     * @version 1.1 03-06-2016    Se agrega validacion de empresaCod a valores que deben ser recuperar clientes TN (vrf,vlan,as_privado)
     *
     * @author Jesus Bozada <jbozada@telconet.ec>
-    * @version 1.2 20-02-2017    Se agrega recuperaci�n de solicitud para agregar equipo SmartWifi
+    * @version 1.2 20-02-2017    Se agrega recuperación de solicitud para agregar equipo SmartWifi
     *
     * @author Francisco Adum <fadum@netlife.net.ec>
     * @version 1.3 06-07-2017    Se agrega recuperacion de caracteristica [ipv4] que indica si el cliente tiene ipv4 publica.
@@ -1537,14 +1537,14 @@ AS
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
     * @version 1.5 25-04-2018    Se realizan modificaciones para flujo de producto Ip Adicional para el Internet Small Business
     *
-    * @author Jes�s Bozada <jbozada@telconet.ec>
+    * @author Jesús Bozada <jbozada@telconet.ec>
     * @version 1.6 05-11-2018    Se realizan modificaciones para flujo de empresa TNP
     *
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
     * @version 1.7 08-02-2019    Se realizan modificaciones para flujo de producto TelcoHome
     *
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
-    * @version 1.8 09-07-2019    Se agrega la consulta de la solicitud de migraci�n en estado PendienteExtender para servicios 
+    * @version 1.8 09-07-2019    Se agrega la consulta de la solicitud de migración en estado PendienteExtender para servicios 
     *                            que necesiten agregar el equipo Extender Dual Band
     *
     * @author David Leon <mdleon@telconet.ec>
@@ -1555,10 +1555,10 @@ AS
     *                            Se cambio el tipo de dato de la variable Pn_TipoMedioBusquedaId de NUMBER a VARCHAR2
     *
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
-    * @version 1.11 27-04-2020   Se env�a el par�metro del id del producto en lugar del nombre t�cnico a la funci�n F_GET_VALIDACION_IP_FIJA_TN
+    * @version 1.11 27-04-2020   Se envía el parámetro del id del producto en lugar del nombre técnico a la función F_GET_VALIDACION_IP_FIJA_TN
     *
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
-    * @version 1.12 12-05-2020   Se agrega la obtenci�n de la marca del elemento para validar olts por marca y no por modelo por cambios de zte
+    * @version 1.12 12-05-2020   Se agrega la obtención de la marca del elemento para validar olts por marca y no por modelo por cambios de zte
     *
     * @author Jeampier Carriel <jacarriel@telconet.ec>
     * @version 1.13 2021-12-15 - Se agrega variable Pv_ServiciosFTTxTN para filtro para Servicios FTTx de Clientes Telconet.
@@ -2240,7 +2240,7 @@ END GET_VALOR_SERVICIO_CARACT_CM;
 /**
 * GET_DATO_SUBRED_SERVICIO
 *
-* Funci�n que permite obtener la ip del servicio
+* Función que permite obtener la ip del servicio
 *
 * @author Kenneth Jimenez <kjimenez@telconet.ec>
 * @param number Fn_idServicio
@@ -2303,7 +2303,7 @@ END GET_DATO_SUBRED_SERVICIO;
 /**
 * GET_IP_SERVICIO
 *
-* Funci�n que permite obtener la ip del servicio
+* Función que permite obtener la ip del servicio
 *
 * @author Kenneth Jimenez <kjimenez@telconet.ec>
 * @param number Fn_idServicio
@@ -2492,7 +2492,7 @@ END GET_VALOR_DETALLE_ELEMENTO;
 *
 * @author Allan Suarez <arsuarez@telconet.ec>
 * @version 1.1 21-09-2017 - Se agrega validacion para validar que si el Producto tiene marca de requiere info tecnica (SI)
-*                           muestre por default el flujo de acuerdo a la empresa a la cual pertence el due�o del servicio
+*                           muestre por default el flujo de acuerdo a la empresa a la cual pertence el dueño del servicio
 *                           en caso de que no tenga una ultima milla definida
 * @param  INFO_EMPRESA_GRUPO.PREFIJO%TYPE                             Fv_PrefijoEmpresa     prefijo de la empresa
 * @param  DB_INFRAESTRUCTURA.ADMI_TIPO_MEDIO.CODIGO_TIPO_MEDIO%TYPE   Fv_CodigoTipoMedio    id de la empresa
@@ -2555,7 +2555,7 @@ END GET_FLUJO_TECNICO;
 * @version 1.0 29-10-2014
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
-* @version 1.1 07-04-2017 - Se modifica la funci�n para que se muestre los botones para el producto preferencial CAMARA IP perteneciente al paquete
+* @version 1.1 07-04-2017 - Se modifica la función para que se muestre los botones para el producto preferencial CAMARA IP perteneciente al paquete
 *                           de NETLIFECAM
 *
 * @param  INFO_PLAN_CAB.ID_PLAN%TYPE          Fn_IdPlan            id del plan
@@ -3484,7 +3484,7 @@ END GET_ID_DETALLE_ULTIMA_SOL;
 /**
 * GET_RD_ID
 *
-* Funci�n que permite obtener la ip del servicio
+* Función que permite obtener la ip del servicio
 *
 * @author Kenneth Jimenez <kjimenez@telconet.ec>
 * @param number Fn_idServicio
@@ -3536,7 +3536,7 @@ END GET_RD_ID;
 
 /**
  * F_GET_VALOR_DET_ELE_FILTROS
- * Funcion que retorna informaci�n acerca del cliente segun los parametros enviados
+ * Funcion que retorna información acerca del cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  * @param  INFO_DETALLE_ELEMENTO.ELEMENTO_ID%TYPE    IN  Fn_ElementoId
@@ -3588,7 +3588,7 @@ END F_GET_VALOR_DET_ELE_FILTROS;
 
 --
 /**
-* Funci�n que obtiene la capacidad total de los servicios de una interface
+* Función que obtiene la capacidad total de los servicios de una interface
 *
 * @author Felix Caicedo <facaicedo@telconet.ec>
 * @version 1.0 18-06-2020
@@ -3693,7 +3693,7 @@ END F_GET_BW_TOTAL_INTERFACE;
 
 /**
  * P_WS_GET_ROL_CLIENTE
- * Funcion que retorna informaci�n acerca del cliente segun los parametros enviados
+ * Funcion que retorna información acerca del cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  *
@@ -3701,7 +3701,7 @@ END F_GET_BW_TOTAL_INTERFACE;
  * @version 1.1 15-12-2016    Se agrega un nivel de filtrado de rol del cliente en el query para recuperar informacion
  *                            del cliente consultado
  *
- * @author H�ctor Lozano <hlozano@telconet.ec>
+ * @author Héctor Lozano <hlozano@telconet.ec>
  * @version 1.2 06-12-2018    Se agrega el campo OFICINA_ID, para ser consultado en el query principal. 
  *
  * @param  DB_COMERCIAL.INFO_EMPRESA_ROL.EMPRESA_COD%TYPE         IN Pv_EmpresaCod
@@ -3818,7 +3818,7 @@ END P_WS_GET_ROL_CLIENTE;
 
 /**
  * P_WS_GET_ROL_CLIENTE_EXT
- * Funcion que retorna informaci�n acerca del cliente segun los parametros enviados, y estados parametrizados
+ * Funcion que retorna información acerca del cliente segun los parametros enviados, y estados parametrizados
  * para extranet
  * @author Jose Bedon <jobedon@telconet.ec>
  * @version 1.0 22-04-2020
@@ -3995,12 +3995,12 @@ END P_WS_GET_ROL_CLIENTE_EXT;
 
 /**
  * P_WS_GET_PUNTOS_CLIENTE
- * Funcion que retorna informaci�n acerca de puntos de un cliente segun los parametros enviados
+ * Funcion que retorna información acerca de puntos de un cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  *
  * @author Jesus Bozada <jbozada@telconet.ec>
- * @version 1.1 15-10-2018 Se modifica recuperaci�n de correos del cliente y se agrega par�metro nuevo SALDO del punto del cliente
+ * @version 1.1 15-10-2018 Se modifica recuperación de correos del cliente y se agrega parámetro nuevo SALDO del punto del cliente
  * @since 1.0
  * 
  * @author Jose Bedon <jobedon@telconet.ec>
@@ -4084,7 +4084,7 @@ WHEN OTHERS THEN
 END P_WS_GET_PUNTOS_CLIENTE;
 /**
  * P_WS_GET_SERVICIOS_PTO_CLIENTE
- * Funcion que retorna informaci�n acerca de servicios delpunto de un cliente segun los parametros enviados
+ * Funcion que retorna información acerca de servicios delpunto de un cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  *
@@ -4200,13 +4200,13 @@ WHEN OTHERS THEN
 END P_WS_GET_SERVICIOS_PTO_CLIENTE;
 /**
  * P_WS_GET_INF_SERVICIO_INTERNET
- * Funcion que retorna informaci�n tecnica del servicio de internet del punto de un cliente segun los parametros enviados
+ * Funcion que retorna información tecnica del servicio de internet del punto de un cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  * @author Francisco Adum <fadum@netlife.net.ec>
  * @version 1.1 06-07-2017  Se agrega valor de [ipv4] para saber si el cliente tiene asignada una ipv4 publica
- * @author Jes�s Bozada <jbozada@telconet.ec>
- * @version 1.2 16-09-2019  Se agregan par�metros promocionales de BW para ser utilizados en operaciones t�cnicas del negocio
+ * @author Jesús Bozada <jbozada@telconet.ec>
+ * @version 1.2 16-09-2019  Se agregan parámetros promocionales de BW para ser utilizados en operaciones técnicas del negocio
  * @param  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE     IN  Pn_IdServicioInternet
  * @param  Lrf_Result OUT Prf_Result
  * @param  VARCHAR2   OUT Pv_Status
@@ -4284,7 +4284,7 @@ WHEN OTHERS THEN
 END P_WS_GET_INF_SERVICIO_INTERNET;
 /**
  * P_WS_GET_IPS_POR_PUNTO
- * Funcion que retorna informaci�n acerca de Ips del punto de un cliente segun los parametros enviados
+ * Funcion que retorna información acerca de Ips del punto de un cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  * @author Jesus Bozada <jbozada@telconet.ec>
@@ -4333,7 +4333,7 @@ WHEN OTHERS THEN
 END P_WS_GET_IPS_POR_PUNTO;
 /**
  * P_WS_GET_CASOS_POR_PUNTO
- * Funcion que retorna informaci�n acerca de casos del punto de un cliente segun los parametros enviados
+ * Funcion que retorna información acerca de casos del punto de un cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  * @author Jesus Bozada <jbozada@telconet.ec>
@@ -4383,7 +4383,7 @@ WHEN OTHERS THEN
 END P_WS_GET_CASOS_POR_PUNTO;
 /**
  * P_WS_GET_TAREAS_POR_PUNTO
- * Funcion que retorna informaci�n acerca de tareas del punto de un cliente segun los parametros enviados
+ * Funcion que retorna información acerca de tareas del punto de un cliente segun los parametros enviados
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 30-09-2016
  * @param  DB_SOPORTE.INFO_PARTE_AFECTADA.AFECTADO_NOMBRE%TYPE   IN  Pv_Login
@@ -4593,7 +4593,7 @@ END P_WS_GET_LOGINES_POR_OLT;
 
 /**
  * P_GET_SERVICIOS_MISMA_UM
- * Funcion que retorna informaci�n acerca de los servicios asociados a una misma UM segun los parametros enviados
+ * Funcion que retorna información acerca de los servicios asociados a una misma UM segun los parametros enviados
  * 
  * @author Jesus Bozada <jbozada@telconet.ec>
  * @version 1.0 25-10-2016
@@ -4746,7 +4746,7 @@ END P_GET_SERVICIOS_MISMA_UM;
 /**
  * GET_EXISTE_AS_PRIVADO
  *
- * Funci�n que permite obtener si un asprivado existe o no dentro de otro servicio ( internet mpls ) o dentro de otro
+ * Función que permite obtener si un asprivado existe o no dentro de otro servicio ( internet mpls ) o dentro de otro
  * cliente ( l3mpls )
  *
  * @author Allan Suarez <arsuarez@telconet.ec>
@@ -5882,7 +5882,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
       Prf_OltsCpm       := NULL;
       Pn_TotalOltsCpm   := 0;
       Pv_Status         := 'ERROR';
-      Pv_MsjError       := 'No se ha podido realizar la consulta de manera correcta. Por favor comun�quese con Sistemas';
+      Pv_MsjError       := 'No se ha podido realizar la consulta de manera correcta. Por favor comuníquese con Sistemas';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                             'TECNK_SERVICIOS.P_GET_OLTS_INICIO_CPM', 
                                             'Error al obtener la consulta - ' || SQLCODE || ' - ERROR_STACK: ' 
@@ -6085,7 +6085,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
       Prf_ServiciosIps          := NULL;
       Pn_TotalServiciosIps := 0;
       Pv_Status                 := 'ERROR';
-      Pv_MsjError               := 'No se ha podido realizar la consulta de manera correcta. Por favor comun�quese con Sistemas';
+      Pv_MsjError               := 'No se ha podido realizar la consulta de manera correcta. Por favor comuníquese con Sistemas';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                             'TECNK_SERVICIOS.P_GET_SERV_IPS_MIGRACION', 
                                             'Error al obtener la consulta - ' || SQLCODE || ' - ERROR_STACK: ' 
@@ -6604,35 +6604,35 @@ END F_GET_VALIDACION_IP_FIJA_TN;
             IF Lv_MarcaOlt = 'HUAWEI' OR Lv_MarcaOlt = 'TELLION' OR Lv_MarcaOlt = 'ZTE' THEN
               Lv_ContinuaValidacion := 'SI';
             ELSE
-            --Caso contrario de la validaci�n de la marca del olt
+            --Caso contrario de la validación de la marca del olt
               Pv_Status     := 'ERROR';
               Pv_TipoError  := 'ErrorValidaMarcaOlt';
             END IF;
-            --Fin de la validaci�n de la marca del olt
+            --Fin de la validación de la marca del olt
           ELSE
-          --Caso contrario de la validaci�n del id del olt
+          --Caso contrario de la validación del id del olt
             Pv_Status     := 'ERROR';
             Pv_TipoError  := 'ErrorValidaIdOlt';
           END IF;
-          --Fin de la validaci�n del id del olt
+          --Fin de la validación del id del olt
         ELSE
-        --Caso contrario de la validaci�n del id del punto
+        --Caso contrario de la validación del id del punto
           Pv_Status     := 'ERROR';
           Pv_TipoError  := 'ErrorValidaIdPunto';
         END IF;
-        --Fin de la validaci�n del id del punto
+        --Fin de la validación del id del punto
       ELSE
-      --Caso contrario de la validaci�n del id del plan nuevo
+      --Caso contrario de la validación del id del plan nuevo
         Pv_Status     := 'ERROR';
         Pv_TipoError  := 'ErrorValidaIdPlanNuevo';
       END IF;
-      --Fin de la validaci�n del id del plan nuevo
+      --Fin de la validación del id del plan nuevo
     ELSE
-    --Caso contrario de la validaci�n del id del plan nuevo
+    --Caso contrario de la validación del id del plan nuevo
       Pv_Status     := 'ERROR';
       Pv_TipoError  := 'ErrorValidaDataCsv';
     END IF;
-    --Fin de la validaci�n del nombre del olt, login del punto y id del plan nuevo
+    --Fin de la validación del nombre del olt, login del punto y id del plan nuevo
 
     IF Lv_ContinuaValidacion = 'SI' THEN
       Lv_ContinuaValidacion := 'NO';
@@ -6653,30 +6653,30 @@ END F_GET_VALIDACION_IP_FIJA_TN;
           Pv_Status     := 'ERROR';
           Pv_TipoError  := 'ErrorValidaCountSolicitudesCpm';
         ELSE
-        --Caso contrario de la validaci�n del conteo de solicitudes de cambio de plan masivo
+        --Caso contrario de la validación del conteo de solicitudes de cambio de plan masivo
           IF Lv_TipoPlanViejo = Lv_TipoPlanNuevo THEN
             IF Lv_AplicaCpmPlanNuevo = 'SI' THEN
               Lv_ContinuaValidacion := 'SI';
             ELSE
-            --Caso contrario de la validaci�n de si aplica el cambio de plan masivo
+            --Caso contrario de la validación de si aplica el cambio de plan masivo
               Pv_Status     := 'ERROR';
               Pv_TipoError  := 'ErrorValidaAplicaCpm';
             END IF;
-            --Fin de la validaci�n de si aplica el cambio de plan masivo
+            --Fin de la validación de si aplica el cambio de plan masivo
           ELSE
-          --Caso contrario de la validaci�n de comparaci�n de tipos de planes
+          --Caso contrario de la validación de comparación de tipos de planes
             Pv_Status     := 'ERROR';
             Pv_TipoError  := 'ErrorValidaTipoPlanes';
           END IF;
-          --Fin de la validaci�n de de comparaci�n de tipos de planes
+          --Fin de la validación de de comparación de tipos de planes
         END IF;
-        --Fin de la validaci�n del conteo de solicitudes de cambio de plan masivo
+        --Fin de la validación del conteo de solicitudes de cambio de plan masivo
       ELSE
-      --Caso contrario de la validaci�n del id del servicio
+      --Caso contrario de la validación del id del servicio
         Pv_Status     := 'ERROR';
         Pv_TipoError  := 'ErrorValidaIdServicio';
       END IF;
-      --Fin de la validaci�n del id del servicio
+      --Fin de la validación del id del servicio
     END IF;
 
     IF Lv_ContinuaValidacion = 'SI' THEN
@@ -6704,13 +6704,13 @@ END F_GET_VALIDACION_IP_FIJA_TN;
             Pr_RegDataPorProcesar.NOMBRE_OLT            := Lv_NombreOltCsv;
             Pr_RegDataPorProcesar.VALOR_EQUIPO          := Lv_ValorEquipoCsv;
           ELSE
-          --Caso contrario de la validaci�n de verificar el valor del equipo
+          --Caso contrario de la validación de verificar el valor del equipo
             Pv_Status     := 'ERROR';
             Pv_TipoError  := 'ErrorValidaValorEquipo';
           END IF;
-          --Fin de la validaci�n de verificar el valor del equipo
+          --Fin de la validación de verificar el valor del equipo
         ELSE
-        --Caso contrario de la validaci�n de si es necesario verificar el valor del equipo
+        --Caso contrario de la validación de si es necesario verificar el valor del equipo
           Pv_Status                                 := 'OK';
           Pv_TipoError                              := '';
           Pr_RegDataPorProcesar                     := NULL;
@@ -6724,9 +6724,9 @@ END F_GET_VALIDACION_IP_FIJA_TN;
           Pr_RegDataPorProcesar.NOMBRE_OLT          := Lv_NombreOltCsv;
           Pr_RegDataPorProcesar.VALOR_EQUIPO        := Lv_ValorEquipoCsv;
         END IF;
-        --Fin de la validaci�n de si es necesario verificar el valor del equipo
+        --Fin de la validación de si es necesario verificar el valor del equipo
       ELSE
-      --Caso contrario de la validaci�n de si aplica el cambio de plan masivo
+      --Caso contrario de la validación de si aplica el cambio de plan masivo
         Pv_Status     := 'ERROR';
         Pv_TipoError  := 'ErrorValidaIdServicioTecnico';
       END IF;
@@ -6737,7 +6737,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
     Pv_TipoError            := 'ErrorDesconocido';
     Pr_RegDataPorProcesar   := NULL;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 'TECNK_SERVICIOS.P_VALIDA_LINEA_CSV_CPM', 
-                                            'Error en la validaci�n de la l�nea del archivo CSV para el cambio de plan masivo ' || SQLCODE 
+                                            'Error en la validación de la línea del archivo CSV para el cambio de plan masivo ' || SQLCODE 
                                             || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
                                             || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE, 
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL'), SYSDATE, 
@@ -6889,7 +6889,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
   WHEN OTHERS THEN
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'TECNK_SERVICIOS.F_GET_PARAMS_SERVICIOS_MD', 
-                                            'Error al consultar los detalles del par�metro PARAMETROS_ASOCIADOS_A_SERVICIOS_MD - ' 
+                                            'Error al consultar los detalles del parámetro PARAMETROS_ASOCIADOS_A_SERVICIOS_MD - ' 
                                             || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
                                             || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL'),
@@ -7074,7 +7074,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
   WHEN OTHERS THEN
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'TECNK_SERVICIOS.F_GET_SOL_VALIDA_DUAL_BAND', 
-                                            'Error al obtener la solicitud v�lida para gestionar equipos W del servicio ' || Fn_IdServicio || ' - ' 
+                                            'Error al obtener la solicitud válida para gestionar equipos W del servicio ' || Fn_IdServicio || ' - ' 
                                             || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
                                             || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                             NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL'),
@@ -7179,7 +7179,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
   EXCEPTION
   WHEN OTHERS THEN
     Pv_Status   := 'ERROR';
-    Pv_MsjError := 'No se ha podido validar la informaci�n del antivirus';
+    Pv_MsjError := 'No se ha podido validar la información del antivirus';
   END P_VALIDA_FLUJO_ANTIVIRUS;
 
   PROCEDURE P_VERIFICA_CAMBIO_PLAN(
@@ -7323,14 +7323,14 @@ END F_GET_VALIDACION_IP_FIJA_TN;
         WHEN Lrf_ServsAdicIProtegidoXPto%NOTFOUND;
         END LOOP;
         CLOSE Lrf_ServsAdicIProtegidoXPto;
-        --Si el cliente est� trabajando bajo el flujo McAfee debe seguir valid�ndose esta informaci�n.
+        --Si el cliente está trabajando bajo el flujo McAfee debe seguir validándose esta información.
         IF Lv_ExistenIPMPAdicionales = 'SI' THEN
           Lv_MsjError               := 'Cambio de Plan no permitido porque el cliente tiene contratado MCAFEE como producto adicional.';
           RAISE Le_Exception;
         END IF;
       END IF;
 
-      --Se verifica si la tecnolog�a es permitida para equipos Dual Band y si est� permitido validar equipos W y Extender en planes
+      --Se verifica si la tecnología es permitida para equipos Dual Band y si está permitido validar equipos W y Extender en planes
       Lr_RespuestaBusqTecnologiaDb       := NULL;
       Lr_ParametroDetalleBusqueda        := NULL;
       Lr_ParametroDetalleBusqueda.VALOR1 := Lv_ModelosOltEquiposdb;
@@ -7394,7 +7394,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
         END IF;
       END IF;
     ELSE
-      Lv_MsjError := 'No se ha podido obtener la informaci�n t�cnica del servicio que desea cambiar de plan';
+      Lv_MsjError := 'No se ha podido obtener la información técnica del servicio que desea cambiar de plan';
       RAISE Le_Exception;
     END IF;
     Pv_Status := 'OK';
@@ -7553,7 +7553,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
       ELSE
         Prf_PuntosMd        := NULL;
         Pv_Status           := 'ERROR';
-        Pv_MsjError         := 'Por favor ingrese la c�dula del cliente o el login del punto para realizar la b�squeda';
+        Pv_MsjError         := 'Por favor ingrese la cédula del cliente o el login del punto para realizar la búsqueda';
         Pn_TotalPuntosMd    := 0;
       END IF;
       Pv_Status                := 'OK';
@@ -7562,7 +7562,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
       Prf_PuntosMd      := NULL;
       Pn_TotalPuntosMd  := 0;
       Pv_Status         := 'ERROR';
-      Pv_MsjError       := 'No se ha podido realizar la consulta de manera correcta. Por favor comun�quese con Sistemas';
+      Pv_MsjError       := 'No se ha podido realizar la consulta de manera correcta. Por favor comuníquese con Sistemas';
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                             'TECNK_SERVICIOS.P_GET_PUNTOS_MD_ASOCIADOS', 
                                             'Error al obtener la consulta - ' || SQLCODE || ' - ERROR_STACK: ' 
@@ -7585,7 +7585,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
     Lv_PlantillaCorreo              VARCHAR2(32767);
     Lr_GetAliasPlantillaCorreo      DB_FINANCIERO.FNKG_TYPES.Lr_AliasPlantilla;
   BEGIN
-    --Env�o de correo a PYL por creaci�n de la solicitud de agregar equipo
+    --Envío de correo a PYL por creación de la solicitud de agregar equipo
     Lr_GetAliasPlantillaCorreo  := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA('AGREGAEQUIPOPYL');
     Lv_PlantillaInicial         := Lr_GetAliasPlantillaCorreo.PLANTILLA;
     Lv_PlantillaCorreo          := Lv_PlantillaInicial;
@@ -7730,17 +7730,17 @@ END F_GET_VALIDACION_IP_FIJA_TN;
     END IF;
 
     IF Lv_CodEmpresa IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio del c�digo de la empresa';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio del código de la empresa';
       RAISE Le_Exception;
     END IF;
 
     IF Lv_FechaCreacionDoc IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio de la fecha de creaci�n del documento';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio de la fecha de creación del documento';
       RAISE Le_Exception;
     END IF;
 
     IF Lv_TiposDocumentos IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio del tipo de documento';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio del tipo de documento';
       RAISE Le_Exception;
     END IF;
 
@@ -7990,7 +7990,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
                          'Ejecutando procedure principal P_GET_PUNTOS_CORTE_MASIVO',
                          'Seguimiento',
                          Lcl_QueryFinal,
-                         'Sin par�metros',
+                         'Sin parámetros',
                          NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL')); 
     OPEN Lrf_PuntosCorteMasivo FOR Lcl_QueryFinal;
     Pv_Status         := 'OK';
@@ -8117,17 +8117,17 @@ END F_GET_VALIDACION_IP_FIJA_TN;
     END IF;
 
     IF Lv_CodEmpresa IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio del c�digo de la empresa';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio del código de la empresa';
       RAISE Le_Exception;
     END IF;
 
     IF Lv_FechaCreacionDoc IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio de la fecha de creaci�n del documento';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio de la fecha de creación del documento';
       RAISE Le_Exception;
     END IF;
 
     IF Lv_TiposDocumentos IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio del tipo de documento';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio del tipo de documento';
       RAISE Le_Exception;
     END IF;
 
@@ -8326,7 +8326,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
                          'Ejecutando procedure principal P_GET_RESUMEN_CORTE_MASIVO',
                          'Seguimiento',
                          Lcl_QueryFinal,
-                         'Sin par�metros',
+                         'Sin parámetros',
                          NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL')); 
 
     OPEN Lrf_ResumenCorteMasivo FOR Lcl_QueryFinal;
@@ -8417,7 +8417,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
         Lv_MarcaElementoSt  := Lr_InfoServicioTecnico.NOMBRE_MARCA_ELEMENTO;
         Lv_ModeloElementoSt := Lr_InfoServicioTecnico.NOMBRE_MODELO_ELEMENTO;
       ELSE
-        Lv_MsjError := 'No se ha podido obtener la informaci�n t�cnica del Servicio de Internet contratado.';
+        Lv_MsjError := 'No se ha podido obtener la información técnica del Servicio de Internet contratado.';
         RAISE Le_Exception;
       END IF;
       CLOSE Lc_GetInfoServicioTecnico;
@@ -8531,7 +8531,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
       Lv_MsjError := Lv_MarcaElementoSt || '|' || Lv_ModeloElementoSt || '|' || Lv_PermitidoWYExtenderEnPlanes ;
     ELSE
       Lv_Status   := 'ERROR';
-      Lv_MsjError := 'No est� permitido para la tecnolog�a del Servicio de Internet contratado';
+      Lv_MsjError := 'No está permitido para la tecnología del Servicio de Internet contratado';
     END IF;
     Pv_Status                       := Lv_Status;
     Pv_MsjError                     := Lv_MsjError;
@@ -8557,7 +8557,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
     Pv_Status                       := 'ERROR';
     Lv_MsjError                     := 'Error inesperado ' || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK 
                                        || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
-    Pv_MsjError                     := 'Ha ocurrido un error al verificar la tecnolog�a Dual Band. Por favor consultar con el Dep. de Sistemas!';
+    Pv_MsjError                     := 'Ha ocurrido un error al verificar la tecnología Dual Band. Por favor consultar con el Dep. de Sistemas!';
     Pv_ModelosEquiposOntXTipoOnt    := Lv_ModelosEquiposOntXTipoOnt;
     Pv_ModelosEquiposEdbXTipoOnt    := Lv_ModelosEquiposEdbXTipoOnt;
     Pv_ModelosEquiposWdb            := Lv_ModelosEquiposWdb;
@@ -8672,7 +8672,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
         Ln_IdInterfaceElementoIni := Pn_IdInterfaceElementoIni;
       END IF;
     ELSE
-      Lv_MsjError := 'No se ha podido obtener la informaci�n t�cnica del Servicio de Internet contratado';
+      Lv_MsjError := 'No se ha podido obtener la información técnica del Servicio de Internet contratado';
       RAISE Le_Exception;
     END IF;
     CLOSE Lc_GetInfoServicioTecnico;
@@ -8689,7 +8689,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
     IF Lr_RespuestaBusqEquipodb.ID_PARAMETRO_DET IS NOT NULL THEN
       Lv_EsTipoEquipoParam := 'SI';
     ELSIF Pv_ModeloEquipoABuscar IS NULL THEN
-      Lv_MsjError           := 'El tipo de equipo ' || Pv_TipoEquipoABuscar || ' no est� permitido para la tecnolog�a ' 
+      Lv_MsjError           := 'El tipo de equipo ' || Pv_TipoEquipoABuscar || ' no está permitido para la tecnología ' 
                                || Lv_MarcaElementoSt || ' del servicio de Internet contratado';
       Lv_ConsultarASistemas := 'NO';
       RAISE Le_Exception;
@@ -8737,7 +8737,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
             Lv_MsjError := 'La interface ' || Lr_ElementoXInterface.NOMBRE_INTERFACE_ELEMENTO || ' del elemento ' 
                            || Lr_ElementoXInterface.NOMBRE_ELEMENTO || ' tiene ' || Ln_NumEnlacesXInterfaceIni || ' enlaces.';
           ELSE
-            Lv_MsjError := 'Ha ocurrido un error al obtener la informaci�n del elemento asociado a la INTERFACE INICIAL con ID '
+            Lv_MsjError := 'Ha ocurrido un error al obtener la información del elemento asociado a la INTERFACE INICIAL con ID '
                            || Ln_IdInterfaceElementoIni || ' que tiene ' || Ln_NumEnlacesXInterfaceIni || ' enlaces.';
           END IF;
           CLOSE Lc_GetElementoXInterface;
@@ -8799,7 +8799,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
               END IF;
               Ln_IdInterfaceElementoIni := Ln_IdInterfaceElementoFin;
             ELSE
-              Lv_MsjError := 'Ha ocurrido un error al obtener la informaci�n del elemento asociado a la INTERFACE FINAL CON ID '
+              Lv_MsjError := 'Ha ocurrido un error al obtener la información del elemento asociado a la INTERFACE FINAL CON ID '
                              || Ln_IdInterfaceElementoIni;
               RAISE Le_Exception;
             END IF;
@@ -8810,7 +8810,7 @@ END F_GET_VALIDACION_IP_FIJA_TN;
               Lv_ContinuaVerificacion := 'NO';
             END IF;
           ELSE
-            Lv_MsjError := 'Ha ocurrido un error al obtener la informaci�n del enlace asociado a la INTERFACE INICIAL CON ID '
+            Lv_MsjError := 'Ha ocurrido un error al obtener la información del enlace asociado a la INTERFACE INICIAL CON ID '
                            || Ln_IdInterfaceElementoIni;
             RAISE Le_Exception;
           END IF;
@@ -9168,7 +9168,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
                  RAISE Le_Errors;
 
               ELSE
-                 Lv_MensajeError := 'No es posible realizar la activaci�n del SubscriberId se encuentra en estado: '||Lr_ServicioCaracteristica.ESTADO;
+                 Lv_MensajeError := 'No es posible realizar la activación del SubscriberId se encuentra en estado: '||Lr_ServicioCaracteristica.ESTADO;
                  RAISE Le_Errors; 
               
              END IF;
@@ -9188,7 +9188,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
                            MESSAGE      => 
                         '<html>
                              <head>
-                               <meta meta http-equiv=�Content-Type� content=�text/html; charset=UTF-8� /> 
+                               <meta meta http-equiv=”Content-Type” content=”text/html; charset=UTF-8" /> 
                                <meta content="width=device-width, initial-scale=1" name="viewport"> 
                                <meta name="x-apple-disable-message-reformatting"> 
                                <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
@@ -9213,7 +9213,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
                     END IF; 
                    
                  CLOSE C_CORREO_ELECTRONICO;
-                 Lv_MensajeError := 'No se encontr� SubscriberId';
+                 Lv_MensajeError := 'No se encontró SubscriberId';
                  RAISE Le_Errors;
                
              END IF;
@@ -9309,7 +9309,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
   WHEN OTHERS THEN
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(   'Telcos+', 
                                             'TECNK_SERVICIOS.F_GET_ULT_SERV_ADIC_X_PUNTO', 
-                                            'Error al intentar obtener el �ltimo servicio adicional por punto ' || Fn_IdPunto || ' , nombre t�cnico ' 
+                                            'Error al intentar obtener el último servicio adicional por punto ' || Fn_IdPunto || ' , nombre técnico ' 
                                             || Fv_NombreTecnicoProd
                                             || ' , estado servicio: ' || Fv_EstadoServicio || ' , proceso ejecutante: ' || Fv_ProcesoEjecutante 
                                             || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
@@ -9389,7 +9389,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
   EXCEPTION
   WHEN OTHERS THEN
     Pv_Status   := 'ERROR';
-    Pv_MsjError := 'No se ha podido obtener el registro de la caracter�stica asociada al servicio';
+    Pv_MsjError := 'No se ha podido obtener el registro de la característica asociada al servicio';
   END P_GET_REGISTRO_SPC;
 
 
@@ -9549,7 +9549,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
         END LOOP;
         
         Pv_Status   := 'OK';
-        Pv_Mensaje  := 'Se realiz� el proceso de rollback exitosamente';
+        Pv_Mensaje  := 'Se realizó el proceso de rollback exitosamente';
         
         COMMIT;
 
@@ -9713,8 +9713,8 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     Lcl_Query                       CLOB;
   BEGIN
     IF Pn_IdSolicitud IS NULL THEN
-      Lv_MsjError   := 'No se ha enviado el par�metro con el ID de la solicitud que el usuario est� gestionando para obtener '
-                        || 'las que deben gestionarse simult�neamente';
+      Lv_MsjError   := 'No se ha enviado el parámetro con el ID de la solicitud que el usuario está gestionando para obtener '
+                        || 'las que deben gestionarse simultáneamente';
       RAISE Le_Exception;
     END IF;
 
@@ -9937,11 +9937,11 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     Prf_RegistrosGestionSimultanea  := NULL;
   WHEN OTHERS THEN
     Pv_Status                       := 'ERROR';
-    Pv_MsjError                     := 'No se ha podido obtener los registros con la informaci�n de la gesti�n simult�nea';
+    Pv_MsjError                     := 'No se ha podido obtener los registros con la información de la gestión simultánea';
     Prf_RegistrosGestionSimultanea  := NULL;
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                           'TECNK_SERVICIOS.P_GET_INFO_GESTION_SIMULTANEA',
-                                          'No se ha podido obtener los registros con la informaci�n de la gesti�n simult�nea  - ' 
+                                          'No se ha podido obtener los registros con la información de la gestión simultánea  - ' 
                                           || SQLCODE || ' - ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' 
                                           || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_COMERCIAL'), 
@@ -9997,12 +9997,12 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     Lv_NumParamsMaximo      := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'strNumParamsMaximo'));
     
     IF Lv_Identificacion IS NULL AND Lv_Login IS NULL AND Lv_SerieOnt IS NULL AND Lv_MacOnt IS NULL THEN
-      Lv_MsjError := 'No se ha enviado alguno de los par�metros obligatorios para obtener la informaci�n del cliente';
+      Lv_MsjError := 'No se ha enviado alguno de los parámetros obligatorios para obtener la información del cliente';
       RAISE Le_Exception;
     END IF;
     
     IF Lv_CodEmpresa IS NULL THEN
-      Lv_MsjError := 'No se ha enviado el par�metro obligatorio del c�digo de la empresa';
+      Lv_MsjError := 'No se ha enviado el parámetro obligatorio del código de la empresa';
       RAISE Le_Exception;
     END IF;
     
@@ -10191,7 +10191,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     END IF;
 
     IF Ln_NumParamsRequest > Ln_NumParamsMaximo THEN
-      Lv_MsjError   := 'Se han enviado ' || Ln_NumParamsRequest || ' filtro(s) de b�squeda. Para esta consulta solo se tiene permitido '
+      Lv_MsjError   := 'Se han enviado ' || Ln_NumParamsRequest || ' filtro(s) de búsqueda. Para esta consulta solo se tiene permitido '
                        || Ln_NumParamsMaximo || ' filtro(s).';
       RAISE Le_Exception;
     END IF;
@@ -10467,7 +10467,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     Ln_IdPunto              := TRIM(APEX_JSON.GET_NUMBER(p_path => 'intIdPunto'));
     
     IF Lv_CodEmpresa IS NULL OR Lv_PrefijoEmpresa IS NULL OR Ln_IdPunto IS NULL THEN
-      Lv_MsjError := 'No se han enviado los par�metros obligatorios para obtener la informaci�n del punto';
+      Lv_MsjError := 'No se han enviado los parámetros obligatorios para obtener la información del punto';
       RAISE Le_Exception;
     END IF;
     
@@ -10576,7 +10576,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     Ln_IdPunto              := TRIM(APEX_JSON.GET_NUMBER(p_path => 'intIdPunto'));
     
     IF Lv_CodEmpresa IS NULL OR Lv_PrefijoEmpresa IS NULL OR Ln_IdPunto IS NULL THEN
-      Lv_MsjError := 'No se han enviado los par�metros obligatorios para obtener la informaci�n del punto';
+      Lv_MsjError := 'No se han enviado los parámetros obligatorios para obtener la información del punto';
       RAISE Le_Exception;
     END IF;
     
@@ -11444,7 +11444,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
         APEX_JSON.close_object; -- } data
       ELSIF Lv_TieneInfoCliente = 'NO' THEN
         APEX_JSON.write('strStatus', Lv_StatusError);
-        APEX_JSON.write('strMensaje', 'No existe informaci�n del cliente consultado.');
+        APEX_JSON.write('strMensaje', 'No existe información del cliente consultado.');
       ELSIF Lv_TieneServicioInternet = 'NO' THEN
         APEX_JSON.write('strStatus', Lv_StatusError);
         APEX_JSON.write('strMensaje', 'No existe servicio de Internet asociado a los puntos del cliente consultado.');
@@ -11520,7 +11520,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
     Lv_MacOnt               := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'strMacOnt'));
     Lv_TipoRol              := TRIM(APEX_JSON.GET_VARCHAR2(p_path => 'strTipoRol'));
     IF Lv_Identificacion IS NULL AND Lv_Login IS NULL AND Lv_SerieOnt IS NULL AND Lv_MacOnt IS NULL THEN
-      Lv_MsjError := 'No se ha enviado alguno de los par�metros obligatorios para obtener la informaci�n del cliente';
+      Lv_MsjError := 'No se ha enviado alguno de los parámetros obligatorios para obtener la información del cliente';
       RAISE Le_Exception;
     END IF;
 
@@ -11864,7 +11864,7 @@ PROCEDURE P_WS_PUT_SUBSCRIBER(Pn_ID_SUBSCRIBER  IN  DB_COMERCIAL.INFO_SERVICIO_P
         APEX_JSON.write('strMensaje', Lv_MensajeOK);
       ELSIF Lv_TieneInfoCliente = 'NO' THEN
         APEX_JSON.write('strStatus', Lv_StatusError);
-        APEX_JSON.write('strMensaje', 'No existe informaci�n del cliente consultado.');
+        APEX_JSON.write('strMensaje', 'No existe información del cliente consultado.');
       END IF;
     ELSE
       APEX_JSON.write('strStatus', Lv_StatusError);

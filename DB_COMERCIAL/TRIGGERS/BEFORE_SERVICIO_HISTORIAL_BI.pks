@@ -3,9 +3,9 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.BEFORE_SERVICIO_HISTORIAL_BI
   REFERENCING NEW AS NEW OLD AS OLD 
   FOR EACH ROW
     /**
-    * Documentaci�n para trigger BEFORE_SERVICIO_HISTORIAL_BI
+    * Documentación para trigger BEFORE_SERVICIO_HISTORIAL_BI
     * Trigger que valida los update en la tabla INFO_SERVICIO_HISTORIAL y almacena fechas de update en INFO_SERVICIO_HISTORIAL_BI
-    * @author M�nica Moreta <mmoreta@telconet.ec>
+    * @author Mónica Moreta <mmoreta@telconet.ec>
     * @version 2.0 24-08-2022
     */
  

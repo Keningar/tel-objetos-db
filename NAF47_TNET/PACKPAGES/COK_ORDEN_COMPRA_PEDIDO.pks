@@ -19,7 +19,7 @@ CREATE OR REPLACE package NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 12/06/2017
   * @author llindao <llindao@telconet.ec>
-  * @version 1.1 16/02/2018 - Se modifica para corregir asignaci�n de los campos SUBTOTAL y DESCUENTO
+  * @version 1.1 16/02/2018 - Se modifica para corregir asignación de los campos SUBTOTAL y DESCUENTO
   *
   * @author llindao <llindao@telconet.ec>
   * @version 1.2 27/07/2020 - Se modifica para agregar nueva funcionalida de Pedidos de Servicios.
@@ -50,12 +50,12 @@ CREATE OR REPLACE package NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 12/06/2017
   * @author llindao <llindao@telconet.ec>
-  * @version 1.1 22/09/2017 Se modifica para agregar puntero que permitir� hacer rollback solo en este procedimiento sin afectar los cambios
+  * @version 1.1 22/09/2017 Se modifica para agregar puntero que permitirá hacer rollback solo en este procedimiento sin afectar los cambios
   *                         realizados por el procedimiento que lo invoca.
   *                         Se agrega filtro que identifica los articulos recurrentes en query principal
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.2 16/02/2018 - Se modifica que generaci�n de solicitud compra pueda ejecutarse desde transferencias Interbodegas
+  * @version 1.2 16/02/2018 - Se modifica que generación de solicitud compra pueda ejecutarse desde transferencias Interbodegas
   *
   * @author llindao <llindao@telconet.ec>
   * @version 1.3 28/02/2018 - Se modifica actualizar estado de solicitud de compra
@@ -91,7 +91,7 @@ CREATE OR REPLACE package NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
   * @version 1.0 20/05/2021
   *
   * @author jgilces <jgilces@telconet.ec>
-  * @version 1.1 08/08/2022 - Se a�ade actualizacion de estado para la tabla de modificacion de articulos fijos/recurrentes bodega.
+  * @version 1.1 08/08/2022 - Se añade actualizacion de estado para la tabla de modificacion de articulos fijos/recurrentes bodega.
   *
   * @param Pv_Error IN OUT VARCHAR2 Retorna mensaje error.
   */
@@ -149,7 +149,7 @@ CREATE OR REPLACE package NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
 
   /**
   * Documentacion para P_INSERT_CAT_ART_KATUK
-  * Funcion que recibe un parametro de formato Json con informaci�n para crear catalogos
+  * Funcion que recibe un parametro de formato Json con información para crear catalogos
   * @author banton <banton@telconet.ec>
   * @version 1.0 20/04/2022
   *
@@ -1006,7 +1006,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
                  AND P.ESTADO = Lv_EstActParametro)
          AND EXISTS
        (SELECT NULL
-                FROM ARINML ML -- valida transacci�n es despacho de pedido
+                FROM ARINML ML -- valida transacción es despacho de pedido
                 JOIN ARINME ME
                   ON ME.NO_DOCU = ML.NO_DOCU
                  AND ME.NO_CIA = ML.NO_CIA
@@ -1018,7 +1018,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
                  AND NVL(ME.IND_PEDIDO_IMPRESO, 'N') = Lv_EstNoImpreso
               UNION
               SELECT NULL
-                FROM ARINML ML -- valida que transacci�n es transferencia interbodega
+                FROM ARINML ML -- valida que transacción es transferencia interbodega
                 JOIN ARINME ME
                   ON ME.NO_DOCU = ML.NO_DOCU
                  AND ME.NO_CIA = ML.NO_CIA
@@ -1257,7 +1257,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
       --
       -- no tiene configurados parametros recurrentes se presenta error
       IF NVL(Lr_ParamRecurrente.Cantidad_Minima, 0) = 0 THEN
-        Lv_MensajeError := 'Articulo marcado como Recurrente no tiene asignados unidades m�nimas o m�ximas: ' ||
+        Lv_MensajeError := 'Articulo marcado como Recurrente no tiene asignados unidades mínimas o máximas: ' ||
                            Lc_Articulo.Producto_id;
         RAISE Le_Error;
         -- se verifica si stock llega a minimo
@@ -1367,7 +1367,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
       END IF;
     END LOOP;
     --
-    -- si gener� solicitud de compra se debe actualizar total pedido
+    -- si generó solicitud de compra se debe actualizar total pedido
     IF Lr_InfoSolicitud.Id_Solicitud IS NOT NULL THEN
       --
       UPDATE DB_COMPRAS.INFO_SOLICITUD
@@ -1376,7 +1376,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
       --
     END IF;
     --
-    -- se asigna numero de solicitud p�ra prsentar alerta en despacho.
+    -- se asigna numero de solicitud pára prsentar alerta en despacho.
     Pn_NoSolicitud := Lr_InfoSolicitud.Id_Solicitud;
     --
     --
@@ -1700,7 +1700,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
          GEK_CONSULTA.F_RECUPERA_IP);
     END IF;
     --
-    -- Asigna distribuci�n de costos en base al pedido.
+    -- Asigna distribución de costos en base al pedido.
     --
     IF C_SEC_DOCUMENTO_DISTRIB%ISOPEN THEN
       CLOSE C_SEC_DOCUMENTO_DISTRIB;
@@ -1944,7 +1944,7 @@ CREATE OR REPLACE package body NAF47_TNET.COK_ORDEN_COMPRA_PEDIDO is
         END IF;
 
         IF Ln_TotalSolicitud > 0 THEN
-          -- si gener� solicitud de compra se debe actualizar total de la solicitud
+          -- si generó solicitud de compra se debe actualizar total de la solicitud
           UPDATE DB_COMPRAS.INFO_SOLICITUD
              SET VALOR_TOTAL = Ln_TotalSolicitud
            WHERE ID_SOLICITUD = Lr_InfoSolicitud.Id_Solicitud;

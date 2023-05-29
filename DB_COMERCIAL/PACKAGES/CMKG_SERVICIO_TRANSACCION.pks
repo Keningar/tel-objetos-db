@@ -1,15 +1,15 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
 
   /**
-   * Documentaci�n para el procedimiento 'P_ACTUALIZAR_SERVICIO'.
+   * Documentación para el procedimiento 'P_ACTUALIZAR_SERVICIO'.
    *
-   * M�todo encargado de actualizar un registro en la 'INFO_SERVICIO' del esquema 'DB_COMERCIAL'.
+   * Método encargado de actualizar un registro en la 'INFO_SERVICIO' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request IN  CLOB Recibe json request.
-   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status   OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje  OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_ACTUALIZAR_SERVICIO(Pcl_Request IN  CLOB,
@@ -17,16 +17,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
                                   Pv_Mensaje  OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_GUARDAR_SERVICIO_HISTORIAL'.
+   * Documentación para el procedimiento 'P_GUARDAR_SERVICIO_HISTORIAL'.
    *
-   * M�todo encargado de guardar un registro en la 'INFO_SERVICIO_HISTORIAL' del esquema 'DB_COMERCIAL'.
+   * Método encargado de guardar un registro en la 'INFO_SERVICIO_HISTORIAL' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request       IN  CLOB Recibe json request.
    * @param Pn_IdServicioHist OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_SERVICIO_HISTORIAL(Pcl_Request       IN  CLOB,
@@ -35,16 +35,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
                                          Pv_Mensaje        OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_GUARDAR_SERVICIO_TECNICO'.
+   * Documentación para el procedimiento 'P_GUARDAR_SERVICIO_TECNICO'.
    *
-   * M�todo encargado de guardar un registro en la 'INFO_SERVICIO_TECNICO' del esquema 'DB_COMERCIAL'.
+   * Método encargado de guardar un registro en la 'INFO_SERVICIO_TECNICO' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request       IN  CLOB Recibe json request.
    * @param Pn_IdServicioTecn OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 30-04-2020
    */
   PROCEDURE P_GUARDAR_SERVICIO_TECNICO(Pcl_Request       IN  CLOB,
@@ -53,16 +53,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
                                        Pv_Mensaje        OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_GUARDAR_SERVICIO_PROD_CARACT'
+   * Documentación para el procedimiento 'P_GUARDAR_SERVICIO_PROD_CARACT'
    *
-   * M�todo encargado de guardar un registro en la 'INFO_SERVICIO_PROD_CARACT' del esquema 'DB_COMERCIAL'.
+   * Método encargado de guardar un registro en la 'INFO_SERVICIO_PROD_CARACT' del esquema 'DB_COMERCIAL'.
    *
    * @param Pcl_Request         IN  CLOB Recibe json request
    * @param Pn_IdServicioCaract OUT NUMBER Retorna el id del registro creado.
-   * @param Pv_Status           OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje          OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pv_Status           OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje          OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Karen Rodr�guez V�liz <kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez Véliz <kyrodriguez@telconet.ec>
    * @version 1.0 01-02-2020
    */
   PROCEDURE P_GUARDAR_SERVICIO_PROD_CARACT(Pcl_Request         IN  CLOB,
@@ -104,9 +104,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
     APEX_JSON.PARSE(Pcl_Request);
     Ln_IdServicio := APEX_JSON.GET_NUMBER(P_PATH => 'idServicio');
 
-    --Validaci�n.
+    --Validación.
     IF Ln_IdServicio IS NULL THEN
-      Lv_Mensaje := 'Ning�n valor puede ir nulo (idServicio).';
+      Lv_Mensaje := 'Ningún valor puede ir nulo (idServicio).';
       RAISE Le_Exception;
     END IF;
 
@@ -125,7 +125,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
     WHERE ID_SERVICIO = Ln_IdServicio;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -154,13 +154,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validaci�n.
+    --Validación.
     IF APEX_JSON.GET_NUMBER(P_PATH   => 'servicioId')  IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'observacion') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'estado')      IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'usrCreacion') IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH => 'ipCreacion')  IS NULL THEN
-      Lv_Mensaje := 'Ning�n valor puede ir nulo (servicioId,observacion,estado,usrCreacion,ipCreacion)';
+      Lv_Mensaje := 'Ningún valor puede ir nulo (servicioId,observacion,estado,usrCreacion,ipCreacion)';
       RAISE Le_Exception;
     END IF;
 
@@ -191,7 +191,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status         := 'OK';
-    Pv_Mensaje        := 'Transaci�n exitosa';
+    Pv_Mensaje        := 'Transación exitosa';
     Pn_IdServicioHist :=  Ln_IdServicioHist;
 
   EXCEPTION
@@ -223,9 +223,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
     --Parse del JSON.
     APEX_JSON.PARSE(Pcl_Request);
 
-    --Validaci�n.
+    --Validación.
     IF APEX_JSON.GET_NUMBER(P_PATH => 'servicioId') IS NULL THEN
-      Lv_Mensaje := 'Ning�n valor puede ir nulo (servicioId)';
+      Lv_Mensaje := 'Ningún valor puede ir nulo (servicioId)';
       RAISE Le_Exception;
     END IF;
 
@@ -239,7 +239,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
        APEX_JSON.GET_NUMBER(P_PATH   => 'elementoConectorId')   IS NULL AND
        APEX_JSON.GET_NUMBER(P_PATH   => 'interfaceElementoConectorId') IS NULL AND
        APEX_JSON.GET_VARCHAR2(P_PATH => 'tipoEnlace') IS NULL THEN
-      Lv_Mensaje := 'Verificar la informaci�n, se ha obtenido todo los valores nulos a excepci�n del id del servicio.';
+      Lv_Mensaje := 'Verificar la información, se ha obtenido todo los valores nulos a excepción del id del servicio.';
       RAISE Le_Exception;
     END IF;
 
@@ -276,7 +276,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
 
     --Respuesta Exitosa.
     Pv_Status         := 'OK';
-    Pv_Mensaje        := 'Transaci�n exitosa';
+    Pv_Mensaje        := 'Transación exitosa';
     Pn_IdServicioTecn :=  Ln_IdServicioTecn;
 
   EXCEPTION
@@ -312,7 +312,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
        APEX_JSON.GET_VARCHAR2(P_PATH  => 'valor')                     IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH  => 'estado')                    IS NULL OR
        APEX_JSON.GET_VARCHAR2(P_PATH  => 'usrCreacion')               IS NULL THEN
-      Lv_Mensaje := 'Ning�n valor puede ir nulo (servicioId,productoCaracteristicaId,valor,estado,usrCreacion)';
+      Lv_Mensaje := 'Ningún valor puede ir nulo (servicioId,productoCaracteristicaId,valor,estado,usrCreacion)';
       RAISE Le_Exception;
     END IF;
 
@@ -339,7 +339,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SERVICIO_TRANSACCION AS
     );
 
     Pv_Status           := 'OK';
-    Pv_Mensaje          := 'Transaci�n exitosa';
+    Pv_Mensaje          := 'Transación exitosa';
     Pn_IdServicioCaract :=  Ln_idServicioCaract;
 
   EXCEPTION

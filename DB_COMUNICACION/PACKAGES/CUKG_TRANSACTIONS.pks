@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_TRANSACTIONS AS
 /**
- * Documentaci�n para P_INSERT_INFO_NOTIF_MASIVA
- * Procedimiento que inserta el registro de un nuevo env�o masivo y devuelve un mensaje en caso de haber ocurrido un error al insertar
+ * Documentación para P_INSERT_INFO_NOTIF_MASIVA
+ * Procedimiento que inserta el registro de un nuevo envío masivo y devuelve un mensaje en caso de haber ocurrido un error al insertar
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 14/09/2017
@@ -15,8 +15,8 @@ PROCEDURE P_INSERT_INFO_NOTIF_MASIVA(
   Pv_MsnError           OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_INSERT_INFO_NOTIF_MASIVA_PAR
- * Procedimiento que inserta los registros con los par�metros de b�squeda y env�o configuradas para el env�o masivo
+ * Documentación para P_INSERT_INFO_NOTIF_MASIVA_PAR
+ * Procedimiento que inserta los registros con los parámetros de búsqueda y envío configuradas para el envío masivo
  *
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 14/09/2017
@@ -31,8 +31,8 @@ PROCEDURE P_INSERT_INFO_NOTIF_MASIVA_PAR(
 
 
 /**
- * Documentaci�n para P_INSERT_INFO_NOTIF_MASIV_HIST
- * Procedimiento que inserta el registro del hostorial de un env�o masivo y devuelve un mensaje en caso de haber ocurrido un error al insertar
+ * Documentación para P_INSERT_INFO_NOTIF_MASIV_HIST
+ * Procedimiento que inserta el registro del hostorial de un envío masivo y devuelve un mensaje en caso de haber ocurrido un error al insertar
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 27/09/2017
@@ -46,8 +46,8 @@ PROCEDURE P_INSERT_INFO_NOTIF_MASIV_HIST(
   Pv_MsnError               OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_INSERT_INFO_NOTIF_MASIVA_LOG
- * Procedimiento que inserta el registro de la ejeuci�n de un nuevo env�o masivo y devuelve un mensaje en caso de haber ocurrido un error al insertar
+ * Documentación para P_INSERT_INFO_NOTIF_MASIVA_LOG
+ * Procedimiento que inserta el registro de la ejeución de un nuevo envío masivo y devuelve un mensaje en caso de haber ocurrido un error al insertar
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 25/09/2017
@@ -61,8 +61,8 @@ PROCEDURE P_INSERT_INFO_NOTIF_MASIVA_LOG(
   Pv_MsnError               OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_INSERT_INFO_NOTIF_M_LOG_DET
- * Procedimiento que inserta el registro con la informaci�n del destinatario del env�o masivo que se est� ejecutando 
+ * Documentación para P_INSERT_INFO_NOTIF_M_LOG_DET
+ * Procedimiento que inserta el registro con la información del destinatario del envío masivo que se está ejecutando 
  * y devuelve un mensaje en caso de haber ocurrido un error al insertar
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -77,17 +77,17 @@ PROCEDURE P_INSERT_INFO_NOTIF_M_LOG_DET(
   Pv_MsnError                 OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_SEND_MAIL
- * Funci�n que devuelve el contenido con el valor reemplazado de acuerdo a los par�metros enviados
+ * Documentación para P_SEND_MAIL
+ * Función que devuelve el contenido con el valor reemplazado de acuerdo a los parámetros enviados
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 25/09/2017
  *
- * @param Pv_From IN CLOB Recibe el usuario que env�a el correo
+ * @param Pv_From IN CLOB Recibe el usuario que envía el correo
  * @param Pv_To IN VARCHAR2 Recibe el/los usuario(s) destinatarios del correo
  * @param Pv_Subject IN VARCHAR2 Recibe el subject del correo
  * @param Pv_Message IN VARCHAR2 Recibe el cuerpo del mensaje
- * @param Pv_MimeType IN VARCHAR2 Recibe el charset en el que se env�a el correo
+ * @param Pv_MimeType IN VARCHAR2 Recibe el charset en el que se envía el correo
  * @param Pv_MsnError OUT VARCHAR2 Retorna un mensaje de error
  * @return CLOB
  */
@@ -100,13 +100,13 @@ PROCEDURE P_INSERT_INFO_NOTIF_M_LOG_DET(
       Pv_MsnError   OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_ENVIO_NOTIF_MASIVA
- * Procedimiento que enviar� las notificaciones de acuerdo a los par�metros de b�squeda y env�o de la notificaci�n masiva configurada
+ * Documentación para P_ENVIO_NOTIF_MASIVA
+ * Procedimiento que enviará las notificaciones de acuerdo a los parámetros de búsqueda y envío de la notificación masiva configurada
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 15/10/2017
  *
- * @param Pn_IdNotifMasiva      IN  DB_COMUNICACION.INFO_NOTIF_MASIVA.ID_NOTIF_MASIVA%TYPE Recibe el id de la notificaci�n masiva
+ * @param Pn_IdNotifMasiva      IN  DB_COMUNICACION.INFO_NOTIF_MASIVA.ID_NOTIF_MASIVA%TYPE Recibe el id de la notificación masiva
  * @param Pv_MsnError           OUT VARCHAR2 Devuelve el mensaje de error
  *
  */
@@ -115,13 +115,13 @@ PROCEDURE P_ENVIO_NOTIF_MASIVA(
   Pv_MsnError           OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_CREA_JOB_NOTIF_MASIVA
- * Procedimiento que realiza la configuraci�n y creaci�n de un env�o masivo
+ * Documentación para P_CREA_JOB_NOTIF_MASIVA
+ * Procedimiento que realiza la configuración y creación de un envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 14/09/2017
  * 
- * @param Pv_InfoFiltros                IN VARCHAR2 Recibe la informaci�n de los par�metros seleccionada en formato HTML
+ * @param Pv_InfoFiltros                IN VARCHAR2 Recibe la información de los parámetros seleccionada en formato HTML
  * @param Pv_Grupo                      IN VARCHAR2 Recibe el nombre del grupo de un producto
  * @param Pv_Subgrupo                   IN VARCHAR2 Recibe el nombre del subgrupo de un producto
  * @param Pn_IdElementoNodo             IN NUMBER Recibe el id del elemento nodo
@@ -129,30 +129,30 @@ PROCEDURE P_ENVIO_NOTIF_MASIVA(
  * @param Pv_EstadoServicio             IN VARCHAR2 Recibe el estado del servicio
  * @param Pv_EstadoPunto                IN VARCHAR2 Recibe el estado del punto
  * @param Pv_EstadoCliente              IN VARCHAR2 Recibe el estado del cliente
- * @param Pv_ClientesVIP                IN VARCHAR2 Recibe 'S' si se desea filtrar s�lo por clientes que son VIP o 'N' para excluir a los clientes VIP
- * @param Pv_UsrCreacionFactura         IN VARCHAR2 Recibe el usuario de creaci�n de la factura
- * @param Pn_NumFacturasAbiertas        IN NUMBER Recibe el n�mero m�nimo de facturas abiertas
- * @param Pv_PuntosFacturacion          IN VARCHAR2 Recibe 'S' si se desea filtrar s�lo por puntos de facturaci�n
+ * @param Pv_ClientesVIP                IN VARCHAR2 Recibe 'S' si se desea filtrar sólo por clientes que son VIP o 'N' para excluir a los clientes VIP
+ * @param Pv_UsrCreacionFactura         IN VARCHAR2 Recibe el usuario de creación de la factura
+ * @param Pn_NumFacturasAbiertas        IN NUMBER Recibe el número mínimo de facturas abiertas
+ * @param Pv_PuntosFacturacion          IN VARCHAR2 Recibe 'S' si se desea filtrar sólo por puntos de facturación
  * @param Pv_IdsTiposNegocio            IN VARCHAR2 Recibe los ids del tipo de negocio concatenados con ,
  * @param Pv_IdsOficinas                IN VARCHAR2 Recibe los ids de las oficinas concatenados con ,
  * @param Pv_IdFormaPago                IN VARCHAR2 Recibe el id de la forma de pago
  * @param Pv_NombreFormaPago            IN VARCHAR2 Recibe el nombre de la forma de pago
  * @param Pv_IdsBancosTarjetas          IN VARCHAR2 Recibe los ids de los bancos o tarjetas concatenados con ,
- * @param Pv_FechaDesdeFactura          IN VARCHAR2 Recibe la fecha desde la que comparar� la fecha de autorizaci�n de las facturas
- * @param Pv_FechaHastaFactura          IN VARCHAR2 Recibe la fecha hasta la que comparar� la fecha de autorizaci�n de las facturas
- * @param Pv_SaldoPendientePago         IN VARCHAR2 Recibe 'S' si se desea filtrar s�lo a los clientes con saldo pendiente de pago
- * @param Pf_ValorSaldoPendientePago    IN FLOAT Recibe el valor m�nimo para comparar el saldo pendiente de un cliente
+ * @param Pv_FechaDesdeFactura          IN VARCHAR2 Recibe la fecha desde la que comparará la fecha de autorización de las facturas
+ * @param Pv_FechaHastaFactura          IN VARCHAR2 Recibe la fecha hasta la que comparará la fecha de autorización de las facturas
+ * @param Pv_SaldoPendientePago         IN VARCHAR2 Recibe 'S' si se desea filtrar sólo a los clientes con saldo pendiente de pago
+ * @param Pf_ValorSaldoPendientePago    IN FLOAT Recibe el valor mínimo para comparar el saldo pendiente de un cliente
  * @param Pn_IdPlantilla                IN VARCHAR2 Recibe el id de la plantilla que se desea enviar
- * @param Pv_IdsTipoContacto            IN VARCHAR2 Recibe los ids de los tipos de contacto del punto a los que se enviar� la plantilla
- * @param Pv_Asunto                     IN VARCHAR2 Recibe el asunto del env�o de la plantilla
- * @param Pv_TipoEnvio                  IN VARCHAR2 Recibe el tipo de env�o que se realizar�: inmediato, programado, recurrente
- * @param Pv_FechaHoraProgramada        IN VARCHAR2 Recibe la fecha y hora cuando el env�o es programado
- * @param Pv_FechaEjecucionDesde        IN VARCHAR2 Recibe la fecha desde la que se empezar� a ejecutar un env�o recurrente
- * @param Pv_HoraEjecucion              IN VARCHAR2 Recibe la hora en la que se ejecutar� el env�o recurrente
+ * @param Pv_IdsTipoContacto            IN VARCHAR2 Recibe los ids de los tipos de contacto del punto a los que se enviará la plantilla
+ * @param Pv_Asunto                     IN VARCHAR2 Recibe el asunto del envío de la plantilla
+ * @param Pv_TipoEnvio                  IN VARCHAR2 Recibe el tipo de envío que se realizará: inmediato, programado, recurrente
+ * @param Pv_FechaHoraProgramada        IN VARCHAR2 Recibe la fecha y hora cuando el envío es programado
+ * @param Pv_FechaEjecucionDesde        IN VARCHAR2 Recibe la fecha desde la que se empezará a ejecutar un envío recurrente
+ * @param Pv_HoraEjecucion              IN VARCHAR2 Recibe la hora en la que se ejecutará el envío recurrente
  * @param Pv_Periodicidad               IN VARCHAR2 Recibe la periodicidad: Diaria, Mensual, Anual
- * @param Pn_NumeroDia                  IN NUMBER Recibe el d�a del mes en que se ejecutar� un env�o recurrente mensual
- * @param Pv_UsrCreacion                IN VARCHAR2 Recibe el usuario de creaci�n
- * @param Pv_IpCreacion                 IN VARCHAR2 Recibe la IP de creaci�n
+ * @param Pn_NumeroDia                  IN NUMBER Recibe el día del mes en que se ejecutará un envío recurrente mensual
+ * @param Pv_UsrCreacion                IN VARCHAR2 Recibe el usuario de creación
+ * @param Pv_IpCreacion                 IN VARCHAR2 Recibe la IP de creación
  * @param Pv_MsnError                   OUT VARCHAR2 Devuelve el mensaje de error
  */
 PROCEDURE P_CREA_JOB_NOTIF_MASIVA(  
@@ -191,16 +191,16 @@ PROCEDURE P_CREA_JOB_NOTIF_MASIVA(
                                     Pv_MsnError                   OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_CREA_JOB
- * Procedimiento que realiza la configuraci�n y creaci�n de un env�o masivo
+ * Documentación para P_CREA_JOB
+ * Procedimiento que realiza la configuración y creación de un envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 14/09/2017
  * 
- * @param Pn_IdNotifMasiva      IN DB_COMUNICACION.INFO_NOTIF_MASIVA.ID_NOTIF_MASIVA%TYPE Recibe el id de la notificaci�n masiva que se desea enviar
- * @param Pv_NombreJob          IN DB_COMUNICACION.INFO_NOTIF_MASIVA.NOMBRE_JOB%TYPE Recibe el nombre del job que se desea crear para el env�o masivo
- * @param Pt_FechaStartJob      IN TIMESTAMP Fecha y hora en la que se empezar� con la ejecuci�n del job
- * @param Pv_RepeatInterval     IN VARCHAR2 Recibe la configuraci�n del intervalo que ejecutar� el job
+ * @param Pn_IdNotifMasiva      IN DB_COMUNICACION.INFO_NOTIF_MASIVA.ID_NOTIF_MASIVA%TYPE Recibe el id de la notificación masiva que se desea enviar
+ * @param Pv_NombreJob          IN DB_COMUNICACION.INFO_NOTIF_MASIVA.NOMBRE_JOB%TYPE Recibe el nombre del job que se desea crear para el envío masivo
+ * @param Pt_FechaStartJob      IN TIMESTAMP Fecha y hora en la que se empezará con la ejecución del job
+ * @param Pv_RepeatInterval     IN VARCHAR2 Recibe la configuración del intervalo que ejecutará el job
  * @param Pv_MsnError           OUT VARCHAR2 Devuelve el mensaje de error
  */
 PROCEDURE P_CREA_JOB(
@@ -211,15 +211,15 @@ PROCEDURE P_CREA_JOB(
                         Pv_MsnError         OUT VARCHAR2);       
 
 /**
- * Documentaci�n para P_ELIMINA_JOB_NOTIF_MASIVA
- * Procedimiento que realiza la eliminaci�n del env�o masivo
+ * Documentación para P_ELIMINA_JOB_NOTIF_MASIVA
+ * Procedimiento que realiza la eliminación del envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 28/09/2017
  * 
- * @param Pn_IdNotifMasiva      IN DB_COMUNICACION.INFO_NOTIF_MASIVA.ID_NOTIF_MASIVA%TYPE Recibe el id de la notificaci�n masiva que se desea enviar
- * @param Pv_Observacion        IN VARCHAR2 Observaci�n del historial
- * @param Pv_UsrCreacion        IN VARCHAR2 Usuario de Creaci�n
+ * @param Pn_IdNotifMasiva      IN DB_COMUNICACION.INFO_NOTIF_MASIVA.ID_NOTIF_MASIVA%TYPE Recibe el id de la notificación masiva que se desea enviar
+ * @param Pv_Observacion        IN VARCHAR2 Observación del historial
+ * @param Pv_UsrCreacion        IN VARCHAR2 Usuario de Creación
  * @param Pv_MsnError           OUT VARCHAR2 Devuelve el mensaje de error
  */
 PROCEDURE P_ELIMINA_JOB_NOTIF_MASIVA(
@@ -230,8 +230,8 @@ PROCEDURE P_ELIMINA_JOB_NOTIF_MASIVA(
 
 
 /**
- * Documentaci�n para P_ELIMINA_JOB
- * Procedimiento que realiza la eliminaci�n del job del env�o masivo
+ * Documentación para P_ELIMINA_JOB
+ * Procedimiento que realiza la eliminación del job del envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 28/09/2017
@@ -244,8 +244,8 @@ PROCEDURE P_ELIMINA_JOB(
                         Pv_MsnError     OUT VARCHAR2);
 
 /**
- * Documentaci�n para P_ELIMINA_ENVIO_MASIVO_AUT
- * Procedimiento que realiza la eliminaci�n autom�tica de los jobs del env�o masivo
+ * Documentación para P_ELIMINA_ENVIO_MASIVO_AUT
+ * Procedimiento que realiza la eliminación automática de los jobs del envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 28/09/2017
@@ -253,9 +253,9 @@ PROCEDURE P_ELIMINA_JOB(
 PROCEDURE P_ELIMINA_ENVIO_MASIVO_AUT;
 
 /**
- * Documentaci�n para P_ACTUALIZA_AUDIT_ELEMENTOS
- * Procedimiento que realiza la actualizaci�n autom�tica del estado de 'En Proceso' a 'Pendiente' de la evaluaci�n de im�genes de elementos 
- * luego de 1 d�a de permanecer en estado 'En Proceso' para que pueda ser evaluada nuevamente
+ * Documentación para P_ACTUALIZA_AUDIT_ELEMENTOS
+ * Procedimiento que realiza la actualización automática del estado de 'En Proceso' a 'Pendiente' de la evaluación de imágenes de elementos 
+ * luego de 1 día de permanecer en estado 'En Proceso' para que pueda ser evaluada nuevamente
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 09/11/2017
@@ -287,7 +287,6 @@ PROCEDURE P_ACTUALIZA_AUDIT_ELEMENTOS;
 
 END CUKG_TRANSACTIONS;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_TRANSACTIONS AS
 
@@ -782,7 +781,7 @@ BEGIN
                                                                                             Ln_TotalRegistros           );
   LOOP
     IF TRIM(Pv_MsnError) IS NOT NULL THEN
-      Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro de ejecuci�n del env�o masivo';
+      Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro de ejecución del envío masivo';
       RAISE Le_Exception;
     END IF;
     FETCH Lrf_EnvioMasivoDestinatarios BULK COLLECT INTO Lt_EnvioMasivoDestinatarios LIMIT 500;
@@ -855,7 +854,7 @@ BEGIN
       DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_M_LOG_DET(Lr_InfoNotifMasivaLogDet, Pv_MsnError);
 
       IF TRIM(Pv_MsnError) IS NOT NULL THEN
-        Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del detalle de la ejecuci�n del env�o masivo';
+        Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del detalle de la ejecución del envío masivo';
         RAISE Le_Exception;
       END IF;
 
@@ -888,7 +887,7 @@ BEGIN
     DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_MASIV_HIST(Lr_InfoNotifMasivaHist, Pv_MsnError);
 
     IF TRIM(Pv_MsnError) IS NOT NULL THEN
-      Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del historial del env�o masivo';
+      Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del historial del envío masivo';
       RAISE Le_Exception;
     END IF;
 
@@ -992,7 +991,7 @@ BEGIN
   DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_MASIVA(Lr_InfoNotifMasiva, Pv_MsnError);
 
   IF TRIM(Pv_MsnError) IS NOT NULL THEN
-    Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro de env�o masivo';
+    Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro de envío masivo';
     RAISE Le_Exception;
   END IF;
 
@@ -1010,7 +1009,7 @@ BEGIN
   DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_MASIV_HIST(Lr_InfoNotifMasivaHist, Pv_MsnError);
 
   IF TRIM(Pv_MsnError) IS NOT NULL THEN
-    Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del historial del env�o masivo';
+    Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del historial del envío masivo';
     RAISE Le_Exception;
   END IF;
 
@@ -1052,7 +1051,7 @@ BEGIN
         Lr_InfoNotifMasivaParam.IP_CREACION           := Pv_IpCreacion;
         DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_MASIVA_PAR(Lr_InfoNotifMasivaParam, Pv_MsnError);
         IF TRIM(Pv_MsnError) IS NOT NULL THEN
-          Pv_MsnError := Pv_MsnError || ' - Error al insertar el par�metro de b�squeda para el env�o masivo';
+          Pv_MsnError := Pv_MsnError || ' - Error al insertar el parámetro de búsqueda para el envío masivo';
           RAISE Le_Exception;
         END IF;
       END IF;
@@ -1088,7 +1087,7 @@ BEGIN
         IF Lv_HoraRecurrente IS NOT NULL AND Lv_MinsRecurrente IS NOT NULL THEN 
           Lv_RepeatInterval := Lv_RepeatInterval || 'BYHOUR=' || Lv_HoraRecurrente || ';BYMINUTE=' || Lv_MinsRecurrente || ';BYSECOND=0';
         ELSE
-          Pv_MsnError := 'Error al obtener el intervalo de repetici�n';
+          Pv_MsnError := 'Error al obtener el intervalo de repetición';
           RAISE Le_Exception;
         END IF;
       END IF;
@@ -1111,7 +1110,7 @@ BEGIN
         Lr_InfoNotifMasivaParam.IP_CREACION           := Pv_IpCreacion;
         DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_MASIVA_PAR(Lr_InfoNotifMasivaParam, Pv_MsnError);
         IF TRIM(Pv_MsnError) IS NOT NULL THEN
-          Pv_MsnError := Pv_MsnError || ' - Error al insertar el par�metro de env�o masivo';
+          Pv_MsnError := Pv_MsnError || ' - Error al insertar el parámetro de envío masivo';
           RAISE Le_Exception;
         END IF;
       END IF;
@@ -1126,7 +1125,7 @@ BEGIN
                                                     Lv_RepeatInterval,
                                                     Pv_MsnError);
     IF TRIM(Pv_MsnError) IS NOT NULL THEN
-      Pv_MsnError := Pv_MsnError || ' - Error al intentar crear el job desde la configuraci�n de env�o masivo';
+      Pv_MsnError := Pv_MsnError || ' - Error al intentar crear el job desde la configuración de envío masivo';
       RAISE Le_Exception;
     END IF;
 
@@ -1150,13 +1149,13 @@ BEGIN
       DB_COMUNICACION.CUKG_TRANSACTIONS.P_INSERT_INFO_NOTIF_MASIV_HIST(Lr_InfoNotifMasivaHist, Pv_MsnError);
 
       IF TRIM(Pv_MsnError) IS NOT NULL THEN
-        Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del historial del env�o masivo';
+        Pv_MsnError := Pv_MsnError || ' - Error al insertar el registro del historial del envío masivo';
         RAISE Le_Exception;
       END IF;
 
       COMMIT;
     ELSE
-      Pv_MsnError := ' Error al obtener el job del env�o masivo ' || Lr_InfoNotifMasiva.NOMBRE_JOB;
+      Pv_MsnError := ' Error al obtener el job del envío masivo ' || Lr_InfoNotifMasiva.NOMBRE_JOB;
       RAISE Le_Exception;
     END IF;
 
@@ -1212,7 +1211,7 @@ BEGIN
           end_date => NULL,
           enabled => FALSE,
           auto_drop => FALSE,
-          comments => 'Job creado para el env�o masivo de notificaciones en TN');
+          comments => 'Job creado para el envío masivo de notificaciones en TN');
 
   DBMS_SCHEDULER.SET_ATTRIBUTE( 
            name => '"DB_COMUNICACION"."' || Pv_NombreJob || '"', 
@@ -1266,7 +1265,7 @@ BEGIN
   DB_COMUNICACION.CUKG_TRANSACTIONS.P_ELIMINA_JOB(  Lv_NombreJob,
                                                     Pv_MsnError);
   IF TRIM(Pv_MsnError) IS NOT NULL THEN
-    Pv_MsnError := Pv_MsnError || ' - Error al intentar eliminar el job del env�o masivo ' || Lv_NombreJob;
+    Pv_MsnError := Pv_MsnError || ' - Error al intentar eliminar el job del envío masivo ' || Lv_NombreJob;
     RAISE Le_Exception;
   END IF;
 
@@ -1287,7 +1286,7 @@ BEGIN
 
 
   IF TRIM(Pv_MsnError) IS NOT NULL THEN
-    Pv_MsnError := Pv_MsnError || ' - Error al eliminar el registro del historial del env�o masivo '|| Lv_NombreJob;
+    Pv_MsnError := Pv_MsnError || ' - Error al eliminar el registro del historial del envío masivo '|| Lv_NombreJob;
     RAISE Le_Exception;
   END IF;
 
@@ -1307,7 +1306,7 @@ WHEN Le_Exception THEN
 
 WHEN OTHERS THEN  
   ROLLBACK;
-  Pv_MsnError := 'Error al eliminar el env�o masivo '  || Lv_NombreJob;
+  Pv_MsnError := 'Error al eliminar el envío masivo '  || Lv_NombreJob;
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                         'CUKG_TRANSACTIONS.P_ELIMINA_JOB_NOTIF_MASIVA', 
                                         Pv_MsnError || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM, 
@@ -1356,7 +1355,7 @@ IS
     FROM DB_COMUNICACION.INFO_NOTIF_MASIVA INM
     WHERE INM.TIPO IN ('INMEDIATO','PROGRAMADO')
     AND INM.ESTADO IN ('Finalizado','Pendiente');
-  Lv_Observacion VARCHAR(100) := 'Eliminaci�n Autom�tica del env�o masivo ';
+  Lv_Observacion VARCHAR(100) := 'Eliminación Automática del envío masivo ';
   Lv_MsnError VARCHAR(4000);
   Lv_NombreJob VARCHAR(30);
 BEGIN
@@ -1455,7 +1454,7 @@ PROCEDURE P_ENVIA_CTA_CORREO_GENERADO(Pv_Login          IN VARCHAR2,
 --
   Lc_Plantilla         C_GetPlantilla%ROWTYPE;
   Lv_MessageMail       VARCHAR2(4000);
-  Lv_Asunto            VARCHAR2(200):= 'Creaci�n  de cuenta Telcos+';
+  Lv_Asunto            VARCHAR2(200):= 'Creación  de cuenta Telcos+';
   Lv_MailDestinatario  VARCHAR2(4000);
   Lv_Estado            VARCHAR2(10):= 'Eliminado'; 
   Lv_DescFormaContacto DB_COMUNICACION.ADMI_FORMA_CONTACTO.DESCRIPCION_FORMA_CONTACTO%TYPE:= 'Correo Electronico'; 
@@ -1541,4 +1540,3 @@ BEGIN
 
 END CUKG_TRANSACTIONS;
 /
-

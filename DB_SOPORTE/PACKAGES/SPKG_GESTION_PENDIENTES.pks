@@ -2,9 +2,9 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GESTION_PENDIENTES
 AS
 
   /*
-  * Documentaci�n para TYPE 'Gr_IdDetalle'.
+  * Documentación para TYPE 'Gr_IdDetalle'.
   * Type para detalles de tareas
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @author Andrés Montero H. <amontero@telconet.ec>
   * @version 1.0 15-09-2021
   */
   TYPE Gr_IdDetalle IS RECORD (
@@ -27,7 +27,7 @@ AS
   * @param pv_fecha_fin IN VARCHAR2 fecha de fin del pendiente (tarea o caso)
   * @param Pr_Informacion  OUT SYS_REFCURSOR  Retorna el resultado de la consulta
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 10-02-2021
   */
   PROCEDURE P_GET_PENDIENTES (
@@ -42,14 +42,14 @@ AS
                         Pr_Informacion     OUT SYS_REFCURSOR);
 
   /**
-  * Documentacion para funci�n 'F_GET_TAREAS_POR_CASO'
+  * Documentacion para función 'F_GET_TAREAS_POR_CASO'
   *
-  * Funci�n que obtiene tareas asociadas a un caso
+  * Función que obtiene tareas asociadas a un caso
   *
   * @param Pv_id_caso IN DB_SOPORTE.INFO_CASO.ID_CASO%TYPE id del caso
   * @param Pv_id_departamento DB_SOPORTE.INFO_DETALLE_ASIGNACION.ASIGNADO_ID%TYPE id del departamento
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 10-02-2021
   */
 FUNCTION F_GET_TAREAS_POR_CASO(
@@ -58,13 +58,13 @@ FUNCTION F_GET_TAREAS_POR_CASO(
     RETURN VARCHAR2;
 
   /**
-  * Documentacion para funci�n 'F_GET_OBSERVACION_TAREA_CASO'
+  * Documentacion para función 'F_GET_OBSERVACION_TAREA_CASO'
   *
-  * Funci�n que obtiene la observaci�n de la primera tarea de un caso
+  * Función que obtiene la observación de la primera tarea de un caso
   *
   * @param Pv_id_caso IN DB_SOPORTE.INFO_CASO.ID_CASO%TYPE id del caso
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 10-02-2021
   */
 FUNCTION F_GET_OBSERVACION_TAREA_CASO(
@@ -73,13 +73,13 @@ FUNCTION F_GET_OBSERVACION_TAREA_CASO(
 
 
   /**
-  * Documentacion para funci�n 'F_GET_FECHA_FIN_TAREA'
+  * Documentacion para función 'F_GET_FECHA_FIN_TAREA'
   *
-  * Funci�n que obtiene fecha finalizaci�n de una tarea
+  * Función que obtiene fecha finalización de una tarea
   *
   * @param Pv_id_caso IN DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION id de la tarea
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 10-02-2021
   */
 FUNCTION F_GET_FECHA_FIN_TAREA(
@@ -99,7 +99,7 @@ FUNCTION F_GET_FECHA_FIN_TAREA(
   * @param pv_procedencia IN VARCHAR2 procedencia del seguimiento
   * @param Pr_Informacion  OUT SYS_REFCURSOR  Retorna el resultado de la consulta
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 10-02-2021
   */
   PROCEDURE P_GET_SEGUIMIENTOS (
@@ -118,7 +118,7 @@ FUNCTION F_GET_FECHA_FIN_TAREA(
   * @param pn_comunicacion_id IN NUMBER id de la tarea
   * @param Pr_Informacion  OUT SYS_REFCURSOR  Retorna el resultado de la consulta
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 18-03-2021
   */
   PROCEDURE P_GET_DATOS_TAREA
@@ -127,13 +127,13 @@ FUNCTION F_GET_FECHA_FIN_TAREA(
     Pr_Informacion     OUT SYS_REFCURSOR);
 
   /**
-  * Documentacion para funci�n 'F_GET_FECHA_FIN_ACT_PENDIENTE'
+  * Documentacion para función 'F_GET_FECHA_FIN_ACT_PENDIENTE'
   *
-  * Funci�n que obtiene fecha fin del pendiente basada en �ltima actualizaci�n en la tarea de recorrido o de informe
+  * Función que obtiene fecha fin del pendiente basada en última actualización en la tarea de recorrido o de informe
   *
   * @param Pv_id_asignacion_solicitud IN NUMBER id de la asignacion solicitud
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 11-05-2021
   */
   FUNCTION F_GET_FECHA_FIN_ACT_PENDIENTE(
@@ -141,13 +141,13 @@ FUNCTION F_GET_FECHA_FIN_TAREA(
       RETURN VARCHAR2;
 
   /**
-  * Documentacion para funci�n 'F_GET_FECHA_INI_TAREA'
+  * Documentacion para función 'F_GET_FECHA_INI_TAREA'
   *
-  * Funci�n que obtiene los de la tarea
+  * Función que obtiene los de la tarea
   *
-  * @param Pv_id_comunicacion IN NUMBER id comunicaci�n
+  * @param Pv_id_comunicacion IN NUMBER id comunicación
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 11-05-2021
   */
   FUNCTION F_GET_FECHA_INI_TAREA(
@@ -155,14 +155,14 @@ FUNCTION F_GET_FECHA_FIN_TAREA(
       RETURN VARCHAR2;
 
   /**
-  * Documentacion para funci�n 'F_GET_DEPARTAMENTO_USUARIO'
+  * Documentacion para función 'F_GET_DEPARTAMENTO_USUARIO'
   *
-  * Funci�n que obtiene los de la tarea
+  * Función que obtiene los de la tarea
   *
   * @param Pv_usr_creacion IN VARCHAR2 - usuario al que pertenece el departamento
   * @param Pv_empresa_cod IN VARCHAR2 - id de la empresa
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 11-05-2021
   */
   FUNCTION F_GET_DEPARTAMENTO_USUARIO(
@@ -172,14 +172,14 @@ FUNCTION F_GET_FECHA_FIN_TAREA(
 
 
   /**
-  * Documentacion para funci�n 'F_GET_OBS_ULTIMO_SEGUIMIENTO'
+  * Documentacion para función 'F_GET_OBS_ULTIMO_SEGUIMIENTO'
   *
-  * Funci�n que obtiene el �ltimo seguimiento de una tarea
+  * Función que obtiene el último seguimiento de una tarea
   *
   * @param Pn_id_comunicacion DB_COMUNICACION.INFO_COMUNICACION.ID_COMUNICACION%TYPE - id de la tarea para buscar seguimiento
   * @param Pv_empresa_cod DB_SOPORTE.INFO_TAREA_SEGUIMIENTO.EMPRESA_COD%TYPE - id de la empresa
   *
-  * @author Andr�s Montero H <amontero@telconet.ec>
+  * @author Andrés Montero H <amontero@telconet.ec>
   * @version 1.0 08-07-2021
   */
 FUNCTION F_GET_OBS_ULTIMO_SEGUIMIENTO(
@@ -193,6 +193,7 @@ FUNCTION F_GET_OBS_ULTIMO_SEGUIMIENTO(
 END SPKG_GESTION_PENDIENTES;
 
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_GESTION_PENDIENTES
 AS
 

@@ -20,11 +20,11 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 
 	
 	/**
-	* Documentacion para la funci�n 'F_AUTHENTICATION'.
-	* Retorna token al recibir credenciales de Telcodrive. El token retornado es necesario para todos los otros m�todos de este paquete.
+	* Documentacion para la función 'F_AUTHENTICATION'.
+	* Retorna token al recibir credenciales de Telcodrive. El token retornado es necesario para todos los otros métodos de este paquete.
 	*
 	* @param p_username usuario de telcodrive
-	* @param p_password contrase�a de telcodrive
+	* @param p_password contraseña de telcodrive
 	*
 	* @author Bryan Fonseca <bfonseca@telconet.ec>
 	* @version 1.0 11-10-2022
@@ -32,7 +32,7 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	FUNCTION F_AUTHENTICATION(p_username VARCHAR2, p_password VARCHAR2) RETURN VARCHAR2;
 	
 	/**
-	* Documentacion para la funci�n 'F_LIST_REPOS'.
+	* Documentacion para la función 'F_LIST_REPOS'.
 	* Lista todos los repositorios pertenecientes a un usuario identificado por el token proporcionado.
 	*
 	* @param p_token token obtenido con F_AUTHENTICATION
@@ -43,7 +43,7 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	FUNCTION F_LIST_REPOS(p_token VARCHAR2) RETURN CLOB;
 	
 	/**
-	* Documentacion para la funci�n 'F_GET_REPO_ID'.
+	* Documentacion para la función 'F_GET_REPO_ID'.
 	* Retorna el ID de un repositorio.
 	*
 	* @param p_token token obtenido con F_AUTHENTICATION
@@ -58,14 +58,14 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	FUNCTION F_GET_UPLOAD_LINK(p_token VARCHAR2, p_repo_name VARCHAR2) RETURN CLOB;
 	
 	/**
-	* Documentacion para la funci�n 'F_UPLOAD_FILE'.
+	* Documentacion para la función 'F_UPLOAD_FILE'.
 	* Permite subir archivos usando multipart/form-data
 	*
 	* @param p_token token obtenido con F_AUTHENTICATION
-	* @param p_dir_name nombre del objeto directorio de Oracle donde est� el archivo
+	* @param p_dir_name nombre del objeto directorio de Oracle donde está el archivo
 	* @param p_file_name nombre del archivo del directorio
-	* @param p_repo nombre del repositorio de Telcodrive al que se subir� el archivo
-	* @param p_path path en el repo al que se subir� el archivo. Si no existe, ser� creado. El path puede empezar con / o no.
+	* @param p_repo nombre del repositorio de Telcodrive al que se subirá el archivo
+	* @param p_path path en el repo al que se subirá el archivo. Si no existe, será creado. El path puede empezar con / o no.
 	*
 	* @author Bryan Fonseca <bfonseca@telconet.ec>
 	* @version 1.0 11-10-2022
@@ -73,9 +73,9 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	FUNCTION F_UPLOAD_FILE(p_token VARCHAR2, p_dir_name VARCHAR2, p_file_name VARCHAR2, p_repo VARCHAR2, p_path VARCHAR2 DEFAULT '') RETURN CLOB;
 	
 	/**
-	* Documentacion para la funci�n 'F_GET_SHARE_LINK'.
+	* Documentacion para la función 'F_GET_SHARE_LINK'.
 	* Obtiene enlace para un archivo o directorio de Telcodrive. 
-	* El enlace generado es v�lido �nicamente para las personas que tienen acceso al repositorio, es decir, previamente tiene que d�rseles permisos usando F_SHARE_TO_USER.
+	* El enlace generado es válido únicamente para las personas que tienen acceso al repositorio, es decir, previamente tiene que dárseles permisos usando F_SHARE_TO_USER.
 	*
 	* @param p_token token obtenido con F_AUTHENTICATION
 	* @param p_repo_name nombre de repositorio.
@@ -89,13 +89,13 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	
 	/**
 	* Documentacion para el procedimiento 'P_NOTIFICAR_SUBIDA'.
-	* Notifica a destinatarios mediante correo electr�nico que un archivo o directorio ha sido subido a Telcodrive. Idealmente debe usarse en conjunto con F_UPLOAD_FILE.
+	* Notifica a destinatarios mediante correo electrónico que un archivo o directorio ha sido subido a Telcodrive. Idealmente debe usarse en conjunto con F_UPLOAD_FILE.
 	*
 	* @param p_token token obtenido con F_AUTHENTICATION
 	* @param p_nombre_repo nombre de repositorio.
 	* @param p_path_archivo path del archivo en Telcodrive. Puede empezar con '/' o no.
 	* @param p_is_dir define si el objeto de Telcodrive es un archivo o directorio, por defecto es un archivo (FALSE).
-	* @param p_destinatarios direcciones de correos electr�nicos separadas por comas: 'ejemplo1@telconet.ec,ejemplo2@telconet.ec'
+	* @param p_destinatarios direcciones de correos electrónicos separadas por comas: 'ejemplo1@telconet.ec,ejemplo2@telconet.ec'
 	*
 	* @author Bryan Fonseca <bfonseca@telconet.ec>
 	* @version 1.0 11-10-2022
@@ -103,12 +103,12 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	PROCEDURE P_NOTIFICAR_SUBIDA(p_token VARCHAR2, p_nombre_repo VARCHAR2, p_path_archivo VARCHAR2, p_is_dir BOOLEAN DEFAULT FALSE, p_destinatarios VARCHAR2);
 	
 	/**
-	* Documentacion para la funci�n 'F_SHARE_TO_USER'.
+	* Documentacion para la función 'F_SHARE_TO_USER'.
 	* Comparte un repositorio de Telcodrive con el usuario especificado.
 	*
 	* @param p_token token obtenido con F_AUTHENTICATION
 	* @param p_repo_name nombre de repositorio.
-	* @param p_user_email correo de telconet del usuario al que se le compartir� el repositorio.
+	* @param p_user_email correo de telconet del usuario al que se le compartirá el repositorio.
 	*
 	* @author Bryan Fonseca <bfonseca@telconet.ec>
 	* @version 1.0 11-10-2022
@@ -117,6 +117,7 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	
 END GNKG_INTEGRACION_TELCODRIVE;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS	
 
 	FUNCTION F_GET_PARAMETRO(p_descripcion VARCHAR2) RETURN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE
@@ -131,7 +132,7 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		RETURN detalleParametroRow;
 	EXCEPTION
 		WHEN NO_DATA_FOUND THEN
-			RAISE_APPLICATION_ERROR(-20007, 'No se encontr� el par�metro ' || p_descripcion || '.');
+			RAISE_APPLICATION_ERROR(-20007, 'No se encontró el parámetro ' || p_descripcion || '.');
 	END;
 	
 	FUNCTION F_CHECK_IF_JSON(testString CLOB) RETURN BOOLEAN AS
@@ -176,24 +177,24 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
         APEX_JSON.CLOSE_OBJECT;
         headersJson := APEX_JSON.GET_CLOB_OUTPUT;     	
 		
-		-- Se realiza la petici�n
+		-- Se realiza la petición
 		urlRequest := HOST_TELCODRIVE || PATH_AUTHENTICATION ;
 		GNKG_WEB_SERVICE.P_POST(urlRequest, headersJson, credencialesJson, codigoEstadoPeticion, mensajePeticion, response);
 		
 		IF (codigoEstadoPeticion = 99) THEN
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		IF NOT F_CHECK_IF_JSON(response) THEN
 			-- Esto se considera un 404, porque siempre que eso sucede, se retorna algo que no es JSON
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		APEX_JSON.PARSE(response);			
 		token := APEX_JSON.get_varchar2(p_path => 'token');
 		
 		IF (token IS NULL) THEN
-			RAISE_APPLICATION_ERROR(-20003, 'Username o password incorrectos, o comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20003, 'Username o password incorrectos, o comprobar tabla de parámetros.');
 		END IF;
 		
 		RETURN token;
@@ -225,12 +226,12 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		GNKG_WEB_SERVICE.P_GET(urlRequest, headersJson, codigoEstadoPeticion, mensajePeticion, response);
 		
 		IF (codigoEstadoPeticion = 99) THEN
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		IF NOT F_CHECK_IF_JSON(response) THEN
 			-- Esto se considera un 404, porque siempre que eso sucede, se retorna algo que no es JSON
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || urlRequest || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		APEX_JSON.PARSE(response);	
@@ -238,10 +239,10 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 
 		IF (reposContador IS NULL) THEN
 			IF APEX_JSON.get_varchar2(p_path => 'detail') = 'Invalid token' THEN
-				dbms_output.put_line('token inv�lido');
+				dbms_output.put_line('token inválido');
 				RAISE AUTH_ERROR;
 			END IF;
-			-- podr�a llegarse aqu� si el usuario no tiene repositorios
+			-- podría llegarse aquí si el usuario no tiene repositorios
 			dbms_output.put_line('El usuario no tiene repositorios.');
 		END IF;		
 		
@@ -275,7 +276,7 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		RETURN APEX_JSON.get_varchar2(p_path => 'repos[' || indexEncontrado ||'].repo_id');
 	EXCEPTION
 		WHEN NO_REPO_FOUND THEN
-			dbms_output.put_line('No se encontr� repo con el nombre proporcionado.');
+			dbms_output.put_line('No se encontró repo con el nombre proporcionado.');
 			RAISE;
 		WHEN OTHERS THEN
 			RAISE_APPLICATION_ERROR(-20003, 'Token incorrecto.');
@@ -309,12 +310,12 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		GNKG_WEB_SERVICE.P_GET(requestUrl, headersJson, codigoEstadoPeticion, mensajePeticion, uploadLink);
 		
 		IF (codigoEstadoPeticion = 99) THEN
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		-- Si el contenido es HTML, es un 404		
 		IF REGEXP_LIKE(uploadLink, '<\/?[a-z][\s\S]*>') THEN
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		RETURN TRIM(BOTH '"' FROM uploadLink);
@@ -394,7 +395,7 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		WHEN DIR_DOES_NOT_EXIST THEN 
 			RAISE_APPLICATION_ERROR(-20006, 'El directorio en el servidor de la base.');
 		WHEN NO_REPO_FOUND THEN
-			RAISE_APPLICATION_ERROR(-20006, 'No se encontr� repo con el nombre proporcionado.');
+			RAISE_APPLICATION_ERROR(-20006, 'No se encontró repo con el nombre proporcionado.');
 	END;
 	
 	FUNCTION F_GET_SHARE_LINK(p_token VARCHAR2, p_repo_name VARCHAR2, p_path VARCHAR2, p_is_dir BOOLEAN DEFAULT FALSE) RETURN CLOB
@@ -431,12 +432,12 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		GNKG_WEB_SERVICE.P_GET(requestUrl, headersJson, codigoEstadoPeticion, mensajePeticion, response);
 		
 		IF (codigoEstadoPeticion = 99) THEN
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		-- Si el contenido es HTML, es un 404		
 		IF REGEXP_LIKE(response, '<\/?[a-z][\s\S]*>') THEN
-			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de par�metros.');
+			RAISE_APPLICATION_ERROR(-20001, 'URL ' || requestUrl || ' incorrecta, comprobar tabla de parámetros.');
 		END IF;
 		
 		APEX_JSON.PARSE(response);
@@ -450,7 +451,7 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 		return shareLink;
 	EXCEPTION
 		WHEN NO_REPO_FOUND THEN
-			RAISE_APPLICATION_ERROR(-20006, 'No se encontr� repo con el nombre proporcionado.');
+			RAISE_APPLICATION_ERROR(-20006, 'No se encontró repo con el nombre proporcionado.');
 	END;
 
 	PROCEDURE P_NOTIFICAR_SUBIDA(p_token VARCHAR2, p_nombre_repo VARCHAR2, p_path_archivo VARCHAR2, p_is_dir BOOLEAN DEFAULT FALSE, p_destinatarios VARCHAR2) AS
@@ -512,4 +513,3 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE IS
 	
 END GNKG_INTEGRACION_TELCODRIVE;
 /
-

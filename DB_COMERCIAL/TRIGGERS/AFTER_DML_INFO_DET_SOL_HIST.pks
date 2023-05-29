@@ -4,7 +4,7 @@ DECLARE
     --
 /**
   * Documentacion para trigger AFTER_DML_INFO_DET_SOL_HIST
-  * Inserta un registro en INFO_SERVICIO_HISTORIAL cuando la solicitud cambia a un estado diferente de Pendiente y �sta sea de tipo 'SOLICITUD MIGRACION'
+  * Inserta un registro en INFO_SERVICIO_HISTORIAL cuando la solicitud cambia a un estado diferente de Pendiente y ésta sea de tipo 'SOLICITUD MIGRACION'
   * @author Alexander Samaniego <awsamaniego@telconet.ec>
   * @version 1.0 11-03.2015
   */

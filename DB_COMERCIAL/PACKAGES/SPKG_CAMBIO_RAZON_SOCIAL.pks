@@ -1,12 +1,12 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.SPKG_CAMBIO_RAZON_SOCIAL
 AS
 /**
-    * Documentaci�n para la funci�n P_NOTIFICACION_PENDIENTE_CRS
-    * Procedimiento que env�a correo de CRS pendientes.
+    * Documentación para la función P_NOTIFICACION_PENDIENTE_CRS
+    * Procedimiento que envía correo de CRS pendientes.
     *
-    * @param  Pv_Usuario - Usuario de creaci�n
+    * @param  Pv_Usuario - Usuario de creación
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 05-09-2022
     *
     */

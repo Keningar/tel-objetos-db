@@ -2,14 +2,14 @@ CREATE OR REPLACE TRIGGER DB_COMERCIAL.AFTER_DML_INFO_PER_HISTO AFTER
   UPDATE ON DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL REFERENCING OLD AS OLD NEW AS NEW FOR EACH ROW DECLARE
     --
     /**
-    * Documentaci�n para trigger AFTER_DML_INFO_PER_HISTO
+    * Documentación para trigger AFTER_DML_INFO_PER_HISTO
     * Si un empleado se ha cambiado de departamento, se reasignan las tareas pendientes de dicho empleado al Jefe del departamento anterior
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
     * @version 1.0 27-01-2017
     *
     * @author Lizbeth Cruz <mlcruz@telconet.ec>
-    * @version 1.1 06-02-2017 Se realizan modificaciones del trigger dispar�ndolo desde la actualizaci�n de la tabla en
-    *                         DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL y enviando los par�metros del OLD Y NEW del registro
+    * @version 1.1 06-02-2017 Se realizan modificaciones del trigger disparándolo desde la actualización de la tabla en
+    *                         DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL y enviando los parámetros del OLD Y NEW del registro
     */
     Lv_MsjError VARCHAR2(1000);
     PRAGMA AUTONOMOUS_TRANSACTION;

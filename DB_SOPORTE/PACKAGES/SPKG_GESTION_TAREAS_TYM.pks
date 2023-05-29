@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_GESTION_TAREAS_TYM 
 AS 
 /**
-* Documentaci�n para la funcion F_GET_TAREA_ID_X_NOMBRE
-* La funci�n F_GET_TAREA_ID_X_NOMBRE obtiene el id de la tarea buscada por nombre
+* Documentación para la funcion F_GET_TAREA_ID_X_NOMBRE
+* La función F_GET_TAREA_ID_X_NOMBRE obtiene el id de la tarea buscada por nombre
 *
 * @param VARCHAR2 Fv_nombreTarea Recibe el nombre de la tarea
 * @return NUMBER  Retorna el id de la tarea
@@ -13,11 +13,11 @@ FUNCTION F_GET_TAREA_ID_X_NOMBRE(Fv_nombreTarea VARCHAR2) return NUMBER;
 
 
 /**
-* Documentaci�n para la funcion F_GET_CAT_TAREA_ID_X_VALOR1
-* La funci�n F_GET_CAT_TAREA_ID_X_VALOR1 obtiene el id de la categor�a de la tarea buscada por su nombre
+* Documentación para la funcion F_GET_CAT_TAREA_ID_X_VALOR1
+* La función F_GET_CAT_TAREA_ID_X_VALOR1 obtiene el id de la categoría de la tarea buscada por su nombre
 *
-* @param VARCHAR2 Fv_nombreCategoriaTarea Recibe el nombre de la categor�a de la tarea
-* @return NUMBER  Retorna el id de la categor�a de la tarea
+* @param VARCHAR2 Fv_nombreCategoriaTarea Recibe el nombre de la categoría de la tarea
+* @return NUMBER  Retorna el id de la categoría de la tarea
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 05-08-2015
 */
@@ -29,7 +29,7 @@ TYPE nombresArray IS VARRAY(300) OF VARCHAR2(100);
 /**
 * P_ACTUALIZAR_CATEGORIAS_TAREAS
 *
-* PROCEDIMIENTO QUE ACTUALIZA LAS CATEGOR�AS DE LAS TAREAS DE TALLER Y MOVILIZACI�N
+* PROCEDIMIENTO QUE ACTUALIZA LAS CATEGORÍAS DE LAS TAREAS DE TALLER Y MOVILIZACIÓN
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 05/08/2016
@@ -48,7 +48,7 @@ PROCEDURE P_ACTUALIZAR_CATEGORIAS_TAREAS(Pv_tareas nombresArray,Pv_categorias no
   *
   * @author Robinson Salgado     <rsalgado@telconet.ec>
   * @version 1.1 12/07/2018
-  * Se  reemplaza el signo | en el campo de direcci�n en el cursor C_getInfoPorPunto al momento de obtener la direcci�n del punto
+  * Se  reemplaza el signo | en el campo de dirección en el cursor C_getInfoPorPunto al momento de obtener la dirección del punto
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.2 18/07/2018
@@ -56,15 +56,15 @@ PROCEDURE P_ACTUALIZAR_CATEGORIAS_TAREAS(Pv_tareas nombresArray,Pv_categorias no
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.3 23/07/2018
-  * Se implementa nuevo proceso para cuadrillas HAL, las cuales visualizar�n sus tareas seg�n planifique HAL
+  * Se implementa nuevo proceso para cuadrillas HAL, las cuales visualizarán sus tareas según planifique HAL
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.4 21/08/2018
-  * Se optimiz� la consulta de las tareas en el m�vil
+  * Se optimizó la consulta de las tareas en el móvil
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.5 22/08/2018
-  * Se ordena las tareas de formas ascendente en el m�vil
+  * Se ordena las tareas de formas ascendente en el móvil
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.6 1/10/2018
@@ -72,7 +72,7 @@ PROCEDURE P_ACTUALIZAR_CATEGORIAS_TAREAS(Pv_tareas nombresArray,Pv_categorias no
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.7 19/10/2018
-  * Se agrega la variable si es enlace, la cual sirve para reconocer las tareas de instalaci�n que tienen un producto asociado a instalar
+  * Se agrega la variable si es enlace, la cual sirve para reconocer las tareas de instalación que tienen un producto asociado a instalar
   *
   * @author Nestor Naula     <nnaulal@telconet.ec>
   * @version 1.8 10/01/2019
@@ -85,7 +85,7 @@ PROCEDURE P_ACTUALIZAR_CATEGORIAS_TAREAS(Pv_tareas nombresArray,Pv_categorias no
   *
   * @author Wilmer Vera <wvera@telconet.ec>
   * @version 1.10 07/08/2019
-  * Se elimina l�gica para obtimizar cursor del paquete
+  * Se elimina lógica para obtimizar cursor del paquete
   *
   * @author Jean Nazareno    <jnazareno@telconet.ec>
   * @version 2.0 12/07/2019
@@ -99,7 +99,7 @@ PROCEDURE P_ACTUALIZAR_CATEGORIAS_TAREAS(Pv_tareas nombresArray,Pv_categorias no
   *
   * @author Wilmer Vera <wvera@telconet.ec>
   * @version 2.2 07/07/2020
-  * Se agrega �ltima milla para tareas de soporte.
+  * Se agrega última milla para tareas de soporte.
   *
   * @author Jean Pierre Nazareno  <jnazareno@telconet.ec>
   * @author Ronny Moran <rmoranc@telconet.ec>
@@ -122,6 +122,7 @@ PROCEDURE P_ACTUALIZAR_CATEGORIAS_TAREAS(Pv_tareas nombresArray,Pv_categorias no
 
 END SPKG_GESTION_TAREAS_TYM;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_GESTION_TAREAS_TYM
 AS
 FUNCTION F_GET_TAREA_ID_X_NOMBRE(Fv_nombreTarea VARCHAR2)
@@ -149,7 +150,7 @@ return NUMBER is
 
 FUNCTION F_GET_CAT_TAREA_ID_X_VALOR1(Fv_nombreCategoriaTarea VARCHAR2)
 	return NUMBER is  
-	    	--Cursor para obtener id de la categor�a tarea en base al nombre de la categor�a de la tarea
+	    	--Cursor para obtener id de la categoría tarea en base al nombre de la categoría de la tarea
 		cursor c_obtenerCategoriaTareaXValor1(Fv_nombreCategoriaTarea VARCHAR2) is
 		SELECT det.ID_PARAMETRO_DET
 		FROM DB_GENERAL.ADMI_PARAMETRO_DET det

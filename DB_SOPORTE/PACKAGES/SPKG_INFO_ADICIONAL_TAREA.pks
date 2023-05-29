@@ -1,100 +1,100 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
 /*
-  * Documentaci�n para FUNCI�N 'F_GET_TAREA_TIEMPO_PARCIAL'.
-  * Funci�n que obtiene la ultima fecha y tiempo de la tarea
+  * Documentación para FUNCIÓN 'F_GET_TAREA_TIEMPO_PARCIAL'.
+  * Función que obtiene la ultima fecha y tiempo de la tarea
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  id_detalle de la tarea
   * @Param VARCHAR2  Pv_estado  ->  estado de la tarea
   * @Param NUMBER   Pn_id_caso  -> id de caso
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_TAREA_TIEMPO_PARCIAL(Pn_detalle_id NUMBER, Pv_estado VARCHAR2, Pn_id_caso NUMBER)
       RETURN VARCHAR2;
  
 /*
-  * Documentaci�n para FUNCI�N 'F_GET_INFO_CASO'.
-  * Funci�n que obtiene el numero de caso 
+  * Documentación para FUNCIÓN 'F_GET_INFO_CASO'.
+  * Función que obtiene el numero de caso 
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_id_caso  ->  id caso
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_INFO_CASO(Pn_id_caso NUMBER)
       RETURN VARCHAR2;
      
  /*
-  * Documentaci�n para FUNCI�N 'F_GET_CLIENTES_AFECTADOS'.
-  * Funci�n que obtiene el cliente afectado
+  * Documentación para FUNCIÓN 'F_GET_CLIENTES_AFECTADOS'.
+  * Función que obtiene el cliente afectado
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  id detalle
   * @Param NUMBER  Pn_id_caso  ->  id caso
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_CLIENTES_AFECTADOS(Pn_detalle_id NUMBER, Pn_id_caso NUMBER)
       RETURN VARCHAR2;
      
  /*
-  * Documentaci�n para FUNCI�N 'F_GET_FECHA_CREA_TAREA'.
-  * Funci�n que obtiene la fecha en que se inicio o acepto la tarea
+  * Documentación para FUNCIÓN 'F_GET_FECHA_CREA_TAREA'.
+  * Función que obtiene la fecha en que se inicio o acepto la tarea
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  id detalle
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_FECHA_CREA_TAREA(Pn_detalle_id NUMBER)
       RETURN VARCHAR2;
      
  /*
-  * Documentaci�n para FUNCI�N 'F_GET_FECHA_TIEMPO_PARCIAL'.
-  * Funci�n que obtiene fecha y tiempo de la tarea
+  * Documentación para FUNCIÓN 'F_GET_FECHA_TIEMPO_PARCIAL'.
+  * Función que obtiene fecha y tiempo de la tarea
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  id detalle
   * @Param NUMBER  Pv_estado  ->  estado de la tarea
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_FECHA_TIEMPO_PARCIAL(Pn_detalle_id NUMBER, Pv_estado VARCHAR2)
       RETURN VARCHAR2; 
      
  /*
-  * Documentaci�n para FUNCI�N 'F_GET_DEP_COORDINADOR'.
-  * Funci�n que obtiene el id departamento del coordinador
+  * Documentación para FUNCIÓN 'F_GET_DEP_COORDINADOR'.
+  * Función que obtiene el id departamento del coordinador
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_id_persona  ->  id persona
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_DEP_COORDINADOR(Pn_id_persona DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE)
       RETURN NUMBER; 
      
  /*
-  * Documentaci�n para FUNCI�N 'F_GET_ULTIMA_MILLA_SOPORTE'.
-  * Funci�n que obtiene el codigo timpo medio
+  * Documentación para FUNCIÓN 'F_GET_ULTIMA_MILLA_SOPORTE'.
+  * Función que obtiene el codigo timpo medio
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_id_caso  ->  id de caso
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_ULTIMA_MILLA_SOPORTE(Pn_id_caso DB_SOPORTE.INFO_CASO.ID_CASO%TYPE)
       RETURN VARCHAR2; 
      
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_CARACTERISTICA_DETALLE'.
-  * Funci�n que obtiene el codigo timpo medio
+  * Documentación para FUNCIÓN 'F_GET_CARACTERISTICA_DETALLE'.
+  * Función que obtiene el codigo timpo medio
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  detalle id
   *  @Param NUMBER  Pn_numero_tarea  ->  numero de tarea
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_CARACTERISTICA_DETALLE(Pn_detalle_id DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE,
@@ -103,26 +103,26 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
      
      
 /*
-  * Documentaci�n para FUNCI�N 'F_GET_MOTIVO_POR_TAREA'.
-  * Funci�n que obtiene la tarea anterior
+  * Documentación para FUNCIÓN 'F_GET_MOTIVO_POR_TAREA'.
+  * Función que obtiene la tarea anterior
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  detalle id
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_MOTIVO_POR_TAREA(Pn_detalle_id DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
       RETURN VARCHAR2;
      
  /*
-  * Documentaci�n para FUNCI�N 'F_GET_INFO_ADICIONAL_TAREA'.
-  * Funci�n que obtiene informaci�n de tarea adicional
+  * Documentación para FUNCIÓN 'F_GET_INFO_ADICIONAL_TAREA'.
+  * Función que obtiene información de tarea adicional
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  detalle id
   * @Param VARCHAR2  Pv_nombre_tarea  ->  nombre de tarea
   * @Param VARCHAR2  Pv_tareas_adicional  ->  lista de tareas adicionales
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_INFO_ADICIONAL_TAREA(Pn_detalle_id DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE,
@@ -131,27 +131,27 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
       RETURN VARCHAR2;
      
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_ID_SERVICIO_VRF'.
-  * Funci�n que obtiene el id_servicio afectado
+  * Documentación para FUNCIÓN 'F_GET_ID_SERVICIO_VRF'.
+  * Función que obtiene el id_servicio afectado
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  detalle id
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_ID_SERVICIO_VRF(Pn_detalle_id DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE)
       RETURN NUMBER;
  
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_INFO_TAREA_DETALE_CASO'.
-  * Funci�n que retorna el id persona por detalle o caso.
+  * Documentación para FUNCIÓN 'F_GET_INFO_TAREA_DETALE_CASO'.
+  * Función que retorna el id persona por detalle o caso.
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  detalle id
   * @Param NUMBER Pn_id_caso  -> id del caso
   * @Param VARCHAR2 Pv_cod_emp -> codigo de empresa
   * @Param VARCHAR2 Pv_es_departamental -> bamdera si tarea es departamental
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_GET_INFO_TAREA_DETALE_CASO(Pn_detalle_id DB_SOPORTE.INFO_DETALLE.ID_DETALLE%TYPE,
@@ -161,15 +161,15 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
       RETURN VARCHAR2;
      
 /*
-  * Documentaci�n para FUNCI�N 'F_GET_VALIDA_PROGRESO_TAREA'.
-  * Funci�n que retorna el id persona por detalle o caso.
+  * Documentación para FUNCIÓN 'F_GET_VALIDA_PROGRESO_TAREA'.
+  * Función que retorna el id persona por detalle o caso.
   *
   * PARAMETROS:
   * @Param NUMBER  Pn_detalle_id  ->  detalle id
   * @Param NUMBER Pn_id_caso  -> id del caso
   * @Param VARCHAR2 Pv_cod_emp -> codigo de empresa
   * @Param VARCHAR2 Pv_es_departamental -> bamdera si tarea es departamental
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   *
   * @author Emmanuel Martillo. <filopez@telconet.ec>
@@ -184,13 +184,13 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
       RETURN VARCHAR2;
      
   /*
-  * Documentaci�n para FUNCI�N 'F_GET_TOTAL_TAREA_PERFIL'.
-  * Funci�n que retorna el total de tareas abiertas por perfil.
+  * Documentación para FUNCIÓN 'F_GET_TOTAL_TAREA_PERFIL'.
+  * Función que retorna el total de tareas abiertas por perfil.
   *
   * PARAMETROS:
   * @Param VARCHAR2 Pv_FechaDefecto -> fecha por defecto
   * @Param VARCHAR2 Pv_PersonaEmpresaRol -> array de id persona empresa rol
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 28-07-2022
   */
   FUNCTION F_GET_TOTAL_TAREA_PERFIL(Pv_FechaDefecto VARCHAR2,
@@ -199,6 +199,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
      
 END SPKG_INFO_ADICIONAL_TAREA;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INFO_ADICIONAL_TAREA AS
 
 FUNCTION F_GET_TAREA_TIEMPO_PARCIAL(Pn_detalle_id NUMBER, Pv_estado VARCHAR2,Pn_id_caso NUMBER)

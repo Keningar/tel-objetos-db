@@ -8,14 +8,14 @@ CREATE OR REPLACE procedure NAF47_TNET.P_GENERA_ASIENTO_DEPRECIACION(Pv_cia   IN
                                                                      Pn_NumAsiento   IN OUT arcgae.no_asiento%type,
                                                                      Pv_Error        IN OUT varchar2 ) IS
 /**
-Documentaci�n para P_GENERA_ASIENTO_DEPRECIACION
+Documentación para P_GENERA_ASIENTO_DEPRECIACION
 Procedimiento que realiza la generacion del asiento cantables por depereciaciones
 
 @author  Martha Navarrete Martinez <mnavarrete@telconet.ec>
 @version 1.0  15/05/2017
 
 @param  Pv_cia   IN varchar2  Recibe el codigo de la empresa 
-@param  Pn_ano   IN number Recibe el a�o de proceso del modulo
+@param  Pn_ano   IN number Recibe el año de proceso del modulo
 @param  Pn_mes   IN number Recibe el mes de proceso del modulo
 @param  Pd_fecha IN date Recibe el ultimo dia del mes en proceso
 @param  Pv_CodigoDiario IN Recibe el codigo de diario

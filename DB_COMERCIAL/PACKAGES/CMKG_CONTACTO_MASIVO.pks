@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
 
     /**
-     * Documentaci�n Para CMKG_CONTACTO_MASIVO
-     * Paquete que contiene procedimientos y funciones para la administraci�n masiva de contactos
+     * Documentación Para CMKG_CONTACTO_MASIVO
+     * Paquete que contiene procedimientos y funciones para la administración masiva de contactos
      *
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
      * @Version 1.0 18/10/2019
@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
 
     /**
      *
-     * Procedimiento que realiza la creaci�n masiva de contactos a nivel puntos y/o cliente
+     * Procedimiento que realiza la creación masiva de contactos a nivel puntos y/o cliente
      *
      * Costo Del Query C_GetDescripcionRol: 3
      * Costo Del Query C_GetCaracPorDesc:   2
@@ -30,19 +30,19 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
      * @Version 1.0 18/10/2019
      *
-     * @Author David Le�n <mdleon@telconet.ec>
+     * @Author David León <mdleon@telconet.ec>
      * @Version 1.1 07/07/2022 - Se modifica el proceso para guardar una sola vez en la tabla de INFO_PERSONA_EMPRESA_ROL.
      *
      * @PARAM Pcl_Idroles           IN CLOB     Id De Roles Del Contacto Concatenados
      * @PARAM Pcl_Idpuntos          IN CLOB     Id De Puntos Concatenados
-     * @PARAM Pcl_Extraparams       IN CLOB     Par�metros extras
+     * @PARAM Pcl_Extraparams       IN CLOB     Parámetros extras
      **** @PARAM intIdOficina          NUMBER   Id De Oficina
      **** @PARAM strCodEmpresa         VARCHAR2 Id De Empresa
      **** @PARAM strUsuario            VARCHAR2 Usuario Creador
      **** @PARAM strIp                 VARCHAR2 Ip Creador
-     **** @PARAM strDescripcionRol1    VARCHAR2 Par�metro Adicional, Descripci�n De Rol
-     **** @PARAM strDescripcionCarac1  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
-     **** @PARAM strDescripcionCarac2  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
+     **** @PARAM strDescripcionRol1    VARCHAR2 Parámetro Adicional, Descripción De Rol
+     **** @PARAM strDescripcionCarac1  VARCHAR2 Parámetro Adicional, Descripción De Característica
+     **** @PARAM strDescripcionCarac2  VARCHAR2 Parámetro Adicional, Descripción De Característica
      * @PARAM Pn_Idcliente          IN NUMBER   Id Del Cliente
      * @PARAM Pn_Idpersona          IN NUMBER   Id Del Contacto
      * @PARAM Pn_Nivel_Cliente      IN NUMBER   Flag Que Indica Si Se Debe Crear A Nivel Cliente
@@ -59,7 +59,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
                              Pv_Msgerror       OUT VARCHAR2);
 
     /**
-     * Procedimiento que realiza la asignaci�n masiva de roles de contacto a nivel puntos y/o cliente
+     * Procedimiento que realiza la asignación masiva de roles de contacto a nivel puntos y/o cliente
      *
      * Costo Del Query C_GetDescripcionRol:      2
      * Costo Del Query C_GetPuntosPorEmpresaRol: 1414
@@ -68,18 +68,18 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
      * @Version 1.0 23/10/2019
      *
-     * @Author David Le�n <mdleon@telconet.ec>
+     * @Author David León <mdleon@telconet.ec>
      * @Version 1.1 07/07/2022 - Se modifica el proceso para guardar una sola vez en la tabla de INFO_PERSONA_EMPRESA_ROL.
      *
      * @PARAM Pcl_Idroles            IN CLOB     Id De Roles Del Contacto Concatenados
-     * @PARAM Pcl_Extraparams        IN CLOB     Par�metros extras
+     * @PARAM Pcl_Extraparams        IN CLOB     Parámetros extras
      **** @PARAM intIdOficina          NUMBER   Id De Oficina
      **** @PARAM strCodEmpresa         VARCHAR2 Id De Empresa
      **** @PARAM strUsuario            VARCHAR2 Usuario Creador
      **** @PARAM strIp                 VARCHAR2 Ip Creador
-     **** @PARAM strDescripcionRol1    VARCHAR2 Par�metro Adicional, Descripci�n De Rol
-     **** @PARAM strDescripcionCarac1  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
-     **** @PARAM strDescripcionCarac2  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
+     **** @PARAM strDescripcionRol1    VARCHAR2 Parámetro Adicional, Descripción De Rol
+     **** @PARAM strDescripcionCarac1  VARCHAR2 Parámetro Adicional, Descripción De Característica
+     **** @PARAM strDescripcionCarac2  VARCHAR2 Parámetro Adicional, Descripción De Característica
      * @PARAM Pn_Idcliente          IN NUMBER   Id Del Cliente
      * @PARAM Pn_Idpersona          IN NUMBER   Id Del Contacto
      * @PARAM Pn_Asigna_Cliente     IN NUMBER   Flag Que Indica Si Se Debe Asginar Rol A Nivel Cliente
@@ -95,7 +95,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
                                     Pv_Msgerror        OUT VARCHAR2);
 
      /**
-     * Procedimiento que realiza la eliminaci�n masiva de roles de contacto a nivel puntos y/o cliente
+     * Procedimiento que realiza la eliminación masiva de roles de contacto a nivel puntos y/o cliente
      *
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
      * @Version 1.0 24/10/2019
@@ -111,14 +111,14 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
      * Costo Del Query C_GetCaracPorDesc:    3
 
      * @PARAM Pcl_Idroles            IN CLOB     Id De Roles Del Contacto Concatenados
-     * @PARAM Pcl_Extraparams        IN CLOB     Par�metros extras
+     * @PARAM Pcl_Extraparams        IN CLOB     Parámetros extras
      **** @PARAM intIdOficina          NUMBER   Id De Oficina
      **** @PARAM strCodEmpresa         VARCHAR2 Id De Empresa
      **** @PARAM strUsuario            VARCHAR2 Usuario Creador
      **** @PARAM strIp                 VARCHAR2 Ip Creador
-     **** @PARAM strDescripcionRol1    VARCHAR2 Par�metro Adicional, Descripci�n De Rol
-     **** @PARAM strDescripcionCarac1  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
-     **** @PARAM strDescripcionCarac2  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
+     **** @PARAM strDescripcionRol1    VARCHAR2 Parámetro Adicional, Descripción De Rol
+     **** @PARAM strDescripcionCarac1  VARCHAR2 Parámetro Adicional, Descripción De Característica
+     **** @PARAM strDescripcionCarac2  VARCHAR2 Parámetro Adicional, Descripción De Característica
      * @PARAM Pn_Idcliente          IN NUMBER   Id Del Cliente
      * @PARAM Pn_Idpersona          IN NUMBER   Id Del Contacto
      * @PARAM Pn_Elimina_Cliente    IN NUMBER   Flag Que Indica Si Se Debe Eliminar Rol A Nivel Cliente
@@ -133,7 +133,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
                                      Pv_Msgerror        OUT VARCHAR2);
 
     /**
-     * Procedimiento que realiza la eliminaci�n de contacto a nivel puntos y/o cliente
+     * Procedimiento que realiza la eliminación de contacto a nivel puntos y/o cliente
      *
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
      * @Version 1.0 24/10/2019
@@ -145,7 +145,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
 
      * @PARAM Pn_Idcliente          IN NUMBER   Id Del Cliente
      * @PARAM Pn_Idpersona          IN NUMBER   Id Del Contacto
-     * @PARAM Pcl_Extraparams       IN CLOB     Par�metros extras
+     * @PARAM Pcl_Extraparams       IN CLOB     Parámetros extras
      **** @PARAM intIdOficina          NUMBER   Id De Oficina
      **** @PARAM strCodEmpresa         VARCHAR2 Id De Empresa
      **** @PARAM strUsuario            VARCHAR2 Usuario Creador
@@ -159,15 +159,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
                                 Pv_Msgerror        OUT VARCHAR2);
 
     /**
-     * Procedimiento que realiza la duplicaci�n masiva de contacto y roles a nivel de puntos y/o cliente
+     * Procedimiento que realiza la duplicación masiva de contacto y roles a nivel de puntos y/o cliente
      *
      * @Author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
      * @Version 1.0 22/10/2019
      *
-     * @Author David Le�n <mdleon@telconet.ec>
+     * @Author David León <mdleon@telconet.ec>
      * @Version 1.1 07/07/2022 - Se modifica el proceso para guardar una sola vez en la tabla de INFO_PERSONA_EMPRESA_ROL.
      *
-     * @Author David Le�n <mdleon@telconet.ec>
+     * @Author David León <mdleon@telconet.ec>
      * @Version 1.2 12/10/2022 - Se realiza consulta para reutilizar los datos de INFO_PERSONA_EMPRESA_ROL.
      *
      * Costo Del Query C_GetDescripcionRol: 3
@@ -179,15 +179,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
      *
      * @PARAM Pcl_Idroles            IN CLOB     Id De Roles Del Contacto Concatenados
      * @PARAM Pcl_Idpuntos           IN CLOB     Id De Puntos Concatenados
-     * @PARAM Pcl_Extraparams        IN CLOB     Par�metros extras
+     * @PARAM Pcl_Extraparams        IN CLOB     Parámetros extras
      **** @PARAM intIdOficina          NUMBER   Id De Oficina
-     **** @PARAM intLoginLimite        NUMBER   Cantidad l�mite de logines repetidos en mensaje de salida
+     **** @PARAM intLoginLimite        NUMBER   Cantidad límite de logines repetidos en mensaje de salida
      **** @PARAM strCodEmpresa         VARCHAR2 Id De Empresa
      **** @PARAM strUsuario            VARCHAR2 Usuario Creador
      **** @PARAM strIp                 VARCHAR2 Ip Creador
-     **** @PARAM strDescripcionRol1    VARCHAR2 Par�metro Adicional, Descripci�n De Rol
-     **** @PARAM strDescripcionCarac1  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
-     **** @PARAM strDescripcionCarac2  VARCHAR2 Par�metro Adicional, Descripci�n De Caracter�stica
+     **** @PARAM strDescripcionRol1    VARCHAR2 Parámetro Adicional, Descripción De Rol
+     **** @PARAM strDescripcionCarac1  VARCHAR2 Parámetro Adicional, Descripción De Característica
+     **** @PARAM strDescripcionCarac2  VARCHAR2 Parámetro Adicional, Descripción De Característica
      * @PARAM Pn_Idcliente          IN NUMBER   Id Del Cliente
      * @PARAM Pn_Idpersona          IN NUMBER   Id Del Contacto
      * @PARAM Pn_Duplica_Cliente    IN NUMBER   Flag Que Indica Si Se Debe Duplicar Contacto A Nivel Cliente
@@ -209,7 +209,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CONTACTO_MASIVO AS
                                 Pv_Msgerror             OUT VARCHAR2);
 
     /**
-     * Funci�n que devuelve un array de ids de un string con ids concatenados
+     * Función que devuelve un array de ids de un string con ids concatenados
      *
      * @Author Sean D. Stuber
      * @Adapted By Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>

@@ -9,9 +9,9 @@ DECLARE
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 05-08-2015
   *
-  * @author Alejandro Dom�nguez <adominguez@telconet.ec>
+  * @author Alejandro Domínguez <adominguez@telconet.ec>
   * @version 1.1 04-12-2015
-  * Se agrega el control de duplicidad de logins y preparaci�n de una respuesta personalizada.
+  * Se agrega el control de duplicidad de logins y preparación de una respuesta personalizada.
   */
   v_cadena_limpia  VARCHAR2(60);
   LN_ROW_COUNT NUMBER;
@@ -32,7 +32,7 @@ DECLARE
 EXCEPTION
 WHEN RAISE_EXCEPTION THEN
   RAISE_APPLICATION_ERROR(-20999, '#ERR-20999$Login ' ||v_cadena_limpia|| ' duplicado, el usuario ' || LV_USR_CREACION || 
-                                  ' lo registr� el ' || LD_FE_CREACION ||  '$'|| LN_ID_PUNTO ||'#');
+                                  ' lo registró el ' || LD_FE_CREACION ||  '$'|| LN_ID_PUNTO ||'#');
 WHEN OTHERS THEN
   UTL_MAIL.SEND (sender     => 'notificaciones@telconet.ec', 
                  recipients => 'telcos@telconet.ec', 

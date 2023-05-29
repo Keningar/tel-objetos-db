@@ -83,7 +83,7 @@ CREATE OR REPLACE package NAF47_TNET.ARCPK_WEBSERVICE is
   * @author banton <banton@telconet.ec>
   * @version 1.3  21/01/2021  Se agrega numero de agente de retencion en el bloque de informacion tributaria
   *
-  * Llamado de proceso para la notificaci�n de Comprobantes de retencion con error
+  * Llamado de proceso para la notificación de Comprobantes de retencion con error
   * @author Wilson Chimbo <wchimbo@telconet.ec>
   * @version 1.4 25/11/2022 
   */
@@ -129,57 +129,57 @@ CREATE OR REPLACE package NAF47_TNET.ARCPK_WEBSERVICE is
                                                   Pv_TipoEmision                  IN Varchar2  ) Return Varchar2;
 
 /**
-  * Documentaci�n para P_ENVIA_LIQUIDACION_COMPRAS
-  * Procedimiento para ingresar documento de liquidaci�n de compras en DB_COMPROBANTES.INFO_DOCUMENTO
+  * Documentación para P_ENVIA_LIQUIDACION_COMPRAS
+  * Procedimiento para ingresar documento de liquidación de compras en DB_COMPROBANTES.INFO_DOCUMENTO
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 22/11/2019
   *
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.1 13/07/2020 Se modifica para obtener detalle servicios del documento
   *
-  * @author Byron Ant�n <banton@telconet.ec>
-  * @version 1.2 30/05/2022 Se modifica para obtener descripci�n del servicio ingresado de manera manual
+  * @author Byron Antón <banton@telconet.ec>
+  * @version 1.2 30/05/2022 Se modifica para obtener descripción del servicio ingresado de manera manual
   * 
    */                                     
   PROCEDURE P_ENVIA_LIQUIDACION_COMPRAS  ; 
    /**
-  * Documentaci�n para P_CONSULTA_ESTADO_LIQ_COMPRAS
+  * Documentación para P_CONSULTA_ESTADO_LIQ_COMPRAS
   * Procedimiento que verifica estado del comprobante para actualizarlo en NAF
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 29/11/2019
   *
-  * Llamado de proceso para la notificaci�n de liquidacion de compras con error
+  * Llamado de proceso para la notificación de liquidacion de compras con error
   * @author Wilson Chimbo <wchimbo@telconet.ec>
   * @version 1.1 25/11/2022 
   * 
    */
   PROCEDURE P_CONSULTA_ESTADO_LIQ_COMPRAS;
    /**
-  * Documentaci�n para P_GENERA_XML_FISICO
+  * Documentación para P_GENERA_XML_FISICO
   * Procedimiento que genera xml para enviar a autorizar al SRI 
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 22/01/2020
   * 
   * @author llindao <llindao@telconet.ec>
   * @version 1.1  13/04/2020  Se modifica para dar formato decimales a campo porcentaje porque emite error al generar xml
   *
-   @author Byron Ant�n <banton@telconet.ec>
+   @author Byron Antón <banton@telconet.ec>
   * @version 1.2 13/07/2020 Se modifica para obtener detalle servicios del documento
   *
-   @author Byron Ant�n <banton@telconet.ec>
-  * @version 1.3 06/10/2020 Se modifica para codigo de agente en bloque de informaci�n adicional
+   @author Byron Antón <banton@telconet.ec>
+  * @version 1.3 06/10/2020 Se modifica para codigo de agente en bloque de información adicional
  */
   PROCEDURE P_GENERA_XML_FISICO (Pv_noDocu IN VARCHAR2,
                                  Pv_NoCia  IN VARCHAR2);
 
    /**
-  * Documentaci�n para F_LEER_ARCHIVO_CLOB
+  * Documentación para F_LEER_ARCHIVO_CLOB
   * Procedimiento que lee el xml desde la base para transcribir a disco desde el Forms 
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 22/01/2020
   */
   FUNCTION F_LEER_ARCHIVO_CLOB(Pv_NoDocu IN VARCHAR2,
@@ -1682,7 +1682,7 @@ BEGIN
                FETCH C_USUARIOEXISTE INTO Ln_IdUsuario;
 
                 IF (C_USUARIOEXISTE%notfound) THEN
-                  -- Obtenci�n de clave para el Usuario  
+                  -- Obtención de clave para el Usuario  
                  Lv_Password  := DB_FINANCIERO.FNCK_COM_ELECTRONICO.F_GENERA_PASSWD_SHA256 (DOC.identificacion);
 
                   Ln_IdUsuario                         :=DB_COMPROBANTES.SEQ_ADMI_USUARIO.NEXTVAL;
@@ -1814,7 +1814,7 @@ BEGIN
                IF Lv_MessageError IS NOT NULL  THEN  
 
                   BEGIN
-                     Lv_MessageError := Lv_MessageError || ' Se trat� de hacer un comprobante no permitido IdDocumento: '||TO_CHAR(Ln_IdDocumento);
+                     Lv_MessageError := Lv_MessageError || ' Se trató de hacer un comprobante no permitido IdDocumento: '||TO_CHAR(Ln_IdDocumento);
                      DB_FINANCIERO.FNCK_COM_ELECTRONICO_TRAN.INSERT_ERROR('FNCK_COM_ELECTRONICO.P_INSERT_INFO_DOCUMENTO', 'INGRESO DE INFO_DOCUMENTO', Lv_MessageError);
                    RAISE Le_Error;
                   END;
@@ -2266,14 +2266,14 @@ BEGIN
           <div style="background-color: #f4f4f4; padding: 15px;display: block;">
 
               <div>
-                  <h3>Notificaci�n</h3>
+                  <h3>Notificación</h3>
               </div>
 
               <div style="background-color:#ffffff; padding: 15px;text-align:justify;">
                   <p style="padding: 8px;">Estimados,</p>
 
                   <p style="padding: 8px;"> El documento <b>'||Lc_DetalleNotificacion.NOMBRE 
-                  ||'</b> n�mero <b>'||Lc_DetalleNotificacion.SERIE||'</b>,
+                  ||'</b> número <b>'||Lc_DetalleNotificacion.SERIE||'</b>,
                       con fecha <b>'||Lc_DetalleNotificacion.FECHA||'</b> del proveedor con 
                       CI/RUC <b>'||Lc_DetalleNotificacion.IDENTIFICACION||'</b> de nombre <B>'
                       ||Lc_DetalleNotificacion.NOMBRES||'</B> ha
@@ -2313,14 +2313,14 @@ BEGIN
           <div style="background-color: #f4f4f4; padding: 15px;display: block;">
 
               <div>
-                  <h3>Notificaci�n</h3>
+                  <h3>Notificación</h3>
               </div>
 
               <div style="background-color:#ffffff; padding: 15px;text-align: justify;">
                   <p style="padding: 8px;">Estimados,</p>
 
                   <p style="padding: 8px;"> El documento <b>'||Lc_DetalleNotificacionSimple.NOMBRE 
-                  ||'</b> n�mero <b>'||Lc_DetalleNotificacionSimple.SERIE||'</b>,
+                  ||'</b> número <b>'||Lc_DetalleNotificacionSimple.SERIE||'</b>,
                       con fecha <b>'||Lc_DetalleNotificacionSimple.FECHA||'</b> del proveedor con CI/RUC
                       <b>'||Lc_DetalleNotificacionSimple.IDENTIFICACION||'</b> ha
                       sido rechazado, el motivo del porque se ha devuelto el

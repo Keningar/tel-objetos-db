@@ -264,10 +264,10 @@ BEGIN
          Lr_InfoElementoTrazabilidad.Ip_Creacion     := GEK_CONSULTA.F_RECUPERA_IP;
          Lr_InfoElementoTrazabilidad.Cod_Empresa     := i.No_Cia;
          Lr_InfoElementoTrazabilidad.Estado_Naf      := 'Fuera de Bodega';
-         Lr_InfoElementoTrazabilidad.Estado_Activo   := 'Da�ado';
+         Lr_InfoElementoTrazabilidad.Estado_Activo   := 'Dañado';
          Lr_InfoElementoTrazabilidad.Estado_Telcos   := 'Eliminado';
          Lr_InfoElementoTrazabilidad.Ubicacion       := 'Fuera de bodega';
-         Lr_InfoElementoTrazabilidad.Transaccion     := 'Despacho de equipos da�ados';--Lr_DocumentoInv.Accion;               
+         Lr_InfoElementoTrazabilidad.Transaccion     := 'Despacho de equipos dañados';--Lr_DocumentoInv.Accion;               
          Lr_InfoElementoTrazabilidad.Observacion     := 'Baja de equipo';
          Lr_InfoElementoTrazabilidad.Numero_Serie    := i.serie;
          --

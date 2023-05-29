@@ -3,21 +3,21 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
   /**
   * Documentacion para el procedimiento P_WEB_SERVICE
   *
-  * M�todo encargado del consumo de webservice
+  * Método encargado del consumo de webservice
   *
   * @param Pv_Url             IN  NUMBER   Recibe la url del webservice
   * @param Pcl_Mensaje        IN  VARCHAR2 Recibe el mensaje en formato JSON,XML,ETC
   * @param Pv_Application     IN  VARCHAR2 Recibe el content type por ejemplo (application/json)
   * @param Pv_Charset         IN  VARCHAR2 Recibe el charset en el que se envia el mensaje
   * @param Pv_UrlFileDigital  IN  VARCHAR2 Ruta del certificado digital
-  * @param Pv_PassFileDigital IN  VARCHAR2 contrase�a para acceder al certificado digital
+  * @param Pv_PassFileDigital IN  VARCHAR2 contraseña para acceder al certificado digital
   * @param Pv_Respuesta       OUT VARCHAR2 Retorna la respuesta del webservice
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 25-09-2017
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.1 17-10-2017
   */ 
   PROCEDURE P_WEB_SERVICE(
@@ -33,23 +33,23 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
 /**
   * Documentacion para el procedimiento P_WEB_SERVICE_BR
   *
-  * M�todo encargado del consumo de webservice con request y response de gran tama�o (BIG REQUEST), se creo este
-  * m�todo para evitar alguna afectaci�n con procesos que usaban el m�todo anterior existente
+  * Método encargado del consumo de webservice con request y response de gran tamaño (BIG REQUEST), se creo este
+  * método para evitar alguna afectación con procesos que usaban el método anterior existente
   *
   * @param Pv_Url             IN  NUMBER   Recibe la url del webservice
   * @param Pcl_Mensaje        IN  VARCHAR2 Recibe el mensaje en formato JSON,XML,ETC
   * @param Pv_Application     IN  VARCHAR2 Recibe el content type por ejemplo (application/json)
   * @param Pv_Charset         IN  VARCHAR2 Recibe el charset en el que se envia el mensaje
   * @param Pv_UrlFileDigital  IN  VARCHAR2 Ruta del certificado digital
-  * @param Pv_PassFileDigital IN  VARCHAR2 contrase�a para acceder al certificado digital
+  * @param Pv_PassFileDigital IN  VARCHAR2 contraseña para acceder al certificado digital
   * @param Pv_Respuesta       OUT VARCHAR2 Retorna la respuesta del webservice
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Jes�s Bozada <jbozada@telconet.ec>
+  * @author Jesús Bozada <jbozada@telconet.ec>
   * @version 1.0 10-11-2022
   * 
-  * @author Jes�s Bozada
-  * @version 1.1 13-12-2022  Se quita l�na con "UTL_HTTP.set_persistent_conn_support" ya que causa problemas al
+  * @author Jesús Bozada
+  * @version 1.1 13-12-2022  Se quita lína con "UTL_HTTP.set_persistent_conn_support" ya que causa problemas al
   *                          comunicarnos con WS GDA y utilizar el header  'Transfer-Encoding', 'chunked'
   */ 
   PROCEDURE P_WEB_SERVICE_BR(
@@ -65,15 +65,15 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
   /**
   * Documentacion para el procedimiento P_GET
   *
-  * M�todo encargado del consumo de webservice GET
+  * Método encargado del consumo de webservice GET
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
-  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */    
   PROCEDURE P_GET(Pv_Url      IN  VARCHAR2,
@@ -85,23 +85,23 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
   /**
   * Documentacion para el procedimiento P_POST
   *
-  * M�todo encargado del consumo de webservice POST
+  * Método encargado del consumo de webservice POST
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
   * @param Pcl_Content        IN  CLOB     Recibe un json request
-  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   *
   * @author Felix Caicedo <facaicedo@telconet.ec>
   * @version 1.1 18-06-2020 - Se aumenta el tiempo de respuesta a 120 segundos.
   *
   * @author Felix Caicedo <facaicedo@telconet.ec>
-  * @version 1.2 21-07-2020 - Se define la conexi�n persistente y se aumenta el tiempo de respuesta a 180 segundos.
+  * @version 1.2 21-07-2020 - Se define la conexión persistente y se aumenta el tiempo de respuesta a 180 segundos.
   *
   * @author Leonardo Mero <lemero@telconet.ec>
   * @version 1.3 20-09-2022 - Se aumenta el valor de caracteres maximos en el header para tolerar tokens extensos
@@ -116,16 +116,16 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
   /**
   * Documentacion para el procedimiento P_PUT
   *
-  * M�todo encargado del consumo de webservice PUT
+  * Método encargado del consumo de webservice PUT
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
   * @param Pcl_Content        IN  CLOB     Recibe un json request
-  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                   
   PROCEDURE P_PUT(Pv_Url      IN  VARCHAR2,
@@ -138,16 +138,16 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
   /**
   * Documentacion para el procedimiento P_DELETE
   *
-  * M�todo encargado del consumo de webservice DELETE
+  * Método encargado del consumo de webservice DELETE
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
   * @param Pcl_Content        IN  CLOB     Recibe un json request
-  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                 
   PROCEDURE P_DELETE(Pv_Url      IN  VARCHAR2,
@@ -160,16 +160,16 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
   /**
   * Documentacion para el procedimiento P_PATCH
   *
-  * M�todo encargado del consumo de webservice PATCH
+  * Método encargado del consumo de webservice PATCH
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
   * @param Pcl_Content        IN  CLOB     Recibe un json request
-  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
-  * @author Marlon Pl�as <mpluas@telconet.ec>
+  * @author Marlon Plúas <mpluas@telconet.ec>
   * @version 1.0 23-12-2019
   */                   
   PROCEDURE P_PATCH(Pv_Url      IN  VARCHAR2,
@@ -188,7 +188,7 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
 	type parts is table of part;
 	
 	/**
-	* Procedimiento usado para agregar par�metros en un request multipart/form-data.
+	* Procedimiento usado para agregar parámetros en un request multipart/form-data.
 	*/
 	procedure add_param(
 		p_parts in out parts,
@@ -208,12 +208,12 @@ CREATE OR REPLACE PACKAGE DB_GENERAL.GNKG_WEB_SERVICE AS
 	);
 	
 	/**
-	* Documentacion para la funci�n 'F_FORM'.
+	* Documentacion para la función 'F_FORM'.
 	* Permite realizar peticiones HTTP multipart/form-data.
 	*
-	* p_method VARCHAR2 m�todo HTTP (POST o PUT)  
-	* p_url VARCHAR2 URL al que se realizar� la petici�n
-	* p_parts parts tipo que contendr� las "partes" necesarias para construir la petici�n
+	* p_method VARCHAR2 método HTTP (POST o PUT)  
+	* p_url VARCHAR2 URL al que se realizará la petición
+	* p_parts parts tipo que contendrá las "partes" necesarias para construir la petición
 	* Pcl_Headers CLOB headers en formato JSON
 	*
 	* @author Bryan Fonseca <bfonseca@telconet.ec>
@@ -979,7 +979,7 @@ CREATE OR REPLACE PACKAGE BODY DB_GENERAL.GNKG_WEB_SERVICE AS
 			res          := utl_http.get_response(req);
 			statusCode   := to_number(trim(res.status_code));
 			
-			-- deber�an manejarse UTL_HTTP.HTTP_BAD_REQUEST y UTL_HTTP.HTTP_NOT_FOUND
+			-- deberían manejarse UTL_HTTP.HTTP_BAD_REQUEST y UTL_HTTP.HTTP_NOT_FOUND
 			BEGIN
 				LOOP
 					utl_http.read_line(res, vResult);

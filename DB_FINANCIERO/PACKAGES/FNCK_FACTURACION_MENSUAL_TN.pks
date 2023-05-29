@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_FACTURACION_MENSUAL_TN AS 
 
 /*
-* Documentaci�n para TYPE 'TypeClientesFacturar'.
+* Documentación para TYPE 'TypeClientesFacturar'.
 * Record que me permite almancernar la informacion devuelta por el query de los clientes a facturar.
 */
 TYPE TypeClientesFacturar IS RECORD (
@@ -23,7 +23,7 @@ TYPE TypeClientesFacturar IS RECORD (
 );
 
 /*
-* Documentaci�n para TYPE 'T_ClientesFacturar'.
+* Documentación para TYPE 'T_ClientesFacturar'.
 * Record para almacenar la data enviada al BULK.
 */
 TYPE T_ClientesFacturar IS TABLE OF TypeClientesFacturar INDEX BY PLS_INTEGER;
@@ -55,13 +55,13 @@ TYPE T_ClientesFacturar IS TABLE OF TypeClientesFacturar INDEX BY PLS_INTEGER;
   --
   --
 /*
-* Documentaci�n para TYPE 'TypeServiciosAsociados'.
+* Documentación para TYPE 'TypeServiciosAsociados'.
 * Record para almacenar la data enviada al BULK.
 */
 TYPE T_ServiciosAsociados IS TABLE OF TypeServiciosAsociados INDEX BY PLS_INTEGER;
 
 /*
-* Documentaci�n para TYPE 'TypeSolicitudes'.
+* Documentación para TYPE 'TypeSolicitudes'.
 * Record que me permite almancernar la informacion devuelta de las solicitudes asociados al punto de facturacion.
 */
 Type TypeSolicitudes IS RECORD (
@@ -72,7 +72,7 @@ Type TypeSolicitudes IS RECORD (
 
 
 /*
-* Documentaci�n para TYPE 'TypeBienServicio'.
+* Documentación para TYPE 'TypeBienServicio'.
 * Record que me permite devolver los valores para los acumuladores de bienes y servicios
 */
 Type TypeBienServicio IS RECORD (
@@ -83,7 +83,7 @@ Type TypeBienServicio IS RECORD (
 );
 
 /*
-* Documentaci�n para TYPE 'TypeNumerar'.
+* Documentación para TYPE 'TypeNumerar'.
 * Record que me permite numerar los documentos por oficina
 */
 Type TypeNumerar IS RECORD (
@@ -115,10 +115,10 @@ FUNCTION F_VERIFICAR_IMPUESTO_PRODUCTO(
 RETURN DB_COMERCIAL.INFO_PRODUCTO_IMPUESTO.PORCENTAJE_IMPUESTO%TYPE;
 
   /*
-  * Funci�n para verificar el impuesto ligado al plan.
+  * Función para verificar el impuesto ligado al plan.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.0 26-03-201 Se agrega la definici�n de la funci�n F_VERIFICAR_IMPUESTO_PLAN en la cabecera del Paquete.
+  * @version 1.0 26-03-201 Se agrega la definición de la función F_VERIFICAR_IMPUESTO_PLAN en la cabecera del Paquete.
   *
   * @param   DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE   Fn_IdPlan     Id del plan.
   * Return   DB_COMERCIAL.INFO_PRODUCTO_IMPUESTO.PORCENTAJE_IMPUESTO%TYPE
@@ -127,18 +127,18 @@ FUNCTION F_VERIFICAR_IMPUESTO_PLAN(Fn_IdPlan IN DB_COMERCIAL.INFO_PLAN_CAB.ID_PL
 RETURN DB_COMERCIAL.INFO_PRODUCTO_IMPUESTO.PORCENTAJE_IMPUESTO%TYPE;
 
   /**
-  * Documentacion para funci�n P_ACTUALIZAR_SERVICIO
+  * Documentacion para función P_ACTUALIZAR_SERVICIO
   *
   * Funcion para actualizar la informacion relevante al servicio para el conteo
   *
   * @version 1.0 Version Inicial
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 24-10-2018 - Se elimina la actualizacion de los meses restantes segun la frecuencia, 
   * ya que esto debe ejecutarse cuando la Factura se encuentra en estado Activo, ya que esto genera error en la ejecucion
   * del job de conteo de frecuencia ya que no considera la Prefactura y vuelve a dejar el servicio en meses restantes = 0 
   * (Listo para facturar), debido a que cuando las facturas son generadas en Fin de Semana o en Feriado se numeran y
-  * envian a autorizar el primer d�a h�bil.
+  * envian a autorizar el primer día hábil.
   */
 PROCEDURE P_ACTUALIZAR_SERVICIO(
     Pn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE);
@@ -146,13 +146,13 @@ PROCEDURE P_ACTUALIZAR_SERVICIO(
   --
   --
   /**
-  * Documentacion para funci�n F_VERIFICAR_CARAC_PERSONA
+  * Documentacion para función F_VERIFICAR_CARAC_PERSONA
   *
   * Funcion para verificar si la persona posee la caracteristica de compensacion
   *
   * @version 1.0 Version Inicial
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 13-10-2016 - Se verifica si el usuario debe ser compensado o no usando la funci�n 'FNCK_CONSULTS.F_VALIDA_CLIENTE_COMPENSADO'
+  * @version 1.1 13-10-2016 - Se verifica si el usuario debe ser compensado o no usando la función 'FNCK_CONSULTS.F_VALIDA_CLIENTE_COMPENSADO'
   */
   FUNCTION F_VERIFICAR_CARAC_PERSONA(
       Fn_IdPunto IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE)
@@ -164,7 +164,7 @@ PROCEDURE P_ACTUALIZAR_SERVICIO(
   * Procedimiento para obtener la fecha de emision dependiendo de la fecha actual
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.1 22-06-2017 - Modificacion del procedimiento para extraer el mes en espa�ol
+  * @version 1.1 22-06-2017 - Modificacion del procedimiento para extraer el mes en español
   */
 PROCEDURE P_GENERAR_FECHA_EMISION(
     Pn_EmpresaCod IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -205,8 +205,8 @@ PROCEDURE UPD_SOL_DESCT_UNICO (Pn_IdDetalleSol IN DB_COMERCIAL.INFO_DETALLE_SOLI
   *                           provocado por Precios de Venta a 9 decimales 
   *
   * @author Allan Suarez <arsuarez@telconet.ec>
-  * @version 1.3 17-07-2018 - Se agrega condici�n para que no se facturen servicios con caracteristica FACTURACION POR CONSUMO dado que se manejan
-  *                           en una facturaci�n diferenciada
+  * @version 1.3 17-07-2018 - Se agrega condición para que no se facturen servicios con caracteristica FACTURACION POR CONSUMO dado que se manejan
+  *                           en una facturación diferenciada
   */
   PROCEDURE GET_SERVICIO_ASOCIADOS(
       Pn_PuntoFacturacionId IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
@@ -278,7 +278,7 @@ PROCEDURE P_ACTUALIZAR_CABECERA(
   * Procedimiento para crear el impuesto adicional.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.0 26-03-201 Se agrega la definici�n del procedimiento P_CREAR_IMPUESTO_ADICIONAL en la cabecera del Paquete.
+  * @version 1.0 26-03-201 Se agrega la definición del procedimiento P_CREAR_IMPUESTO_ADICIONAL en la cabecera del Paquete.
   *
   * @param   INFO_DOCUMENTO_FINANCIERO_DET.ID_DOC_DETALLE%TYPE   Pn_IdDocDetalle     Id del detalle del documento.
   * @param   NUMBER                                              Pn_IdImpuesto       Id del impuesto.
@@ -307,9 +307,9 @@ PROCEDURE P_CREAR_IMPUESTO_ADICIONAL(
   * @param   INFO_DOCUMENTO_FINANCIERO_CAB%ROWTYPE                         Lr_InfoDocumentoFinancieroCab Cabecera del documento.
   * @param   DB_COMERCIAL.INFO_DETALLE_SOLICITUD.PORCENTAJE_DESCUENTO%TYPE Ln_PorcentajeDescuento        Porcentaje de descuento.
   * @param   NUMBER                                                        Ln_DescuentoFacProDetalle     Descuento correspondiente al detalle.
-  * @param   VARCHAR2                                                      Lv_MesEmision                 Mes de emisi�n.
-  * @param   VARCHAR2                                                      Lv_AnioEmision                Anio de emisi�n.
-  * @param   VARCHAR2                                                      Lv_Observacion                Observaci�n.
+  * @param   VARCHAR2                                                      Lv_MesEmision                 Mes de emisión.
+  * @param   VARCHAR2                                                      Lv_AnioEmision                Anio de emisión.
+  * @param   VARCHAR2                                                      Lv_Observacion                Observación.
   */
 PROCEDURE P_CREAR_DETALLE(
     Lr_Servicio                   IN TypeServiciosAsociados,
@@ -327,27 +327,27 @@ PROCEDURE P_CREAR_DETALLE(
     --
     --
 /*
- * Documentaci�n para FUNCION 'P_NUMERAR_LOTE_POR_OFICINA'.
+ * Documentación para FUNCION 'P_NUMERAR_LOTE_POR_OFICINA'.
  *
  * Procedimiento para numerar todo el lote de documentos pendientes
  * Se marca el campo ES_ELECTRONICA:='S' para que se envien al SRI
  *
  * @version 1.0 Version Inicial
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.1 - Se agrega el usuario de creaci�n 'Pv_UsrCreacion' para verificar por usuario de creaci�n las facturas a numerar
+ * @version 1.1 - Se agrega el usuario de creación 'Pv_UsrCreacion' para verificar por usuario de creación las facturas a numerar
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.2 04-09-2016 - Se a�ade la variable 'Pn_IdDocumento' que contiene el id del documento a procesar
+ * @version 1.2 04-09-2016 - Se añade la variable 'Pn_IdDocumento' que contiene el id del documento a procesar
  *
  * PARAMETROS:
  * @param Pv_PrefijoEmpresa          DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (prefijo de la empresa que va a enumerarse)
- * @param Pv_FeEmision               VARCHAR2 (fecha de emisi�n de las facturas a numerar)
- * @param Pv_CodigoTipoDocumento     DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE (c�digo del tipo de documento a generar)
- * @param Pv_UsrCreacion             DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE (usuario de creaci�n de las facturas)
+ * @param Pv_FeEmision               VARCHAR2 (fecha de emisión de las facturas a numerar)
+ * @param Pv_CodigoTipoDocumento     DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE (código del tipo de documento a generar)
+ * @param Pv_UsrCreacion             DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE (usuario de creación de las facturas)
  * @param Pv_EstadoImpresionFact     DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ESTADO_IMPRESION_FACT%TYPE (estado de las facturas a buscar)
- * @param Pv_EsElectronica           DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ES_ELECTRONICA%TYPE (par�metro que indica si la factura es 
+ * @param Pv_EsElectronica           DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ES_ELECTRONICA%TYPE (parámetro que indica si la factura es 
  *                                                                                                    electronica o no)
  * @param Pn_IdDocumento             DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE (id del documento a procesar)
- * @return Pv_MsnError               VARCHAR2 (variable que retornar� el mensaje de error en caso de existir )
+ * @return Pv_MsnError               VARCHAR2 (variable que retornará el mensaje de error en caso de existir )
  */
 PROCEDURE P_NUMERAR_LOTE_POR_OFICINA(
       Pv_PrefijoEmpresa      IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE,
@@ -365,15 +365,15 @@ PROCEDURE P_NUMERAR_LOTE_POR_OFICINA(
   *
   * Permite procesar la informacion a facturar
   *
-  * @param Cn_Puntos_Facturar  IN T_ClientesFacturar  Cursor con los puntos de facturaci�n
-  * @param Ln_MesEmision       IN VARCHAR2  Mes de emisi�n en n�meros de la factura a realizar
-  * @param Lv_MesEmision       IN VARCHAR2  Mes de emisi�n en letras de la factura a realizar
-  * @param Lv_AnioEmision      IN VARCHAR2  A�o de emisi�n de la factura a realizar
-  * @param Lv_PrefijoEmpresa   IN INFO_EMPRESA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa la cual realiza el proceso de facturaci�n
-  * @param Ln_IdOficina        IN INFO_OFICINA_GRUPO.ID_OFICINA%TYPE  Id de la oficina de facturaci�n
-  * @param Lv_FeEmision        IN VARCHAR2  Fecha de emisi�n de la factura realizada
+  * @param Cn_Puntos_Facturar  IN T_ClientesFacturar  Cursor con los puntos de facturación
+  * @param Ln_MesEmision       IN VARCHAR2  Mes de emisión en números de la factura a realizar
+  * @param Lv_MesEmision       IN VARCHAR2  Mes de emisión en letras de la factura a realizar
+  * @param Lv_AnioEmision      IN VARCHAR2  Año de emisión de la factura a realizar
+  * @param Lv_PrefijoEmpresa   IN INFO_EMPRESA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa la cual realiza el proceso de facturación
+  * @param Ln_IdOficina        IN INFO_OFICINA_GRUPO.ID_OFICINA%TYPE  Id de la oficina de facturación
+  * @param Lv_FeEmision        IN VARCHAR2  Fecha de emisión de la factura realizada
   * @param Ln_Porcentaje       IN NUMBER   Porcentaje del iva que se va a calcular
-  * @param Ln_RecordCount      IN OUT NUMBER  N�mero de documentos creados.
+  * @param Ln_RecordCount      IN OUT NUMBER  Número de documentos creados.
   *
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @since 1.0
@@ -382,16 +382,16 @@ PROCEDURE P_NUMERAR_LOTE_POR_OFICINA(
   * @version 1.1 - Se agrega Ln_BanderaImpuestoAdicional, para el impuesto adicional en este caso el ICE
   * @since 30-09-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 14-10-2016 - Se parametriza la validaci�n de compensaci�n de las facturas al 14% y al 12%.
+  * @version 1.2 14-10-2016 - Se parametriza la validación de compensación de las facturas al 14% y al 12%.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 14-03-2017 - Cuando el servicio facturado tiene frecuencia mayor que uno se a�ade a la descripci�n del servicio facturado una glosa
+  * @version 1.3 14-03-2017 - Cuando el servicio facturado tiene frecuencia mayor que uno se añade a la descripción del servicio facturado una glosa
   *                           informativa indicado el periodo facturado del servicio.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.4 05-04-2018 - Se agrega validaci�n para que se genere la cabecera de la factura cuando existen servicios a facturar.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.4 05-04-2018 - Se agrega validación para que se genere la cabecera de la factura cuando existen servicios a facturar.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.5 01-07-2021 - Se parametriza el valor l�mite de la cantidad de servicios para el detalle de la factura.
+  * @version 1.5 01-07-2021 - Se parametriza el valor límite de la cantidad de servicios para el detalle de la factura.
   * Costo query C_GetParametroLimite: 3
   *
   * @param Ln_RecordCount IN OUT NUMBER Retorna el conteo para reallizar el commit
@@ -409,20 +409,20 @@ PROCEDURE P_NUMERAR_LOTE_POR_OFICINA(
   --
   --
   /*
-  * Documentaci�n para el procedimiento 'P_FACTURACION_MENSUAL'.
+  * Documentación para el procedimiento 'P_FACTURACION_MENSUAL'.
   *
   * Procedimiento para realizar la facturacion mensual de todos los puntos de facturacion
   *
   * @version 1.0 Version Inicial
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 - Se cambia la forma de obtener la fecha de emisi�n, puesto que ahora se obtendr� la fecha de emisi�n del d�a en que se ejecuta el
+  * @version 1.1 - Se cambia la forma de obtener la fecha de emisión, puesto que ahora se obtendrá la fecha de emisión del día en que se ejecuta el
   *                proceso.
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.2 - Modificacion del procedimiento para extraer el mes en espa�ol
+  * @version 1.2 - Modificacion del procedimiento para extraer el mes en español
   *
   * PARAMETROS:
-  * @param Pn_EmpresaCod  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa de la cual se va a ejecutar el proceso
+  * @param Pn_EmpresaCod  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa de la cual se va a ejecutar el proceso
   * @param Pv_EsPrepago  DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ES_PREPAGO%TYPE  Indica si el cliente es prepago
   */
   PROCEDURE P_FACTURACION_MENSUAL(
@@ -501,7 +501,7 @@ BEGIN
       DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL,
       Pn_IdServicio,
       'Activo',
-      'Se reinicio el conteo para la facturaci�n',
+      'Se reinicio el conteo para la facturación',
       'telcos',
       sysdate,
       'reinicioConteo'
@@ -1017,7 +1017,7 @@ END F_VERIFICAR_IMPUESTO_PRODUCTO;
     --
     IF( Lr_InformacionCliente.ID_PERSONA_ROL IS NOT NULL AND Lr_InformacionCliente.ID_PERSONA_ROL > 0 )THEN
       --
-      --Si se obtiene la informaci�n del cliente se busca si debe o no compensar al cliente
+      --Si se obtiene la información del cliente se busca si debe o no compensar al cliente
       Lv_EsCompensado := DB_FINANCIERO.FNCK_CONSULTS.F_VALIDA_CLIENTE_COMPENSADO( Lr_InformacionCliente.ID_PERSONA_ROL, 
                                                                                   Lr_InformacionCliente.OFICINA_ID, 
                                                                                   Lr_InformacionCliente.EMPRESA_ID, 
@@ -1648,7 +1648,7 @@ PROCEDURE P_PROCESAR_INFORMACION (
     CLOSE C_GetCodEmpresa;
     --
     
-    --Obtenemos el par�metro de cantidad l�mite para el detalle de factura
+    --Obtenemos el parámetro de cantidad límite para el detalle de factura
     OPEN C_GetParametroLimite(Lv_NombreParametro,Lv_DescripcionParam,Lv_EstadoActivo,Lv_CodEmpresa);
     FETCH C_GetParametroLimite INTO Ln_LimitDet;
     CLOSE C_GetParametroLimite;
@@ -1826,11 +1826,11 @@ PROCEDURE P_PROCESAR_INFORMACION (
                 --Detalle para la factura
                 Lv_Observacion := Lr_Servicio.observacion;
                 --
-                --Cuando la frecuencia del servicio facturado sea mayor a uno se a�ade la glosa del periodo de facturaci�n a la observaci�n del 
+                --Cuando la frecuencia del servicio facturado sea mayor a uno se añade la glosa del periodo de facturación a la observación del 
                 --detalle facturado
                 IF Lr_Servicio.frecuencia_producto IS NOT NULL AND Lr_Servicio.frecuencia_producto > 1 THEN
                   --
-                  Lv_Observacion := Lv_Observacion || '. Periodo de Facturaci�n: ' 
+                  Lv_Observacion := Lv_Observacion || '. Periodo de Facturación: ' 
                                     || DB_FINANCIERO.FNCK_CONSULTS.F_GET_DESCRIPCION_PERIODO_FACT(Lr_Servicio.frecuencia_producto);
                   --
                 END IF;
@@ -2057,7 +2057,7 @@ BEGIN
   --Seteamos el porcentaje de IVA
   Ln_Porcentaje:=F_OBTENER_IMPUESTO('IVA') ;
   
-  --Seteamos la fecha de emision correspondiente al d�a en que se ejecuta el proceso de facturaci�n
+  --Seteamos la fecha de emision correspondiente al día en que se ejecuta el proceso de facturación
   Lv_FeEmision   := TO_CHAR(SYSDATE,'dd/mm/yyyy');
   Lv_MesEmision  := TO_CHAR(SYSDATE,'MONTH','NLS_DATE_LANGUAGE = SPANISH');
   Ln_MesEmision  := TO_CHAR(SYSDATE,'mm');

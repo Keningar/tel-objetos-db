@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL
 AS
     /**
-      * Documentaci�n para el procedimiento P_PROGRAMAR_SOLICITUD
+      * Documentación para el procedimiento P_PROGRAMAR_SOLICITUD
       *
-      * M�todo que se encarga de realizar la programaci�n de solicitudes
+      * Método que se encarga de realizar la programación de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -17,9 +17,9 @@ AS
 
 
      /**
-      * Documentaci�n para el procedimiento P_CONFIRMAR_PLANIFICACION
+      * Documentación para el procedimiento P_CONFIRMAR_PLANIFICACION
       *
-      * M�todo que se encarga de asignar responsables de solicitudes
+      * Método que se encarga de asignar responsables de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -33,9 +33,9 @@ AS
                                          Pcl_Response OUT SYS_REFCURSOR); 
 
      /**
-      * Documentaci�n para el procedimiento P_EJECUTA_GESTION_SIMULTANEA
+      * Documentación para el procedimiento P_EJECUTA_GESTION_SIMULTANEA
       *
-      * M�todo que se encarga de ejecutar la gestion simultanea de solicitudes
+      * Método que se encarga de ejecutar la gestion simultanea de solicitudes
       * 
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -52,6 +52,7 @@ AS
 
 END SPKG_PLANIFICACION_COMERCIAL;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
   PROCEDURE P_PROGRAMAR_SOLICITUD (Pcl_Request  IN  CLOB,
                                    Pv_Status    OUT VARCHAR2,
@@ -243,7 +244,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
     OPEN C_GET_DETALLE_SOLICITUD(Ln_IdFactibilidad);
     FETCH C_GET_DETALLE_SOLICITUD INTO Ln_IdServicio, Ln_IdProducto, Ln_IdPunto, Ln_IdJurisdiccion, Ln_Cupo, Lv_EstadoServicio;
     IF C_GET_DETALLE_SOLICITUD%NOTFOUND THEN
-      Pv_Mensaje := 'No Existe Solicitud de Planificaci�n!';
+      Pv_Mensaje := 'No Existe Solicitud de Planificación!';
       CLOSE C_GET_DETALLE_SOLICITUD; 
       RAISE Le_Errors;
     END IF;
@@ -256,7 +257,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
       FETCH C_GET_MOTIVO INTO Lv_NombreMotivo;
       CLOSE C_GET_MOTIVO;
 
-      Lv_ObservacionServicio  := 'Se graba la planificaci�n comercial sin horario. Motivo:' || Lv_NombreMotivo;
+      Lv_ObservacionServicio  := 'Se graba la planificación comercial sin horario. Motivo:' || Lv_NombreMotivo;
 
       INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, USR_CREACION, FE_CREACION, IP_CREACION, ESTADO, MOTIVO_ID, OBSERVACION)
       VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_UsrCreacion, sysdate, Lv_IpCreacion, Lv_EstadoServicio, Ln_IdMotivo, Lv_ObservacionServicio);
@@ -302,7 +303,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
       END IF;
     END IF;  
     Pv_Status     := 'OK';
-    Pv_Mensaje    := 'Transacci�n exitosa';
+    Pv_Mensaje    := 'Transacción exitosa';
   EXCEPTION
     WHEN Le_Errors THEN
       DBMS_OUTPUT.PUT_LINE('le_error programar' || Pv_Mensaje);     
@@ -721,7 +722,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_COMERCIAL AS
     ELSE
 
         INSERT INTO DB_COMERCIAL.INFO_SERVICIO_HISTORIAL (ID_SERVICIO_HISTORIAL, SERVICIO_ID, IP_CREACION, FE_CREACION, USR_CREACION, ESTADO, OBSERVACION)
-        VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificaci�n comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
+        VALUES (DB_COMERCIAL.SEQ_INFO_SERVICIO_HISTORIAL.NEXTVAL, Ln_IdServicio, Lv_IpCreacion, SYSDATE, Lv_UsrCreacion, 'AsignadoTarea', 'Se graba la planificación comercial con horario ' || Lv_FechaHoraInicio || ' y cuadrilla ' || Lv_NombreCuadrilla);
     END IF;
     DB_SOPORTE.SPKG_INFO_TAREA.P_CREA_INFO_TAREA(Ln_IdDetalle,
                                                  Lv_UsrCreacion,

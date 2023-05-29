@@ -13,8 +13,8 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.ACTUALIZA_CHEQUES_MIGRA(p_no_cia         
  * @version 1.0 01/01/2007
  * 
  * @author llindao <llindao@telconet.ec>
- * @version 1.1 22/03/2017 Se modifica para distribuir la asignaci�n del campo migra_arckmm.no_fisico en los campos arckmm.no_fisico y 
-                           arckmm.serie_fisico distribuidos en 15 caracteres cada uno, esta distribuci�n se realizaba desde Telcos en migra_arckmm
+ * @version 1.1 22/03/2017 Se modifica para distribuir la asignación del campo migra_arckmm.no_fisico en los campos arckmm.no_fisico y 
+                           arckmm.serie_fisico distribuidos en 15 caracteres cada uno, esta distribución se realizaba desde Telcos en migra_arckmm
                            pero por proceso de cuadre de informacion se necesita que dicho campo pase intacto en la estructura migra_arckmm
  * 
  * @author llindao <llindao@telconet.ec>

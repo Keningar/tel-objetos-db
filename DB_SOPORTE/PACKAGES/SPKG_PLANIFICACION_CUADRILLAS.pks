@@ -3,7 +3,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento P_MAIN
   *
-  * M�todo encargado de ejecutar los procesos para la creacion de la planificacion de las cuadrillas.
+  * Método encargado de ejecutar los procesos para la creacion de la planificacion de las cuadrillas.
   *
   * @param Pn_CuadrillaId     IN  NUMBER Recibe el id de la cuadrilla
   * @param Pn_IntervaloId     IN  NUMBER Recibe el id del intervalo
@@ -16,15 +16,15 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Pn_PersonaRolId    IN  NUMBER Recibi el id de la persona empresa rol, de la persona que esta realizando la planificacion
   * @param Pv_Automatico      IN  VARCHAR2 Recibi el identificador si es automatico o no
   * @param Pn_ZonaId          IN  NUMBER Recibi el id de la zona
-  * @param Pv_Actividad       IN  VARCHAR2 Recibe la actividad que se realiza en la planificaci�n,
+  * @param Pv_Actividad       IN  VARCHAR2 Recibe la actividad que se realiza en la planificación,
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 23-04-2018
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   *
-  * @version 1.1 28-10-2020 - Se agrega nuevo parametro Actividad para que pueda ser registrado en la cabecera de la planificaci�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @version 1.1 28-10-2020 - Se agrega nuevo parametro Actividad para que pueda ser registrado en la cabecera de la planificación
+  * @author Andrés Montero H. <amontero@telconet.ec>
   */
   PROCEDURE P_MAIN(Pn_CuadrillaId    IN  NUMBER,
                    Pn_IntervaloId    IN  NUMBER, 
@@ -43,7 +43,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento P_SET_PLANIF_CUADRILLA_MANUAL
   *
-  * M�todo encargado de realizar la planificacion
+  * Método encargado de realizar la planificacion
   *
   * @param Pn_CuadrillaId     IN  NUMBER Recibe el id de la cuadrilla
   * @param Pn_IntervaloId     IN  NUMBER Recibe el id del intervalo
@@ -55,18 +55,18 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Pv_IpCreacion      IN  VARCHAR2 Recibi la ip de creacion
   * @param Pn_PersonaRolId    IN  NUMBER Recibi el id de la persona empresa rol, de la persona que esta realizando la planificacion
   * @param Pn_ZonaId          IN  NUMBER Recibi el id de la zona
-  * @param Pv_Actividad       IN VARCHAR2 Recibe la actividad que se realiza en la planificaci�n
+  * @param Pv_Actividad       IN VARCHAR2 Recibe la actividad que se realiza en la planificación
   * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 23-04-2018
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
-  * @version 1.1 24-08-2018 - Se realiza ajustes en el m�todo para detectar si existe una planificaci�n creada en estado 'Liberado'
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
+  * @version 1.1 24-08-2018 - Se realiza ajustes en el método para detectar si existe una planificación creada en estado 'Liberado'
   *                           y en caso de existir se actualiza el estado a 'Activo'
   *
-  * @version 1.2 28-10-2020 - Se agrega nuevo parametro Actividad para que pueda ser registrado en la cabecera de la planificaci�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @version 1.2 28-10-2020 - Se agrega nuevo parametro Actividad para que pueda ser registrado en la cabecera de la planificación
+  * @author Andrés Montero H. <amontero@telconet.ec>
   */
   PROCEDURE P_SET_PLANIF_CUADRILLA_MANUAL(Pn_CuadrillaId    IN  NUMBER,
                                           Pn_IntervaloId    IN  NUMBER, 
@@ -84,7 +84,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento P_GENERA_INTERVALO
   *
-  * M�todo encargado de realizar la granularidad de los intervalos de tiempo de trabajo de una cuadrilla
+  * Método encargado de realizar la granularidad de los intervalos de tiempo de trabajo de una cuadrilla
   *
   * @param Pn_PlanifCuadrillaId IN  NUMBER Recibe el id de la cuadrilla
   * @param Pn_IntervaloId       IN  NUMBER Recibe el id del intervalo
@@ -94,7 +94,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Pv_IpCreacion        IN  VARCHAR2 Recibe la ipd de creacion
   * @param Pv_Error             OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 23-04-2018
   */
   PROCEDURE P_GENERA_INTERVALO(Pn_PlanifCuadrillaId IN  NUMBER, 
@@ -108,7 +108,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento F_VALIDA_PLANIF_CUADRILLA
   *
-  * Funci�n encargada de identificar si ya existe una planificacion creada para la fecha sugerida por parametro.
+  * Función encargada de identificar si ya existe una planificacion creada para la fecha sugerida por parametro.
   *
   * @param Pn_CuadrillaId   IN  NUMBER Recibe el id de la cuadrilla
   * @param Pn_IntervaloId   IN  NUMBER Recibe el id del intervalo
@@ -118,7 +118,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   *
   * @RETURN NUMBER - Retorna 0 si no existe planificacion creada y 1 cuando existe una planificacion.
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 23-04-2018
   */
   FUNCTION F_VALIDA_PLANIF_CUADRILLA(Pn_CuadrillaId     IN NUMBER,
@@ -130,7 +130,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento F_INSERTA_PLANIF_CUADRILLA_CAB
   *
-  * Funci�n encargada de identificar si ya existe una planificacion creada para la fecha sugerida por parametro.
+  * Función encargada de identificar si ya existe una planificacion creada para la fecha sugerida por parametro.
   *
   * @param Fn_CuadrillaId     IN  NUMBER Recibe el id de la cuadrilla
   * @param Fn_IntervaloId     IN  NUMBER Recibe el id del intervalo
@@ -140,16 +140,16 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Fv_UsrCreacion     IN  VARCHAR2 Recibe el usuario de creacion
   * @param Fv_IpCreacion      IN  VARCHAR2 Recibe la ip de creacion
   * @param Fn_ZonaId          IN  NUMBER Recibe el id de la Zona
-  * @param Fv_Actividad       IN VARCHAR2 Recibe la actividad que se va a insertar en la planificaci�n
+  * @param Fv_Actividad       IN VARCHAR2 Recibe la actividad que se va a insertar en la planificación
   * @param Fv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
   * @RETURN NUMBER - Retorna el id de la generado de la tabla INFO_CUADRILLA_PLANIF_CAB
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 23-04-2018
   *
-  * @version 1.1 28-10-2020 - Se agrega nuevo parametro Actividad para que pueda ser registrado en la cabecera de la planificaci�n
-  * @author Andr�s Montero H. <amontero@telconet.ec>
+  * @version 1.1 28-10-2020 - Se agrega nuevo parametro Actividad para que pueda ser registrado en la cabecera de la planificación
+  * @author Andrés Montero H. <amontero@telconet.ec>
   */
   FUNCTION F_INSERTA_PLANIF_CUADRILLA_CAB(Fn_CuadrillaId    IN  NUMBER,
                                           Fn_IntervaloId    IN  NUMBER,
@@ -166,7 +166,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento F_INSERTA_PLANIF_CUADRILLA_CAB
   *
-  * Funci�n encargada de identificar si ya existe una planificacion creada para la fecha sugerida por parametro.
+  * Función encargada de identificar si ya existe una planificacion creada para la fecha sugerida por parametro.
   *
   * @param Pn_PlanifCuadrillaId IN  NUMBER Recibe el id de la tabla INFO_CUADRILLA_PLANIF_CAB
   * @param Pt_FechaInicio       IN  TIMESTAMP Recibe la fecha y hora de inicio
@@ -178,15 +178,15 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Pv_IpCreacion        IN  VARCHAR2 Recibe la ip de creacion
   * @param Fv_Error             OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 23-04-2018
   *
   * Modificado: Se agrega el nuevo parametro Pv_TipoProceso, para identificar si el detalle de planificacion es creada por Manual o Automatico
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.2 28-06-2018
   *
   * Modificado: Se agrega en el insert la columna VISUALIZAR_MOVIL, para que se inserte el valor S o N de acuerdo al parametro configurado.
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.3 19-07-2018
   */
   PROCEDURE P_INSERTA_PLANIF_CUADRILLA_DET(Pn_PlanifCuadrillaId IN NUMBER,
@@ -203,7 +203,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento P_ASIGNAR_SOLICITUD_TAREA
   *
-  * M�todo encargado validar los parametros que llegue y obtener el intervalo de trabajo de una cuadrilla para
+  * Método encargado validar los parametros que llegue y obtener el intervalo de trabajo de una cuadrilla para
     asignar la solicitud de planificacion o la tarea de soporte.
   *
   * @param Pt_FeInicio    IN  TIMESTAMP Recibe la fecha de inicio del intervalo de trabajo
@@ -216,10 +216,10 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Pv_User        IN  NUMBER Recibi el usuario que ejecuta el procedimineto
   * @param Fv_Error       OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 16-03-2018
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.1 12-07-2018 - Se realiza un nuevo filtro por estado Activo en el cursor que devuelve la jornada laboral de una cuadrilla.
   */
   PROCEDURE P_ASIGNAR_SOLICITUD_TAREA(Pt_FeInicio    IN  TIMESTAMP,
@@ -236,7 +236,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento P_SET_PLINIF_CUAD_DET
   *
-  * M�todo encargado de actualizar la informacion en la tabla INFO_CUADRILLA_PLANIF_DET
+  * Método encargado de actualizar la informacion en la tabla INFO_CUADRILLA_PLANIF_DET
   *
   * @param Pn_IdPlanifDet     IN  NUMBER Recibe el id de la tabla
   * @param Pn_IdPlanifCab     IN  NUMBER Recibe el id de la tabla INFO_CUADRILLA_PLANIF_CAB
@@ -250,7 +250,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @param Pv_UsrModificacion IN  VARCHAR2 Recibi el usuario que ejecuta el procedimineto
   * @param Fv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.0 16-03-2018
   */
   PROCEDURE P_SET_PLINIF_CUAD_DET(Pn_IdPlanifDet      IN NUMBER,
@@ -268,7 +268,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
  /**
   * Documentacion para el procedimiento P_GENERA_INTERVALO_POR_ACT
   *
-  * M�todo encargado de actualizar las horas de trabajo en la tabla INFO_CUADRILLA_PLANIF_DET
+  * Método encargado de actualizar las horas de trabajo en la tabla INFO_CUADRILLA_PLANIF_DET
   *
   * @param Pn_PlanifCuadrillaId     IN  NUMBER Recibe el id de la tabla
   * @param Pn_HoraInicio            IN  TIMESTAMP Recibe la hora inicial de trabajo
@@ -283,11 +283,11 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   * @version 1.0 14-04-2018
   *
   * Modificado: Se realiza ajustes en el procedimiento para validar si la planificacion a ingresar ya se encuentra registrada, es caso de existir se actualiza el estado..
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.1 14-06-2018
   *
   * Modificado: Se agrega el nuevo parametro Pv_TipoProceso, para identificar si el detalle de planificacion es creada por Manual o Automatico
-  * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+  * @author Germán Valenzuela <gvalenzuela@telconet.ec>
   * @version 1.2 28-06-2018
   *
   */
@@ -304,7 +304,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
   /**
    * Documentacion para el procedimiento P_SET_LIMPIAR_PLANIFICACION
    *
-   * M�todo encargado de limpiar la planficacion de horas de trabajo en un rango de fecha determinado para una cuadrilla
+   * Método encargado de limpiar la planficacion de horas de trabajo en un rango de fecha determinado para una cuadrilla
    *
    * @param Pn_IdCuadrilla  IN  NUMBER Recibe el id de la cuadrilla
    * @param Pt_Feinicio     IN  TIMESTAMP Recibe la fecha de inicio
@@ -312,7 +312,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
    * @param Pv_Usuario      IN  VARCHAR2  Recibe el usuario quien realiza la modificacion
    * @param Fv_Error        OUT VARCHAR2  Retorna un mensaje de error en caso de existir
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 16-03-2018
    */
    PROCEDURE P_SET_LIMPIAR_PLANIFICACION(Pn_IdCuadrilla IN  NUMBER,
@@ -322,17 +322,17 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
                                          Pv_Error       OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento P_UPDATE_VISUALIZAR_MOVIL
+   * Documentación para el procedimiento P_UPDATE_VISUALIZAR_MOVIL
    *
-   * M�todo encargado de actualizar el campo VISUALIZAR_MOVIL, para la visualizaci�n de las tareas en el telcos m�vil
+   * Método encargado de actualizar el campo VISUALIZAR_MOVIL, para la visualización de las tareas en el telcos móvil
    *
-   * @param Pn_IdComunicacion  IN  NUMBER   Recibe el id de comunicaci�n u/o n�mero de tarea
-   * @param Pv_VisualizarMovil IN  VARCHAR2 Recibe S o N para la visualizaci�n en el telcos m�vil
-   * @param Pv_Usuario         IN  VARCHAR2 Recibe el usuario quien realiza la modificaci�n
-   * @param Pv_Ip              IN  VARCHAR2 Recibe la ip quien realiza la modificaci�n
+   * @param Pn_IdComunicacion  IN  NUMBER   Recibe el id de comunicación u/o número de tarea
+   * @param Pv_VisualizarMovil IN  VARCHAR2 Recibe S o N para la visualización en el telcos móvil
+   * @param Pv_Usuario         IN  VARCHAR2 Recibe el usuario quien realiza la modificación
+   * @param Pv_Ip              IN  VARCHAR2 Recibe la ip quien realiza la modificación
    * @param Pv_Error           OUT VARCHAR2 Retorna un mensaje de error en caso de existir
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 11-07-2018
    */
    PROCEDURE P_UPDATE_VISUALIZAR_MOVIL(Pn_IdComunicacion  IN  NUMBER,
@@ -343,6 +343,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
 
 END SPKG_PLANIFICACION_CUADRILLAS;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_PLANIFICACION_CUADRILLAS AS
 
   /* VARIABLES GLOBALES */

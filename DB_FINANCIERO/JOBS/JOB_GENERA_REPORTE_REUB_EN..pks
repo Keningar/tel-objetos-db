@@ -1,4 +1,3 @@
-
 BEGIN 
 dbms_scheduler.create_job('"JOB_GENERA_REPORTE_REUB_EN"',
 job_type=>'PLSQL_BLOCK', job_action=>
@@ -31,7 +30,7 @@ job_type=>'PLSQL_BLOCK', job_action=>
                                                                       '''',
                                                                       REPLACE(LC_ALIASPLANTILLA.ALIAS_CORREOS,'';'','',''),
                                                                       LV_USUARIO,
-                                                                      ''Ejecuci�n reporte de Fact y Nc emitidas por reubicaci�n'',
+                                                                      ''Ejecución reporte de Fact y Nc emitidas por reubicación'',
                                                                       ''DB_FINANCIERO'' );                                    
     
         END;'
@@ -42,7 +41,7 @@ start_date=>TO_TIMESTAMP_TZ('02-APR-2023 03.57.31.160828000 AM AMERICA/GUAYAQUIL
 job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
 'ENVIO AUTOMATICO DIARIO DE REPORTE DE FACTURA Y NC EMITIDAS POR REUBICACION EN'
 );
-sys.dbms_scheduler.set_attribute('"JOB_GENERA_REPORTE_REUB_EN"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY=''�'' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY=''�'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
+sys.dbms_scheduler.set_attribute('"JOB_GENERA_REPORTE_REUB_EN"','NLS_ENV','NLS_LANGUAGE=''SPANISH'' NLS_TERRITORY=''SPAIN'' NLS_CURRENCY='''' NLS_ISO_CURRENCY=''SPAIN'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RR'' NLS_DATE_LANGUAGE=''SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH24:MI:SSXFF'' NLS_TIMESTAMP_FORMAT=''DD/MM/RR HH24:MI:SSXFF'' NLS_TIME_TZ_FORMAT=''HH24:MI:SSXFF TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RR HH24:MI:SSXFF TZR'' NLS_DUAL_CURRENCY='''' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
 dbms_scheduler.set_attribute('"JOB_GENERA_REPORTE_REUB_EN"','logging_level',DBMS_SCHEDULER.LOGGING_FULL);
 dbms_scheduler.enable('"JOB_GENERA_REPORTE_REUB_EN"');
 COMMIT; 

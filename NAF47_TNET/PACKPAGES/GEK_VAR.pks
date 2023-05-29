@@ -134,7 +134,7 @@ CREATE OR REPLACE package NAF47_TNET.GEK_VAR is
   --
  /**
   * Documentacion para P_SET_COMPANIA_ID
-  * Procedure que asigna el valor de la variable GEK_VAR.Gv_NoCompania desde los procesos que invoquen a generaci�n autom�tica de n�meros series
+  * Procedure que asigna el valor de la variable GEK_VAR.Gv_NoCompania desde los procesos que invoquen a generación automática de números series
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 28/02/2020
   *
@@ -144,7 +144,7 @@ CREATE OR REPLACE package NAF47_TNET.GEK_VAR is
   --
  /**
   * Documentacion para P_SET_ARTICULO_ID
-  * Procedure que asigna el valor de la variable GEK_VAR.Gv_NoArticulo desde los procesos que invoquen a generaci�n autom�tica de n�meros series
+  * Procedure que asigna el valor de la variable GEK_VAR.Gv_NoArticulo desde los procesos que invoquen a generación automática de números series
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 28/02/2020
   *
@@ -154,7 +154,7 @@ CREATE OR REPLACE package NAF47_TNET.GEK_VAR is
   --
  /**
   * Documentacion para P_SET_NUMERO_SERIE
-  * Procedure que asigna el valor de la variable GEK_VAR.Gv_NumeroSerie desde los procesos que invoquen a generaci�n autom�tica de n�meros series
+  * Procedure que asigna el valor de la variable GEK_VAR.Gv_NumeroSerie desde los procesos que invoquen a generación automática de números series
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 28/02/2020
   *
@@ -183,7 +183,7 @@ CREATE OR REPLACE package NAF47_TNET.GEK_VAR is
   --
  /**
   * Documentacion para F_GET_COMPANIA_ID
-  * Funcion que retorna el valor de la variable GEK_VAR.Gv_NoCompania que es usada como parametro en proceso genera serie autom�tica
+  * Funcion que retorna el valor de la variable GEK_VAR.Gv_NoCompania que es usada como parametro en proceso genera serie automática
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 30/07/2021
   *
@@ -193,7 +193,7 @@ CREATE OR REPLACE package NAF47_TNET.GEK_VAR is
   --
    /**
   * Documentacion para F_GET_ARTICULO_ID
-  * Funcion que retorna el valor de la variable GEK_VAR.Gv_NoArticulo que es usada como parametro en proceso genera serie autom�tica
+  * Funcion que retorna el valor de la variable GEK_VAR.Gv_NoArticulo que es usada como parametro en proceso genera serie automática
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 30/07/2021
   *
@@ -203,7 +203,7 @@ CREATE OR REPLACE package NAF47_TNET.GEK_VAR is
   --
    /**
   * Documentacion para F_GET_NUMERO_SERIE
-  * Funcion que retorna el valor de la variable GEK_VAR.Gv_NumeroSerie que es usada como parametro en proceso genera serie autom�tica
+  * Funcion que retorna el valor de la variable GEK_VAR.Gv_NumeroSerie que es usada como parametro en proceso genera serie automática
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 30/07/2021
   *

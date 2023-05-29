@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GENERACION_SERIE IS 
   /**
   * Documentacion para P_PROCESA_SERIE
-  * Procedure que registra los n�meros de series de un producto seleccionado.
+  * Procedure que registra los números de series de un producto seleccionado.
   * @author Antonio Ayala Torres <afayala@telconet.ec>
   * @version 1.0 11/04/2019
   *
@@ -9,13 +9,13 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GENERACION_SERIE IS
   * @version 1.2 05/08/2021 - Se modifica para agregar parametro que recibe unidades por serie 
   *                           y usar nuevo proceso que genera serie en base a formato
   *
-  * @param  Pv_NoCia          IN varchar2  Recibe el codigo de la compa��a
+  * @param  Pv_NoCia          IN varchar2  Recibe el codigo de la compañía
   * @param  Pv_NoArticulo     IN varchar2  Recibe el articulo
   * @param  Pv_IdBodega       IN varchar2  Recibe la bodega donde se va a generar las series
-  * @param  Pv_Ubicacion      IN varchar2  Recibe la ubicaci�n del art�culo
+  * @param  Pv_Ubicacion      IN varchar2  Recibe la ubicación del artículo
   * @param  Pv_CantidadSeries IN varchar2  Recibe la cantidad de series a generar
   * @param  Pv_Error          IN varchar2  Mensajes de error si se generan
-  * @param  Pn_UnidadSerie    IN varchar2  Recibe n�mero de unidades que representa cada serie, por defecto es 1
+  * @param  Pn_UnidadSerie    IN varchar2  Recibe número de unidades que representa cada serie, por defecto es 1
 
   */
   PROCEDURE P_PROCESA_SERIE ( Pv_NoCia          IN VARCHAR2,
@@ -27,14 +27,14 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GENERACION_SERIE IS
                               Pn_UnidadSerie    IN NUMBER DEFAULT 1);
   /**
   * Documentacion para P_FORMATO
-  * Procedure genera el numero de serie en base al formatod efinido en el art�culo.
+  * Procedure genera el numero de serie en base al formatod efinido en el artículo.
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 25/08/2021
   *
-  * @param  Pn_FormatoId    IN varchar2  Recibe el codigo del formato del art�culo
-  * @param  Pn_Cantidad     IN varchar2  Recibe la cantidad segmentada del n�mero de serie
-  * @param  Pb_InsertaSerie IN varchar2  Indica si el n�mero de serie se insreta en el maestro de series
-  * @param  Pv_NumeroSerie  IN OUT varchar2  Retorna el n�mero de serie generado
+  * @param  Pn_FormatoId    IN varchar2  Recibe el codigo del formato del artículo
+  * @param  Pn_Cantidad     IN varchar2  Recibe la cantidad segmentada del número de serie
+  * @param  Pb_InsertaSerie IN varchar2  Indica si el número de serie se insreta en el maestro de series
+  * @param  Pv_NumeroSerie  IN OUT varchar2  Retorna el número de serie generado
   * @param  Pv_Error        IN OUT varchar2  Mensajes de error si se generan
   */
   PROCEDURE P_FORMATO( Pn_FormatoId    IN NUMBER,
@@ -49,11 +49,11 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GENERACION_SERIE IS
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 05/01/2022
   *
-  * @param  Pv_ArticuloId   IN varchar2      Recibe el codigo del art�culo para generar serie
-  * @param  Pn_Cantidad     IN varchar2      Recibe la cantidad segmentada del n�mero de serie
-  * @param  Pb_InsertaSerie IN varchar2      Indica si el n�mero de serie se insreta en el maestro de series
-  * @param  Pv_EmpresaId    IN varchar2      Recibe el codigo de la compa��a
-  * @param  Pv_NumeroSerie  IN OUT varchar2  Retorna el n�mero de serie generado
+  * @param  Pv_ArticuloId   IN varchar2      Recibe el codigo del artículo para generar serie
+  * @param  Pn_Cantidad     IN varchar2      Recibe la cantidad segmentada del número de serie
+  * @param  Pb_InsertaSerie IN varchar2      Indica si el número de serie se insreta en el maestro de series
+  * @param  Pv_EmpresaId    IN varchar2      Recibe el codigo de la compañía
+  * @param  Pv_NumeroSerie  IN OUT varchar2  Retorna el número de serie generado
   * @param  Pv_Error        IN OUT varchar2  Mensajes de error si se generan
   */
   PROCEDURE P_SERIE_FORMATO_GENERAL( Pv_ArticuloId   IN VARCHAR2,
@@ -69,7 +69,7 @@ END INKG_GENERACION_SERIE;
 /
 
 CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GENERACION_SERIE IS
-  -- Procedimiento que genera las series de un art�culo 
+  -- Procedimiento que genera las series de un artículo 
   PROCEDURE P_PROCESA_SERIE ( Pv_NoCia          IN VARCHAR2,
                               Pv_NoArticulo     IN VARCHAR2,
                               Pv_IdBodega       IN VARCHAR2,
@@ -95,7 +95,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GENERACION_SERIE IS
     OPEN C_DATOS_ARTICULO;
     FETCH C_DATOS_ARTICULO INTO Lr_DatosArticulo;
     IF C_DATOS_ARTICULO%NOTFOUND THEN
-      Pv_Error := 'No se encontr� articulo '||Pv_NoArticulo;
+      Pv_Error := 'No se encontró articulo '||Pv_NoArticulo;
       RAISE Le_Error;
     END IF;
     CLOSE C_DATOS_ARTICULO;
@@ -208,13 +208,13 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GENERACION_SERIE IS
     CLOSE C_DATOS_ARTICULO;
     --
     IF Lr_DatosArticulo.Ind_Requiere_Serie = 'N' THEN
-      Pv_MensajeError := 'Articulo: '||Lv_NoArticulo||' no maneja n�mero de serie por tal motivo no se puede generar serie autom�tica, favor revisar.';
+      Pv_MensajeError := 'Articulo: '||Lv_NoArticulo||' no maneja número de serie por tal motivo no se puede generar serie automática, favor revisar.';
       RAISE Le_Error;
     ELSIF Lr_DatosArticulo.Genera_Numero_Serie = 'N' THEN
-      Pv_MensajeError := 'Articulo: '||Lv_NoArticulo||' NO genera serie autom�tica, favor revisar.';
+      Pv_MensajeError := 'Articulo: '||Lv_NoArticulo||' NO genera serie automática, favor revisar.';
       RAISE Le_Error;
     ELSIF Lr_DatosArticulo.Ind_Mac = 'S' THEN
-      Pv_MensajeError := 'Articulo: '||Lv_NoArticulo||' maneja n�mero MAC por tal motivo no se puede generar serie autom�tica, favor revisar.';
+      Pv_MensajeError := 'Articulo: '||Lv_NoArticulo||' maneja número MAC por tal motivo no se puede generar serie automática, favor revisar.';
       RAISE Le_Error;
     END IF;
     --
@@ -233,7 +233,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GENERACION_SERIE IS
       END IF;
       --
       IF Lv_ExtractoSerie IS NULL THEN
-        Pv_MensajeError := 'No se encontr� definido valor para formato: '||Pn_FormatoId||' y sub-estructura: '|| Lr_Formato.Nombre||', favor revisar.';
+        Pv_MensajeError := 'No se encontró definido valor para formato: '||Pn_FormatoId||' y sub-estructura: '|| Lr_Formato.Nombre||', favor revisar.';
         RAISE Le_Error;
       ELSE
         Pv_NumeroSerie := Pv_NumeroSerie||Lv_ExtractoSerie;
@@ -354,9 +354,9 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GENERACION_SERIE IS
     END IF;
     CLOSE C_DATOS_ARTICULO;
     --
-    -- se valida que el articulo maneje n�mero de serie 
+    -- se valida que el articulo maneje número de serie 
     IF Lr_DatosArticulo.Ind_Requiere_Serie = 'N' THEN
-      Pv_MensajeError := 'Articulo: '||Pv_ArticuloId||' no maneja n�mero de serie por tal motivo no se puede generar serie autom�tica, favor revisar.';
+      Pv_MensajeError := 'Articulo: '||Pv_ArticuloId||' no maneja número de serie por tal motivo no se puede generar serie automática, favor revisar.';
       RAISE Le_Error;
     END IF;
     --
@@ -376,11 +376,11 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GENERACION_SERIE IS
         Lv_ExtractoSerie := Lr_Formato.Valores;
       END IF;
       --
-      -- si no gener� nada se emite emnsaje error 
+      -- si no generó nada se emite emnsaje error 
       IF Lv_ExtractoSerie IS NULL THEN
-        Pv_MensajeError := 'No se encontr� definido valor para formato: '||Lr_Formato.Formato_Serie||' y sub-estructura: '|| Lr_Formato.Nombre||', favor revisar.';
+        Pv_MensajeError := 'No se encontró definido valor para formato: '||Lr_Formato.Formato_Serie||' y sub-estructura: '|| Lr_Formato.Nombre||', favor revisar.';
         RAISE Le_Error;
-      ELSE -- se gener� serie y se asigna a parametro de retorno.
+      ELSE -- se generó serie y se asigna a parametro de retorno.
         Pv_NumeroSerie := Pv_NumeroSerie||Lv_ExtractoSerie;
       END IF;
       --

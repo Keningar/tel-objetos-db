@@ -2,15 +2,15 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_INCIDENCIA_ECUCERT
 AS
     
    /**
-    * Documentaci�n para la funci�n P_JOB_GUARDAR_INCIDENCIA
+    * Documentación para la función P_JOB_GUARDAR_INCIDENCIA
     * Procedimiento que ejecuta un job para ingresar incidencias enviadas por ECUCERT 
     *
     * @param  Pcl_JsonEcucert       - Json enviado por CERT
     *          Pv_NombreJob          - Nombre del Job
-    *          Pn_NumeroRegistro     - N�meros de registros enviados por ticket
+    *          Pn_NumeroRegistro     - Números de registros enviados por ticket
     *          Pv_MensajeError       - Mensaje de error del sistemas
-    *          Pv_Respuesta          - Respuesta de la petici�n.
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *          Pv_Respuesta          - Respuesta de la petición.
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 04-06-2019
     */
 
@@ -22,11 +22,11 @@ AS
                                   Pv_Respuesta      OUT VARCHAR2) ;
 
    /**
-    * Documentaci�n para la funci�n P_JOB_PROCESAR_TICKET
+    * Documentación para la función P_JOB_PROCESAR_TICKET
     * Procedimiento para revisa tickets pendientes a procesar
     *
     * @param  null
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 09-04-2019
     *
     */
@@ -34,22 +34,22 @@ AS
     PROCEDURE P_JOB_PROCESAR_TICKET ;
 
    /**
-    * Documentaci�n para la funci�n P_GUARDAR_INCIDENCIA
+    * Documentación para la función P_GUARDAR_INCIDENCIA
     * Procedimiento para guardar incidencias enviadas por ECUCERT 
     *
     * @param  Pcl_JsonEcucert       - Json enviado por CERT
     *          Pv_MensajeError       - Mensaje de error del sistemas
-    *          Pv_Respuesta          - Respuesta de la petici�n.
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *          Pv_Respuesta          - Respuesta de la petición.
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 09-04-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 12-08-2020 - Se realiza validaci�n de tipo de Ip es nulo.
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 12-08-2020 - Se realiza validación de tipo de Ip es nulo.
     * @since 1.0
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.2 23-05-2021 - Se valida si existe la categor�a y sino se encuentra
-    *                           se guarda en la admi parametro para la generaci�n de
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.2 23-05-2021 - Se valida si existe la categoría y sino se encuentra
+    *                           se guarda en la admi parametro para la generación de
     *                           de la plantilla por empresa
     * @since 1.1
     *
@@ -63,13 +63,13 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_CREAR_INCIDENCIA
+    * Documentación para la función P_CREAR_INCIDENCIA
     * Procedimiento que guarda la incidencia
     *
     * @param  Pv_IncidenciaObj    - Tipo de incidencia
     *         Pn_IncidenciaId     - Id de la incidencia
     *         Pv_MensajeError     - Mensaje de error del procedimiento
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 18-02-2019
     */
     PROCEDURE P_CREAR_INCIDENCIA(
@@ -79,14 +79,14 @@ AS
                               );
 
    /**
-    * Documentaci�n para la funci�n P_CREAR_INCIDENCIA_DETALLE
+    * Documentación para la función P_CREAR_INCIDENCIA_DETALLE
     * Procedimiento que guarda el detalle de la incidencia
     *
     * @param  
     *       Pv_IncidenciaDetObj - Tipo de detalle incidencia
     *       Pn_IncidenciaIdDet  - Id del detalle de la incidencia
     *       Pv_MensajeError     - Mensaje de error del procedimiento
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 18-02-2019
     */                             
 
@@ -98,12 +98,12 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_ACTUALIZAR_DET_INCI_CASO_CLIENTE
+    * Documentación para la función P_ACTUALIZAR_DET_INCI_CASO_CLIENTE
     * Procedimiento que modifica el detalle de la incidencia ingresando el cliente y el caso
     *
     * @param  Pn_IncidenciaDetActId    - Objeto de del detalle de la incidencia
     *          Pv_MensajeError          - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 25-02-2019
     */
 
@@ -114,19 +114,19 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_ACT_ESTADO_DET_INC
+    * Documentación para la función P_ACT_ESTADO_DET_INC
     * Procedimiento que modifica el estado del detalle de la incidencia
     *
     * @param    Pn_IncidenciaDetId  - Id del detalle de la incidencia
     *         Pv_Estado             - Estado del detalle del incidente
-    *         Pv_UsrModi            - Usuario de modificaci�n de la incidencia
+    *         Pv_UsrModi            - Usuario de modificación de la incidencia
     *         Pv_IpModi             - Ip que modifica la incidencia
     *         Pv_MensajeError       - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 14-02-2020 - Se cambia el estado de gesti�n a Atendido 
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 14-02-2020 - Se cambia el estado de gestión a Atendido 
     *                           si la IP ya no es vulnerable
     * @since 1.0
     */
@@ -141,15 +141,15 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_ACT_ESTADO_GES_INC
-    * Procedimiento que modifica el estado de gesti�n de la incidencia
+    * Documentación para la función P_ACT_ESTADO_GES_INC
+    * Procedimiento que modifica el estado de gestión de la incidencia
     *
     * @param    Pn_IncidenciaDetId  - Id del detalle de la incidencia
     *         Pv_Estado             - Estado de la incidente
-    *         Pv_UsrModi            - Usuario de modificaci�n de la incidencia
+    *         Pv_UsrModi            - Usuario de modificación de la incidencia
     *         Pv_IpModi             - Ip que modifica la incidencia
     *         Pv_MensajeError       - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     */
 
@@ -162,17 +162,17 @@ AS
                               );   
 
    /**
-    * Documentaci�n para la funci�n P_CREAR_INCIDENCIA_NOTIF
+    * Documentación para la función P_CREAR_INCIDENCIA_NOTIF
     * Procedimiento que crea el registro de la persona notificada por la incidencia
     *
     * @param  Pv_Correo             - Correo de la persona notificada
-    *         Pv_TipoContacto       - Tipo de contacto del cliente (T�cnico, Punto o personal)
+    *         Pv_TipoContacto       - Tipo de contacto del cliente (Técnico, Punto o personal)
     *         Pn_IncidenciaDetId    - Id del detalle de la incidencia
     *         Pv_Estado             - Estado del detalle del incidente
-    *         Pv_UsrCreacion        - Usuario de modificaci�n de la incidencia
+    *         Pv_UsrCreacion        - Usuario de modificación de la incidencia
     *         Pv_IpCreacion         - Ip que modifica la incidencia
     *         Pv_MensajeError       - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 19-03-2019
     */
 
@@ -187,17 +187,17 @@ AS
                                   );  
 
    /**
-    * Documentaci�n para la funci�n P_REPORTE_INCIDENCIAS
+    * Documentación para la función P_REPORTE_INCIDENCIAS
     * Procedimiento que genera un archivo csv de incidencias para posteriormente enviarlo por email 
     *
     * @param  Pv_FechaInicio        - Fecha de inicio de busqueda
     *         Pv_FechaFin           - Fecha Fin de busqueda
-    *         Pv_NoTicket           - N�mero de Ticket
+    *         Pv_NoTicket           - Número de Ticket
     *         Pv_MensajeError       - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 19-03-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.1 18-08-2019 - Se cambia de destinatario para el reporte generado desde el telcos 
     *                           al campo parametrizable en la admi_parametro_det (ECCUERT)
     * @since 1.0
@@ -211,17 +211,17 @@ AS
                                   Pv_MensajeError   OUT VARCHAR2) ;
 
    /**
-    * Documentaci�n para la funci�n P_CREAR_REQUEST
-    * Procedimiento que genera una petici�n al servidor mediante una url y Json
+    * Documentación para la función P_CREAR_REQUEST
+    * Procedimiento que genera una petición al servidor mediante una url y Json
     *
     * @param  Pcl_Json          - Json de casos y tareas
     *         Pv_URL            - Url a consumir
     *         Pv_Respuesta      - Data de respuesta de la url a consumir
     *         Pv_MensajeError   - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 09-04-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.1 18-08-2019 - Se trunca el Json para guardar en la info error
     * @since 1.0
     */                              
@@ -233,15 +233,15 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_DATOS_CREAR_CASOS
-    * Procedimiento que procesa la respuesta de la creaci�n del caso y la tarea 
+    * Documentación para la función P_DATOS_CREAR_CASOS
+    * Procedimiento que procesa la respuesta de la creación del caso y la tarea 
     *
     * @param  Pv_Data           - Json de casos y tareas
     *         Pv_Status         - Estado de la respuesta del Telcos
     *         Pv_Message        - Mensaje del Telcos
-    *         Pv_NoCaso         - N�mero de caso
-    *         Pv_NoTarea        - N�mero de tarea
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *         Pv_NoCaso         - Número de caso
+    *         Pv_NoTarea        - Número de tarea
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-04-2019
     */
 
@@ -252,13 +252,13 @@ AS
                                     Pv_NoTarea       OUT VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_ENVIO_NOTIFICACION
+    * Documentación para la función P_ENVIO_NOTIFICACION
     * Procedimiento que procesa la respuesta de la notificacion al cliente
     *
-    * @param  Pv_Data           - Json de la notificaci�n al cliente
+    * @param  Pv_Data           - Json de la notificación al cliente
     *         Pv_Status         - Estado de la respuesta del Telcos
     *         Pv_Message        - Mensaje del Telcos
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     */
 
@@ -268,13 +268,13 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_BUSQUEDA_CLIENTE_MD
+    * Documentación para la función P_BUSQUEDA_CLIENTE_MD
     * Procedimiento que procesa la respuesta de la busqueda del cliente de Megadatos por RDA
     *
     * @param  Pv_Data           - Json del cliente MD
     *         Pv_Status         - Estado de la respuesta del Telcos
     *         Pv_Message        - Mensaje del Telcos
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     */
 
@@ -283,13 +283,13 @@ AS
                                     Pv_Message       OUT VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_RESPUESTA_RDA
-    * Procedimiento que procesa la respuesta de RDA para la obtenci�n del cliente.
+    * Documentación para la función P_RESPUESTA_RDA
+    * Procedimiento que procesa la respuesta de RDA para la obtención del cliente.
     *
     * @param   Pv_Data      - Json de respuesta de RDA
     *          Pv_Status    - Estado de la respuesta
     *          Pv_Login     - Login del cliente
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 19-03-2019
     */
 
@@ -299,13 +299,13 @@ AS
                                 );
 
    /**
-    * Documentaci�n para la funci�n P_RESPUESTA_CGNAT
-    * Procedimiento que procesa la respuesta de Networking para la obtenci�n del cliente CGNAT.
+    * Documentación para la función P_RESPUESTA_CGNAT
+    * Procedimiento que procesa la respuesta de Networking para la obtención del cliente CGNAT.
     *
     * @param   Pv_Data      - Json de respuesta de CGNAT
     *          Pv_Status    - Estado de la respuesta
     *          Pv_Login     - Login del cliente
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 19-03-2019
     */
 
@@ -314,34 +314,34 @@ AS
                                 );
 
    /**
-    * Documentaci�n para la funci�n P_REPORTE_INCIDENCIAS_AUTOMATICA
+    * Documentación para la función P_REPORTE_INCIDENCIAS_AUTOMATICA
     * Procedimiento que se esta ejecutando constantemente para verificar la fecha de los tickets emitidos 
-    * y enviar un informe en formato csv de incidencias por correo electr�nico a ECUCERT
+    * y enviar un informe en formato csv de incidencias por correo electrónico a ECUCERT
     *
     * @param   null
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 19-03-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 18-10-2019 - Se cambia el formato del archivo que se env�a a ECUCERT a CSV
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 18-10-2019 - Se cambia el formato del archivo que se envía a ECUCERT a CSV
     * @since 1.0
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.2 14-02-2020 - Se cambia la observaci�n del reporte a ECUCERT en base al estado
-    *                           de gesti�n
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.2 14-02-2020 - Se cambia la observación del reporte a ECUCERT en base al estado
+    *                           de gestión
     * @since 1.1
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.3 18-03-2020 - Se agrega una nueva variable para realizar el env�o de reporte
-    *                           en base a un n�mero te ticket o de forma autom�tica
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.3 18-03-2020 - Se agrega una nueva variable para realizar el envío de reporte
+    *                           en base a un número te ticket o de forma automática
     * @since 1.2
     *
-    * @author Jos� Bed�n <jobedon@telconet.ec>
-    * @version 1.4 31-08-2020 - Se cambia Acciones tecnicas por Gesti�n de procesos interno
+    * @author José Bedón <jobedon@telconet.ec>
+    * @version 1.4 31-08-2020 - Se cambia Acciones tecnicas por Gestión de procesos interno
     *                         - Se cambia mensaje Script automatico por Gestion automatica de notificaciones
     * @since 1.3
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.5 07-06-2021 - Se omite las guias generadas de forma interna
     * @since 1.5
     *
@@ -350,14 +350,14 @@ AS
     PROCEDURE P_REPORTE_INC_AUTOMAT (Pv_NumeroTicket  IN  VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_TOKEN
+    * Documentación para la función P_TOKEN
     * Procedimiento que procesa la respuesta del token
     *
-    * @param  Pv_Data           - Json de la notificaci�n al cliente
+    * @param  Pv_Data           - Json de la notificación al cliente
     *         Pv_Token          - token
     *         Pv_Status         - Estado de la respuesta del Telcos
     *         Pv_Message        - Mensaje del Telcos
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     */
 
@@ -368,24 +368,24 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_ENVIO_CORREO
-    * Procedimiento que env�a correo
+    * Documentación para la función P_ENVIO_CORREO
+    * Procedimiento que envía correo
     *
     * @param    Pv_To           - Correo del destinataraio,
-    *           Pv_From         - Correo de quien es el que env�a,
+    *           Pv_From         - Correo de quien es el que envía,
     *           Pv_Message      - Mensaje del correo,
     *           Pv_SmtpHost     - Host o Ip del servidor,
-    *           Pv_Subject      - Encabezado del mensaje que se env�a,
+    *           Pv_Subject      - Encabezado del mensaje que se envía,
     *           Pv_TextMsg      - Texto del cuerpo del mensaje,
     *           Pv_AttachName   - Nombre del archivo a enviar,
     *           Pv_AttachMime   - Tipo de Archivo
     *           Pcl_ClobText     - Clob con el texto a enviar
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 04-06-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.1 18-08-2019 - Se agrega por defecto copia a soc_notificaciones@telconet.net para el 
-    *                           env�o de correo a ECUCERT
+    *                           envío de correo a ECUCERT
     * @since 1.0
     *
     */
@@ -404,25 +404,25 @@ AS
                             ) ;
 
    /**
-    * Documentaci�n para la funci�n P_RESPUESTA_CERT_VUL
+    * Documentación para la función P_RESPUESTA_CERT_VUL
     * Procedimiento que procesa la respuesta de CERT PARA LA VULNERABLIDAD
     *
     * @param   Pv_Data          - Json de respuesta de CERT
     *          Pv_Status        - Estado de la respuesta
     *          Pv_Vulnerable    - Estado que verifica si es vulnerable
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 05-06-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.1 12-08-2019 - Se agrega el ingreso del seguimiento al momento de validad la vulnerabilidad
     * @since 1.0
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.2 17-08-2019 - Se ingresa la validaci�n cuando no es vulnerable debido 
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.2 17-08-2019 - Se ingresa la validación cuando no es vulnerable debido 
     *                           a que la respuesta por parte de CERT es diferente sino encuentra vulnerabilidad
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.3 18-02-2020 - Se actualiza el estado de vulnerabilidad y gesti�n indiferentemente  
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.3 18-02-2020 - Se actualiza el estado de vulnerabilidad y gestión indiferentemente  
     *                           la Ip este asociada una tarea
     * @since 1.2
     */
@@ -434,14 +434,14 @@ AS
                                 );
 
    /**
-    * Documentaci�n para la funci�n P_IP_NETWORKING
+    * Documentación para la función P_IP_NETWORKING
     * Procedimiento que procesa la respuesta de la notificacion de netwoking
     *
     * @param  Pv_Data           - Json de la ip local del cliente para obtener la WAN
     *         Pv_IpWAN          - IP WAN del cliente
     *         Pv_Vrf            - Es la Vrf de la red consultada a networking
     *         Pv_Message        - Mensaje del Telcos
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 12-06-2019
     */
 
@@ -452,7 +452,7 @@ AS
                                 Pv_Message      OUT VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_MASCARA_IP
+    * Documentación para la función P_MASCARA_IP
     * Procedimiento que procesa la mascara IP u retorna si pertenece a ese segmento la IP
     *
     * @param  Pv_SubRed         - SubRed de telconet
@@ -460,7 +460,7 @@ AS
     *         Pv_IpValida       - Ip se se va a comparar
     *         Pn_boolValida     - Bandera si pertenece a la red
     *         Pv_Message        - Mensaje del Telcos
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     */
 
@@ -471,16 +471,16 @@ AS
                             Pv_Message       OUT VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_BUSCAR_CLIENTE_NOT
+    * Documentación para la función P_BUSCAR_CLIENTE_NOT
     * Procedimiento que procesa y busca el cliente y lo notifica
     *
     * @param  Pv_ipAddress       - Ip de la incidencia
     *         Pn_IncidenciaIdDet - Id detalle de la incidencia
-    *         Pv_ipCreacion      - Ip de creaci�n
-    *         Pv_feIncidenciaIp  - Fecha en que se cometi� la incidencia
+    *         Pv_ipCreacion      - Ip de creación
+    *         Pv_feIncidenciaIp  - Fecha en que se cometió la incidencia
     *         Pv_user            - Usuario
     *         Pv_puerto          - Puerto en donde se detecto la incidencia
-    *         Pv_noTicket        - N�mero de Ticket
+    *         Pv_noTicket        - Número de Ticket
     *         Pv_categoria       - Categoria de la incidencia
     *         Pv_subCategoria    - SuCategoria de la incidencia
     *         Pv_tipoEvento      - Tipo de Evento de la incidencia
@@ -488,49 +488,49 @@ AS
     *         Pv_BandCPE         - bandera que indica si es posible que sea CPE
     *         Pv_statusIn        - Estado de la respuesta del Telcos
     *         Pv_Message         - Mensaje del Telcos
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 11-03-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 24-07-2019 - Se agrega la validaci�n para que el tiempo transcurrido 
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 24-07-2019 - Se agrega la validación para que el tiempo transcurrido 
     *                           al caso cuando se asigna sea del cliente
     * @since 1.0
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.2 19-08-2019 - Se valida por el campo 'ES JEFE' para la b�squeda del jefe del departamento 
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.2 19-08-2019 - Se valida por el campo 'ES JEFE' para la búsqueda del jefe del departamento 
     * @since 1.1
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.3 - Se agrega el proceso para megadatos para crear tarea a IP contact center cuando ECUCERT reporta una IP
     * @since 1.2
     *
     * @author Otto Navas <onavas@telconet.ec>
-    * @version 1.4 - Se agreg� una validaci�n al cursor C_RUTA_SUBRED que permite aceptar la IP gateway de una subred
+    * @version 1.4 - Se agregó una validación al cursor C_RUTA_SUBRED que permite aceptar la IP gateway de una subred
     * @since 1.3
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.5 14-02-2020 - Se valida que no se cree tareas a CERT ni a IPCCL2 si la IP no es vulnerable
     * @since 1.4
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.6 04-03-2020 - Se le agrega la excepci�n al procedimiento.
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.6 04-03-2020 - Se le agrega la excepción al procedimiento.
     * @since 1.5
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.7 19-03-2020 - Se realiza validaci�n para Ips de infraestructura y
-    *                           validar el env�o de correo al clietne para cambiar a "an�lisis" el estado de gesti�n
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.7 19-03-2020 - Se realiza validación para Ips de infraestructura y
+    *                           validar el envío de correo al clietne para cambiar a "análisis" el estado de gestión
     * @since 1.6
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.8 27-04-2020 - Se realiza validaci�n con la empresa enviada por ECUCERT para direccionar
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.8 27-04-2020 - Se realiza validación con la empresa enviada por ECUCERT para direccionar
     *                           la tarea al departamento pertinente.
     * @since 1.7
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.9 12-08-2020 - Se realiza p�rametrizaci�n del jefe de region sino se encuenta en la consulta.
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.9 12-08-2020 - Se realiza párametrización del jefe de region sino se encuenta en la consulta.
     * @since 1.8
     * 
-    * @author Jos� Bed�n <jobedon@telconet.ec>
+    * @author José Bedón <jobedon@telconet.ec>
     * @version 1.4 31-08-2020 - Se cambia estado de Pendiente a Analisis cuando el cliente no se encontro
     * @since 1.9
     *
@@ -542,14 +542,14 @@ AS
                                    Pv_Message              OUT VARCHAR2);
 
    /** 
-    * Documentaci�n para la funci�n P_INGRESAR_CATEGORIA
+    * Documentación para la función P_INGRESAR_CATEGORIA
     * Procedimiento que ingresa la categoria, subcategoria y tipo de evento
     *
     * @param  Pv_Categoria      - Categoria
     *         Pv_SubCategoria   - SuCategoria
     *         Pv_TipoEvento     - Tipo de Evento
     *         Pv_Message        - Mensaje respuesta
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 21-05-2021
     */
     PROCEDURE P_INGRESAR_CATEGORIA(Pv_Categoria       IN VARCHAR2,
@@ -559,14 +559,14 @@ AS
                                    Pv_Message         OUT VARCHAR2);
 
    /** 
-    * Documentaci�n para la funci�n P_DATOS_CREAR_TAREA
-    * Procedimiento que procesa la respuesta de la creaci�n de la tarea 
+    * Documentación para la función P_DATOS_CREAR_TAREA
+    * Procedimiento que procesa la respuesta de la creación de la tarea 
     *
     * @param  Pv_Data           - Json de la tarea
     *         Pv_Status         - Estado de la respuesta del Telcos
     *         Pv_Message        - Mensaje del Telcos
-    *         Pv_NoTarea        - N�mero de tarea
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *         Pv_NoTarea        - Número de tarea
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 20-06-2019
     */
 
@@ -576,13 +576,13 @@ AS
                                     Pv_NoTarea       OUT VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_RESPUESTA_CSOC
+    * Documentación para la función P_RESPUESTA_CSOC
     * Procedimiento que procesa la respuesta de si el Cliente tiene CSOC
     *
     * @param  Pv_Data           - Json de la consulta a Csoc por Login
     *         Pv_Status         - Estado de la respuesta de CERT
     *         Pn_ClienteCsoc    - Indicador si es cliente Csoc
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 20-06-2019
     */
     PROCEDURE P_RESPUESTA_CSOC(Pv_Data          IN  VARCHAR2,
@@ -591,13 +591,13 @@ AS
                                 );
 
    /**
-    * Documentaci�n para la funci�n P_RESPUESTA_SG
+    * Documentación para la función P_RESPUESTA_SG
     * Procedimiento que procesa la respuesta de si el Cliente tiene Seguridad  Gestionada por Telconet
     *
     * @param  Pv_Data           - Json de la consulta a Cert para saber si el cliente tiene Seguridad Gestionada
     *         Pv_Status         - Estado de la respuesta de CERT
     *         Pn_ClienteSg      - Indicador si es un cliente Seguridad Gestionada
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 20-06-2019
     */
     PROCEDURE P_RESPUESTA_SG(Pv_Data          IN  VARCHAR2,
@@ -606,17 +606,17 @@ AS
                               );
 
    /** 
-    * Documentaci�n para la funci�n P_ACTUALIZAR_ESTADOGESTION
+    * Documentación para la función P_ACTUALIZAR_ESTADOGESTION
     * Procedimiento queatualiza el estado de gestion
     *
     * @param  Pv_EstadoGestion      - Estado de Gestion
     *         Pv_SubEstado          - Sub Estado de la Incidencia
     *         Pv_IdDetalleInc       - Id detalle de incidencia
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 12-06-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 14-02-2020 - Agrega el ingreso del estado de gesti�n en el historial
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 14-02-2020 - Agrega el ingreso del estado de gestión en el historial
     * @since 1.0
     *
     */
@@ -627,14 +627,14 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_REPROCESAR_CLIENTE
+    * Documentación para la función P_REPROCESAR_CLIENTE
     * Procedimiento que reprocesa el registro de la incidencia
     *
     * @param  Pn_IncidenciaDetId    - Objeto de del detalle de la incidencia
-    *         Pv_ipCreacion         - Ip de creaci�n,
-    *         Pv_user               - Usuario de creaci�n,
+    *         Pv_ipCreacion         - Ip de creación,
+    *         Pv_user               - Usuario de creación,
     *         Pv_MensajeError       - Mensaje de error del sistemas
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 21-07-2019
     */
 
@@ -646,16 +646,16 @@ AS
                               );  
 
    /** 
-    *Documentaci�n para la funci�n F_DIAS_LABORABLES
+    *Documentación para la función F_DIAS_LABORABLES
     * Procedimiento que obtiene las horas laborales entre fechas
     *
     * @param  Ft_fechaInicio    - Fecha de Inicio de la incidencia
     *         Ft_fechaFin       - Fecha actual
-    *         NUMBER            - Retorna en horas los d�as que lleva la incidencia
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *         NUMBER            - Retorna en horas los días que lleva la incidencia
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 10-07-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.1 19-08-2019 - Se valida que la funciones no sume las horas los fines de semana
     * @since 1.0
     */
@@ -665,15 +665,15 @@ AS
                           RETURN NUMBER;
 
    /**
-    * Documentaci�n para la funci�n P_FINALIZACION_TAREAS_AUTOMAT
-    * Procedimiento que se est� ejecutando constantemente para verificar si las tareas de ECUCERT 
-    * estan cerradas en un periodo de tiempo m�ximo
+    * Documentación para la función P_FINALIZACION_TAREAS_AUTOMAT
+    * Procedimiento que se está ejecutando constantemente para verificar si las tareas de ECUCERT 
+    * estan cerradas en un periodo de tiempo máximo
     *
     * @param  null
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 06-08-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.1 20-02-2020 - Se agrega el token al finalizar la tarea
     * @since 1.0
     *
@@ -682,17 +682,17 @@ AS
     PROCEDURE P_FINALIZACION_TAREAS_AUTOMAT ;
 
    /**
-    * Documentaci�n para la funci�n P_TAREA_PROCESADA
+    * Documentación para la función P_TAREA_PROCESADA
     * Procedimiento que cambia a procesada la tarea en la tabla de incidencias ECUCERT
     *
     * @param  Pn_IncidenciaDet  - Detalle de la Incidencia
     *         Pn_TareaProcesada - Bandera que indica si se proceso la tarea
     *         Pn_DetalleId      - Detalle de la tarea
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 01-08-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 18-03-2020 - Se par�metriza la observaci�n del seguimiento
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 18-03-2020 - Se parámetriza la observación del seguimiento
     * @since 1.0
     */
 
@@ -703,7 +703,7 @@ AS
                                 Pv_Observacion    IN VARCHAR2) ;
 
     /**
-    * Documentaci�n para la funci�n P_IDENTIFICACION_CLIENTE
+    * Documentación para la función P_IDENTIFICACION_CLIENTE
     * Procedimiento encargado de obtener un Json e identificar si el LOGIN de un punto mediante una ip determinada
     *
     * @param  Pv_IncidenciaDetNotObj     - Variable de tipo Objeto 
@@ -713,9 +713,9 @@ AS
     * @author Otto Navas <onavas@telconet.ec>
     * @version 1.0 23-10-2019
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 31-03-2020 - Cambio en la b�squeda de servicios adicionales 
-    *                           devolviendo el n�mero de planes por servicio
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 31-03-2020 - Cambio en la búsqueda de servicios adicionales 
+    *                           devolviendo el número de planes por servicio
     * @since 1.0
     */ 
 
@@ -730,8 +730,8 @@ AS
 
 
     /**
-    * Documentaci�n para la funci�n P_OBTIENE_CLIENTE
-    * Procedimiento encargado de obtener informaci�n del cliente en un formato Json
+    * Documentación para la función P_OBTIENE_CLIENTE
+    * Procedimiento encargado de obtener información del cliente en un formato Json
     *
     * @param  Pv_Login            - Login obtenido
     *         Pc_JsonCliente      - Json que contiene la informacion del cliente de acuerdo a punto
@@ -746,7 +746,7 @@ AS
                                         Pv_ErrorMsj             OUT VARCHAR2);
 
    /**
-    * Documentaci�n para la funci�n P_IDENTIFICA_IP
+    * Documentación para la función P_IDENTIFICA_IP
     * Procedimiento encargado de obtener la IP necesaria para obetner los datos del cliente
     * si la IP es una sub red, lo enviara al procedimiento P_SUBNETTING para su respectivo 
     * subneteo. Una vez eso se envia la IP al procedieminto P_IDENTIFICACION_CLIENTE
@@ -769,36 +769,36 @@ AS
                                         Pv_ErrorMsj          OUT VARCHAR2);  
 
     /**
-      * Documentaci�n para el procedimiento P_CREAR_CASO
+      * Documentación para el procedimiento P_CREAR_CASO
       * Procedimiento que crea el registro del caso
       *
       * @param Pn_idCaso              - Id Caso
       *        Pn_idCasoHistorial     - Id Caso Historial
       *        Pn_idDocumento         - Id Documento
-      *        Pn_idComunicacion      - Id Comunicaci�n 
-      *        Pn_idDocuComunicacion  - Id Documento Comunicaci�n
+      *        Pn_idComunicacion      - Id Comunicación 
+      *        Pn_idDocuComunicacion  - Id Documento Comunicación
       *        Pn_idDetalleHipotesis  - Id Detalle Hipotesis
       *        Pn_idDetalle           - Id Detalle del Caso
       *        Pn_idCriterioAfectado  - Id Criterio afectado
       *        Pn_idParteAfectada     - Id Parte afectada
-      *        Pn_idDetalleCaAsig     - Id Detalle asignaci�n
-      *        Pn_idComunicacionCaSig - Id Comunicaci�n Asignado
+      *        Pn_idDetalleCaAsig     - Id Detalle asignación
+      *        Pn_idComunicacionCaSig - Id Comunicación Asignado
       *        Pn_idCasoHistorialAsig - Id Caso Historial Asignado
-      *        Pn_idCasoAsignacion    - Id Caso Asignaci�n
+      *        Pn_idCasoAsignacion    - Id Caso Asignación
       *        Pn_idCasoDocumentoAsig - Id Caso Documento
-      *        Pn_idDocuComunicaAsig  - Id Documento Comunicaci�n
+      *        Pn_idDocuComunicaAsig  - Id Documento Comunicación
       *        
-      * @author N�stor Naula <nnaulal@telconet.ec>
+      * @author Néstor Naula <nnaulal@telconet.ec>
       * @version 1.0 04-02-2020
       *
-      * @author N�stor Naula <nnaulal@telconet.ec>
-      * @version 1.1 04-03-2020 - Se cambia la l�gica para crear caso para que no se repita el n�mero
+      * @author Néstor Naula <nnaulal@telconet.ec>
+      * @version 1.1 04-03-2020 - Se cambia la lógica para crear caso para que no se repita el número
       *                           del caso.
       * @since 1.0
       * 
-      * @author N�stor Naula <nnaulal@telconet.ec>
-      * @version 1.2 23-05-2021 - Se modifica logica para darle un delay a la generaci�n del
-      *                           n�mero del caso
+      * @author Néstor Naula <nnaulal@telconet.ec>
+      * @version 1.2 23-05-2021 - Se modifica logica para darle un delay a la generación del
+      *                           número del caso
       * @since 1.1
       *
       */
@@ -811,18 +811,18 @@ AS
                           ); 
 
      /**
-      * Documentaci�n para el procedimiento P_CREAR_TAREA
+      * Documentación para el procedimiento P_CREAR_TAREA
       * Procedimiento que crea el registro del caso
       *
-      * @param Pn_idComunicacionTarea   - Id Comunicaci�n
+      * @param Pn_idComunicacionTarea   - Id Comunicación
       *        Pn_idDetalleTarea        - Id Detalle
       *        Pn_idTareaDocumentoAsig  - Id Documento
-      *        Pn_idDocuComuAsigTarea   - Id Documento Comunicaci�n
+      *        Pn_idDocuComuAsigTarea   - Id Documento Comunicación
       *        Pn_idDetalleAsigTarea    - Id Detalle
       *        Pn_idDetalleHistTarea    - Id Detalle Historial
       *        Pn_idTareaSeguiTarea     - Id Tarea Seguimiento
       *        
-      * @author N�stor Naula <nnaulal@telconet.ec>
+      * @author Néstor Naula <nnaulal@telconet.ec>
       * @version 1.0 04-02-2020
       */
     PROCEDURE P_CREAR_TAREA(Pn_idComunicacionTarea  OUT INTEGER,
@@ -835,16 +835,16 @@ AS
 
 
      /**
-      * Documentaci�n para el procedimiento P_GENERAR_NUMERO_CASO
-      * Procedimiento que genera el n�mero del caso
+      * Documentación para el procedimiento P_GENERAR_NUMERO_CASO
+      * Procedimiento que genera el número del caso
       *
-      * @param Pv_NumeroCaso     - N�mero de caso 
+      * @param Pv_NumeroCaso     - Número de caso 
       *        
-      * @author N�stor Naula <nnaulal@telconet.ec>
+      * @author Néstor Naula <nnaulal@telconet.ec>
       * @version 1.0 03-03-2020
       *
-      * @author N�stor Naula <nnaulal@telconet.ec>
-      * @version 1.1 23-05-2021 - Se genera el n�mero de caso a partir del contador
+      * @author Néstor Naula <nnaulal@telconet.ec>
+      * @version 1.1 23-05-2021 - Se genera el número de caso a partir del contador
       *                           a partir de los mil registros
       * @since 1.0
       */
@@ -853,16 +853,16 @@ AS
 
 
    /**
-    * Documentaci�n para la funci�n P_REENVIO_CORREO_ECUCERT
-    * Procedimiento que en base al n�mero de ticket enviado lo procesa 
-    * y env�a correo con la informaci�n del ticket a ECUCERT.
+    * Documentación para la función P_REENVIO_CORREO_ECUCERT
+    * Procedimiento que en base al número de ticket enviado lo procesa 
+    * y envía correo con la información del ticket a ECUCERT.
     *
-    * @param  Pv_NumeroTicket       - N�mero de Ticket
-    *         Pv_ipCreacion         - Ip de Creaci�n
-    *         Pv_user               - Usuario de Creaci�n,
+    * @param  Pv_NumeroTicket       - Número de Ticket
+    *         Pv_ipCreacion         - Ip de Creación
+    *         Pv_user               - Usuario de Creación,
     *         Pv_MensajeError       - Mensaje de error del sistema
-    *         Pv_Respuesta          - Respuesta de la petici�n.
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *         Pv_Respuesta          - Respuesta de la petición.
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 18-03-2020
     */
 
@@ -874,24 +874,24 @@ AS
                                   Pv_Respuesta      OUT VARCHAR2) ;
 
    /**
-    * Documentaci�n para la funci�n P_NOTIFICACION_CIERRE_CASO
+    * Documentación para la función P_NOTIFICACION_CIERRE_CASO
     * Procedimiento que cierra caso/tarea y notifica al cliente.
     *
-    * @param  Pv_Nombre_Proceso     - Siglas del proceso que lo llama si es reenv�o
+    * @param  Pv_Nombre_Proceso     - Siglas del proceso que lo llama si es reenvío
     *                                 o solo cierre de Caso/Tarea
-    *         Pv_NumeroTicket       - N�mero de Ticket
-    *         Pv_ipCreacion         - Ip de Creaci�n
-    *         Pv_user               - Usuario de Creaci�n,
+    *         Pv_NumeroTicket       - Número de Ticket
+    *         Pv_ipCreacion         - Ip de Creación
+    *         Pv_user               - Usuario de Creación,
     *         Pv_MensajeError       - Mensaje de error del sistema
-    *         Pv_Respuesta          - Respuesta de la petici�n.
-    * @author N�stor Naula <nnaulal@telconet.ec>
+    *         Pv_Respuesta          - Respuesta de la petición.
+    * @author Néstor Naula <nnaulal@telconet.ec>
     * @version 1.0 18-03-2020
     *
-    * @author N�stor Naula <nnaulal@telconet.ec>
-    * @version 1.1 30-03-2020 - Se agrega v�lidaci�n para cerrar casos y tareas puntuales
-    *                           de un n�mero de ticket en base a la variable Pv_Nombre_Proceso
-    *                           Si es C hace referencia �nicamente al cierra de caso y tarea
-    *                           Si es T hace referencia al proceso de reenv�o de correo
+    * @author Néstor Naula <nnaulal@telconet.ec>
+    * @version 1.1 30-03-2020 - Se agrega válidación para cerrar casos y tareas puntuales
+    *                           de un número de ticket en base a la variable Pv_Nombre_Proceso
+    *                           Si es C hace referencia únicamente al cierra de caso y tarea
+    *                           Si es T hace referencia al proceso de reenvío de correo
     * @since 1.0
     *
     */
@@ -906,6 +906,7 @@ AS
 
 END SPKG_INCIDENCIA_ECUCERT;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_INCIDENCIA_ECUCERT
 AS
 
@@ -1485,7 +1486,7 @@ AS
     AND APD.descripcion = Cv_DescripcionParametro;
 
     Lv_FechaArchivo                 VARCHAR2(20)   := TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS');
-    Lv_AsuntoNotificacion           VARCHAR2(100)  := 'Notificaci�n de Generacion de Reporte de Incidencias'; 
+    Lv_AsuntoNotificacion           VARCHAR2(100)  := 'Notificación de Generacion de Reporte de Incidencias'; 
     Lv_NombreArchivo                VARCHAR2(100)  := 'ReporteIncidencias_'|| Lv_FechaArchivo||'.csv';
     Lv_ParametroProyectoEcucert     VARCHAR2(100)  := 'PARAMETROS_ECUCERT';
     Lv_ParametroDescripcion         VARCHAR2(100)  := 'PARAMETROS_REPORTE_BASE';    
@@ -1832,20 +1833,20 @@ AS
     CASE  WHEN (IID.ESTADO_GESTION = Cv_EstadoAtendido OR IID.ESTADO_GESTION = Cv_EstadoAnalisis) THEN
       CASE
         WHEN (Cv_CodigoEmpreTicket = 18 OR Cv_CodigoEmpreTicket = 10) AND IID.ESTADO_GESTION = Cv_EstadoAtendido AND UPPER(IIC.TIPO_EVENTO) = 'VULNERABLE'
-        THEN 'Script autom�tico ejecutado en la fecha '
+        THEN 'Script automático ejecutado en la fecha '
           ||IFDH.FE_CREACION
           ||' indica que la IP reportada NO ES VULNERABLE. '
         WHEN (Cv_CodigoEmpreTicket = 18 OR Cv_CodigoEmpreTicket = 10) AND IID.PERSONA_EMPRESA_ROL_ID IS NULL AND IID.ESTADO_GESTION = Cv_EstadoAnalisis
-        THEN 'Gesti�n por procesos internos'
+        THEN 'Gestión por procesos internos'
         WHEN UPPER(IIC.TIPO_EVENTO) = 'INCIDENTE' OR (UPPER(IID.STATUS) = 'VULNERABLE' AND IID.ESTADO_GESTION = Cv_EstadoAnalisis)
-        THEN 'Gesti�n autom�tica de notificaciones'
-        ELSE 'Script autom�tico ejecutado en la fecha ' ||IFDH.FE_CREACION ||' indica que la IP reportada NO ES VULNERABLE. '
+        THEN 'Gestión automática de notificaciones'
+        ELSE 'Script automático ejecutado en la fecha ' ||IFDH.FE_CREACION ||' indica que la IP reportada NO ES VULNERABLE. '
       END
     ELSE CASE  WHEN TNO.TOTALNOTIF IS NULL THEN 
          CASE WHEN NVL(IID.TIPO_USUARIO,'Cliente') = 'Infraestructura' THEN 
-         'Se Notific� al departamento de Seguridad L�gica mediante tarea de gesti�n interna para su revisi�n y gesti�n' 
-         ELSE 'Notificaci�n Pendiente. ' END
-         ELSE 'Se Notific� al Cliente mediante correo electr�nico, incluyendo recomendaciones de Seguridad para su gesti�n. ' 
+         'Se Notificó al departamento de Seguridad Lógica mediante tarea de gestión interna para su revisión y gestión' 
+         ELSE 'Notificación Pendiente. ' END
+         ELSE 'Se Notificó al Cliente mediante correo electrónico, incluyendo recomendaciones de Seguridad para su gestión. ' 
          END
     END AS OBSERVACION,
     IFDH.FE_CREACION AS FECHAGESTION,IID.COMUNICACION_ID
@@ -1888,7 +1889,7 @@ AS
 
 
     Lv_FechaArchivo                 VARCHAR2(20)   := TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS');
-    Lv_AsuntoNotificacion           VARCHAR2(100)  := 'Notificaci�n de Generaci�n de Reporte de Incidencias'; 
+    Lv_AsuntoNotificacion           VARCHAR2(100)  := 'Notificación de Generación de Reporte de Incidencias'; 
     Lv_NombreArchivo                VARCHAR2(100)  := 'ReporteIncidencias_'|| Lv_FechaArchivo||'.csv';
     Lv_ParametroProyectoEcucert     VARCHAR2(100)  := 'PARAMETROS_ECUCERT';
     Lv_ParametroDescripcion         VARCHAR2(100)  := 'PARAMETROS_REPORTE_BASE';     
@@ -2033,34 +2034,34 @@ AS
         IF Lv_TipoIncidencia = 'INCIDENTE' THEN
 
         Lcl_Encabezado := 'Codigo: FO-CCDR-04'||Lv_Delimitador 
-                    ||'DIRECCI�N T�CNICA DE CONTROL DE SEGURIDAD DE REDES DE TELECOMUNICACIONES REPORTE SOBRE LA GESTION DE INCIDENTES NOTIFICADOS POR LA ARCOTEL'|| UTL_TCP.crlf || '' || Lv_Delimitador 
-                    ||'AGENCIA DE REGULACI�N Y CONTROL DE LAS TELECOMUNICACIONES'||  UTL_TCP.crlf ||  UTL_TCP.crlf
+                    ||'DIRECCIÓN TÉCNICA DE CONTROL DE SEGURIDAD DE REDES DE TELECOMUNICACIONES REPORTE SOBRE LA GESTION DE INCIDENTES NOTIFICADOS POR LA ARCOTEL'|| UTL_TCP.crlf || '' || Lv_Delimitador 
+                    ||'AGENCIA DE REGULACIÓN Y CONTROL DE LAS TELECOMUNICACIONES'||  UTL_TCP.crlf ||  UTL_TCP.crlf
                     || 'Version: 1.0' ||  UTL_TCP.crlf ||  UTL_TCP.crlf
                     || 'PRESTADOR:'||Lv_Delimitador|| Lv_NombrePrestador ||  UTL_TCP.crlf
-                    || 'ELABORACI�N REPORTE:'||Lv_Delimitador|| Lv_NombrePrestador ||  UTL_TCP.crlf
+                    || 'ELABORACIÓN REPORTE:'||Lv_Delimitador|| Lv_NombrePrestador ||  UTL_TCP.crlf
                     || 'FECHA DEL REPORTE:'||Lv_Delimitador|| sysdate ||  UTL_TCP.crlf
-                    || 'N�MERO DE TICKET ARCOTEL:'||Lv_Delimitador|| Lv_NoTicket ||  UTL_TCP.crlf
-                    || 'FECHA DE NOTIFICACI�N:'||Lv_Delimitador|| Lv_FechaIncidencia ||  UTL_TCP.crlf
+                    || 'NÚMERO DE TICKET ARCOTEL:'||Lv_Delimitador|| Lv_NoTicket ||  UTL_TCP.crlf
+                    || 'FECHA DE NOTIFICACIÓN:'||Lv_Delimitador|| Lv_FechaIncidencia ||  UTL_TCP.crlf
                     || 'EVENTO (INCIDENTE):'||Lv_Delimitador|| Lv_Categoria ||  UTL_TCP.crlf || UTL_TCP.crlf
                     || 'No.:'||Lv_Delimitador|| 'IP reportada/caso' ||Lv_Delimitador|| 'Tipo de Usuario' || Lv_Delimitador
-                    || 'Estado de Gesti�n:'||Lv_Delimitador|| 'Fecha de gesti�n del incidente (dd/mm/aaaa)' ||Lv_Delimitador|| 
-                    'Hora de fin de gesti�n del incidente (hh:mm)' || Lv_Delimitador|| 
-                    'Acciones t�cnicas o administrativas ejecutadas para la gestion del incidente' || UTL_TCP.crlf ;
+                    || 'Estado de Gestión:'||Lv_Delimitador|| 'Fecha de gestión del incidente (dd/mm/aaaa)' ||Lv_Delimitador|| 
+                    'Hora de fin de gestión del incidente (hh:mm)' || Lv_Delimitador|| 
+                    'Acciones técnicas o administrativas ejecutadas para la gestion del incidente' || UTL_TCP.crlf ;
         ELSE
 
         Lcl_Encabezado := 'Codigo: FO-CCDR-03'||Lv_Delimitador 
-                    ||'DIRECCI�N T�CNICA DE CONTROL DE SEGURIDAD DE REDES DE TELECOMUNICACIONES REPORTE SOBRE LA GESTION DE INCIDENTES NOTIFICADOS POR LA ARCOTEL'|| UTL_TCP.crlf || '' || Lv_Delimitador 
-                    ||'AGENCIA DE REGULACI�N Y CONTROL DE LAS TELECOMUNICACIONES'||  UTL_TCP.crlf ||  UTL_TCP.crlf
+                    ||'DIRECCIÓN TÉCNICA DE CONTROL DE SEGURIDAD DE REDES DE TELECOMUNICACIONES REPORTE SOBRE LA GESTION DE INCIDENTES NOTIFICADOS POR LA ARCOTEL'|| UTL_TCP.crlf || '' || Lv_Delimitador 
+                    ||'AGENCIA DE REGULACIÓN Y CONTROL DE LAS TELECOMUNICACIONES'||  UTL_TCP.crlf ||  UTL_TCP.crlf
                     || 'Version: 1.0' ||  UTL_TCP.crlf ||  UTL_TCP.crlf
                     || 'PRESTADOR:'||Lv_Delimitador|| Lv_NombrePrestador ||  UTL_TCP.crlf
                     || 'REPORTE ELABORADO POR:'||Lv_Delimitador|| Lv_NombrePrestador ||  UTL_TCP.crlf
                     || 'FECHA DEL REPORTE:'||Lv_Delimitador|| sysdate ||  UTL_TCP.crlf
-                    || 'N�MERO DE TICKET ARCOTEL:'||Lv_Delimitador|| Lv_NoTicket ||  UTL_TCP.crlf
-                    || 'FECHA DE NOTIFICACI�N:'||Lv_Delimitador|| Lv_FechaIncidencia ||  UTL_TCP.crlf
+                    || 'NÚMERO DE TICKET ARCOTEL:'||Lv_Delimitador|| Lv_NoTicket ||  UTL_TCP.crlf
+                    || 'FECHA DE NOTIFICACIÓN:'||Lv_Delimitador|| Lv_FechaIncidencia ||  UTL_TCP.crlf
                     || 'EVENTO (VULNERABILIDAD):'||Lv_Delimitador|| Lv_Categoria ||  UTL_TCP.crlf || UTL_TCP.crlf
                     || '#'||Lv_Delimitador|| 'IP reportada' ||Lv_Delimitador|| 'Tipo de Usuario' || Lv_Delimitador
-                    || 'Estado de Gesti�n:'||Lv_Delimitador|| 'Fecha de gesti�n' ||Lv_Delimitador|| 
-                    'Acciones t�cnicas o administrativas ejecutadas para la gestion del incidente' || UTL_TCP.crlf ;
+                    || 'Estado de Gestión:'||Lv_Delimitador|| 'Fecha de gestión' ||Lv_Delimitador|| 
+                    'Acciones técnicas o administrativas ejecutadas para la gestion del incidente' || UTL_TCP.crlf ;
         END IF;
 
         FOR i IN C_Get_Incidencias_Fecha_Det(Lv_IdIncidencia,Lv_EstadoAtendido,Lv_EstadoAnalisis,Lv_CodigoEmpreTicket)
@@ -2310,7 +2311,7 @@ AS
             CLOSE C_DETALLE_TAREA;
 
             INSERT INTO DB_SOPORTE.INFO_TAREA_SEGUIMIENTO(ID_SEGUIMIENTO, DETALLE_ID, OBSERVACION, USR_CREACION, FE_CREACION) 
-            VALUES (DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL, Ln_DetalleId,'Validaci�n Autom�tica: '||Lv_MensajeVulnerabilidad,'telcos',SYSDATE);
+            VALUES (DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL, Ln_DetalleId,'Validación Automática: '||Lv_MensajeVulnerabilidad,'telcos',SYSDATE);
 
         END IF;
 
@@ -3697,7 +3698,7 @@ AS
                     THEN
                         Lv_Region := 'QUITO';
                     END IF;
-                    Lv_Observacion      := 'La IP '||Pv_IncidenciaDetNotObj.Pv_ipAddress || ': No est� registrada en el Telcos, pero fue encontrada en el  backbone con la IPWAN: '||Lv_IpWAN;
+                    Lv_Observacion      := 'La IP '||Pv_IncidenciaDetNotObj.Pv_ipAddress || ': No está registrada en el Telcos, pero fue encontrada en el  backbone con la IPWAN: '||Lv_IpWAN;
 
                     UPDATE DB_SOPORTE.INFO_INCIDENCIA_DET SET IPWAN=Lv_IpWAN WHERE ID_DETALLE_INCIDENCIA = Pv_IncidenciaDetNotObj.Pn_IncidenciaIdDet;
 
@@ -3714,7 +3715,7 @@ AS
                 lv_Vrf :=  LOWER(Lv_Vrf);
                 IF (Lv_Vrf IS NOT NULL) AND ( Lv_Vrf = 'gepon' OR Lv_Vrf = 'cgnat' OR Lv_Vrf = 'netlife') OR (Ln_CodEmpresa = 18)
                 THEN
-                    --Asignaci�n a RDA - Red de acceso
+                    --Asignación a RDA - Red de acceso
                     Ln_CodEmpresa       := 18;
                     Lv_Departamento     := 'Gepon/Tap';
                     Lv_PrefijoEmpre     := 'MD';
@@ -3910,7 +3911,7 @@ AS
                 CLOSE C_DETALLE_TAREA;
 
                 INSERT INTO DB_SOPORTE.INFO_TAREA_SEGUIMIENTO(ID_SEGUIMIENTO, DETALLE_ID, OBSERVACION, USR_CREACION, FE_CREACION) 
-                VALUES (DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL, Ln_DetalleId,'Validaci�n Autom�tica: '||Pv_IncidenciaDetNotObj.Pv_statusIn,Pv_IncidenciaDetNotObj.Pv_user,SYSDATE);
+                VALUES (DB_SOPORTE.SEQ_INFO_TAREA_SEGUIMIENTO.NEXTVAL, Ln_DetalleId,'Validación Automática: '||Pv_IncidenciaDetNotObj.Pv_statusIn,Pv_IncidenciaDetNotObj.Pv_user,SYSDATE);
             END IF;
             Lv_DescripcionRol := Pv_tipoUsuario;
             Pn_IncidenciaDetActId :=  INCIDENCIA_ACT_DETALLE_TYPE(Pv_IncidenciaDetNotObj.Pn_IncidenciaIdDet,
@@ -4036,7 +4037,7 @@ AS
         COMMIT;
       END IF;
 
-      Pv_Message := 'Se proceso con �xito';
+      Pv_Message := 'Se proceso con éxito';
 
       EXCEPTION
       WHEN OTHERS THEN
@@ -4443,7 +4444,7 @@ AS
             Lv_StatusTarea     := UPPER(APEX_JSON.GET_VARCHAR2(p_path => 'status'));
             IF Lv_StatusTarea = '200'
             THEN
-                P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,Ln_TareaProcesada,i.ID_DETALLE,'Cierre Autom�tico de la Tarea de ECUCERT'); 
+                P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,Ln_TareaProcesada,i.ID_DETALLE,'Cierre Automático de la Tarea de ECUCERT'); 
             ELSE
                 DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('ECUCERT',
                                                 'SPKG_INCIDENCIA_ECUCERT.P_FINALIZACION_TAREAS_AUTOMAT/P_CREAR_REQUEST',
@@ -5962,8 +5963,8 @@ AS
                 FETCH C_DETALLE_TAREA INTO Ln_DetalleId;
                 CLOSE C_DETALLE_TAREA;
 
-                P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Validaci�n autom�tica: No Vulnerable'); 
-                P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Cambio de estado de gesti�n a: Atendido'); 
+                P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Validación automática: No Vulnerable'); 
+                P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Cambio de estado de gestión a: Atendido'); 
 
                 DB_SOPORTE.SPKG_INCIDENCIA_ECUCERT.P_CREAR_REQUEST (Lcl_JsonToken ,Lv_URLToken,Lv_RespuestaToken,Lv_MensajeError);        
                 DB_SOPORTE.SPKG_INCIDENCIA_ECUCERT.P_TOKEN(Lv_RespuestaToken,Lv_Token,Lv_Status,Lv_Message);
@@ -6002,7 +6003,7 @@ AS
                 Lv_StatusTarea     := UPPER(APEX_JSON.GET_VARCHAR2(p_path => 'status'));
                 IF Lv_StatusTarea = '200' AND Pv_Nombre_Proceso IS NOT NULL AND Pv_Nombre_Proceso = 'C'
                 THEN
-                  P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Cierre de tarea autom�tica: Arcotel informa que el ticket fue resuelto'); 
+                  P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Cierre de tarea automática: Arcotel informa que el ticket fue resuelto'); 
                 END IF;
                 IF Lv_StatusTarea = '200' AND i.CASO_ID IS NOT NULL 
                 THEN
@@ -6045,7 +6046,7 @@ AS
                             Lv_StatusTarea     := UPPER(APEX_JSON.GET_VARCHAR2(p_path => 'status'));
                             IF Lv_StatusTarea = '200' AND Pv_Nombre_Proceso IS NOT NULL AND Pv_Nombre_Proceso = 'C'
                             THEN
-                              P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,j.DETALLE_ID,'Cierre de tarea autom�tica: Arcotel informa que el ticket fue resuelto'); 
+                              P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,j.DETALLE_ID,'Cierre de tarea automática: Arcotel informa que el ticket fue resuelto'); 
                             END IF;
 
                         END LOOP;
@@ -6160,7 +6161,7 @@ AS
                         FETCH C_DETALLE_TAREA INTO Ln_DetalleId;
                         CLOSE C_DETALLE_TAREA;
 
-                        P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Notificaci�n reenviada autom�ticamente'); 
+                        P_TAREA_PROCESADA(i.ID_DETALLE_INCIDENCIA,0,Ln_DetalleId,'Notificación reenviada automáticamente'); 
 
                    END IF;
                 END IF;

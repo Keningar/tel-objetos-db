@@ -2,30 +2,30 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GUIAS_REMISION AS
 
  
    /**
-  * Documentaci�n para NAF47_TNET.INKG_GUIAS_REMISION
+  * Documentación para NAF47_TNET.INKG_GUIAS_REMISION
   * Paquete que contiene procedimientos para generar guias de remision por transferencias de articulos
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 10/07/2019
   */
   /**
-  Definici�n de variables globales
+  Definición de variables globales
   */
-  Lv_TipoEmision       VARCHAR2(1):='1';--tipo emisi�n
+  Lv_TipoEmision       VARCHAR2(1):='1';--tipo emisión
 
   /**
-  * Documentaci�n para P_INSERTA_ARINENCREMISION
-  * Procedimiento para insertar cabecera de guia de remisi�n
+  * Documentación para P_INSERTA_ARINENCREMISION
+  * Procedimiento para insertar cabecera de guia de remisión
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 10/07/2019
   *
   * Se agrega columna NO_CIA_TRANSP
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.1 03/06/2021
   * 
-  * @param Pt_Arinencreremision IN  ARINENCREMISION%ROWTYPE  Recibe valores para registro de cabecera de remisi�n
+  * @param Pt_Arinencreremision IN  ARINENCREMISION%ROWTYPE  Recibe valores para registro de cabecera de remisión
   * @param Pv_Error             OUT VARCHAR2 Devuelve mensaje de error en caso de que se presente alguno
   */
 
@@ -35,25 +35,25 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GUIAS_REMISION AS
 
 
  /**
-  * Documentaci�n para P_INSERTA_ARINDETREMISION
-  * Procedimiento para insertar detalle de guia de remisi�n
+  * Documentación para P_INSERTA_ARINDETREMISION
+  * Procedimiento para insertar detalle de guia de remisión
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 12/07/2019
   * 
-  * @param Pt_Arindetreremision IN  ARINDETREMISION%ROWTYPE  Recibe valores para registro de cabecera de remisi�n
+  * @param Pt_Arindetreremision IN  ARINDETREMISION%ROWTYPE  Recibe valores para registro de cabecera de remisión
   * @param Pv_Error             OUT VARCHAR2 Devuelve mensaje de error en caso de que se presente alguno
   */                                      
   PROCEDURE P_INSERTA_ARINDETREMISION (Pt_Arindetreremision  NAF47_TNET.ARINDETREMISION%ROWTYPE,
                                        Pv_Error              OUT VARCHAR2) ; 
    /**
-  * Documentaci�n para P_GENERA_CLAVE_ACCESO
-  * Procedimiento que genera clave de acceso de la gu�a de remisi�n
+  * Documentación para P_GENERA_CLAVE_ACCESO
+  * Procedimiento que genera clave de acceso de la guía de remisión
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 17/07/2019
   * 
-  * @param Pn_NoTransa IN  NAF47_TNET.ARINENCREMISION.NO_TRANSA%TYPE n�mero de transacci�n
+  * @param Pn_NoTransa IN  NAF47_TNET.ARINENCREMISION.NO_TRANSA%TYPE número de transacción
   * @param Pn_NoCia    IN  NAF47_TNET.ARINENCREMISION.NO_CIA%TYPE
   * @param Pv_Error    OUT VARCHAR2 Devuelve mensaje de error en caso de que se presente alguno
   */                                     
@@ -63,10 +63,10 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GUIAS_REMISION AS
 
 
  /**
-  * Documentaci�n para P_ENVIA_GUIA_ELECTRONICA
-  * Procedimiento para ingresar documento de gu�a de remisi�n en DB_COMPROBANTES.INFO_DOCUMENTO
+  * Documentación para P_ENVIA_GUIA_ELECTRONICA
+  * Procedimiento para ingresar documento de guía de remisión en DB_COMPROBANTES.INFO_DOCUMENTO
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 30/07/2019
   * 
    */ 
@@ -74,24 +74,24 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GUIAS_REMISION AS
   /**
   * Se ajusta para que considere todos los correos del proveedor de transporte
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 22/01/2020
   * 
   * Se ajusta para que considere la compania del transportista interno
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.1 04/06/2021
    */                                   
   PROCEDURE P_ENVIA_GUIA_ELECTRONICA  ;  
 
   /**
-  * Documentaci�n para P_CONSULTA_COMP_GUIA
+  * Documentación para P_CONSULTA_COMP_GUIA
   * Procedimiento que consulta estado de los documentos que han sido enviados al SRI
   * 
-  * @author Byron Ant�n <banton@telconet.ec>
+  * @author Byron Antón <banton@telconet.ec>
   * @version 1.0 30/07/2019
   *
-  * Llamado de proceso para la notificaci�n de guias de remision con error
+  * Llamado de proceso para la notificación de guias de remision con error
   * @author Wilson Chimbo <wchimbo@telconet.ec>
   * @version 1.1 25/11/2022 
   * 
@@ -99,17 +99,17 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.INKG_GUIAS_REMISION AS
   PROCEDURE P_CONSULTA_COMP_GUIA ;
 
   /**
-  * Documentaci�n para P_ANULA_GUIA_REMISION
-  * Procedimiento que anula la guia de reimisi�n en NAF verificando que est� anulado en comprobantes
-  ** @author Byron Ant�n <banton@telconet.ec>
+  * Documentación para P_ANULA_GUIA_REMISION
+  * Procedimiento que anula la guia de reimisión en NAF verificando que esté anulado en comprobantes
+  ** @author Byron Antón <banton@telconet.ec>
   * @version 1.0 30/08/2019
   */                                     
   PROCEDURE P_ANULA_GUIA_REMISION ;
 
 /**
-  * Documentaci�n para P_ENVIA_CORREO
+  * Documentación para P_ENVIA_CORREO
   * Procedimiento que envia correo
-  ** @author Byron Ant�n <banton@telconet.ec>
+  ** @author Byron Antón <banton@telconet.ec>
   * @version 1.0 30/08/2019
   * 
   * @param Pv_Remitente    VARCHAR2 correo remitente
@@ -411,10 +411,10 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GUIAS_REMISION AS
    END  P_GENERA_CLAVE_ACCESO;
 
  /**
-  * Documentaci�n para P_ENVIA_GUIA_ELECTRONICA
-  * Se agrega en la patametrizaci�n de los motivos filtrar por compa�ia para habilitar a Mega
+  * Documentación para P_ENVIA_GUIA_ELECTRONICA
+  * Se agrega en la patametrización de los motivos filtrar por compañia para habilitar a Mega
   * 
-  * @author Andr�s Astudillo <aastudillo@telconet.ec>
+  * @author Andrés Astudillo <aastudillo@telconet.ec>
   * @version 1.1 17/06/2020
   * 
   */
@@ -434,7 +434,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GUIAS_REMISION AS
                                                      XMLElement("nombreComercial",gek_consulta.gef_elimina_caracter_esp(A.razon_social)),
                                                      XMLElement("ruc",A.id_tributario),
                                                      XMLElement("claveAcceso",C.CLAVE_ACCESO),
-                                                     XMLElement("codDoc",(SELECT CODIGO FROM DB_COMPROBANTES.ADMI_TIPO_DOCUMENTO WHERE DESCRIPCION='guiaRemision')),--Tipo de comprobante Gu�a de Remisi�n
+                                                     XMLElement("codDoc",(SELECT CODIGO FROM DB_COMPROBANTES.ADMI_TIPO_DOCUMENTO WHERE DESCRIPCION='guiaRemision')),--Tipo de comprobante Guía de Remisión
                                                      XMLElement("estab",Substr(F.SERIE,1,3)),
                                                      XMLElement("ptoEmi",Substr(F.SERIE,4,3)),
                                                      XMLElement("secuencial",lpad(C.NO_FISICO_GUIA , 9, '0')),
@@ -656,7 +656,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GUIAS_REMISION AS
       IF C_UsuarioExiste%ISOPEN         THEN  CLOSE C_UsuarioExiste;      END IF;
       IF C_UsuarioEmpExiste%ISOPEN  THEN  CLOSE C_UsuarioEmpExiste; END IF;
 
-      --Se verifica si se ingres� transportista externo
+      --Se verifica si se ingresó transportista externo
       IF Lc_GuiaRemision.CED_TRANSP_EXTERNO IS NOT NULL THEN
         Lv_CedulaTrans:=Lc_GuiaRemision.CED_TRANSP_EXTERNO;
       ELSE
@@ -685,7 +685,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.INKG_GUIAS_REMISION AS
           END IF;
 
 
-                  -- Obtenci�n de clave para el Usuario  
+                  -- Obtención de clave para el Usuario  
                  Lv_Password  := DB_FINANCIERO.FNCK_COM_ELECTRONICO.F_GENERA_PASSWD_SHA256 (Lv_CedulaTrans);
                   --
                   Ln_IdUsuario                      :=DB_COMPROBANTES.SEQ_ADMI_USUARIO.NEXTVAL;

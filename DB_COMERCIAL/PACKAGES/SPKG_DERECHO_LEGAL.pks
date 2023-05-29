@@ -3,7 +3,7 @@ CREATE OR REPLACE package DB_COMERCIAL.SPKG_DERECHO_LEGAL is
   
   
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * VALIDAR_CARACT_USUARIO_CIFRADO
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -17,7 +17,7 @@ PROCEDURE P_VALIDAR_USU_CLIENTE(Pcl_Request IN CLOB,
                                             
 
  /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * VALIDAR_CARACT_USUARIO_CIFRADO
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -32,7 +32,7 @@ PROCEDURE P_VALIDAR_CARACT_CIFRADO(Pcl_Request IN CLOB,
                                             
                                             
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * P_VALIDAR_DEUDAS
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -47,7 +47,7 @@ PROCEDURE P_VALIDAR_DEUDAS(Pcl_Request IN CLOB,
                                             
                                             
    /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * VALIDAR_CARACT_USUARIO_CIFRADO
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -61,7 +61,7 @@ PROCEDURE P_VALIDAR_SERVICIOS_CNL(Pcl_Request IN CLOB,
                                             
                                             
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * P_VALIDAR_EQUIPOS
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -76,7 +76,7 @@ PROCEDURE P_VALIDAR_EQUIPOS(Pcl_Request IN CLOB,
                                             
 
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * VALIDAR_CARACT_USUARIO_CIFRADO
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -89,7 +89,7 @@ PROCEDURE P_VALIDAR_GENERAL_ENCRYPT(Pcl_Request IN CLOB,
                                             Pcl_Response OUT CLOB);                                                 
 
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * VALIDAR_CARACT_USUARIO_CIFRADO
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -103,7 +103,7 @@ PROCEDURE P_GET_DATA_CIFRAR (Pv_IdentificacionCliente IN DB_COMERCIAL.INFO_PERSO
                              
 
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * P_GET_DATA_CIFRAR
  * Procedimiento para validacion de estado cifrado para clientes.
@@ -115,7 +115,7 @@ PROCEDURE P_CLI_DATA_CIFRAR (Pcl_Request IN CLOB,
                              
                             
   /**
- * Documentaci�n para TYPE 'SPKG_DERECHO_LEGAL'.
+ * Documentación para TYPE 'SPKG_DERECHO_LEGAL'.
  *
  * P_CLI_DATA_DESCIFRAR
  * Procedimiento para validacion de  descifrado para clientes.
@@ -185,8 +185,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
      IF  Lv_IdPersona IS NOT NULL THEN
      
       Lv_Retorno := '000';
-      Lv_Error := '�xito.';
-      Pv_Mensaje := '�xito.';
+      Lv_Error := 'Éxito.';
+      Pv_Mensaje := 'Éxito.';
      
      
      Pcl_Response := '{' ||
@@ -199,8 +199,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
      ELSE 
      
       Lv_Retorno := '001';
-      Lv_Error := 'La identificaci�n no pertenece a un cliente.';
-      Pv_Mensaje := 'La identificaci�n no pertenece a un cliente.';
+      Lv_Error := 'La identificación no pertenece a un cliente.';
+      Pv_Mensaje := 'La identificación no pertenece a un cliente.';
       Pv_Status := 'ERROR';
       
       
@@ -319,8 +319,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        
        
         Lv_Retorno := '005';
-        Lv_Error := 'La identificaci�n no pertenece a un cliente encriptado/eliminado.';
-        Pv_Mensaje := 'La identificaci�n no pertenece a un cliente encriptado/eliminado.';
+        Lv_Error := 'La identificación no pertenece a un cliente encriptado/eliminado.';
+        Pv_Mensaje := 'La identificación no pertenece a un cliente encriptado/eliminado.';
        
        
          Pcl_Response := '{' ||
@@ -422,7 +422,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        IF Ln_SaldoTotal > 0 THEN
        
            Lv_Retorno := '007';
-           Lv_Error := 'El cliente no cumple las condiciones de eliminaci�n, ya que tiene deudas pendientes.';
+           Lv_Error := 'El cliente no cumple las condiciones de eliminación, ya que tiene deudas pendientes.';
            
            
            Pcl_Response := '{' ||
@@ -432,13 +432,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                             || '}';
 
                 Pv_Status := 'ERROR';
-                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminaci�n, ya que tiene deudas pendientes.';
+                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminación, ya que tiene deudas pendientes.';
            
        
        ELSE 
        
            Lv_Retorno := '000';
-           Lv_Error := '�xito.';
+           Lv_Error := 'Éxito.';
            
             Pcl_Response := '{' ||
                                 '"retorno":"' || Lv_Retorno || '",' ||
@@ -447,7 +447,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                             || '}';
 
              Pv_Status     := 'OK';
-             Pv_Mensaje    := 'Transacci�n exitosa';
+             Pv_Mensaje    := 'Transacción exitosa';
         
        END IF;
        
@@ -583,7 +583,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
        IF Lb_banderaSer != true THEN 
        
            Lv_Retorno := '006';
-           Lv_Error := 'El cliente no cumple las condiciones de eliminaci�n, ya que no tiene todos los servicios cancelados';
+           Lv_Error := 'El cliente no cumple las condiciones de eliminación, ya que no tiene todos los servicios cancelados';
            
            
            Pcl_Response := '{' ||
@@ -593,13 +593,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                                 || '}';
 
                 Pv_Status := 'ERROR';
-                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminaci�n, ya que no tiene todos los servicios cancelados';
+                Pv_Mensaje := 'El cliente no cumple las condiciones de eliminación, ya que no tiene todos los servicios cancelados';
            
        
        ELSE 
        
            Lv_Retorno := '000';
-           Lv_Error := '�xito.';
+           Lv_Error := 'Éxito.';
            
               
            Pcl_Response := '{' ||
@@ -609,7 +609,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
                                 || '}';
 
              Pv_Status     := 'OK';
-             Pv_Mensaje    := 'Transacci�n exitosa';
+             Pv_Mensaje    := 'Transacción exitosa';
         
        END IF;
        
@@ -886,20 +886,20 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             DBMS_OUTPUT.PUT_LINE('Todo entregado');
             
              Lv_Retorno := '000';
-             Lv_Error := '�xito.';
+             Lv_Error := 'Éxito.';
              
              Pv_Status     := 'OK';
-             Pv_Mensaje    := 'Transacci�n exitosa'; 
+             Pv_Mensaje    := 'Transacción exitosa'; 
               
             ELSE
             
             DBMS_OUTPUT.PUT_LINE('Falta entregar algo');
             
              Lv_Retorno := '008';
-             Lv_Error := 'El cliente no cumple las condiciones de eliminaci�n, ya que tiene pendiente la entrega de equipos';
+             Lv_Error := 'El cliente no cumple las condiciones de eliminación, ya que tiene pendiente la entrega de equipos';
              
              Pv_Status     := 'ERROR';
-             Pv_Mensaje    := 'El cliente no cumple las condiciones de eliminaci�n, ya que tiene pendiente la entrega de equipos';
+             Pv_Mensaje    := 'El cliente no cumple las condiciones de eliminación, ya que tiene pendiente la entrega de equipos';
            
            END IF;
            
@@ -1059,7 +1059,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             ELSE
           
             Lv_Retorno := '000';
-            Lv_Error := '�xito.';
+            Lv_Error := 'Éxito.';
             
             
             Pcl_Response := '{' ||
@@ -1575,7 +1575,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             Lv_ip_mod,
             'Activo',
             null,
-            'Proceso eliminaci�n/encriptaci�n del cliente',
+            'Proceso eliminación/encriptación del cliente',
             null
            );
          
@@ -1637,7 +1637,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
   commit;
   
    Lv_Retorno := '000'; 
-   Lv_Error := '�xito.';
+   Lv_Error := 'Éxito.';
    Pcl_Resultado  := '{' ||
                                 '"retorno":"' || Lv_Retorno || '",' ||
                                 '"error":"' || Lv_Error || '",' ||
@@ -2104,7 +2104,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
             Lv_ip_mod,
             'Activo',
             null,
-            'Proceso desencriptar informaci�n del cliente',
+            'Proceso desencriptar información del cliente',
             null
            );
          
@@ -2136,7 +2136,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.SPKG_DERECHO_LEGAL AS
         DBMS_OUTPUT.PUT_LINE('Fin descifrar');
      
    Lv_Retorno := '000'; 
-   Lv_Error := '�xito.';
+   Lv_Error := 'Éxito.';
    Pcl_Resultado  := '{' ||
                                 '"retorno":"' || Lv_Retorno || '",' ||
                                 '"error":"' || Lv_Error || '",' ||

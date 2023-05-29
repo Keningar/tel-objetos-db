@@ -1024,7 +1024,7 @@ TO_CHAR(DECODE(a.no_refe,Null,m.no_docu,a.no_refe)), 0, 0,
      -- Efectua la aprobacion y cierre del periodo conciliado. Este proceso consiste
      -- en los siguientes pasos :
      -- 1. Validar que el saldo de la compa?ia para el siguiente periodo sea igual
-     --    al saldo actual � movimientos del mes siguiente.
+     --    al saldo actual ± movimientos del mes siguiente.
      -- 2. Poner indicador de conciliado en ARCKHC en S para el periodo que se cierra.
      -- 3. Actualizar saldo de bancos en ARCKMC para el periodo que se cierra.
      -- 4. Actualizar en ARCKMC el ultimo ano y mes conciliado.

@@ -12,8 +12,8 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.CO_P_GESTION_DOCUMENTAL(Pv_noOrden       
   * @param Pv_noOrden       IN VARCHAR2     Recibe numero de pedido
   * @param Pv_NoCia         IN VARCHAR2     Recibe codigo de compania
   * @param Pv_MensajeError  IN OUT VARCHAR2 Retorna mensaje de error
-  * @param Pv_NumeroFactura IN VARCHAR2     Recibde n�mero de factura
-  * @param Pv_NumeroRuc     IN VARCHAR2     Recibe n�mero de RUC
+  * @param Pv_NumeroFactura IN VARCHAR2     Recibde numero de factura
+  * @param Pv_NumeroRuc     IN VARCHAR2     Recibe numero de RUC
   */
   --
   Lc_TipoFactura     CONSTANT VARCHAR2(2) := '01';

@@ -1,20 +1,20 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS 
 
  /**
-  * Documentaci�n para PROCEDURE 'P_CREA_PMA_ACTUALIZA_ABU'.
+  * Documentación para PROCEDURE 'P_CREA_PMA_ACTUALIZA_ABU'.
   *
   * Procedimiento que crea Proceso Masivo "ArchivoTarjetasAbu" para el procesamiento del archivo de tarjetas ABU 
   *
   * PARAMETROS:
   * @Param Pv_UrlFile              IN  CLOB ( Ruta donde se almacena el archivo de tarjetas Abu )
   * @Param Pn_IdMotivo             IN  DB_GENERAL.ADMI_MOTIVO.ID_MOTIVO%TYPE ( Id del Motivo del Proceso del PMA )
-  * @Param Pv_Observacion          IN  VARCHAR2 ( Observaci�n del Proceso del PMA )
-  * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesi�n)
-  * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
-  * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creaci�n)
+  * @Param Pv_Observacion          IN  VARCHAR2 ( Observación del Proceso del PMA )
+  * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesión)
+  * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
+  * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creación)
   * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo: ArchivoTarjetasAbu)      
   * @Param Pv_Destinatario         IN  VARCHAR2 (Correo del usuario en sesion)      
-  * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 21-09-2022
@@ -31,13 +31,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
     Pv_MsjResultado             OUT VARCHAR2  
   ); 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_CAB'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_CAB'.
   *
   * Procedimiento que Inserta cabecera del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoCab IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE 
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 21-09-2022
@@ -46,13 +46,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_CAB'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_CAB'.
   *
   * Procedimiento que Actualiza cabecera del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoCab IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE 
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 21-09-2022
@@ -61,13 +61,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_DET'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_DET'.
   *
   * Procedimiento que Inserta detalle del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoDet IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 21-09-2022
@@ -76,13 +76,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_DET'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_DET'.
   *
   * Procedimiento que Actualiza detalle del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoDet IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 21-09-2022
@@ -91,8 +91,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
                                           Pv_MsjResultado          OUT VARCHAR2);    
 
   /**
-  * Documentaci�n para FUNCTION 'F_VALIDA_CODIGO_COMERCIO'.
-  * Funci�n para validaci�n Columna "Codigo Comercio": Validaci�n de codigo de MD �10980461� seg�n valor parametrizado.
+  * Documentación para FUNCTION 'F_VALIDA_CODIGO_COMERCIO'.
+  * Función para validación Columna "Codigo Comercio": Validación de codigo de MD 10980461 según valor parametrizado.
   *
   * Costo del Query C_ParamCodigoComercio: 3  
   *
@@ -108,8 +108,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
 
 
   /**
-  * Documentaci�n para FUNCTION 'F_VALIDAR_CLIENTE'.
-  * Funci�n para validaci�n Columna "IDENTIF. CLIENTE PR": formato de la columna seg�n valor parametrizado y si existe el cliente.
+  * Documentación para FUNCTION 'F_VALIDAR_CLIENTE'.
+  * Función para validación Columna "IDENTIF. CLIENTE PR": formato de la columna según valor parametrizado y si existe el cliente.
   *
   * Costo del Query F_VALIDAR_CLIENTE: 66  
   *
@@ -126,8 +126,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
   RETURN CLOB;
 
     /**
-  * Documentaci�n para FUNCTION 'F_VALIDAR_NUMERO_ANTIGUO'.
-  * Funci�n para validaci�n Columna "ANTIGUO": formato de la columna seg�n valor parametrizado y si existe el cliente, si es forma de pago DEBITO y Tarjeta.
+  * Documentación para FUNCTION 'F_VALIDAR_NUMERO_ANTIGUO'.
+  * Función para validación Columna "ANTIGUO": formato de la columna según valor parametrizado y si existe el cliente, si es forma de pago DEBITO y Tarjeta.
   *
   * Costo del Query F_VALIDAR_NUMERO_ANTIGUO: 51  
   *
@@ -147,8 +147,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
  RETURN CLOB;
 
     /**
-  * Documentaci�n para FUNCTION 'F_VALIDAR_NUMERO_NUEVO'.
-  * Funci�n para validaci�n Columna "ANTIGUO": formato de la columna seg�n valor parametrizado y si existe el cliente, si es forma de pago DEBITO y Tarjeta.
+  * Documentación para FUNCTION 'F_VALIDAR_NUMERO_NUEVO'.
+  * Función para validación Columna "ANTIGUO": formato de la columna según valor parametrizado y si existe el cliente, si es forma de pago DEBITO y Tarjeta.
   *
   * Costo del Query F_VALIDAR_NUMERO_NUEVO: 43  
   *
@@ -167,8 +167,8 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
     RETURN CLOB;
 
      /**
-  * Documentaci�n para FUNCTION 'F_VALIDAR_FECHA_CADUCIDAD'.
-  * Funci�n para validaci�n Columna "ANTIGUO": formato de la columna seg�n valor parametrizado y si existe el cliente, si es forma de pago DEBITO y Tarjeta.
+  * Documentación para FUNCTION 'F_VALIDAR_FECHA_CADUCIDAD'.
+  * Función para validación Columna "ANTIGUO": formato de la columna según valor parametrizado y si existe el cliente, si es forma de pago DEBITO y Tarjeta.
   *
   * Costo del Query F_VALIDAR_FECHA_CADUCIDAD: 21  
   *
@@ -185,7 +185,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
     RETURN CLOB;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_CREA_PMA_ACTUALIZA_ABU'.
+  * Documentación para PROCEDURE 'P_CREA_PMA_ACTUALIZA_ABU'.
   *
   * Procedimiento que crea Proceso Masivo "ArchivoTarjetasAbu" para el procesamiento del archivo de tarjetas ABU, se
   * consume un web services para crear Tareas con Cierre Automatico
@@ -258,7 +258,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
    * @Param	Pv_NumeroCuentaTarj    IN  VARCHAR2  Numero de la cuenta tarjeta sin encriptar
    * @Param	Pv_CodigoVerificacion  IN  VARCHAR2	 codigo de verificacion puede ir nulo
    * @Param	Pv_IpCreacion          OUT VARCHAR2	 Ip del usuario que usar el procedimiento
-   * @Param	Pv_MsjResultado        OUT VARCHAR2	 Respuesta ser� vac�a si la tarjeta es correcta
+   * @Param	Pv_MsjResultado        OUT VARCHAR2	 Respuesta será vacía si la tarjeta es correcta
    * 
    * @author Christian Yunga <cyungat@telconet.ec>
    * @version 1.0 16-02-2023
@@ -274,7 +274,6 @@ PROCEDURE P_VALIDAR_TARJETA_ABU(
 
 END FNCK_ACTUALIZA_TARJETAS_ABU;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS  
 
@@ -427,12 +426,12 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
 
     --
     COMMIT;
-    Pv_MsjResultado      := 'Se procedi� a ejecutar el script de '|| Pv_TipoPma ||', por favor esperar el email de confirmaci�n!'; 
+    Pv_MsjResultado      := 'Se procedió a ejecutar el script de '|| Pv_TipoPma ||', por favor esperar el email de confirmación!'; 
 
     EXCEPTION   
     WHEN OTHERS THEN
       --
-      Pv_MsjResultado      := 'Ocurri� un error al guardar el Proceso Masivo '||Pv_TipoPma; 
+      Pv_MsjResultado      := 'Ocurrió un error al guardar el Proceso Masivo '||Pv_TipoPma; 
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU.P_CREA_PMA_ACTUALIZA_ABU', 
@@ -650,7 +649,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU AS
   EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar el codigo de comercio CodigoComercio: ' || Fv_CodigoComercio; 
+    Lv_MsjResultado := 'Ocurrió un error al validar el codigo de comercio CodigoComercio: ' || Fv_CodigoComercio; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU.F_VALIDA_CODIGO_COMERCIO', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -856,7 +855,7 @@ FUNCTION F_VALIDAR_CLIENTE( Fv_IdentificacionCliente IN VARCHAR2,
    EXCEPTION
   WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la identidad del cliente: ' || Fv_IdentificacionCliente; 
+    Lv_MsjResultado := 'Ocurrió un error al validar la identidad del cliente: ' || Fv_IdentificacionCliente; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU.F_VALIDAR_CLIENTE', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -1042,7 +1041,7 @@ END F_VALIDAR_CLIENTE;
     EXCEPTION
     WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la identidad del cliente: ' || Fv_NumeroAntiguo; 
+    Lv_MsjResultado := 'Ocurrió un error al validar la identidad del cliente: ' || Fv_NumeroAntiguo; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU.F_VALIDAR_NUMERO_ANTIGUO', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -1182,7 +1181,7 @@ END F_VALIDAR_CLIENTE;
     EXCEPTION
     WHEN OTHERS THEN
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la identidad del cliente: ' || Fv_NumeroNuevo; 
+    Lv_MsjResultado := 'Ocurrió un error al validar la identidad del cliente: ' || Fv_NumeroNuevo; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU.F_VALIDAR_NUMERO_NUEVO', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
@@ -1289,7 +1288,7 @@ END F_VALIDAR_CLIENTE;
     WHEN OTHERS THEN
 
   --
-    Lv_MsjResultado := 'Ocurri� un error al validar la fecha de caducidad nueva: ' || Fv_FechaCaducidad; 
+    Lv_MsjResultado := 'Ocurrió un error al validar la fecha de caducidad nueva: ' || Fv_FechaCaducidad; 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                          'DB_FINANCIERO.FNCK_ACTUALIZA_TARJETAS_ABU.F_VALIDAR_FECHA_CADUCIDAD', 
                                          Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,

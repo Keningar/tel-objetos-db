@@ -1,11 +1,11 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS 
 
   /**
-  * Documentaci�n para PROCEDURE 'P_CREA_PM_PROMOCIONES'.
+  * Documentación para PROCEDURE 'P_CREA_PM_PROMOCIONES'.
   *
-  * Procedure que genera un Proceso Masivo que puede ser por Inactivaci�n, Dado de Baja o Clonaci�n de promociones, en base a par�metros enviados.
-  * El m�todo incluir� en el PMA todas las promociones que hayan sido previamente escogidas o  marcadas en el proceso,
-  * guardando el motivo y la observaci�n del proceso sea esta por Inactivaci�n, Clonaci�n o Dada de baja.
+  * Procedure que genera un Proceso Masivo que puede ser por Inactivación, Dado de Baja o Clonación de promociones, en base a parámetros enviados.
+  * El método incluirá en el PMA todas las promociones que hayan sido previamente escogidas o  marcadas en el proceso,
+  * guardando el motivo y la observación del proceso sea esta por Inactivación, Clonación o Dada de baja.
   *
   * Costo del Query C_GetIdGrupoPromocion: 7
   * Costo del Query C_GetIdVencePromocion: 5
@@ -13,23 +13,23 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
   * PARAMETROS:
   * @Param Pv_IdsGrupoPromocion    IN  CLOB ( Ids de los grupos de Promociones ADMI_GRUPO_PROMOCION )
   * @Param Pn_IdMotivo             IN  DB_GENERAL.ADMI_MOTIVO.ID_MOTIVO%TYPE ( Id del Motivo del Proceso del PMA )
-  * @Param Pv_Observacion          IN  VARCHAR2 ( Observaci�n del Proceso del PMA )
-  * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesi�n)
-  * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (C�digo de Empresa en sesi�n)
-  * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creaci�n)
-  * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Inactivaci�n, Clonaci�n o Dada de baja.)      
-  * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_Observacion          IN  VARCHAR2 ( Observación del Proceso del PMA )
+  * @Param Pv_UsrCreacion          IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE  (Usuario en sesión)
+  * @Param Pv_CodEmpresa           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Código de Empresa en sesión)
+  * @Param Pv_IpCreacion           IN  VARCHAR2 (Ip de Creación)
+  * @Param Pv_TipoPma              IN  VARCHAR2 (Tipo de Proceso Masivo Inactivación, Clonación o Dada de baja.)      
+  * @Param Pv_MsjResultado         OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 04-04-2019
   *
   * @author Katherine Yager <kyager@telconet.ec>
   * @version 1.1  25-10-2019
-  * Se agrega validaci�n para que cuando se Inactive por fechas de vigencias se cree el respectivo proceso masivo.
+  * Se agrega validación para que cuando se Inactive por fechas de vigencias se cree el respectivo proceso masivo.
   *
   * @author Katherine Yager <kyager@telconet.ec>
   * @version 1.2  13-04-2020
-  * Se cambia la forma de la validaci�n de fechas en el query C_GetIdVencePromocion.
+  * Se cambia la forma de la validación de fechas en el query C_GetIdVencePromocion.
   */
   PROCEDURE P_CREA_PM_PROMOCIONES(
     Pv_IdsGrupoPromocion        IN OUT  CLOB,  
@@ -42,13 +42,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
     Pv_MsjResultado             OUT VARCHAR2  
   ); 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_CAB'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_CAB'.
   *
   * Procedimiento que Inserta cabecera del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoCab IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE 
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 05-04-2019
@@ -57,13 +57,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_CAB'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_CAB'.
   *
   * Procedimiento que Actualiza cabecera del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoCab IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE 
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 08-04-2019
@@ -72,13 +72,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_DET'.
+  * Documentación para PROCEDURE 'P_INSERT_INFO_PROC_MASIVO_DET'.
   *
   * Procedimiento que Inserta detalle del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoDet IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 05-04-2019
@@ -87,13 +87,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_DET'.
+  * Documentación para PROCEDURE 'P_UPDATE_INFO_PROC_MASIVO_DET'.
   *
   * Procedimiento que Actualiza detalle del Proceso Masivo
   *
   * PARAMETROS:
   * @Param Prf_InfoProcesoMasivoDet IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 08-04-2019
@@ -102,7 +102,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                           Pv_MsjResultado          OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_EJECUTA_PM_PROMOCIONES'.
+  * Documentación para PROCEDURE 'P_EJECUTA_PM_PROMOCIONES'.
   *
   * Procedimiento que Ejecuta Proceso Masivo de Promociones
   *
@@ -120,20 +120,20 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
   *
   * @author Katherine Yager <kyager@telconet.ec>
   * @version 1.1  25-10-2019
-  * Se agrega par�metro de origen en P_EJECUTA_PM_PROMOCIONES para determinar que el proceso se realizar� por Anulaci�n desde la Web.
-  * Se agrega validaci�n para que se realice el nuevo proceso de inactivaci�n por fechas de vigencias de la promoci�n. 
+  * Se agrega parámetro de origen en P_EJECUTA_PM_PROMOCIONES para determinar que el proceso se realizará por Anulación desde la Web.
+  * Se agrega validación para que se realice el nuevo proceso de inactivación por fechas de vigencias de la promoción. 
   *
   * @author Katherine Yager <kyager@telconet.ec>
   * @version 1.2  07-10-2020
-  * Se agregan cambios para inactivaci�n de promociones en su fecha de vigencia y que estas actualicen su fecha de fin 
-  * de vigencia al d�a anterior para no otorgar mas promociones.
+  * Se agregan cambios para inactivación de promociones en su fecha de vigencia y que estas actualicen su fecha de fin 
+  * de vigencia al día anterior para no otorgar mas promociones.
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.3 19-08-2021
-  * Se modifica que al ejecutar los procesos masivos de Inactivaci�n de Promociones solo se realice el cambio de estado a "Inactivo" de las reglas 
+  * Se modifica que al ejecutar los procesos masivos de Inactivación de Promociones solo se realice el cambio de estado a "Inactivo" de las reglas 
   * promocionales que se encuentran en estado Activo.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.4 28-02-2023
   * Se agrega cursor para obtner el nombre de plantilla parametrizado por empresa.
   */
@@ -143,7 +143,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                        Pv_Estado      IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ESTADO%TYPE);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_EJECUTA_CLONAR_PROMOCIONES'.
+  * Documentación para PROCEDURE 'P_EJECUTA_CLONAR_PROMOCIONES'.
   *
   * Procedimiento que Ejecuta Proceso Masivo de Promociones
   *
@@ -157,10 +157,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
   * @Param Pv_CodEmpresa    IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
   * @Param Pv_Estado        IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ESTADO%TYPE
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 08-04-2019
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 28-02-2023
   * Se agrega cursor para obtner el nombre de plantilla parametrizado por empresa.
   */
@@ -169,7 +169,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                           Pv_Estado     IN DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB.ESTADO%TYPE);
 
  /**
-  * Documentaci�n para PROCEDURE 'P_CLONA_PROMOCIONES'.
+  * Documentación para PROCEDURE 'P_CLONA_PROMOCIONES'.
   *
   * Procedimiento que Clona Promociones
   *
@@ -190,7 +190,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
   * @Param Pn_IdMotivo            IN  NUMBER,
   * @Param Pv_MsjResultado        OUT VARCHAR2  
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 08-04-2019
   */
 
@@ -204,90 +204,90 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                 Pv_MsjResultado             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSRT_ADMI_GRUPO_PROMOCION'.
+  * Documentación para PROCEDURE 'P_INSRT_ADMI_GRUPO_PROMOCION'.
   *
-  * Procedimiento que Inserta datos generales de una promoci�n
+  * Procedimiento que Inserta datos generales de una promoción
   *
   * PARAMETROS:
   * @Param Prf_AdmiGrupoPromocion   IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-04-2019
   */
   PROCEDURE P_INSRT_ADMI_GRUPO_PROMOCION(Prf_AdmiGrupoPromocion IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION%ROWTYPE,
                                          Pv_MsjResultado        OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSRT_ADMI_GRUPO_PROMO_REGLA'.
+  * Documentación para PROCEDURE 'P_INSRT_ADMI_GRUPO_PROMO_REGLA'.
   *
-  * Procedimiento que Inserta los grupos de una regla de promoci�n
+  * Procedimiento que Inserta los grupos de una regla de promoción
   *
   * PARAMETROS:
   * @Param Prf_AdmiGrupoPromocionRegla  IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION_REGLA%ROWTYPE
-  * @Param Pv_MsjResultado              OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado              OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-04-2019
   */
   PROCEDURE P_INSRT_ADMI_GRUPO_PROMO_REGLA(Prf_AdmiGrupoPromocionRegla  IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION_REGLA%ROWTYPE,
                                            Pv_MsjResultado              OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSRT_ADMI_TIPO_PROMOCION'.
+  * Documentación para PROCEDURE 'P_INSRT_ADMI_TIPO_PROMOCION'.
   *
   * Procedimiento que Inserta el o los tipos de promociones
   *
   * PARAMETROS:
   * @Param Prf_AdmiTipoPromocion    IN DB_COMERCIAL.ADMI_TIPO_PROMOCION%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-04-2019
   */
   PROCEDURE P_INSRT_ADMI_TIPO_PROMOCION(Prf_AdmiTipoPromocion IN DB_COMERCIAL.ADMI_TIPO_PROMOCION%ROWTYPE,
                                         Pv_MsjResultado       OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSRT_ADMI_TIPO_PROMO_REGLA'.
+  * Documentación para PROCEDURE 'P_INSRT_ADMI_TIPO_PROMO_REGLA'.
   *
-  * Procedimiento que Inserta las reglas de una promoci�n
+  * Procedimiento que Inserta las reglas de una promoción
   *
   * PARAMETROS:
   * @Param Prf_AdmiTipoPromoRegla   IN DB_COMERCIAL.ADMI_TIPO_PROMOCION_REGLA%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-04-2019
   */
   PROCEDURE P_INSRT_ADMI_TIPO_PROMO_REGLA(Prf_AdmiTipoPromoRegla  IN DB_COMERCIAL.ADMI_TIPO_PROMOCION_REGLA%ROWTYPE,
                                           Pv_MsjResultado         OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSRT_ADMITIPOPLANPRODPROMO'.
+  * Documentación para PROCEDURE 'P_INSRT_ADMITIPOPLANPRODPROMO'.
   *
-  * Procedimiento que Inserta los planes/productos de una promoci�n
+  * Procedimiento que Inserta los planes/productos de una promoción
   *
   * PARAMETROS:
   * @Param Prf_AdmiTipoPlanProndPromo   IN DB_COMERCIAL.ADMI_TIPO_PLAN_PROD_PROMOCION%ROWTYPE
-  * @Param Pv_MsjResultado              OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado              OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-04-2019
   */
   PROCEDURE P_INSRT_ADMITIPOPLANPRODPROMO(Prf_AdmiTipoPlanProndPromo  IN DB_COMERCIAL.ADMI_TIPO_PLAN_PROD_PROMOCION%ROWTYPE,
                                           Pv_MsjResultado             OUT VARCHAR2);
 
   /**
-  * Documentaci�n para PROCEDURE 'P_INSRT_ADMI_GRUPO_PROMO_HIST'.
+  * Documentación para PROCEDURE 'P_INSRT_ADMI_GRUPO_PROMO_HIST'.
   *
-  * Procedimiento que Inserta el historial de una promoci�n
+  * Procedimiento que Inserta el historial de una promoción
   *
   * PARAMETROS:
   * @Param Prf_AdmiGrupoPromoHist   IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION_HISTO%ROWTYPE
-  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecuci�n)
+  * @Param Pv_MsjResultado          OUT VARCHAR2 (Devuelve un mensaje del resultado de ejecución)
 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-04-2019
   */
   PROCEDURE P_INSRT_ADMI_GRUPO_PROMO_HIST(Prf_AdmiGrupoPromoHist  IN DB_COMERCIAL.ADMI_GRUPO_PROMOCION_HISTO%ROWTYPE,
@@ -347,7 +347,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
     Lr_InfoProcesoMasivoCab   DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB%ROWTYPE;
     Lr_InfoProcesoMasivoDet   DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET%ROWTYPE;    
     Lv_EstadoActivo           VARCHAR2(15):='Activo';
-    Lv_NombreMotivo           VARCHAR2(200):='Inactivaci�n autom�tica por fechas de vigencias';
+    Lv_NombreMotivo           VARCHAR2(200):='Inactivación automática por fechas de vigencias';
     Lex_Exception EXCEPTION;
 
   BEGIN  
@@ -515,12 +515,12 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
 
     --
     COMMIT;
-    Pv_MsjResultado      := 'Se procedi� a ejecutar el script de '|| Pv_TipoPma ||', por favor esperar el email de confirmaci�n!'; 
+    Pv_MsjResultado      := 'Se procedió a ejecutar el script de '|| Pv_TipoPma ||', por favor esperar el email de confirmación!'; 
 
     EXCEPTION   
     WHEN OTHERS THEN
       --
-      Pv_MsjResultado      := 'Ocurri� un error al guardar el Proceso Masivo '||Pv_TipoPma; 
+      Pv_MsjResultado      := 'Ocurrió un error al guardar el Proceso Masivo '||Pv_TipoPma; 
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'CMKG_GRUPO_PROMOCIONES.P_CREA_PM_PROMOCIONES', 
@@ -816,7 +816,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
     Lv_Delimitador               VARCHAR2(1)    := ',';
     Lv_Gzip                      VARCHAR2(250);
     Lv_Remitente                 VARCHAR2(100)  := 'notificaciones_telcos@telconet.ec';
-    Lv_Asunto                    VARCHAR2(300)  := 'Reporte de Inactivaci�n de Promociones';
+    Lv_Asunto                    VARCHAR2(300)  := 'Reporte de Inactivación de Promociones';
     Lv_Cuerpo                    VARCHAR2(9999) := ''; 
     Lv_NombreArchivoZip          VARCHAR2(250);
     Lc_GetAliasPlantilla         DB_FINANCIERO.FNKG_TYPES.Lr_AliasPlantilla;
@@ -911,7 +911,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
        --Si el estado del Grupo Promocion no es Activo el detalle del PMA debe ser Fallo
        IF (Lr_GetProcesoMasivoDet.ESTADO_GRUPO_PROMO!='Activo') THEN             
          Lv_EstadoDetPma   :='Fallo';
-         Lv_ObservacionPma :='No se realizo el Proceso: '||Pv_TipoPma||' debido a que el Grupo Promoci�n: '||SUBSTR(Lr_GetProcesoMasivoDet.NOMBRE_GRUPO,1,100)||
+         Lv_ObservacionPma :='No se realizo el Proceso: '||Pv_TipoPma||' debido a que el Grupo Promoción: '||SUBSTR(Lr_GetProcesoMasivoDet.NOMBRE_GRUPO,1,100)||
                              ' Se encuentra en Estado: '||Lr_GetProcesoMasivoDet.ESTADO_GRUPO_PROMO;
          Lb_ProcesoPma     :=FALSE;
        END IF;
@@ -967,11 +967,11 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
          WHERE TIPO_PROMOCION_ID=Lr_GetTiposPorGrupoPromo.ID_TIPO_PROMOCION AND ESTADO = Lv_EstadoActivo;
          --
          
-         Lv_ObservHist:=  'Se cambia de estado el Tipo de Promoci�n: ' ||Lr_GetTiposPorGrupoPromo.Tipo|| ' - ' || Lr_GetProcesoMasivoDet.OBSERVACION;
+         Lv_ObservHist:=  'Se cambia de estado el Tipo de Promoción: ' ||Lr_GetTiposPorGrupoPromo.Tipo|| ' - ' || Lr_GetProcesoMasivoDet.OBSERVACION;
          
          IF Pv_TipoPma = 'InactPromoVigente' OR  Pv_TipoPma = 'InactPromoUnico'  THEN
    
-            Lv_ObservHist:= Lv_ObservHist || ' - la promoci�n se procedi� a inactivar el ' || SYSDATE ;
+            Lv_ObservHist:= Lv_ObservHist || ' - la promoción se procedió a inactivar el ' || SYSDATE ;
            
          END IF;
          
@@ -1009,7 +1009,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
               Lv_EstadoGrupo :='Inactivo';
          END IF;
          --
-         --Paso a Estado Inactivo el grupo de la Promoci�n
+         --Paso a Estado Inactivo el grupo de la Promoción
          
           IF Pv_TipoPma = 'InactPromoVigente' OR  Pv_TipoPma = 'InactPromoUnico'  THEN
              IF (Lv_ActFeFin='S') THEN
@@ -1051,7 +1051,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
          --
        END IF;      
        --
-       --Actualizo estado del Detalle del PMA a Finalizado o Fall�
+       --Actualizo estado del Detalle del PMA a Finalizado o Falló
        --      
        UPDATE DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET
        SET ESTADO  = Lv_EstadoDetPma,
@@ -1199,7 +1199,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
     Lv_Directorio             VARCHAR2(50)    := 'DIR_REPGERENCIA';
     Lv_Delimitador            VARCHAR2(1)     := ',';
     Lv_Remitente              VARCHAR2(100)   := 'notificaciones_telcos@telconet.ec';
-    Lv_Asunto                 VARCHAR2(300)   := 'Reporte de Clonaci�n de Promociones';
+    Lv_Asunto                 VARCHAR2(300)   := 'Reporte de Clonación de Promociones';
     Lv_Cuerpo                 VARCHAR2(9999)  := ''; 
     Lv_FechaReporte           VARCHAR2(50)    := TO_CHAR(sysdate, 'YYYYMMDDHH24MISS');
     Lb_ProcesoPma             BOOLEAN         := TRUE;
@@ -1289,7 +1289,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                                                 Lr_GetProcesoMasivoDet.id_motivo,
                                                                 Lv_MsjResultado);
 
-          --Si el estado del Grupo Promoci�n no es Activo el detalle del PMA debe ser Fall�
+          --Si el estado del Grupo Promoción no es Activo el detalle del PMA debe ser Falló
         IF TRIM(Lv_MsjResultado) IS NOT NULL THEN
         --
           Lv_EstadoDetPma   := 'Fallo';
@@ -1307,7 +1307,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
           Lr_AdmiGrupoPromocionHist.FE_CREACION               := SYSDATE;
           Lr_AdmiGrupoPromocionHist.USR_CREACION              := Lv_User;
           Lr_AdmiGrupoPromocionHist.IP_CREACION               := Lv_IpCreacion;
-          Lr_AdmiGrupoPromocionHist.OBSERVACION               := 'Se clona Promoci�n: ' ||Lr_GetProcesoMasivoDet.NOMBRE_MOTIVO;
+          Lr_AdmiGrupoPromocionHist.OBSERVACION               := 'Se clona Promoción: ' ||Lr_GetProcesoMasivoDet.NOMBRE_MOTIVO;
           Lr_AdmiGrupoPromocionHist.ESTADO                    := 'Activo';
           --
           DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES.P_INSRT_ADMI_GRUPO_PROMO_HIST(Lr_AdmiGrupoPromocionHist, Lv_MsjResultado);
@@ -1324,7 +1324,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
 
         END IF;
         --
-        --Actualiz� estado del Detalle del PMA a Finalizado o Fall�
+        --Actualizó estado del Detalle del PMA a Finalizado o Falló
         --      
         UPDATE DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_DET
         SET ESTADO    = Lv_EstadoDetPma,
@@ -1333,7 +1333,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
           OBSERVACION = Lr_GetProcesoMasivoDet.OBSERVACION ||' - '||Lv_ObservacionPma
         WHERE ID_PROCESO_MASIVO_DET = Lr_GetProcesoMasivoDet.ID_PROCESO_MASIVO_DET;
         --
-        --Construy� archivo
+        --Construyó archivo
         UTL_FILE.PUT_LINE(Lfile_Archivo,NVL(SUBSTR(Lr_GetProcesoMasivoDet.NOMBRE_GRUPO,1,100), '')||Lv_Delimitador 
                           ||NVL(Lr_GetProcesoMasivoDet.NOMBRE_MOTIVO, '')||Lv_Delimitador  
                           ||NVL(SYSDATE, '')||Lv_Delimitador 
@@ -1342,7 +1342,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                           ||NVL(Lr_GetProcesoMasivoDet.OBSERVACION ||' - '||Lv_ObservacionPma, '')||Lv_Delimitador); 
       END LOOP;
     --
-    --Actualiz� estado de la Cabecera del PMA a Finalizado 
+    --Actualizó estado de la Cabecera del PMA a Finalizado 
     --    
     UPDATE DB_INFRAESTRUCTURA.INFO_PROCESO_MASIVO_CAB
     SET ESTADO    = 'Finalizado',
@@ -1369,7 +1369,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
   EXCEPTION
     WHEN Lex_Exception THEN
       --
-      Lv_MsjResultado      := 'Ocurri� un error al ejecutar el Proceso Masivo '||Pv_TipoPma; 
+      Lv_MsjResultado      := 'Ocurrió un error al ejecutar el Proceso Masivo '||Pv_TipoPma; 
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'CMKG_GRUPO_PROMOCIONES.P_EJECUTA_CLONAR_PROMOCIONES', 
@@ -1379,7 +1379,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion)); 
     WHEN OTHERS THEN
       --
-      Lv_MsjResultado      := 'Ocurri� un error al ejecutar el Proceso Masivo '||Pv_TipoPma; 
+      Lv_MsjResultado      := 'Ocurrió un error al ejecutar el Proceso Masivo '||Pv_TipoPma; 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+', 
                                            'CMKG_GRUPO_PROMOCIONES.P_EJECUTA_CLONAR_PROMOCIONES', 
                                            Lv_MsjResultado || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM, 
@@ -1682,7 +1682,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
     Lr_AdmiGrupoPromocionHist.FE_CREACION               := SYSDATE;
     Lr_AdmiGrupoPromocionHist.USR_CREACION              := Pv_UsrCreacion;
     Lr_AdmiGrupoPromocionHist.IP_CREACION               := Lv_IpCreacion;
-    Lr_AdmiGrupoPromocionHist.OBSERVACION               := 'Se clona promoci�n de la promoci�n origen ' || Pn_IdGrupoPromocion;
+    Lr_AdmiGrupoPromocionHist.OBSERVACION               := 'Se clona promoción de la promoción origen ' || Pn_IdGrupoPromocion;
     Lr_AdmiGrupoPromocionHist.ESTADO                    := 'Activo';
     --
     DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES.P_INSRT_ADMI_GRUPO_PROMO_HIST(Lr_AdmiGrupoPromocionHist, Pv_MsjResultado);
@@ -1695,7 +1695,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
   EXCEPTION
     WHEN Lex_Exception THEN
       --
-      Lv_MsjResultado      := 'Ocurri� un error al guardar el Proceso Masivo '||Pv_TipoPma; 
+      Lv_MsjResultado      := 'Ocurrió un error al guardar el Proceso Masivo '||Pv_TipoPma; 
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'CMKG_GRUPO_PROMOCIONES.P_CLONA_PROMOCIONES', 
@@ -1705,7 +1705,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_GRUPO_PROMOCIONES AS
                                            NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), Lv_IpCreacion));
     WHEN OTHERS THEN
       --
-      Pv_MsjResultado      := 'Ocurri� un error al guardar el Proceso Masivo '||Pv_TipoPma; 
+      Pv_MsjResultado      := 'Ocurrió un error al guardar el Proceso Masivo '||Pv_TipoPma; 
 
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos +', 
                                            'CMKG_GRUPO_PROMOCIONES.P_CLONA_PROMOCIONES', 

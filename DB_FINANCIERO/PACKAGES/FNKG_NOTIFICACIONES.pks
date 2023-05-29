@@ -4,11 +4,11 @@ AS
   /**
   * Documentacion para el procedimiento P_NOTIFICAR_FACTURACION_MASIVA
   *
-  * M�todo que env�a un correo notificando a los usuarios de la creaci�n de los documentos facturados.
+  * Método que envía un correo notificando a los usuarios de la creación de los documentos facturados.
   *
-  * @param Pv_CuerpoMensaje    IN CLOB  Texto que ser� colocado como cuerpo del mensaje a notificar
-  * @param Pv_CodigoPlantilla  IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla con la cual se va a enviar el correo
-  * @param Pv_EmpresaCod       IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa de la cual va a ser notificada
+  * @param Pv_CuerpoMensaje    IN CLOB  Texto que será colocado como cuerpo del mensaje a notificar
+  * @param Pv_CodigoPlantilla  IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla con la cual se va a enviar el correo
+  * @param Pv_EmpresaCod       IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa de la cual va a ser notificada
   * @param Pv_MensajeError     OUT VARCHAR2  Retorna un mensaje de error en caso de existir
   *
   * @author Edson Franco <efranco@telconet.ec>
@@ -24,17 +24,17 @@ AS
   /**
    * Documentacion para el procedimiento P_NOTIF_PROCESO_MASIVO_DEBITOS
    *
-   * M�todo que env�a un correo notificando a los usuarios de la finalizacion del proceso masivo de debitos pendientes.
+   * Método que envía un correo notificando a los usuarios de la finalizacion del proceso masivo de debitos pendientes.
    *
-   * @param Pv_CuerpoMensaje   IN  CLOB Texto que ser� colocado como cuerpo del mensaje a notificar
-   * @param Pv_CodigoPlantilla IN  DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE - C�digo de la plantilla con la cual se va a enviar el correo
+   * @param Pv_CuerpoMensaje   IN  CLOB Texto que será colocado como cuerpo del mensaje a notificar
+   * @param Pv_CodigoPlantilla IN  DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE - Código de la plantilla con la cual se va a enviar el correo
    * @param Pv_From            IN  VARCHAR2 Recibe el usuario que envia el correo
    * @param Pv_Subject         IN  VARCHAR2 Recibe el subject del correo
    * @param Pv_Replace         IN  VARCHAR2 Recibe el valor a remplazar en la plantilla,
    * @param Pv_MimeType        IN  VARCHAR2 Recibe el charset en el que se envia el correo
    * @param Pv_MensajeError    OUT VARCHAR2 Retorna un mensaje de error en caso de existir
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 25-09-2017
    */
   PROCEDURE P_NOTIF_PROCESO_MASIVO_DEBITOS(
@@ -50,21 +50,21 @@ AS
   /**
   * Documentacion para el procedimiento P_NOTIF_DOCUMENTOS_RECHAZADOS
   *
-  * Procedimiento que env�a un correo notificando a los usuarios de los documentos rechazados existentes.
+  * Procedimiento que envía un correo notificando a los usuarios de los documentos rechazados existentes.
   * Costo del query 39
   *
   * @param Pv_PrejifoEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Prefijo de la empresa de la cual se va a obtener 
   *                                                                                          los documentos
-  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla con la cual se va a enviar el correo
-  * @param Pv_DescripcionCaracteristica  IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  Texto con la caracter�stica que se 
+  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla con la cual se va a enviar el correo
+  * @param Pv_DescripcionCaracteristica  IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  Texto con la característica que se 
   *                                                                                                           desea buscar
   * @param Pv_MensajeError               OUT VARCHAR2  Retorna un mensaje de error en caso de existir
   *
   * @author Hector Ortega <haortega@telconet.ec>
   * @version 1.00 26-12-2016
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.00 18-01-2018  Se agrega filtro para que se consulte s�lo documentos que posean detalle.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.00 18-01-2018  Se agrega filtro para que se consulte sólo documentos que posean detalle.
   */
   PROCEDURE P_NOTIF_DOCUMENTOS_RECHAZADOS(
     Pv_PrejifoEmpresa            IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE,
@@ -78,17 +78,17 @@ AS
   /**
   * Documentacion para el procedimiento P_ENVIO_NOTIFICACION_DOCUMENTO
   *
-  * M�todo que env�a un correo notificando a los usuarios de la creaci�n de documentos dependiendo de los par�metros enviados al procedure
+  * Método que envía un correo notificando a los usuarios de la creación de documentos dependiendo de los parámetros enviados al procedure
   *
   * @param Pv_EmpresaId              IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Id de la empresa de la cual se va a obtener los documentos
   * @param Pv_NombreDocumento        IN DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE  Nombre de los documentos se van a notificar
-  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla con la cual se va a enviar el correo
+  * @param Pv_CodigoPlantilla        IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla con la cual se va a enviar el correo
   * @param Pv_UsuarioCreacion        IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE Usuario de creacion de los documentos
-  * @param Pv_ConNumDocSri           IN VARCHAR2  Si se desea obtener documentos que tengan n�mero de SRI
-  * @param Pv_Caracteristica         IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  Texto con la caracter�stica que se desea 
+  * @param Pv_ConNumDocSri           IN VARCHAR2  Si se desea obtener documentos que tengan número de SRI
+  * @param Pv_Caracteristica         IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  Texto con la característica que se desea 
   *                                                                                                       buscar
-  * @param Pt_FechaAutorizacionDesde IN TIMESTAMP  Par�metro que indica desde que fecha se desea obtener los documentos 
-  * @param Pt_FechaAutorizacionHasta IN TIMESTAMP  Par�metro que indica hasta que fecha se desea obtener los documentos 
+  * @param Pt_FechaAutorizacionDesde IN TIMESTAMP  Parámetro que indica desde que fecha se desea obtener los documentos 
+  * @param Pt_FechaAutorizacionHasta IN TIMESTAMP  Parámetro que indica hasta que fecha se desea obtener los documentos 
   * @param Pv_MensajeError           OUT VARCHAR2  Retorna un mensaje de error en caso de existir
   *
   * COSTO QUERY: 29
@@ -96,11 +96,11 @@ AS
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 21-12-2016
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 13-03-2018 - Se modifica para que en los parametros de Pt_FechaAutorizacionDesde y Pt_FechaAutorizacionHasta se consulte 
   * por FeEmision de la Factura y ya no por FeAutorizacion.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.2 07-10-2019 Se modifica tipo de dato para campos de fecha debido a que consulta se realiza con respecto a FE_EMISION del documento.
   */
   PROCEDURE P_ENVIO_NOTIFICACION_DOCUMENTO(
@@ -115,7 +115,7 @@ AS
       Pv_MensajeError           OUT VARCHAR2);
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_NOTIFICACION_PREFACTURAS'.
+  * Documentación para PROCEDURE 'P_NOTIFICACION_PREFACTURAS'.
   *
   * Procedure que envia notificacion por correo de las Pre facturas que han sido eliminadas
   * a partir de 2 dias atras.
@@ -129,11 +129,11 @@ AS
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.1 09-01-2016 Se adapta procedimiento para envio de facturas proporcionales, se renombra procedimiento.
-  *                         Se modifica query para obtener descripci�n del documento, a partir del primer detalle.
+  *                         Se modifica query para obtener descripción del documento, a partir del primer detalle.
   * PARAMETROS:
   * @param Pv_PrefijoEmpresa  IN   DB_FINANCIERO.INFO_PAGO_LINEA.EMPRESA_ID%TYPE Prefijo de la Empresa
-  * @param Pt_FechaPeDesde    IN   TIMESTAMP  Se�ala desde que fecha se obtendran los documentos 
-  * @param Pt_FechaPeHasta    IN   TIMESTAMP  Se�ala hasta que fecha se obtendran los documentos 
+  * @param Pt_FechaPeDesde    IN   TIMESTAMP  Señala desde que fecha se obtendran los documentos 
+  * @param Pt_FechaPeHasta    IN   TIMESTAMP  Señala hasta que fecha se obtendran los documentos 
   * @param Pv_EstadoPrefac    IN   VARCHAR2   Indica el estado de las prefacturas.
   * @param Pv_CodigoPlantilla IN   DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE Codigo de la plantilla 
   * @param Pv_Caracteristica  IN   DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE  Descripcion de la caracterisitica que se aspira buscar.  
@@ -155,19 +155,19 @@ AS
   /**
   * Documentacion para el procedimiento P_NOTIF_PAGOS_DEPOSITABLES
   *
-  * Procedimiento que env�a notificaci�n de pagos depositables no procesados.
+  * Procedimiento que envía notificación de pagos depositables no procesados.
   * Costo del query 39
   *
   * @param Pv_PrefijoEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Prefijo de la empresa de la cual se va a obtener 
   *                                                                                          los documentos
-  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla con la cual se va a enviar el correo
-  * @param Pv_NombreParametroCab         IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE  Nombre de par�metro habilitado para env�o 
-  *                                                                                              de noitificaci�n de pagos depositables.
-  * @param Pv_EstadoDeposito             IN DB_FINANCIERO.INFO_DEPOSITO.ESTADO%TYPE  Estado del dep�sito.
+  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla con la cual se va a enviar el correo
+  * @param Pv_NombreParametroCab         IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE  Nombre de parámetro habilitado para envío 
+  *                                                                                              de noitificación de pagos depositables.
+  * @param Pv_EstadoDeposito             IN DB_FINANCIERO.INFO_DEPOSITO.ESTADO%TYPE  Estado del depósito.
   *
   * @param Pv_MensajeError               OUT VARCHAR2  Retorna un mensaje de error en caso de existir
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 02-02-2017
   */
   PROCEDURE P_NOTIF_PAGOS_DEPOSITABLES(
@@ -178,26 +178,26 @@ AS
     Pv_MensajeError              OUT VARCHAR2);
 
   /*
-  * Documentaci�n para TYPE 'T_ClientesFacturar'.
+  * Documentación para TYPE 'T_ClientesFacturar'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 15-08-2019
   */
   TYPE T_PtoNoFacturado IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_PtosNoFacturados INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para el procedimiento P_GET_PTOS_NOFACTURADOS
+  * Documentación para el procedimiento P_GET_PTOS_NOFACTURADOS
   *
   * Procedimiento que retorna cursor de puntos no facturados.
   *
   * Costo del query 94218
   *
   * @param Pv_PrejifoEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Prefijo de la empresa.
-  * @param Pr_ParamFechaDesde            IN IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  Par�metro  para rango de fecha fin .
-  * @param Pr_ParamFechaHasta            IN IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  Par�metro  para rango de fecha de inicio .
+  * @param Pr_ParamFechaDesde            IN IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  Parámetro  para rango de fecha fin .
+  * @param Pr_ParamFechaHasta            IN IN DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE  Parámetro  para rango de fecha de inicio .
   * @param Prf_PtosNoFacturados          OUT VARCHAR2  Retorna cursor de puntos no facturados.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 15-08-2019
   */
 
@@ -208,15 +208,15 @@ AS
     Prf_PtosNoFacturados  OUT SYS_REFCURSOR);
 
   /**
-  * Documentaci�n para el procedimiento P_NOTIF_PTOS_NOFACTURADOS
+  * Documentación para el procedimiento P_NOTIF_PTOS_NOFACTURADOS
   *
-  * Procedimiento que realiza env�o de notificaci�n de puntos no facturados.
+  * Procedimiento que realiza envío de notificación de puntos no facturados.
   *
   * @param Pv_PrefijoEmpresa             IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa.
-  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla .
+  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla .
   * @param Pv_MensajeError               OUT VARCHAR2  Retorna un mensaje de error en caso de existir.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 15-08-2019
   */
   PROCEDURE P_NOTIF_PTOS_NOFACTURADOS(
@@ -225,24 +225,24 @@ AS
     Pv_MensajeError              OUT VARCHAR2);
 
   /*
-  * Documentaci�n para TYPE 'T_PtosFacturarInst'.
+  * Documentación para TYPE 'T_PtosFacturarInst'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 12-06-2020
   */
   TYPE T_PtosFacturarInst IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_PtosFacturarInst INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para el procedimiento P_GET_PTOS_NOFACTURADOS_INST
+  * Documentación para el procedimiento P_GET_PTOS_NOFACTURADOS_INST
   *
   * Procedimiento que retorna cursor de puntos no facturados.
   *
   * Costo del query 96216
   *
-  * @param Pv_CodEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  C�digo de la empresa.
+  * @param Pv_CodEmpresa             IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Código de la empresa.
   * @param Prf_PtosNoFacturados      OUT VARCHAR2  Retorna cursor de puntos no facturados.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 15-08-2019
   */
   PROCEDURE P_GET_PTOS_NOFACTURADOS_INST(
@@ -250,15 +250,15 @@ AS
     Prf_PtosNoFacturados  OUT SYS_REFCURSOR);
 
   /**
-  * Documentaci�n para el procedimiento P_RPT_PTOS_NOFACTURADOS_INST
+  * Documentación para el procedimiento P_RPT_PTOS_NOFACTURADOS_INST
   *
-  * Procedimiento que realiza env�o de reporte de puntos a considerar en proceso de facturaci�n de instalaci�n.
+  * Procedimiento que realiza envío de reporte de puntos a considerar en proceso de facturación de instalación.
   *
   * @param Pv_EmpresaCod             IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  Codigo de la empresa.
-  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  C�digo de la plantilla .
+  * @param Pv_CodigoPlantilla            IN DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE  Código de la plantilla .
   * @param Pv_MensajeError               OUT VARCHAR2  Retorna un mensaje de error en caso de existir.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 12-06-2020
   */
   PROCEDURE P_RPT_PTOS_NOFACTURADOS_INST(
@@ -812,7 +812,7 @@ AS
 
           ELSE
 
-            Pv_MensajeError := 'No se encontr� la caracter�stica en la tabla DB_COMERCIAL.ADMI_CARACTERISTICA en estado Activo';
+            Pv_MensajeError := 'No se encontró la característica en la tabla DB_COMERCIAL.ADMI_CARACTERISTICA en estado Activo';
             RAISE Le_Exception;
 
           END IF;
@@ -911,7 +911,7 @@ AS
     --
   BEGIN
     --
-    -- ESTRUCTURA INICIAL DEL QUERY DONDE SE OBTIENE LA INFORMACION QUE SER� RETORNADA POR LA CONSULTA
+    -- ESTRUCTURA INICIAL DEL QUERY DONDE SE OBTIENE LA INFORMACION QUE SERÁ RETORNADA POR LA CONSULTA
     Lcl_Query := 'SELECT                 
                     DFC.ID_DOCUMENTO,                 
                     TDF.CODIGO_TIPO_DOCUMENTO CODIGO_TIPO_DOCUMENTO,                 
@@ -1264,7 +1264,7 @@ AS
               --
             ELSE
               --
-              Pv_MensajeError := 'No se encontr� la caracter�stica en la tabla DB_COMERCIAL.ADMI_CARACTERISTICA en estado Activo';
+              Pv_MensajeError := 'No se encontró la característica en la tabla DB_COMERCIAL.ADMI_CARACTERISTICA en estado Activo';
               --
               RAISE Lex_Exception;
               --
@@ -1684,7 +1684,7 @@ AS
             --
           ELSE
             --
-            Pv_MsnResult            := 'Se notific� correctamente al usuario: ' || Ln_CounterPreEliminadas || 
+            Pv_MsnResult            := 'Se notificó correctamente al usuario: ' || Ln_CounterPreEliminadas || 
                                       ' documento(s) .';
             Ln_CounterPreEliminadas := 0;
             --
@@ -1834,7 +1834,7 @@ AS
 
           DBMS_LOB.CREATETEMPORARY(Lcl_TablePagosDepositables, TRUE);
 
-          --Obtiene dep�sitos con el estado enviado como par�metro.
+          --Obtiene depósitos con el estado enviado como parámetro.
 
           IF C_GetDepositos%ISOPEN THEN
             CLOSE C_GetDepositos;
@@ -1844,7 +1844,7 @@ AS
           --
           LOOP
             --
-            --Obteniendo informaci�n del dep�sito.
+            --Obteniendo información del depósito.
 
             DBMS_LOB.APPEND(Lcl_TablePagosDepositables,
                            '
@@ -2192,17 +2192,17 @@ AS
       Lr_ParametroFeHasta.VALOR3 := Lr_ParamFechaHasta.VALOR3;
       Lr_ParametroFeHasta.VALOR4 := Lr_ParamFechaHasta.VALOR4;
 
-      --Se obtiene los par�metros para enviar el correo
+      --Se obtiene los parámetros para enviar el correo
       OPEN C_GetParametro(Lv_NombreCabeceraEnvioCorreo, Lv_EstadoActivo, Lv_EstadoActivo, Lv_DatosMail, NULL, NULL, NULL, NULL, 
                           Lr_GetAdmiParametrosDet.Empresa_Cod);
 
       FETCH C_GetParametro INTO Lr_Parametro;
       CLOSE C_GetParametro;
 
-      --Se obtiene el alias y la plantilla donde se enviar� la notificaci�n   
+      --Se obtiene el alias y la plantilla donde se enviará la notificación   
       Lr_GetAliasPlantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA(Lv_CodigoPlantilla);    
-      --Si no esta configurado la plantilla con alias y el par�metro con los datos del remitente y asunto
-      --no se enviar� la notificaci�n
+      --Si no esta configurado la plantilla con alias y el parámetro con los datos del remitente y asunto
+      --no se enviará la notificación
       IF Lr_Parametro.ID_PARAMETRO_DET     IS NOT NULL AND
         Lr_GetAliasPlantilla.PLANTILLA     IS NOT NULL AND
         Lr_Parametro.VALOR2                IS NOT NULL AND
@@ -2246,7 +2246,7 @@ AS
               Lcl_MessageMail  := DB_FINANCIERO.FNCK_CONSULTS.F_CLOB_REPLACE(Lr_GetAliasPlantilla.PLANTILLA, 
                                                                             '{{ plPtosNoFact | raw }}', 
                                                                             Lcl_TableDocumento);
-              --Env�a correo
+              --Envía correo
               DB_FINANCIERO.FNCK_CONSULTS.P_SEND_MAIL(Lr_Parametro.VALOR2, 
                                                       Lr_GetAliasPlantilla.ALIAS_CORREOS,
                                                       Lr_Parametro.VALOR3,
@@ -2275,14 +2275,14 @@ AS
         END LOOP;
         CLOSE Lrf_GetPtosNoFacturados;
 
-        --En caso de que el contador no haya llegado a 50 se env�a los documentos obtenidos hasta el momento
+        --En caso de que el contador no haya llegado a 50 se envía los documentos obtenidos hasta el momento
         IF Ln_CounterCommit < 50 AND Ln_CounterCommit > 0 THEN
 
           Lcl_MessageMail := NULL;
           Lcl_MessageMail := DB_FINANCIERO.FNCK_CONSULTS.F_CLOB_REPLACE(Lr_GetAliasPlantilla.PLANTILLA,
                                                                         '{{ plPtosNoFact | raw }}', 
                                                                         Lcl_TableDocumento);   
-          --Env�a correo
+          --Envía correo
           DB_FINANCIERO.FNCK_CONSULTS.P_SEND_MAIL(Lr_Parametro.VALOR2, 
                                                   Lr_GetAliasPlantilla.ALIAS_CORREOS,
                                                   Lr_Parametro.VALOR3,
@@ -2467,16 +2467,16 @@ AS
   Lv_MimeType                    VARCHAR2(50)                                                     := 'text/html; charset=UTF-8';
   Lv_GeneraFactura               VARCHAR2(2)                                                      := 'Si';
   BEGIN      
-      --Se obtiene los par�metros para enviar el correo
+      --Se obtiene los parámetros para enviar el correo
       OPEN C_GetParametro(Lv_NombreParametroCab, Lv_EstadoActivo, Lv_EstadoActivo, Lv_DatosMail, NULL, NULL, NULL, NULL,Pv_EmpresaCod);
 
       FETCH C_GetParametro INTO Lr_Parametro;
       CLOSE C_GetParametro;
 
-      --Se obtiene el alias y la plantilla donde se enviar� la notificaci�n   
+      --Se obtiene el alias y la plantilla donde se enviará la notificación   
       Lr_GetAliasPlantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA(Lv_CodigoPlantilla);    
-      --Si no esta configurado la plantilla con alias y el par�metro con los datos del remitente y asunto
-      --no se enviar� la notificaci�n
+      --Si no esta configurado la plantilla con alias y el parámetro con los datos del remitente y asunto
+      --no se enviará la notificación
       IF Lr_Parametro.ID_PARAMETRO_DET     IS NOT NULL AND
         Lr_GetAliasPlantilla.PLANTILLA     IS NOT NULL AND
         Lr_Parametro.VALOR2                IS NOT NULL AND
@@ -2537,7 +2537,7 @@ AS
               Lcl_MessageMail  := DB_FINANCIERO.FNCK_CONSULTS.F_CLOB_REPLACE(Lr_GetAliasPlantilla.PLANTILLA, 
                                                                             '{{ plPtosFacturar | raw }}', 
                                                                             Lcl_TableDocumento);
-              --Env�a correo
+              --Envía correo
             IF Lr_Parametro.VALOR5 = 'N' THEN
               DB_FINANCIERO.FNCK_CONSULTS.P_SEND_MAIL(Lr_Parametro.VALOR2, 
                                                       Lr_GetAliasPlantilla.ALIAS_CORREOS,
@@ -2575,14 +2575,14 @@ AS
         END LOOP;
         CLOSE Lrf_GetPtosNoFacturados;
 
-        --En caso de que el contador no haya llegado a 50 se env�a los documentos obtenidos hasta el momento
+        --En caso de que el contador no haya llegado a 50 se envía los documentos obtenidos hasta el momento
         IF Ln_CounterCommit < 50 AND Ln_CounterCommit > 0 THEN
 
           Lcl_MessageMail := NULL;
           Lcl_MessageMail := DB_FINANCIERO.FNCK_CONSULTS.F_CLOB_REPLACE(Lr_GetAliasPlantilla.PLANTILLA,
                                                                         '{{ plPtosFacturar | raw }}', 
                                                                         Lcl_TableDocumento);   
-          --Env�a correo
+          --Envía correo
             IF Lr_Parametro.VALOR5 = 'N' THEN
               DB_FINANCIERO.FNCK_CONSULTS.P_SEND_MAIL(Lr_Parametro.VALOR2, 
                                                       Lr_GetAliasPlantilla.ALIAS_CORREOS,

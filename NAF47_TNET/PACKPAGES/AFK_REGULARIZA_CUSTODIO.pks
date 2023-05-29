@@ -46,7 +46,7 @@ AS
 END AFK_REGULARIZA_CUSTODIO;
 /
 
-CREATE OR REPLACE PACKAGE BODY  NAF47_TNET.AFK_REGULARIZA_CUSTODIO as
+CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFK_REGULARIZA_CUSTODIO as
 
   PROCEDURE P_CAMBIO_CUSTODIO(Pv_NumeroSerie      IN ARAF_CONTROL_CUSTODIO.ARTICULO_ID%TYPE,
                           Pn_IdCustodioEnt    IN ARAF_CONTROL_CUSTODIO.CUSTODIO_ID%TYPE, 
@@ -242,7 +242,7 @@ CREATE OR REPLACE PACKAGE BODY  NAF47_TNET.AFK_REGULARIZA_CUSTODIO as
   ----------------------------------------------------
       Ln_Movimiento := Pn_CantidadRec * -1;
 
-      -- Recupera datos de persona que ser� nuevo custodio
+      -- Recupera datos de persona que será nuevo custodio
           IF C_DATOS_PERSONA%ISOPEN THEN
             CLOSE C_DATOS_PERSONA;
           END IF;
@@ -323,7 +323,7 @@ CREATE OR REPLACE PACKAGE BODY  NAF47_TNET.AFK_REGULARIZA_CUSTODIO as
 
     ---------Actualiza id_custodio y cedula en in_articulo_instalacion----
 
-    -- Recupera datos de persona que ser� nuevo custodio
+    -- Recupera datos de persona que será nuevo custodio
           IF C_DATOS_PERSONA%ISOPEN THEN
             CLOSE C_DATOS_PERSONA;
           END IF;
@@ -461,7 +461,7 @@ CREATE OR REPLACE PACKAGE BODY  NAF47_TNET.AFK_REGULARIZA_CUSTODIO as
 
     ---------Actualiza id_custodio y cedula en in_articulo_instalacion----
 
-    -- Recupera datos de persona que ser� nuevo custodio
+    -- Recupera datos de persona que será nuevo custodio
           IF C_DATOS_PERSONA%ISOPEN THEN
             CLOSE C_DATOS_PERSONA;
           END IF;
@@ -593,7 +593,7 @@ CREATE OR REPLACE PACKAGE BODY  NAF47_TNET.AFK_REGULARIZA_CUSTODIO as
 
      -------Insertar nuevo registro en IN_ARTICULOS_INSTALACION----------
 
-     -- Recupera datos de persona que ser� nuevo custodio
+     -- Recupera datos de persona que será nuevo custodio
           IF C_DATOS_PERSONA%ISOPEN THEN
             CLOSE C_DATOS_PERSONA;
           END IF;

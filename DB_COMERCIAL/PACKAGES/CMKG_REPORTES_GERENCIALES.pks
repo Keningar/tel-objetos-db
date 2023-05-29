@@ -1,18 +1,18 @@
-CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTES_GERENCIALES
+CREATE OR REPLACE PACKAGE  DB_COMERCIAL.CMKG_REPORTES_GERENCIALES
 AS
 /**
-* Documentaci�n para el procedimiento P_SUBIR_REPORTES_PENDIENTES
-* Utiliza el paquete DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE para subir los reportes que est�n en estado
-* GENERADO o ERROR_SUBIDA. Puede ejecutarse varias veces, pues su �nico prop�sito es subir archivos
-* pendientes. Cuando uno de estos archivos se sube, NO se emite notificaci�n por correo a gerencia e
+* Documentación para el procedimiento P_SUBIR_REPORTES_PENDIENTES
+* Utiliza el paquete DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE para subir los reportes que estén en estado
+* GENERADO o ERROR_SUBIDA. Puede ejecutarse varias veces, pues su único propósito es subir archivos
+* pendientes. Cuando uno de estos archivos se sube, NO se emite notificación por correo a gerencia e
 * informe. 
 * Se usa como redundancia en caso de que se haya presentado un problema de conectividad a Telcodrive.
 */
 PROCEDURE P_SUBIR_REPORTES_PENDIENTES;
 
 /**
-* Documentaci�n para el procedimiento P_SUBIR_REPORTES_PENDIENTES
-* Env�a notificaci�n por correo electr�nico de la subida de los reportes que estaban en estado
+* Documentación para el procedimiento P_SUBIR_REPORTES_PENDIENTES
+* Envía notificación por correo electrónico de la subida de los reportes que estaban en estado
 * ERROR_NOTIFICA y SUBIDO. Se usa como redundancia en caso de que se haya presentado un problema
 * al notificar por correos.
 */
@@ -36,10 +36,10 @@ PROCEDURE P_NOTIFICAR_REP_PENDIENTES;
   * Nombres, telefonos y correos de contactos comerciales.
   * Nombres, telefonos, correos y celulares de todos los demas tipos de contactos registrados
   *
-  * @author Alejandro Dom�nguez Vargas <adominguez@telconet.ec>
+  * @author Alejandro Domínguez Vargas <adominguez@telconet.ec>
   * @version 1.3 26-09-2016
-  * Se implementa la generaci�n del Reporte Gerencia Financiero: Facturas y Pago, y se env�a por correo de forma independiente al reporte comercial.
-  * El rango de fechas del reporte ser� un mes atr�s del d�a de la generaci�n del mismo, siendo el 21 de cada m�s el rango ser� del 21 del mes 
+  * Se implementa la generación del Reporte Gerencia Financiero: Facturas y Pago, y se envía por correo de forma independiente al reporte comercial.
+  * El rango de fechas del reporte será un mes atrás del día de la generación del mismo, siendo el 21 de cada més el rango será del 21 del mes 
   * anterior al 20 del mes actual.
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -89,7 +89,7 @@ PROCEDURE P_NOTIFICAR_REP_PENDIENTES;
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 2.0 05-05-2017
   * Se agregan en el reporte de Gerencia Comercial las columnas que contendran la Plantilla de Comisionistas existente para el servicio,
-  * esta informacion se debe cotejar con el grupo de roles de la siguiente manera "ROL | NOMBRE PERSONA | %COMISI�N"
+  * esta informacion se debe cotejar con el grupo de roles de la siguiente manera "ROL | NOMBRE PERSONA | %COMISIÓN"
   * El Valor de Comision que se presenta sera la COMISION_MANTENIMIENTO,  de no existir sera la COMISION_VENTA.
   * Se agregan correcciones en sql, se agrega casteo a numero, dado que el campo valor es string, caso contrario se genera un error
   * ORA-01722: invalid number. Error fue solventado en el paquete pero no fue versionado, se agrega correccion.
@@ -103,10 +103,10 @@ PROCEDURE P_NOTIFICAR_REP_PENDIENTES;
   * Se agrega columna al reporte LOGIN del Punto.
   *
   * @author Kevin Baque Puya <kbaque@telconet.ec>
-  * @version 2.3 19-11-2020 - Se agrega la columna l�nea de negocio.
+  * @version 2.3 19-11-2020 - Se agrega la columna línea de negocio.
   *
   * @author Bryan Fonseca <bfonseca@telconet.ec>
-  * @version 2.4 28-11-2022 - Se agrega interacci�n con Telcodrive para subir los reportes en vez de enviarlos por correo.
+  * @version 2.4 28-11-2022 - Se agrega interacción con Telcodrive para subir los reportes en vez de enviarlos por correo.
   *
   * @param cod_ret in out number,
   * @param msg_ret in out varchar2,  
@@ -125,7 +125,7 @@ p_delimitador_fact varchar2(1):=',';
 p_remitente varchar2(28):='dba@telconet.ec';
 p_destinatario varchar2(150);
 
---Bloque Definici�n de variables para generaci�n del reporte gerencia finaciero de Facturas y Pagos.
+--Bloque Definición de variables para generación del reporte gerencia finaciero de Facturas y Pagos.
 p_archivoFinanciero          utl_file.file_type;
 --Fin del bloque
 
@@ -146,7 +146,7 @@ BEGIN
 	RETURN detalleParametroRow;
 EXCEPTION
 	WHEN NO_DATA_FOUND THEN
-		RAISE_APPLICATION_ERROR(-20007, 'No se encontr� el par�metro ' || p_descripcion || '.');
+		RAISE_APPLICATION_ERROR(-20007, 'No se encontró el parámetro ' || p_descripcion || '.');
 END;
 
 -- Tipos: EMAIL_NOTIFICACION, EMAIL_GERENCIA
@@ -168,7 +168,7 @@ EXCEPTION
 	WHEN NO_DATA_FOUND THEN
 		DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('DB_COMERCIAL', 
 								 'DB_COMERCIAL.JOB_REPGER_REPORTCOMERCIAL',  
-								 'No existen correos ' || p_tipo_correo || ' en tabla de par�metros: ' || SQLCODE || ' -ERROR_STACK: '
+								 'No existen correos ' || p_tipo_correo || ' en tabla de parámetros: ' || SQLCODE || ' -ERROR_STACK: '
 								 || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,  
 								 NVL(SYS_CONTEXT( 'USERENV','HOST'), 'DB_COMERCIAL'),  
 								 SYSDATE, 
@@ -182,7 +182,7 @@ BEGIN
 														 p_nombre_repo => p_nombre_repo, 
 														 p_path_archivo => p_path_telcodrive || p_nombre_archivo,
 														 p_destinatarios => Lv_destinatarios);
-	-- Se registra que se notific�										  
+	-- Se registra que se notificó										  
 	UPDATE DB_GENERAL.ADMI_PARAMETRO_DET SET ESTADO = 'NOTIFICADO' WHERE DESCRIPCION = p_nombre_archivo;
 	COMMIT;	
 EXCEPTION
@@ -206,7 +206,7 @@ BEGIN
 														   p_nombre_archivo,
 														   p_nombre_repo,
 														   p_path_telcodrive);
-	-- Se registra que se subi�										  
+	-- Se registra que se subió										  
 	UPDATE DB_GENERAL.ADMI_PARAMETRO_DET SET ESTADO = 'SUBIDO' WHERE DESCRIPCION = p_nombre_archivo;
 	COMMIT;	
 	
@@ -239,7 +239,7 @@ PROCEDURE P_NOTIFICAR_REP_PENDIENTES IS
 BEGIN
 	TOKEN_TELCODRIVE := DB_GENERAL.GNKG_INTEGRACION_TELCODRIVE.F_AUTHENTICATION(Lv_user, Lv_password);
 	FOR NO_NOTIFICADO IN C_NO_NOTIFICADOS LOOP
-		-- Se construye el nombre del directorio en Telcodrive donde se subir� el reporte
+		-- Se construye el nombre del directorio en Telcodrive donde se subirá el reporte
 		-- El path luce /2022/diciembre
 		Lv_path_telcodrive := '/' || NO_NOTIFICADO.ANIO || '/' ||  TRIM(LOWER(TO_CHAR(TO_DATE(NO_NOTIFICADO.MES, 'MM'), 'MONTH',  'NLS_DATE_LANGUAGE = spanish'))) || '/';																	   
 		F_NOTIFICAR_SUBIDA(p_token 			  	=> TOKEN_TELCODRIVE,
@@ -285,7 +285,7 @@ BEGIN
 	END LOOP;
 	
 	FOR NO_SUBIDO IN C_NO_SUBIDOS LOOP
-		-- Se construye el nombre del directorio en Telcodrive donde se subir� el reporte
+		-- Se construye el nombre del directorio en Telcodrive donde se subirá el reporte
 		-- El path luce /2022/diciembre
 		Lv_path_telcodrive := '/' || NO_SUBIDO.ANIO || '/' ||  TRIM(LOWER(TO_CHAR(TO_DATE(NO_SUBIDO.MES, 'MM'), 'MONTH',  'NLS_DATE_LANGUAGE = spanish'))) || '/';																	   
 		P_SUBIR_REPORTE(p_token 			=> TOKEN_TELCODRIVE,
@@ -967,8 +967,8 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
    END IF;
    CLOSE C_GetParametroIp;
 
-   Lv_Cuerpo:='Generaci�n autom�tica y env�o por correo ' || Lv_Ambiente;
-   Lv_AsuntoInforme:='Notificaci�n de Informe T�cnico de Reporte Gerencial';
+   Lv_Cuerpo:='Generación automática y envío por correo ' || Lv_Ambiente;
+   Lv_AsuntoInforme:='Notificación de Informe Técnico de Reporte Gerencial';
    --   
    Lv_NombreArchivo:='ReporteTtopic-'|| Lv_FechaReporte || '-' || Lv_Ambiente || '.csv';
    Lv_Gzip:='gzip /backup/repgerencia/'|| Lv_NombreArchivo;
@@ -978,7 +978,7 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
    Lv_NombreArchivoFinanciero:= 'ReporteTtopicFinanciero-'|| Lv_FechaReporte || '-' || Lv_Ambiente || '.csv';
    Lv_GzipFinanciero:= 'gzip -f /backup/repgerencia/'|| Lv_NombreArchivoFinanciero;
    Lv_NombreArchivoFinancieroZip:= 'ReporteTtopicFinanciero-'|| Lv_FechaReporte || '-' || Lv_Ambiente || '.csv.gz';
-   Lv_AsuntoFinanciero:= 'Notificaci�n Reporte Gerencial Financiero: Facturas y Pagos '|| Lv_Ambiente;
+   Lv_AsuntoFinanciero:= 'Notificación Reporte Gerencial Financiero: Facturas y Pagos '|| Lv_Ambiente;
 
    p_archivo :=UTL_FILE.fopen(p_directorio,Lv_NombreArchivo,'w',3000);--Opening a file                
    FOR datos in lc_reporteComercial LOOP         
@@ -1604,9 +1604,9 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
                    ||Lv_FechaAutForm||p_delimitador -- 68)Campo que identifica Fecha de Aprobacion de la Solicitud de descuento del servicio
                    ||Lv_Plantilla||p_delimitador -- 69-73)Campo que almacena las plantillas de comisionistas por servicio, el numero de columnas 
                                                  -- dependera del numero de GRUPOS_ROLES que exista definido en la Parameter, Cada Columna contiene:
-                                                 -- "ROL | NOMBRE PERSONA | %COMISI�N" 
+                                                 -- "ROL | NOMBRE PERSONA | %COMISIÓN" 
                    ||datos.subgrupo||p_delimitador  --74)Campo que identifica el subgrupo al que pertenece el producto.
-                   ||datos.IDENTIFICACION_CLIENTE ||p_delimitador --75)Campo que muestra la IDENTIFICACI�N DEL CLIENTE.
+                   ||datos.IDENTIFICACION_CLIENTE ||p_delimitador --75)Campo que muestra la IDENTIFICACIÓN DEL CLIENTE.
                    ||l_login_punto ||p_delimitador --76)Campo que muestra el Login del Punto en Info_Punto.
                    ||datos.linea_negocio||p_delimitador  --77)Campo que identifica la linea de negocio que pertenece el producto.
                    );                                     
@@ -1621,13 +1621,13 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
    p_archivoFinanciero := UTL_FILE.fopen(p_directorio, Lv_NombreArchivoFinanciero, 'w', 3000);
    utl_file.put_line(p_archivoFinanciero, 'ID_FACTURA'              || p_delimitador_fact || -- 1)  Cabecera: Id de la Factura
                                           'LOGIN_CLIENTE_SUCURSAL'  || p_delimitador_fact || -- 2)  Cabecera: Login del punto
-                                          'ESTADO_CLIENTE_SUCURSAL' || p_delimitador_fact || -- 3)  Cabecera: Estado del Cliente en Oficina facturaci�n
-                                          'FECHA_CREACION'          || p_delimitador_fact || -- 4)  Cabecera: Fecha de emisi�n de la Factura
-                                          'NUMERO_DOCUMENTO'        || p_delimitador_fact || -- 5)  Cabecera: N�mero SRI de la Factura
+                                          'ESTADO_CLIENTE_SUCURSAL' || p_delimitador_fact || -- 3)  Cabecera: Estado del Cliente en Oficina facturación
+                                          'FECHA_CREACION'          || p_delimitador_fact || -- 4)  Cabecera: Fecha de emisión de la Factura
+                                          'NUMERO_DOCUMENTO'        || p_delimitador_fact || -- 5)  Cabecera: Número SRI de la Factura
                                           'VALOR'                   || p_delimitador_fact || -- 6)  Cabecera: Monto total de la Factura
                                           'ESTADO_DOCUMENTO'        || p_delimitador_fact || -- 7)  Cabecera: Estado de la Factura
                                           'DOCUMENTO'               || p_delimitador_fact || -- 8)  Cabecera: Codigo del Tipo de Documentos
-                                          'NOMBRE_OFICINA'          || p_delimitador_fact || -- 9)  Cabecera: Nombre de la Oficina de facturaci�n
+                                          'NOMBRE_OFICINA'          || p_delimitador_fact || -- 9)  Cabecera: Nombre de la Oficina de facturación
                                           'FORMA_PAGO');                                -- 10) Cabecera: Forma de Pago 
 
 
@@ -1637,13 +1637,13 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
 
      utl_file.put_line(p_archivoFinanciero, datos.ID_FACTURA              || p_delimitador_fact || -- 1)  Id de la Factura
                                             datos.LOGIN_CLIENTE_SUCURSAL  || p_delimitador_fact || -- 2)  Login del punto
-                                            datos.ESTADO_CLIENTE_SUCURSAL || p_delimitador_fact || -- 3)  Estado del Cliente en Oficina facturaci�n
-                                            datos.FECHA_CREACION          || p_delimitador_fact || -- 4)  Fecha de emisi�n de la Factura
-                                            datos.NUMERO_DOCUMENTO        || p_delimitador_fact || -- 5)  N�mero SRI de la Factura
+                                            datos.ESTADO_CLIENTE_SUCURSAL || p_delimitador_fact || -- 3)  Estado del Cliente en Oficina facturación
+                                            datos.FECHA_CREACION          || p_delimitador_fact || -- 4)  Fecha de emisión de la Factura
+                                            datos.NUMERO_DOCUMENTO        || p_delimitador_fact || -- 5)  Número SRI de la Factura
                                             datos.VALOR                   || p_delimitador_fact || -- 6)  Monto total de la Factura
                                             datos.ESTADO_DOCUMENTO        || p_delimitador_fact || -- 7)  Estado de la Factura
                                             datos.DOCUMENTO               || p_delimitador_fact || -- 8)  Codigo del Tipo de Documentos
-                                            datos.NOMBRE_OFICINA          || p_delimitador_fact || -- 9)  Nombre de la Oficina de facturaci�n
+                                            datos.NOMBRE_OFICINA          || p_delimitador_fact || -- 9)  Nombre de la Oficina de facturación
                                             datos.FORMA_PAGO);                                -- 10) Forma de Pago
    END LOOP;
 
@@ -1652,7 +1652,7 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
    UTL_FILE.fclose(p_archivoFinanciero);
    dbms_output.put_line( NAF47_TNET.JAVARUNCOMMAND (Lv_GzipFinanciero) ) ;  
    
-   -- Se crearon ambos reportes, se ingresan en la tabla de par�metros con estado GENERADO		
+   -- Se crearon ambos reportes, se ingresan en la tabla de parámetros con estado GENERADO		
 	INSERT
 	INTO DB_GENERAL.ADMI_PARAMETRO_DET
 		(
@@ -1678,7 +1678,7 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
 				AND ESTADO             = 'Activo'
 			),
 			Lv_NombreArchivoZip, to_char(sysdate, 'DD'), to_char(sysdate, 'MM'), to_char(sysdate, 'YYYY'), 'GENERADO', 'bfonseca',
-			SYSDATE, '127.0.0.1', '10', 'DESCRIPCI�N: Reporte gerencial creado.'
+			SYSDATE, '127.0.0.1', '10', 'DESCRIPCIÓN: Reporte gerencial creado.'
 		);
 	INSERT
 	INTO DB_GENERAL.ADMI_PARAMETRO_DET
@@ -1705,11 +1705,11 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
 				AND ESTADO             = 'Activo'
 			),
 			Lv_NombreArchivoFinancieroZip, to_char(sysdate, 'DD'), to_char(sysdate, 'MM'), to_char(sysdate, 'YYYY'), 'GENERADO', 'bfonseca',
-			SYSDATE, '127.0.0.1', '10', 'DESCRIPCI�N: Reporte gerencial creado.'
+			SYSDATE, '127.0.0.1', '10', 'DESCRIPCIÓN: Reporte gerencial creado.'
 		);
 	COMMIT;	
 	
-	-- Se intentan subir los archivos pendientes (idealmente ser�an solo los que se acaban de generar arriba)
+	-- Se intentan subir los archivos pendientes (idealmente serían solo los que se acaban de generar arriba)
 	BEGIN
 		P_SUBIR_REPORTES_PENDIENTES();
 	EXCEPTION
@@ -1723,7 +1723,7 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
 							 NVL(SYS_CONTEXT('USERENV', 'IP_ADDRESS'), '127.0.0.1') );
 	END;
 	
-	-- Se intentan notificar los archivos pendientes (idealmente ser�an solo los que se acaban de subir arriba)
+	-- Se intentan notificar los archivos pendientes (idealmente serían solo los que se acaban de subir arriba)
 	BEGIN
 		P_NOTIFICAR_REP_PENDIENTES();
 	EXCEPTION
@@ -1886,3 +1886,4 @@ procedure p_reportComercial(cod_ret out number, msg_ret out varchar2) is
 end p_reportComercial;
 
 end CMKG_REPORTES_GERENCIALES;
+/

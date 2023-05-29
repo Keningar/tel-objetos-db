@@ -1,16 +1,16 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
 
   /**
-   * Documentaci�n para el procedimiento 'P_OBTENER_DETALLE_SOLUCION'.
+   * Documentación para el procedimiento 'P_OBTENER_DETALLE_SOLUCION'.
    *
-   * M�todo encargado de obtener el detalle de una soluci�n.
+   * Método encargado de obtener el detalle de una solución.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 12-06-2020
    */
   PROCEDURE P_OBTENER_DETALLE_SOLUCION(Pcl_Request  IN  CLOB,
@@ -19,28 +19,28 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
                                        Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-   * Documentaci�n para el procedimiento 'F_OBTENER_CORES_REFERENTES'.
+   * Documentación para el procedimiento 'F_OBTENER_CORES_REFERENTES'.
    *
-   * M�todo encargado de obtener los cores referentes del detalle de una soluci�n.
+   * Método encargado de obtener los cores referentes del detalle de una solución.
    *
-   * @param Cn_IdSolucionDet  IN  NUMBER Recibe el id del detalle de la soluci�n.
+   * @param Cn_IdSolucionDet  IN  NUMBER Recibe el id del detalle de la solución.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 13-04-2020
    */
   FUNCTION F_OBTENER_CORES_REFERENTES(Cn_IdSolucionDet NUMBER) RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para el procedimiento 'P_OBTENER_SOLUCIONES_PUNTO'.
+   * Documentación para el procedimiento 'P_OBTENER_SOLUCIONES_PUNTO'.
    *
-   * M�todo encargado de obtener las soluciones de un punto.
+   * Método encargado de obtener las soluciones de un punto.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 13-04-2020
    */
   PROCEDURE P_OBTENER_SOLUCIONES_PUNTO(Pcl_Request  IN  CLOB,
@@ -49,15 +49,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
                                        Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-   * Documentaci�n para el procedimiento 'P_OBTENER_NUMERO_SOLUCION'.
+   * Documentación para el procedimiento 'P_OBTENER_NUMERO_SOLUCION'.
    *
-   * M�todo encargado de obtener el n�mero de soluci�n.
+   * Método encargado de obtener el número de solución.
    *
-   * @param Pn_NumeroSolucion OUT NUMBER   Retorna el n�mero de soluci�n.
-   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacci�n.
+   * @param Pn_NumeroSolucion OUT NUMBER   Retorna el número de solución.
+   * @param Pv_Status         OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje        OUT VARCHAR2 Retorna el mensaje de la transacción.
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 13-04-2020
    */
   PROCEDURE P_OBTENER_NUMERO_SOLUCION(Pn_NumeroSolucion OUT NUMBER,
@@ -65,16 +65,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
                                       Pv_Mensaje        OUT VARCHAR2);
 
   /**
-   * Documentaci�n para el procedimiento 'P_OBTENER_INFO_CUARTO_TI_CAB'.
+   * Documentación para el procedimiento 'P_OBTENER_INFO_CUARTO_TI_CAB'.
    *
-   * M�todo encargado de retornar la informaci�n general del cuarto de TI del servicio.
+   * Método encargado de retornar la información general del cuarto de TI del servicio.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 07-05-2020
    */
   PROCEDURE P_OBTENER_INFO_CUARTO_TI_CAB(Pcl_Request  IN  CLOB,
@@ -83,16 +83,16 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
                                          Pcl_Response OUT SYS_REFCURSOR);
 
   /**
-   * Documentaci�n para el procedimiento 'P_OBTENER_INFO_CUARTO_TI_DET'.
+   * Documentación para el procedimiento 'P_OBTENER_INFO_CUARTO_TI_DET'.
    *
-   * M�todo encargado de retornar el detalle del cuarto de TI del servicio.
+   * Método encargado de retornar el detalle del cuarto de TI del servicio.
    *
    * @param Pcl_Request  IN  CLOB Recibe json request.
-   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacci�n.
-   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacci�n.
-   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status    OUT VARCHAR2 Retorna el estado de la transacción.
+   * @param Pv_Mensaje   OUT VARCHAR2 Retorna el mensaje de la transacción.
+   * @param Pcl_Response OUT SYS_REFCURSOR Retorna cursor de la transacción
    *
-   * @author Germ�n Valenzuela <gvalenzuela@telconet.ec>
+   * @author Germán Valenzuela <gvalenzuela@telconet.ec>
    * @version 1.0 07-05-2020
    */
   PROCEDURE P_OBTENER_INFO_CUARTO_TI_DET(Pcl_Request  IN  CLOB,
@@ -134,7 +134,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
     -- VALIDACIONES
     IF (Ln_IdSolucionCab  IS NULL AND Ln_IdServicio IS NULL AND
         Ln_NumeroSolucion IS NULL AND Ln_IdPunto    IS NULL) OR Lv_Estado IS NULL THEN
-      Lv_Mensaje := 'Par�metros incompletos para consultar el detalle de la soluci�n.';
+      Lv_Mensaje := 'Parámetros incompletos para consultar el detalle de la solución.';
       RAISE Le_Exception;
     END IF;
 
@@ -220,7 +220,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
       ORDER BY ISE.FE_CREACION DESC,ISDET.TIPO_SOLUCION;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -284,7 +284,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
 
     -- VALIDACIONES
     IF Ln_PuntoId IS NULL OR Lv_Estado IS NULL THEN
-      Lv_Mensaje := 'Par�metros incompletos para consultar las soluciones del punto.';
+      Lv_Mensaje := 'Parámetros incompletos para consultar las soluciones del punto.';
       RAISE Le_Exception;
     END IF;
 
@@ -314,7 +314,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
         ISCAB.NUMERO_SOLUCION DESC;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -336,7 +336,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
   BEGIN
 
     Pv_Status         := 'OK';
-    Pv_Mensaje        := 'Transaci�n exitosa';
+    Pv_Mensaje        := 'Transación exitosa';
     Pn_NumeroSolucion :=  DB_COMERCIAL.SEQ_GRUPO_PRODUCTO.NEXTVAL;
 
   EXCEPTION
@@ -367,7 +367,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
 
     -- VALIDACIONES
     IF Ln_ServicioId IS NULL THEN
-      Lv_Mensaje := 'El par�metro servicioId esta vac�o';
+      Lv_Mensaje := 'El parámetro servicioId esta vacío';
       RAISE Le_Exception;
     END IF;
 
@@ -523,7 +523,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
         IEL2.NOMBRE_ELEMENTO;
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN
@@ -555,7 +555,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
 
     -- VALIDACIONES
     IF APEX_JSON.GET_NUMBER(p_path => 'servicioId') IS NULL OR APEX_JSON.GET_NUMBER(p_path => 'idRack') IS NULL THEN
-      Lv_Mensaje := 'El par�metro servicioId o idRack esta vac�o';
+      Lv_Mensaje := 'El parámetro servicioId o idRack esta vacío';
       RAISE Le_Exception;
     END IF;
 
@@ -574,7 +574,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_SOLUCIONES_CONSULTA AS
         AND IRE.ELEMENTO_ID_A       = APEX_JSON.GET_NUMBER(p_path => 'idRack');
 
     Pv_Status  := 'OK';
-    Pv_Mensaje := 'Transaci�n exitosa';
+    Pv_Mensaje := 'Transación exitosa';
 
   EXCEPTION
     WHEN Le_Exception THEN

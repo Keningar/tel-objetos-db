@@ -5,25 +5,25 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.INACT_NUMEROS_SERIES(Pv_NoCia        IN V
                                                  Pv_MensajeError IN OUT VARCHAR2) IS
 /**
  * Documentacion para INACT_NUMEROS_SERIES
- * Este procedimiento genera la informaci�n de n�meros de series en la tabla INV_DOCUMENTO_SERIE.
+ * Este procedimiento genera la información de números de series en la tabla INV_DOCUMENTO_SERIE.
  * 
  * @author llindao <llindao@telconet.ec>
  * @version 1.0 23-07-2017
  *
  * @author llindao <llindao@telconet.ec>
- * @version 1.1 02/08/2018 Se modifica para considerar nuevo campo que guarda la cantidad que representa cada n�mero de serie registrado.
+ * @version 1.1 02/08/2018 Se modifica para considerar nuevo campo que guarda la cantidad que representa cada número de serie registrado.
  *
  * @author llindao <llindao@telconet.ec>
  * @version 1.2 30/07/2021 Se modifica para considerar nuevos campos cantidad_segmento y serie_original.
  * 
  * @param Pv_NoCia        IN VARCHAR2 recibe codigo de compania
  * @param Pv_NoDocumento  IN VARCHAR2 recibe numero transaccion inventario
- * @param Pn_noLinea      IN VARCHAR2 recibe n�mero de linea detalle
+ * @param Pn_noLinea      IN VARCHAR2 recibe número de linea detalle
  * @param Pv_MensajeError IN OUT VARCHAR2 retorma mensaje de error
  */
   -- costo query; 30
   CURSOR C_PRE_NUMEROS_SERIES IS
-  /*Actualziaci�n compras locales e Importaciones*/
+  /*Actualziación compras locales e Importaciones*/
     SELECT A.COMPANIA,
            A.NO_DOCUMENTO,
            A.LINEA,
@@ -52,7 +52,7 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.INACT_NUMEROS_SERIES(Pv_NoCia        IN V
        AND A.NO_ARTICULO = NVL(Pv_noArticulo, A.NO_ARTICULO)
        AND A.NO_DOCUMENTO = Pv_NoDocumento
        AND A.COMPANIA = Pv_NoCia
-    UNION /*Actualziaci�n importaciones*/
+    UNION /*Actualziación importaciones*/
     SELECT A.COMPANIA,
            A.NO_DOCUMENTO,
            A.LINEA,
@@ -62,7 +62,7 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.INACT_NUMEROS_SERIES(Pv_NoCia        IN V
            A.ORIGEN,
            B.BODEGA,
            C.IND_MAC,
-           'E' MOVIMI, -- cuando es importaci�n es solo ingreso
+           'E' MOVIMI, -- cuando es importación es solo ingreso
            A.UNIDADES,
            A.SERIE_ORIGINAL,
            A.CANTIDAD_SEGMENTO
@@ -125,25 +125,25 @@ BEGIN
         Lv_CadenaAux := REPLACE(A.MAC, '.', '');
       
         if Lv_CadenaAux is null then
-          Pv_MensajeError := 'N�mero de MAC: ' || A.MAC || ' asociado al articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO ||', no se puede ingresar.';
+          Pv_MensajeError := 'Número de MAC: ' || A.MAC || ' asociado al articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO ||', no se puede ingresar.';
           RAISE Le_Error;
         end if;
          
         IF LENGTH(Lv_CadenaAux) != 12 THEN
-          Pv_MensajeError := 'N�mero de MAC: ' || A.MAC || ' asociado al articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO ||', no tiene 12 caracteres.';
+          Pv_MensajeError := 'Número de MAC: ' || A.MAC || ' asociado al articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO ||', no tiene 12 caracteres.';
           RAISE Le_Error;
         ELSE
           FOR i IN 1 .. LENGTH(Lv_CadenaAux) LOOP
             IF (ascii(SUBSTR(Lv_CadenaAux, i, 1)) < 65 OR ascii(SUBSTR(Lv_CadenaAux, i, 1)) > 70) AND 
               (ascii(SUBSTR(Lv_CadenaAux, i, 1)) < 48 OR ascii(SUBSTR(Lv_CadenaAux, i, 1)) > 57) THEN
-              Pv_MensajeError := 'N�mero de MAC: ' || A.MAC || ' asociado al articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO || ', no tiene formato hexadecimal.';
+              Pv_MensajeError := 'Número de MAC: ' || A.MAC || ' asociado al articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO || ', no tiene formato hexadecimal.';
               RETURN;
             END IF;
           END LOOP;
         END IF;
       ELSE
         IF A.MAC IS NOT NULL THEN
-          Pv_MensajeError := 'El articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO || ', no permite ingreso de n�mero MAC.';
+          Pv_MensajeError := 'El articulo: ' || A.NO_ARTICULO ||' del documento: '||A.NO_DOCUMENTO || ', no permite ingreso de número MAC.';
           RETURN;
         END IF;
       END IF;
@@ -154,7 +154,7 @@ BEGIN
       FETCH C_VERIFICA_MAC INTO Lr_verificaMac;
       IF C_VERIFICA_MAC%FOUND THEN
         IF Lr_verificaMac.ESTADO = 'EB' THEN
-          Pv_MensajeError := 'N�mero Mac ' || A.MAC || ' se encuentra ingresada en la bodega ' || Lr_verificaMac.ID_BODEGA || ' con articulo ' || Lr_verificaMac.NO_ARTICULO;
+          Pv_MensajeError := 'Número Mac ' || A.MAC || ' se encuentra ingresada en la bodega ' || Lr_verificaMac.ID_BODEGA || ' con articulo ' || Lr_verificaMac.NO_ARTICULO;
           RAISE Le_Error;
         END IF;
       END IF;
@@ -206,7 +206,7 @@ BEGIN
        AND NO_ARTICULO = a.no_articulo
        AND COMPANIA = a.compania;
   
-    -- combinacion Serie, Mac, Articulo no existen para la compa�ia, se inserta 
+    -- combinacion Serie, Mac, Articulo no existen para la compañia, se inserta 
     IF SQL%ROWCOUNT = 0 THEN
       BEGIN        
         INSERT INTO INV_NUMERO_SERIE

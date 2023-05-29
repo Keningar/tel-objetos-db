@@ -1,14 +1,14 @@
 CREATE OR REPLACE PACKAGE NAF47_TNET.CORREO_ORDEN AS
   /**
   * Documentacion para NAF47_TNET.CORREO_ORDEN
-  * Paquete que contiene procesos y funciones para registro autom�tico factura proveedor.
+  * Paquete que contiene procesos y funciones para registro automático factura proveedor.
   * @author telconet <telconet@telconet.ec>
   * @version 1.0 11/10/2012
   */
 
   /**
   * Documentacion para NAF47_TNET.CPKG_TRANSACCION.Gr_DatosOrdenCompra
-  * Variable Registro que permite pasar por parametro los datos necesarios para notificaci�n de orden compra autorizada.
+  * Variable Registro que permite pasar por parametro los datos necesarios para notificación de orden compra autorizada.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 12/11/2021
   *
@@ -55,11 +55,11 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.CORREO_ORDEN AS
   --
  /**
   * Documentacion para P_NOTIFICA_AUTORIZACION
-  * Procedure que crea correo electr�nico para notificar a usuarios las autorizaciones de ordenes de compra.
+  * Procedure que crea correo electrónico para notificar a usuarios las autorizaciones de ordenes de compra.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 12/11/2021
   *
-  * @param Pr_DatosOC IN NAF47_TNET.CORREO_ORDEN.Gr_DatosOrdenCompra Recibe variable tipo registro para realizar proceso notificaci�n
+  * @param Pr_DatosOC IN NAF47_TNET.CORREO_ORDEN.Gr_DatosOrdenCompra Recibe variable tipo registro para realizar proceso notificación
   */
   PROCEDURE P_NOTIFICA_AUTORIZACION ( Pr_DatosOC NAF47_TNET.CORREO_ORDEN.Gr_DatosOrdenCompra);
   --  
@@ -228,17 +228,17 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
     --
     IF Lv_Notifica = 'S' THEN
       IF Pv_IdEmpresa IS NULL THEN
-        Pv_MensajeError := 'El C�digo de Empresa no puede Se Nulo.';
+        Pv_MensajeError := 'El Código de Empresa no puede Se Nulo.';
         RAISE Le_Error;
       END IF;
       --
       IF Pv_IdOrden IS NULL THEN
-        Pv_MensajeError := 'El C�digo de Orden no puede Se Nulo.';
+        Pv_MensajeError := 'El Código de Orden no puede Se Nulo.';
         RAISE Le_Error;
       END IF;
       --
       IF Pv_IdTipoOrden IS NULL THEN
-        Pv_MensajeError := 'El C�digo del Tipo de Orden no puede Se Nulo.';
+        Pv_MensajeError := 'El Código del Tipo de Orden no puede Se Nulo.';
         RAISE Le_Error;
       END IF;
       --
@@ -275,7 +275,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
       CLOSE C_LeeHora;
       IF Ln_Hora >= 0 AND Ln_Hora < 12 THEN
         --DIAS
-        Lv_Saludo := 'Buenos D�as';
+        Lv_Saludo := 'Buenos Días';
       END IF;
       IF Ln_Hora >= 12 AND Ln_Hora < 19 THEN
         --TARDES
@@ -294,10 +294,10 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
     <p>
       <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>' || Lv_Saludo || '</strong></span></span></p>
     <p>
-      <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">Se comunica que se ha ingresado una orden de compra de <strong>' || Lv_DescripcionTipoOC || '</strong>  <strong>No. ' || Lr_Orden.NO_ORDEN || '</strong> con <strong>Fecha Orden:</strong> ' || TO_CHAR(Lr_Orden.FECHA, 'DD/MM/YYYY') || ' para su <strong>Aprobaci�n/Autorizaci�n</strong> correspondiente al proveedor <strong>' || Lr_Orden.NO_PROVE || ' - ' || Lv_NombreProveedor ||
+      <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">Se comunica que se ha ingresado una orden de compra de <strong>' || Lv_DescripcionTipoOC || '</strong>  <strong>No. ' || Lr_Orden.NO_ORDEN || '</strong> con <strong>Fecha Orden:</strong> ' || TO_CHAR(Lr_Orden.FECHA, 'DD/MM/YYYY') || ' para su <strong>Aprobación/Autorización</strong> correspondiente al proveedor <strong>' || Lr_Orden.NO_PROVE || ' - ' || Lv_NombreProveedor ||
                           '</strong> por un monto total de <strong>' || TO_CHAR(Lr_Orden.TOTAL, '999,999,999.00') || '</strong> con <strong>Fecha de Vencimiento:</strong> ' || TO_CHAR(Lr_Orden.FECHA_VENCE, 'DD/MM/YYYY') || '</span></span></p>
       <br>
-      <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>Observaci�n:</strong>' || UPPER(Lr_Orden.OBSERV) || ' </span></span></p>
+      <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>Observación:</strong>' || UPPER(Lr_Orden.OBSERV) || ' </span></span></p>
       <br>
       <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>Detalle Orden</strong></span></span></p>
       <table border="1" cellpadding="1" cellspacing="1" style="width: 75%;">
@@ -630,17 +630,17 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
     CLOSE C_LeeNotifica;
     IF Lv_Notifica = 'S' THEN
       IF Pv_IdEmpresa IS NULL THEN
-        Pv_MensajeError := 'El C�digo de Empresa no puede ser Nulo.';
+        Pv_MensajeError := 'El Código de Empresa no puede ser Nulo.';
         RAISE Le_Error;
       END IF;
       --
       IF Pv_IdOrden IS NULL THEN
-        Pv_MensajeError := 'El C�digo de Orden no puede ser Nulo.';
+        Pv_MensajeError := 'El Código de Orden no puede ser Nulo.';
         RAISE Le_Error;
       END IF;
       --
       IF Pv_IdTipoOrden IS NULL THEN
-        Pv_MensajeError := 'El C�digo del Tipo de Orden no puede ser Nulo.';
+        Pv_MensajeError := 'El Código del Tipo de Orden no puede ser Nulo.';
         RAISE Le_Error;
       END IF;
       --
@@ -653,7 +653,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
       CLOSE C_LeeHora;
       IF Ln_Hora >= 0 AND Ln_Hora < 12 THEN
         --DIAS
-        Lv_Saludo := 'Buenos D�as';
+        Lv_Saludo := 'Buenos Días';
       END IF;
       IF Ln_Hora >= 12 AND Ln_Hora < 19 THEN
         --TARDES
@@ -709,7 +709,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
                           TO_CHAR(Lr_Orden.TOTAL, '999,999,999.00') || '</strong> </span></span></p>
             <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>MOTIVO ' || Lv_TipoDestinoOrden || ':</strong>' || Pv_MotivoCORZ || ' </span></span></p>
       <br>
-      <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>Observaci�n:</strong>' || UPPER(Lr_Orden.OBSERV) || ' </span></span></p>
+      <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>Observación:</strong>' || UPPER(Lr_Orden.OBSERV) || ' </span></span></p>
       <br>
       <span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><strong>Detalle Orden</strong></span></span></p>
       <table border="1" cellpadding="1" cellspacing="1" style="width: 75%;">
@@ -1098,7 +1098,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
         CLOSE C_LeeHora;
         IF Ln_Hora >= 0 AND Ln_Hora < 12 THEN
           --DIAS
-          Lv_Saludo := 'Buenos D�as';
+          Lv_Saludo := 'Buenos Días';
         END IF;
         IF Ln_Hora >= 12 AND Ln_Hora < 19 THEN
           --TARDES
@@ -1384,7 +1384,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
     --
     CASE 
       WHEN Ln_Hora >= 0 AND Ln_Hora < 12 THEN  --DIAS
-        Lv_Saludo := 'Buenos D�as';
+        Lv_Saludo := 'Buenos Días';
       WHEN Ln_Hora >= 12 AND Ln_Hora < 19 THEN --TARDES
         Lv_Saludo := 'Buenas Tardes';
       ELSE                                      --NOCHES
@@ -1424,7 +1424,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
     Lv_MensajeCorreo := Lv_MensajeCorreo ||     '<br>';
     Lv_MensajeCorreo := Lv_MensajeCorreo ||     '<span style="font-size:14px;">';
     Lv_MensajeCorreo := Lv_MensajeCorreo ||      '<span style="font-family:arial,helvetica,sans-serif;">';
-    Lv_MensajeCorreo := Lv_MensajeCorreo ||        '<strong>Observaci�n:</strong> '|| UPPER(Pr_DatosOC.OBSERVACION);
+    Lv_MensajeCorreo := Lv_MensajeCorreo ||        '<strong>Observación:</strong> '|| UPPER(Pr_DatosOC.OBSERVACION);
     Lv_MensajeCorreo := Lv_MensajeCorreo ||      '</span>';
     Lv_MensajeCorreo := Lv_MensajeCorreo ||    '</span>';
     --Lv_MensajeCorreo := Lv_MensajeCorreo ||     '</p>';
@@ -1578,7 +1578,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
        CLOSE C_DATOS_SOLICITANTE_DAT;
       --JXZURITA email generico [11/11/2022] [FIN]
       IF Lr_Solicitante.Mail_Cia IS NULL THEN
-      Lv_MensajeError := 'No se encuentra definido c�digo de solicitante '||Pr_DatosOC.NO_SOLICITANTE||' para empresa '||Pr_DatosOC.NO_CIA;
+      Lv_MensajeError := 'No se encuentra definido código de solicitante '||Pr_DatosOC.NO_SOLICITANTE||' para empresa '||Pr_DatosOC.NO_CIA;
         RAISE Le_Error;
       END IF;
     --JXZURITA email generico [11/11/2022] [INICIO]
@@ -1623,7 +1623,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
        CLOSE C_DATOS_CREA_DAT;  
     --JXZURITA email generico [11/11/2022] [FIN]
       IF Lr_DatosCrea.Mail_Cia IS NULL THEN
-      Lv_MensajeError := 'No se encuentra definido c�digo de usuario '||Pr_DatosOC.USUARIO||' para empresa '||Pr_DatosOC.NO_CIA;
+      Lv_MensajeError := 'No se encuentra definido código de usuario '||Pr_DatosOC.USUARIO||' para empresa '||Pr_DatosOC.NO_CIA;
         RAISE Le_Error;
       END IF;
     --JXZURITA email generico [11/11/2022] [INICIO]
@@ -1635,7 +1635,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CORREO_ORDEN IS
     SYS.UTL_MAIL.SEND(sender     => 'naf@telconet.ec',
                       recipients => Lr_Solicitante.Mail_Cia, --Envia al autorizador o a su reemplazo
                       CC         => Lr_DatosCrea.Mail_Cia,
-                      subject    => 'SISTEMA NAF: AUTORIZACI�N COMPLETA DE ORDEN COMPRA NO.' || Pr_DatosOC.NO_ORDEN,
+                      subject    => 'SISTEMA NAF: AUTORIZACIÓN COMPLETA DE ORDEN COMPRA NO.' || Pr_DatosOC.NO_ORDEN,
                       mime_type  => 'text/html; charset=us-ascii',
                       MESSAGE    => Lv_MensajeCorreo);
 

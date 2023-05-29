@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_UTILIDADES AS
 
  /**
-  * Documentaci�n para FUNCTION 'F_GET_CLOB_TO_VARCHAR'
+  * Documentación para FUNCTION 'F_GET_CLOB_TO_VARCHAR'
   * Funcion que permite convertir un clob a un varchar2
   *
   * PARAMETROS:
@@ -13,13 +13,13 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_UTILIDADES AS
 
 
  /**
-  * Actualizaci�n: Se realiza validaci�n de permitir eliminar registro solo si el par�metro
+  * Actualización: Se realiza validación de permitir eliminar registro solo si el parámetro
   *                recibido con el id del caso es diferente a null
-  * @author Andr�s Montero <amontero@telconet.ec>
+  * @author Andrés Montero <amontero@telconet.ec>
   * @version 1.1 04-01-2021
   *
-  * Documentaci�n para funci�n 'F_ELIMINAR_REGISTROS_TEMPORAL'
-  * Funci�n que permite eliminar registros temporales que sirven para el envi� de notificaciones a afectados backbone
+  * Documentación para función 'F_ELIMINAR_REGISTROS_TEMPORAL'
+  * Función que permite eliminar registros temporales que sirven para el envió de notificaciones a afectados backbone
   *
   * PARAMETROS:
   * @Param NUMBER       Pn_idCaso   id del caso
@@ -29,12 +29,12 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_UTILIDADES AS
  FUNCTION F_ELIMINAR_REGISTROS_TEMPORAL(Pn_idCaso IN NUMBER)  RETURN VARCHAR2;
 
  /**
-  * Documentaci�n para funci�n 'GET_VARCHAR_CLEAN'
-  * Funci�n que permite eliminar caracteres especiales de una cadena
+  * Documentación para función 'GET_VARCHAR_CLEAN'
+  * Función que permite eliminar caracteres especiales de una cadena
   *
   * PARAMETROS:
   * @Param VARCHAR2  Fv_Cadena Cadena para limpiar caracteres especiales
-  * @author Andr�s Montero <amontero@telconet.ec>
+  * @author Andrés Montero <amontero@telconet.ec>
   * @version 1.0 28-12-2018
   */
 FUNCTION GET_VARCHAR_CLEAN(
@@ -42,8 +42,8 @@ FUNCTION GET_VARCHAR_CLEAN(
     RETURN VARCHAR2;
 
 /**
-  * Documentaci�n para funci�n 'P_INSERT_TAREA_SEGUIMIENTO'
-  * Funci�n insertar un historial en la INFO_TAREA_SEGUIMIENTO
+  * Documentación para función 'P_INSERT_TAREA_SEGUIMIENTO'
+  * Función insertar un historial en la INFO_TAREA_SEGUIMIENTO
   *
   * PARAMETROS:
   * @Param Pr_infoTareaSeguimiento INFO_TAREA_SEGUIMIENTO%ROWTYPE
@@ -57,8 +57,8 @@ PROCEDURE P_INSERT_TAREA_SEGUIMIENTO(Pr_infoTareaSeguimiento IN INFO_TAREA_SEGUI
                                       Lv_MensaError OUT VARCHAR2);
            
  /**
-  * Documentaci�n para funci�n 'P_INSERT_DETALLE_HISTORIAL'
-  * Funci�n insertar un historial en la INFO_DETALLE_HISTORIAL
+  * Documentación para función 'P_INSERT_DETALLE_HISTORIAL'
+  * Función insertar un historial en la INFO_DETALLE_HISTORIAL
   *
   * PARAMETROS:
   * @Param Pr_infoDetalleHistorial INFO_DETALLE_HISTORIAL%ROWTYPE
@@ -72,10 +72,10 @@ PROCEDURE P_INSERT_DETALLE_HISTORIAL(Pr_infoDetalleHistorial IN INFO_DETALLE_HIS
                                       Lv_MensaError OUT VARCHAR2);
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_DETALLE'
+  * Documentación para procedimiento 'P_INSERT_DETALLE'
   * Procedimiento para insertar un registro en la DB_SOPORTE.INFO_DETALLE
   *
-  * @param  Pr_InfoDetalle IN DB_SOPORTE.INFO_DETALLE%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoDetalle IN DB_SOPORTE.INFO_DETALLE%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError    OUT VARCHAR2 Mensaje de error
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -85,10 +85,10 @@ PROCEDURE P_INSERT_DETALLE_HISTORIAL(Pr_infoDetalleHistorial IN INFO_DETALLE_HIS
                              Pv_MsjError    OUT VARCHAR2);
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_DETALLE_ASIGNACION'
+  * Documentación para procedimiento 'P_INSERT_DETALLE_ASIGNACION'
   * Procedimiento para insertar un registro en la DB_SOPORTE.INFO_DETALLE_ASIGNACION
   *
-  * @param  Pr_InfoDetalleAsignacion    IN DB_SOPORTE.INFO_DETALLE_ASIGNACION%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoDetalleAsignacion    IN DB_SOPORTE.INFO_DETALLE_ASIGNACION%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError                 OUT VARCHAR2 Mensaje de error
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -99,10 +99,10 @@ PROCEDURE P_INSERT_DETALLE_HISTORIAL(Pr_infoDetalleHistorial IN INFO_DETALLE_HIS
 
 
  /**
-  * Documentaci�n para procedimiento 'P_INSERT_INFO_TAREA'
+  * Documentación para procedimiento 'P_INSERT_INFO_TAREA'
   * Procedimiento para insertar un registro en la DB_SOPORTE.INFO_TAREA
   *
-  * @param  Pr_InfoTarea    IN DB_SOPORTE.INFO_TAREA%ROWTYPE Registro con la informaci�n a crear
+  * @param  Pr_InfoTarea    IN DB_SOPORTE.INFO_TAREA%ROWTYPE Registro con la información a crear
   * @param  Pv_MsjError     OUT VARCHAR2 Mensaje de error
   *
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
@@ -112,14 +112,14 @@ PROCEDURE P_INSERT_DETALLE_HISTORIAL(Pr_infoDetalleHistorial IN INFO_DETALLE_HIS
                                 Pv_MsjError     OUT VARCHAR2);
                                
  /*
-  * Documentaci�n para FUNCI�N 'F_MATCH_VALOR_PARAMETER'.
-  * Funci�n para buscar si existe valor parametrizado
+  * Documentación para FUNCIÓN 'F_MATCH_VALOR_PARAMETER'.
+  * Función para buscar si existe valor parametrizado
   *
   * PARAMETROS:
   * @Param VARCHAR2  Pv_valor_param  ->  valor de parmetros
   * @Param VARCHAR2  Pv_valor_match  ->  valor a buscar
   * @Param VARCHAR2  Pv_delimiter  ->  delimitador
-  * @author Fernando L�pez. <filopez@telconet.ec>
+  * @author Fernando López. <filopez@telconet.ec>
   * @version 1.0 30-03-2022
   */
   FUNCTION F_MATCH_VALOR_PARAMETER(Pv_valor_param VARCHAR2, Pv_valor_match VARCHAR2, Pv_delimiter VARCHAR2)
@@ -127,6 +127,7 @@ PROCEDURE P_INSERT_DETALLE_HISTORIAL(Pr_infoDetalleHistorial IN INFO_DETALLE_HIS
 
 END SPKG_UTILIDADES;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_UTILIDADES
 AS
 FUNCTION F_GET_CLOB_TO_VARCHAR(
@@ -195,9 +196,9 @@ BEGIN
             REPLACE(
             TRANSLATE(
             REGEXP_REPLACE(
-            REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|%|"]|[)]+$', ' ')
-            ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-            ,'������,������', 'AEIOUN aeioun')
+            REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|%|"]|[)]+$', ' ')
+            ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+            ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
             , Chr(9), ' ')
             , Chr(10), ' ')
             , Chr(13), ' '));

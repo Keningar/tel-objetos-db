@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_TYPES 
 AS
 /*
-* Documentaci�n para TYPE 'Lt_ArrayAsociativo'.
+* Documentación para TYPE 'Lt_ArrayAsociativo'.
 *
-* Tipo de datos para mapear los par�metros enviados en un array asociativo
+* Tipo de datos para mapear los parámetros enviados en un array asociativo
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 07-09-2017
@@ -11,9 +11,9 @@ AS
 TYPE Lt_ArrayAsociativo IS TABLE OF VARCHAR2(300) INDEX BY VARCHAR2(30);
 
 /*
-* Documentaci�n para TYPE 'Lr_AliasPlantilla'.
+* Documentación para TYPE 'Lr_AliasPlantilla'.
 *
-* Tipo de datos para obtener la informaci�n de los alias asociados a una plantilla
+* Tipo de datos para obtener la información de los alias asociados a una plantilla
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 24-09-2017
@@ -26,9 +26,9 @@ IS
     ID_PLANTILLA  DB_COMUNICACION.ADMI_PLANTILLA.ID_PLANTILLA%TYPE);
 
 /*
-* Documentaci�n para TYPE 'Lr_EnvioMasivo'.
+* Documentación para TYPE 'Lr_EnvioMasivo'.
 *
-* Tipo de datos para el retorno de la informaci�n correspondiente a los destinatarios del env�o masivo
+* Tipo de datos para el retorno de la información correspondiente a los destinatarios del envío masivo
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 25-09-2017
@@ -52,8 +52,8 @@ TYPE Lr_EnvioMasivo IS RECORD (
 );
 
 /*
-* Documentaci�n para TYPE 'Lt_EnvioMasivo'.
-* Tabla que obtiene para almacenar la data enviada al BULK con la informaci�n correspondiente a los destinatarios del env�o masivo
+* Documentación para TYPE 'Lt_EnvioMasivo'.
+* Tabla que obtiene para almacenar la data enviada al BULK con la información correspondiente a los destinatarios del envío masivo
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 25-09-2017
@@ -62,8 +62,8 @@ TYPE Lt_EnvioMasivo IS TABLE OF Lr_EnvioMasivo INDEX BY PLS_INTEGER;
 
 
 /*
-* Documentaci�n para TYPE 'Lr_NotifEnvioMasivoPlantilla'.
-* Tipo de datos para el retorno de la informaci�n correspondiente al env�o masivo y a la plantilla asociada
+* Documentación para TYPE 'Lr_NotifEnvioMasivoPlantilla'.
+* Tipo de datos para el retorno de la información correspondiente al envío masivo y a la plantilla asociada
 *
 * @author Lizbeth Cruz <mlcruz@telconet.ec>
 * @version 1.0 25-09-2017
@@ -116,7 +116,7 @@ IS
  
   /*
    * Documentacion para TYPE 'Ltr_Imagenes'.
-   * Record que me permite obtener los registros de informaci�n de imagenes
+   * Record que me permite obtener los registros de información de imagenes
    * @author David De La Cruz <ddelacruz@telconet.ec>
    * @version 1.0
    * @since 23-02-2022
@@ -126,7 +126,7 @@ IS
   
   /*
    * Documentacion para TYPE 'Lr_CantidadImagen'.
-   * Record que me permite obtener la cantidad de registros con detalles de imagenes del m�dulo de Soporte
+   * Record que me permite obtener la cantidad de registros con detalles de imagenes del módulo de Soporte
    * @author David De La Cruz <ddelacruz@telconet.ec>
    * @version 1.0
    * @since 04-03-2022
@@ -138,7 +138,7 @@ IS
   
   /*
    * Documentacion para TYPE 'Ltr_CantidadImagenes'.
-   * Record que me permite obtener los registros de informaci�n de imagenes
+   * Record que me permite obtener los registros de información de imagenes
    * @author David De La Cruz <ddelacruz@telconet.ec>
    * @version 1.0
    * @since 04-03-2022

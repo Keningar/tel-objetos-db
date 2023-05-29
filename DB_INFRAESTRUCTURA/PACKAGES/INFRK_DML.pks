@@ -11,7 +11,7 @@ AS
   * @author Lizbeth Cruz <mlcruz@telconet.ec>
   * @version 1.1 20/06/2019 Se agrega en el INSERT el campo del estado del detalle elemento
   *
-  * @author Karen Rodr�guez V. kyrodriguez@telconet.ec>
+  * @author Karen Rodríguez V. kyrodriguez@telconet.ec>
   * @version 1.1 20/06/2020 Se agrega validacion NVL para la secuencia de la tabla.
   *
   * @param string Pr_detalleElemento
@@ -72,7 +72,7 @@ AS
   * @version 1.0 03/10/2014
   * @param string Pr_RelacionElemento
   *
-  * @author Karen Rodr�guez V. kyrodriguez@telconet.ec>
+  * @author Karen Rodríguez V. kyrodriguez@telconet.ec>
   * @version 1.1 20/06/2020 Se agrega validacion NVL para la secuencia de la tabla.
   *
   * @author Antonio Ayala  <afayala@telconet.ec>
@@ -106,7 +106,7 @@ AS
   * @version 1.0 03/10/2014
   * @param string Pr_EmprElementUbica
   *
-  * @author Karen Rodr�guez V. kyrodriguez@telconet.ec>
+  * @author Karen Rodríguez V. kyrodriguez@telconet.ec>
   * @version 1.1 20/06/2020 Se agrega validacion NVL para la secuencia de la tabla.
   *
   * @return string Lv_MensaError
@@ -123,7 +123,7 @@ AS
   * @version 1.0 03/10/2014
   * @param string Pr_EmpresaElemento
   *
-  * @author Karen Rodr�guez V. kyrodriguez@telconet.ec>
+  * @author Karen Rodríguez V. kyrodriguez@telconet.ec>
   * @version 1.1 20/06/2020 Se agrega validacion NVL para la secuencia de la tabla.
   *
   * @return string Lv_MensaError
@@ -137,12 +137,12 @@ AS
    * Procedimiento que actualiza el registro asociado a la tabla INFO_DETALLE_ELEMENTO
    * 
    * @param Pr_InfoDetalleElemento  IN DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO%ROWTYPE Registro de la tabla INFO_DETALLE_ELEMENTO
-   * @param Pv_Mensaje              OUT VARCHAR2 Mensaje de la ejecuci�n del procedimiento
+   * @param Pv_Mensaje              OUT VARCHAR2 Mensaje de la ejecución del procedimiento
    *
    * @author Lizbeth Cruz <mlcruz@telconet.ec>
    * @version 1.0 04-12-2019
    *
-   * @author Karen Rodr�guez V. kyrodriguez@telconet.ec>
+   * @author Karen Rodríguez V. kyrodriguez@telconet.ec>
    * @version 1.1 20-06-2020 Se agrega validacion NVL para la secuencia de la tabla.
    *
    */
@@ -220,7 +220,6 @@ AS
   RETURN NUMBER;
 END INFRK_DML;
 /
-
 
 CREATE OR REPLACE PACKAGE BODY DB_INFRAESTRUCTURA.INFRK_DML
 AS

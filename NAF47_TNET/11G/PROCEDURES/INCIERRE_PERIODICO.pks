@@ -13,10 +13,11 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.INCIERRE_PERIODICO (Pv_cia          IN VA
   
   /**
   * Documentacion para INCIERRE_PERIODICO
-  * Se modifico la validaci�n de la consulta c_asiento_pend para sensar el periodo de cierre de mes.
-  * @author Miguel Angulo S�nchez <jmangulos@telconet.ec>
+  * Se modifico la validacion de la consulta c_asiento_pend para sensar el periodo de cierre de mes.
+  * @author Miguel Angulo Sanchez <jmangulos@telconet.ec>
   * @version 1.1 07/08/2019
   **/
+
 
   CURSOR c_asiento_pend IS
     SELECT a.fecha

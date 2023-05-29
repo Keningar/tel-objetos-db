@@ -7,12 +7,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C AS
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
    * [
-   *  codEmpresa            C�digo empresa,
-   *  fechaEmisionDesde     Fecha de emisi�n inicial para consultar por rango,
-   *  fechaEmisionHasta     Fecha de emisi�n final para consultar por rango,
+   *  codEmpresa            Código empresa,
+   *  fechaEmisionDesde     Fecha de emisión inicial para consultar por rango,
+   *  fechaEmisionHasta     Fecha de emisión final para consultar por rango,
    *  estado                Estado de la factura,
-   *  idPunto               Id del punto de facturaci�n,
-   *  identificacionCliente Identificaci�n del cliente,
+   *  idPunto               Id del punto de facturación,
+   *  identificacionCliente Identificación del cliente,
    * ]
    * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la consulta
    * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la consulta
@@ -134,11 +134,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_DOCUMENTOS_FINANCIEROS_C AS
    * Procedimiento para obtener los detalles de notas de debitos
    *
    * @param Pn_IdDocumento        IN NUMBER Identificador del documento,
-   * @param Pv_Login              IN VARCHAR2 Login del punto de facturaci�n,
+   * @param Pv_Login              IN VARCHAR2 Login del punto de facturación,
    * @param Pv_NombreOficinaGrupo IN VARCHAR2 Nombre de la oficina del grupo,
    * @param Pr_EstadoCuenta       IN OUT FNKG_TYPES_DOCUMENTOS.Ltr_EstadoCuenta Estructura con datos del Estado de Cuenta,
    * @param Pn_Id                 IN OUT NUMBER Id de secuencia del registro de la estructura del Estado de Cuenta,
-   * @param Pn_ValorIngresoDoc    IN OUT NUMBER Valor acumulado de los ingresos seg�n el tipo de documento,
+   * @param Pn_ValorIngresoDoc    IN OUT NUMBER Valor acumulado de los ingresos según el tipo de documento,
    * @param Pn_ValorIngreso       IN OUT NUMBER Valor acumulado de los ingresos en general,
    * @param Pn_SumaValorTotal     IN OUT NUMBER Valor acumulado de la diferencia entre ingresos y egresos,
    * @param Pn_ValorEgresoDoc     IN OUT NUMBER Valor acumulado de los egresos seg{un el tipo de documento,

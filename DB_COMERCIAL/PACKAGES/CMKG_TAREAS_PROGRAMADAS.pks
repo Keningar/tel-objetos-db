@@ -1,8 +1,8 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
 
 /**
-   * Documentaci�n para el procedimiento 'P_CADUCA_CREDENCIALES_LINK_BCO'
-   * Proceso que sirve para INACTIVAR las contrase�as para el ingresar al portal de 
+   * Documentación para el procedimiento 'P_CADUCA_CREDENCIALES_LINK_BCO'
+   * Proceso que sirve para INACTIVAR las contraseñas para el ingresar al portal de 
    * solicitud de llenado del proceso link bancario.
    *
    * @author Walther Joao Gaibor C <wgaibor@telconet.ec>
@@ -12,9 +12,9 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
   PROCEDURE P_CADUCA_CREDENCIALES_LINK_BCO;
 
 /**
-   * Documentaci�n para el procedimiento 'P_REGULARIZA_CONTRATO'
+   * Documentación para el procedimiento 'P_REGULARIZA_CONTRATO'
    * Proceso que sirve para regularizar los contratos de los clientes que no
-   * pasar�n por el proceso de llenado del proceso link bancario.
+   * pasarón por el proceso de llenado del proceso link bancario.
    *
    * @author Walther Joao Gaibor C <wgaibor@telconet.ec>
    * @version 1.0 06-06-2022
@@ -195,7 +195,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
         and ipca.codigo_plan like Cv_PlanEmpleado
         and infp.id_punto = Cn_PuntoId;
 
-    -- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZ�N SOCIAL TRADICIONAL
+    -- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZÓN SOCIAL TRADICIONAL
     CURSOR C_TIENE_CRS_TRADICIONAL(Cn_PuntoId NUMBER) IS
     SELECT
     DISTINCT(1) 
@@ -211,7 +211,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             and iper.empresa_rol_id = 813
             and inpt.id_punto = Cn_PuntoId);
 
-    -- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZ�N SOCIAL POR PUNTO.
+    -- CONSULTAR SI EL PUNTO PROVIENE DE UN CAMBIO DE RAZÓN SOCIAL POR PUNTO.
     CURSOR C_TIENE_CRS_POR_PUNTO(Cn_PuntoId NUMBER) IS
     SELECT
         1 
@@ -353,7 +353,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
                 db_documento.SEQ_INFO_DOCUMENTO_RELACION.nextval,
                 Lv_Proceso,
                 'Activo',
-                'SCRIPT DE REGULARIZACI�N DE CLAUSULAS DIGITAL',
+                'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS DIGITAL',
                 'reg_clausulas_digital',
                 SYSDATE) RETURNING ID_DOCUMENTO_RELACION INTO ln_id_documento_relacion;
 
@@ -368,8 +368,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             VALUES(
                 db_documento.SEQ_INFO_DOC_RELACION_HIST.nextval,
                 ln_id_documento_relacion,
-                'SCRIPT DE REGULARIZACI�N DE CLAUSULAS DIGITAL',
-                'REGULARIZACI�N',
+                'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS DIGITAL',
+                'REGULARIZACIÓN',
                 'reg_clausulas_digital',
                 SYSDATE);
             --
@@ -416,7 +416,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
                 'Activo',
                 'reg_clausulas_digital',
                 SYSDATE);
-            -- OBTENER EL ENUNCIANDO RESPUESTA PARA LA INSERCI�N EN LA TABLA DE INFO_PUNTO_CLAUSULA_RESP
+            -- OBTENER EL ENUNCIANDO RESPUESTA PARA LA INSERCIÓN EN LA TABLA DE INFO_PUNTO_CLAUSULA_RESP
             FOR j IN C_ENUNCIADOS_CLAUSULAS 
             LOOP
                 Ln_CRS_TRADICIONAL          := NULL;
@@ -429,7 +429,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
                 CLOSE C_RESPUESTA_DEFAULT;
 
                 IF Ln_IdRespuesta IS NULL THEN
-                    RAISE_APPLICATION_ERROR(-20101, 'No se encontr� respuesta para la clausula ' || j.NOMBRE_CLAUSULA);
+                    RAISE_APPLICATION_ERROR(-20101, 'No se encontró respuesta para la clausula ' || j.NOMBRE_CLAUSULA);
                 END IF;
 
                 SELECT ID_DOC_ENUNCIADO_RESP INTO Ln_DocEnunciadoResp
@@ -464,7 +464,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
         END LOOP;
 
         ln_id_documento_relacion := NULL;
-        --REGULARIZACI�N DE CONTRATOS F�SICOS.
+        --REGULARIZACIÓN DE CONTRATOS FÍSICOS.
         OPEN C_CONTRATO_FIS_REG(PV_FECHA_INICIO, PV_FECHA_FIN);    
         FETCH C_CONTRATO_FIS_REG BULK COLLECT INTO lc_contratoFisico LIMIT 5000;
         CLOSE C_CONTRATO_FIS_REG;
@@ -513,7 +513,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
                 db_documento.SEQ_INFO_DOCUMENTO_RELACION.nextval,
                 Lv_Proceso,
                 'Activo',
-                'SCRIPT DE REGULARIZACI�N DE CLAUSULAS F�SICO',
+                'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS FÍSICO',
                 'reg_clausulas_fisico',
                 SYSDATE) RETURNING ID_DOCUMENTO_RELACION INTO ln_id_documento_relacion;
 
@@ -528,8 +528,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             VALUES(
                 db_documento.SEQ_INFO_DOC_RELACION_HIST.nextval,
                 ln_id_documento_relacion,
-                'SCRIPT DE REGULARIZACI�N DE CLAUSULAS F�SICO',
-                'REGULARIZACI�N',
+                'SCRIPT DE REGULARIZACIÓN DE CLAUSULAS FÍSICO',
+                'REGULARIZACIÓN',
                 'reg_clausulas_fisico',
                 SYSDATE);
             --
@@ -576,7 +576,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
                 'Activo',
                 'reg_clausulas_fisico',
                 SYSDATE);
-            -- OBTENER EL ENUNCIANDO RESPUESTA PARA LA INSERCI�N EN LA TABLA DE INFO_PUNTO_CLAUSULA_RESP
+            -- OBTENER EL ENUNCIANDO RESPUESTA PARA LA INSERCIÓN EN LA TABLA DE INFO_PUNTO_CLAUSULA_RESP
             FOR j IN C_ENUNCIADOS_CLAUSULAS
             LOOP
                 --
@@ -618,7 +618,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_TAREAS_PROGRAMADAS AS
             ln_contador := ln_contador + 1;
             Ln_FisIteradorI := lc_contratoFisico.NEXT(Ln_FisIteradorI);
         END LOOP;
-        PV_MENSAJE := 'Proceso de regularizaci�n de clausulas finalizado!!! cantidad regularizada: ' || ln_contador;
+        PV_MENSAJE := 'Proceso de regularización de clausulas finalizado!!! cantidad regularizada: ' || ln_contador;
     COMMIT;
     EXCEPTION
     WHEN OTHERS THEN

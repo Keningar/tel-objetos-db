@@ -1,11 +1,11 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS 
 
   /*
-  * Documentaci�n para TYPE 'Lr_FormatosRecaudacion'.
+  * Documentación para TYPE 'Lr_FormatosRecaudacion'.
   *
-  * Tipo de datos para el retorno de la informacion de los formatos de recaudaci�n.
+  * Tipo de datos para el retorno de la informacion de los formatos de recaudación.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 22-11-2017
   */
   TYPE Lr_FormatosRecaudacion
@@ -29,28 +29,28 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_GEN_FORMATO_ENV_REC'.
-  * Procedure que permite generar el formato de env�o de  recaudaci�n seg�n el canal de recaudaci�n enviado como par�metro.
+  * Documentación para PROCEDURE 'P_GEN_FORMATO_ENV_REC'.
+  * Procedure que permite generar el formato de envío de  recaudación según el canal de recaudación enviado como parámetro.
   *
   * PARAMETROS:
   * @Param varchar2 Pn_EmpresaCod     Empresa a generar el reporte
-  * @Param varchar2 Pv_UsrSesion      Canal de recaudaci�n
+  * @Param varchar2 Pv_UsrSesion      Canal de recaudación
   * @Param varchar2 Pv_EmailUsrSesion Email del usuario a ser notificado.
-  * @Param varchar2 Pv_UsuarioSession Usuario que genera formato de env�o de recaudaci�n.
-  * @Param varchar2 Pv_NombreArchivo  Nombre del archivo de formato de env�o de recaudaci�n a generar.
+  * @Param varchar2 Pv_UsuarioSession Usuario que genera formato de envío de recaudación.
+  * @Param varchar2 Pv_NombreArchivo  Nombre del archivo de formato de envío de recaudación a generar.
   * @Param varchar2 Pv_PathNFS        Ruta donde se encuentra alojado el archivo.
   * @Param varchar2 Pv_Error          Usa para validar errores.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 16-09-2016
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 16-01-2018 Se realiza cierre de cursores utilizados en la generaci�n de formatos de recaudaci�n.
+  * @version 1.1 16-01-2018 Se realiza cierre de cursores utilizados en la generación de formatos de recaudación.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.2 16-02-2018 Se agrega env�o de reporte de clientes que no cumplen con el formato necesario para generar recaudaci�n, 
-                            se agregan validaciones con respecto a la longitud de identificaci�n y nombres del cliente.
+  * @version 1.2 16-02-2018 Se agrega envío de reporte de clientes que no cumplen con el formato necesario para generar recaudación, 
+                            se agregan validaciones con respecto a la longitud de identificación y nombres del cliente.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.3 10-05-2021 Se realizan cambios por el consumo al nuevo NFS.
   */
   PROCEDURE P_GEN_FORMATO_ENV_REC(
@@ -64,12 +64,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
   );
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_SALDO_CLIENTE'.
-  * Funcui�n que permite consultar el saldo total del cliente enviado como par�metro.
+  * Documentación para la función 'F_GET_SALDO_CLIENTE'.
+  * Funcuión que permite consultar el saldo total del cliente enviado como parámetro.
   *
   * PARAMETROS:
-  * @Param varchar2 Fv_EmpresaCod             C�digo de la empresa
-  * @Param varchar2 Fv_IdentificacionCliente  Identificaci�n del cliente
+  * @Param varchar2 Fv_EmpresaCod             Código de la empresa
+  * @Param varchar2 Fv_IdentificacionCliente  Identificación del cliente
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 22-11-2017
   */
@@ -79,13 +79,13 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
   RETURN DB_FINANCIERO.VISTA_ESTADO_CUENTA_RESUMIDO.SALDO%TYPE;
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_FORMATOS_REC'.
-  * Funci�n que permite consultar los formatos de recaudaci�n seg�n los filtros enviados como par�metro.
+  * Documentación para la función 'F_GET_FORMATOS_REC'.
+  * Función que permite consultar los formatos de recaudación según los filtros enviados como parámetro.
   *
   * PARAMETROS:
-  * @Param varchar2 Fv_EmpresaCod             C�digo de la empresa
-  * @Param varchar2 Fv_CanalRecaudacion       Canal de recaudaci�n
-  * @Param varchar2 Fv_EsCabecera             Filtro que indica si es cabecera o detalle del formato de recaudaci�n
+  * @Param varchar2 Fv_EmpresaCod             Código de la empresa
+  * @Param varchar2 Fv_CanalRecaudacion       Canal de recaudación
+  * @Param varchar2 Fv_EsCabecera             Filtro que indica si es cabecera o detalle del formato de recaudación
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 22-11-2017
   */
@@ -97,15 +97,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
 
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_VALOR_FORMAT'.
-  * Funci�n que retorna una cadena de texto con el formato respectivo.
+  * Documentación para la función 'F_GET_VALOR_FORMAT'.
+  * Función que retorna una cadena de texto con el formato respectivo.
   *
   * PARAMETROS:
   * @Param DB_FINANCIERO.ADMI_FORMATO_RECAUDACION.CONTENIDO%TYPE                     Fv_Contenido                   Cadena de texto a ser formatreada
   * @Param DB_FINANCIERO.ADMI_FORMATO_RECAUDACION.TIPO_CAMPO%TYPE                    Fv_TipoCampo                   Tipo de campo Fijo o Variable  
   * @Param DB_FINANCIERO.ADMI_FORMATO_RECAUDACION.LONGITUD%TYPE                      Fv_Longitud                    Longitud de la cadena a formatear 
   * @Param DB_FINANCIERO.ADMI_FORMATO_RECAUDACION.CARACTER_RELLENO%TYPE              Fv_CaracterRelleno             Caracter de relleno  
-  * @Param DB_FINANCIERO.ADMI_FORMATO_RECAUDACION.ORIENTACION_CARACTER_RELLENO%TYPE  Fv_OrientacionCaracterRelleno  Orientaci�n de rellede DER o IZQ   
+  * @Param DB_FINANCIERO.ADMI_FORMATO_RECAUDACION.ORIENTACION_CARACTER_RELLENO%TYPE  Fv_OrientacionCaracterRelleno  Orientación de rellede DER o IZQ   
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 22-11-2017
   */
@@ -119,11 +119,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
   RETURN VARCHAR2;
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_SALDO_RECAUDADO'.
-  * Funci�n que permite consultar el saldo total recaudado de la empresa enviada como par�metro.
+  * Documentación para la función 'F_GET_SALDO_RECAUDADO'.
+  * Función que permite consultar el saldo total recaudado de la empresa enviada como parámetro.
   *
   * PARAMETROS:
-  * @Param varchar2 Fv_EmpresaCod             C�digo de la empresa
+  * @Param varchar2 Fv_EmpresaCod             Código de la empresa
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 22-11-2017
   */
@@ -133,11 +133,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
 
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_TOTAL_CLIENTES_REC'.
-  * Funci�n que permite consultar la cantidad total de cliente recaudados de la empresa enviada como par�metro.
+  * Documentación para la función 'F_GET_TOTAL_CLIENTES_REC'.
+  * Función que permite consultar la cantidad total de cliente recaudados de la empresa enviada como parámetro.
   *
   * PARAMETROS:
-  * @Param varchar2 Fv_EmpresaCod             C�digo de la empresa
+  * @Param varchar2 Fv_EmpresaCod             Código de la empresa
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 22-11-2017
   */
@@ -146,12 +146,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_RECAUDACIONES AS
   RETURN VARCHAR2;
 
 /*
-* Documentaci�n para FUNCION 'P_PROCESAR'.
-* Procedimiento que genra los registros contables en los Repositorios de Migraci�n de NAF.
+* Documentación para FUNCION 'P_PROCESAR'.
+* Procedimiento que genra los registros contables en los Repositorios de Migración de NAF.
 * @author Luis Lindao llindao@telconet.ec
 * @version 1.0
 *
-* @Param Pv_NoCia        IN     VARCHAR2 recibe C�digo de Compa�ia
+* @Param Pv_NoCia        IN     VARCHAR2 recibe Código de Compañia
 * @Param Pv_Fecha        IN     VARCHAR2 recibe fecha a procesar
 * @Param Pv_MensajeError IN OUT VARCHAR2 retorna mensaje de error
 *
@@ -1033,7 +1033,7 @@ PROCEDURE P_CONTABILIZAR ( Pv_NoCia         IN VARCHAR2,
         -- si no se ha generado cabecera para esta forma de pago, se genera.
         IF Lr_MigraArckmm.Id_Migracion IS NULL THEN
 
-          -- se recupera informaci�n de cuenta bancaria
+          -- se recupera información de cuenta bancaria
           Lr_CuentaContable := DB_FINANCIERO.FNKG_CONTABILIZAR_PAGO_MANUAL.GET_CUENTA_CONTABLE( Lr_DetallePago.CUENTA_CONTABLE_ID );
 
           -- se inicializan los campos a insertar
@@ -1072,7 +1072,7 @@ PROCEDURE P_CONTABILIZAR ( Pv_NoCia         IN VARCHAR2,
             --
         END IF;
         --
-        -- generaci�n detalle de Contabilizaci�n.
+        -- generación detalle de Contabilización.
         DB_FINANCIERO.FNKG_CONTABILIZAR_PAGO_MANUAL.CREA_DEBITO_CREDITO( Lr_CabPlantillaCon,
                                                                          Lr_DetallePago,
                                                                          Lr_MigraArckmm, 

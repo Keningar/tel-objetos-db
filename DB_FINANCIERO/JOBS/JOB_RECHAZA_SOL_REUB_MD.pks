@@ -7,7 +7,7 @@ start_date=>TO_TIMESTAMP_TZ('14-MAY-2023 02.04.19.935762000 AM AMERICA/GUAYAQUIL
 'FREQ=DAILY;BYHOUR=0;BYMINUTE=00;BYSECOND=0'
 , end_date=>NULL,
 job_class=>'"DEFAULT_JOB_CLASS"', enabled=>FALSE, auto_drop=>FALSE,comments=>
-'Job que ejecuta el procedimiento P_RECHAZA_SOLICITUDES_REUB para actualizar el estado de las solicitudes de Fact y NC cuando una tarea de reubicaci�n es "Anulada", "Rechazada", "Cancelada".'
+'Job que ejecuta el procedimiento P_RECHAZA_SOLICITUDES_REUB para actualizar el estado de las solicitudes de Fact y NC cuando una tarea de reubicación es "Anulada", "Rechazada", "Cancelada".'
 );
 sys.dbms_scheduler.set_attribute('"JOB_RECHAZA_SOL_REUB_MD"','NLS_ENV','NLS_LANGUAGE=''LATIN AMERICAN SPANISH'' NLS_TERRITORY=''ECUADOR'' NLS_CURRENCY=''$'' NLS_ISO_CURRENCY=''ECUADOR'' NLS_NUMERIC_CHARACTERS='',.'' NLS_CALENDAR=''GREGORIAN'' NLS_DATE_FORMAT=''DD/MM/RRRR'' NLS_DATE_LANGUAGE=''LATIN AMERICAN SPANISH'' NLS_SORT=''SPANISH'' NLS_TIME_FORMAT=''HH12:MI:SSXFF AM'' NLS_TIMESTAMP_FORMAT=''DD/MM/RRRR HH24:MI'' NLS_TIME_TZ_FORMAT=''HH12:MI:SSXFF AM TZR'' NLS_TIMESTAMP_TZ_FORMAT=''DD/MM/RRRR HH24:MI'' NLS_DUAL_CURRENCY=''$'' NLS_COMP=''BINARY'' NLS_LENGTH_SEMANTICS=''BYTE'' NLS_NCHAR_CONV_EXCP=''FALSE''');
 dbms_scheduler.enable('"JOB_RECHAZA_SOL_REUB_MD"');

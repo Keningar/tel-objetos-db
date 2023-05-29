@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_CONTABILIZAR_PAGOS_RET
 AS
   --
   /*
-  * Documentaci�n para FUNCION 'GET_PAGOS_DE_ASIENTO'.
+  * Documentación para FUNCION 'GET_PAGOS_DE_ASIENTO'.
   *
   * Este busca los pagos que pertenecen al pago grupal que se esta grabando en el asiento contable
   *
@@ -10,9 +10,9 @@ AS
   * @version 1.0
   * @since 17/03/2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 09-01-2017 - Se modifica la funci�n para obtener los detalles que no han sido contabilizados
+  * @version 1.1 09-01-2017 - Se modifica la función para obtener los detalles que no han sido contabilizados
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 09-08-2017 - Se modifica la funci�n para obtener obtener los pagos que no han sido migrados a la tabla
+  * @version 1.2 09-08-2017 - Se modifica la función para obtener obtener los pagos que no han sido migrados a la tabla
   *                          'NAF47_TNET.MIGRA_DOCUMENTO_ASOCIADO'
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.3 06-01-2018 - Se modifica para agregar filtro tipo documento en consulta que recupera pagos a registrar
@@ -27,7 +27,7 @@ AS
   --
   --
   /*
-  * Documentaci�n para FUNCION 'MARCA_PAGO_CONTABILIZADO'.
+  * Documentación para FUNCION 'MARCA_PAGO_CONTABILIZADO'.
   *
   * Este proceso se encarga de marcar como contabilizado los pagos que forman parte del asiento contable
   *
@@ -35,12 +35,12 @@ AS
   * @version 1.0
   * @since 17/03/2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 09-08-2017 - Se agrega el par�metro 'Pr_MigraDocumentoAsociado' para enviar los par�metros adecuados para insertar los detalles de
+  * @version 1.1 09-08-2017 - Se agrega el parámetro 'Pr_MigraDocumentoAsociado' para enviar los parámetros adecuados para insertar los detalles de
   *                           los pagos migrados.
   *
-  * @param Pv_NoCia                  IN VARCHAR2  C�digo de la compa�ia que genera la migraci�n
+  * @param Pv_NoCia                  IN VARCHAR2  Código de la compañia que genera la migración
   * @param Pr_DetallePago            IN DB_FINANCIERO.FNKG_TRANSACTION_CONTABILIZAR.TypeDetallePagos  Detalle del pago a migrar
-  * @param Pr_MigraDocumentoAsociado IN NAF47_TNET.MIGRA_DOCUMENTO_ASOCIADO%ROWTYPE  Informaci�n del registro del pago migrado
+  * @param Pr_MigraDocumentoAsociado IN NAF47_TNET.MIGRA_DOCUMENTO_ASOCIADO%ROWTYPE  Información del registro del pago migrado
   * @param Pv_MensajeError           OUT VARCHAR2  Mensaje de error en caso de existir
   */
   PROCEDURE MARCA_CONTABILIZADO_PAGO(
@@ -51,7 +51,7 @@ AS
   --
   --
   /*
-  * Documentaci�n para FUNCION 'GET_ANTICIPOS_ADICIONALXDIA'.
+  * Documentación para FUNCION 'GET_ANTICIPOS_ADICIONALXDIA'.
   *
   * FUNCION QUE OBTIENE ANTICIPOS QUE FUERON CREADOS POR UN PAGO
   *
@@ -68,16 +68,16 @@ AS
   * @version 1.2 07/09/2016
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 09-01-2017 - Se modifica la funci�n para obtener los detalles que no han sido contabilizados
+  * @version 1.3 09-01-2017 - Se modifica la función para obtener los detalles que no han sido contabilizados
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 09-08-2017 - Se agregan los par�metros 'Fv_NombrePaqueteSQL', 'Fv_EmpresaCod' y 'Fv_EstadoActivo' para obtener los anticipos que no
+  * @version 1.4 09-08-2017 - Se agregan los parámetros 'Fv_NombrePaqueteSQL', 'Fv_EmpresaCod' y 'Fv_EstadoActivo' para obtener los anticipos que no
   *                           han sido migrados a NAF.
   *
   * @param Fn_FormaPagoId      IN DB_FINANCIERO.INFO_PAGO_DET.FORMA_PAGO_ID%TYPE  Id forma de pago
-  * @param Ft_FeCreacion       IN VARCHAR2  Fecha de creaci�n del pago
+  * @param Ft_FeCreacion       IN VARCHAR2  Fecha de creación del pago
   * @param Fn_OficinaId        IN DB_FINANCIERO.INFO_PAGO_CAB.OFICINA_ID%TYPE  Id de oficina
   * @param Fv_NombrePaqueteSQL IN DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.NOMBRE_PAQUETE_SQL%TYPE  Nombre del paquete SQL que ejecuta el proceso
-  * @param Fv_EmpresaCod       IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  C�digo de la empresa
+  * @param Fv_EmpresaCod       IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Código de la empresa
   * @param Fv_EstadoActivo     IN DB_GENERAL.ADMI_PARAMETRO_CAB.ESTADO%TYPE  Estado activo de lo que se requiere buscar
   */
   FUNCTION GET_ANTICIPOS_ADICIONALXDIA(
@@ -91,7 +91,7 @@ AS
   --
   --
   /*
-  * Documentaci�n para FUNCION 'F_GET_PAGOS_FORMA_PAGO_XDIA'.
+  * Documentación para FUNCION 'F_GET_PAGOS_FORMA_PAGO_XDIA'.
   * FUNCION QUE OBTIENE PAGOS SEGUN FORMA DE PAGO Y FECHA
   * @author Andres Montero amontero@telconet.ec
   * @version 1.0
@@ -102,16 +102,16 @@ AS
   * @version 1.1 07/09/2016
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 09-01-2017 - Se modifica la funci�n para obtener los detalles que no han sido contabilizados
+  * @version 1.3 09-01-2017 - Se modifica la función para obtener los detalles que no han sido contabilizados
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 09-08-2017 - Se agregan los par�metros 'Fv_NombrePaqueteSQL', 'Fv_EmpresaCod' y 'Fv_EstadoActivo' para obtener las formas de pago de
+  * @version 1.4 09-08-2017 - Se agregan los parámetros 'Fv_NombrePaqueteSQL', 'Fv_EmpresaCod' y 'Fv_EstadoActivo' para obtener las formas de pago de
   *                           los pagos que no han sido migrados a NAF.
   *
   * @param Fn_FormaPagoId      IN DB_FINANCIERO.INFO_PAGO_DET.FORMA_PAGO_ID%TYPE  Id forma de pago
-  * @param Ft_FeCreacion       IN VARCHAR2  Fecha de creaci�n del pago
+  * @param Ft_FeCreacion       IN VARCHAR2  Fecha de creación del pago
   * @param Fn_OficinaId        IN DB_FINANCIERO.INFO_PAGO_CAB.OFICINA_ID%TYPE  Id de oficina
   * @param Fv_NombrePaqueteSQL IN DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.NOMBRE_PAQUETE_SQL%TYPE  Nombre del paquete SQL que ejecuta el proceso
-  * @param Fv_EmpresaCod       IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  C�digo de la empresa
+  * @param Fv_EmpresaCod       IN DB_COMERCIAL.INFO_OFICINA_GRUPO.EMPRESA_ID%TYPE  Código de la empresa
   * @param Fv_EstadoActivo     IN DB_GENERAL.ADMI_PARAMETRO_CAB.ESTADO%TYPE  Estado activo de lo que se requiere buscar
   */
   FUNCTION F_GET_PAGOS_FORMA_PAGO_XDIA(
@@ -125,7 +125,7 @@ AS
   --
   --
 /*
-* Documentaci�n para FUNCION 'PAGO_RETENCIONESxDIA'.
+* Documentación para FUNCION 'PAGO_RETENCIONESxDIA'.
 * PROCEDIMIENTO QUE REALIZA EL PROCESO DE CREAR ASIENTOS CONTABLES PARA LOS PAGOS QUE TENGAN FORMA DE PAGO RETENCION
 * @author Andres Montero amontero@telconet.ec
 * @version 1.0
@@ -134,13 +134,13 @@ AS
 * @author Andres Montero amontero@telconet.ec
 * @version 1.1 31/08/2016
 * @author Edson Franco <efranco@telconet.ec>
-* @version 1.3 09-08-2017 - Se agrega al query principal la validaci�n para que no retorne los pagos que ya hayan sido migrados al NAF.
+* @version 1.3 09-08-2017 - Se agrega al query principal la validación para que no retorne los pagos que ya hayan sido migrados al NAF.
 *                           Se agregan las funciones implementadas en NAF 'NAF47_TNET.GEK_MIGRACION.P_INSERTA_MIGRA_ARCGAE' para insertar en la tabla
 *                           'MIGRA_ARCGAE'
-*                           Se env�a al procedure 'MARCA_CONTABILIZADO_PAGO' la variable 'Lr_MigraDocumentoAsociado' para migrar la informaci�n de
+*                           Se envía al procedure 'MARCA_CONTABILIZADO_PAGO' la variable 'Lr_MigraDocumentoAsociado' para migrar la información de
 *                           cada detalle de pago contabilizado.
 * @author Edson Franco <efranco@telconet.ec>
-* @version 1.4 12-09-2017 - Se valida que no se migre la informaci�n de pagos o anticipo con valor cero.
+* @version 1.4 12-09-2017 - Se valida que no se migre la información de pagos o anticipo con valor cero.
 *
 * @since 17/03/2016
 * @Param in  varchar2  v_no_cia (id de la empresa)
@@ -151,12 +151,12 @@ PROCEDURE PROCESAR_PAGO_RETENCIONESxDIA(v_no_cia in varchar2,v_fecha in varchar2
 
 
 /*
-* Documentaci�n para procedimiento 'P_CONTABILIZAR_INDIVIDUAL'.
-* procedimiento que genera contabilziaci�n de retenciones individualmente al sistema NAF.
+* Documentación para procedimiento 'P_CONTABILIZAR_INDIVIDUAL'.
+* procedimiento que genera contabilziación de retenciones individualmente al sistema NAF.
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.0 27-09-2018
 *
-* @param Pv_NoCia        IN     VARCHAR2  C�digo de la empresa
+* @param Pv_NoCia        IN     VARCHAR2  Código de la empresa
 * @param Pv_Fecha        IN     VARCHAR2  Fecha de proceso
 * @param Pv_MensajeError IN OUT VARCHAR2  Detalle de errores
 */
@@ -171,8 +171,8 @@ END FNKG_CONTABILIZAR_PAGOS_RET;
 CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_CONTABILIZAR_PAGOS_RET
 AS
  /*
- * Documentaci�n para FUNCION 'F_OBTENER_VALOR_PARAMETRO'.
- * FUNCION QUE OBTIENE PARAMETROS DE ECUANET PARA MIGRACION A COMPA�IA MEGADATOS
+ * Documentación para FUNCION 'F_OBTENER_VALOR_PARAMETRO'.
+ * FUNCION QUE OBTIENE PARAMETROS DE ECUANET PARA MIGRACION A COMPAÑIA MEGADATOS
  * @author Jimmy Gilces <jgilces@telconet.ec>
  * @version 1.0
  * @since 27/03/2023
@@ -309,7 +309,7 @@ AS
         --
         IF Pv_MensajeError IS NOT NULL THEN
           --
-          raise_application_error( -20001, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+          raise_application_error( -20001, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                            ' DETALLE_PAGO ( ' || Ln_IdPagoDet || '). MENSAJE ERROR NAF (' || Pv_MensajeError || ').');
           --
         END IF;
@@ -326,14 +326,14 @@ AS
         --
         IF Pv_MensajeError IS NOT NULL THEN
           --
-          raise_application_error( -20001, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+          raise_application_error( -20001, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                            ' DETALLE_PAGO ( ' || Ln_IdPagoDet || '). MENSAJE ERROR NAF (' || Pv_MensajeError || ').');
           --
         END IF;
         --
       ELSE
         --
-        raise_application_error( -20001, 'Error al insertar la relaci�n del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
+        raise_application_error( -20001, 'Error al insertar la relación del documento migrado en la tabla MIGRA_DOCUMENTO_ASOCIADO. ' ||
                                          ' DETALLE_PAGO ( ' || Ln_IdPagoDet || '). MENSAJE ERROR ( NO EXISTE ID_MIGRACION ).');
         --
       END IF;
@@ -656,7 +656,7 @@ END;
     PRAGMA EXCEPTION_INIT( Le_MigraDocumentoAsociado, -20008 );
     --
     --
-    --CURSOR C_GetParametrosDet obtiene los detalles de los parametros segun los par�metros enviados por el usuario
+    --CURSOR C_GetParametrosDet obtiene los detalles de los parametros segun los parámetros enviados por el usuario
     --COSTO QUERY: 9
     CURSOR C_GetDetalleParametros( Cv_NombreParameteroCab DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE,
                                    Cv_EstadoParametroCab  DB_GENERAL.ADMI_PARAMETRO_DET.ESTADO%TYPE,
@@ -1234,7 +1234,7 @@ END;
       END IF;
       
       --
-      -- generaci�n detalle de Contabilizaci�n.
+      -- generación detalle de Contabilización.
       FNKG_CONTABILIZAR_PAGO_MANUAL.CREA_DEBITO_CREDITO( Lr_CabPlantillaCon,
                                                          Lr_DetallePago,
                                                          Lr_MigraArckmm,

@@ -6,7 +6,7 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.IN_ACT_ARTICULOS_RECURRENTES(PV_ERROR OUT
   /**
   * Documentacion para IN_ACT_ARTICULOS_RECURRENTES 
   *
-  * Procedimiento que actualiza valores minimos y maximos de art�culos recurrentes 
+  * Procedimiento que actualiza valores minimos y maximos de articulos recurrentes 
   *
   * @author banton <banton@telconet.ec>
   * @version 1.0 
@@ -154,12 +154,12 @@ BEGIN
         
         ELSE
           Lv_Estado      := 'E';
-          Lv_Observacion := 'Art�culo nuevo debe tener valor maximo';
+          Lv_Observacion := 'Artículo nuevo debe tener valor maximo';
         
         END IF;
       ELSE
         Lv_Estado      := 'E';
-        Lv_Observacion := 'Art�culo no existe en maestro';
+        Lv_Observacion := 'Artículo no existe en maestro';
       END IF;
       UPDATE NAF47_TNET.ARIN_ARTICULO_RECURRENTE_TEMP
          SET ESTADO        = Lv_Estado,

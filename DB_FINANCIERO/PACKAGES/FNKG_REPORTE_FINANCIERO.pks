@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS 
 
   /*
-  *Se agregan types necesarios para generaci�n de reporte de pagos por vendedor.
+  *Se agregan types necesarios para generación de reporte de pagos por vendedor.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 13-10-2016
   */
@@ -14,17 +14,17 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_COBRANZAS'.
+  * Documentación para PROCEDURE 'P_REPORTE_COBRANZAS'.
   * Procedure que me permite obtener datos de los documentos financieros segun parametros indicados.
   *
   * PARAMETROS:
   * @Param varchar2 Pv_TipoDocumento   (tipo de documento a consultar)
-  * @Param varchar2 Pv_NumeroDocumento (n�mero de documento a consultar)
-  * @Param varchar2 Pv_NumeroDocumentoAut (n�mero de documento  autorizado a consultar)
+  * @Param varchar2 Pv_NumeroDocumento (número de documento a consultar)
+  * @Param varchar2 Pv_NumeroDocumentoAut (número de documento  autorizado a consultar)
   * @Param varchar2 Pv_UsrCreacion (usuariuo de creacion del documento a consultar)
   * @Param varchar2 Pv_EstadoDocumento (estado del documento a consultar)
-  * @Param varchar2 Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
+  * @Param varchar2 Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2 Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
   * @Param varchar2 Pv_FormaPago (Forma de pago a conbnsultar)
   * @Param varchar2 Pv_Banco (Nombre del banco a consultar)
   * @Param varchar2 Pv_NumeroReferencia (Numero de referencia del documento a consultar)
@@ -32,19 +32,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   * @Param varchar2 Pn_EmpresaCod (empresa a generar el reporte)
   * @Param varchar2 Pv_UsrSesion  Usuario en sesion
   * @Param varchar2 Pv_PrefijoEmpresa   Prefijo de empresa en sesion
-  * @Param varchar2 Pv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2 Pv_Start (Rango inicial de n�mero de registros del reporte)
-  * @Param varchar2 Pv_Limit (Rango final de n�mero de registros del reporte)
+  * @Param varchar2 Pv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2 Pv_Start (Rango inicial de número de registros del reporte)
+  * @Param varchar2 Pv_Limit (Rango final de número de registros del reporte)
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 16-09-2016
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 25-10-2016 Se elimina filtro de b�squeda por login vendedor debido a duplicidad de logins a nivel de la tabla INFO_PERSONA.
+  * @version 1.1 25-10-2016 Se elimina filtro de búsqueda por login vendedor debido a duplicidad de logins a nivel de la tabla INFO_PERSONA.
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.2 26-10-2016 Se agrega visualizaci�n de campo comentario del detalle del documento.
+  * @version 1.2 26-10-2016 Se agrega visualización de campo comentario del detalle del documento.
   * @author Ricardo Coello Quezada <rcoello@telconet.ec> 
-  * @version 1.7 16-11-2016   Se quita la estampa de tiempo(Fe_Emisi�n).
+  * @version 1.7 16-11-2016   Se quita la estampa de tiempo(Fe_Emisión).
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.8 19-12-2016 - Se agregan las variables 'Pv_FechaContabilizacionDesde', 'Pv_FechaContabilizacionHasta' para realizar la b�squeda por
+  * @version 1.8 19-12-2016 - Se agregan las variables 'Pv_FechaContabilizacionDesde', 'Pv_FechaContabilizacionHasta' para realizar la búsqueda por
   *                           fechas con las cuales se contabilizan los documentos del departamento de cobranzas
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.9 11-01-2017 - Se modifica el reporte para agregar la columna '# COMPROBANTE' y que muestre el 'No FISICO' con el cual se ha
@@ -56,20 +56,20 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   * @version 1.10 20-01-2017 
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.0 21-01-2017 - Se modifica la funci�n para poder generar los reportes para realizar la respectiva cuadratura de la contabilidad. Para
+  * @version 2.0 21-01-2017 - Se modifica la función para poder generar los reportes para realizar la respectiva cuadratura de la contabilidad. Para
   *                           ello se agregan validaciones dependiendo de cada proceso contable que existe actualmente en base para migrar la
-  *                           informaci�n del TELCOS+ al NAF. Los reportes de contabilidad a generar son los siguientes:
+  *                           información del TELCOS+ al NAF. Los reportes de contabilidad a generar son los siguientes:
   *                           - Reporte:          Reporte de pagos manuales (P_PAG). 
   *                             Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_PAGO_MANUAL
-  *                             Definici�n:       Se obtiene el reporte de pagos manuales dependiendo de la forma de pago de los documentos.
-  *                                               Si la forma de pago es depositable se considera la fecha de dep�sito del documento.
-  *                                               Si la forma de pago no es depositable se considera la fecha de creaci�n del documento.
-  *                                               Adicional se considera para los pagos con forma de pago 'D�bito Bancario' que en su cabecera tengan
+  *                             Definición:       Se obtiene el reporte de pagos manuales dependiendo de la forma de pago de los documentos.
+  *                                               Si la forma de pago es depositable se considera la fecha de depósito del documento.
+  *                                               Si la forma de pago no es depositable se considera la fecha de creación del documento.
+  *                                               Adicional se considera para los pagos con forma de pago 'Débito Bancario' que en su cabecera tengan
   *                                               el campo 'DB_FINANCIERO.INFO_PAGO_CAB.DEBITO_GENERAL_HISTORIAL_ID' en 'NULL'
   *
   *                           - Reporte:          Reporte de pagos masivos (P_PAG_RET). 
   *                             Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_PAGO_RET 
-  *                             Definici�n:       Se obtiene el reporte de pagos masivos considerando la fecha de creaci�n de los documentos y de las
+  *                             Definición:       Se obtiene el reporte de pagos masivos considerando la fecha de creación de los documentos y de las
   *                                               siguientes formas de pago:
   *                                               + CANJ	CANJE
   *                                               + RF8	    RETENCION FUENTE 8%
@@ -88,80 +88,80 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   *                                               + ROL	    ROL DE PAGO
   *                                               + CMBC	COMISIONES BANCARIAS
   *
-  *                           - Reporte:          Reporte de d�bitos (P_DEB). 
+  *                           - Reporte:          Reporte de débitos (P_DEB). 
   *                             Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_DEBITOS
-  *                             Definici�n:       Se obtiene el reporte de pagos con forma de pago 'Debito Bancario' que en su cabecera tengan el
+  *                             Definición:       Se obtiene el reporte de pagos con forma de pago 'Debito Bancario' que en su cabecera tengan el
   *                                               campo 'DB_FINANCIERO.INFO_PAGO_CAB.DEBITO_GENERAL_HISTORIAL_ID' diferente de 'NULL'. Se realiza
-  *                                               dicha verificaci�n para asegurarse que los pagos fueron creados por el proceso de d�bitos del 
-  *                                               TELCOS+. Para este reporte la fecha de validaci�n para obtener el reporte de contabilidad es 
+  *                                               dicha verificación para asegurarse que los pagos fueron creados por el proceso de débitos del 
+  *                                               TELCOS+. Para este reporte la fecha de validación para obtener el reporte de contabilidad es 
   *                                               'DB_FINANCIERO.INFO_DEBITO_GENERAL_HISTORIAL.FE_DOCUMENTO'
   *
-  *                           - Reporte:          Reporte de d�bitos (P_DEP). 
+  *                           - Reporte:          Reporte de débitos (P_DEP). 
   *                             Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_DEPOSITO
-  *                             Definici�n:       Se obtiene el reporte de pagos con forma de pagos que son depositables y para ello se verifica que
+  *                             Definición:       Se obtiene el reporte de pagos con forma de pagos que son depositables y para ello se verifica que
   *                                               el campo 'DB_GENERAL.ADMI_FORMA_PAGO.ES_DEPOSITABLE' tenga valor 'S'. Adicional para este reporte 
-  *                                               la fecha de validaci�n para obtener el reporte de contabilidad es 
+  *                                               la fecha de validación para obtener el reporte de contabilidad es 
   *                                               'DB_FINANCIERO.INFO_DEPOSITO.FE_PROCESADO'
   *
   *                           - Reporte:          Reporte de anticipos por cruce (P_ANT_CRUCE). 
   *                             Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_CRUCE
-  *                             Definici�n:       Se obtiene el reporte de anticipos (ANT) y anticipos por cruce (ANTC) que hayan sido cruzados
-  *                                               contra una factura. Adicional para este reporte la fecha de validaci�n para obtener el reporte de
+  *                             Definición:       Se obtiene el reporte de anticipos (ANT) y anticipos por cruce (ANTC) que hayan sido cruzados
+  *                                               contra una factura. Adicional para este reporte la fecha de validación para obtener el reporte de
   *                                               contabilidad es 'DB_FINANCIERO.INFO_PAGO_CAB.FE_CRUCE'.
-  *                             Consideraci�n Especial: Para este reporte se crea una validaci�n adicional puesto que actualmente el proceso contable
-  *                                                     est� migrando la informaci�n al NAF con la fecha de dep�sito o fecha de creaci�n dependiendo
-  *                                                     de la forma de pago, y no con la fecha de cruce con la cual se est� realizando el movimiento.
-  *                                                     Este cambio ser� subido a partir del '01-FEB-2017' por ello se valida para cuando la fecha de
-  *                                                     consulta del usuario sea menor al '01-FEB-2017' se retorne la informaci�n de los pagos
-  *                                                     considerando la fecha de creaci�n o dep�sito de los pagos, caso contrario considerar� la
+  *                             Consideración Especial: Para este reporte se crea una validación adicional puesto que actualmente el proceso contable
+  *                                                     está migrando la información al NAF con la fecha de depósito o fecha de creación dependiendo
+  *                                                     de la forma de pago, y no con la fecha de cruce con la cual se está realizando el movimiento.
+  *                                                     Este cambio será subido a partir del '01-FEB-2017' por ello se valida para cuando la fecha de
+  *                                                     consulta del usuario sea menor al '01-FEB-2017' se retorne la información de los pagos
+  *                                                     considerando la fecha de creación o depósito de los pagos, caso contrario considerará la
   *                                                     fecha de cruce del pago.  
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.1 03-02-2017 - Se modifica la funci�n para realizar mejoras a los reportes de contabilidad. Las mejoras consisten en agregar la
+  * @version 2.1 03-02-2017 - Se modifica la función para realizar mejoras a los reportes de contabilidad. Las mejoras consisten en agregar la
   *                           columna de 'FECHA CONTABILIDAD' la cual contiene la fecha con la cual ha sido procesado el pago en el NAF, se agrega al
   *                           query principal la columna 'DESCRIPCION_CTA_CONTABLE' la cual contiene el nombre de la cuenta contable a la cual fue
-  *                           migrado el pago en el NAF en caso de existir dicha informaci�n en el detalle del pago, se corrige la informaci�n 
+  *                           migrado el pago en el NAF en caso de existir dicha información en el detalle del pago, se corrige la información 
   *                           presentada en la columna 'BANCO EMPRESA' para que muestre la correcta cuenta o banco a la cual fue migrada la
-  *                           informaci�n del pago al NAF.
+  *                           información del pago al NAF.
   *
   *                           Adicional por reporte se realizaron ciertas mejoras que consisten en:
   *                           Reporte:          Reporte de pagos manuales (P_PAG). 
   *                           Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_PAGO_MANUAL
-  *                           Mejora:           El reporte s�lo debe mostrar los pagos con formas de pago depositables y pago con formas de pago no
+  *                           Mejora:           El reporte sólo debe mostrar los pagos con formas de pago depositables y pago con formas de pago no
   *                                             depositables pero que tienen tipo de forma de pago 'TARJETA_CREDITO', 'DEBITO' y 'DEPOSITO'.
   *                                             Adicional se excluyen los anticipos por cruce ('ANTC') y los pagos por cruce ('PAGC').
-  *                                             Se implementa una mejora en la validaci�n de la fecha de contabilidad la cual consiste en preguntar
+  *                                             Se implementa una mejora en la validación de la fecha de contabilidad la cual consiste en preguntar
   *                                             la tabla cabecera a la cual fue migrado el pago al NAF usando su forma de pago, el tipo de documento,
-  *                                             el proceso ejecutado y el c�digo de la empresa. Para ello se crea la funci�n 
+  *                                             el proceso ejecutado y el código de la empresa. Para ello se crea la función 
   *                                             'DB_FINANCIERO.FNCK_CONSULTS.F_GET_TABLA_NAF_PLANTILLA_CAB' y si retorna 'MIGRA_ARCKMM' se valida con
-  *                                             la fecha de dep�sito del pago, si retorna 'MIGRA_ARCGAE' o NULL se valida con la fecha de creaci�n
+  *                                             la fecha de depósito del pago, si retorna 'MIGRA_ARCGAE' o NULL se valida con la fecha de creación
   *                                             del pago.
   *
   *                           Reporte:          Reporte de anticipos por cruce (P_ANT_CRUCE). 
   *                           Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_CRUCE
-  *                           Mejora:           El reporte s�lo debe mostrar los pagos que no incluyan formas de pago depositables y pago con formas
+  *                           Mejora:           El reporte sólo debe mostrar los pagos que no incluyan formas de pago depositables y pago con formas
   *                                             de pago no depositables pero que tienen tipo de forma de pago 'TARJETA_CREDITO', 'DEBITO' y 
-  *                                             'DEPOSITO', y que est�n en estado 'Activo' y que sean visibles en la opci�n de pagos.
-  *                                             Adicional s�lo se deben incluir los anticipos por cruce ('ANTC') y los pagos por cruce ('PAGC').
-  *                                             Se implementa una mejora en la validaci�n de la fecha de contabilidad cuando el par�metro 
-  *                                             'Lv_ValidadorFechas' es igual a 'N'. La validaci�n consiste en preguntar la tabla cabecera a la cual
+  *                                             'DEPOSITO', y que estén en estado 'Activo' y que sean visibles en la opción de pagos.
+  *                                             Adicional sólo se deben incluir los anticipos por cruce ('ANTC') y los pagos por cruce ('PAGC').
+  *                                             Se implementa una mejora en la validación de la fecha de contabilidad cuando el parámetro 
+  *                                             'Lv_ValidadorFechas' es igual a 'N'. La validación consiste en preguntar la tabla cabecera a la cual
   *                                             fue migrado el pago al NAF usando su forma de pago, el tipo de documento, el proceso ejecutado y el 
-  *                                             c�digo de la empresa. Para ello se crea la funci�n 
+  *                                             código de la empresa. Para ello se crea la función 
   *                                             'DB_FINANCIERO.FNCK_CONSULTS.F_GET_TABLA_NAF_PLANTILLA_CAB' y si retorna 'MIGRA_ARCKMM' se valida con
-  *                                             la fecha de dep�sito del pago, si retorna 'MIGRA_ARCGAE' o NULL se valida con la fecha de creaci�n
+  *                                             la fecha de depósito del pago, si retorna 'MIGRA_ARCGAE' o NULL se valida con la fecha de creación
   *                                             del pago.
   * @author Edson Franco <efranco@telconet.ec>
   * @version 2.2 24-03-2017 - Reporte:          Reporte de anticipos por cruce (P_ANT_CRUCE). 
   *                           Proceso Contable: DB_FINANCIERO.FNCK_CONTABILIZAR_CRUCE
   *                           Mejora:           Se valida que retorne los anticipos cruzados (ANT, ANTC, PAGC) que tengan fecha de cruce. Adicional
-  *                                             se valida con la variable 'Lv_FechaCruceAnticipos' si la fecha de cruce corresponde a d�as anteriores
-  *                                             del '01/02/2017' para validar el cruce contra la fecha de creaci�n o la fecha de dep�sito.
+  *                                             se valida con la variable 'Lv_FechaCruceAnticipos' si la fecha de cruce corresponde a días anteriores
+  *                                             del '01/02/2017' para validar el cruce contra la fecha de creación o la fecha de depósito.
   * @author Edson Franco <efranco@telconet.ec>
   * @version 2.3 31-03-2017 - Se agregan los siguientes reportes:
-  *                              - 'P_PAG_HISTO': Reporte hist�rico de pagos.
-  *                              - 'P_ANT_HISTO': Reporte hist�rico de anticipos.
+  *                              - 'P_PAG_HISTO': Reporte histórico de pagos.
+  *                              - 'P_ANT_HISTO': Reporte histórico de anticipos.
   *                            Adicional se realiza SUBSTR a las columnas 'COMENTARIO PAGO' y 'COMENTARIO PAGO_DET' puesto que debido a la cantidad
-  *                            de caracteres obtenidos en dicha columna no permit�a la generaci�n respectiva del reporte solicitado.
+  *                            de caracteres obtenidos en dicha columna no permitía la generación respectiva del reporte solicitado.
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
   * @version 2.4 27-07-2017 - Se agrega el filtro del Estado del Punto y se modifica los filtros
@@ -172,7 +172,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   *                           EMPRESA_ID
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 2.5 14-08-2017 - Se valida para los reportes 'P_DEB' y 'P_DEP' que se realice la b�squeda por fecha de creaci�n cuando la fecha de
+  * @version 2.5 14-08-2017 - Se valida para los reportes 'P_DEB' y 'P_DEP' que se realice la búsqueda por fecha de creación cuando la fecha de
   *                           consulta sea mayor o igual al '15-Agosto-2017'
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -212,60 +212,60 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_FACTURACION'.
+  * Documentación para PROCEDURE 'P_REPORTE_FACTURACION'.
   * Procedure que me permite obtener datos de los documentos financieros segun parametros indicados.
   *
   * PARAMETROS:
   * @Param varchar2 Pv_TipoDocumento   (tipo de documento a consultar)
-  * @Param varchar2 Pv_NumeroDocumento (n�mero de documento a consultar)
+  * @Param varchar2 Pv_NumeroDocumento (número de documento a consultar)
   * @Param varchar2 Pv_UsrCreacion (usuario de creacion del documento a consultar)
   * @Param varchar2 Pv_EstadoDocumento (estado del documento a consultar)
   * @Param number   Pf_Monto (monto o valor a connsultar)
   * @Param varchar2 Pv_FiltroMonto (operador para rango de consulta)
-  * @Param varchar2 Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Pv_FechaEmisionDesde (rango inicial para consulta por fecha de emisi�n del documento)
-  * @Param varchar2 Pv_FechaEmisionHasta (rango final para consulta por fecha de emisi�n del documento)
-  * @Param varchar2 Pv_FechaAutorizacionDesde (rango inicial para consulta por fecha de autorizaci�n del documento)
-  * @Param varchar2 Pv_FechaAutorizacionHasta (rango final para consulta por fecha de autorizaci�n del documento)
+  * @Param varchar2 Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2 Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2 Pv_FechaEmisionDesde (rango inicial para consulta por fecha de emisión del documento)
+  * @Param varchar2 Pv_FechaEmisionHasta (rango final para consulta por fecha de emisión del documento)
+  * @Param varchar2 Pv_FechaAutorizacionDesde (rango inicial para consulta por fecha de autorización del documento)
+  * @Param varchar2 Pv_FechaAutorizacionHasta (rango final para consulta por fecha de autorización del documento)
   * @Param varchar2 Pv_EmpresaCod (empresa a generar el reporte)
   * @Param varchar2 Pv_UsrSesion  Usuario en sesion
   * @Param varchar2 Pv_PrefijoEmpresa   Prefijo de empresa en sesion
-  * @Param varchar2 Pv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2 Pv_Start (Rango inicial de n�mero de registros del reporte)
-  * @Param varchar2 Pv_Limit (Rango final de n�mero de registros del reporte)
+  * @Param varchar2 Pv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2 Pv_Start (Rango inicial de número de registros del reporte)
+  * @Param varchar2 Pv_Limit (Rango final de número de registros del reporte)
   * @return C_DocumentosFinancieros (cursor con la informacion de documentos financieros.)
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 12-09-2016
   * @author Edgar Holguin <eholguin@telconet.ec> 
-  * @version 1.1 12-10-2016   Se actualizan longitud y tipo de datos en variables utilizadas para visualizaci�n de rpt NDI
+  * @version 1.1 12-10-2016   Se actualizan longitud y tipo de datos en variables utilizadas para visualización de rpt NDI
   * @author Edgar Holguin <eholguin@telconet.ec> 
-  * @version 1.2 17-10-2016   Se realiza correcci�n en consulta de documentos por fecha de emisi�n.
+  * @version 1.2 17-10-2016   Se realiza corrección en consulta de documentos por fecha de emisión.
   * @author Edgar Holguin <eholguin@telconet.ec> 
   * @version 1.3 18-10-2016   Se agrega limpieza de caracteres especiales sobre campo responsable nc
   * @author Edgar Holguin <eholguin@telconet.ec> 
-  * @version 1.4 19-10-2016   Se agregan nuevas columnas al reporte, cambio en forma de obtener descripci�n de documento
-  *                           a partir del detalle (FACP) o del campo observaci�n del historial realizando la consulta
-  *                           por id y usuario de creaci�n del documento.
+  * @version 1.4 19-10-2016   Se agregan nuevas columnas al reporte, cambio en forma de obtener descripción de documento
+  *                           a partir del detalle (FACP) o del campo observación del historial realizando la consulta
+  *                           por id y usuario de creación del documento.
   * @author Edgar Holguin <eholguin@telconet.ec> 
   * @version 1.5 26-10-2016   Se agrega redondeo a dos decimales en consulta de valores correspondientes a  subtotales.
   * @author Ricardo Coello Quezada <rcoello@telconet.ec> 
-  * @version 1.7 16-11-2016   Se quita la estampa de tiempo(Fe_Emisi�n).
+  * @version 1.7 16-11-2016   Se quita la estampa de tiempo(Fe_Emisión).
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.8 22-12-2016 - Se modifica el procedimiento para agregar la columna de valor de compensaci�n para los documentos 'FAC', 'FACP', 'NC'.
+  * @version 1.8 22-12-2016 - Se modifica el procedimiento para agregar la columna de valor de compensación para los documentos 'FAC', 'FACP', 'NC'.
   *                           Adicional se hace limpieza de caracteres especiales a las columnas NOMBRES, APELLIDOS y RAZON_SOCIAL
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.9 22-12-2016 - Se modifica el procedimiento para agregar la columna de fecha de anulaci�n para los documentos 'FAC', 'FACP', 'NC'.
+  * @version 1.9 22-12-2016 - Se modifica el procedimiento para agregar la columna de fecha de anulación para los documentos 'FAC', 'FACP', 'NC'.
   * @author Edson Franco <efranco@telconet.ec>
   * @version 2.0 11-01-2016 - Se modifica el procedimiento para agregar variable local 'Lv_ValorCompensacion' que permita traer las columnas de 
-  *                           compensaci�n solidaria.
+  *                           compensación solidaria.
   *
   * Se modifca el procedimiento para agregar las columnas VALOR_RETENCION_FTE y VALOR_RETENCION_IVA en el reporte,
   * en el query se llama a la funcion actualizada FNCK_CONSULTS.F_GET_VALOR_RETENCIONES
   * @author Hector Ortega <haortega@telconet.ec>
   * @version 1.9 29-12-2016 
   *
-  * Se modifica query para que el c�lculo del campo subtotal cero impuesto se realice a trav�s de una nueva funci�n.
+  * Se modifica query para que el cálculo del campo subtotal cero impuesto se realice a través de una nueva función.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 2.0 19-01-2017 
   *
@@ -276,7 +276,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   * @author Edson Franco <efranco@telconet.ec>
   * @version 2.2 11-05-2017 - Se setean en NULL las variables 'Lv_DescripcionFactura', 'Lv_TipoResponsable', 'Lv_DescripcionArea', 
   *                           'Lv_FacturaAplica', 'Lv_PagoAplica', 'Lv_FechaPagoAplica', 'Lv_Comentario', 'Lv_Multa', 'Lf_ValorRetenciones' en cada
-  *                           registro del reporte para presentar en blanco la columna correspondiente en caso de no encontrar informaci�n.
+  *                           registro del reporte para presentar en blanco la columna correspondiente en caso de no encontrar información.
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 23-10-2017
@@ -306,7 +306,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
 
   /**
    * Documentacion para la funcion F_INFO_CLIENTE_CICLOFAC
-   * Retorna Informaci�n del Cliente como: ciclo de Facturaci�n del cliente
+   * Retorna Información del Cliente como: ciclo de Facturación del cliente
    * 
    * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
    * @version 1.0 23-10-2017
@@ -340,18 +340,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
     RETURN VARCHAR2;  
 
   /*
-  * Documentaci�n para PROCEDURE 'P_GET_PAGOS_VENDEDOR'.
-  * Procedure que me permite obtener lista de pagos por vendedor seg�n filtros enviados como par�metros.
+  * Documentación para PROCEDURE 'P_GET_PAGOS_VENDEDOR'.
+  * Procedure que me permite obtener lista de pagos por vendedor según filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param number         Pn_EmpresaId  (empresa a generar el reporte)
   * @Param varchar2       Pv_PrefijoEmpresa   Prefijo de empresa en sesion
   * @Param varchar2       Pv_UsrSesion  Usuario en sesion
-  * @Param varchar2       Pv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_Identificacion Numero de identificaci�n el vendedor
-  * @Param varchar2       Pv_RazonSocial   Raz�n social del cliente
+  * @Param varchar2       Pv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_Identificacion Numero de identificación el vendedor
+  * @Param varchar2       Pv_RazonSocial   Razón social del cliente
   * @Param varchar2       Pv_Nombres   Nombres del cliente 
   * @Param varchar2       Pv_Apellidos Apellidos del cliente   
   * @Param number         Pn_Start (Rango inicial de consulta)
@@ -381,18 +381,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_REPORTE_PAGOS_VENDEDOR'.
-  * Procedure que me permite generar reporte de pagos por vendedor en formato csv y enviarlo por mail seg�n filtros enviados como par�metros.
+  * Documentación para PROCEDURE 'P_REPORTE_PAGOS_VENDEDOR'.
+  * Procedure que me permite generar reporte de pagos por vendedor en formato csv y enviarlo por mail según filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param number   Pn_EmpresaId  (empresa a generar el reporte)
   * @Param varchar2 Pv_PrefijoEmpresa   Prefijo de empresa en sesion
   * @Param varchar2 Pv_UsrSesion  Usuario en sesion
-  * @Param varchar2 Pv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2 Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Pv_Identificacion Numero de identificaci�n el vendedor
-  * @Param varchar2 Pv_RazonSocial   Raz�n social del cliente
+  * @Param varchar2 Pv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2 Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2 Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2 Pv_Identificacion Numero de identificación el vendedor
+  * @Param varchar2 Pv_RazonSocial   Razón social del cliente
   * @Param varchar2 Pv_Nombres   Nombres del cliente 
   * @Param varchar2 Pv_Apellidos Apellidos del cliente  
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -413,18 +413,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   );
 
   /*
-  * Documentaci�n para la funci�n 'F_GET_PAGOS_VENDEDOR'.
-  * Funci�n que me permite obtener lista de pagos por vendedor seg�n filtros enviados como par�metros.
+  * Documentación para la función 'F_GET_PAGOS_VENDEDOR'.
+  * Función que me permite obtener lista de pagos por vendedor según filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param varchar2 Fn_EmpresaCod (empresa a generar el reporte)
   * @Param varchar2 Fv_PrefijoEmpresa   Prefijo de empresa en sesion
   * @Param varchar2 Fv_UsrSesion  Usuario en sesion
-  * @Param varchar2 Fv_EmailUsrSesion   Email de usuario en sesi�n
-  * @Param varchar2 Fv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Fv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
-  * @Param varchar2 Fv_Identificacion Numero de identificaci�n el vendedor
-  * @Param varchar2 Fv_RazonSocial   Raz�n social del cliente
+  * @Param varchar2 Fv_EmailUsrSesion   Email de usuario en sesión
+  * @Param varchar2 Fv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2 Fv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
+  * @Param varchar2 Fv_Identificacion Numero de identificación el vendedor
+  * @Param varchar2 Fv_RazonSocial   Razón social del cliente
   * @Param varchar2 Fv_Nombres   Nombres del cliente 
   * @Param varchar2 Fv_Apellidos Apellidos del cliente
   * @Param number   Fn_Start   Rango inicial de consulta
@@ -517,19 +517,19 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
 
 
   /*
-  * Documentaci�n para PROCEDURE 'P_GEN_REPORTE_BURO'.
+  * Documentación para PROCEDURE 'P_GEN_REPORTE_BURO'.
   * Procedure que me permite generar el reporte de buro segun parametros enviados.
   *
   * PARAMETROS:
-  * @Param varchar2 Pv_Host                Host de conecci�n para la base de datos
-  * @Param varchar2 Pv_PathFileLogger      Ruta donde se guardar� el log del script
+  * @Param varchar2 Pv_Host                Host de conección para la base de datos
+  * @Param varchar2 Pv_PathFileLogger      Ruta donde se guardará el log del script
   * @Param varchar2 Pv_NameFileLogger      Nombre del log del script
   * @Param varchar2 Pv_PrefijoEmpresa      Empresa del usuario que manda a ejecutar el script para generar el reporte
   * @Param varchar2 Pv_IpSession           Ip del usuario que manda a ejecutar el script para generar el reporte 
   * @Param varchar2 Pv_UsuarioSession      Nombre del usuario que manda a ejecutar el script para generar el reporte 
   * @Param varchar2 Pv_ValorClientesBuenos Valor de deuda permitido para los clientes buenos
   * @Param varchar2 Pv_ValorClientesMalos  Valor de deuda permitido para los clientes malos
-  * @Param varchar2 Pv_DirectorioUpload    Directorio donde se guardar� el reporte a descargar
+  * @Param varchar2 Pv_DirectorioUpload    Directorio donde se guardará el reporte a descargar
   * @Param varchar2 Pv_Ambiente            Si es generado por el usuario o por el job  
   * @Param varchar2 Pv_EmailUsrSesion      Email del usuario que genera el reporte.
   *
@@ -538,18 +538,18 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.1 08-09-2017 Se realiza cambio para que reporte se almacene el el dbserver para posteriormente ser enviado al fileserver.
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.2 15-09-2017 Se realiza cambio en funci�n utilizada para mover el rpt generado del dbserver al fileserver.
+  * @version 1.2 15-09-2017 Se realiza cambio en función utilizada para mover el rpt generado del dbserver al fileserver.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.3 23-01-2018 Se realiza cambio en extensi�n de archivo comprimido a formato .zip
+  * @version 1.3 23-01-2018 Se realiza cambio en extensión de archivo comprimido a formato .zip
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.4 28-02-2018 Se corrige ubicaci�n de l�nea que genera el archivo comprimido en formato zip .
+  * @version 1.4 28-02-2018 Se corrige ubicación de línea que genera el archivo comprimido en formato zip .
   *
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * @version 1.5 01-12-2017 Se agrega la columna de Ciclo de Facturaci�n.
+  * @version 1.5 01-12-2017 Se agrega la columna de Ciclo de Facturación.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.6 02-09-2019 Se agrega columna CANCELACION VOLUNTARIA.
   *
   * @author Gustavo Narea <gnarea@telconet.ec>
@@ -661,7 +661,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
   Lrf_GetAdmiParamtrosDet     SYS_REFCURSOR;
   Lr_GetAdmiParamtrosDet      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;
   --
-  --Variable usada para v�lidar si se deben mostrar los anticipos que han sido cruzados antes de esta fecha, en la cual se implemento una mejora al
+  --Variable usada para válidar si se deben mostrar los anticipos que han sido cruzados antes de esta fecha, en la cual se implemento una mejora al
   --proceso de cruce de anticipos
   Lv_FechaCruceAnticipos      DB_GENERAL.ADMI_PARAMETRO_DET.VALOR3%TYPE                     := '01/02/17';
   --
@@ -2697,9 +2697,9 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNKG_REPORTE_FINANCIERO AS
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|;|,|.|%|"]|[)]+$', ' ')
-              ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-              ,'������,������', 'AEIOUN aeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|;|,|.|%|"]|[)]+$', ' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+              ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
               , Chr(9), ' ')
               , Chr(10), ' ')
               , Chr(13), ' ')
@@ -3073,7 +3073,7 @@ EXCEPTION
 WHEN OTHERS THEN 
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                         'FNKG_REPORTE_FINANCIERO.F_INFO_CLIENTE_CICLOFAC', 
-                                        'Error al obtener informaci�n de CICLO_FACTURACION del cliente
+                                        'Error al obtener información de CICLO_FACTURACION del cliente
                                         (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
                                         || SQLCODE || ' -ERROR- ' || SQLERRM, 
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
@@ -3403,7 +3403,7 @@ WHEN OTHERS THEN
                                                     ' Inicio:'||Lr_InfoReporteHistorial.FE_CREACION;
     Lr_InfoReporteHistorial.FE_ULT_MOD           := SYSDATE;
 
-    --Se crea una transacci�n a estado Pendiente.
+    --Se crea una transacción a estado Pendiente.
     DB_GENERAL.GECK_TRANSACTION.P_INSERT_INFO_TRANSACCIONES(Lr_InfoTransacciones);
 
     --Se crea registro de historial.
@@ -3612,7 +3612,7 @@ WHEN OTHERS THEN
    UTL_FILE.fclose(Lfile_Archivo);
    DBMS_OUTPUT.PUT_LINE( NAF47_TNET.JAVARUNCOMMAND (Lv_Gzip) ) ;  
 
-   --Se actualiza el estado de la transacci�n a estado Activo.
+   --Se actualiza el estado de la transacción a estado Activo.
    DB_GENERAL.GECK_TRANSACTION.P_UPDATE_INFO_TRANSACCIONES(
      Lr_InfoTransacciones.ID_TRANSACCION,
      Pv_UsuarioSession,
@@ -3626,7 +3626,7 @@ WHEN OTHERS THEN
 
    UTL_FILE.FCOPY(Lv_Directorio,Lv_NombreArchivoGz,Lv_Directorio,Lv_NombreArchivoZip);
 
-    -- Si el reporte es generado desde la aplicaci�n se envia correo al usuario confirmando que termin� el proceso.
+    -- Si el reporte es generado desde la aplicación se envia correo al usuario confirmando que terminó el proceso.
    IF Pv_Ambiente = 'TELCOS' THEN
       --
       Lr_GetAliasPlantilla := DB_FINANCIERO.FNCK_CONSULTS.F_GET_ALIAS_PLANTILLA('RPT_DFC');

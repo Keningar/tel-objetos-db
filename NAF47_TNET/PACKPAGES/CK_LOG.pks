@@ -30,7 +30,7 @@ CREATE OR REPLACE package NAF47_TNET.CK_LOG is
 end ck_log;
 /
 
-CREATE OR REPLACE PACKAGE BODY NAF47_TNET.TCK_LOG IS
+CREATE OR REPLACE PACKAGE BODY NAF47_TNET.CK_LOG IS
   
   ------------------------------------
   -- proeso que verifica los saldos --
@@ -169,7 +169,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.TCK_LOG IS
       cta.mes_inicio := Pn_MesInicio;
     end if;
 
-    -- se determina perido anterior al inicial para recuperar saldo final � saldo incial mes inicio --
+    -- se determina perido anterior al inicial para recuperar saldo final ó saldo incial mes inicio --
     if cta.mes_inicio = 1 then
       Ln_AnioAntIni := cta.anio_inicio - 1;
       Ln_MesAntIni := 12;
@@ -316,19 +316,19 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.TCK_LOG IS
       
       -- Total DEP mes diferente
       if nvl(sl.dep_mes,0) != nvl(mv.depositos,0)  then 
-        Lv_Observaciones := Lv_Observaciones||' Saldo Dep�sitos: '||nvl(sl.dep_mes,0)||' Mov Dep�sitos: '||nvl(mv.depositos,0)||chr(13);
+        Lv_Observaciones := Lv_Observaciones||' Saldo Depósitos: '||nvl(sl.dep_mes,0)||' Mov Depósitos: '||nvl(mv.depositos,0)||chr(13);
         Lb_DifLin := true;
       end if;
       
       -- Total CRE mes diferente
       if nvl(sl.cre_mes,0) != nvl(mv.creditos,0)  then 
-        Lv_Observaciones := Lv_Observaciones||' Saldo Cr�ditos: '||nvl(sl.cre_mes,0)||' Mov Cr�ditos: '||nvl(mv.creditos,0)||chr(13);
+        Lv_Observaciones := Lv_Observaciones||' Saldo Créditos: '||nvl(sl.cre_mes,0)||' Mov Créditos: '||nvl(mv.creditos,0)||chr(13);
         Lb_DifLin := true;
       end if;
       
       -- Total DEB mes diferente
       if nvl(sl.deb_mes,0) != nvl(mv.debitos,0) then
-        Lv_Observaciones := Lv_Observaciones||' Saldo D�bitos: '||nvl(sl.deb_mes,0)||' Mov D�bitos: '||nvl(mv.debitos,0)||chr(13);
+        Lv_Observaciones := Lv_Observaciones||' Saldo Débitos: '||nvl(sl.deb_mes,0)||' Mov Débitos: '||nvl(mv.debitos,0)||chr(13);
         Lb_DifLin := true;
       end if;
     end if;

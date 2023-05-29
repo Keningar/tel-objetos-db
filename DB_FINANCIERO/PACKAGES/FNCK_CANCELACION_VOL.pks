@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
 
   /*
-  * Documentaci�n para TYPE 'Lrf_Result'.
+  * Documentación para TYPE 'Lrf_Result'.
   *
-  * Tipo de datos para el retorno de la informaci�n correspondiente a facturas.
+  * Tipo de datos para el retorno de la información correspondiente a facturas.
   *
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.0 12-07-2019
@@ -18,10 +18,10 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
     IS
       REF CURSOR;
   /*
-  * Documentaci�n para TYPE 'TypeArreglo'.
+  * Documentación para TYPE 'TypeArreglo'.
   * Tipo que me permite almacenar datos en forma de array.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 06-12-2022
   */
   TYPE TypeArreglo IS TABLE OF VARCHAR2(2000) INDEX BY BINARY_INTEGER;
@@ -29,7 +29,7 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
   /**
   * Documentacion para el procedimiento 'P_GET_VALORES_FACT'
   *
-  * Funci�n que permite obtener el total de descuentos del punto enviado como par�metro.
+  * Función que permite obtener el total de descuentos del punto enviado como parámetro.
   *
   * @param Pv_EmpresaCod        IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA, Id del punto a consultar
   * @param Pn_IdPtoFacturacion  IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE, Id del punto a consultar
@@ -40,22 +40,22 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
   * @param Pn_NetlifeCloud      OUT DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE, Id del punto a consultar
   * @param Pn_NetlifeAssistance OUT DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE, Id del punto a consultar
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 04-09-2018
   * 
-  * Se modifica el valor total de la instalaci�n por funci�n que eval�a f�rmula de amortizaci�n.
+  * Se modifica el valor total de la instalación por función que evalúa fórmula de amortización.
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.1 07-06-2019  
   *
-  * Se modifica el valor total de la instalaci�n por funci�n que eval�a f�rmula parametrizada en 'FORMULA PROMOCIONAL INSTALACION'.
+  * Se modifica el valor total de la instalación por función que evalúa fórmula parametrizada en 'FORMULA PROMOCIONAL INSTALACION'.
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.2 01-12-2020
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.3 22-03-2021  Se agrega funcionalidad para c�lculo de descuento facturado proveniente de un punto trasladado.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.3 22-03-2021  Se agrega funcionalidad para cálculo de descuento facturado proveniente de un punto trasladado.
   *
   * @author Jonathan Mazon Sanchez <jmazon@telconet.ec>
-  * @version 1.4 28-09-2021  Se agrega funcionalidad para c�lculo del producto ECDF
+  * @version 1.4 28-09-2021  Se agrega funcionalidad para cálculo del producto ECDF
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.5 5-09-2022  Se agrega parametro de Descripcion del Producto, se modifican cursores para que reciban el IdServicio y se modifica 
@@ -78,25 +78,25 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
                                 Pn_ElCanalDelFutbol  OUT DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE);
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_MESES_ACTIVO'
+  * Documentación para la función 'F_GET_MESES_ACTIVO'
   *
-  * Funci�n que permite obtener el n�mero de meses activo de un servicio.
+  * Función que permite obtener el número de meses activo de un servicio.
   * @param  Fn_IdServicio   IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE  recibe el id del servicio.
   * @return NUMBER
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 16-09-2018
   *
-  * Se modifica la funci�n para traer los meses activos del contrato.
-  * se agrega como par�metro id del contrato.
+  * Se modifica la función para traer los meses activos del contrato.
+  * se agrega como parámetro id del contrato.
   * @param  Fn_IdContrato   IN  DB_COMERCIAL.INFO_CONTRATO.ID_CONTRATO%TYPE  recibe el id del contrato.
   * @author Josselhin Moreira Q. <kjmoreira@telconet.ec>
   * @version 1.1 27-06-2019
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.2 08-01-2020 Se elimina el par�metro idContrato, se agregan nuevas consultas .
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.2 08-01-2020 Se elimina el parámetro idContrato, se agregan nuevas consultas .
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.3 03-03-2021 Se agrega observaci�n por CRS para servicios antiguos
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.3 03-03-2021 Se agrega observación por CRS para servicios antiguos
   *
   * @author Emmanuel Martillo <emartillo@telconet.ec>
   * @version 1.4 18-10-2022 Se agrega FechadeOrigenNetlifecam 
@@ -108,12 +108,12 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
     RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_TOTAL_FACTURADO'.
+  * Documentación para la función 'F_GET_TOTAL_FACTURADO'.
   *
-  * Funci�n que permite obtener el total facturado del servicio con respecto a la fecha de vigencia enviada como par�metro.
-  * @param  Fv_DescProducto   IN DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE   Recibe la descripci�n del producto.
+  * Función que permite obtener el total facturado del servicio con respecto a la fecha de vigencia enviada como parámetro.
+  * @param  Fv_DescProducto   IN DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE   Recibe la descripción del producto.
   * @param  Fn_IdServicio     IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE            Recibe el id del servicio.
-  * @param  Fd_FeCreacionHist IN DB_COMERCIAL.INFO_SERVICIO_HISTORIAL.FE_CREACION%TYPE  Recibe la fecha de creaci�n del historial del servicio.
+  * @param  Fd_FeCreacionHist IN DB_COMERCIAL.INFO_SERVICIO_HISTORIAL.FE_CREACION%TYPE  Recibe la fecha de creación del historial del servicio.
   * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -125,11 +125,11 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
     RETURN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE; 
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_DCTO_FACTURADO'.
+  * Documentación para la función 'F_GET_DCTO_FACTURADO'.
   *
-  * Funci�n que permite obtener el total de descuentos facturados del punto enviado como par�metro.
+  * Función que permite obtener el total de descuentos facturados del punto enviado como parámetro.
   * @param  Fn_IdPunto     DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                                   Recibe el id del punto.
-  * @param  Fv_TipoDoc     DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE Recibe el c�digo de tipo de documento.
+  * @param  Fv_TipoDoc     DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE Recibe el código de tipo de documento.
   * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE                  Retorna el valor total facturado.  
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-10-2018
@@ -138,15 +138,15 @@ CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CANCELACION_VOL AS
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.1 12-07-2019
   *
-  * Se modifica query para que tome el valor sumarizado de decuentos, se excluye facturas de instalaci�n.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * Se modifica query para que tome el valor sumarizado de decuentos, se excluye facturas de instalación.
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.2 08-05-2020
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.3 10-05-2020 Se mejora condici�n para excluir documentos con caracter�stica de cambio de forma de pago y por instalaci�n.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.3 10-05-2020 Se mejora condición para excluir documentos con característica de cambio de forma de pago y por instalación.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.4 24-03-2021 Se agrega par�metro tipo de documento.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.4 24-03-2021 Se agrega parámetro tipo de documento.
   */    
 FUNCTION F_GET_DCTO_FACTURADO(Fn_IdPunto     IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                               Fv_TipoDoc     IN DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE)
@@ -154,12 +154,12 @@ FUNCTION F_GET_DCTO_FACTURADO(Fn_IdPunto     IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO
 
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_DCTO_FACTURADO_SERVICIO'.
+  * Documentación para la función 'F_GET_DCTO_FACTURADO_SERVICIO'.
   *
-  * Funci�n que permite obtener el total de descuentos facturados del punto y servicio enviado como par�metro.
+  * Función que permite obtener el total de descuentos facturados del punto y servicio enviado como parámetro.
   * @param  Fn_IdPunto     DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                                   Recibe el id del punto.
   * @param  Fn_IdServicio  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE                             Recibe el id del servicio.
-  * @param  Fv_TipoDoc     DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE Recibe el c�digo de tipo de documento.
+  * @param  Fv_TipoDoc     DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE Recibe el código de tipo de documento.
   * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE                  Retorna el valor total facturado.  
   *
   * @author Hector Lozano <hlozano@telconet.ec>
@@ -172,9 +172,9 @@ FUNCTION F_GET_DCTO_FACTURADO_SERVICIO(Fn_IdPunto     IN DB_COMERCIAL.INFO_PUNTO
 
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_NUM_TAREAS'.
+  * Documentación para la función 'F_GET_NUM_TAREAS'.
   *
-  * Funci�n que permite obtener el n�mero de tareas asociadas al punto enviado como par�metro.
+  * Función que permite obtener el número de tareas asociadas al punto enviado como parámetro.
   * @param  Fn_IdPunto         DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                             Recibe el id del punto.
   * @param  Fv_NombreTarea     DB_SOPORTE.ADMI_TAREA.NOMBRE_TAREA%TYPE                           Recibe el nombre de la tarea.
   * @param  Fv_PrefijoEmpresa  DB_COMERCIAL.INFO_EMPRESA_GRUPO%TYPE                              Recibe el prefijo.
@@ -190,17 +190,17 @@ FUNCTION F_GET_NUM_TAREAS(Fn_PuntoId        IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%
   RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_TIPOMEDIO'.
+  * Documentación para la función 'F_GET_TIPOMEDIO'.
   *
-  * Funci�n que permite obtener el tipo medio.
+  * Función que permite obtener el tipo medio.
   * @param  Fn_ServicioId DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE  Recibe el id del servicio.
   * @param  Fv_Estado     DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE        Recibe el estado del servicio.
   * @return VARCHAR2
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-10-2018
   *
-  * Se modifica la funci�n para traer los tipo de medio para el proceso de Cambio de forma de pago, 
-  * Filtrando por el punto, se agrega como par�metro id del punto.
+  * Se modifica la función para traer los tipo de medio para el proceso de Cambio de forma de pago, 
+  * Filtrando por el punto, se agrega como parámetro id del punto.
   * @param  Fn_IdPunto         DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE  Recibe el id del punto.
   * @author Josselhin Moreira Q. <kjmoreira@telconet.ec>
   * @version 1.1 27-09-2019
@@ -210,8 +210,8 @@ FUNCTION F_GET_NUM_TAREAS(Fn_PuntoId        IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%
                            Fn_IdPunto    DB_COMERCIAL.INFO_SERVICIO.PUNTO_ID%TYPE DEFAULT NULL)
     RETURN VARCHAR2;
   /**
-  * Documentaci�n para la funci�n F_GET_SERVICIOS_BY_PTO.
-  * Funci�n que retorna los servicios seg�n los criterios enviados como Par�metro.
+  * Documentación para la función F_GET_SERVICIOS_BY_PTO.
+  * Función que retorna los servicios según los criterios enviados como Parámetro.
   *
   * @param  Fn_PuntoId IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE      Recibe el id del punto.
   * @param  Fv_Codigo  IN DB_COMERCIAL.ADMI_PRODUCTO.CODIGO_PRODUCTO Recibe el codigo del producto.
@@ -226,8 +226,8 @@ FUNCTION F_GET_NUM_TAREAS(Fn_PuntoId        IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%
     RETURN SYS_REFCURSOR;
 
   /**
-  * Documentaci�n para la funci�n F_GET_TOTAL_FACT_INST.
-  * Funci�n que retorna el total facturado por instalaci�n.
+  * Documentación para la función F_GET_TOTAL_FACT_INST.
+  * Función que retorna el total facturado por instalación.
   *
   * @param  Fn_PuntoId IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE  Recibe el id del punto.
   * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE   Retorna el total facturado.
@@ -242,8 +242,8 @@ FUNCTION F_GET_TOTAL_FACT_INST(Fn_IdPunto     IN DB_COMERCIAL.INFO_PUNTO.ID_PUNT
 
 
   /**
-  * Documentaci�n para la funci�n F_GET_TOTAL_NC_FACT_INST.
-  * Funci�n que retorna el valor total de las notas de cr�dito aplicados a la factura de instalaci�n.
+  * Documentación para la función F_GET_TOTAL_NC_FACT_INST.
+  * Función que retorna el valor total de las notas de crédito aplicados a la factura de instalación.
   *
   * @param  Fn_PuntoId IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE  Recibe el id del punto.
   * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE   Retorna el total facturado.
@@ -254,64 +254,64 @@ FUNCTION F_GET_TOTAL_NC_FACT_INST(Fn_IdPunto     IN DB_COMERCIAL.INFO_PUNTO.ID_P
   RETURN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE; 
 
   /**
-  * Documentaci�n para la funci�n F_GET_TOTAL_FACT_PRO
-  * Funcion que retorna el total facturado por instalaci�n.
+  * Documentación para la función F_GET_TOTAL_FACT_PRO
+  * Funcion que retorna el total facturado por instalación.
   *
-  * @param  Fv_CodProducto DB_COMERCIAL.ADMI_PRODUCTO.CODIGO_PRODUCTO%TYPE  Recibe el c�digo de producto.
+  * @param  Fv_CodProducto DB_COMERCIAL.ADMI_PRODUCTO.CODIGO_PRODUCTO%TYPE  Recibe el código de producto.
   * @param  Fn_IdPunto DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE  Recibe el id del punto.
-  * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE   Retorna el total facturado del producto enviado como par�metro.
+  * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE   Retorna el total facturado del producto enviado como parámetro.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 26-10-2018
   * 
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.1 20-12-2022 Se elimina como par�metro el id punto y se agrega el id servicio.
+  * @version 1.1 20-12-2022 Se elimina como parámetro el id punto y se agrega el id servicio.
   */
 FUNCTION F_GET_TOTAL_FACT_PRO(Fv_CodProducto    DB_COMERCIAL.ADMI_PRODUCTO.CODIGO_PRODUCTO%TYPE,
                               Fn_IdServicio     DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE)
   RETURN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE;
 
 /**
-  * Documentaci�n para la funci�n 'F_GET_PERMANENCIA_VIGENTE'
+  * Documentación para la función 'F_GET_PERMANENCIA_VIGENTE'
   *
-  * Funci�n que permite obtener la permanencia m�nima desde la fecha de activaci�n del servicio y del contrato.
-  * @param  Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  recibe el c�digo de la empresa.
+  * Función que permite obtener la permanencia mínima desde la fecha de activación del servicio y del contrato.
+  * @param  Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  recibe el código de la empresa.
   * @param  Fn_IdPunto      IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE             recibe el id del punto.
   * @return NUMBER  
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.0 18-06-2019
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.1 08-01-2020 Se elimina como par�metro el id del contrato.
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.1 08-01-2020 Se elimina como parámetro el id del contrato.
   */    
   FUNCTION F_GET_PERMANENCIA_VIGENTE (Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                       Fn_IdPunto      IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE)
     RETURN NUMBER;
 
   /**
-  * Documentaci�n para la funcion F_GET_FE_ACT_INT.
-  * Funci�n que retorna la fecha de activaci�n del servicio de Internet.
+  * Documentación para la funcion F_GET_FE_ACT_INT.
+  * Función que retorna la fecha de activación del servicio de Internet.
   *
   * @param  Fn_PuntoId IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE  Recibe el id del punto.
-  * @return VARCHAR2   Retorna la fecha de activaci�n en formato DD-MM-YYYY.
+  * @return VARCHAR2   Retorna la fecha de activación en formato DD-MM-YYYY.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 28-11-2018
   *    
-  * Se modifican condiciones de b�squeda en el historial del servicio.
-  * Se inserta la acci�n 'CONFIRMARCANCELACIONVOLUN' en la b�squeda de la activaci�n del sercicio.
+  * Se modifican condiciones de búsqueda en el historial del servicio.
+  * Se inserta la acción 'CONFIRMARCANCELACIONVOLUN' en la búsqueda de la activación del sercicio.
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.1 03-07-2019
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.1 03-03-2021 Se agrega observaci�n por CRS para servicios antiguos
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.1 03-03-2021 Se agrega observación por CRS para servicios antiguos
   *
   */
 FUNCTION F_GET_FE_ACT_INT(Fn_IdPunto   IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE)
   RETURN VARCHAR2;
 
 /**
-  * Documentaci�n para la funci�n 'F_GET_CANCEL_VOL_INST_AMORT'.
+  * Documentación para la función 'F_GET_CANCEL_VOL_INST_AMORT'.
   *
-  * Funci�n que permite obtener la permanencia el valor de la instalaci�n desde la evaluaci�n de la f�rmula de amortizaci�n.
-  * @param  Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  recibe el c�digo de la empresa.
+  * Función que permite obtener la permanencia el valor de la instalación desde la evaluación de la fórmula de amortización.
+  * @param  Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  recibe el código de la empresa.
   * @param  Fn_IdPunto      IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE             recibe el id del punto.
   * @param  Pn_IdServicio   IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE  recibe el id del servicio.
   * @return NUMBER
@@ -319,8 +319,8 @@ FUNCTION F_GET_FE_ACT_INT(Fn_IdPunto   IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE)
   * @author Madeline Haz <mhaz@telconet.ec>
   * @version 1.0 21-06-2019
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
-  * @version 1.1 08-01-2020 Se reversa como par�metro el id del contrato
+  * @author Edgar Holguín <eholguin@telconet.ec>
+  * @version 1.1 08-01-2020 Se reversa como parámetro el id del contrato
   */
 
 FUNCTION F_GET_CANCEL_VOL_INST_AMORT (Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -329,9 +329,9 @@ FUNCTION F_GET_CANCEL_VOL_INST_AMORT (Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPR
     RETURN NUMBER;  
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_FECHA_CONTRATO'
+  * Documentación para la función 'F_GET_FECHA_CONTRATO'
   *
-  * Funci�n que permite obtener la fecha de creaci�n del contrato.
+  * Función que permite obtener la fecha de creación del contrato.
   * @param  Fn_IdContrato   IN DB_COMERCIAL.INFO_CONTRATO.ID_CONTRATO%TYPE recibe el id del contrato.
   * @return VARCHAR2
   *
@@ -343,9 +343,9 @@ FUNCTION F_GET_CANCEL_VOL_INST_AMORT (Fv_EmpresaCod   IN  DB_COMERCIAL.INFO_EMPR
 
 
 /**
-  * Documentacion para la funci�n 'F_GET_TIPO_CUENTA_SELEC'.
+  * Documentacion para la función 'F_GET_TIPO_CUENTA_SELEC'.
   *
-  * Funci�n que obtiene la forma de pago y el tipo de cuenta seleccionados desde el formulario.
+  * Función que obtiene la forma de pago y el tipo de cuenta seleccionados desde el formulario.
   *    
   * @param   Fn_IdFormaPago     IN  DB_GENERAL.ADMI_FORMA_PAGO.ID_FORMA_PAGO%TYPE    recibe el id de la forma de pago.
   * @param   Fn_IdTipoCuenta    IN  DB_GENERAL.ADMI_TIPO_CUENTA.ID_TIPO_CUENTA%TYPE  recibe el id del tipo de cuenta.
@@ -359,9 +359,9 @@ FUNCTION F_GET_TIPO_CUENTA_SELEC(Fn_IdFormaPago  IN DB_GENERAL.ADMI_FORMA_PAGO.I
   RETURN VARCHAR2;    
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_FORMA_PAGO_ACT'.
+  * Documentación para la función 'F_GET_FORMA_PAGO_ACT'.
   *
-  * Funci�n que permite obtener la forma de pago actual del punto para el proceso de Cambio de Forma de Pago.
+  * Función que permite obtener la forma de pago actual del punto para el proceso de Cambio de Forma de Pago.
   * @param  Fn_IdContrato   IN  DB_COMERCIAL.INFO_CONTRATO.ID_CONTRATO%TYPE       recibe el id del contrato.
   * @return VARCHAR2
   *
@@ -372,9 +372,9 @@ FUNCTION F_GET_TIPO_CUENTA_SELEC(Fn_IdFormaPago  IN DB_GENERAL.ADMI_FORMA_PAGO.I
     RETURN VARCHAR2;      
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_FORMA_PAGO_HIST'.
+  * Documentación para la función 'F_GET_FORMA_PAGO_HIST'.
   *
-  * Funci�n que obtiene la forma de pago  del historial del punto y si esta gener� o no factura.
+  * Función que obtiene la forma de pago  del historial del punto y si esta generó o no factura.
   * @param  Fn_IdPunto      IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE    recibe el id del punto.
   * @return VARCHAR2
   *
@@ -385,10 +385,10 @@ FUNCTION F_GET_TIPO_CUENTA_SELEC(Fn_IdFormaPago  IN DB_GENERAL.ADMI_FORMA_PAGO.I
     RETURN VARCHAR2;  
 
 /**
-  * Documentaci�n para la funci�n 'F_GET_BASE_INSTALACION_FP'.
+  * Documentación para la función 'F_GET_BASE_INSTALACION_FP'.
   *
-  * Funci�n que permite obtener la base monetaria de la instalaci�n a amortizar 
-  * seg�n la forma de pago Actual y la seleccionada por parte del cliente.  
+  * Función que permite obtener la base monetaria de la instalación a amortizar 
+  * según la forma de pago Actual y la seleccionada por parte del cliente.  
   * @param  Fv_TipoFormaPagoSelec   IN  DB_GENERAL.ADMI_FORMA_PAGO.DESCRIPCION_FORMA_PAGO%TYPE  recibe la forma de pago seleccionada.
   * @param  Fn_IdContrato           IN  DB_COMERCIAL.INFO_CONTRATO.ID_CONTRATO%TYPE             recibe el id del contrato.
   * @return NUMBER
@@ -402,7 +402,7 @@ FUNCTION F_GET_BASE_INSTALACION_FP(Fv_TipoFormaPagoSelec   IN  DB_GENERAL.ADMI_F
 RETURN NUMBER;
 
 /**
-  * Documentaci�n para el procedimiento 'P_GET_FACT_PROM_MENSUALES'
+  * Documentación para el procedimiento 'P_GET_FACT_PROM_MENSUALES'
   *
   * Procedimiento que permite obtener el valor total del descuento realizado a las facturas mensuales.
   * @param  Fn_IdPunto      IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE    recibe el id del punto.
@@ -416,8 +416,8 @@ RETURN NUMBER;
 PROCEDURE P_GET_FACT_PROM_MENSUALES (Pn_IdPunto       IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,                                                                          
                                      Prf_Result       OUT Lrf_Result)  ;
   /**
-  * Documentaci�n para el procedimiento P_RPT_CANC_NOFACTURADAS
-  * Procedimiento que realiza el env�o del reporte de cancelaciones no facturadas.
+  * Documentación para el procedimiento P_RPT_CANC_NOFACTURADAS
+  * Procedimiento que realiza el envío del reporte de cancelaciones no facturadas.
   *
   * @param  Pv_PrefijoEmpresa DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  Recibe el prefijo empresa.
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -427,12 +427,12 @@ PROCEDURE P_GET_FACT_PROM_MENSUALES (Pn_IdPunto       IN  DB_COMERCIAL.INFO_PUNT
 PROCEDURE P_RPT_CANC_NOFACTURADAS(Pv_PrefijoEmpresa   IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE);
 
   /**
-  * Documentaci�n para el procedimiento P_GET_FACTURAS_BY_PTOCARACTID
-  * Procedimiento que retorna el listado de facturas asocidas al punto enviado como par�metro.
+  * Documentación para el procedimiento P_GET_FACTURAS_BY_PTOCARACTID
+  * Procedimiento que retorna el listado de facturas asocidas al punto enviado como parámetro.
   * Costo de query: 42
   *
   * @param  Pn_PuntoId DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                              Recibe el id del punto.
-  * @param  Pn_CaracteristicaId  DB_COMERCIAL.ADMI_CARACTERISTICA.ID_CARACTERISTICA%TYPE  Recibe el id de la caracter�stica a consultar.
+  * @param  Pn_CaracteristicaId  DB_COMERCIAL.ADMI_CARACTERISTICA.ID_CARACTERISTICA%TYPE  Recibe el id de la característica a consultar.
   * @param  Prf_Facturas                                                                  Cursor de salida.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 06-09-2019
@@ -444,7 +444,7 @@ PROCEDURE P_RPT_CANC_NOFACTURADAS(Pv_PrefijoEmpresa   IN  DB_COMERCIAL.INFO_EMPR
       Prf_Facturas         OUT SYS_REFCURSOR);          
 
    /**
-    * Documentaci�n para TYPE 'T_ValorTotal'.
+    * Documentación para TYPE 'T_ValorTotal'.
     * Record para almacenar la data enviada al BULK.
     * @author Hector Lozano <hlozano@telconet.ec>
     * @version 1.0 01-12-2020
@@ -452,10 +452,10 @@ PROCEDURE P_RPT_CANC_NOFACTURADAS(Pv_PrefijoEmpresa   IN  DB_COMERCIAL.INFO_EMPR
     TYPE T_ValorTotal IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_ValorTotal INDEX BY PLS_INTEGER;  
 
    /**
-    * Documentaci�n para la funci�n 'F_GET_DESC_INST_PROMO'.
+    * Documentación para la función 'F_GET_DESC_INST_PROMO'.
     *
-    * Funci�n que permite obtener el valor promocional por instalaci�n del servicio enviado como par�metro.
-    * @param  Fv_EmpresaCod         IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  recibe el c�digo de la empresa.
+    * Función que permite obtener el valor promocional por instalación del servicio enviado como parámetro.
+    * @param  Fv_EmpresaCod         IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  recibe el código de la empresa.
     * @param  Fn_IdPunto            IN  DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE             recibe el id del punto.
     * @param  Fn_IdServicio         IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE        recibe el id del servicio.
     * @param  Fv_DescProducto       IN VARCHAR2                                           recibe la descripcion del producto.
@@ -465,8 +465,8 @@ PROCEDURE P_RPT_CANC_NOFACTURADAS(Pv_PrefijoEmpresa   IN  DB_COMERCIAL.INFO_EMPR
     * @author Hector Lozano <hlozano@telconet.ec>
     * @version 1.0 01-12-2020
     *
-    * @author Edgar Holgu�n <eholguin@telconet.ec>
-    * @version 1.1 25-02-2021 Se agrega b�squeda de id de servicio facturado por instalaci�n para c�lculo de porcentaje de descuento.
+    * @author Edgar Holguín <eholguin@telconet.ec>
+    * @version 1.1 25-02-2021 Se agrega búsqueda de id de servicio facturado por instalación para cálculo de porcentaje de descuento.
     *
     * @author Hector Lozano <hlozano@telconet.ec>
     * @version 1.2 5-09-2022 Se agrega parametro de descripcion de producto.
@@ -480,13 +480,13 @@ PROCEDURE P_RPT_CANC_NOFACTURADAS(Pv_PrefijoEmpresa   IN  DB_COMERCIAL.INFO_EMPR
 
 
   /**
-  * Documentaci�n para la funcion F_GET_SERVICIO_ID_FACT_INST
+  * Documentación para la funcion F_GET_SERVICIO_ID_FACT_INST
   * Costo 177
-  * La funcion retorna el id servicio de la factura de instalaci�n .
+  * La funcion retorna el id servicio de la factura de instalación .
   *
   * @param Fn_PuntoId  IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.PUNTO_ID%TYPE
   * 
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 25-02-2021 
   */
 
@@ -496,18 +496,18 @@ PROCEDURE P_RPT_CANC_NOFACTURADAS(Pv_PrefijoEmpresa   IN  DB_COMERCIAL.INFO_EMPR
 
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_DCTO_BY_PRODUCTO'.
+  * Documentación para la función 'F_GET_DCTO_BY_PRODUCTO'.
   * Costo: 45
-  * Funci�n que permite obtener el total de descuentos facturados del producto enviado como par�metro en el punto.
+  * Función que permite obtener el total de descuentos facturados del producto enviado como parámetro en el punto.
   * @param  Fn_IdPunto          DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                  Recibe el id del punto.
-  * @param  Fv_CodigoProducto   DB_COMERCIAL.ADMI_PRODUCTO.CODIGO_PRODUCTO %TYPE       Recibe el c�digo del producto.
-  * @param  Fv_TipoDoc          DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE  Recibe el c�digo del tipo de documento.
+  * @param  Fv_CodigoProducto   DB_COMERCIAL.ADMI_PRODUCTO.CODIGO_PRODUCTO %TYPE       Recibe el código del producto.
+  * @param  Fv_TipoDoc          DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE  Recibe el código del tipo de documento.
   * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.VALOR_FACPRO_DETALLE%TYPE      Retorna el valor total facturado.  
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 03-03-2021
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.1 29-08-2022 Se agrega parametro Fn_IdServicio,para obtener el total de descuentos facturados del punto y id_servicio enviado como par�metro.
+  * @version 1.1 29-08-2022 Se agrega parametro Fn_IdServicio,para obtener el total de descuentos facturados del punto y id_servicio enviado como parámetro.
   */    
 FUNCTION F_GET_DCTO_BY_PRODUCTO(Fn_IdPunto           IN DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE,
                                 Fn_IdServicio        IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -518,12 +518,12 @@ FUNCTION F_GET_DCTO_BY_PRODUCTO(Fn_IdPunto           IN DB_COMERCIAL.INFO_PUNTO.
   /**
   * Documentacion para la funcion F_GET_ID_PTO_TRASLADADO
   *
-  * Funci�n que retorna el id del punto trasladado con respecto al id de servicio activo enviado como par�metro.
+  * Función que retorna el id del punto trasladado con respecto al id de servicio activo enviado como parámetro.
   *
   * @param Fn_ServicioId            IN _COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE
   * return Fn_PuntoId               DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE
   * 
-  * @author Edgar Holgu�n <eholgu�n@telconet.ec>
+  * @author Edgar Holguín <eholguín@telconet.ec>
   * @version 1.0 19-03-2021 
   */
   FUNCTION F_GET_ID_PTO_TRASLADADO(
@@ -533,13 +533,13 @@ FUNCTION F_GET_DCTO_BY_PRODUCTO(Fn_IdPunto           IN DB_COMERCIAL.INFO_PUNTO.
   /**
   * Documentacion para procedimiento P_SPLIT
   *
-  * Procedimiento que permite dividir una cadena en subcadenas seg�n el caracter delimitador enviado como par�metro. 
+  * Procedimiento que permite dividir una cadena en subcadenas según el caracter delimitador enviado como parámetro. 
   *
   * @param Pv_Cadena 
   * @param Pv_Caracter                       
   * return Pr_Arreglo               
   * 
-  * @author Edgar Holgu�n <eholgu�n@telconet.ec>
+  * @author Edgar Holguín <eholguín@telconet.ec>
   * @version 1.0 06-12-2021 
   */
   PROCEDURE P_SPLIT(
@@ -581,7 +581,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_CANCELACION_VOL AS
       AND DET.EMPRESA_COD      =  Cv_EmpresaCod
       AND CAB.NOMBRE_PARAMETRO =  Cv_NombreParametro;
 
-  --Cursor que sirve para  obtener para obtener las caracter�sticas seg�n los filtros enviados como par�metro.
+  --Cursor que sirve para  obtener para obtener las características según los filtros enviados como parámetro.
     CURSOR C_GET_PARAM(Cv_EmpresaCod VARCHAR2, Cv_NombreParametro VARCHAR2, Cv_Modulo VARCHAR2, Cv_Estado VARCHAR2) IS
       SELECT DET.VALOR1,
              DET.VALOR2,
@@ -773,7 +773,7 @@ CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_CANCELACION_VOL AS
     Lv_TareaNetlAssistance        DB_SOPORTE.ADMI_TAREA.NOMBRE_TAREA%TYPE                                       := 'NETLIFE ASSISTANCE';
     Lv_DescripcionProducto        DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE                          := 'NetlifeCloud';
     Lv_DescProdNtlAssistance      DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE                          := 'NetlifeAssistance';
-    Lv_DescripcionProductoECDF    DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE                          := 'El Canal Del F�tbol';
+    Lv_DescripcionProductoECDF    DB_COMERCIAL.ADMI_PRODUCTO.DESCRIPCION_PRODUCTO%TYPE                          := 'El Canal Del Fútbol';
     Lv_NombreTecnicoProdECDF      DB_COMERCIAL.ADMI_PRODUCTO.NOMBRE_TECNICO%TYPE                                := 'ECDF';
     Lv_DescripcionCaractECDF      DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE              := 'FECHA_ACTIVACION';
     Lv_NombreParamFechaMinima     DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE                           := 'PRODUCTO_FECHA_MINIMA_SUSCRIPCION';
@@ -2579,7 +2579,7 @@ FUNCTION F_GET_SERVICIO_ID_FACT_INST(Pn_PuntoId DB_COMERCIAL.INFO_SERVICIO.PUNTO
         RETURN Ln_IdServicioFactInst;
     EXCEPTION
         WHEN OTHERS THEN
-            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('Facturas de instalaci�n',
+            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('Facturas de instalación',
                                           'FNCK_CANCELACION_VOL.F_GET_SERVICIO_ID_FACT_INST',
                                           'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK ||
                                           ' ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE);
@@ -2754,4 +2754,3 @@ END F_GET_DCTO_BY_PRODUCTO;
 
 END FNCK_CANCELACION_VOL;
 /
-

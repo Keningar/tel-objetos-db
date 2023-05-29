@@ -141,7 +141,7 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.Inact_compra(cia_p          in Varchar2,
   --
   Lr_ProductoSerie C_PRODUCTO_SERIE%ROWTYPE := NULL;
 
-  -- vmmoreno: validacion de ordenes de compras que no valide la diferencia entre unidades ingresadas y n�mero de series.
+  -- vmmoreno: validacion de ordenes de compras que no valide la diferencia entre unidades ingresadas y numero de series.
   Cursor C_Parametro_Serie is
     SELECT A.PARAMETRO
       FROM NAF47_TNET.GE_PARAMETROS A, NAF47_TNET.GE_GRUPOS_PARAMETROS B
@@ -195,7 +195,7 @@ BEGIN
   -- llindao: se valida el numeros de serie
 
   --vmmoreno
-  /*Se parametriza el tipo de documento Compras para que que no valide cuando existe diferencias entre unidades ingresadas y n�mero de series.
+  /*Se parametriza el tipo de documento Compras para que que no valide cuando existe diferencias entre unidades ingresadas y numero de series.
   22-04-2021*/
 
   IF C_PARAMETRO_SERIE%ISOPEN THEN

@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
     /**
-    * Documentaci�n para el procedimiento P_GUARDAR_FOTO_EMPLEADO
+    * Documentación para el procedimiento P_GUARDAR_FOTO_EMPLEADO
     *
     * Proceso encargado de detectar guardar foto de empleados en servidor nfs
     *
@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
                                       Pn_CodRespuesta   OUT NUMBER,
                                       Pv_MsjRespuesta   OUT VARCHAR2);
         /**
-    * Documentaci�n para el procedimiento P_GUARDAR_ARCHIVO_NFS
+    * Documentación para el procedimiento P_GUARDAR_ARCHIVO_NFS
     *
     * Proceso encargado de detectar guardar foto de empleados en servidor nfs
     *
@@ -55,13 +55,13 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_ARCHIVOS_EMPLEADOS AS
         /**
   * Documentacion para el procedimiento P_METODO_POST
   *
-  * M�todo encargado del consumo de webservice P_METODO_POST
+  * Método encargado del consumo de webservice P_METODO_POST
   *
   * @param Pv_Url             IN  VARCHAR2 Recibe la url del webservice
-  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers din�micos
+  * @param Pcl_Headers        IN  CLOB     Recibe un json de headers dinámicos
   * @param Pcl_Content        IN  CLOB     Recibe un json request
-  * @param Pn_Code            OUT NUMBER   Retorna c�digo de error
-  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacci�n
+  * @param Pn_Code            OUT NUMBER   Retorna código de error
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna mensaje de transacción
   * @param Pcl_Data           OUT CLOB     Retorna un json respuesta del webservice
   *
   * @author Liseth Chunga <lchunga@telconet.ec>

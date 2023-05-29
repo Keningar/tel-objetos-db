@@ -30,22 +30,22 @@ DECLARE
     * @author Jorge Guerrero <jguerrerop@telconet.ec>
     * @version 1.5 05-10-2017 Se modifica el trigger para que se guarde el ciclo del documento en la tabla INFO_DOCUMENTO_CARACTERISTICA
     * @author Jorge Guerrero <jguerrerop@telconet.ec>
-    * @version 1.6 24-10-2017 Se modifica el trigger para guardar las caracteristicas del mes y a�o de consumo de la factura.
+    * @version 1.6 24-10-2017 Se modifica el trigger para guardar las caracteristicas del mes y año de consumo de la factura.
     * @author Luis Cabrera <lcabrera@telconet.ec>
-    * @version 1.7 - Se agrega validaci�n cuando se actualiza la fecha de emisi�n. Se escribe el mes y a�o de consumo de la nueva fe_emision.
-    *              - Aplican facturas y facturas proporcionales que no est�n cerradas.
-    *              - Se modifica la caracter�stica de mes y a�o de consumo seg�n el mes de consumo actual del ciclo al insertarse.
+    * @version 1.7 - Se agrega validación cuando se actualiza la fecha de emisión. Se escribe el mes y año de consumo de la nueva fe_emision.
+    *              - Aplican facturas y facturas proporcionales que no estén cerradas.
+    *              - Se modifica la característica de mes y año de consumo según el mes de consumo actual del ciclo al insertarse.
     * @since 24-09-2018
     *
-    * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+    * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
     * @version 1.8 -26-10-2018 -  Se agrega actualizacion de los meses restantes segun la frecuencia cuando la Factura pasa a estado
-    *                             Activo, para facturas automaticas generadas por el proceso masivo de Facturaci�n para la empresa TN.
+    *                             Activo, para facturas automaticas generadas por el proceso masivo de Facturación para la empresa TN.
     * @author Luis Lindao <llindao@telconet.ec>
-    * @version 1.9 - Se valida el nulo del campo :OLD.FE_EMISION al momento de ejecutar actualizaci�n del mismo campo.
+    * @version 1.9 - Se valida el nulo del campo :OLD.FE_EMISION al momento de ejecutar actualización del mismo campo.
     * @since 17-01-2019
     *
     * @author Andre Lazo <alazo@telconet.ec>
-    * @version 2.0 - Se a�ade prefijo empresa 'EN' para que pueda recuperar la caracteristica CICLO_FACTURACION
+    * @version 2.0 - Se añade prefijo empresa 'EN' para que pueda recuperar la caracteristica CICLO_FACTURACION
     * @since 17-03-2023
     *
     */
@@ -176,7 +176,7 @@ DECLARE
       --
     END IF;
     --    
-    --Si se actualiza la fecha de emisi�n, es una factura o proporcional y no se actualiza el estado a Cerrado.
+    --Si se actualiza la fecha de emisión, es una factura o proporcional y no se actualiza el estado a Cerrado.
     IF UPDATING('FE_EMISION') AND :NEW.TIPO_DOCUMENTO_ID IN (1,5) AND :NEW.ESTADO_IMPRESION_FACT <> 'Cerrado' AND
        :NEW.FE_EMISION <> NVL(:OLD.FE_EMISION,TO_DATE('01/01/1900','DD/MM/YYYY')) THEN
 
@@ -186,12 +186,12 @@ DECLARE
         FETCH C_ObtieneDocumentoCaract INTO Lr_ObtieneDocumentoCaract;
         CLOSE C_ObtieneDocumentoCaract;
 
-        --SI NO TIENE CICLO (TN), SE FIJA POR DEFECTO EL CICLO 1 DE MD PARA REALIZAR EL C�LCULO DE FECHA DE FACTURACI�N.
+        --SI NO TIENE CICLO (TN), SE FIJA POR DEFECTO EL CICLO 1 DE MD PARA REALIZAR EL CÁLCULO DE FECHA DE FACTURACIÓN.
         Lr_ObtieneDocumentoCaract.VALOR := NVL(Lr_ObtieneDocumentoCaract.VALOR, '5');
         DB_FINANCIERO.FNCK_FACTURACION.P_OBTIENE_FE_SIG_CICLO_FACT(Pn_IdCiclo       => TO_NUMBER(Lr_ObtieneDocumentoCaract.Valor),
                                                                    Pd_FeAValidar    => TRUNC(:NEW.FE_EMISION),
                                                                    Pd_FeFacturacion => Ld_FeInicioConsumo);
-        --Se obtiene la fecha de la siguiente facturaci�n del ciclo, por lo tanto resto un mes para obtener la actual.
+        --Se obtiene la fecha de la siguiente facturación del ciclo, por lo tanto resto un mes para obtener la actual.
         Ld_FeInicioConsumo := ADD_MONTHS(Ld_FeInicioConsumo, -1);
 
         --Se actualiza el mes y anio de consumo.
@@ -211,7 +211,7 @@ DECLARE
             END IF;
             Lr_InfoDocumentoCaracteristica       := NULL;
             Lr_InfoDocumentoCaracteristica.Valor := TO_CHAR(Ld_FeInicioConsumo, Lv_FormatoFecha);
-            --Si es el mismo valor, no se actualiza/crea la caracter�stica.
+            --Si es el mismo valor, no se actualiza/crea la característica.
             IF TO_CHAR(Lr_InfoDocumentoCaracteristica.Valor) = TO_CHAR(Lr_ObtieneDocumentoCaract.Valor) THEN
                 Ln_Indice := La_Caracteristicas.NEXT(Ln_Indice);
                 CONTINUE;
@@ -222,7 +222,7 @@ DECLARE
             Lr_InfoDocumentoCaracteristica.Caracteristica_Id           := Lr_ObtieneDocumentoCaract.ID_CARACTERISTICA;
             Lr_InfoDocumentoCaracteristica.Estado                      := Lv_EstadoActivo;
 
-            --Si existe, se actualiza el valor de la caracter�stica.
+            --Si existe, se actualiza el valor de la característica.
             IF NVL(Lr_ObtieneDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA, 0) > 0 THEN
                 Lr_InfoDocumentoCaracteristica.Fe_Ult_Mod  := SYSDATE;
                 Lr_InfoDocumentoCaracteristica.Usr_Ult_Mod := NVL(:NEW.USR_CREACION, 'telcos');
@@ -240,7 +240,7 @@ DECLARE
                                                     ||Lv_Error);
                 END IF;
             ELSE
-                --Si no existe, se busca la caracter�stica y luego se inserta.
+                --Si no existe, se busca la característica y luego se inserta.
                 OPEN  C_BuscaCaract(La_Caracteristicas(Ln_Indice));
                 FETCH C_BuscaCaract INTO Lc_BuscaCaract;
                 CLOSE C_BuscaCaract;
@@ -272,7 +272,7 @@ DECLARE
             Lr_InfoDocumentoHistorial.USR_CREACION              := NVL(:NEW.USR_CREACION, 'telcos');
             Lr_InfoDocumentoHistorial.ESTADO                    := :NEW.ESTADO_IMPRESION_FACT;
             Lr_InfoDocumentoHistorial.OBSERVACION               := 'Se ' || Lv_AccionCaracteristica ||
-                                                                   ' la caracter�stica ' || La_Caracteristicas(Ln_Indice) || ':' ||
+                                                                   ' la característica ' || La_Caracteristicas(Ln_Indice) || ':' ||
                                                                    Lr_InfoDocumentoCaracteristica.Valor;
             DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_Error);
             IF Lv_Error IS NOT NULL THEN
@@ -318,12 +318,12 @@ DECLARE
   
         END IF;
 
-        --SI NO TIENE CICLO (TN), SE FIJA POR DEFECTO EL CICLO 1 DE MD PARA REALIZAR EL C�LCULO DE FECHA DE FACTURACI�N.
+        --SI NO TIENE CICLO (TN), SE FIJA POR DEFECTO EL CICLO 1 DE MD PARA REALIZAR EL CÁLCULO DE FECHA DE FACTURACIÓN.
         Lc_BuscaCiclo.Valor := NVL(Lc_BuscaCiclo.Valor, '5');
         DB_FINANCIERO.FNCK_FACTURACION.P_OBTIENE_FE_SIG_CICLO_FACT(Pn_IdCiclo       => TO_NUMBER(Lc_BuscaCiclo.Valor),
                                                                    Pd_FeAValidar    => TRUNC(:NEW.FE_CREACION),
                                                                    Pd_FeFacturacion => Ld_FeInicioConsumo);
-        --Se obtiene la fecha de la siguiente facturaci�n del ciclo, por lo tanto resto un mes para obtener la actual.
+        --Se obtiene la fecha de la siguiente facturación del ciclo, por lo tanto resto un mes para obtener la actual.
         Ld_FeInicioConsumo := ADD_MONTHS(Ld_FeInicioConsumo, -1);
 
         OPEN C_BuscaCaract('CICLO_FACTURADO_MES');

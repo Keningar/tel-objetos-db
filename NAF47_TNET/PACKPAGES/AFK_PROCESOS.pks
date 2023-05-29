@@ -90,19 +90,19 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
   ------------------------------------------------------
   /**
   * Documentacion para IN_P_RETIRA_INSTALACION
-  * Procedure procesa los retiroes de equipos en repositorio de instalaci�n.
+  * Procedure procesa los retiroes de equipos en repositorio de instalación.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 15/05/2017
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.1 10/12/2021 - Se modifica para agregar parametro que controle ejecuci�n de rollback
+  * @version 1.1 10/12/2021 - Se modifica para agregar parametro que controle ejecución de rollback
   *
   *
-  * @param Pv_NoCia        IN VARCHAR2     Recibe c�digo compa��a
-  * @param Pv_IdArticulo   IN VARCHAR2     Recibe c�digo de art�culo
-  * @param Pv_TipoArticulo IN VARCHAR2     Recibe tipo de art�culo [AF] Activo Fijo [IN] Instalaciones
-  * @param Pv_NumeroCedula IN VARCHAR2     Recibe n�mero de c�dla de empleado
-  * @param Pv_NumeroSerie  IN VARCHAR2     Recibe n�mero serie de art�culo
+  * @param Pv_NoCia        IN VARCHAR2     Recibe código compañía
+  * @param Pv_IdArticulo   IN VARCHAR2     Recibe código de artículo
+  * @param Pv_TipoArticulo IN VARCHAR2     Recibe tipo de artículo [AF] Activo Fijo [IN] Instalaciones
+  * @param Pv_NumeroCedula IN VARCHAR2     Recibe número de cédla de empleado
+  * @param Pv_NumeroSerie  IN VARCHAR2     Recibe número serie de artículo
   * @param Pn_Cantidad     IN NUMBER       Recibe cantidad a procesar
   * @param Pv_Estado       IN VARCHAR2     Recibe estado a asignar
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.,
@@ -146,14 +146,14 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
   -- Procedimiento que genera por tipo de Activo asiento de regualrizacion de cuenta puente  --
   ---------------------------------------------------------------------------------------------
   /**
-  Documentaci�n para P_GENERA_ASIENTO_REGULARIZA
-  Procedimiento que realiza la generacion del asiento contable por regularizaci�n de cuenta puente
+  Documentacion para P_GENERA_ASIENTO_REGULARIZA
+  Procedimiento que realiza la generacion del asiento contable por regularizacion de cuenta puente
 
   @author  Martha Navarrete Martinez <mnavarrete@telconet.ec>
   @version 1.0  05/06/2017
 
   @param  Pv_cia   IN varchar2  Recibe el codigo de la empresa
-  @param  Pn_ano   IN number Recibe el a�o de proceso del modulo
+  @param  Pn_ano   IN number Recibe el ao de proceso del modulo
   @param  Pn_mes   IN number Recibe el mes de proceso del modulo
   @param  Pd_fecha IN date Recibe el ultimo dia del mes en proceso
   @param  Pv_CodigoDiario IN Recibe el codigo de diario
@@ -173,14 +173,14 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
                                          Pv_Error        IN OUT varchar2 );
 
   /**
-  Documentaci�n para P_GENERA_ASIENTO_DEPRECIACION
+  Documentacion para P_GENERA_ASIENTO_DEPRECIACION
   Procedimiento que realiza la generacion del asiento cantables por depereciaciones
 
   @author  Martha Navarrete Martinez <mnavarrete@telconet.ec>
   @version 1.0  07/06/2017
 
   @param  Pv_cia   IN varchar2  Recibe el codigo de la empresa
-  @param  Pn_ano   IN number Recibe el a�o de proceso del modulo
+  @param  Pn_ano   IN number Recibe el año de proceso del modulo
   @param  Pn_mes   IN number Recibe el mes de proceso del modulo
   @param  Pd_fecha IN date Recibe el ultimo dia del mes en proceso
   @param  Pv_CodigoDiario IN Recibe el codigo de diario
@@ -203,7 +203,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
   /**
   Documentacion para P_INSERTA_LINEA_AUXILIAR
   Procedimiento que realiza la creacion de linea contable para armar auxiliar
-  en la genracion del asiento contable por depreciaci�n.
+  en la genracion del asiento contable por depreciacion.
 
   @author  Martha Navarrete Martinez <mnavarrete@telconet.ec>
   @version 1.0  07/06/2017
@@ -254,8 +254,8 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 03/07/2017
   *
-  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compa����a
-  * @param Pn_Procesado    IN NUMBER Recibe tipo de eliminaci��n a realizar
+  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compañia
+  * @param Pn_Procesado    IN NUMBER Recibe tipo de eliminacion a realizar
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_INICIALIZA_TEMPORAL ( Pv_NoCia        IN VARCHAR2,
@@ -268,8 +268,8 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 03/07/2017
   *
-  * @param Pv_NumeroSerie  IN NUMBER Recibe n��mero de serie a registrar en carga
-  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compa����a
+  * @param Pv_NumeroSerie  IN NUMBER Recibe numero de serie a registrar en carga
+  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compañia
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_REGISTRA_CARGA_TEMPORAL ( Pv_NumeroSerie  IN VARCHAR2,
@@ -278,11 +278,11 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
 
   /**
   * Documentacion para P_VALIDA_CARGA
-  * Procedure que recupera datos de repositorio de instalaci��n y de Telcos los logines asociados
+  * Procedure que recupera datos de repositorio de instalacion y de Telcos los logines asociados
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 03/07/2017
   *
-  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compa����a
+  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compania
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_VALIDA_CARGA ( Pv_NoCia        IN VARCHAR2,
@@ -290,11 +290,11 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
 
   /**
   * Documentacion para P_INFORMACION_COMPLEMENTARIA
-  * Procedure que recupera datos de repositorio de instalaci��n y de Telcos los logines asociados
+  * Procedure que recupera datos de repositorio de instalacion y de Telcos los logines asociados
   * @author  mnavarrete <mnavarrete@telconet.ec>
   * @version 1.0 03/07/2017
   *
-  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compa����a
+  * @param Pv_NoCia        IN VARCHAR2 Recibe codigo de compania
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error.
   */
   PROCEDURE P_INFORMACION_COMPLEMENTARIA ( Pv_NoCia           IN VARCHAR2,
@@ -302,7 +302,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
 
   /**
   * Documentacion para P_PROCESAR_ACTIVO_FIJO
-  * Procedure que genera informaci��n a m��dulo activo fijo
+  * Procedure que genera informacion a modulo activo fijo
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 03/07/2017
   *
@@ -314,7 +314,7 @@ CREATE OR REPLACE PACKAGE NAF47_TNET.AFK_PROCESOS IS
 
   /**
   * Documentacion para P_PROCESAR_ACTIVO_FIJO_DESECHO 
-  * Procedure que genera informaci��n a m��dulo activo fijo
+  * Procedure que genera informacion a modulo activo fijo
   * @author mnavarrete <mnavarrete@telconet.ec>
   * @version 1.0 07/12/2017
   *
@@ -892,7 +892,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFK_PROCESOS IS
         Lr_instalacion.MAC := AFK_PROCESOS.IN_F_CALCULA_MAC(Lr_instalacion.MAC, 'N');
         Lr_instalacion.Mac_Original := AFK_PROCESOS.IN_F_CALCULA_MAC(Lr_instalacion.Mac_Original, 'N');
         --
-        -- Se parametriz� transformar en minuscula
+        -- Se parametrizo transformar en minuscula
         IF Lb_MACinMinusMarca OR Lb_MACinMinusModelo THEN
           Lr_instalacion.MAC := LOWER(Lr_instalacion.MAC);
         END IF;
@@ -1588,7 +1588,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFK_PROCESOS IS
                            Ln_gasto * -1,
                            SUBSTR('REGULARIZACION DE ASIENTO DE DEPRECIACION ANIO/MES '|| Pn_ano||'/'||Pn_mes,1,100) );
 
-        -- Las dem��s cuentas deben de ir al Debito
+        -- Las demas cuentas deben de ir al Debito
         IF C_CuentasPorcentajes%ISOPEN THEN CLOSE C_CuentasPorcentajes; END IF;
         For Lc_CuentasPorcentajes in C_CuentasPorcentajes(Lc_tipo.Tipo) Loop  -- cuenta, centro_costo, porcentaje
           Lv_TipoCambio := moneda.redondeo(Pn_TipoCambio,'P');
@@ -2414,7 +2414,7 @@ CREATE OR REPLACE PACKAGE BODY NAF47_TNET.AFK_PROCESOS IS
   PROCEDURE P_INFORMACION_COMPLEMENTARIA ( Pv_NoCia           IN VARCHAR2,
                                                                           Pv_MensajeError IN OUT VARCHAR2 ) IS
 
-    -- cursor que recupera la data insertada en tabla temporal para buscar el resto de informaci�n 
+    -- cursor que recupera la data insertada en tabla temporal para buscar el resto de informacion 
     CURSOR C_DATOS_CARGADOS IS
         SELECT no_cia, numero_serie, id_documento_origen, tipo_documento_origen, fecha, id_articulo, 
                     NVL(  SUBSTR(id_documento_origen, length(id_documento_origen)-1, 2) , '00')   origen

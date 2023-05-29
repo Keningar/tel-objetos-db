@@ -1,14 +1,14 @@
 CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS 
 
   /** 
-   * Documentaci�n para el proceso 'P_CREAR_TAREA'
+   * Documentación para el proceso 'P_CREAR_TAREA'
    *
    * Procedimiento encargado de registrar una tarea en sus diferentes estructuras
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
-   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -20,13 +20,13 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                            Prf_Response OUT SYS_REFCURSOR);
 
   /** 
-   * Documentaci�n para el proceso 'P_ASIGNAR_RESPONSABLE_TAREA'
+   * Documentación para el proceso 'P_ASIGNAR_RESPONSABLE_TAREA'
    *
    * Procedimiento encargado de asignar a el/los responsable(s) a la tarea, segun la informacion recibida 
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
-   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -37,14 +37,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                                          Pv_Mensaje   OUT VARCHAR2);
 
   /** 
-   * Documentaci�n para el proceso 'P_INSERT_TAREA_SEGUIMIENTO'
+   * Documentación para el proceso 'P_INSERT_TAREA_SEGUIMIENTO'
    *
-   * Procedimiento encargado de registrar la informaci�n del seguimiento de la tarea
+   * Procedimiento encargado de registrar la información del seguimiento de la tarea
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
-   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacci�n
-   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacci�n
-   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
+   * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
+   * @param Prf_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -56,14 +56,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                                        Pv_Mensaje       OUT VARCHAR2);                        
 
   /**
-   * Documentaci�n para proceso 'P_ADJUNTAR_DOCUMENTOS_TAREA'
+   * Documentación para proceso 'P_ADJUNTAR_DOCUMENTOS_TAREA'
    *
    * Procedimiento encargado de adjuntar uno o varios documentos a la tarea
    *
    * @param Pcl_Request   IN  CLOB Recibe json request
-   * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la transacci�n
-   * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la transacci�n
-   * @param Prf_Response  OUT SYS_REFCURSOR Retorna cursor de la transacci�n
+   * @param Pv_Status     OUT VARCHAR2 Retorna estatus de la transacción
+   * @param Pv_Mensaje    OUT VARCHAR2 Retorna mensaje de la transacción
+   * @param Prf_Response  OUT SYS_REFCURSOR Retorna cursor de la transacción
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -75,14 +75,14 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
                                         Prf_Response OUT SYS_REFCURSOR);
 
   /** 
-   * Documentaci�n para el proceso 'P_INSERT_TAREA_CARACTERISTICA'
+   * Documentación para el proceso 'P_INSERT_TAREA_CARACTERISTICA'
    *
    * Procedimiento encargado de relacionar una tarea (actividad) con una caracteristica
    *
    * @param Pcl_Request    IN   CLOB Recibe json request
    * @param Pn_IdTareaCaracteristica  OUT INFO_TAREA_CARACTERISTICA.ID_TAREA_CARACTERISTICA%TYPE
-   * @param Pv_Status                 OUT  VARCHAR2 Retorna estatus de la transacci�n
-   * @param Pv_Mensaje                OUT  VARCHAR2 Retorna mensaje de la transacci�n
+   * @param Pv_Status                 OUT  VARCHAR2 Retorna estatus de la transacción
+   * @param Pv_Mensaje                OUT  VARCHAR2 Retorna mensaje de la transacción
    *
    * @author   David De La Cruz <ddelacruz@telconet.ec>
    * @version  1.0
@@ -96,6 +96,7 @@ CREATE OR REPLACE PACKAGE DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
 END SPKG_TAREAS_TRANSACCION;
 
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
 
   PROCEDURE P_CREAR_TAREA (Pcl_Request  IN CLOB,
@@ -854,7 +855,7 @@ CREATE OR REPLACE PACKAGE BODY DB_SOPORTE.SPKG_TAREAS_TRANSACCION AS
         RAISE Le_Error;
       END IF;    
 
-       --Json para crear el documento y la relaci�n con el caso
+       --Json para crear el documento y la relación con el caso
       APEX_JSON.INITIALIZE_CLOB_OUTPUT;
       APEX_JSON.OPEN_OBJECT;
       APEX_JSON.WRITE('modulo','SOPORTE'); 

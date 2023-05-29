@@ -1,7 +1,7 @@
 CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   /**
   * Documentacion para NAF47_TNET.AFK_CONTROL_CUSTODIO
-  * Paquete que contiene procesos y funciones para registrar control art�culos
+  * Paquete que contiene procesos y funciones para registrar control artículos
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 13/08/2018
   */
@@ -13,7 +13,7 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
 
   /**
   * Documentacion para NAF47_TNET.AFK_CONTROL_CUSTODIO.TypeControlCustodio
-  * Variable Registro que permite pasar por parametro los datos necesarios para el registro de control de art�culos
+  * Variable Registro que permite pasar por parametro los datos necesarios para el registro de control de artículos
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 13/08/2018
   *
@@ -22,7 +22,7 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   */
 
   TYPE TypeControlCustodio IS RECORD(
-    ID_CONTROL          ARAF_CONTROL_CUSTODIO.ID_CONTROL%TYPE, -- Identificaci�n registro desde donde se transfiere
+    ID_CONTROL          ARAF_CONTROL_CUSTODIO.ID_CONTROL%TYPE, -- Identificación registro desde donde se transfiere
     NUMERO_SERIE        ARAF_CONTROL_CUSTODIO.ARTICULO_ID%TYPE, -- numero de serie para equipos/fibra y Cod Articulo NAF para materiales
     TIPO_ARTICULO       ARAF_CONTROL_CUSTODIO.TIPO_ARTICULO%TYPE, -- tipo de articulo Fibra, Equipo, Material
     EMPRESA_ID          ARAF_CONTROL_CUSTODIO.EMPRESA_ID%TYPE, -- empresa asociado al id persona empresa rol
@@ -42,23 +42,23 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   --
   TYPE TypeIngresoBodegaCC IS RECORD (
     CUSTODIO_ID         ARAF_CONTROL_CUSTODIO.CUSTODIO_ID%TYPE, -- id persona empresa rol Empleado/Contratista que traspasa articulo
-    EMPRESA_ID          ARINME.NO_CIA%TYPE, -- C�digo de empresa
-    CENTRO_ID           ARINME.CENTRO%TYPE, -- C�digo de centro distribucion
-    CUSTODIO_NAF_ID     ARINME.EMPLE_SOLIC%TYPE, --C�digo de empleado/Contartista de NAF
+    EMPRESA_ID          ARINME.NO_CIA%TYPE, -- Código de empresa
+    CENTRO_ID           ARINME.CENTRO%TYPE, -- Código de centro distribucion
+    CUSTODIO_NAF_ID     ARINME.EMPLE_SOLIC%TYPE, --Código de empleado/Contartista de NAF
     TIPO_INGRESO_ID     ARINME.TIPO_DOC%TYPE, -- Tipo de Documento de Ingreso
     OBSERVACION         ARINME.OBSERV1%TYPE, -- Observacion
-    BODEGA_ID           ARINML.BODEGA%TYPE, -- C�digo Bodega registra ingreso
+    BODEGA_ID           ARINML.BODEGA%TYPE, -- Código Bodega registra ingreso
     CANTIDAD            ARINML.UNIDADES%TYPE, -- cantidad a procesar
     ARTICULO_ID         ARINDA.NO_ARTI%TYPE, -- codigo de Articulo
-    MANEJA_SERIE        VARCHAR2(2), -- Indica si maneja n�mero de Serie
-    NUMERO_SERIE        ARAF_CONTROL_CUSTODIO.ARTICULO_ID%TYPE, -- N�mero de serie registrado
-    ID_CONTROL          ARAF_CONTROL_CUSTODIO.ID_CONTROL%TYPE, -- Identificaci�n registro desde donde se transfiere
+    MANEJA_SERIE        VARCHAR2(2), -- Indica si maneja número de Serie
+    NUMERO_SERIE        ARAF_CONTROL_CUSTODIO.ARTICULO_ID%TYPE, -- Número de serie registrado
+    ID_CONTROL          ARAF_CONTROL_CUSTODIO.ID_CONTROL%TYPE, -- Identificación registro desde donde se transfiere
     GENERA_SERIE        VARCHAR2(1) DEFAULT 'N'
   );
   --
   /**
   * Documentacion para NAF47_TNET.AFK_CONTROL_CUSTODIO.Gt_TransfCustodio
-  * Variable Tipo Tabla que permite pasar por parametro los datos necesarios para control de art�culos
+  * Variable Tipo Tabla que permite pasar por parametro los datos necesarios para control de artículos
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 13/08/2018
   */
@@ -86,7 +86,7 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   * @version 1.4 23/09/2019 -  Se modifica proceso asignar estados, controlar saldo cero y controlar las devoluciones.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.5 04/10/2019 -  Se modifica proceso para agregar funcionalidad de fragmentaci�n de art�culos
+  * @version 1.5 04/10/2019 -  Se modifica proceso para agregar funcionalidad de fragmentación de artículos
   *
   * @author banton <banton@telconet.ec>
   * @version 1.6 28/09/2021 -  Se modifica para validar tipos de articulo, antes solo fibra 
@@ -121,10 +121,10 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   * @version 1.2 30/07/2021 - Se modifica para considerar nuevos campos cantidad_segmento, serie_original en proceso retiro fibra
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.3 14/09/2021 - Se corrige validaci�n para generar serie desde check enviado por pantalla y no de configuraci�n del art�culo
+  * @version 1.3 14/09/2021 - Se corrige validación para generar serie desde check enviado por pantalla y no de configuración del artículo
   *
   * @param Pt_DatosIB      IN     VARCHAR2 Recibe registro de Ingreso a Bodega
-  * @param Pv_IngBodegaId  IN OUT VARCHAR2 Retorna n�mero de ingreso a bodega generado.
+  * @param Pv_IngBodegaId  IN OUT VARCHAR2 Retorna número de ingreso a bodega generado.
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje error
   */
   PROCEDURE P_GENERA_INGRESO_BODEGA ( Pt_DatosIB      IN Gt_IngresoBodegaCC,
@@ -135,7 +135,7 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
 
   /**
   * Documentacion para P_TRANSFIERE_CUSTODIO
-  * Procedure que registra asignaciones y entregad de art�culos que se transfieren entre personas (Cliente, Empleado, etc)
+  * Procedure que registra asignaciones y entregad de artículos que se transfieren entre personas (Cliente, Empleado, etc)
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 13/08/2018
   *
@@ -201,7 +201,7 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
                                   Pv_MensajeError IN OUT VARCHAR2,
                                   Pn_IdControl    IN ARAF_CONTROL_CUSTODIO.ID_CONTROL%TYPE DEFAULT 0,
                                   Pv_Observacion  IN ARAF_CONTROL_CUSTODIO.OBSERVACION%TYPE DEFAULT NULL,
-                                  Pv_TipoArticulo IN ARAF_CONTROL_CUSTODIO.TIPO_ARTICULO%TYPE, -- Tipo de Art�culo Fibra, Equpo, Materiales, etc
+                                  Pv_TipoArticulo IN ARAF_CONTROL_CUSTODIO.TIPO_ARTICULO%TYPE, -- Tipo de Artículo Fibra, Equpo, Materiales, etc
                                   Pb_Commit	  IN BOOLEAN DEFAULT TRUE);
 
   /**
@@ -221,19 +221,19 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   * @version 1.3 23/09/2019 - Se modifica para identificar las devoluciones a bodegas de los ingresos por compras.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.4 04/10/2019 - Se modifica para mantener n�mero serie original en los tramos que reingresan a bodega.
+  * @version 1.4 04/10/2019 - Se modifica para mantener número serie original en los tramos que reingresan a bodega.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.5 21/05/2021 - Se modifica para corregir busqueda de c�digo de empleados en tecos porque esta retornado un codigo con rol inactivo.
+  * @version 1.5 21/05/2021 - Se modifica para corregir busqueda de código de empleados en tecos porque esta retornado un codigo con rol inactivo.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.6 30/07/2021 - Se modifica para considerar proceso de generacion autom�tica de n�meros de series.
+  * @version 1.6 30/07/2021 - Se modifica para considerar proceso de generacion automática de números de series.
   *
   * @author banton <banton@telconet.ec>
   * @version 1.7 28/09/2021 - Se modifica para considerar tipos de articulos, antes solo fibra.
   *
   * @author llindao <llindao@telconet.ec>
-  * @version 1.8 17/02/2022 - Se corrige asignaci�n de cantidad de articulos que manejan segmentos, para considerar valor CERO y no NULL.
+  * @version 1.8 17/02/2022 - Se corrige asignación de cantidad de articulos que manejan segmentos, para considerar valor CERO y no NULL.
   *
   * @param Pv_IdDocumento  IN     VARCHAR2 Recibe nmero despacho
   * @param Pv_IdCompania   IN     VARCHAR2 Recibe cdigo de empresa
@@ -249,10 +249,10 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 17/01/2022
   *
-  * @param Pv_NumeroSerie IN VARCHAR2 Recibe n�mero serie
-  * @param Pn_CustodioId  IN VARCHAR2 Recibe c�digo de custodio asignado
+  * @param Pv_NumeroSerie IN VARCHAR2 Recibe número serie
+  * @param Pn_CustodioId  IN VARCHAR2 Recibe código de custodio asignado
   * @param Pv_UsrProcesa  IN VARCHAR2 Recibe usuario procesa
-  * @param Pv_EmpresaId   IN VARCHAR2 Recibe c�digo de empresa
+  * @param Pv_EmpresaId   IN VARCHAR2 Recibe código de empresa
   */
   PROCEDURE P_REGULARIZA_NEGATIVOS ( Pv_NumeroSerie IN VARCHAR2,
                                      Pn_CustodioId  IN NUMBER,
@@ -266,17 +266,17 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 24/04/2022
   *
-  * @param Pv_NumeroSerie  IN     VARCHAR2 Recibe n�mero de serie
+  * @param Pv_NumeroSerie  IN     VARCHAR2 Recibe número de serie
   * @param Pv_Login        IN     VARCHAR2 Recibe login
-  * @param Pn_OficinaId    IN     NUMBER   Recibe c�digo de oficina
+  * @param Pn_OficinaId    IN     NUMBER   Recibe código de oficina
   * @param Pv_Responsable  IN     VARCHAR2 Recibe nombre responsable
-  * @param Pv_Transaccion  IN     VARCHAR2 Recibe tipo transacci�n
-  * @param Pv_Ubicacion    IN     VARCHAR2 Recibe ubicaci�n
+  * @param Pv_Transaccion  IN     VARCHAR2 Recibe tipo transacción
+  * @param Pv_Ubicacion    IN     VARCHAR2 Recibe ubicación
   * @param Pv_EstadoNaf    IN     VARCHAR2 Recibe estado del sistema NAF
   * @param Pv_EstadoTelcos IN     VARCHAR2 Recibe estado del sistema TELCOS
   * @param Pv_EstadoActivo IN     VARCHAR2 Recibe estado de Equipo
-  * @param Pv_Observacion  IN     VARCHAR2 Recibe observaci�n del registro
-  * @param Pv_EmpresaId    IN     VARCHAR2 Recibe c�digo de empresa
+  * @param Pv_Observacion  IN     VARCHAR2 Recibe observación del registro
+  * @param Pv_EmpresaId    IN     VARCHAR2 Recibe código de empresa
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje de error
   */
   PROCEDURE P_INSERTA_INFO_ELEMENTO_TRAZAB (Pv_NumeroSerie  IN VARCHAR2,
@@ -300,9 +300,9 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
   * @version 1.0 24/04/2022
   *
   * @param Pn_ElmentoIdA   IN     NUMBER   Recibe codigo de elemento Nodo
-  * @param Pn_ElmentoIdB   IN     NUMBER   Recibe c�digo de elemento Equipo
-  * @param Pv_TipoRelacion IN     VARCHAR2 Recibe tipo relaci�n
-  * @param Pv_Observacion  IN     VARCHAR2 Recibe observaci�n del registro
+  * @param Pn_ElmentoIdB   IN     NUMBER   Recibe código de elemento Equipo
+  * @param Pv_TipoRelacion IN     VARCHAR2 Recibe tipo relación
+  * @param Pv_Observacion  IN     VARCHAR2 Recibe observación del registro
   * @param Pv_Estado       IN     VARCHAR2 Recibe el estado del registro
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje de error
   */
@@ -315,13 +315,13 @@ CREATE OR REPLACE package NAF47_TNET.AFK_CONTROL_CUSTODIO is
 
   /**
   * Documentacion para P_INSERTA_INFO_RELACION_ELEMEN
-  * Procedure lee parametrizaci�n de condiguracipons del art�culo para validar si todos los parametros cumplen con el
-  *           Requerimiento m�nimo para realizar una instalaci�n.
+  * Procedure lee parametrización de condiguracipons del artículo para validar si todos los parametros cumplen con el
+  *           Requerimiento mínimo para realizar una instalación.
   * @author llindao <llindao@telconet.ec>
   * @version 1.0 24/04/2022
   *
-  * @param Pv_ArticuloId   IN     VARCHAR2 Recibe c�digo de art�culo
-  * @param Pv_EmpresaId    IN     VARCHAR2 Recibe c�digo de empresa
+  * @param Pv_ArticuloId   IN     VARCHAR2 Recibe código de artículo
+  * @param Pv_EmpresaId    IN     VARCHAR2 Recibe código de empresa
   * @param Pv_MensajeError IN OUT VARCHAR2 Retorna mensaje de error
   */
   PROCEDURE P_VALIDA_PARAMETRO_INSTALACION (Pv_ArticuloId   IN VARCHAR2,
@@ -446,7 +446,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
     CLOSE C_ROL_CONTRATISTA;
     --
     IF Ln_IdEmpresaRol IS NULL THEN
-      Pv_MensajeError := 'No se encontr� rol contratista, favor revisar';
+      Pv_MensajeError := 'No se encontró rol contratista, favor revisar';
       RAISE Le_Error;
     END IF;
     --
@@ -823,7 +823,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       END IF;
       --
       --
-      -- Se recupera datos persona que ser� nuevo custodio
+      -- Se recupera datos persona que será nuevo custodio
       IF C_DATOS_PERSONA%ISOPEN THEN
         CLOSE C_DATOS_PERSONA;
       END IF;
@@ -851,7 +851,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
         Ln_IdControlEntAux   := NVL(Pt_Transferencia(Li_Idx).ID_CONTROL, 0);
       END IF;
       -- 
-      -- Si NO se recibe n�mero de control realiza busquea sin control id
+      -- Si NO se recibe número de control realiza busquea sin control id
       IF Ln_IdControlEntNuevo = 0 THEN
         ---------------------------------
         GOTO E02_BUSQUEDA_SIN_ID_CONTROL;
@@ -919,7 +919,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       Lr_ControlCustodio.Observacion         := Pt_Transferencia(Li_Idx).OBSERVACION;
       Lr_ControlCustodio.Estado              := AFK_CONTROL_CUSTODIO.Gc_EstadoAsignado;
       --
-      -- no se encontr� por ningun tipo de busqueda, se procede a ingresar registro --
+      -- no se encontró por ningun tipo de busqueda, se procede a ingresar registro --
       -- Se recupera datos persona que ser nuevo custodio
       IF C_DATOS_PERSONA%ISOPEN THEN
         CLOSE C_DATOS_PERSONA;
@@ -969,7 +969,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       ----------------------------------
       <<E01_VALIDA_CONTROL_PROCESADO>>--
       ----------------------------------
-      -- Si no recuper� control id entrega no se genera descargo, simplemente es una asignaci�n
+      -- Si no recuperó control id entrega no se genera descargo, simplemente es una asignación
       IF NVL(Lr_ControlCustodioEntrega.Id_Control,0) = 0 THEN
         ------------------------------
         GOTO E03_AFECTACION_PEDIDOS;--
@@ -1085,8 +1085,8 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
         IF Lr_DatosPedido.Id_Pedido IS NULL THEN
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('NAF',
                                                'AFK_CONTROL_CUSTODIO.P_TRANSFIERE_CUSTODIO',
-                                               'No se encontr� n�mero de Pedido asociado al n�mero de serie ' ||Lr_ControlCustodioEntrega.Articulo_Id ||
-                                               ', n�mero conrol ' || Lr_ControlCustodioEntrega.Id_Control,
+                                               'No se encontró número de Pedido asociado al número de serie ' ||Lr_ControlCustodioEntrega.Articulo_Id ||
+                                               ', número conrol ' || Lr_ControlCustodioEntrega.Id_Control,
                                                NVL(SYS_CONTEXT(GEK_VAR.Gr_Sesion.USERENV, GEK_VAR.Gr_Sesion.HOST), user), SYSDATE,
                                                NVL(SYS_CONTEXT(GEK_VAR.Gr_Sesion.USERENV,GEK_VAR.Gr_Sesion.IP_ADRESS),'127.0.0.1'));
           ---------------------------------
@@ -1108,7 +1108,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
         END IF;
         CLOSE C_PEDIDO_DETALLE;
         --
-        -- Se valida cantidad entregada no supere la cantidad despachada al usuario due�o del pedido
+        -- Se valida cantidad entregada no supere la cantidad despachada al usuario dueño del pedido
         IF Pt_Transferencia(Li_Idx).CANTIDAD_ENTREGA > NVL(Lr_PedidoDetalle.Pendiente_Usar, 0) AND 
           Lr_DocOrigen.Custodio_Id = Pt_Transferencia(Li_Idx).CUSTODIO_ENTREGA_ID THEN
           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('NAF',
@@ -1124,14 +1124,14 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
           ---------------------------------
         END IF;
         --
-        -- si usuario due�o del pedido es el custodio entrega, se incrementa la cantidad de uso
+        -- si usuario dueño del pedido es el custodio entrega, se incrementa la cantidad de uso
         IF Lr_DocOrigen.Custodio_Id = Pt_Transferencia(Li_Idx).CUSTODIO_ENTREGA_ID THEN
           -- se descarga del pedido asociado al empleado.
           UPDATE DB_COMPRAS.INFO_PEDIDO_DETALLE
           SET CANTIDAD_A_DEVOLVER = NVL(CANTIDAD_A_DEVOLVER, 0) + Pt_Transferencia(Li_Idx).CANTIDAD_ENTREGA
           WHERE ID_PEDIDO_DETALLE = Lr_PedidoDetalle.Id_Pedido_Detalle;
           --
-          -- si usuario due�o del pedido es el custodio recibe, se resta la cantidad de uso
+          -- si usuario dueño del pedido es el custodio recibe, se resta la cantidad de uso
         ELSIF Lr_DocOrigen.Custodio_Id = Pt_Transferencia(Li_Idx).CUSTODIO_RECIBE_ID THEN
           -- se devuelve del pedido asociado al empleado.
           UPDATE DB_COMPRAS.INFO_PEDIDO_DETALLE
@@ -1641,7 +1641,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       END IF;
       --
       IF Lr_ControlCustodio.Custodio_Id IS NULL THEN
-        Pv_MensajeError := 'No se encontr� custodio definido en PERSONA EMPRESA ROL ' ||
+        Pv_MensajeError := 'No se encontró custodio definido en PERSONA EMPRESA ROL ' ||
                            Lr_Reg.Id_Responsable || ', ' ||
                            Lr_Reg.Login_Empleado || ', ' ||
                            Lr_Reg.Identificacion_Contratista || ', ' ||
@@ -1665,7 +1665,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       END IF;
       CLOSE C_CONTROL;
       --
-      -- no encontr� registro entonces continua con la reopilacion de datos
+      -- no encontró registro entonces continua con la reopilacion de datos
       IF Lr_ControlExiste.Id_Control IS NULL THEN
         GOTO RECUPERA_CARACTERISTICA;
       END IF;
@@ -1678,7 +1678,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       IF Ln_TipoArticulo > 0 THEN
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'NAF',
                                               'AFK_CONTROL_CUSTODIO.P_ARTICULO_CONTROL',
-                                              'Art�culo ' ||Lr_Reg.Articulo_Id ||
+                                              'Artículo ' ||Lr_Reg.Articulo_Id ||
                                               ' ya se encuentra asignado al custodio ' ||Lr_Reg.LOGIN_EMPLEADO,
                                               NVL(SYS_CONTEXT(GEK_VAR.Gr_Sesion.USERENV,GEK_VAR.Gr_Sesion.HOST),user), SYSDATE,
                                               NVL(SYS_CONTEXT(GEK_VAR.Gr_Sesion.USERENV,GEK_VAR.Gr_Sesion.IP_ADRESS),'127.0.0.1'));
@@ -1961,7 +1961,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       CLOSE C_DATOS_CUSTODIO; 
       --
       IF Lr_DatosCustodio.Tipo IS NULL THEN
-        Pv_MensajeError := 'No se encontr� Login definido en Telcos para custodio '||Pt_DatosIB(Li_Idx).CUSTODIO_ID ||', favor revisar';
+        Pv_MensajeError := 'No se encontró Login definido en Telcos para custodio '||Pt_DatosIB(Li_Idx).CUSTODIO_ID ||', favor revisar';
         RAISE Le_Error;
       END IF;
       --
@@ -1994,7 +1994,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       END IF;
       --
       IF Lv_EmpSolicita IS NULL THEN
-        Pv_MensajeError := 'No se encontr� C�digo de Empleado NAF para custodio '||Pt_DatosIB(Li_Idx).CUSTODIO_ID ||', favor revisar';
+        Pv_MensajeError := 'No se encontró Código de Empleado NAF para custodio '||Pt_DatosIB(Li_Idx).CUSTODIO_ID ||', favor revisar';
         RAISE Le_Error;
       END IF;
       --
@@ -2058,7 +2058,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
                             Pt_DatosIB(Li_Idx).EMPRESA_ID);
       FETCH C_DATOS_PERIODO INTO Lr_DatosPeriodo;
       IF C_DATOS_PERIODO%NOTFOUND THEN
-        Pv_MensajeError := 'La definici�n del calendario del inventario es incorrecta.';
+        Pv_MensajeError := 'La definición del calendario del inventario es incorrecta.';
         RAISE Le_Error;
       END IF;
       CLOSE C_DATOS_PERIODO;
@@ -2211,7 +2211,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
         --
         
       ELSE
-        -- Se asigna n�mero de serie
+        -- Se asigna número de serie
         Lr_PreIngSerie.Serie := Lv_NumeroSerie;--Pt_DatosIB(Li_Idx).NUMERO_SERIE;
         --
       END IF;
@@ -2223,7 +2223,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       FOR Lr_MaestroSerie IN C_VERIFICA_SERIE ( Lr_PreIngSerie.Serie, 
                                                 Lr_Arinml.No_Cia) LOOP
         IF Lr_MaestroSerie.Estado = 'EB' THEN
-          Pv_MensajeError := 'N�mero de serie se encuentra registrado en bodega: '||Lr_MaestroSerie.Id_Bodega||' asociado al art�culo '||Lr_MaestroSerie.No_Articulo;
+          Pv_MensajeError := 'Número de serie se encuentra registrado en bodega: '||Lr_MaestroSerie.Id_Bodega||' asociado al artículo '||Lr_MaestroSerie.No_Articulo;
           RAISE Le_Error;
         ELSIF NOT Lb_ExisteRegistro THEN
          Lb_ExisteRegistro := (NVL(Lr_MaestroSerie.No_Articulo,'@') = Lr_Arinml.No_Arti);
@@ -2295,7 +2295,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       RAISE Le_Error;
     END IF;
     --
-    -- se ejecuta actualizaci�n
+    -- se ejecuta actualización
     -- proceso que actualiza el movimiento de inventarios.
     NAF47_TNET.INACTUALIZA( Lr_Arinme.NO_CIA ,
                             Lr_Arinme.TIPO_DOC,
@@ -2345,7 +2345,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
                                   Pv_MensajeError     IN OUT VARCHAR2,
                                   Pn_IdControl        IN ARAF_CONTROL_CUSTODIO.ID_CONTROL%TYPE DEFAULT 0,
                                   Pv_Observacion      IN ARAF_CONTROL_CUSTODIO.OBSERVACION%TYPE DEFAULT NULL,
-                                  Pv_TipoArticulo     IN ARAF_CONTROL_CUSTODIO.TIPO_ARTICULO%TYPE, -- Tipo de Art�culo Fibra, Equpo, Materiales, etc
+                                  Pv_TipoArticulo     IN ARAF_CONTROL_CUSTODIO.TIPO_ARTICULO%TYPE, -- Tipo de Artículo Fibra, Equpo, Materiales, etc
                                   Pb_Commit	      IN BOOLEAN DEFAULT TRUE) IS --Variable para no considerar commit cuando el procedimiento es llamado desde el sistema NAF
     --
     Lc_Retiro CONSTANT VARCHAR2(6) := 'Retiro';
@@ -2602,7 +2602,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
       */
     END LOOP;
     --
-    -- si recuper� data de cursor anterio y no es un ingreso a bodega se procesa lo recuperado
+    -- si recuperó data de cursor anterio y no es un ingreso a bodega se procesa lo recuperado
     IF Ln_NumReg != 0 THEN
       ---------------------------------
       GOTO E02_PROCESA_TRANSFERENCIA;
@@ -2649,7 +2649,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
     END IF;
     
     
-    -- No se proces� nada, se envia el control id recibido para que genere los registros carga y descarga
+    -- No se procesó nada, se envia el control id recibido para que genere los registros carga y descarga
     IF Ln_NumReg != 0 THEN
       -------------------------------
       GOTO E02_PROCESA_TRANSFERENCIA;
@@ -2852,7 +2852,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
           Lr_CustodioNegativo.Cantidad            := Lr_Negativo.Cantidad + Lr_CustodioNegativo.Movimiento;
         END IF;
         
-        Lr_CustodioNegativo.Observacion         := Lr_Negativo.Observacion||'. Regularizaci�n Autom�tica de valores Negativos cruzando con valores positivos de Id_control: '||Lr_Positivo.Id_Control;
+        Lr_CustodioNegativo.Observacion         := Lr_Negativo.Observacion||'. Regularización Automática de valores Negativos cruzando con valores positivos de Id_control: '||Lr_Positivo.Id_Control;
         Lr_CustodioNegativo.Id_Control          := NAF47_TNET.SEQ_ARAF_CONTROL_CUSTODIO.NEXTVAL;
         --
         P_INSERTA_CONTROL_CUSTODIO(Lr_CustodioNegativo, Lv_MensajeError);
@@ -2880,7 +2880,7 @@ CREATE OR REPLACE package body NAF47_TNET.AFK_CONTROL_CUSTODIO is
           Ln_MontoRegular                := Ln_MontoRegular + Lr_Positivo.CANTIDAD;
         END IF;
         --
-        Lr_CustodioPositivo.Observacion         := Lr_Positivo.Observacion||'. Regularizaci�n Autom�tica de valores Positivos cruzando con valores negativos de Id_control: '||Lr_Negativo.Id_Control;
+        Lr_CustodioPositivo.Observacion         := Lr_Positivo.Observacion||'. Regularización Automática de valores Positivos cruzando con valores negativos de Id_control: '||Lr_Negativo.Id_Control;
         Lr_CustodioPositivo.Id_Control          := NAF47_TNET.SEQ_ARAF_CONTROL_CUSTODIO.NEXTVAL;
         --
         P_INSERTA_CONTROL_CUSTODIO(Lr_CustodioPositivo, Lv_MensajeError);

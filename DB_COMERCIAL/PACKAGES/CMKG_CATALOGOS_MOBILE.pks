@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_CATALOGOS_MOBILE
 AS
     /**
-      * Documentaci�n para el procedimiento P_GENERA_JSON_CATALOGOS
+      * Documentación para el procedimiento P_GENERA_JSON_CATALOGOS
       *
-      * M�todo que se encarga de generar el JSON de cada uno de los cat�logos y cargalos en la tabla
+      * Método que se encarga de generar el JSON de cada uno de los catálogos y cargalos en la tabla
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -19,7 +19,7 @@ AS
                                       Pv_Error       OUT VARCHAR2);
 
     /**
-      * Funci�n que se encarga de generar el JSON de catalogo de productos
+      * Función que se encarga de generar el JSON de catalogo de productos
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -36,7 +36,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de catalogo de puntos de cobertura
+      * Función que se encarga de generar el JSON de catalogo de puntos de cobertura
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -49,7 +49,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de los canales de venta
+      * Función que se encarga de generar el JSON de los canales de venta
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -65,7 +65,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de los TIPO DE CUENTA/BANCOS
+      * Función que se encarga de generar el JSON de los TIPO DE CUENTA/BANCOS
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -81,7 +81,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de los TIPO DE NEGOCIO
+      * Función que se encarga de generar el JSON de los TIPO DE NEGOCIO
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -94,7 +94,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de los TIPO DE CONTRATO
+      * Función que se encarga de generar el JSON de los TIPO DE CONTRATO
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -107,7 +107,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de los DOCUMENTOS OBLIGATORIOS
+      * Función que se encarga de generar el JSON de los DOCUMENTOS OBLIGATORIOS
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -115,7 +115,7 @@ AS
       * @version 1.0 24-04-2019
       *
       * author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
-      * @version 1.1 20-06-2020 Adici�n de consultas de documentos obligatorios para persona jur�dica
+      * @version 1.1 20-06-2020 Adición de consultas de documentos obligatorios para persona jurídica
       */
     FUNCTION F_GENERA_JSON_DOC_OBLIGATORIOS(Fv_Empresa     IN  VARCHAR2,
                                             Fv_Descripcion IN  VARCHAR2,
@@ -123,7 +123,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de elemento por empresa y tipo.
+      * Función que se encarga de generar el JSON de elemento por empresa y tipo.
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -140,7 +140,7 @@ AS
 
     /**
    * Documentacion para la funcion F_GET_VARCHAR_CLEAN
-   * Funcion que limpia ciertos caracteres especiales de l�a cadena enviada cono par�metro.
+   * Funcion que limpia ciertos caracteres especiales de lña cadena enviada cono parámetro.
    * @param Fv_Cadena IN VARCHAR2   Recibe la cadena a limpiar
    * @return             VARCHAR2   Retorna cadena sin caracteres especiales
    *
@@ -152,7 +152,7 @@ AS
     RETURN VARCHAR2;
 
     /**
-      * Funci�n que se encarga de generar el JSON de cat�logo de productos que se presentar�n por empresa
+      * Función que se encarga de generar el JSON de catálogo de productos que se presentarán por empresa
       *
       * Costo Del Query C_Productos:       11
       * Costo Del Query C_Caracteristica:  25
@@ -161,7 +161,7 @@ AS
       * @version 1.0 16-10-2019
       *
       * @author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
-      * @version 1.1 05-04-2020 Implementaci�n para obtener informaci�n de servicios adicionales parametrizados.
+      * @version 1.1 05-04-2020 Implementación para obtener información de servicios adicionales parametrizados.
       *
       */
     FUNCTION F_GENERA_JSON_PRODUCTOS_DISP(Pv_Empresa     IN  VARCHAR2,
@@ -170,7 +170,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de catalogo de productos que se presentaran por empresa
+      * Función que se encarga de generar el JSON de catalogo de productos que se presentaran por empresa
       *
       * @author Edgar Pin Villavicencio <epin@telconet.ec>
       * @version 1.0 16-10-2019
@@ -181,7 +181,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de generar el JSON de los tipos de promociones aplicables para planes y productos adicionales
+      * Función que se encarga de generar el JSON de los tipos de promociones aplicables para planes y productos adicionales
       *
       * @author Christian Jaramillo Espinoza <cjaramilloe@telconet.ec>
       * @version 1.0 26-11-2020
@@ -192,7 +192,7 @@ AS
     RETURN CLOB;
     
     /**
-      * Funci�n que se encarga de obtener los estados de los puntos
+      * Función que se encarga de obtener los estados de los puntos
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -203,7 +203,7 @@ AS
     RETURN CLOB;
     
     /**
-      * Funci�n que se encarga de obtener la �ltima milla
+      * Función que se encarga de obtener la última milla
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -214,7 +214,7 @@ AS
     RETURN CLOB;
     
     /**
-      * Funci�n que se encarga de obtener los estados del servicio
+      * Función que se encarga de obtener los estados del servicio
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -225,7 +225,7 @@ AS
     RETURN CLOB;
     
     /**
-      * Funci�n que se encarga de obtener los estados del servicio
+      * Función que se encarga de obtener los estados del servicio
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -236,7 +236,7 @@ AS
     RETURN CLOB;
 
     /**
-      * Funci�n que se encarga de obtener los motivos hal
+      * Función que se encarga de obtener los motivos hal
       *
       * @param Pv_Error  OUT VARCHAR2 Retorna un mensaje de error en caso de existir
       *
@@ -803,9 +803,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CATALOGOS_MOBILE AS
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|;|,|.|%|"]|[)]+$', ' ')
-              ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-              ,'������,������', 'AEIOUN aeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|;|,|.|%|"]|[)]+$', ' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+              ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
               , Chr(9), ' ')
               , Chr(10), ' ')
               , Chr(13), ' ')
@@ -1272,7 +1272,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_CATALOGOS_MOBILE AS
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'TelcosMobile',
                                           'CMKG_CATALOGOS_MOBILE.F_GENERA_JSON_ULTIMA_MILLA',
-                                          'Error al obtener listado de �ltima milla' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener listado de última milla' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_INFRAESTRUCTURA'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );

@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA AS 
 
   /**
-   * Documentaci�n para proceso 'P_GET_CLASE_DOCUMENTO'
+   * Documentación para proceso 'P_GET_CLASE_DOCUMENTO'
    *
    * Metodo encargado de consultar uno o varios documentos, segun los datos ingresados
    *
@@ -25,9 +25,9 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA AS
                                   Prf_Response OUT SYS_REFCURSOR);
 
   /**
-   * Documentaci�n para proceso 'P_GET_DOCUMENTOS_RELACIONADOS'
+   * Documentación para proceso 'P_GET_DOCUMENTOS_RELACIONADOS'
    *
-   * Metodo encargado de consultar uno o varios documentos relacionados seg�n la transacci�n: casos,tareas, etc.
+   * Metodo encargado de consultar uno o varios documentos relacionados según la transacción: casos,tareas, etc.
    *
    * @param Pr_DocumentoRelacion    IN   INFO_DOCUMENTO_RELACION%ROWTYPE Recibe registro con los datos a consultar
    * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la consulta
@@ -46,7 +46,7 @@ CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA AS
 END CUKG_COMUNICACIONES_CONSULTA;
 /
 
-CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA AS
+CREATE OR REPALCE PACKAGE BODY DB_COMUNICACION.CUKG_COMUNICACIONES_CONSULTA AS
 
   PROCEDURE P_GET_CLASE_DOCUMENTO(Pcl_Request  IN  CLOB,
                                   Pv_Status    OUT VARCHAR2,

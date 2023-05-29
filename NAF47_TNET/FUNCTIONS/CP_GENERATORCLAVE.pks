@@ -18,7 +18,7 @@ CREATE OR REPLACE function NAF47_TNET.CP_GENERATORCLAVE(Pv_FechaDocumento       
    Lv_ClaveAcceso  DB_COMPROBANTES.INFO_DOCUMENTO.CLAVE_ACCESO%type;
 
 Begin
---- Funcion que devuelve la clave para el comprobante de retenci�n 
+--- Funcion que devuelve la clave para el comprobante de retencion
   Open C_ClaveSRI;
   Fetch C_ClaveSRI into Lv_ClaveAcceso;
   If C_ClaveSRI%notfound Then

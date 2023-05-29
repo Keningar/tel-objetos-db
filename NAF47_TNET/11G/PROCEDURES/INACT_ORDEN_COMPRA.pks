@@ -13,7 +13,7 @@ CREATE OR REPLACE PROCEDURE NAF47_TNET.INACT_ORDEN_COMPRA ( Pv_Cia   IN VARCHAR2
 * @author Luis Lindao <llindao@telconet.ec>
 * @version 1.2 28/02/2018 Se modifica considerar solo los articulos recurrentes y actualizar el estado de la solicitud a nivel cabecera
 *
-* @author Elvis Mu�oz <emunoz@telconet.ec>
+* @author Elvis Muñoz <emunoz@telconet.ec>
 * @version 1.3 28/02/2018 Se procede al cambio de la funcion GEK_CONSULTA.F_RECUPERA_LOGIN por la sentencia LOWER(USER)
 *
 * @param Pv_Cia   IN     VARCHAR2 Recibe codigo de compania

@@ -3863,7 +3863,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_CLIENTES
       INTO Lv_NoCliente;
     IF C_CLIENTES%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Cliente en C_CLIENTES: ' ||
+      Lv_MensajeError := ' No se encontró Cliente en C_CLIENTES: ' ||
                          Pv_TipoIdentificacion;
       Raise Le_Error;
     END IF;
@@ -3881,7 +3881,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_PERIODO
       INTO Lr_ARINCD;
     IF C_PERIODO%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Periodo en C_PERIODO';
+      Lv_MensajeError := ' No se encontró Periodo en C_PERIODO';
       Raise Le_Error;
     END IF;
     CLOSE C_PERIODO;
@@ -3901,7 +3901,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_SUBCLIENTE
       INTO Lr_ARCCLOCALES_CLIENTES;
     IF C_SUBCLIENTE%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Subcliente en C_SUBCLIENTE';
+      Lv_MensajeError := ' No se encontró Subcliente en C_SUBCLIENTE';
       Raise Le_Error;
     END IF;
     CLOSE C_SUBCLIENTE;
@@ -3913,7 +3913,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_COBRADOR
       INTO Lv_NombreCobrador;
     IF C_COBRADOR%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Cobrador en COBRADOR';
+      Lv_MensajeError := ' No se encontró Cobrador en COBRADOR';
       Raise Le_Error;
     END IF;
     CLOSE C_COBRADOR;
@@ -3935,7 +3935,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_AUTOMATICO
       INTO Lv_formulario;
     IF C_AUTOMATICO%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Formulario en C_AUTOMATICO';
+      Lv_MensajeError := ' No se encontró Formulario en C_AUTOMATICO';
       Raise Le_Error;
     END IF;
 
@@ -3949,7 +3949,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_FORMU
       INTO Ln_siguiente, Ln_serie;
     IF C_FORMU%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Secuencia en C_FORMU';
+      Lv_MensajeError := ' No se encontró Secuencia en C_FORMU';
       Raise Le_Error;
     END IF;
     CLOSE C_FORMU;
@@ -3968,7 +3968,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_RETE
       INTO Lv_formuTipoDoc;
     IF C_RETE%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Tipo Retencion en C_RETE';
+      Lv_MensajeError := ' No se encontró Tipo Retencion en C_RETE';
       Raise Le_Error;
     END IF;
     CLOSE C_RETE;
@@ -3980,7 +3980,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_FORMU_TIPO_DOC
       INTO Ln_siguTipoDoc;
     IF C_FORMU_TIPO_DOC%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Tipo Documento en C_FORMU_TIPO_DOC';
+      Lv_MensajeError := ' No se encontró Tipo Documento en C_FORMU_TIPO_DOC';
       Raise Le_Error;
     END IF;
     CLOSE C_FORMU_TIPO_DOC;
@@ -3997,7 +3997,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
     FETCH C_TIPO
       INTO Lr_TipoDoc;
     IF C_TIPO%NOTFOUND THEN
-      Lv_MensajeError := ' No se encontr� Tipo  en C_TIPO';
+      Lv_MensajeError := ' No se encontró Tipo  en C_TIPO';
       Raise Le_Error;
     END IF;
     CLOSE C_TIPO;
@@ -4238,7 +4238,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
           FETCH C_ARCGIMP
             INTO Lr_Arcgimp;
           IF C_ARCGIMP%NOTFOUND THEN
-            Lv_MensajeError := ' No se encontr� impuesto en C_ARCGIMP ';
+            Lv_MensajeError := ' No se encontró impuesto en C_ARCGIMP ';
             Raise Le_Error;
           END IF;
           CLOSE C_ARCGIMP;
@@ -4262,7 +4262,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
           FETCH C_MONTO_RET
             INTO Ln_Tot_Ret;
           IF C_MONTO_RET%NOTFOUND OR NVL(Ln_Tot_Ret, 0) = 0 THEN
-            Lv_MensajeError := ' No se encontr� Total Ret para Cliente:' ||
+            Lv_MensajeError := ' No se encontró Total Ret para Cliente:' ||
                                Lv_NoCliente || ' Grupo: ' || Pv_Grupo ||
                                ' Cobro: ' || Lv_NoDocu || ' Fact. Refe: ' ||
                                Lr_ARCCRD.No_Refe || ' Empresa: ' ||
@@ -4372,7 +4372,7 @@ RHP_REGISTRA_HIST_DE_REINGRESO(Pv_NoCia,
       Lr_ARCCMD.Total_Cr := Ln_SumCredito;
       Lr_ARCCMD.Total_Db := Ln_SumDebito;
     ELSE
-      Lv_MensajeError := 'Debito: ' || Ln_SumDebito || ' y  Cr�dito: ' ||
+      Lv_MensajeError := 'Debito: ' || Ln_SumDebito || ' y  Crédito: ' ||
                          Ln_SumCredito || ' diferentes.';
       Raise Le_Error;
     END IF;

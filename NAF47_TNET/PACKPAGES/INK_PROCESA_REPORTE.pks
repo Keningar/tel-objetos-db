@@ -70,7 +70,7 @@ CREATE OR REPLACE package NAF47_TNET.INK_PROCESA_REPORTE is
   * @version 1.2  06/06/2021 Se modifica select de obtencion de informacion para usuario despachos manuales 
   *
   * @author Luis Lindao <llindao@telconet.ec> 
-  * @version 1.3  24/04/2022 - Se modifica para recuperar correctamente la descripci�n del tipo de art�culo
+  * @version 1.3  24/04/2022 - Se modifica para recuperar correctamente la descripción del tipo de artículo
   *
   * @author Elvis Munoz <llindao@telconet.ec> 
   * @version 1.4  12/07/2022 - Se modifica para recuperar correctamente el ultimo movimiento de un articulo  

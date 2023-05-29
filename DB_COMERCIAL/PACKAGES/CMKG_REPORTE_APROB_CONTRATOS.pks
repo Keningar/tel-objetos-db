@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS 
 
   /**
-  * Se agregan types necesarios para Generaci�n de Reporte Detallado y Resumido de Aprobaci�n de Contratos
+  * Se agregan types necesarios para Generación de Reporte Detallado y Resumido de Aprobación de Contratos
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 11-07-2017
   */
@@ -74,15 +74,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN VARCHAR2;  
 
   /**
-  * Documentaci�n para PROCEDURE 'P_GET_CLIENTES_APROB_CONTRATOS'.
-  * Procedure que me permite obtener Reporte de Gestion de Administracion de Contratos con filtros enviados como par�metros.
+  * Documentación para PROCEDURE 'P_GET_CLIENTES_APROB_CONTRATOS'.
+  * Procedure que me permite obtener Reporte de Gestion de Administracion de Contratos con filtros enviados como parámetros.
   *
   * PARAMETROS:
   * @Param Pv_CodEmpresa  IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Codigo Empresa a generar el reporte)
   * @Param Pv_PrefijoEmpresa IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de empresa a generar el reporte)
   * @Param Pv_UsrSesion  IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE (Usuario a generar el reporte) 
   * @Param Pv_FechaPrePlanificacionDesde VARCHAR2  (Rango inicial para consulta por fecha de pre-planificacion del servicio)
-  * @Param Pv_FechaPrePlanificacionHasta VARCHAR2 (Rango final para consulta por fecha de pre-planificaci�n del servicio)   
+  * @Param Pv_FechaPrePlanificacionHasta VARCHAR2 (Rango final para consulta por fecha de pre-planificación del servicio)   
   * @Param Pv_IdsPtoCobertura VARCHAR2 (Ids para filtrar por punto de cobertura )    
   * @Param Pn_Start IN NUMBER (Rango inicial de consulta)
   * @Param Pn_Limit IN NUMBER(Rango final consulta) 
@@ -105,15 +105,15 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
   );
 
   /**
-  * Documentaci�n para la funci�n 'F_GET_CLIENTES_APROB_CONTRATOS'.
-  * Funci�n que me permite obtener Reporte de Gestion de Administracion de Contratos con filtros enviados como par�metros.
+  * Documentación para la función 'F_GET_CLIENTES_APROB_CONTRATOS'.
+  * Función que me permite obtener Reporte de Gestion de Administracion de Contratos con filtros enviados como parámetros.
   * Costo: 11114
   * PARAMETROS:
   * @Param Fv_CodEmpresa IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Codigo Empresa a generar el reporte)
   * @Param Fv_PrefijoEmpresa  IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de empresa a generar el reporte)
   * @Param Fv_UsrSesion IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE (Usuario a generar el reporte)
   * @Param Fv_FechaPrePlanificacionDesde IN  VARCHAR2 (Rango inicial para consulta por fecha de pre-planificacion del servicio)
-  * @Param Fv_FechaPrePlanificacionHasta IN  VARCHAR2 (Rango final para consulta por fecha de pre-planificaci�n del servicio) 
+  * @Param Fv_FechaPrePlanificacionHasta IN  VARCHAR2 (Rango final para consulta por fecha de pre-planificación del servicio) 
   * @Param Fv_IdsPtoCobertura IN  VARCHAR2 (Ids para filtrar por punto de cobertura )    
   * @Param Fn_Start IN  NUMBER  (Rango inicial de consulta)
   * @Param Fn_Limit IN  NUMBER (Rango final de consulta)
@@ -146,7 +146,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN NUMBER;  
 
   /**
-  * Documentaci�n para F_GET_FE_USR_SOLICITUD
+  * Documentación para F_GET_FE_USR_SOLICITUD
   * Retorna la fecha o el usuario del Historial de una Solicitud en base al servicio, Estado y Tipo de Solicitud.
   * Costo: 12
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -166,7 +166,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para F_GET_ULT_ESTADO_SOLPLANIF
+  * Documentación para F_GET_ULT_ESTADO_SOLPLANIF
   * Retorna el ultimo estado de una solicitud de tipo PLANIFICACION para un servicio especifico.
   * Costo: 3
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -180,7 +180,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN DB_COMERCIAL.INFO_DETALLE_SOL_HIST.ESTADO%TYPE;
 
 /**
-  * Documentaci�n para F_GET_USUARIO
+  * Documentación para F_GET_USUARIO
   * Retorna los nombres del usuario segun el login que recibe como parametro
   * Costo: 3
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -195,7 +195,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
 
 
 /**
-  * Documentaci�n para F_GET_FECHA_PROSPECTO_CLI
+  * Documentación para F_GET_FECHA_PROSPECTO_CLI
   * Retorna la fecha de creacion del Prospecto o cliente segun el Rol y prefijho empresa que recibe
   * Costo: 3
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -213,7 +213,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN VARCHAR2;    
 
 /**
-  * Documentaci�n para F_GET_CANAL_PTOVTA
+  * Documentación para F_GET_CANAL_PTOVTA
   * Retorna el canal o el punto de venta asignado a un Punto
   * Costo: 12
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -229,7 +229,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN VARCHAR2;
 
 /**
-  * Documentaci�n para F_INFORMACION_CONTRATO_CLI
+  * Documentación para F_INFORMACION_CONTRATO_CLI
   * Retorna Informacion del Contrato por cliente segun el estado y por el tipo de informacion que desea obtener
   * 
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -247,7 +247,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN VARCHAR2;
 
 /**
-  * Documentaci�n para F_INFORMACION_PAGO_ANT
+  * Documentación para F_INFORMACION_PAGO_ANT
   * Retorna Informacion del Pago asociado a un ID_DOCUMENTO Factura o Anticipo asociado al ID_PUNTO de facturacion
   *
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
@@ -265,7 +265,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
     RETURN VARCHAR2;
 
 /**
-  * Documentaci�n para F_INFORMACION_FACT_INST
+  * Documentación para F_INFORMACION_FACT_INST
   * Retorna Informacion respecto a la factura de instalacion en base al ID_PUNTO  de Facturacion, retorna informacion
   * segun el parametro enviado.
   * Costo: 4
@@ -282,18 +282,18 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
   RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para PROCEDURE 'P_REPORTE_APROBACION_CONTRATOS'.
+  * Documentación para PROCEDURE 'P_REPORTE_APROBACION_CONTRATOS'.
   * Procedure que me permite generar Reporte de Gestion de Administracion de Contratos en formato csv Detallado y Resumido y enviarlo por mail
-  * segun con filtros recibidos como par�metros.  
+  * segun con filtros recibidos como parámetros.  
   * Costo: 11945
   * PARAMETROS:
   * @Param Pv_CodEmpresa IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE (Codigo Empresa a generar el reporte)
   * @Param Pv_PrefijoEmpresa  IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE (Prefijo de empresa a generar el reporte)
   * @Param Pv_UsrSesion IN  DB_COMERCIAL.INFO_PERSONA.LOGIN%TYPE (Usuario a generar el reporte)
-  * @Param Pv_FechaPrePlanificacionDesde IN  VARCHAR2 (Rango inicial para consulta por fecha de pre-planificaci�n del servicio)
-  * @Param Pv_FechaPrePlanificacionHasta IN  VARCHAR2 (Rango final para consulta por fecha de pre-planificaci�n del servicio)
+  * @Param Pv_FechaPrePlanificacionDesde IN  VARCHAR2 (Rango inicial para consulta por fecha de pre-planificación del servicio)
+  * @Param Pv_FechaPrePlanificacionHasta IN  VARCHAR2 (Rango final para consulta por fecha de pre-planificación del servicio)
   * @Param Pv_IdsPtoCobertura IN  VARCHAR2 (Ids para filtrar por punto de cobertura) 
-  * @Param Pv_MsjResultado OUT VARCHAR2 (Devuelve un mensaje del resultado de la generaci�n del reporte)
+  * @Param Pv_MsjResultado OUT VARCHAR2 (Devuelve un mensaje del resultado de la generación del reporte)
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 11-07-2017
   */
@@ -324,9 +324,9 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REPORTE_APROB_CONTRATOS AS
               REPLACE(
               TRANSLATE(
               REGEXP_REPLACE(
-              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|�|<|>|/|;|.|,|%|"]|[)]+$', ' ')
-              ,'[^A-Za-z0-9������������&()-_ ]' ,' ')
-              ,'������,������', 'AEIOUN aeioun')
+              REGEXP_REPLACE(Fv_Cadena,'^[^A-Z|^a-z|^0-9]|[?|¿|<|>|/|;|.|,|%|"]|[)]+$', ' ')
+              ,'[^A-Za-z0-9ÁÉÍÓÚáéíóúÑñ&()-_ ]' ,' ')
+              ,'ÁÉÍÓÚÑ,áéíóúñ', 'AEIOUN aeioun')
               , Chr(9), ' ')
               , Chr(10), ' ')
               , Chr(13), ' ')
@@ -1116,7 +1116,7 @@ EXCEPTION
 WHEN OTHERS THEN 
   DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+', 
                                         'CMKG_REPORTE_APROB_CONTRATOS.F_INFORMACION_CONTRATO_CLI', 
-                                        'Error al obtener la informaci�n de contrato (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
+                                        'Error al obtener la información de contrato (' || Fv_TipoInformacion || ', ' || Fn_IdPersonaRol || ') - '
                                         || SQLCODE || ' -ERROR- ' || SQLERRM, 
                                         NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'), 
                                         SYSDATE, 
@@ -1367,7 +1367,7 @@ END F_INFORMACION_CONTRATO_CLI;
     Lv_DescPtosCobertura          VARCHAR2(4000):='';
     Lv_DesCobertura               VARCHAR2(250);
     Lv_DocsEntregables            VARCHAR2(500);
-    Lv_CaractOriginal             VARCHAR2(100):= '������������������������������������������������';
+    Lv_CaractOriginal             VARCHAR2(100):= 'ñáéíóúàèìòùãõâêîôôäëïöüçÑÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ';
     Lv_CaractReemplazo            VARCHAR2(100):= 'naeiouaeiouaoaeiooaeioucNAEIOUAEIOUAOAEIOOAEIOUC';
     --
     --Costo: 1
@@ -1729,8 +1729,8 @@ END F_INFORMACION_CONTRATO_CLI;
     Lv_AliasCorreos,
     'Telcos',
     'Activo',
-    'Reporte Detallado de Gesti�n de Administraci�n de Contratos en base a los parametros:'||
-    '</br> Fecha PrePlanificaci�n Desde: <b>'||TO_DATE(Pv_FechaPrePlanificacionDesde,'DD/MM/YY')||
+    'Reporte Detallado de Gestión de Administración de Contratos en base a los parametros:'||
+    '</br> Fecha PrePlanificación Desde: <b>'||TO_DATE(Pv_FechaPrePlanificacionDesde,'DD/MM/YY')||
 '</b> Hasta: <b>'||(TO_DATE(Pv_FechaPrePlanificacionHasta,'DD/MM/YY')-1)||'</b>'||
     '</br> Puntos Cobertura: <b>'||Lv_DescPtosCobertura||'</b>');
     --
@@ -1955,8 +1955,8 @@ END F_INFORMACION_CONTRATO_CLI;
     Lv_AliasCorreos,
     'Telcos',
     'Activo',
-    'Reporte Resumen de Gesti�n de Administraci�n de Contratos en base a los parametros:'||
-    '</br> Fecha PrePlanificaci�n Desde: <b>'||TO_DATE(Pv_FechaPrePlanificacionDesde,'DD/MM/YY')||'</b> Hasta: <b>'
+    'Reporte Resumen de Gestión de Administración de Contratos en base a los parametros:'||
+    '</br> Fecha PrePlanificación Desde: <b>'||TO_DATE(Pv_FechaPrePlanificacionDesde,'DD/MM/YY')||'</b> Hasta: <b>'
 ||(TO_DATE(Pv_FechaPrePlanificacionHasta,'DD/MM/YY')-1)||'</b>'||
     '</br> Puntos Cobertura: <b>'||Lv_DescPtosCobertura||'</b>');
     --

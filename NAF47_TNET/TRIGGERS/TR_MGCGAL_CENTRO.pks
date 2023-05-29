@@ -3,8 +3,8 @@ CREATE OR REPLACE TRIGGER NAF47_TNET.TR_MGCGAL_CENTRO
   ON "NAF47_TNET"."MIGRA_ARCGAL" FOR EACH ROW
   /**
   * Documentacion para trigger TR_MGCGAL_CENTRO
-  * Trigger que validar� que los campos centros de costos siempre se registren con valores asignados
-  * al registrar en repositorio migraci�n bancos
+  * Trigger que validará que los campos centros de costos siempre se registren con valores asignados
+  * al registrar en repositorio migración bancos
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.0 01-09-2017
   */

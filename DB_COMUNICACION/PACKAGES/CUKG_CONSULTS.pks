@@ -1,14 +1,14 @@
 CREATE OR REPLACE PACKAGE DB_COMUNICACION.CUKG_CONSULTS AS
 /**
- * Documentaci�n para F_GET_PARAMS_NOTIF_MASIVA
- * Funci�n que obtiene los par�metros que fueron configurados en el env�o masivo
+ * Documentación para F_GET_PARAMS_NOTIF_MASIVA
+ * Función que obtiene los parámetros que fueron configurados en el envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 18/09/2017
  *
- * @param Fn_IdNotifMasiva  IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.NOTIF_MASIVA_ID%TYPE Recibe el id de la notificaci�n masiva
- * @param Fn_Tipo           IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.TIPO%TYPE Recibe el tipo de par�metro de env�o masivo
- * @param Fv_Estado         IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.ESTADO%TYPE Recibe el estado del par�metro del env�o masivo
+ * @param Fn_IdNotifMasiva  IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.NOTIF_MASIVA_ID%TYPE Recibe el id de la notificación masiva
+ * @param Fn_Tipo           IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.TIPO%TYPE Recibe el tipo de parámetro de envío masivo
+ * @param Fv_Estado         IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.ESTADO%TYPE Recibe el estado del parámetro del envío masivo
  * @return SYS_REFCURSOR
  */
 FUNCTION F_GET_PARAMS_NOTIF_MASIVA(
@@ -18,15 +18,15 @@ FUNCTION F_GET_PARAMS_NOTIF_MASIVA(
 RETURN SYS_REFCURSOR;
 
 /**
- * Documentaci�n para F_GET_VALOR_PARAM_NOTIF_MASIVA
- * Funci�n que obtiene el valor de un par�metro de la notificaci�n masiva
+ * Documentación para F_GET_VALOR_PARAM_NOTIF_MASIVA
+ * Función que obtiene el valor de un parámetro de la notificación masiva
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 26/09/2017
  *
- * @param Fn_IdNotifMasiva  IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.NOTIF_MASIVA_ID%TYPE Recibe el id de la notificaci�n masiva
- * @param Fv_Nombre         IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.NOMBRE%TYPE Recibe el nombre de par�metro de env�o masivo
- * @param Fv_Estado         IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.ESTADO%TYPE Recibe el estado del par�metro del env�o masivo
+ * @param Fn_IdNotifMasiva  IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.NOTIF_MASIVA_ID%TYPE Recibe el id de la notificación masiva
+ * @param Fv_Nombre         IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.NOMBRE%TYPE Recibe el nombre de parámetro de envío masivo
+ * @param Fv_Estado         IN  DB_COMUNICACION.INFO_NOTIF_MASIVA_PARAM.ESTADO%TYPE Recibe el estado del parámetro del envío masivo
  * @return SYS_REFCURSOR
  */
 FUNCTION F_GET_VALOR_PARAM_NOTIF_MASIVA(
@@ -36,13 +36,13 @@ FUNCTION F_GET_VALOR_PARAM_NOTIF_MASIVA(
 RETURN VARCHAR2;
 
 /**
- * Documentaci�n para P_GET_SERVICIOS_NOTIF_MASIVA
- * Procedimiento que retorna el listado de los clientes con los servicios para el listado del env�o masivo
+ * Documentación para P_GET_SERVICIOS_NOTIF_MASIVA
+ * Procedimiento que retorna el listado de los clientes con los servicios para el listado del envío masivo
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 20/09/2017
  *
- * @param Fv_DestinatariosCorreo        IN VARCHAR2 Recibe 'S' si se desea obtener los destinatarios del env�o masivo que se quiere realizar
+ * @param Fv_DestinatariosCorreo        IN VARCHAR2 Recibe 'S' si se desea obtener los destinatarios del envío masivo que se quiere realizar
  * @param Pn_Start                      IN NUMBER Inicio del rownum
  * @param Pn_Limit                      IN NUMBER Fin del rownum
  * @param Pv_Grupo                      IN VARCHAR2 Recibe el nombre del grupo de un producto
@@ -52,23 +52,23 @@ RETURN VARCHAR2;
  * @param Pv_EstadoServicio             IN VARCHAR2 Recibe el estado del servicio
  * @param Pv_EstadoPunto                IN VARCHAR2 Recibe el estado del punto
  * @param Pv_EstadoCliente              IN VARCHAR2 Recibe el estado del cliente
- * @param Pv_ClientesVIP                IN VARCHAR2 Recibe 'S' si se desea filtrar s�lo por clientes que son VIP o 'N' para excluir a los clientes VIP
- * @param Pv_UsrCreacionFactura         IN VARCHAR2 Recibe el usuario de creaci�n de facturas mensuales o proporcionales
- * @param Pn_NumFacturasAbiertas        IN NUMBER Recibe el n�mero m�nimo de facturas abiertas
- * @param Pv_PuntosFacturacion          IN VARCHAR2 Recibe 'S' si se desea filtrar s�lo por puntos de facturaci�n
+ * @param Pv_ClientesVIP                IN VARCHAR2 Recibe 'S' si se desea filtrar sólo por clientes que son VIP o 'N' para excluir a los clientes VIP
+ * @param Pv_UsrCreacionFactura         IN VARCHAR2 Recibe el usuario de creación de facturas mensuales o proporcionales
+ * @param Pn_NumFacturasAbiertas        IN NUMBER Recibe el número mínimo de facturas abiertas
+ * @param Pv_PuntosFacturacion          IN VARCHAR2 Recibe 'S' si se desea filtrar sólo por puntos de facturación
  * @param Pv_IdsTiposNegocio            IN VARCHAR2 Recibe los ids del tipo de negocio concatenados con ,
  * @param Pv_IdsOficinas                IN VARCHAR2 Recibe los ids de las oficinas concatenados con ,
  * @param Pn_IdFormaPago                IN NUMBER Recibe el id de la forma de pago
  * @param Pv_NombreFormaPago            IN VARCHAR2 Recibe el nombre de la forma de pago
  * @param Pv_IdsBancosTarjetas          IN VARCHAR2 Recibe los ids de los bancos o tarjetas concatenados con ,
- * @param Pv_FechaDesdeFactura          IN VARCHAR2 Recibe la fecha desde la que comparar� la fecha de autorizaci�n de las facturas
- * @param Pv_FechaHastaFactura          IN VARCHAR2 Recibe la fecha hasta la que comparar� la fecha de autorizaci�n de las facturas
- * @param Pv_SaldoPendientePago         IN VARCHAR2 Recibe 'S' si se desea filtrar s�lo a los clientes con saldo pendiente de pago
- * @param Pf_ValorSaldoPendientePago    IN FLOAT Recibe el valor m�nimo para comparar el saldo pendiente de un cliente
+ * @param Pv_FechaDesdeFactura          IN VARCHAR2 Recibe la fecha desde la que comparará la fecha de autorización de las facturas
+ * @param Pv_FechaHastaFactura          IN VARCHAR2 Recibe la fecha hasta la que comparará la fecha de autorización de las facturas
+ * @param Pv_SaldoPendientePago         IN VARCHAR2 Recibe 'S' si se desea filtrar sólo a los clientes con saldo pendiente de pago
+ * @param Pf_ValorSaldoPendientePago    IN FLOAT Recibe el valor mínimo para comparar el saldo pendiente de un cliente
  * @param Pv_IdsTiposContactos          IN VARCHAR2 Recibe los ids de la empresa rol asociados a un tipo de contacto
- * @param Pv_VariablesNotificacion      IN VARCHAR2 Recibe los nombres de las variables que se encuentran en la plantilla de la notificaci�n
+ * @param Pv_VariablesNotificacion      IN VARCHAR2 Recibe los nombres de las variables que se encuentran en la plantilla de la notificación
  * @param Pn_TotalRegistros             OUT NUMBER Recibe el total de registros 
- * @param Prf_ListadoEnvioMasivo        OUT SYS_REFCURSOR Cursor que retorna el listado del env�o masivo
+ * @param Prf_ListadoEnvioMasivo        OUT SYS_REFCURSOR Cursor que retorna el listado del envío masivo
  *
  */
 PROCEDURE P_GET_SERVICIOS_NOTIF_MASIVA(
@@ -101,13 +101,13 @@ PROCEDURE P_GET_SERVICIOS_NOTIF_MASIVA(
                                         Prf_ListadoEnvioMasivo        OUT SYS_REFCURSOR);
 
 /**
- * Documentaci�n para F_GET_ALIAS_PLANTILLA
- * Funci�n que obtiene los alias asociados a una plantilla
+ * Documentación para F_GET_ALIAS_PLANTILLA
+ * Función que obtiene los alias asociados a una plantilla
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 24/09/2017
  *
- * @param Fv_CodigoPlantilla  IN  DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE Recibe el c�digo de la plantilla
+ * @param Fv_CodigoPlantilla  IN  DB_COMUNICACION.ADMI_PLANTILLA.CODIGO%TYPE Recibe el código de la plantilla
  * @return DB_COMUNICACION.CUKG_TYPES.Lr_AliasPlantilla
  */
 FUNCTION F_GET_ALIAS_PLANTILLA(
@@ -115,8 +115,8 @@ FUNCTION F_GET_ALIAS_PLANTILLA(
 RETURN DB_COMUNICACION.CUKG_TYPES.Lr_AliasPlantilla;
 
 /**
- * Documentaci�n para F_GET_PLANTILLA_NOTIF_MASIVA
- * Funci�n que obtiene un cursor de la plantilla que se desea enviar
+ * Documentación para F_GET_PLANTILLA_NOTIF_MASIVA
+ * Función que obtiene un cursor de la plantilla que se desea enviar
  * 
  * @author Lizbeth Cruz <mlcruz@telconet.ec>
  * @version 1.0 24/09/2017
@@ -129,8 +129,8 @@ FUNCTION F_GET_PLANTILLA_NOTIF_MASIVA(
 RETURN SYS_REFCURSOR;
 
 /**
- * Documentaci�n para F_GET_COUNT_TAREAS
- * Funci�n que obtiene la cantidad de tareas asociadas a un id_detalle
+ * Documentación para F_GET_COUNT_TAREAS
+ * Función que obtiene la cantidad de tareas asociadas a un id_detalle
  * 
  * @author Jean Pierre Nazareno <jnazareno@telconet.ec>
  * @version 1.0 03/10/2019
@@ -142,13 +142,13 @@ FUNCTION F_GET_COUNT_TAREAS(Fn_IdDetalle IN DB_SOPORTE.INFO_DETALLE.ID_DETALLE%T
   RETURN NUMBER;
   
   /**
-   * Documentaci�n para P_GET_IMAGENES_POR_CRITERIOS
-   * Proceso que obtiene las im�genes seg�n los criterios ingresados
+   * Documentación para P_GET_IMAGENES_POR_CRITERIOS
+   * Proceso que obtiene las imágenes según los criterios ingresados
    * 
    * @author David De La Cruz <ddelacruz@telconet.ec>
    * @version 1.0
    * @since 02-03-2022
-   *   
+   *
    * @param Pcl_Request
    * @param Pv_Status
    * @param Pv_Mensaje
@@ -162,7 +162,6 @@ FUNCTION F_GET_COUNT_TAREAS(Fn_IdDetalle IN DB_SOPORTE.INFO_DETALLE.ID_DETALLE%T
 
 END CUKG_CONSULTS;
 /
-
 CREATE OR REPLACE PACKAGE BODY DB_COMUNICACION.CUKG_CONSULTS AS
 
 FUNCTION F_GET_PARAMS_NOTIF_MASIVA(
@@ -811,10 +810,10 @@ END F_GET_PLANTILLA_NOTIF_MASIVA;
         DBMS_LOB.APPEND(Lcl_Response,'"strNombreImagen":"'||Lt_Imagenes(Li_Cont).Nombre_Documento||'_'||Lt_Imagenes(Li_Cont).Id_Documento_Relacion||'",');
         Lv_ContAdicImagen := '';
         IF Lt_Imagenes(Li_Cont).Numero_Caso IS NOT NULL THEN
-          Lv_ContAdicImagen := '<div class=''fila''><div class=''label''> N�mero Caso:</div><div class=''descripcion''>'||Lt_Imagenes(Li_Cont).Numero_Caso||'</div></div>';
+          Lv_ContAdicImagen := '<div class=''fila''><div class=''label''> Número Caso:</div><div class=''descripcion''>'||Lt_Imagenes(Li_Cont).Numero_Caso||'</div></div>';
         END IF;
         IF Lt_Imagenes(Li_Cont).Numero_Tarea IS NOT NULL THEN
-          Lv_ContAdicImagen := '<div class=''fila''><div class=''label''> N�mero Tarea:</div><div class=''descripcion''>'||Lt_Imagenes(Li_Cont).Numero_Tarea||'</div></div>';
+          Lv_ContAdicImagen := '<div class=''fila''><div class=''label''> Número Tarea:</div><div class=''descripcion''>'||Lt_Imagenes(Li_Cont).Numero_Tarea||'</div></div>';
         END IF;
         DBMS_LOB.APPEND(Lcl_Response,'"strContenidoAdicImagen":"'||Lv_ContAdicImagen||'",');
         Lv_InfoEvalImagen := '';
@@ -825,7 +824,7 @@ END F_GET_PLANTILLA_NOTIF_MASIVA;
           Ln_IdTipoElemento := NVL(Lt_Imagenes(Li_Cont).Id_Tipo_Elemento,0);
           Lv_EstadoEvaluacion := NVL(Lt_Imagenes(Li_Cont).Estado_Evaluacion,'Pendiente'); 
           DBMS_LOB.APPEND(Lcl_Response,'"strEstadoEvaluacion":"'||Lv_EstadoEvaluacion||'",');
-          Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Estado de Auditor�a:</div><div class=''descripcion'' id=''estadoEvaluacion''>'||Lv_EstadoEvaluacion||'</div></div>';
+          Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Estado de Auditoría:</div><div class=''descripcion'' id=''estadoEvaluacion''>'||Lv_EstadoEvaluacion||'</div></div>';
           IF Lv_EstadoEvaluacion = 'Auditada' THEN
             IF Lt_Imagenes(Li_Cont).Tipo_Elemento_Id IS NOT NULL THEN
               OPEN C_GetInfoTipoElementoPorId(Lt_Imagenes(Li_Cont).Tipo_Elemento_Id);
@@ -838,7 +837,7 @@ END F_GET_PLANTILLA_NOTIF_MASIVA;
               Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Porcentaje Obtenido:</div><div class=''descripcion'' id=''porcentajeObtenido''>'||Lt_Imagenes(Li_Cont).Porcentaje_Evaluado||'%</div></div>';
             END IF;
             IF Lt_Imagenes(Li_Cont).Evaluacion_Trabajo IS NOT NULL THEN
-               Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Evaluaci�n Trabajo:</div><div class=''descripcion''>'||Lt_Imagenes(Li_Cont).Evaluacion_Trabajo||'</div></div>';
+               Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Evaluación Trabajo:</div><div class=''descripcion''>'||Lt_Imagenes(Li_Cont).Evaluacion_Trabajo||'</div></div>';
             END IF;
             IF Lt_Imagenes(Li_Cont).Nombre_Evaluador IS NOT NULL THEN
                Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Evaluador:</div><div class=''descripcion''>'||INITCAP(LOWER(Lt_Imagenes(Li_Cont).Nombre_Evaluador))||'</div></div>';
@@ -877,13 +876,13 @@ END F_GET_PLANTILLA_NOTIF_MASIVA;
                 Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'</select>';
                 Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'</div></div>';
               END IF;
-              Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Evaluaci�n Trabajo:</div><div class=''descripcion''>';
+              Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div class=''fila''><div class=''label''>Evaluación Trabajo:</div><div class=''descripcion''>';
               Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<select name=''evaluacionTrabajo''><option value=''''>Seleccione...</option>';  
               FOR i in C_GetValoresEvaluacionTrabajo LOOP
                  Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<option value='''||i.valor1||''' > '||i.valor2;
               END LOOP;
               Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'</select></div></div><br>';
-              Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div align=''center''><span class=''height20px''><a href=''javascript:void(0);'' onclick=''evaluarTrabajo('||Lt_Imagenes(Li_Cont).Id_Documento_Relacion||')'' class=''button-crud''>Guardar Evaluaci�n</a></span></div>';
+              Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'<div align=''center''><span class=''height20px''><a href=''javascript:void(0);'' onclick=''evaluarTrabajo('||Lt_Imagenes(Li_Cont).Id_Documento_Relacion||')'' class=''button-crud''>Guardar Evaluación</a></span></div>';
               Lv_InfoEvalImagen := Lv_InfoEvalImagen ||'</form>';
           ELSIF Lv_EstadoEvaluacion = 'En Proceso' 
             AND Lt_Imagenes(Li_Cont).Usr_Evaluacion <> Lv_UsuarioSesion 

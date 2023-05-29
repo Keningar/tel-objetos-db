@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
 
    /**
-    * Documentaci�n para TYPE 'Lr_RegistrosPerEnun'.
+    * Documentación para TYPE 'Lr_RegistrosPerEnun'.
     *  
     * @author Walther Joao Gaibor <wgaibor@telconet.ec>
     * @version 1.0 12-03-2021
@@ -23,7 +23,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
             );
             
    /**
-    * Documentaci�n para TYPE 'T_RegistrosPerEnun'.
+    * Documentación para TYPE 'T_RegistrosPerEnun'.
     *
     * @author Walther Joao Gaibor <wgaibor@telconet.ec>
     * @version 1.0 12-03-2021
@@ -31,7 +31,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     TYPE T_RegistrosPerEnun IS TABLE OF Lr_RegistrosPerEnun INDEX BY PLS_INTEGER;
 
     /**
-    * Documentaci�n para la funci�n P_AGREGAR_PERSONA_LISTA
+    * Documentación para la función P_AGREGAR_PERSONA_LISTA
     * Procedimiento que guarda el contrato
     *
     * @param  Pcl_Request       -  Json,
@@ -41,8 +41,8 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     * @author Walther Joao Gaibor <wgaibor@telconet.ec>
     * @version 1.0 06-11-2022
     *
-    * @author Alex G�mez <algomez@telconet.ec>
-    * @version 1.2 02-03-2023 Se a�ade filtro por empresa
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.2 02-03-2023 Se añade filtro por empresa
     *
     * @author Carlos Caguana <ccaguana@telconet.ec>
     * @version 1.3 18-04-2023 Se actualiza fecha de creacion en roles desde documento respuesta
@@ -54,7 +54,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
                                       Pcl_Response      OUT SYS_REFCURSOR);
 
     /**
-    * Documentaci�n para la funci�n P_BUSQUEDA_PERSONA_LISTA
+    * Documentación para la función P_BUSQUEDA_PERSONA_LISTA
     * Procedimiento que obitiene el listado de una persona.
     *
     * @param  Pcl_Request       -  Json,
@@ -64,11 +64,11 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
     * @author Walther Joao Gaibor <wgaibor@telconet.ec>
     * @version 1.0 06-11-2022
     *
-    * @author Alex G�mez <algomez@telconet.ec>
-    * @version 1.1 02/03/2023  Nuevo cod y status de error para lista vac�a
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.1 02/03/2023  Nuevo cod y status de error para lista vacía
     *
-    * @author Alex G�mez <algomez@telconet.ec>
-    * @version 1.2 02-03-2023 Se a�ade filtro por empresa
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.2 02-03-2023 Se añade filtro por empresa
     */
     PROCEDURE P_BUSQUEDA_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
                                        Pv_Mensaje        OUT VARCHAR2,
@@ -77,6 +77,7 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_LISTA_PERSONA AS
 
 END CMKG_LISTA_PERSONA;
 /
+
 CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_LISTA_PERSONA AS
 
 PROCEDURE P_AGREGAR_PERSONA_LISTA(Pcl_Request       IN VARCHAR2,
@@ -328,7 +329,7 @@ BEGIN
         DB_COMERCIAL.VALIDA_IDENTIFICACION.VALIDA(Lv_TipoIdentificacion,Lv_identificacion,Lv_MsgIdentificacion);        
         IF  Lv_MsgIdentificacion  IS NOT NULL THEN  
             dbms_output.put_line( Lv_MsgIdentificacion );  
-            RAISE_APPLICATION_ERROR(-20101,'[Identificaci�n] '||Lv_MsgIdentificacion );
+            RAISE_APPLICATION_ERROR(-20101,'[Identificación] '||Lv_MsgIdentificacion );
         END IF; 
         --
         IF Lv_nombre IS NULL THEN
@@ -640,7 +641,7 @@ BEGIN
     SELECT Lv_MsgSalida AS mensaje
     FROM   DUAL;
     --
-    Pv_Mensaje   := Pv_Mensaje||' Transacci�n realizada correctamente.';
+    Pv_Mensaje   := Pv_Mensaje||' Transacción realizada correctamente.';
     Pv_Status    := 'OK';
     --
     COMMIT;
@@ -1033,7 +1034,7 @@ BEGIN
       RAISE_APPLICATION_ERROR(-20101, 'No existe registros a buscar');
     END IF;
     --
-    Pv_Mensaje   := Pv_Mensaje||' Transacci�n realizada correctamente.';
+    Pv_Mensaje   := Pv_Mensaje||' Transacción realizada correctamente.';
     Pv_Status    := 'OK';
     --
 EXCEPTION
