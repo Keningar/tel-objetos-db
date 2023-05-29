@@ -4,8 +4,8 @@ AS
   /**
   * Documentacion para el procedimiento P_UPDATE_DOC_FINAN_BY_COMP
   *
-  * Procedimiento que actualiza la informaci�n de los comprobantes electronicos del TELCOS+ que coincidan con el documento autorizado del portal de 
-  * facturaci�n en el nombre, valor, n�mero de establecimiento, punto de emision, secuencial y empresa.
+  * Procedimiento que actualiza la información de los comprobantes electronicos del TELCOS+ que coincidan con el documento autorizado del portal de 
+  * facturación en el nombre, valor, número de establecimiento, punto de emision, secuencial y empresa.
   *
   * @param Pv_MensajeError OUT VARCHAR2 Retorna un mensaje de error en caso de existir
   *
@@ -20,9 +20,9 @@ AS
 /**
 * Documentacion para el procedimiento P_INSERT_INFO_PAGO_HISTORIAL
 *
-* M�todo que inserta registros en la tabla INFO_PAGO_HISTORIAL
+* Método que inserta registros en la tabla INFO_PAGO_HISTORIAL
 *
-* @param Pr_InfoPagoLineaHist IN DB_FINANCIERO.INFO_PAGO_LINEA_HISTORIAL%ROWTYPE Objecto con la informaci�n que se debe ingresar
+* @param Pr_InfoPagoLineaHist IN DB_FINANCIERO.INFO_PAGO_LINEA_HISTORIAL%ROWTYPE Objecto con la información que se debe ingresar
 * @param Pv_MsnError OUT VARCHAR2 Retorna un mensaje de error en caso de existir
 *
 * @author Ricardo Coello Quezada <rcoello@telconet.ec>
@@ -34,10 +34,10 @@ Pv_MsnError          OUT VARCHAR2);
 --      
   /**
 * Documentacion para el procedimiento P_ACTIVA_FAC_POR_ANULA_NC
-* M�todo que activa la factura asociada a la nota de credito siempre y cuando su estado sea Cerrado y su saldo sea mayar a cero.
+* Método que activa la factura asociada a la nota de credito siempre y cuando su estado sea Cerrado y su saldo sea mayar a cero.
 *
-* @param Pn_IdDoc                    IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE     Se env�a el id del documento
-* @param Pv_User                     IN VARCHAR2                                            Se env�a el usuario que realiza la activacion
+* @param Pn_IdDoc                    IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE     Se envía el id del documento
+* @param Pv_User                     IN VARCHAR2                                            Se envía el usuario que realiza la activacion
 * @param Pv_MsnError                 IN VARCHAR2                                            Retorna un mensaje de error en caso de existir uno
 *
 * @author Ricardo Coello Quezada <rcoello@telconet.ec>
@@ -51,7 +51,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para procedure P_REGULARIZAR_NUM_FACTURA_SRI
   *
-  * Verifica que existan facturas con numero de secuencia repetidos y las regulariza para luego generar el comprobante electr�nico respectivo
+  * Verifica que existan facturas con numero de secuencia repetidos y las regulariza para luego generar el comprobante electrónico respectivo
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0
@@ -63,17 +63,17 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.2 25-11-2016 - Se modifica el procedure para que regularice las facturas repetidas tomando en cuenta el tipo de empresa y el tipo de
   *                           documento. 
-  *                           Si no se encuentra la numeraci�n respectiva se actualiza el documento dej�ndolo sin numeraci�n.
-  *                           Se guarda el historial respectivo de la actualizaci�n del documento.
+  *                           Si no se encuentra la numeración respectiva se actualiza el documento dejándolo sin numeración.
+  *                           Se guarda el historial respectivo de la actualización del documento.
   *
-  * @author Jos� Candelario <jcandelario@telconet.ec>
-  * @version 1.3 05-08-2020 - Se modifica el procedure se le agregan par�metros de entreda Pv_ParametroTiposDoc, Pv_ParametroEstadosDoc, Pv_TiposDocumentos
-  *                           para identificar las facturas de las notas de cr�ditos.
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.3 05-08-2020 - Se modifica el procedure se le agregan parámetros de entreda Pv_ParametroTiposDoc, Pv_ParametroEstadosDoc, Pv_TiposDocumentos
+  *                           para identificar las facturas de las notas de créditos.
   *
-  * @param Pv_ParametroTiposDoc   IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE (par�metro para obtener los documentos seg�n el tipo)
-  * @param Pv_ParametroEstadosDoc IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE (par�metro para obtener los estados seg�n el documento)
-  * @param Pv_TiposDocumentos     IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE ('FACTURAS' � 'NOTAS_DE_CREDITO')
-  * @param Pv_CodigoNumeracion    IN DB_COMERCIAL.ADMI_NUMERACION.CODIGO%TYPE ('FACE' � 'NCE')
+  * @param Pv_ParametroTiposDoc   IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE (parámetro para obtener los documentos según el tipo)
+  * @param Pv_ParametroEstadosDoc IN DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE (parámetro para obtener los estados según el documento)
+  * @param Pv_TiposDocumentos     IN DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE ('FACTURAS' ó 'NOTAS_DE_CREDITO')
+  * @param Pv_CodigoNumeracion    IN DB_COMERCIAL.ADMI_NUMERACION.CODIGO%TYPE ('FACE' ó 'NCE')
   * @param Pv_MensaError OUT VARCHAR2 Retorna un mensaje de error en caso de existir uno
   * 
   * @author Leonela Burgos <mlburgos@telconet.ec>
@@ -87,7 +87,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                           Pv_MensaError          OUT VARCHAR2);
 
   /**
-   * Procedimiento que realiza el reverso del contrato seg�n el par�metro.
+   * Procedimiento que realiza el reverso del contrato según el parámetro.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 18-10-2018
@@ -95,8 +95,8 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   PROCEDURE P_REVERSO_CONTRATO_X_PARAMETRO (Pv_NombreParametro DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE);
 
   /**
-   * Procedimiento que crea las notas de cr�dito por reverso del contrato.
-   * Anula los servicios ligados al punto en que se gener� la factura de instalaci�n que no se ha pagado.
+   * Procedimiento que crea las notas de crédito por reverso del contrato.
+   * Anula los servicios ligados al punto en que se generó la factura de instalación que no se ha pagado.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 18-10-2018
@@ -110,7 +110,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                          Pv_Mensaje        OUT VARCHAR2);
 
   /**
-   * Procedimiento que realiza el reverso de los servicios relacionados al punto que se le cre� la factura de instalaci�n.
+   * Procedimiento que realiza el reverso de los servicios relacionados al punto que se le creó la factura de instalación.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 23-11-2018
@@ -121,7 +121,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                  Pv_Mensaje       OUT VARCHAR2);
 
   /**
-   * Procedimiento que numera las notas de cr�dito seg�n corresponda.
+   * Procedimiento que numera las notas de crédito según corresponda.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 18-10-2018
@@ -240,69 +240,69 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
       Pv_MsnError             OUT VARCHAR2);
   --
  /**
-  * Procedimiento que itera las solicitudes que deben ser facturadas seg�n el par�metro 'FACTURACION_SOLICITUDES'
+  * Procedimiento que itera las solicitudes que deben ser facturadas según el parámetro 'FACTURACION_SOLICITUDES'
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.0
   * @since 30-08-2018
-  * Versi�n inicial
+  * Versión inicial
   */
   PROCEDURE P_FACTURACION_SOLICITUDES (Pv_ProcesoAutomatico VARCHAR2 DEFAULT 'N');
 
   /**
   * Documentacion para el procedimiento P_GENERAR_FACTURAS_SOLICITUD
   *
-  * M�todo que genera las facturas dependiendo del estado y la descripcion de la solicitud que han ingresado 
+  * Método que genera las facturas dependiendo del estado y la descripcion de la solicitud que han ingresado 
   *
-  * @param Pv_Estado IN DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE Se env�a el estado del Servicio 
-  * @param Pv_DescripcionSolicitud IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE Se env�a la descripci�n de la Solicitud
+  * @param Pv_Estado IN DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE Se envía el estado del Servicio 
+  * @param Pv_DescripcionSolicitud IN DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE Se envía la descripción de la Solicitud
   * @param Pv_MsnError OUT VARCHAR2 Retorna un mensaje de error en caso de existir 
   *
   * @author Edson Franco <efranco@telconet.ec> 
   * @version 1.0 12-12-2015 
   * @author Edson Franco <efranco@telconet.ec> 
-  * @version 1.1 21-09-2015 - Se agrega las variables 'Pv_UsrCreacion' y 'Pn_MotivoId' para realizar una consulta m�s espec�fica de las facturas que
+  * @version 1.1 21-09-2015 - Se agrega las variables 'Pv_UsrCreacion' y 'Pn_MotivoId' para realizar una consulta más específica de las facturas que
   *                           se deben crear
   * @author Edson Franco <efranco@telconet.ec> 
-  * @version 1.2 12-01-2017 - Se modifica la funci�n para agregar el plan de instalacion 'INSTALACION HOME' cuando se cree una factura por
+  * @version 1.2 12-01-2017 - Se modifica la función para agregar el plan de instalacion 'INSTALACION HOME' cuando se cree una factura por
   *                           solicitud 'SOLICITUD INSTALACION GRATIS' para MD
   * @author Edson Franco <efranco@telconet.ec> 
-  * @version 1.3 24-02-2017 - Al agregar la caracter�stica de 'FECHA_VIGENCIA' a la factura de instalaci�n se corrige el formato de fecha guardado
+  * @version 1.3 24-02-2017 - Al agregar la característica de 'FECHA_VIGENCIA' a la factura de instalación se corrige el formato de fecha guardado
   *                           en el campo valor. El formato usado es 'DD-MM-YYYY'
   * @author Richard Cabrera <rcabrera@telconet.ec>
   * @version 1.4 31-07-2017 - Se realizan ajustes para setear una descripcion unica en las facturas para las
   *                           solicitudes de Demo
-  * @author Edgar Holgu�n   <eholguin@telconet.ec>
-  * @version 1.5 13-12-2017 - Se agrega seteo de campo SERVICIO_ID en creaci�n del detalle de la factura.
+  * @author Edgar Holguín   <eholguin@telconet.ec>
+  * @version 1.5 13-12-2017 - Se agrega seteo de campo SERVICIO_ID en creación del detalle de la factura.
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.6
   * @since 30-08-2018
-  * Se modifica el procedimiento para que pueda ser llamado por cualquier solicitud y as� lea el producto o plan y descripci�n de sus par�metros.
-  * Se agrega la funcionalidad para clonar las caracter�sticas de tipo facturable de la solicitud al documento financiero.
-  * Se modifica la creaci�n del info_Servicio_historial almacenando el estado real de la solicitud en caso de generar factura en subtotal 0.
-  * Se agrega el par�metro Pv_EmpresaCod para discriminar las solicitudes por empresa.
-  * Se elimina toda l�gica del proceso de facturaci�n de contrato digital debido a que este proceso es gen�rico para cualquier tipo de solicitud.
+  * Se modifica el procedimiento para que pueda ser llamado por cualquier solicitud y así lea el producto o plan y descripción de sus parámetros.
+  * Se agrega la funcionalidad para clonar las características de tipo facturable de la solicitud al documento financiero.
+  * Se modifica la creación del info_Servicio_historial almacenando el estado real de la solicitud en caso de generar factura en subtotal 0.
+  * Se agrega el parámetro Pv_EmpresaCod para discriminar las solicitudes por empresa.
+  * Se elimina toda lógica del proceso de facturación de contrato digital debido a que este proceso es genérico para cualquier tipo de solicitud.
   * 
   * @author Luis Lindao   <llindao@telconet.ec>
-  * @version 1.7 17-01-2019 - Se asigna como fecha de emisi�n el dia anterior porque proceso procesa los generado el d�a anterior
+  * @version 1.7 17-01-2019 - Se asigna como fecha de emisión el dia anterior porque proceso procesa los generado el día anterior
   *
   * @author Katherine Yager <kyager@telconet.ec>
   * @version 1.8 20-09-2019 - Se trunca el valor de descuento a 2 decimales.
   * 
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.9 19-10-2020 - Se modifica a forma din�mica el query que obtiene Solicitudes de Clientes, y se valida para agregar sentencia 
-  *                           que obtiene registros por solicitudes facturaci�n por reubicaci�n.
-  *                         - Se agrega cursor C_ObtieneCaractSolFact para obtener el id_caracteristica de la solicitud de factura por reubicaci�n.
-  *                         - Se agrega cursor C_ObtieneNumTareaReub para obtener el n�mero de tarea mediante la solicitud y concatenar a la 
-  *                           observaci�n del documento.
+  * @version 1.9 19-10-2020 - Se modifica a forma dinámica el query que obtiene Solicitudes de Clientes, y se valida para agregar sentencia 
+  *                           que obtiene registros por solicitudes facturación por reubicación.
+  *                         - Se agrega cursor C_ObtieneCaractSolFact para obtener el id_caracteristica de la solicitud de factura por reubicación.
+  *                         - Se agrega cursor C_ObtieneNumTareaReub para obtener el número de tarea mediante la solicitud y concatenar a la 
+  *                           observación del documento.
   * Costo query C_ObtieneCaractSolFact: 2
   * Costo query C_ObtieneNumTareaReub: 5
   * 
   *
   * @version 2.0  12-03-2020
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * Se realizan cambios en query que obtiene las solicitudes de los Clientes, se agrega filtro que el servicio no cuente con una 
-  * caracteristica de Reingreso de OS autom�tica.
+  * caracteristica de Reingreso de OS automática.
   *
   * @version 2.1  12-12-2022
   * @author Gustavo Narea <gnarea@telconet.ec>
@@ -325,9 +325,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_INSERT_INFO_DOCUMENTO_CARACT
   *
-  * M�todo que inserta registros en la tabla INFO_DOCUMENTO_CARACTERISTICA
+  * Método que inserta registros en la tabla INFO_DOCUMENTO_CARACTERISTICA
   *
-  * @param Pr_InfoDocumentoCaract IN DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE  Objecto con la informaci�n que se debe ingresar
+  * @param Pr_InfoDocumentoCaract IN DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE  Objecto con la información que se debe ingresar
   * @param Pv_MsnError OUT VARCHAR2 Retorna un mensaje de error en caso de existir 
   *
   * @author Edson Franco <efranco@telconet.ec> 
@@ -345,7 +345,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 24-09-2018
-   * Versi�n inicial.
+   * Versión inicial.
    */
   PROCEDURE P_UPDATE_INFO_DOCUMENTO_CARACT(Pr_InfoDocumentoCaract IN  DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE,
                                            Pv_MsnError            OUT VARCHAR2);
@@ -354,20 +354,20 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   --
 
   /**
-   * Funci�n que devuelve el valor final de la observaci�n.
-   * Se env�a por par�metro la cadena de la plantilla por ejemplo: 'PLANTILLA PRUEBA POR %VALOR%'
-   *    Donde 'VALOR' es la descripci�n de una caracter�stica activa ligada a la solicitud.
-   *          '%'     es el delimitador para identificar la descripci�n de la caracter�stica a buscar.
-   * Si la caracter�stica no existe, se muestra el valor vac�o.
+   * Función que devuelve el valor final de la observación.
+   * Se envía por parámetro la cadena de la plantilla por ejemplo: 'PLANTILLA PRUEBA POR %VALOR%'
+   *    Donde 'VALOR' es la descripción de una característica activa ligada a la solicitud.
+   *          '%'     es el delimitador para identificar la descripción de la característica a buscar.
+   * Si la característica no existe, se muestra el valor vacío.
    * Si no existe el delimitador, se devuelve la misma cadena.
-   * Si el n�mero de coincidencias del delimitador es impar, significa que una etiqueta no est� cerrada, por lo cual devuelve la misma plantilla.
+   * Si el número de coincidencias del delimitador es impar, significa que una etiqueta no está cerrada, por lo cual devuelve la misma plantilla.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 25-10-2018
    *
    * @param Pv_Plantilla           IN   La cadena de texto de la plantilla.
-   * @param Pn_DetalleSolicitudId  IN   El id de la solicitud a la cual debe estar ligada a las caracter�sticas de la plantilla.
-   * @param Pv_Estado              IN   El estado de la cacter�stica a buscar.
+   * @param Pn_DetalleSolicitudId  IN   El id de la solicitud a la cual debe estar ligada a las características de la plantilla.
+   * @param Pv_Estado              IN   El estado de la cacterística a buscar.
    */
   FUNCTION F_GET_OBSERVACION_X_PLANTILLA(Pv_Plantilla          IN  VARCHAR2,
                                          Pn_DetalleSolicitudId IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE,
@@ -375,17 +375,17 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
     RETURN VARCHAR2;
 
   /**
-   * Procedimiento que Obtiene la informaci�n del par�metro ('FACTURACION_SOLICITUDES') en base al nombre de una solicitud espec�fica
-   * para determinar el plan, producto a facturar y la descripci�n del producto para el detalle de la factura.
+   * Procedimiento que Obtiene la información del parámetro ('FACTURACION_SOLICITUDES') en base al nombre de una solicitud específica
+   * para determinar el plan, producto a facturar y la descripción del producto para el detalle de la factura.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 13-08-2018
    *
-   * @param Pv_NombreSolicitud      IN  Nombre de la solicitud para buscar en la tabla de par�metros.
-   * @param Pv_EmpresaCod           IN  C�digo de la empresa para buscar en la tabla de par�metros.
-   * @param Pn_PlanId               OUT Id del plan a ser facturado resultado de la b�squeda en la tabla de par�metros.
-   * @param Pn_ProductoId           OUT Id del producto a ser facturado resultado de la b�squeda en la tabla de par�metros.
-   * @param Pv_ObservacionFactura   OUT Observaci�n del detalle ser facturado resultado de la b�squeda en la tabla de par�metros.
+   * @param Pv_NombreSolicitud      IN  Nombre de la solicitud para buscar en la tabla de parámetros.
+   * @param Pv_EmpresaCod           IN  Código de la empresa para buscar en la tabla de parámetros.
+   * @param Pn_PlanId               OUT Id del plan a ser facturado resultado de la búsqueda en la tabla de parámetros.
+   * @param Pn_ProductoId           OUT Id del producto a ser facturado resultado de la búsqueda en la tabla de parámetros.
+   * @param Pv_ObservacionFactura   OUT Observación del detalle ser facturado resultado de la búsqueda en la tabla de parámetros.
    */
   PROCEDURE P_BUSCA_INFORMACION_SOLICITUD(Pv_NombreSolicitud    IN  DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE,
                                           Pv_EmpresaCod         IN  DB_GENERAL.ADMI_PARAMETRO_DET.EMPRESA_COD%TYPE,
@@ -394,18 +394,18 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                           Pv_ObservacionFactura OUT DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.OBSERVACIONES_FACTURA_DETALLE%TYPE);
 
  /**
-  * Procedimiento que clona las caracter�sticas de la tabla INFO_DETALLE_SOL_CARAC a la tabla INFO_DOCUMENTO_CARACTERISTICA
+  * Procedimiento que clona las características de la tabla INFO_DETALLE_SOL_CARAC a la tabla INFO_DOCUMENTO_CARACTERISTICA
   * Es mandatorio que el estado de la solicitud sea 'Facturable' para poder ser clonada.
-  * La caracter�stica clonada en la INFO_DOCUMENTO_CARACTERISTICA se crea con estado 'Activo' para ser visualizada en Telcos.
+  * La característica clonada en la INFO_DOCUMENTO_CARACTERISTICA se crea con estado 'Activo' para ser visualizada en Telcos.
   * @author Luis Cabrera <lcabrera@telconet.ec>
   * @version 1.0
   * @since 15-08-2018
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.1
-  * @since 06-09-2019 Se agrega clonado de caracter�sticas no facturables de una solicitud como caracter�sticas del documento financiero.
+  * @since 06-09-2019 Se agrega clonado de características no facturables de una solicitud como características del documento financiero.
   *
-  * @param Pn_DetalleSolicitudId           IN  Id de la solicitud que contiene las caracter�sticas a ser clonadas.
+  * @param Pn_DetalleSolicitudId           IN  Id de la solicitud que contiene las características a ser clonadas.
   * @param Pr_InfoDocumentoFinancieroDet   IN  Registro de la INFO_DOCUMENTO_FINANCIERO_DET a insertar por defecto.
   * @param Pv_PagaIva                      IN  Bandera si el cliente aplica IVA o no. (S/N).
   * @param Pv_Mensaje                      OUT Mensaje de error en caso de existir.
@@ -416,7 +416,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                       Pv_Mensaje                    OUT VARCHAR2);
 
   /**
-   * Procedimiento que crea el registro en la INFO_DOCUMENTO_FINANCIERO_DET y en INFO_DOCUMENTO_FINANCIERO_IMP seg�n corresponda.
+   * Procedimiento que crea el registro en la INFO_DOCUMENTO_FINANCIERO_DET y en INFO_DOCUMENTO_FINANCIERO_IMP según corresponda.
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 30-09-2018
@@ -428,15 +428,15 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_UPDATE_DOC_CONTABILIZAR
   *
-  * Procedimiento que realiza actualiza la columna de CONTABILIZADO con el valor de 'N' para poder reprocesar la informaci�n de dichos documentos,
+  * Procedimiento que realiza actualiza la columna de CONTABILIZADO con el valor de 'N' para poder reprocesar la información de dichos documentos,
   * adicional escribe un historial con lo realizado.
   *
   * @param Pv_Prefijo                 IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  (Prefijo de la empresa que va a reprocesar la informacion)
-  * @param Pv_CodigoTipoDocumento     IN DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE (C�digo de los documentos a 
+  * @param Pv_CodigoTipoDocumento     IN DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE (Código de los documentos a 
   *                                                                                                               actualizar)
-  * @param Pv_ActualizarContabilizado IN VARCHAR2  (Par�metro que indica si se debe actualizar la columna de CONTABILIZADO)
+  * @param Pv_ActualizarContabilizado IN VARCHAR2  (Parámetro que indica si se debe actualizar la columna de CONTABILIZADO)
   * @param Pv_FeProcesar              IN VARCHAR2  (Fecha en la que se van a consultar los documentos)
-  * @param Pv_UsrCreacion             IN DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.USR_CREACION%TYPE  (Usuario quien realiza la acci�n)
+  * @param Pv_UsrCreacion             IN DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.USR_CREACION%TYPE  (Usuario quien realiza la acción)
   * @param Pv_TipoProceso             IN OUT VARCHAR2  (Tipo de proceso que se va a realizar con los documentos a actualizar)
   * @param Pv_MensajeError            OUT VARCHAR2  (Texto con el mensaje de error en caso de existir)
   *
@@ -444,7 +444,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * @version 1.0 22-02-2017
   *
   * @author Luis Lindao <llindao@telconet.ec> 
-  * @version 1.1 04-03-2018 -  Se modifica para corregir where que filtra por fecha de emisi�n o fecha contabilizaci�n 
+  * @version 1.1 04-03-2018 -  Se modifica para corregir where que filtra por fecha de emisión o fecha contabilización 
   *
   * @author Luis Lindao <llindao@telconet.ec>
   * @version 1.2 05-03-2018 - Se modifica para cambiar DECODE por CASE pues la condicion contraria del DECODE no presenta el resultado requerido
@@ -462,25 +462,25 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_REPROCESAMIENTO_CONTABLE
   *
-  * M�todo que realiza el reprocesamiento de la informaci�n migrada al NAF que no haya sido mayorizada
+  * Método que realiza el reprocesamiento de la información migrada al NAF que no haya sido mayorizada
   *
-  * @param Pv_CodEmpresa              IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa que va a reprocesar la informacion)
+  * @param Pv_CodEmpresa              IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa que va a reprocesar la informacion)
   * @param Pv_Prefijo                 IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  (Prefijo de la empresa que va a reprocesar la informacion)
-  * @param Pv_CodigoTipoDocumento     IN DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE (C�digo de los documentos a 
+  * @param Pv_CodigoTipoDocumento     IN DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE (Código de los documentos a 
   *                                                                                                               actualizar)
-  * @param Pv_CodigoDiario            IN DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.COD_DIARIO%TYPE  (C�digo de diario con el cual se asienta el
+  * @param Pv_CodigoDiario            IN DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.COD_DIARIO%TYPE  (Código de diario con el cual se asienta el
   *                                                                                                  registro en la contabilidad)
-  * @param Pv_ActualizarContabilizado IN VARCHAR2  (Par�metro que indica si se debe actualizar la columna de CONTABILIZADO)
+  * @param Pv_ActualizarContabilizado IN VARCHAR2  (Parámetro que indica si se debe actualizar la columna de CONTABILIZADO)
   * @param Pv_FeProcesar              IN VARCHAR2  (Fecha en la que se van a consultar los documentos)
-  * @param Pv_UsrCreacion             IN DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.USR_CREACION%TYPE  (Usuario quien realiza la acci�n)
+  * @param Pv_UsrCreacion             IN DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.USR_CREACION%TYPE  (Usuario quien realiza la acción)
   * @param Pv_TipoProceso             IN OUT VARCHAR2  (Tipo de proceso que se va a realizar con los documentos a actualizar)
   * @param Pv_MensajeError            OUT VARCHAR2  (Texto con el mensaje de error en caso de existir)
   *
   * @author Edson Franco <efranco@telconet.ec> 
   * @version 1.0 23-02-2017
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 20-03-2017 - Se actualiza el procedimiento 'NAF47_TNET.GEK_MIGRACION.P_ELIMINA_MIGRA_CG' enviando 'NULL' al par�metro 
-  *                           'Pv_NumeroAsiento' el cual es usado para eliminar un documento espec�fico de las tablas de migracion del NAF.
+  * @version 1.1 20-03-2017 - Se actualiza el procedimiento 'NAF47_TNET.GEK_MIGRACION.P_ELIMINA_MIGRA_CG' enviando 'NULL' al parámetro 
+  *                           'Pv_NumeroAsiento' el cual es usado para eliminar un documento específico de las tablas de migracion del NAF.
   */
   PROCEDURE P_REPROCESAMIENTO_CONTABLE(
     Pv_CodEmpresa              IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -497,22 +497,22 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_GEN_CARGO_REPROCESO
   *
-  * M�todo que realiza la generaci�n de solicitudes de cargo por reproceso a los clientes correspondientes.
+  * Método que realiza la generación de solicitudes de cargo por reproceso a los clientes correspondientes.
   *
   * @param Pv_PrefijoEmpresa          IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  (Prefijo de la empresa que va a reprocesar la informacion)
-  * @param Pv_EstadoDebitoDet         IN  DB_FINANCIERO.INFO_DEBITO_DET.ESTADO%TYPE (Estado del d�bito)
-  * @param Pv_ParametroDebitos        IN  DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE  (N�mero de intentos de d�bitos fallidos)
+  * @param Pv_EstadoDebitoDet         IN  DB_FINANCIERO.INFO_DEBITO_DET.ESTADO%TYPE (Estado del débito)
+  * @param Pv_ParametroDebitos        IN  DB_GENERAL.ADMI_PARAMETRO_DET.VALOR1%TYPE  (Número de intentos de débitos fallidos)
   * @param Pv_MensajeError            OUT VARCHAR2  (Texto con el mensaje de error en caso de existir)
   *
   * @author Edgar Holguin <eholguin@telconet.ec> 
   * @version 1.0 22-03-2017
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
-  * @version 1.1 20-05-2021 - Se elimina cursor C_GetCountSolReproceso por motivo de validaci�n que aumenta el tiempo de respuesta en la l�gica.  
-  *                           Se elimina c�digo correspondiente a la l�gica del cursor que obten�a un count de las solicitudes del cliente.
+  * @version 1.1 20-05-2021 - Se elimina cursor C_GetCountSolReproceso por motivo de validación que aumenta el tiempo de respuesta en la lógica.  
+  *                           Se elimina código correspondiente a la lógica del cursor que obtenía un count de las solicitudes del cliente.
   *                         - Se modifica cursor C_ClientesConCargoReproceso para obtener los clientes validando las solicitudes ligadas
   *                           en los estados permitidos. Se parametriza los estados permitidos.
-  *                         - Se mueve afuera del bucle la l�gica de los cursores que guardan el mismo valor para mejorar procesamiento en tiempos
+  *                         - Se mueve afuera del bucle la lógica de los cursores que guardan el mismo valor para mejorar procesamiento en tiempos
   *                           de respuesta.
   *
   * Costo query C_ClientesConCargoReproceso: 24
@@ -529,7 +529,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_EJEC_CARGO_REPROCESO
   *
-  * Procedimiento que ejecuta la generaci�n de solicitudes por cargo de reproceso de d�bito.
+  * Procedimiento que ejecuta la generación de solicitudes por cargo de reproceso de débito.
   *
   * @param Pv_MensajeError            OUT VARCHAR2  (Texto con el mensaje de error en caso de existir)
   *
@@ -544,9 +544,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
     /**
     * Documentacion para el procedimiento P_INSERT_INFO_REPORTE_HIST
     *
-    * M�todo que inserta registros en la tabla INFO_REPORTE_HISTORIAL
+    * Método que inserta registros en la tabla INFO_REPORTE_HISTORIAL
     *
-    * @param Pr_InfoReporteHist IN DB_FINANCIERO.INFO_REPORTE_HISTORIAL%ROWTYPE Objeto con la informaci�n que se debe ingresar
+    * @param Pr_InfoReporteHist IN DB_FINANCIERO.INFO_REPORTE_HISTORIAL%ROWTYPE Objeto con la información que se debe ingresar
     *
     * @author Edgar Holguin <eholguin@telconet.ec>
     * @version 1.0 09-09-2017
@@ -557,7 +557,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
     /**
     * Documentacion para el procedimiento P_UPDATE_INFO_REPORTE_HIST
     *
-    * M�todo que actualiza un registro en la tabla INFO_REPORTE_HISTORIAL seg�n el id enviado como par�metro.
+    * Método que actualiza un registro en la tabla INFO_REPORTE_HISTORIAL según el id enviado como parámetro.
     *
     * @param Pn_IdReporteHistorial IN DB_FINANCIERO.INFO_REPORTE_HISTORIAL.ID_REPORTE_HISTORIAL%TYPE Id del reporte.
     *
@@ -570,7 +570,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
 	  /**
   * Documentacion para el procedimiento P_API_INTERFAZ_FACTURACION_TNP
   *
-  * M�todo que ejecuta el consumo de webservice de impresora fiscal Panama
+  * Método que ejecuta el consumo de webservice de impresora fiscal Panama
   *
   * @param Pn_IdDocumento  IN N INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE Id del documento.
   * @param Pv_CodEmpresa   IN IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Id de la empresa.
@@ -580,8 +580,8 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * @author Sofia Fernandez <sfernandez@telconet.ec>
   * @version 1.0 10-05-2018
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
-  * @version 1.1 01-02-2019 - Se modifica la generaci�n de JSON debido a que se habilit� para Panam� la Facturaci�n de Planes y actualmente
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
+  * @version 1.1 01-02-2019 - Se modifica la generación de JSON debido a que se habilitó para Panamá la Facturación de Planes y actualmente
   *                           considera solo Facturas de Productos.
   *                           Se escapan caracteres especiales en el JSON ya que las tildes estan devolviendo en la respuesta :
   *                           CODE-0052 ERROR EN LA FORMACION DEL JSON
@@ -594,8 +594,8 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_API_CIERRE_FISCAL_TNP
   *
-  * M�todo que ejecuta el consumo de webservice de impresora fiscal para la generaci�n del
-  * Reporte de Cierre Fiscal X o Cierre Fiscal Z para la empresa Telconet Panam�.
+  * Método que ejecuta el consumo de webservice de impresora fiscal para la generación del
+  * Reporte de Cierre Fiscal X o Cierre Fiscal Z para la empresa Telconet Panamá.
   *
   * @param Pv_TipoCierre      IN  Varchar2 Tipo de Cierre Fiscal : Cierre Fiscal X o Cierre Fiscal Z
   * @param Pv_CodEmpresa      IN  INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Codigo de la empresa.
@@ -605,7 +605,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * @param Pv_CodigoError     OUT Varchar2.
   * @param Pv_MensajeError    OUT Varchar2.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 29-01-2019
   */
   PROCEDURE P_API_CIERRE_FISCAL_TNP(Pv_TipoCierre        IN  Varchar2,
@@ -619,30 +619,30 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_GENERA_NC_SOLICITUDES
   *
-  * M�todo que ejecuta la generaci�n de notas de cr�dito para facturas que poseen dicha caracter�stica. 
+  * Método que ejecuta la generación de notas de crédito para facturas que poseen dicha característica. 
   *
   * @param Pv_CodEmpresa   IN IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Id de la empresa.
   *
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.0 27-09-2018
   */
   PROCEDURE P_GENERA_NC_SOLICITUDES(Pv_CodEmpresa  IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE);
 
   /*
-  * Documentaci�n para TYPE 'T_FacturasPto'.
+  * Documentación para TYPE 'T_FacturasPto'.
   * Record para almacenar la data enviada al BULK.
-  * @author Edgar Holgu�n <eholguin@telconet.ec>
+  * @author Edgar Holguín <eholguin@telconet.ec>
   * @version 1.00 06-09-2019
   */
   TYPE T_FacturasPto IS TABLE OF DB_FINANCIERO.FNKG_TYPES.Lr_FacturasPto INDEX BY PLS_INTEGER;
 
   /**
-  * Documentaci�n para el procedimiento P_GET_FACTURAS_BY_PTO_CARACT_ID
-  * Procedimiento que retorna el listado de facturas asocidas al punto enviado como par�metro.
+  * Documentación para el procedimiento P_GET_FACTURAS_BY_PTO_CARACT_ID
+  * Procedimiento que retorna el listado de facturas asocidas al punto enviado como parámetro.
   *
   * @param  Pn_PuntoId           DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE                          Recibe el id del punto.
-  * @param  Pn_CaracteristicaId  DB_COMERCIAL.ADMI_CARACTERISTICA.ID_CARACTERISTICA%TYPE        Recibe el id de la caracter�stica a consultar.
-  * @param  Pv_UsrCreacion       DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE  Recibe el usuario de creaci�n.
+  * @param  Pn_CaracteristicaId  DB_COMERCIAL.ADMI_CARACTERISTICA.ID_CARACTERISTICA%TYPE        Recibe el id de la característica a consultar.
+  * @param  Pv_UsrCreacion       DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE  Recibe el usuario de creación.
   * @param  Pv_Mensaje                                                                          Mensaje de salida.
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 06-09-2019
@@ -654,7 +654,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                     Pv_Mensaje          OUT VARCHAR2);
 
  /**
-  * Documentaci�n para TYPE 'Lr_RegistrosSolicitudes'.
+  * Documentación para TYPE 'Lr_RegistrosSolicitudes'.
   *  
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 19-10-2020
@@ -667,7 +667,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
     USR_CREACION         DB_COMERCIAL.INFO_DETALLE_SOLICITUD.USR_CREACION%TYPE);
 
  /**
-  * Documentaci�n para TYPE 'T_RegistrosSolicitudes'. 
+  * Documentación para TYPE 'T_RegistrosSolicitudes'. 
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 19-10-2020
@@ -675,9 +675,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   TYPE T_RegistrosSolicitudes IS TABLE OF Lr_RegistrosSolicitudes INDEX BY PLS_INTEGER;
 
   /**
-   * Documentaci�n para el procedimiento P_GENERA_NC_SOLICITUDES_REUB
+   * Documentación para el procedimiento P_GENERA_NC_SOLICITUDES_REUB
    *
-   * Procedimiento que ejecuta la generaci�n de notas de cr�dito por solictud de Nc por reubicaci�n. 
+   * Procedimiento que ejecuta la generación de notas de crédito por solictud de Nc por reubicación. 
    *
    * Costo query C_GetFacturasCaractNcReub: 110
    * Costo query C_GetIdMotivo: 9
@@ -691,8 +691,8 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
    * @version 1.0 20-10-2020
    *
    * @author Hector Lozano <hlozano@telconet.ec>
-   * @version 1.1 06-09-2021 - Se elimina la b�squeda por estado Activo del cursor C_GetIdMotivo, 
-   *                           el cual obtiene el id motivo de la solicitud de NC por Reubicaci�n.
+   * @version 1.1 06-09-2021 - Se elimina la búsqueda por estado Activo del cursor C_GetIdMotivo, 
+   *                           el cual obtiene el id motivo de la solicitud de NC por Reubicación.
    *
    * @author Hector Lozano <hlozano@telconet.ec>
    * @version 1.2 19-05-2023 - Se insertan logs, para monitorear el proceso de crear Notas de Crédito por Reubicación.
@@ -702,9 +702,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                          Pv_PrefijoEmpresa IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE);
 
   /**
-  * Documentaci�n para el procedimiento P_CLONAR_CARACT_NC_REUB.
+  * Documentación para el procedimiento P_CLONAR_CARACT_NC_REUB.
   *
-  * Procedimiento que clona las caracter�sticas de la tabla INFO_DETALLE_SOL_CARAC a la tabla INFO_DOCUMENTO_CARACTERISTICA.
+  * Procedimiento que clona las características de la tabla INFO_DETALLE_SOL_CARAC a la tabla INFO_DOCUMENTO_CARACTERISTICA.
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0
@@ -712,8 +712,8 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * 
   * Costo query C_ObtieneCaracteristicas: 4
   *
-  * @param Pn_DetalleSolicitudId IN  Id de la solicitud que contiene las caracter�sticas a ser clonadas.
-  * @param Pn_IdDocumento        IN  Id documento de la Nota de cr�dito.
+  * @param Pn_DetalleSolicitudId IN  Id de la solicitud que contiene las características a ser clonadas.
+  * @param Pn_IdDocumento        IN  Id documento de la Nota de crédito.
   * @param Pv_Mensaje            OUT Mensaje de error en caso de existir.
   */
   PROCEDURE P_CLONAR_CARACT_NC_REUB(Pn_DetalleSolicitudId IN DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE,
@@ -721,10 +721,10 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                     Pv_Mensaje            OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el procedimiento P_REPORTE_REUBICACION.
+  * Documentación para el procedimiento P_REPORTE_REUBICACION.
   *
-  * Procedimiento que ejecuta la generaci�n de reporte de facturas y notas de cr�dito emitidas por el
-  * proceso de reubicaci�n MD. 
+  * Procedimiento que ejecuta la generación de reporte de facturas y notas de crédito emitidas por el
+  * proceso de reubicación MD. 
   *
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 29-10-2020
@@ -735,7 +735,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * @param Pv_EmpresaCod      IN VARCHAR2   (Id de la empresa).
   * @param Pv_PrefijoEmpresa  IN VARCHAR2   (Prefijo de la empresa).
   * @param Pv_UsuarioCreacion IN VARCHAR2   (Usuario que ejecuta el proceso).
-  * @param Pv_EmailUsuario    IN VARCHAR2   (Correo a quien se env�a reporte).
+  * @param Pv_EmailUsuario    IN VARCHAR2   (Correo a quien se envía reporte).
   */
   PROCEDURE P_REPORTE_REUBICACION(Pv_FechaReporte    IN VARCHAR2,
                                   Pv_EmpresaCod      IN VARCHAR2,
@@ -744,10 +744,10 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                   Pv_EmailUsuario    IN VARCHAR2);
 
   /**
-  * Documentaci�n para el funci�n F_GET_VALORES_REPORTE_NC_REUB.
+  * Documentación para el función F_GET_VALORES_REPORTE_NC_REUB.
   *
-  * Funci�n que se encarga de obtener los valores de Nc mediante el tipo de consulta enviado, correspondiente
-  * al proceso de reubicaci�n para MD. 
+  * Función que se encarga de obtener los valores de Nc mediante el tipo de consulta enviado, correspondiente
+  * al proceso de reubicación para MD. 
   * 
   * @author Alex Arreaga <atarreaga@telconet.ec>
   * @version 1.0 29-10-2020
@@ -764,9 +764,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   RETURN VARCHAR2;
 
   /**
-  * Documentaci�n para el procedimiento P_CREA_NOTA_CREDITO_REUB.
+  * Documentación para el procedimiento P_CREA_NOTA_CREDITO_REUB.
   *
-  * Procedimiento que se encarga de generar nota de cr�dito para el proceso de reubicaci�n.
+  * Procedimiento que se encarga de generar nota de crédito para el proceso de reubicación.
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0
@@ -780,7 +780,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * @param  Pn_Porcentaje          IN  NUMBER                                                      Recibe el porcentaje
   * @param  Pn_IdOficina           IN  INFO_OFICINA_GRUPO.ID_OFICINA%TYPE                          Recibe la ID_OFICINA
   * @param  Pn_IdEmpresa           IN  INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                         Recibe el COD_EMPRESA
-  * @param  Pn_IdDocumentoNC       OUT INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE             Retorna el ID de la nota de cr�dito
+  * @param  Pn_IdDocumentoNC       OUT INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE             Retorna el ID de la nota de crédito
   * @param  Pv_MessageError        OUT VARCHAR2                                                    Recibe un mensaje de error en caso de existir
   */
   PROCEDURE P_CREA_NOTA_CREDITO_REUB(Pn_IdDocumento        IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -795,9 +795,9 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
                                      Pv_MessageError       OUT VARCHAR2);
 
   /**
-  * Documentaci�n para el procedimiento P_RECHAZA_SOLICTUDES_REUB.
+  * Documentación para el procedimiento P_RECHAZA_SOLICTUDES_REUB.
   *
-  * Procedimiento que se encarga de obtener las solicitudes de factura y/o nota cr�dito por reubicaci�n MD ligadas 
+  * Procedimiento que se encarga de obtener las solicitudes de factura y/o nota crédito por reubicación MD ligadas 
   * a tarea que poseen estado de 'Anulada', 'Rechazada', 'Cancelada', para actualizar la solicitud a "Rechazada".
   * 
   * @author Alex Arreaga <atarreaga@telconet.ec>
@@ -814,7 +814,7 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   /**
   * Documentacion para el procedimiento P_GENERAR_FAC_SOLI_X_SERVICIO
   *
-  * M�todo que genera las facturas por el servicio dependiendo del estado y la descripcion de la solicitud que han ingresado.
+  * Método que genera las facturas por el servicio dependiendo del estado y la descripcion de la solicitud que han ingresado.
   *
   * Costo del Query C_SolicitudesClientes: 126
   * Costo del Query C_GetProducto: 4
@@ -825,13 +825,13 @@ PROCEDURE P_ACTIVA_FAC_POR_ANULA_NC(
   * PARAMETROS:
   * @Param Pn_IdServicio           IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE  Id servicio mandatorio.
   * @Param Pv_Estado               IN  DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE  Estado 'Pendiente'.
-  * @Param Pv_DescripcionSolicitud IN  DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE  Descripci�n de la solicitud M�vil � Web.
+  * @Param Pv_DescripcionSolicitud IN  DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE  Descripción de la solicitud Móvil ó Web.
   * @Param Pv_UsrCreacion          IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.USR_CREACION%TYPE  Usuario transaccional.
-  * @Param Pn_MotivoId             IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD.MOTIVO_ID%TYPE  Motivo de la transacci�n.
-  * @Param Pv_EmpresaCod           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  C�digo de la empresa.
+  * @Param Pn_MotivoId             IN  DB_COMERCIAL.INFO_DETALLE_SOLICITUD.MOTIVO_ID%TYPE  Motivo de la transacción.
+  * @Param Pv_EmpresaCod           IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  Código de la empresa.
   * @Param Pv_MsnError             OUT VARCHAR2  Variabe de salida de los errores controlados.
   * 
-  * @author Jos� Candelario <jcandelario@telconet.ec>
+  * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.0 05-03-2020
   */
   PROCEDURE P_GENERAR_FAC_SOLI_X_SERVICIO(Pn_IdServicio           IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -1178,7 +1178,7 @@ EXCEPTION
 WHEN Lex_Exception THEN
   ROLLBACK;
   FNCK_TRANSACTION.INSERT_ERROR('Telcos+', 'FNCK_TRANSACTION.P_ACTIVA_FAC_POR_ANULA_NC', SQLERRM);
-  Pv_MsnError := 'No se realiz� la activaci�n de la Factura.';
+  Pv_MsnError := 'No se realizó la activación de la Factura.';
   --
 END P_ACTIVA_FAC_POR_ANULA_NC;
   --
@@ -1410,7 +1410,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
                                                                                       Lv_EsMatriz,
                                                                                       Lr_GetEmpresasElectronica.PREFIJO );
               --
-              --SI TIENE NUMERACION INGRESA A BUSCAR A LA SECUENCIA QUE SER� ACTUALIZADA EN EL DOCUMENTO
+              --SI TIENE NUMERACION INGRESA A BUSCAR A LA SECUENCIA QUE SERÁ ACTUALIZADA EN EL DOCUMENTO
               IF Lr_AdmiNumeracion.ID_NUMERACION IS NOT NULL AND Lr_AdmiNumeracion.ID_NUMERACION > 0 THEN
                 --
                 IF TRIM(Lr_AdmiNumeracion.SECUENCIA) IS NOT NULL AND TRIM(Lr_AdmiNumeracion.NUMERACION_UNO) IS NOT NULL 
@@ -1420,7 +1420,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
                                      LPAD(TRIM(Lr_AdmiNumeracion.SECUENCIA), 9, '0');
                   --
                   --
-                  Lv_ObservacionHistorial := Lv_ObservacionHistorial || 'Numeraci�n Actualizada(' || Lv_StrSecuencia || ').';
+                  Lv_ObservacionHistorial := Lv_ObservacionHistorial || 'Numeración Actualizada(' || Lv_StrSecuencia || ').';
                   --
                   --
                   UPDATE DB_COMERCIAL.ADMI_NUMERACION AN
@@ -1660,7 +1660,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
     WHEN OTHERS THEN
         UTL_MAIL.SEND(sender     => 'notificaciones_telcos@telconet.ec', 
                       recipients => 'sistemas-financiero@telconet.ec', 
-                      subject    => 'Error al crear Nota de Cr�dito', 
+                      subject    => 'Error al crear Nota de Crédito', 
                       MESSAGE    => '<p>Ocurrio el siguiente error: '  || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ' ||
                                                                           DBMS_UTILITY.FORMAT_ERROR_BACKTRACE ||' </p>',
                       mime_type  => 'text/html; charset=UTF-8' );
@@ -1674,7 +1674,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
                                          Pv_EmpresaCod     IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                          Pv_Mensaje        OUT VARCHAR2)
   IS
-    --Se obtienen las facturas que tengan la caracter�stica seg�n el tipo de contrato (WEB/MOVIL) y que su fecha de vigencia sea hoy.
+    --Se obtienen las facturas que tengan la característica según el tipo de contrato (WEB/MOVIL) y que su fecha de vigencia sea hoy.
     CURSOR C_ObtieneFactInstalacion (Cv_EstadoActivo   VARCHAR2,
                                      Cv_Valor          DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA.VALOR%TYPE,
                                      Cv_CaractContrato DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
@@ -1704,7 +1704,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
            AND DB_FINANCIERO.FNCK_CONSULTS.F_GET_PREFIJO_BY_PUNTO(CAB.PUNTO_ID,NULL) = Cv_PrefijoEmpresa;
 
     --COSTO DEL QUERY 7
-    --Cursor que obtiene el punto al que se le est� realizando la factura de instalaci�n.
+    --Cursor que obtiene el punto al que se le está realizando la factura de instalación.
     CURSOR C_GetPuntoInstalado (Pn_DocumentoId DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.DOCUMENTO_ID%TYPE) IS
         SELECT DISTINCT SER.PUNTO_ID
           FROM DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET DET,
@@ -1741,7 +1741,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
     Lv_AplicaProceso         DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE;
     Le_Exception             EXCEPTION;
     Ln_Contador              NUMBER := 0;
-    Lv_ObservacionHistorial  DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.OBSERVACION%TYPE := 'Se aprueba la N/C autom�ticamente: Rechazo de contrato web';
+    Lv_ObservacionHistorial  DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.OBSERVACION%TYPE := 'Se aprueba la N/C automáticamente: Rechazo de contrato web';
     Lv_EstadoReverso         VARCHAR2(15) := 'Eliminado';
     Lr_ServicioHistorial     DB_COMERCIAL.INFO_SERVICIO_HISTORIAL%ROWTYPE;
 
@@ -1749,7 +1749,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
     Lr_AdmiTipoDocFinanciero := FNCK_CONSULTS.F_GET_TIPO_DOC_FINANCIERO(NULL, 'NC');
     SELECT PREFIJO INTO Lv_PrefijoEmpresa FROM DB_COMERCIAL.INFO_EMPRESA_GRUPO WHERE COD_EMPRESA = Pv_EmpresaCod;
 
-    --Se obtienen las facturas que tengan la caracter�stica seg�n el tipo de contrato (WEB/MOVIL) y que su fecha de vigencia sea hoy.
+    --Se obtienen las facturas que tengan la característica según el tipo de contrato (WEB/MOVIL) y que su fecha de vigencia sea hoy.
     FOR Lr_FactInstalacion IN C_ObtieneFactInstalacion(Cv_EstadoActivo   => Lv_EstadoActivo,
                                                        Cv_Valor          => Lv_Valor,
                                                        Cv_CaractContrato => Pv_CaractContrato,
@@ -1773,7 +1773,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
                 Lv_Mensaje   := NULL;
                 Lv_Excepcion := NULL;
 
-                --Se crea la nota de cr�dito en estado pendiente y sin numeraci�n por el valor total.
+                --Se crea la nota de crédito en estado pendiente y sin numeración por el valor total.
                 DB_FINANCIERO.FNCK_CONSULTS.P_CREA_NOTA_CREDITO(Pn_IdDocumento         => Lr_FactInstalacion.ID_DOCUMENTO,
                                                                 Pn_TipoDocumentoId     => Lr_AdmiTipoDocFinanciero.ID_TIPO_DOCUMENTO,
                                                                 Pv_Observacion         => Pv_Observacion,
@@ -1794,7 +1794,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
                                                                 Pbool_Done             => Lbool_Done,
                                                                 Pv_MessageError        => Lv_Mensaje);
                 IF Lv_Mensaje IS NOT NULL AND Lbool_Done = FALSE THEN
-                    Lv_Excepcion := 'Error al crear N/C por instalaci�n: Pn_IdDocumento (Factura):' || Lr_FactInstalacion.ID_DOCUMENTO ||
+                    Lv_Excepcion := 'Error al crear N/C por instalación: Pn_IdDocumento (Factura):' || Lr_FactInstalacion.ID_DOCUMENTO ||
                                     'Pv_CaractContrato:' || Pv_CaractContrato || ' Pv_CaractVigencia:' || Pv_CaractVigencia ||
                                     ' Lv_Observacion: ' || Lv_Observacion || ' Lv_Mensaje: ' || Lv_Mensaje;
                     RAISE Le_Exception;
@@ -1802,28 +1802,28 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
 
                 Lv_AplicaProceso := DB_GENERAL.GNRLPCK_UTIL.F_EMPRESA_APLICA_PROCESO('NUMERACION_AUTOMATICA_NOTA_CREDITO', Pv_EmpresaCod);
                 IF TRIM(Lv_AplicaProceso) = 'S' THEN
-                    --Se numero autom�ticamente la nota de cr�dito.
+                    --Se numero automáticamente la nota de crédito.
                     DB_FINANCIERO.FNCK_TRANSACTION.P_NUMERA_NOTA_CREDITO(Pn_DocumentoId    => Ln_IdDocumentoNC,
                                                                          Pv_PrefijoEmpresa => Lv_PrefijoEmpresa,
                                                                          Pv_ObsHistorial   => Lv_ObservacionHistorial,
                                                                          Pv_UsrCreacion    => Pv_UsrCreacion,
                                                                          Pv_Mensaje        => Lv_Excepcion);
                     IF Lv_Excepcion IS NOT NULL THEN
-                        Lv_Excepcion := 'Error al numerar N/C por instalaci�n: Pn_IdDocumento (Factura):' || Lr_FactInstalacion.ID_DOCUMENTO ||
+                        Lv_Excepcion := 'Error al numerar N/C por instalación: Pn_IdDocumento (Factura):' || Lr_FactInstalacion.ID_DOCUMENTO ||
                                         'Pv_CaractContrato:' || Pv_CaractContrato || ' Pv_CaractVigencia:' || Pv_CaractVigencia ||
                                         ' Lv_Observacion: ' || Lv_Observacion || ' Lv_Mensaje: ' || Lv_Excepcion;
                         RAISE Le_Exception;
                     END IF;
                 END IF;
 
-                --Se realiza el reverso de TODAS LAS �RDENES DE SERVICIO del punto al que pertenece el SERVICIO que se hab�a facturado.
+                --Se realiza el reverso de TODAS LAS ÓRDENES DE SERVICIO del punto al que pertenece el SERVICIO que se había facturado.
                 OPEN  C_GetPuntoInstalado (Pn_DocumentoId => Lr_FactInstalacion.ID_DOCUMENTO);
                 FETCH C_GetPuntoInstalado INTO Ln_PuntoFacturado;
                 CLOSE C_GetPuntoInstalado;
 
                 Lv_Mensaje := NULL;
             
-                --Se anulan los servicios dependientes a la factura de instalaci�n creada inicialmente.
+                --Se anulan los servicios dependientes a la factura de instalación creada inicialmente.
                 DB_FINANCIERO.FNCK_TRANSACTION.P_REVERSO_SERVICIOS (Pn_PuntoId       => Ln_PuntoFacturado,
                                                                     Pv_EstadoReverso => Lv_EstadoReverso,
                                                                     Pv_UsrCreacion   => Pv_UsrCreacion,
@@ -1851,7 +1851,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
         ELSE
             DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('JOB_CREA_NC_RECHAZO_CONTRATO',
                                                         'FNCK_TRANSACTION.P_CREA_NC_X_FACT_INSTALACION',
-                                                        'No procede el reverso de instalaci�n porque existe un Historial de Preplanificado ' ||
+                                                        'No procede el reverso de instalación porque existe un Historial de Preplanificado ' ||
                                                          '- PuntoId: ' || Ln_PuntoHistPreplanificado);   
         END IF; 
     END LOOP;
@@ -1894,7 +1894,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
             Lr_ServicioHistorial.USR_CREACION          := Pv_UsrCreacion;
             Lr_ServicioHistorial.IP_CREACION           := '127.0.0.1';
             Lr_ServicioHistorial.OBSERVACION           := 'Se elimina el servicio debido a que ' ||
-                                                          'no se realiza el pago de la factura de instalaci�n del punto.';
+                                                          'no se realiza el pago de la factura de instalación del punto.';
             Lr_ServicioHistorial.SERVICIO_ID           := Lr_ServXAnular.ID_SERVICIO;
             DB_COMERCIAL.COMEK_TRANSACTION.P_INSERT_SERVICIO_HISTORIAL(Lr_ServicioHistorial, Lv_Mensaje);
 
@@ -1917,9 +1917,9 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
     Lrf_Numeracion                  DB_FINANCIERO.FNKG_TYPES.Lrf_AdmiNumeracion;
     Lv_MsnError                     VARCHAR2(1000);
     Lr_AdmiNumeracion               DB_FINANCIERO.FNKG_TYPES.Lr_AdmiNumeracion;
-    --HISTORIAL DE LA NOTA DE CR�DITO
+    --HISTORIAL DE LA NOTA DE CRÉDITO
     Lr_InfoDocumentoFinancieroHis   DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL%ROWTYPE;
-    --NOTA DE CR�DITO
+    --NOTA DE CRÉDITO
     Lr_InfoDocumentoFinancieroCab   DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB%ROWTYPE;
     Lv_Numeracion                   DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.NUMERO_FACTURA_SRI%TYPE;
     Lv_Secuencia                    DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.NUMERO_FACTURA_SRI%TYPE;
@@ -1929,11 +1929,11 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
   BEGIN
 
     Lrf_Numeracion:= DB_FINANCIERO.FNCK_CONSULTS.F_GET_NUMERACION(Pv_PrefijoEmpresa,'S','S',NULL,'NCE');
-    --Se recorre la numeraci�n obtenida.
+    --Se recorre la numeración obtenida.
     FETCH Lrf_Numeracion INTO Lr_AdmiNumeracion;
     Lv_Secuencia := LPAD(Lr_AdmiNumeracion.SECUENCIA,9,'0');
     Lv_Numeracion:= Lr_AdmiNumeracion.NUMERACION_UNO || '-'||Lr_AdmiNumeracion.NUMERACION_DOS||'-'||Lv_Secuencia;
-    --Se cierra la numeraci�n
+    --Se cierra la numeración
     CLOSE Lrf_Numeracion;
 
     Lr_InfoDocumentoFinancieroCab.ID_DOCUMENTO         := Pn_DocumentoId;
@@ -1947,7 +1947,7 @@ END P_ACTIVA_FAC_POR_ANULA_NC;
       RAISE Le_Error;
     END IF;
 
-    --Se incrementa la numeraci�n
+    --Se incrementa la numeración
     Lr_AdmiNumeracion.SECUENCIA:=Lr_AdmiNumeracion.SECUENCIA+1;
     FNCK_TRANSACTION.UPDATE_ADMI_NUMERACION(Lr_AdmiNumeracion.ID_NUMERACION,Lr_AdmiNumeracion,Lv_MsnError);
     IF Lv_MsnError IS NOT NULL THEN
@@ -2113,17 +2113,17 @@ END FINP_ANULAPAGO;
 /**
   * Documentacion para el procedimiento P_PROCESAR_ERROR_IVA
   * Re-procesa los IVA mal calculados para los documentos rechazados FAC y FACP unicamente
-  * @param PV_EMPRESA_COD      IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Tipo de dato correspondiente al c�digo de la empresa.
+  * @param PV_EMPRESA_COD      IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE Tipo de dato correspondiente al código de la empresa.
   * @param PN_ID_DOCUMENTO     IN  NUMBER El id del documento. En caso que sea NULL, se realiza el proceso para todos los documentos (Aplica JOB).
   * @param PV_ESTADO           IN  VARCHAR2 El estado para realizar el filtro.
-  * @param PV_USUARIO          IN  VARCHAR2 El usuario que realiza la transacci�n.
+  * @param PV_USUARIO          IN  VARCHAR2 El usuario que realiza la transacción.
   * @param PV_MENSAJE          OUT VARCHAR2 El mensaje que se muestra al usuario en caso de error.
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.0 21-07-2015
   *
   * @author Luis Cabrera <lcabrera@telconet.ec>
-  * @version 1.1 04-10-2017 - Se implementa l�gica para reajustar las facturas por IVA e ICE.
-  *                           Se agregan los par�metros PN_ID_DOCUMENTO, PV_ESTADO, PV_USUARIO y PV_MENSAJE.
+  * @version 1.1 04-10-2017 - Se implementa lógica para reajustar las facturas por IVA e ICE.
+  *                           Se agregan los parámetros PN_ID_DOCUMENTO, PV_ESTADO, PV_USUARIO y PV_MENSAJE.
   *                           El proceso puede ser llamado desde el JOB PROCESAR_RECHAZADOS_IVA y desde funcionalidad del TELCOS.
   *                           El proceso puede ser ejecutado por empresa.
   *                           El proceso escribe en la tabla INFO_DOCUMENTO_HISTORIAL
@@ -2436,7 +2436,7 @@ END INSERT_ANEXO_TRANSACCIONAL;
   * Se agrega el campo 'DESCUENTO_COMPENSACION', para almanecar el valor de compensacion
   * @version 1.1 30-09-2016
   * @author Jorge Guerrero <jguerrerop@telconet.ec>
-  * Se Agrega el campo RANGO_CONSUMO, para almacenar el rango seg�n el ciclo
+  * Se Agrega el campo RANGO_CONSUMO, para almacenar el rango según el ciclo
   * @version 1.2 25-10-2017
   */
 PROCEDURE INSERT_INFO_DOC_FINANCIERO_CAB
@@ -2551,7 +2551,7 @@ END INSERT_INFO_DOC_FINANCIERO_CAB;
   * @author Alexander Samaniego <awsamaniego@telconet.ec>
   * @version 1.0 15-11-2014
   *
-  * @author Edgar Holgu�n <eholgu�n@telconet.ec>
+  * @author Edgar Holguín <eholguín@telconet.ec>
   * @version 1.1 07-12-2017 Se agrega seteo del campo SERVICIO_ID que hace referencia al id del servicio a facturar.
   */
 PROCEDURE INSERT_INFO_DOC_FINANCIERO_DET
@@ -2839,10 +2839,10 @@ END INSERT_INFO_DOC_FINAN_HST_MAS;
   END UPDATE_INFO_DOC_FINANCIERO_CAB;
 
   /**
-   * Documentaci�n para UPDATE_INFO_DOC_FINANCIERO_IMP
+   * Documentación para UPDATE_INFO_DOC_FINANCIERO_IMP
    * Procedimiento que realiza el UPDATE en la tabla INFO_DOCUMENTO_FINANCIERO_CAB
    * @author Luis Cabrera <lcabrera@telconet.ec>
-   * @version 1.0 06-10-2017 Versi�n inicial
+   * @version 1.0 06-10-2017 Versión inicial
    **/
   PROCEDURE UPDATE_INFO_DOC_FINANCIERO_IMP(
       PN_ID_DOC_IMP                 IN  INFO_DOCUMENTO_FINANCIERO_IMP.ID_DOC_IMP%TYPE,
@@ -3371,7 +3371,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         WHERE ISE.ID_SERVICIO = Cn_IdServicio
         );
 
-      --CURSOR QUE OBTIENE LA INFORMACI�N DEL SERVICIO.
+      --CURSOR QUE OBTIENE LA INFORMACIÓN DEL SERVICIO.
       --COSTO DEL QUERY 3
       CURSOR C_ObtieneInfoServ (Cn_IdServicio DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE)
       IS
@@ -3380,7 +3380,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
          WHERE ID_SERVICIO = Cn_IdServicio;
       Lr_ObtieneInfoServ C_ObtieneInfoServ%ROWTYPE;
       --
-      --Cursor que obtiene el id de la caracteristica de solicitud facturaci�n por reubicaci�n. 
+      --Cursor que obtiene el id de la caracteristica de solicitud facturación por reubicación. 
       CURSOR C_ObtieneCaractSolFact(Cv_DescripcionCaract DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
                                     Cv_Estado            DB_COMERCIAL.ADMI_CARACTERISTICA.ESTADO%TYPE) 
       IS
@@ -3390,7 +3390,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
          DESCRIPCION_CARACTERISTICA = Cv_DescripcionCaract
          AND ESTADO                 = Cv_Estado;
       --
-      --Cursor que obtiene el valor(numero_tarea) para agregar en la observaci�n   
+      --Cursor que obtiene el valor(numero_tarea) para agregar en la observación   
       CURSOR C_ObtieneNumTareaReub (Cn_DetalleSolicitudId DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE,
                                     Cv_DescripcionCaract  DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
                                     Cv_Estado            DB_COMERCIAL.ADMI_CARACTERISTICA.ESTADO%TYPE) 
@@ -3489,7 +3489,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         FROM DB_COMERCIAL.INFO_EMPRESA_GRUPO
        WHERE COD_EMPRESA = Pv_EmpresaCod;
 
-      --Se obtiene DE LOS PAR�METROS LA INFORMACI�N REFERENTE A ESA SOLICITUD ESPEC�FICA.
+      --Se obtiene DE LOS PARÁMETROS LA INFORMACIÓN REFERENTE A ESA SOLICITUD ESPECÍFICA.
       P_BUSCA_INFORMACION_SOLICITUD(Pv_NombreSolicitud    => Pv_DescripcionSolicitud,
                                     Pv_EmpresaCod         => Pv_EmpresaCod,
                                     Pn_PlanId             => Ln_PlanTempId,
@@ -3554,7 +3554,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                                                                Pn_DetalleSolicitudId => Le_SolicitudesClientes(Ln_Indx).ID_DETALLE_SOLICITUD,
                                                                Pv_Estado             => Lv_EstadoActivo);
 
-        --Valida si es por solicitud de reubicaci�n consulte el n�mero de la tarea enlazada para agregarla a la observaci�n.                                                     
+        --Valida si es por solicitud de reubicación consulte el número de la tarea enlazada para agregarla a la observación.                                                     
         IF Pv_DescripcionSolicitud = 'SOLICITUD FACTURACION POR REUBICACION' THEN
             --
             IF C_ObtieneNumTareaReub%ISOPEN THEN    
@@ -3569,7 +3569,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
 
         END IF;
         --
-        -- Obtener la informaci�n correspondiente al servicio a facturar
+        -- Obtener la información correspondiente al servicio a facturar
         DB_FINANCIERO.FNCK_CONSULTS.P_GET_INFO_SERVICIO_A_FACTURAR( Le_SolicitudesClientes(Ln_Indx).SERVICIO_ID, 
                                                                     Lv_EmpresaCod, 
                                                                     Lv_PrefijoEmpresa, 
@@ -3601,7 +3601,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         --
         --
         IF Ln_SubtotalConDescuento > 0 AND Ln_BanderaClienteFacturar='S' THEN
-          --SI INGRESA POR EL FLUJO DE DEMOS, SE LLENA DIN�MICAMENTE LA OBSERVACI�N.
+          --SI INGRESA POR EL FLUJO DE DEMOS, SE LLENA DINÁMICAMENTE LA OBSERVACIÓN.
           IF Pv_DescripcionSolicitud = 'SOLICITUD REQUERIMIENTOS DE CLIENTES'
             AND Le_SolicitudesClientes(Ln_Indx).USR_CREACION = 'telcos_pma_demos' THEN
 
@@ -3618,13 +3618,13 @@ END UPDATE_INFO_CICLO_FACTURACION;
               Lv_ObservacionDetalle  := 'DEMO '||Lv_descripcionProducto||' - '||Lv_login;
               Lv_descripcionProducto := '';
               Lv_login               := '';
-          --SI NO ES NING�N CASO ANTES MENCIONADO, BUSCA PLAN_ID, PRODUCTO_ID Y OBSERVACI�N EN LOS PAR�METROS.
+          --SI NO ES NINGÚN CASO ANTES MENCIONADO, BUSCA PLAN_ID, PRODUCTO_ID Y OBSERVACIÓN EN LOS PARÁMETROS.
           ELSE
-            --SI OBTIENE UN PLAN, SE VAC�A EL PRODUCTO Y SE FIJA EL NUEVO PLAN
+            --SI OBTIENE UN PLAN, SE VACÍA EL PRODUCTO Y SE FIJA EL NUEVO PLAN
             IF NVL(Ln_PlanTempId, 0) != 0 THEN
                 Ln_ProductoId := NULL;
                 Ln_PlanId     := Ln_PlanTempId;
-            --SI OBTIENE UN PRODUCTO, SE VAC�A EL PLAN Y SE FIJA EL NUEVO PRODUCTO
+            --SI OBTIENE UN PRODUCTO, SE VACÍA EL PLAN Y SE FIJA EL NUEVO PRODUCTO
             ELSIF NVL(Ln_ProductoTempId, 0) != 0 THEN
                 Ln_ProductoId := Ln_ProductoTempId;
                 Ln_PlanId     := NULL;
@@ -3711,7 +3711,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
           Lr_InfoDocumentoFinancieroDet.EMPRESA_ID                    := Lv_EmpresaCod;
           Lr_InfoDocumentoFinancieroDet.SERVICIO_ID                   := Le_SolicitudesClientes(Ln_Indx).SERVICIO_ID;
 
-          --SE INSERTAN LAS CARACTER�STICAS DE LA TABLA INFO_DETALLE_SOLICITUD_CARAC
+          --SE INSERTAN LAS CARACTERÍSTICAS DE LA TABLA INFO_DETALLE_SOLICITUD_CARAC
           DB_FINANCIERO.FNCK_TRANSACTION.P_CLONAR_SOLICITUD_CARAC(Le_SolicitudesClientes(Ln_Indx).ID_DETALLE_SOLICITUD,
                                                                   Lr_InfoDocumentoFinancieroDet,
                                                                   Lv_PagaIva,
@@ -3735,13 +3735,13 @@ END UPDATE_INFO_CICLO_FACTURACION;
             Lr_InfoDocumentoCaracteristica.DOCUMENTO_ID                := Lr_InfoDocumentoFinancieroDet.DOCUMENTO_ID;
             Lr_InfoDocumentoCaracteristica.CARACTERISTICA_ID           := Lr_CaractSolFact.ID_CARACTERISTICA;
             Lr_InfoDocumentoCaracteristica.VALOR                       := Le_SolicitudesClientes(Ln_Indx).ID_DETALLE_SOLICITUD;
-             --La caracter�stica queda activa para poder ser visualizada en telcos
+             --La característica queda activa para poder ser visualizada en telcos
             Lr_InfoDocumentoCaracteristica.ESTADO                      := Lv_EstadoActivo;
             Lr_InfoDocumentoCaracteristica.FE_CREACION                 := SYSDATE;
             Lr_InfoDocumentoCaracteristica.USR_CREACION                := Pv_UsrCreacion;
             Lr_InfoDocumentoCaracteristica.IP_CREACION                 := '127.0.0.1';
 
-            --SE INSERTA LA CARACTER�STICA DE SOLICITUD FACTURACI�N POR REUBICACI�N EN INFO_DOCUMENTO_CARACTERISTICA
+            --SE INSERTA LA CARACTERÍSTICA DE SOLICITUD FACTURACIÓN POR REUBICACIÓN EN INFO_DOCUMENTO_CARACTERISTICA
             DB_FINANCIERO.FNCK_TRANSACTION.P_INSERT_INFO_DOCUMENTO_CARACT(Lr_InfoDocumentoCaracteristica, Pv_MsnError);
 
             IF Pv_MsnError IS NOT NULL THEN
@@ -3800,7 +3800,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                     --
                     IF TRIM(Pv_MsnError) IS NOT NULL THEN
                       --
-                      Pv_MsnError := Pv_MsnError || ' - Error al actualizar la numeraci�n';
+                      Pv_MsnError := Pv_MsnError || ' - Error al actualizar la numeración';
                       --
                       RAISE Lex_Exception;
                       --
@@ -3837,7 +3837,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
           --
           IF TRIM(Pv_MsnError) IS NOT NULL THEN
             --
-            Pv_MsnError := Pv_MsnError || ' - Error al actualizar la informaci�n de la cabecera de la factura';
+            Pv_MsnError := Pv_MsnError || ' - Error al actualizar la información de la cabecera de la factura';
             --
             RAISE Lex_Exception;
             --
@@ -3853,9 +3853,9 @@ END UPDATE_INFO_CICLO_FACTURACION;
           --
           -- INSERTO HISTORIAL DEL SERVICIO
           Lo_ServicioHistorial := NULL;
-          Lo_ServicioHistorial.OBSERVACION := 'Tarifario con promoci�n';
+          Lo_ServicioHistorial.OBSERVACION := 'Tarifario con promoción';
 
-          --Se obtiene el estado del servicio para almacenar su historial si no es pasado por par�metro.
+          --Se obtiene el estado del servicio para almacenar su historial si no es pasado por parámetro.
           IF Pv_EstadoServicio IS NOT NULL THEN
                 Lo_ServicioHistorial.ESTADO := Pv_EstadoServicio;
           ELSE
@@ -4017,7 +4017,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
       Lv_Aplicacion    VARCHAR2(15) := 'Telcos+';
     BEGIN
       IF (NVL(Pr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA, 0) = 0) THEN
-        Pv_MsnError := 'Error al actualizar la caracter�stica. Par�metro Pr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA vac�o.';
+        Pv_MsnError := 'Error al actualizar la característica. Parámetro Pr_InfoDocumentoCaract.ID_DOCUMENTO_CARACTERISTICA vacío.';
         RAISE Le_Exception;
       END IF;
 
@@ -4040,7 +4040,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                                              NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
       WHEN OTHERS THEN
         ROLLBACK;
-        Pv_MsnError := 'Error al actualizar la caracter�stica - ' || SQLCODE || ' - ERROR_STACK: '
+        Pv_MsnError := 'Error al actualizar la característica - ' || SQLCODE || ' - ERROR_STACK: '
                        || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
         DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR(Lv_Aplicacion,
                                              Lv_Procedimiento,
@@ -4081,7 +4081,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lr_ObtieneValorSolCaract C_ObtieneValorSolCaract%ROWTYPE;
   BEGIN
     Ln_OcurrenciasEtiqueta := REGEXP_COUNT(Pv_Plantilla, Lv_EtiquetaInicioFin);
-    --Si el n�mero de ocurrencias es mayor a cero y es par.
+    --Si el número de ocurrencias es mayor a cero y es par.
     IF NVL(Ln_OcurrenciasEtiqueta, 0) > 0 AND MOD(Ln_OcurrenciasEtiqueta, 2) = 0 THEN
         FOR Ln_Contador IN 1..(Ln_OcurrenciasEtiqueta/2)
         LOOP
@@ -4089,14 +4089,14 @@ END UPDATE_INFO_CICLO_FACTURACION;
             Lv_Caracteristica         := '';
             Lr_ObtieneValorSolCaract  := NULL;
 
-            --Proceso de b�squeda.
+            --Proceso de búsqueda.
             Ln_PrimerIndice           := INSTR (Lv_ObservacionFinal, Lv_EtiquetaInicioFin);
             Lv_ObservacionTemp        := SUBSTR(Lv_ObservacionFinal, Ln_PrimerIndice + 1);
             Ln_SegundoIndice          := INSTR (Lv_ObservacionTemp,  Lv_EtiquetaInicioFin);
             Lv_ObservacionTemp        := SUBSTR(Lv_ObservacionTemp,  Ln_SegundoIndice + 1);
             Lv_Caracteristica         := SUBSTR(Lv_ObservacionFinal, Ln_PrimerIndice + 1, Ln_SegundoIndice -1);
 
-            --Se busca la caracter�stica relacionada a la solicitud.
+            --Se busca la característica relacionada a la solicitud.
             OPEN  C_ObtieneValorSolCaract(Cn_DetalleSolicitudId => Pn_DetalleSolicitudId,
                                           Cv_DescripcionCaract  => Lv_Caracteristica,
                                           Cv_EstadoActivo       => 'Activo',
@@ -4104,7 +4104,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
             FETCH C_ObtieneValorSolCaract INTO Lr_ObtieneValorSolCaract;
             CLOSE C_ObtieneValorSolCaract;
 
-            --Se reemplaza la etiueta de la plantilla por el de la caracter�stica.
+            --Se reemplaza la etiueta de la plantilla por el de la característica.
             Lv_EtiquetaCaracteristica := Lv_EtiquetaInicioFin || Lv_Caracteristica || Lv_EtiquetaInicioFin;
             Lv_ObservacionFinal       := REPLACE (Lv_ObservacionFinal, Lv_EtiquetaCaracteristica, Lr_ObtieneValorSolCaract.VALOR);
 
@@ -4170,7 +4170,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     WHEN OTHERS THEN
       DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+',
                                             Lv_NombreProcedimiento,
-                                            'Error al obtener la informaci�n de la solicitud: ' || SQLCODE || ' - ERROR_STACK: '
+                                            'Error al obtener la información de la solicitud: ' || SQLCODE || ' - ERROR_STACK: '
                                               || DBMS_UTILITY.FORMAT_ERROR_STACK || ' - ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
                                              NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                             SYSDATE,
@@ -4192,7 +4192,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
          AND ESTADO = Cv_Estado;
     Lr_AdmiCaracteristica C_AdmiCaracteristica%ROWTYPE;
 
-    --CURSOR QUE OBTIENE LAS CARACTER�STICAS DE UNA SOLICITUD ESPEC�FICA QUE TENGAN EL ESTADO ENVIADO POR PAR�METRO (Facturable)
+    --CURSOR QUE OBTIENE LAS CARACTERÍSTICAS DE UNA SOLICITUD ESPECÍFICA QUE TENGAN EL ESTADO ENVIADO POR PARÁMETRO (Facturable)
     CURSOR C_ObtieneCaracteristicas(Cn_DetalleSolicitudId DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE,
                                     Cv_Estado             DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ESTADO%TYPE,
                                     Cn_CaracteristicaId   DB_COMERCIAL.INFO_DETALLE_SOL_CARACT.CARACTERISTICA_ID%TYPE DEFAULT NULL,
@@ -4242,7 +4242,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lr_InfoDocumentoFinancieroDet  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET%ROWTYPE;
     Le_Exception                   EXCEPTION;
     Lv_EstadoActivo                VARCHAR2(15)  := 'Activo';
-    Lv_MensajeError                VARCHAR2(100) := 'Ocurri� un error al clonar las caracter�sticas de la solicitud al documento:';
+    Lv_MensajeError                VARCHAR2(100) := 'Ocurrió un error al clonar las características de la solicitud al documento:';
     Ln_Indice                      NUMBER        := 0;
     Ln_PlanId                      DB_COMERCIAL.INFO_PLAN_CAB.ID_PLAN%TYPE;
     Ln_ProductoId                  DB_COMERCIAL.ADMI_PRODUCTO.ID_PRODUCTO%TYPE;
@@ -4255,7 +4255,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     FETCH C_AdmiCaracteristica INTO Lr_AdmiCaracteristica;
     CLOSE C_AdmiCaracteristica;
 
-    --SE OBTIENE SI LA SOLICITUD REALIZA LA FACTURACI�N DETALLADA O NO.
+    --SE OBTIENE SI LA SOLICITUD REALIZA LA FACTURACIÓN DETALLADA O NO.
     OPEN  C_ObtieneCaracteristicas(Cn_DetalleSolicitudId => Pn_DetalleSolicitudId,
                                    Cv_Estado             => Lv_EstadoActivo,
                                    Cn_CaracteristicaId   => Lr_AdmiCaracteristica.ID_CARACTERISTICA);
@@ -4263,19 +4263,19 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lr_FacturaDetallada.VALOR      := NVL(Lr_FacturaDetallada.VALOR, 'N');
     CLOSE C_ObtieneCaracteristicas;
 
-    --Se asigna el PlanId y el ProductoId enviados por par�metro.
+    --Se asigna el PlanId y el ProductoId enviados por parámetro.
     Ln_PlanId      := Pr_InfoDocumentoFinancieroDet.PLAN_ID;
     Ln_ProductoId  := Pr_InfoDocumentoFinancieroDet.PRODUCTO_ID;
     Ln_Subtotal    := Pr_InfoDocumentoFinancieroDet.PRECIO_VENTA_FACPRO_DETALLE;
 
-    --SE ITERAN LAS CARACTER�STICAS DE LA SOLICITUD
+    --SE ITERAN LAS CARACTERÍSTICAS DE LA SOLICITUD
     FOR Lr_ObtieneSolCarac IN C_ObtieneCaracteristicas(Cn_DetalleSolicitudId => Pn_DetalleSolicitudId,
                                                        Cv_Estado             => 'Facturable',
                                                        Cn_CaracteristicaId   => NULL)
     LOOP
-        --Si la solicitud aplica a la facturaci�n detallada, clona las caracter�sticas como detalles seg�n el  par�metro 
+        --Si la solicitud aplica a la facturación detallada, clona las características como detalles según el  parámetro 
         IF 'S' = Lr_FacturaDetallada.VALOR THEN
-            --Obtiene la informaci�n de los par�metros.
+            --Obtiene la información de los parámetros.
             OPEN  C_ObtieneProdPlan (Cv_NombreParametro => 'FACTURACION SOLICITUD DETALLADA',
                                      Cv_EstadoCab       => Lv_EstadoActivo,
                                      Cv_EstadoDet       => Lv_EstadoActivo,
@@ -4287,32 +4287,32 @@ END UPDATE_INFO_CICLO_FACTURACION;
             Ln_PlanId      := Lr_ObtieneProdPlan.VALOR2;
             Ln_Subtotal    := Lr_ObtieneSolCarac.VALOR;
         ELSE
-            --Caso contrario, se clonan las caracter�sticas de la solicitud como caracter�sticas de la factura.
+            --Caso contrario, se clonan las características de la solicitud como características de la factura.
             Lr_InfoDocumentoCaracteristica                             := NULL;
             Pv_Mensaje                                                 := NULL;
             Lr_InfoDocumentoCaracteristica.ID_DOCUMENTO_CARACTERISTICA := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_CARACT.NEXTVAL;
             Lr_InfoDocumentoCaracteristica.DOCUMENTO_ID                := Pr_InfoDocumentoFinancieroDet.DOCUMENTO_ID;
             Lr_InfoDocumentoCaracteristica.CARACTERISTICA_ID           := Lr_ObtieneSolCarac.CARACTERISTICA_ID;
             Lr_InfoDocumentoCaracteristica.VALOR                       := Lr_ObtieneSolCarac.VALOR;
-             --La caracter�stica queda activa para poder ser visualizada en telcos
+             --La característica queda activa para poder ser visualizada en telcos
             Lr_InfoDocumentoCaracteristica.ESTADO                      := Lv_EstadoActivo;
             Lr_InfoDocumentoCaracteristica.FE_CREACION                 := SYSDATE;
             Lr_InfoDocumentoCaracteristica.USR_CREACION                := Lr_ObtieneSolCarac.USR_CREACION;
             Lr_InfoDocumentoCaracteristica.IP_CREACION                 := '127.0.0.1';
 
-            --SE INSERTA LA CARACTER�STICA EN INFO_DOCUMENTO_CARACTERISTICA
+            --SE INSERTA LA CARACTERÍSTICA EN INFO_DOCUMENTO_CARACTERISTICA
             DB_FINANCIERO.FNCK_TRANSACTION.P_INSERT_INFO_DOCUMENTO_CARACT(Lr_InfoDocumentoCaracteristica, Pv_Mensaje);
             IF Pv_Mensaje IS NOT NULL THEN
               RAISE Le_Exception;
             END IF;
 
-            --Si no aplica facturaci�n detallada y no es el primer registro, se contin�a con el bucle de migraci�n de caracter�sticas.
+            --Si no aplica facturación detallada y no es el primer registro, se continúa con el bucle de migración de características.
             IF Ln_Indice > 0 THEN
                 CONTINUE;
             END IF;
         END IF;
 
-        /*--------------Se crea el detalle y el impuesto seg�n corresponda.------------*/
+        /*--------------Se crea el detalle y el impuesto según corresponda.------------*/
         Lr_InfoDocumentoFinancieroDet                               := NULL;
         Lr_InfoDocumentoFinancieroDet                               := Pr_InfoDocumentoFinancieroDet;
         Lr_InfoDocumentoFinancieroDet.ID_DOC_DETALLE                := DB_FINANCIERO.SEQ_INFO_DOC_FINANCIERO_DET.NEXTVAL;
@@ -4330,32 +4330,32 @@ END UPDATE_INFO_CICLO_FACTURACION;
         IF Pv_Mensaje IS NOT NULL THEN
             RAISE Le_Exception;
         END IF;
-        --Se incrementa el contador de caracter�sticas para validar si se crea o no el detalle.
-        --Existe un �nico detalle cuando la solicitud no aplica a facturaci�n detallada.
-        --Si la solicitud aplica facturaci�n detallada, se crea un detalle por cada caracter�stica.
+        --Se incrementa el contador de características para validar si se crea o no el detalle.
+        --Existe un único detalle cuando la solicitud no aplica a facturación detallada.
+        --Si la solicitud aplica facturación detallada, se crea un detalle por cada característica.
         Ln_Indice := Ln_Indice + 1;
-      /*--------------FIN Se crea el detalle y el impuesto seg�n corresponda.------------*/
+      /*--------------FIN Se crea el detalle y el impuesto según corresponda.------------*/
     END LOOP;
 
-    --SE ITERAN LAS CARACTER�STICAS NO FACTURABLES DE LA SOLICITUD
+    --SE ITERAN LAS CARACTERÍSTICAS NO FACTURABLES DE LA SOLICITUD
     FOR Lr_ObtieneSolCarac IN C_ObtieneCaracteristicas(Cn_DetalleSolicitudId => Pn_DetalleSolicitudId,
                                                        Cv_Estado             => 'NoFacturable',
                                                        Cn_CaracteristicaId   => NULL)
     LOOP
-        --Caso contrario, se clonan las caracter�sticas de la solicitud como caracter�sticas de la factura.
+        --Caso contrario, se clonan las características de la solicitud como características de la factura.
         Lr_InfoDocumentoCaracteristica                             := NULL;
         Pv_Mensaje                                                 := NULL;
         Lr_InfoDocumentoCaracteristica.ID_DOCUMENTO_CARACTERISTICA := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_CARACT.NEXTVAL;
         Lr_InfoDocumentoCaracteristica.DOCUMENTO_ID                := Pr_InfoDocumentoFinancieroDet.DOCUMENTO_ID;
         Lr_InfoDocumentoCaracteristica.CARACTERISTICA_ID           := Lr_ObtieneSolCarac.CARACTERISTICA_ID;
         Lr_InfoDocumentoCaracteristica.VALOR                       := Lr_ObtieneSolCarac.VALOR;
-         --La caracter�stica queda activa para poder ser visualizada en telcos
+         --La característica queda activa para poder ser visualizada en telcos
         Lr_InfoDocumentoCaracteristica.ESTADO                      := Lv_EstadoActivo;
         Lr_InfoDocumentoCaracteristica.FE_CREACION                 := SYSDATE;
         Lr_InfoDocumentoCaracteristica.USR_CREACION                := Lr_ObtieneSolCarac.USR_CREACION;
         Lr_InfoDocumentoCaracteristica.IP_CREACION                 := '127.0.0.1';
 
-        --SE INSERTA LA CARACTER�STICA EN INFO_DOCUMENTO_CARACTERISTICA
+        --SE INSERTA LA CARACTERÍSTICA EN INFO_DOCUMENTO_CARACTERISTICA
         DB_FINANCIERO.FNCK_TRANSACTION.P_INSERT_INFO_DOCUMENTO_CARACT(Lr_InfoDocumentoCaracteristica, Pv_Mensaje);
         IF Pv_Mensaje IS NOT NULL THEN
           RAISE Le_Exception;
@@ -4365,7 +4365,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     IF Ln_Indice = 0 THEN
         Lr_InfoDocumentoFinancieroDet                               := Pr_InfoDocumentoFinancieroDet;
         Lr_InfoDocumentoFinancieroDet.ID_DOC_DETALLE                := DB_FINANCIERO.SEQ_INFO_DOC_FINANCIERO_DET.NEXTVAL;
-        --Si no se obtuvo ninguna caract "Facturable" significa que no ha creado ning�n detalle. Por lo tanto hay que crear el detalle gen�rico.
+        --Si no se obtuvo ninguna caract "Facturable" significa que no ha creado ningún detalle. Por lo tanto hay que crear el detalle genérico.
         DB_FINANCIERO.FNCK_TRANSACTION.P_CREA_DOCUMENTO_DETALLE_IMP(Pr_InfoDocumentoFinancieroDet => Lr_InfoDocumentoFinancieroDet,
                                                                     Pv_PagaIva                    => Pv_PagaIva,
                                                                     Pv_Mensaje                    => Pv_Mensaje);
@@ -4374,14 +4374,14 @@ END UPDATE_INFO_CICLO_FACTURACION;
         END IF;
     END IF;
 
-    --Si la SOLICITUD tiene asociada una SOLICITUD NOTA DE CREDITO a trav�s de la caracter�stica, se clona.
+    --Si la SOLICITUD tiene asociada una SOLICITUD NOTA DE CREDITO a través de la característica, se clona.
     Lr_AdmiCaracteristica := NULL;
     OPEN  C_AdmiCaracteristica(Cv_DescripcionCaract => 'SOLICITUD NOTA CREDITO',
                                Cv_Estado            => Lv_EstadoActivo);
     FETCH C_AdmiCaracteristica INTO Lr_AdmiCaracteristica;
     CLOSE C_AdmiCaracteristica;
 
-    --SE OBTIENE SI LA SOLICITUD APLICA NOTA DE CR�DITO O NO.
+    --SE OBTIENE SI LA SOLICITUD APLICA NOTA DE CRÉDITO O NO.
     OPEN  C_ObtieneCaracteristicas(Cn_DetalleSolicitudId => Pn_DetalleSolicitudId,
                                    Cv_Estado             => Lv_EstadoActivo,
                                    Cn_CaracteristicaId   => Lr_AdmiCaracteristica.ID_CARACTERISTICA);
@@ -4399,7 +4399,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         Lr_InfoDocumentoCaracteristica.USR_CREACION                := Lr_NotaDeCredito.USR_CREACION;
         Lr_InfoDocumentoCaracteristica.IP_CREACION                 := '127.0.0.1';
 
-        --SE INSERTA LA CARACTER�STICA EN INFO_DOCUMENTO_CARACTERISTICA
+        --SE INSERTA LA CARACTERÍSTICA EN INFO_DOCUMENTO_CARACTERISTICA
         DB_FINANCIERO.FNCK_TRANSACTION.P_INSERT_INFO_DOCUMENTO_CARACT(Lr_InfoDocumentoCaracteristica, Pv_Mensaje);
         IF Pv_Mensaje IS NOT NULL THEN
           RAISE Le_Exception;
@@ -4592,7 +4592,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lex_Exception EXCEPTION;
     --
   BEGIN
-    -- se recupera parametro fecha de contabilziaci�n.
+    -- se recupera parametro fecha de contabilziación.
     IF C_PARAMETRO_CONTABILIZACION%ISOPEN THEN
       CLOSE C_PARAMETRO_CONTABILIZACION;
     END IF;
@@ -4639,7 +4639,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         Lr_InfoDocumentoHistorial.FE_CREACION            := SYSDATE;
         Lr_InfoDocumentoHistorial.USR_CREACION           := Pv_UsrCreacion;
         Lr_InfoDocumentoHistorial.ESTADO                 := Lv_EstadoDocumentoActualizar;
-        Lr_InfoDocumentoHistorial.OBSERVACION            := 'Ejecuci�n de Re-procesamiento de Contabilizaci�n | ' || Pv_TipoProceso;
+        Lr_InfoDocumentoHistorial.OBSERVACION            := 'Ejecución de Re-procesamiento de Contabilización | ' || Pv_TipoProceso;
         --
         DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Pv_MensajeError);
         --
@@ -4730,7 +4730,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     --
     IF TRIM(Pv_MensajeError) IS NOT NULL THEN
       --
-      Pv_MensajeError := 'Error al eliminar la migraci�n contable en el NAF. - ' || Pv_MensajeError;
+      Pv_MensajeError := 'Error al eliminar la migración contable en el NAF. - ' || Pv_MensajeError;
       --
       RAISE Lex_Exception;
       --
@@ -4807,7 +4807,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
       Pv_MensajeError     OUT VARCHAR2
   )
   AS
-    -- Cursor que obtiene los clientes con n�mero de intentos de d�bito en el mes actual >= al valor enviado como par�metro.
+    -- Cursor que obtiene los clientes con número de intentos de débito en el mes actual >= al valor enviado como parámetro.
 
     -- C_ClientesConCargoReproceso - Costo Query: 24
 
@@ -5367,8 +5367,8 @@ END UPDATE_INFO_CICLO_FACTURACION;
       Lr_InfoReporteHistorial.APLICACION           := 'Telcos';
       Lr_InfoReporteHistorial.ESTADO               := 'Activo';
       Lr_InfoReporteHistorial.OBSERVACION          := 'Ejecucion de Reporte de Cierre Fiscal Tipo: '||Pv_TipoCierre||
-                                                    ' Fecha de Transacci�n: '||Lv_FechaTrans||
-                                                    ' Hora de Transacci�n: '||Lv_HoraTrans;
+                                                    ' Fecha de Transacción: '||Lv_FechaTrans||
+                                                    ' Hora de Transacción: '||Lv_HoraTrans;
       Lr_InfoReporteHistorial.FE_ULT_MOD           := SYSDATE;
       --Se crea registro de historial.
       DB_FINANCIERO.FNCK_TRANSACTION.P_INSERT_INFO_REPORTE_HIST(Lr_InfoReporteHistorial);
@@ -5997,7 +5997,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lv_DescTipoSolicitud DB_COMERCIAL.ADMI_TIPO_SOLICITUD.DESCRIPCION_SOLICITUD%TYPE:='SOLICITUD NOTA CREDITO POR REUBICACION';
     Lv_AplicaProceso     DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE;
 
-    Lv_Observacion         VARCHAR2(1000) := 'Se crea Nota de Cr�dito por Reubicaci�n';
+    Lv_Observacion         VARCHAR2(1000) := 'Se crea Nota de Crédito por Reubicación';
     Lv_FechaInicio         VARCHAR2(10)   := '';
     Lv_FechaFin            VARCHAR2(10)   := '';
     Lv_EstadoActivo        VARCHAR2(50)   := 'Activo';
@@ -6100,7 +6100,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
             Lv_AplicaProceso := DB_GENERAL.GNRLPCK_UTIL.F_EMPRESA_APLICA_PROCESO('NUMERACION_AUTOMATICA_NOTA_CREDITO', Pv_CodEmpresa);
 
             IF TRIM(Lv_AplicaProceso) = 'S' THEN
-                --Se enumera autom�ticamente la nota de cr�dito.
+                --Se enumera automáticamente la nota de crédito.
                 DB_FINANCIERO.FNCK_TRANSACTION.P_NUMERA_NOTA_CREDITO(Pn_DocumentoId    => Ln_IdDocumentoNC,
                                                                      Pv_PrefijoEmpresa => Pv_PrefijoEmpresa,
                                                                      Pv_ObsHistorial   => Lv_ObservacionCreacion,
@@ -6130,7 +6130,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                                     Pn_IdDocumento        IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
                                     Pv_Mensaje            OUT VARCHAR2)
   IS
-    --CURSOR QUE OBTIENE LAS CARACTER�STICAS DE UNA SOLICITUD
+    --CURSOR QUE OBTIENE LAS CARACTERÍSTICAS DE UNA SOLICITUD
     CURSOR C_ObtieneCaracteristicas(Cn_DetalleSolicitudId DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ID_DETALLE_SOLICITUD%TYPE,
                                     Cv_Estado             DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ESTADO%TYPE)
     IS
@@ -6146,7 +6146,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Lr_InfoDocumentoCaracteristica DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA%ROWTYPE;
     Le_Exception                   EXCEPTION;
     Lv_EstadoActivo                VARCHAR2(15)  := 'Activo';
-    Lv_MensajeError                VARCHAR2(500) := 'Ocurri� un error al clonar las caracter�sticas de la solicitud al documento:';
+    Lv_MensajeError                VARCHAR2(500) := 'Ocurrió un error al clonar las características de la solicitud al documento:';
 
   BEGIN
 
@@ -6154,24 +6154,24 @@ END UPDATE_INFO_CICLO_FACTURACION;
         CLOSE C_ObtieneCaracteristicas;
     END IF;
 
-    --Se Iteran Las Caracter�sticas De La Solicitud
+    --Se Iteran Las Características De La Solicitud
     FOR Lr_ObtieneSolCarac IN C_ObtieneCaracteristicas(Pn_DetalleSolicitudId,
                                                        Lv_EstadoActivo)
     LOOP
-        --Se clonan las caracter�sticas de la solicitud como caracter�sticas del documento.
+        --Se clonan las características de la solicitud como características del documento.
         Lr_InfoDocumentoCaracteristica                             := NULL;
         Pv_Mensaje                                                 := NULL;
         Lr_InfoDocumentoCaracteristica.ID_DOCUMENTO_CARACTERISTICA := DB_FINANCIERO.SEQ_INFO_DOCUMENTO_CARACT.NEXTVAL;
         Lr_InfoDocumentoCaracteristica.DOCUMENTO_ID                := Pn_IdDocumento;
         Lr_InfoDocumentoCaracteristica.CARACTERISTICA_ID           := Lr_ObtieneSolCarac.CARACTERISTICA_ID;
         Lr_InfoDocumentoCaracteristica.VALOR                       := Lr_ObtieneSolCarac.VALOR;
-         --La caracter�stica queda activa para poder ser visualizada en telcos
+         --La característica queda activa para poder ser visualizada en telcos
         Lr_InfoDocumentoCaracteristica.ESTADO                      := Lv_EstadoActivo;
         Lr_InfoDocumentoCaracteristica.FE_CREACION                 := SYSDATE;
         Lr_InfoDocumentoCaracteristica.USR_CREACION                := Lr_ObtieneSolCarac.USR_CREACION;
         Lr_InfoDocumentoCaracteristica.IP_CREACION                 := '127.0.0.1';
 
-        --Se inserta la caracter�stica en info_documento_caracteristica
+        --Se inserta la característica en info_documento_caracteristica
         DB_FINANCIERO.FNCK_TRANSACTION.P_INSERT_INFO_DOCUMENTO_CARACT(Lr_InfoDocumentoCaracteristica, Pv_Mensaje);
 
         IF Pv_Mensaje IS NOT NULL THEN
@@ -6312,7 +6312,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
 
   EXCEPTION
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al generar el reporte de Fact y Nc emitidas por reubicaci�n. '
+    Lv_MsjResultado := 'Ocurrió un error al generar el reporte de Fact y Nc emitidas por reubicación. '
                        ||'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' ERROR_BACKTRACE: ' 
                        || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
 
@@ -6395,7 +6395,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
 
   EXCEPTION
   WHEN OTHERS THEN
-    Lv_MsjResultado := 'Ocurri� un error al obtener los valores de Nc por reubicaci�n. '
+    Lv_MsjResultado := 'Ocurrió un error al obtener los valores de Nc por reubicación. '
                        ||'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK || ' ERROR_BACKTRACE: ' 
                        || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE;
 
@@ -6427,7 +6427,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
     Ln_ValorTotal          NUMBER        := 0;
     Lv_ObservacionCreacion VARCHAR2(100) := '';
     Lv_UsrCreacion         VARCHAR2(20)  := 'telcos_reubica';
-    Lv_Observacion         VARCHAR2(100) := 'Se crea nota de cr�dito por reubicaci�n';
+    Lv_Observacion         VARCHAR2(100) := 'Se crea nota de crédito por reubicación';
     Lv_Estado              VARCHAR2(20)  := 'Pendiente';
     Lv_ProporcionalPorDias VARCHAR2(1)   := 'N';
     Lbool_Done             BOOLEAN       := FALSE;
@@ -6475,7 +6475,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                                        Pv_UsrCreacion IN DB_COMERCIAL.INFO_DETALLE_SOLICITUD.USR_CREACION%TYPE)
   IS
   
-    --Cursor que obtiene todas las solicitudes de fact � Nc por reubicaci�n ligadas a tarea que poseen estado 'Anulada', 'Rechazada', 'Cancelada'.
+    --Cursor que obtiene todas las solicitudes de fact ó Nc por reubicación ligadas a tarea que poseen estado 'Anulada', 'Rechazada', 'Cancelada'.
     CURSOR C_ObtieneSolicitudesReub(Cv_DescripcionCaract DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE,
                                     Cv_UsrCreacion       DB_COMERCIAL.INFO_DETALLE_SOLICITUD.USR_CREACION%TYPE,
                                     Cv_EmpresaCod        DB_SOPORTE.INFO_COMUNICACION.EMPRESA_COD%TYPE)
@@ -6702,7 +6702,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
       
     IF Pn_IdServicio IS NULL THEN
     --
-      Pv_MsnError := Pv_MsnError || ' - Error el campo Pn_IdServicio no puede ser nulo, es obligatorio para la transacci�n.';
+      Pv_MsnError := Pv_MsnError || ' - Error el campo Pn_IdServicio no puede ser nulo, es obligatorio para la transacción.';
       RAISE Lex_Exception;      
     --
     END IF;
@@ -6732,7 +6732,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
       Lv_PrefijoEmpresa := 'MD';
     END;
       
-    --Se obtiene DE LOS PAR�METROS LA INFORMACI�N REFERENTE A ESA SOLICITUD ESPEC�FICA.
+    --Se obtiene DE LOS PARÁMETROS LA INFORMACIÓN REFERENTE A ESA SOLICITUD ESPECÍFICA.
     DB_FINANCIERO.FNCK_TRANSACTION.P_BUSCA_INFORMACION_SOLICITUD(Pv_NombreSolicitud    => Pv_DescripcionSolicitud,
                                                                  Pv_EmpresaCod         => Pv_EmpresaCod,
                                                                  Pn_PlanId             => Ln_PlanTempId,
@@ -6751,7 +6751,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                                                              Pv_Estado             => Lv_EstadoActivo);
 
       --
-      -- Obtener la informaci�n correspondiente al servicio a facturar
+      -- Obtener la información correspondiente al servicio a facturar
       DB_FINANCIERO.FNCK_CONSULTS.P_GET_INFO_SERVICIO_A_FACTURAR(Pn_IdServicio         => Lr_SolicitudesClientes.SERVICIO_ID,
                                                                  Pv_EmpresaCod         => Lv_EmpresaCod,
                                                                  Pv_PrefijoEmpresa     => Lv_PrefijoEmpresa,
@@ -6770,7 +6770,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
       Ln_SubtotalConDescuento := Ln_Subtotal - Ln_Descuento;
       --
       IF Ln_SubtotalConDescuento > 0 THEN
-        --SI INGRESA POR EL FLUJO DE DEMOS, SE LLENA DIN�MICAMENTE LA OBSERVACI�N.
+        --SI INGRESA POR EL FLUJO DE DEMOS, SE LLENA DINÁMICAMENTE LA OBSERVACIÓN.
         IF Pv_DescripcionSolicitud = 'SOLICITUD REQUERIMIENTOS DE CLIENTES' AND Lr_SolicitudesClientes.USR_CREACION = 'telcos_pma_demos' THEN
           --Obtengo el producto
           OPEN C_GetProducto(Lr_SolicitudesClientes.SERVICIO_ID);
@@ -6785,13 +6785,13 @@ END UPDATE_INFO_CICLO_FACTURACION;
           Lv_ObservacionDetalle  := 'DEMO '||Lv_descripcionProducto||' - '||Lv_login;
           Lv_descripcionProducto := '';
           Lv_login               := '';
-        --SI NO ES NING�N CASO ANTES MENCIONADO, BUSCA PLAN_ID, PRODUCTO_ID Y OBSERVACI�N EN LOS PAR�METROS.
+        --SI NO ES NINGÚN CASO ANTES MENCIONADO, BUSCA PLAN_ID, PRODUCTO_ID Y OBSERVACIÓN EN LOS PARÁMETROS.
         ELSE
-          --SI OBTIENE UN PLAN, SE VAC�A EL PRODUCTO Y SE FIJA EL NUEVO PLAN
+          --SI OBTIENE UN PLAN, SE VACÍA EL PRODUCTO Y SE FIJA EL NUEVO PLAN
           IF NVL(Ln_PlanTempId, 0) != 0 THEN
             Ln_ProductoId := NULL;
             Ln_PlanId     := Ln_PlanTempId;
-          --SI OBTIENE UN PRODUCTO, SE VAC�A EL PLAN Y SE FIJA EL NUEVO PRODUCTO
+          --SI OBTIENE UN PRODUCTO, SE VACÍA EL PLAN Y SE FIJA EL NUEVO PRODUCTO
           ELSIF NVL(Ln_ProductoTempId, 0) != 0 THEN
             Ln_ProductoId := Ln_ProductoTempId;
             Ln_PlanId     := NULL;
@@ -6876,7 +6876,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         Lr_InfoDocumentoFinancieroDet.EMPRESA_ID                    := Lv_EmpresaCod;
         Lr_InfoDocumentoFinancieroDet.SERVICIO_ID                   := Lr_SolicitudesClientes.SERVICIO_ID;
 
-        --SE INSERTAN LAS CARACTER�STICAS DE LA TABLA INFO_DETALLE_SOLICITUD_CARAC
+        --SE INSERTAN LAS CARACTERÍSTICAS DE LA TABLA INFO_DETALLE_SOLICITUD_CARAC
         DB_FINANCIERO.FNCK_TRANSACTION.P_CLONAR_SOLICITUD_CARAC(Pn_DetalleSolicitudId         => Lr_SolicitudesClientes.ID_DETALLE_SOLICITUD,
                                                                 Pr_InfoDocumentoFinancieroDet => Lr_InfoDocumentoFinancieroDet,
                                                                 Pv_PagaIva                    => Lv_PagaIva,
@@ -6950,7 +6950,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
                 --
                 IF TRIM(Pv_MsnError) IS NOT NULL THEN
                 --
-                  Pv_MsnError := Pv_MsnError || ' - Error al actualizar la numeraci�n';
+                  Pv_MsnError := Pv_MsnError || ' - Error al actualizar la numeración';
                   RAISE Lex_Exception;
                 --
                 END IF;
@@ -6979,7 +6979,7 @@ END UPDATE_INFO_CICLO_FACTURACION;
         --
         IF TRIM(Pv_MsnError) IS NOT NULL THEN
           --
-          Pv_MsnError := Pv_MsnError || ' - Error al actualizar la informaci�n de la cabecera de la factura';
+          Pv_MsnError := Pv_MsnError || ' - Error al actualizar la información de la cabecera de la factura';
           RAISE Lex_Exception;
           --
         END IF;
@@ -6991,8 +6991,8 @@ END UPDATE_INFO_CICLO_FACTURACION;
         Ln_ContadorCommit                           := Ln_ContadorCommit + 1;
         -- INSERTO HISTORIAL DEL SERVICIO
         Lo_ServicioHistorial                        := NULL;
-        Lo_ServicioHistorial.OBSERVACION            := 'Tarifario con promoci�n';
-        --Se obtiene el estado del servicio para almacenar su historial si no es pasado por par�metro.
+        Lo_ServicioHistorial.OBSERVACION            := 'Tarifario con promoción';
+        --Se obtiene el estado del servicio para almacenar su historial si no es pasado por parámetro.
         OPEN  C_ObtieneInfoServ (Cn_IdServicio => Lr_SolicitudesClientes.SERVICIO_ID);
         FETCH C_ObtieneInfoServ INTO Lr_ObtieneInfoServ;
         CLOSE C_ObtieneInfoServ;
