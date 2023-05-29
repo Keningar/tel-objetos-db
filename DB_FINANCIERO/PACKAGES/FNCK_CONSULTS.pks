@@ -10317,6 +10317,10 @@ END P_SPLIT_CLOB;
 * @version 1.2 29-10-2020 - Se agrega funcionalidad para crear notas de cr�dito por medio de solicitudes para proceso 
 *                           de reubicaci�n. Se valida para cambiar a estado finalizado las solicitudes por reubicaci�n y 
 *                           realize la clonaci�n de caracter�sticas de la solicitud a la Nc.
+*
+* @author Hector Lozano <hlozano@telconet.ec>
+* @version 1.3 19-05-2023 - Se insertan logs, para monitorear el proceso de crear Notas de Crédito por Reubicación.
+*
 * Costo query C_GetParamSolicitud: 5
 * Costo query C_GetSolicitudNcReub: 15
 */
@@ -10594,6 +10598,7 @@ IS
   --
   Lex_Exception EXCEPTION;
   Lv_MsnError   VARCHAR2 (2000);
+  Lv_LogNcReub  VARCHAR2 (2000);
   --
   Lv_FechaInicioPeriodo    VARCHAR2(25) := '';
   Lv_FechaFinPeriodo       VARCHAR2(25) := '';
@@ -10732,6 +10737,10 @@ BEGIN
           --
           Lv_TipoCreacion   := 'DETALLE';
         END IF;
+
+        Lv_LogNcReub := 'PROCESO CREA NC: ' || '-ID_FACT: ' || Pn_IdDocumento || '- TipoCreacion: ' || Lv_TipoCreacion ;
+        DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
+
         --Busca la cabecera de la factura
         Lr_InfoDocumentoFinanCab := FNCK_CONSULTS.F_GET_INFO_DOC_FINANCIERO_CAB(Pn_IdDocumento, NULL);
         --
@@ -10773,6 +10782,10 @@ BEGIN
           --
         END IF;
         IF Lv_TipoCreacion  != 'DETALLE' THEN
+
+          Lv_LogNcReub := 'PROCESO CREA NC: ' || ' -ID_FACT: ' || Pn_IdDocumento || ' -Proceso por '|| Lv_TipoCreacion ;
+          DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);     
+
         --Busca los detalles de la factura, para crear los detalles de la NC
         Lsrf_InfoDocumentoFinanDet := FNCK_CONSULTS.F_GET_INFO_DOC_FINANCIERO_DET( NULL, Ln_IdDocumento);
         --
@@ -10954,9 +10967,16 @@ BEGIN
             --
           END IF;
           --
+          Lv_LogNcReub := 'PROCESO CREA NC: '|| ' -ID_FACT: ' || Pn_IdDocumento ||  ' -Proceso por '|| Lv_TipoCreacion 
+                          || ' -SumaSubtotal: ' || Ln_SumaSubtotal || ' -SumaDescuento: ' || Ln_SumaDescuento;
+          DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
+
         END LOOP; --Lsrf_InfoDocumentoFinanDet
 
         ELSE  --   Lv_TipoCreacion -- 'DETALLE'
+
+         Lv_LogNcReub := 'PROCESO CREA NC: ' || ' -ID_FACT: ' || Pn_IdDocumento || ' Proceso por Detalle: ' ;
+         DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
 
        --Busca las caracteristicas asociadas a la solicitud de NC del documento, para crear los detalles de la NC
 
@@ -11148,6 +11168,10 @@ BEGIN
                 --
               END IF;
               --
+              Lv_LogNcReub := 'PROCESO CREA NC: ' || ' -ID_FACT: ' || Pn_IdDocumento || ' Proceso por Detalle: '
+                              || ' -SumaSubtotal: ' || Ln_SumaSubtotal || ' -SumaDescuento: ' || Ln_SumaDescuento;
+              DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub); 
+
             END LOOP; 
 
         END IF; -- Lv_TipoCreacion
@@ -11234,6 +11258,9 @@ BEGIN
                 DB_COMERCIAL.COMEK_TRANSACTION.P_INSERT_DETALLE_SOL_HIST(Lr_InfoDetSolHistorial, Lv_MsjErrorUpd);
                 
             END IF;
+
+            Lv_LogNcReub := 'FINALIZA LA SOLICITUD Y PROCESO CREA NC' || ' -ID_FACT: ' || Pn_IdDocumento;
+            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
 
             COMMIT;
         END IF;
