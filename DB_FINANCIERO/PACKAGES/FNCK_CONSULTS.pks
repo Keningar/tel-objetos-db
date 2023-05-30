@@ -1,11 +1,12 @@
+
 CREATE OR REPLACE PACKAGE DB_FINANCIERO.FNCK_CONSULTS
 AS
 
   /**
   * Documentacion para la funcion F_GET_MAX_DOCUMENTO_SERV_PROD
   *
-  * La funcion retorna la m�xima factura dependiendo del puntoFacturacionId, puntoId, servicioId, productoId 
-  * , y precioVenta ademas del filtro que se env�e a consultar, sean Factura por AnioMes o Rango de Consumo
+  * La funcion retorna la máxima factura dependiendo del puntoFacturacionId, puntoId, servicioId, productoId 
+  * , y precioVenta ademas del filtro que se envíe a consultar, sean Factura por AnioMes o Rango de Consumo
   * Se considera como prioridad se obtenga la Factura por Servicio facturado, o Factura por Producto y 
   * Precio de Venta asociado , o solo por producto asociado al servicio.
   *
@@ -17,18 +18,18 @@ AS
   * @param Fv_Filtro                IN VARCHAR2
   * return Fn_IdDocumento           DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE
   * 
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 24-10-2018
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 03-03-2022   Se agrega  condici�n en query que verifica documentos que no posean notas de cr�dito con el valor total del precio 
+  * @version 1.1 03-03-2022   Se agrega  condición en query que verifica documentos que no posean notas de crédito con el valor total del precio 
   *                           de venta del servicio asociado . 
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.2 06-04-2022   Se agrega  correcci�n en query que verifica documentos que no posean notas de cr�dito.
+  * @version 1.2 06-04-2022   Se agrega  corrección en query que verifica documentos que no posean notas de crédito.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.3 01-06-2022   Se agrega  env�o de par�metro Fn_ServicioId en querys en clausula USING para optimizar tiempo de ejecuci�n de proceso .
+  * @version 1.3 01-06-2022   Se agrega  envío de parámetro Fn_ServicioId en querys en clausula USING para optimizar tiempo de ejecución de proceso .
   */
   FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
       Fn_PuntoFacturacionId IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE,
@@ -40,10 +41,10 @@ AS
   RETURN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB%ROWTYPE;
 
   /**
-   * Documentaci�n para F_OBTIENE_IMPUESTOS_RIDE
-   * Devuelve un Json con los par�metros (cabecera de impuestos) a llenar en el RIDE.
+   * Documentación para F_OBTIENE_IMPUESTOS_RIDE
+   * Devuelve un Json con los parámetros (cabecera de impuestos) a llenar en el RIDE.
    * @author Luis Cabrera <lcabrera@telconet.ec>
-   * @version 1.0 30-12-2017 - Versi�n inicial
+   * @version 1.0 30-12-2017 - Versión inicial
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.1 03-01-2018 - Se modifican los subtotales: Se resta del subtotal el valor del descuento.
    */
@@ -53,12 +54,12 @@ AS
   RETURN VARCHAR2;
 
   /**
-   * Funci�n que devuelve si se debe crear una factura de instalaci�n a un punto espec�fico.
-   * Si el punto no tiene ninguna factura de instalaci�n (en todos su servicios) se devuelve 'S' porque el punto s� aplica la creaci�n de factura.
-   * Si el punto tiene una o m�s facturas se valida:
-   *    Si al menos una factura est� Pendiente o Activa, no debe crearse la factura de instalaci�n; devuelve 'N'.
-   *    Si al menos una de sus facturas est� Cerrada por pagos, no debe crearse la factura de instalaci�n; devuelve 'N'
-   *    Si una o todas sus facturas est�n cerradas por N/C, s� debe crearse la factura de instalaci�n; devuelve 'S'
+   * Función que devuelve si se debe crear una factura de instalación a un punto específico.
+   * Si el punto no tiene ninguna factura de instalación (en todos su servicios) se devuelve 'S' porque el punto sí aplica la creación de factura.
+   * Si el punto tiene una o más facturas se valida:
+   *    Si al menos una factura está Pendiente o Activa, no debe crearse la factura de instalación; devuelve 'N'.
+   *    Si al menos una de sus facturas está Cerrada por pagos, no debe crearse la factura de instalación; devuelve 'N'
+   *    Si una o todas sus facturas están cerradas por N/C, sí debe crearse la factura de instalación; devuelve 'S'
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 21-11-2018
@@ -66,14 +67,14 @@ AS
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 24-01-2019
-   * Se agrega validaci�n cuando la factura est� en estado "Cerrado", se debe verificar si fue cerrada por  NC o NCI.
-   * Si la factura es cerrada por NC o NCI, significa que s� debe crearse la factura de instalaci�n.
+   * Se agrega validación cuando la factura está en estado "Cerrado", se debe verificar si fue cerrada por  NC o NCI.
+   * Si la factura es cerrada por NC o NCI, significa que sí debe crearse la factura de instalación.
    */
   FUNCTION F_APLICA_CREAR_FACT_INST(Pn_PuntoId DB_COMERCIAL.INFO_SERVICIO.PUNTO_ID%TYPE) RETURN VARCHAR2;
 
   --
   /*
-  * Documentaci�n para TYPE 'Lr_InfoEmpresaGrupo'.
+  * Documentación para TYPE 'Lr_InfoEmpresaGrupo'.
   *
   * Tipo de datos para el retorno de la informacion correspondiente a la 'DB_COMERCIAL.INFO_EMPRESA_GRUPO'
   *
@@ -94,7 +95,7 @@ AS
       RETURN Lr_InfoEmpresaGrupo;
   --
   /*
-  * Documentaci�n para TYPE 'Lr_InfoDocumentosRepetidos'.
+  * Documentación para TYPE 'Lr_InfoDocumentosRepetidos'.
   *
   * Tipo de datos para el retorno de la informacion correspondiente a los documentos repetidos a regularizar
   *
@@ -117,22 +118,22 @@ AS
   --
   --
   /**
-  * Documentacion para la funci�n 'F_GET_TOTAL_FACTURACION'
+  * Documentacion para la función 'F_GET_TOTAL_FACTURACION'
   *
-  * Funci�n que obtiene el total de lo facturado dependiendo de los par�metros enviados por el usuario.
+  * Función que obtiene el total de lo facturado dependiendo de los parámetros enviados por el usuario.
   *
   * @param Fv_PrefijoEmpresa   IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE    Prefijo de la empresa a consultar
   * @param Fd_FechaInicio      IN VARCHAR2    Fecha Inicio de autorizacion
   * @param Fd_FechaFin         IN VARCHAR2    Fecha Fin de autorizacion
-  * @param Fv_Categoria    IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE   Se env�a el nombre de la categoria a buscar
-  * @param Fv_Grupo    IN DB_COMERCIAL.ADMI_PRODUCTO.GRUPO%TYPE    Se env�a el nombre del grupo de los productos a consultar
-  * @param Fv_Subgrupo   IN DB_COMERCIAL.ADMI_PRODUCTO.SUBGRUPO%TYPE   Se env�a el nombre del subgrupo de los productos a consultar
-  * @param Fv_EsRecurrente     IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.RECURRENTE%TYPE   Campo que indica si la facturaci�n es recurrente
+  * @param Fv_Categoria    IN DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE   Se envía el nombre de la categoria a buscar
+  * @param Fv_Grupo    IN DB_COMERCIAL.ADMI_PRODUCTO.GRUPO%TYPE    Se envía el nombre del grupo de los productos a consultar
+  * @param Fv_Subgrupo   IN DB_COMERCIAL.ADMI_PRODUCTO.SUBGRUPO%TYPE   Se envía el nombre del subgrupo de los productos a consultar
+  * @param Fv_EsRecurrente     IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.RECURRENTE%TYPE   Campo que indica si la facturación es recurrente
   *
-  * @return NUMBER  Retorna la sumatoria de la facturaci�n obtenida
+  * @return NUMBER  Retorna la sumatoria de la facturación obtenida
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 06-06-2017
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 28-02-2018 - Se modifica para que en los parametros de Fd_FechaInicio y Fd_FechaFin se consulte por FeEmision
   * de la Factura y ya no por FeAutorizacion.
   */
@@ -148,9 +149,9 @@ AS
   --
   --
   /**
-  * Documentacion para la funci�n 'F_GET_HISTORIAL_PAGO_ANTICIPO'
+  * Documentacion para la función 'F_GET_HISTORIAL_PAGO_ANTICIPO'
   *
-  * Funci�n que retorna la fecha del historial del pago o anticipo o el estado de un pago o anticipo de una fecha determinada.
+  * Función que retorna la fecha del historial del pago o anticipo o el estado de un pago o anticipo de una fecha determinada.
   *
   * @param Fn_IdPagoCab          IN DB_FINANCIERO.INFO_PAGO_CAB.ID_PAGO%TYPE  Id de la cabecera del pago
   * @param Fv_EstadoPago         IN DB_FINANCIERO.INFO_PAGO_CAB.ESTADO_PAGO%TYPE  Estado del pago a consultar
@@ -173,11 +174,11 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   /**
   * Documentacion para el procedimiento 'P_VALIDAR_FECHA_DEPOSITO'
   *
-  * M�todo que validar� hasta que fecha se podr� ingresar pagos, anticipos y/o procesar dep�sitos
+  * Método que validará hasta que fecha se podrá ingresar pagos, anticipos y/o procesar depósitos
   *
-  * @param Pv_FechaValidar        IN VARCHAR2  Fecha contra la cual se va a validar la informaci�n
-  * @param Pv_ParametroValidar    IN VARCHAR2  Valor1 del detalle del par�metro 'VALIDACIONES_PROCESOS_CONTABLES'
-  * @param Pv_PrefijoEmpresa      IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa en sessi�n
+  * @param Pv_FechaValidar        IN VARCHAR2  Fecha contra la cual se va a validar la información
+  * @param Pv_ParametroValidar    IN VARCHAR2  Valor1 del detalle del parámetro 'VALIDACIONES_PROCESOS_CONTABLES'
+  * @param Pv_PrefijoEmpresa      IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  Prefijo de la empresa en sessión
   * @param Pv_RespuestaValidacion OUT VARCHAR2  Respuesta de la validacion realizada. Los valores son: 'S' puesto continuar con el proceso, caso
   *                                             contrario 'N'
   * @param Pv_MensajeError        OUT VARCHAR2  Mensaje de error en caso de existir
@@ -237,7 +238,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   *  
   * Costo del cursor C_GetExportaciones 607
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 28-02-2018 - Se modifica para que en los parametros de Fv_FechaInicio y Fv_FechaFin se consulte por FeEmision
   * de la Factura y ya no por FeAutorizacion.
   *
@@ -265,7 +266,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   /**
   * Documentacion para la funcion F_GET_PARTE_REL_VTAS
-  * Retorna SI/NO el cliente est� relacionada unicamente con la empresa TN.
+  * Retorna SI/NO el cliente está relacionada unicamente con la empresa TN.
   *
   * @param Fv_IdentCliente IN DB_FINANCIERO.INFO_PERSONA.IDENTIFICACION_CLIENTE%TYPE Recibe la identificacion del cliente.
   * @param Fn_IdEmpresa    IN INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE                    Recibe ID de la empresa.
@@ -293,7 +294,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * Costo del query cursor: C_Get_CodigoComp 4
   *                         C_Get_MontoComp  40
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 28-02-2018 - Se modifica para que en los parametros de Fv_FechaInicio y Fv_FechaFin se consulte por FeEmision
   * de la Factura y ya no por FeAutorizacion.
   */
@@ -325,7 +326,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   /**
   * Documentacion para la funcion F_GET_TOTAL_IMPUESTOS
   *
-  * La funci�n retorna el total de los impuestos asociado al documento dependiendo del tipo de impuesto:
+  * La función retorna el total de los impuestos asociado al documento dependiendo del tipo de impuesto:
   * tarifa 0%, iva, ice, reembolsos.
   *
   * @param Fn_IdEmpresa                 IN DB_FINANCIERO.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE
@@ -347,7 +348,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   *                                   C_Get_TotalImpuestos          51
   *                                   C_Get_TotalImpuestosReembolso 47
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.1 28-02-2018 - Se modifica para que en los parametros de Fv_FechaInicio y Fv_FechaFin se consulte por FeEmision
   * de la Factura y ya no por FeAutorizacion.
   */
@@ -361,9 +362,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN VARCHAR2;
   --
   /**
-  * Documentaci�n para FUNCTION 'F_GET_FECHA_CRUCE_PAGO'.
+  * Documentación para FUNCTION 'F_GET_FECHA_CRUCE_PAGO'.
   *
-  * Funci�n que obtiene la fecha de cruce del pago usando el id de la cabecera o el id del detalle del pago
+  * Función que obtiene la fecha de cruce del pago usando el id de la cabecera o el id del detalle del pago
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 12-01-2017
@@ -381,9 +382,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para el procedure 'P_VALIDADOR_DOCUMENTOS'.
+  * Documentación para el procedure 'P_VALIDADOR_DOCUMENTOS'.
   *
-  * Procedimiento que verifica si el c�lculo de impuestos de un documento debe ser regularizado a nivel de cabecera puesto que al redondear los
+  * Procedimiento que verifica si el cálculo de impuestos de un documento debe ser regularizado a nivel de cabecera puesto que al redondear los
   * impuestos queda una diferencia que se debe considerar la cual descuadra el valor facturado.
   *
   * @author Edson Franco <efranco@telconet.ec>
@@ -401,9 +402,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para FUNCTION 'F_GET_FECHA_HISTORIAL'.
+  * Documentación para FUNCTION 'F_GET_FECHA_HISTORIAL'.
   *
-  * Funci�n que obtiene la fecha del historial que se desea buscar
+  * Función que obtiene la fecha del historial que se desea buscar
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 10-01-2017
@@ -412,12 +413,12 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_IdDocumento     IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  (Id del documento del cual se va a obtener la fecha
   *                                                                                               del historial)
   * @param Fv_EstadoDocumento IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ESTADO_IMPRESION_FACT%TYPE  (Estado del documento a buscar)
-  * @param Fv_FiltroBusqueda  IN  VARCHAR2  (Indica la fecha que se desea buscar, es decir si es la m�xima fecha del historial 'MAX', o la m�nima
-  *                                          fecha 'MIN', o si se desea la fecha m�xima con motivo 'MAX_MOTIVO' o minima con motivo 'MIN_MOTIVO')
+  * @param Fv_FiltroBusqueda  IN  VARCHAR2  (Indica la fecha que se desea buscar, es decir si es la máxima fecha del historial 'MAX', o la mínima
+  *                                          fecha 'MIN', o si se desea la fecha máxima con motivo 'MAX_MOTIVO' o minima con motivo 'MIN_MOTIVO')
   *
   * @return DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.FE_CREACION%TYPE
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line,
+  * Se reemplaza la inserción del error por dbms_output.put_line,
   * para evitar error ORA-14551: cannot perform a DML operation inside a query.
   *
   * @author Hector Ortega <haortega@telconet.ec>
@@ -431,17 +432,17 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para FUNCTION 'F_GET_EMPRESA_ELECTRONICAS'.
+  * Documentación para FUNCTION 'F_GET_EMPRESA_ELECTRONICAS'.
   *
-  * Funci�n que obtiene las empresas que usan documentos electronicos
+  * Función que obtiene las empresas que usan documentos electronicos
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 01-12-2016
   *
   * PARAMETROS:
   * @param Fv_Estado              IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.ESTADO%TYPE  (Estado 'Activo' de las empresas que se desea buscar)
-  * @param Fv_FacturaElectronica  IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.FACTURA_ELECTRONICO%TYPE  (Par�metro que indica si la empresa usa documentos
-  *                                                                                              electr�nicos)
+  * @param Fv_FacturaElectronica  IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.FACTURA_ELECTRONICO%TYPE  (Parámetro que indica si la empresa usa documentos
+  *                                                                                              electrónicos)
   *
   * @return Lr_AdmiNumeracion
   */
@@ -452,24 +453,24 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para FUNCTION 'F_GET_ADMI_NUMERACION'.
+  * Documentación para FUNCTION 'F_GET_ADMI_NUMERACION'.
   *
-  * Funci�n que obtiene la numeraci�n respectiva con la cual se numerar�n los documentos que ser�n enviados al SRI
+  * Función que obtiene la numeración respectiva con la cual se numerarán los documentos que serán enviados al SRI
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 01-12-2016
   *
   * PARAMETROS:
-  * @param Fv_EstadoActivo          IN  DB_COMERCIAL.ADMI_NUMERACION.ESTADO%TYPE  (Estado 'Activo' de la numeraci�n a buscar)
-  * @param Fv_CodEmpresa            IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa a regularizar)
-  * @param Fv_IntIdOficina          IN  DB_COMERCIAL.ADMI_NUMERACION.OFICINA_ID%TYPE  (Oficina a la que pertenece la numeraci�n)
-  * @param Fv_NumeracionUno         IN  DB_COMERCIAL.ADMI_NUMERACION.NUMERACION_UNO%TYPE  (Primer secuencial de la numeraci�n a buscar)
-  * @param Fv_NumeracionDos         IN  DB_COMERCIAL.ADMI_NUMERACION.NUMERACION_DOS%TYPE  (Segundo secuencial de la numeraci�n a buscar)
-  * @param Fv_CodigoNumeracion      IN  DB_COMERCIAL.ADMI_NUMERACION.CODIGO%TYPE  (C�digo de la numeraci�n a buscar)
-  * @param Fv_EsOficinaFacturacion  IN  DB_COMERCIAL.INFO_OFICINA_GRUPO.ES_OFICINA_FACTURACION%TYPE  (Par�metro que indica si es oficina de
-  *                                                                                                   facturaci�n)
-  * @param Fv_EsMatriz              IN  DB_COMERCIAL.INFO_OFICINA_GRUPO.ES_MATRIZ%TYPE  (Par�metro que indica si la oficina es MATRIZ)
-  * @param Fv_PrefijoEmpresa        IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  (Par�metro que indica el prefijo de la empresa)
+  * @param Fv_EstadoActivo          IN  DB_COMERCIAL.ADMI_NUMERACION.ESTADO%TYPE  (Estado 'Activo' de la numeración a buscar)
+  * @param Fv_CodEmpresa            IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa a regularizar)
+  * @param Fv_IntIdOficina          IN  DB_COMERCIAL.ADMI_NUMERACION.OFICINA_ID%TYPE  (Oficina a la que pertenece la numeración)
+  * @param Fv_NumeracionUno         IN  DB_COMERCIAL.ADMI_NUMERACION.NUMERACION_UNO%TYPE  (Primer secuencial de la numeración a buscar)
+  * @param Fv_NumeracionDos         IN  DB_COMERCIAL.ADMI_NUMERACION.NUMERACION_DOS%TYPE  (Segundo secuencial de la numeración a buscar)
+  * @param Fv_CodigoNumeracion      IN  DB_COMERCIAL.ADMI_NUMERACION.CODIGO%TYPE  (Código de la numeración a buscar)
+  * @param Fv_EsOficinaFacturacion  IN  DB_COMERCIAL.INFO_OFICINA_GRUPO.ES_OFICINA_FACTURACION%TYPE  (Parámetro que indica si es oficina de
+  *                                                                                                   facturación)
+  * @param Fv_EsMatriz              IN  DB_COMERCIAL.INFO_OFICINA_GRUPO.ES_MATRIZ%TYPE  (Parámetro que indica si la oficina es MATRIZ)
+  * @param Fv_PrefijoEmpresa        IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE  (Parámetro que indica el prefijo de la empresa)
   *
   * @return Lr_AdmiNumeracion
   */
@@ -487,18 +488,18 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para FUNCTION 'F_GET_DOCUMENTOS_REPETIDOS'.
+  * Documentación para FUNCTION 'F_GET_DOCUMENTOS_REPETIDOS'.
   *
-  * Funci�n que obtiene los documentos que tienen el secuencial repetido y que van a ser regularizados
+  * Función que obtiene los documentos que tienen el secuencial repetido y que van a ser regularizados
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 25-11-2016
   *
   * PARAMETROS:
-  * @param Fv_CodEmpresa         IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa a regularizar)
-  * @param Fv_EstadoActivo       IN  DB_GENERAL.ADMI_PARAMETRO_DET.ESTADO%TYPE  (Estado 'Activo' del par�metro)
-  * @param Fv_NombreParametro    IN  DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE  (Nombre del par�metro cabecera)
-  * @param Fv_DescripcionDetalle IN  DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE  (Descripci�n de los detalles)
+  * @param Fv_CodEmpresa         IN  DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa a regularizar)
+  * @param Fv_EstadoActivo       IN  DB_GENERAL.ADMI_PARAMETRO_DET.ESTADO%TYPE  (Estado 'Activo' del parámetro)
+  * @param Fv_NombreParametro    IN  DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE  (Nombre del parámetro cabecera)
+  * @param Fv_DescripcionDetalle IN  DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE  (Descripción de los detalles)
   * @param Fv_ValorDocumentos    IN  DB_GENERAL.ADMI_PARAMETRO_DET.VALOR2%TYPE  (Filtro para obtener los detalles respectivos)
   * @param Fv_NumeroFacturaSri   IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.NUMERO_FACTURA_SRI%TYPE  (Numero de factura SRI a buscar)
   * @param Fn_IdDocumento        IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  (Id del documento que se requiere buscar)
@@ -516,10 +517,10 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
     RETURN C_DocumentosRepetidos;
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_DESCARTA_PAGO_LINEA'.
+  * Documentación para PROCEDURE 'P_DESCARTA_PAGO_LINEA'.
   *
   * Procedure que regulariza los pagos en linea que se quedan en estado Pendiente, los mismos
-  * para darse de baja deben tener un tiempo m�nimo de 24 horas.
+  * para darse de baja deben tener un tiempo mínimo de 24 horas.
 
   * COSTO QUERY del Cursor C_GetPagoPendiente: 836
   *
@@ -545,22 +546,22 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
     Pv_MessageError     OUT VARCHAR2);
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_SALDO_X_FACTURA_FECHA'.
+  * Documentación para PROCEDURE 'P_SALDO_X_FACTURA_FECHA'.
   *
   * Procedure que obtiene el saldo de factura hasta la fecha que se desea consultar
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 21-10-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 22-11-2016 - Se corrige el cursor 'C_GetSumTotalNotasCredito' para que considere en la sumatoria a las Notas de Cr�dito No
-  *                           Electr�nicas, para ello se verifica que el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_EMISION' se encuentre
+  * @version 1.1 22-11-2016 - Se corrige el cursor 'C_GetSumTotalNotasCredito' para que considere en la sumatoria a las Notas de Crédito No
+  *                           Electrónicas, para ello se verifica que el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_EMISION' se encuentre
   *                           dentro del rango de fecha solicitado por el usuario.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 10-01-2017 - Se modifica casteo del par�metro 'Pv_FeConsultaHasta' cuando la variable tiene un valor espec�fico para obtener una
-  *                           mejor interpretaci�n de los ambientes que invocan la funci�n. El casteo realizado es:
+  * @version 1.2 10-01-2017 - Se modifica casteo del parámetro 'Pv_FeConsultaHasta' cuando la variable tiene un valor específico para obtener una
+  *                           mejor interpretación de los ambientes que invocan la función. El casteo realizado es:
   *                           'CAST(TO_DATE(Pv_FeConsultaHasta, 'DD-MM-YYYY') AS TIMESTAMP WITH LOCAL TIME ZONE)'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 15-09-2017 - Se agrega el par�metro 'Pv_TipoConsulta' para obtener el tipo de consulta o valor a retornar del procedimiento
+  * @version 1.3 15-09-2017 - Se agrega el parámetro 'Pv_TipoConsulta' para obtener el tipo de consulta o valor a retornar del procedimiento
   *
   * PARAMETROS:
   * @param Pn_IdDocumento      IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  (Id del documento que se desea consultar)
@@ -571,7 +572,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Pv_MessageError     OUT VARCHAR2  (Mensaje de error en caso de existir)
   *
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.4 11-09-2018 - Se redondea a dos decimales los valores para el c�lculo del Saldo,obteniendo un saldo redondeado con dos decimales.
+  * @version 1.4 11-09-2018 - Se redondea a dos decimales los valores para el cálculo del Saldo,obteniendo un saldo redondeado con dos decimales.
 
   */
   PROCEDURE P_SALDO_X_FACTURA_FECHA(
@@ -584,9 +585,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para la funci�n 'F_GET_SECUENCIAL_DOCUMENTO'.
+  * Documentación para la función 'F_GET_SECUENCIAL_DOCUMENTO'.
   *
-  * Funci�n que obtiene los secuenciales de un documento electr�nico desglosandolo de su n�mero de documento (CAMPO: NUMERO_FACTURA_SRI)
+  * Función que obtiene los secuenciales de un documento electrónico desglosandolo de su número de documento (CAMPO: NUMERO_FACTURA_SRI)
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 31-01-2017
@@ -595,7 +596,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_IdDocumento       IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  (Id del documento)
   * @param Fv_NumeroFacturaSri  IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.NUMERO_FACTURA_SRI%TYPE  (Numero de factura SRI)
   * @param Fv_TipoSecuencial    IN  VARCHAR2  (Tipo de secuencial requerido)
-  * @return VARCHAR2  (Secuencial obtenido de la funci�n)
+  * @return VARCHAR2  (Secuencial obtenido de la función)
   */
   FUNCTION F_GET_SECUENCIAL_DOCUMENTO(
       Fn_IdDocumento      IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -605,9 +606,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentacion para la funci�n F_GET_FORMA_PAGO_CLIENTE
+  * Documentacion para la función F_GET_FORMA_PAGO_CLIENTE
   *
-  * La funci�n retorna un VARCHAR2 con la letra 'S' si el cliente debe ser compensado y 'N' o NULL si fuese el caso contrario
+  * La función retorna un VARCHAR2 con la letra 'S' si el cliente debe ser compensado y 'N' o NULL si fuese el caso contrario
   *
   * COSTO QUERY del Cursor C_GetFormaPagoPunto: 7
   * COSTO QUERY del Cursor C_GetFormaPagoContrato: 3
@@ -617,7 +618,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Pn_IdPunto               IN   DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE  Id del punto del cliente
   * @param Pn_IdFormaPago           OUT  DB_FINANCIERO.ADMI_FORMA_PAGO.ID_FORMA_PAGO%TYPE Id de la forma de pago
   * @param Pn_CodigoFormaPago       OUT  DB_FINANCIERO.ADMI_FORMA_PAGO.CODIGO_FORMA_PAGO%TYPE  Codigo de la forma de pago
-  * @param Pv_DescripcionFormaPago  OUT  DB_FINANCIERO.ADMI_FORMA_PAGO.DESCRIPCION_FORMA_PAGO%TYPE  Descripci�n de la forma de pago
+  * @param Pv_DescripcionFormaPago  OUT  DB_FINANCIERO.ADMI_FORMA_PAGO.DESCRIPCION_FORMA_PAGO%TYPE  Descripción de la forma de pago
   * @param Pn_CodigoSri             OUT  DB_FINANCIERO.ADMI_FORMA_PAGO.CODIGO_SRI%TYPE   Codigo del SRI
   * @param Pv_TipoFormaPago         OUT  DB_FINANCIERO.ADMI_FORMA_PAGO.TIPO_FORMA_PAGO%TYPE  Tipo de la forma de pago
   * @param Pv_FormaPagoObtenidaPor  OUT  VARCHAR2  Retorna un texto indicando por cual filtro fue obtenida la forma de pago, es decir 'CONTRATO',
@@ -637,9 +638,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
       Pv_FormaPagoObtenidaPor OUT VARCHAR2 );
   --
   /**
-  * Documentacion para la funci�n F_VALIDA_CLIENTE_COMPENSADO
+  * Documentacion para la función F_VALIDA_CLIENTE_COMPENSADO
   *
-  * La funci�n retorna un VARCHAR2 con la letra 'S' si el cliente debe ser compensado y 'N' o NULL si fuese el caso contrario
+  * La función retorna un VARCHAR2 con la letra 'S' si el cliente debe ser compensado y 'N' o NULL si fuese el caso contrario
   *
   * @param  Fn_IdPersonaRol DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL.ID_PERSONA_ROL%TYPE  Id del cliente de la tabla INFO_PERSONA_EMPRESA_ROL
   * @param  Fn_OficinaId  DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE  Id de la oficina a la cual pertenece el cliente
@@ -661,17 +662,17 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentacion para la funci�n F_GET_TABLA_NAF_PLANTILLA_CAB
+  * Documentacion para la función F_GET_TABLA_NAF_PLANTILLA_CAB
   *
-  * La funci�n retorna el nombre de la tabla cabecera a la cual es migrado la informaci�n al NAF
+  * La función retorna el nombre de la tabla cabecera a la cual es migrado la información al NAF
   *
-  * @param Fv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (C�digo de la empresa)
+  * @param Fv_EmpresaCod          IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE  (Código de la empresa)
   * @param Fn_FormaPagoId         IN DB_GENERAL.ADMI_FORMA_PAGO.ID_FORMA_PAGO%TYPE  (Id de la forma de pago)
   * @param Fv_CodigoTipoDocumento IN DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE  (Codigo del tipo de documento)
   * @param Fv_TipoProceso         IN DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.TIPO_PROCESO%TYPE  (Tipo de proceso que se realiza)
   * @param Fv_Estado              IN DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.ESTADO%TYPE  (Estado de la plantilla contable cabecera)
   *
-  * @return DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.TABLA_CABECERA%TYPE  (Nombre de la tabla cabecera a la cual fue migrada la informaci�n al NAF)
+  * @return DB_FINANCIERO.ADMI_PLANTILLA_CONTABLE_CAB.TABLA_CABECERA%TYPE  (Nombre de la tabla cabecera a la cual fue migrada la información al NAF)
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 03-02-2017
@@ -686,28 +687,28 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
   /**
-  * Documentaci�n para PROCEDURE 'P_DOCUMENTOS_RELACIONADOS'.
+  * Documentación para PROCEDURE 'P_DOCUMENTOS_RELACIONADOS'.
   *
-  * Funci�n que obtiene los documentos relacionados como pagos, notas de cr�ditos y notas de d�bito
+  * Función que obtiene los documentos relacionados como pagos, notas de créditos y notas de débito
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 15-09-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 21-10-2016 - Se agrega par�metro 'Pv_FeConsultaHasta' para consultar los documentos relacionados al documento hasta la fecha
+  * @version 1.1 21-10-2016 - Se agrega parámetro 'Pv_FeConsultaHasta' para consultar los documentos relacionados al documento hasta la fecha
   *                           enviada.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 18-11-2016 - Se valida que al traer las Notas de Cr�dito y Notas de Cr�dito Internas verifique con la fecha de consulta enviado en
-  *                           el par�metro 'Pv_FeConsultaHasta', lo siguiente:
+  * @version 1.2 18-11-2016 - Se valida que al traer las Notas de Crédito y Notas de Crédito Internas verifique con la fecha de consulta enviado en
+  *                           el parámetro 'Pv_FeConsultaHasta', lo siguiente:
   *                           - Que se presente la NC si el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_AUTORIZACION' se encuentra dentro
   *                             del rango de fecha enviado.
   *                           - Que se presente la NC o NCI si el campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_AUTORIZACION' es 'NULL' y el
   *                             campo 'DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.FE_EMISION' se encuentra dentro del rango de fecha enviado.
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.3 20-12-2016 - Se modifica casteo del par�metro 'Pv_FeConsultaHasta' para obtener una mejor interpretaci�n de los ambientes que
-  *                           invocan la funci�n. El casteo realizado es: 'CAST(Pv_FeConsultaHasta AS TIMESTAMP WITH LOCAL TIME ZONE)'
+  * @version 1.3 20-12-2016 - Se modifica casteo del parámetro 'Pv_FeConsultaHasta' para obtener una mejor interpretación de los ambientes que
+  *                           invocan la función. El casteo realizado es: 'CAST(Pv_FeConsultaHasta AS TIMESTAMP WITH LOCAL TIME ZONE)'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.4 10-01-2017 - Se modifica casteo del par�metro 'Pv_FeConsultaHasta' cuando la variable tiene un valor espec�fico para obtener una
-  *                           mejor interpretaci�n de los ambientes que invocan la funci�n. El casteo realizado es:
+  * @version 1.4 10-01-2017 - Se modifica casteo del parámetro 'Pv_FeConsultaHasta' cuando la variable tiene un valor específico para obtener una
+  *                           mejor interpretación de los ambientes que invocan la función. El casteo realizado es:
   *                           'CAST(TO_DATE(Pv_FeConsultaHasta, 'DD-MM-YYYY') AS TIMESTAMP WITH LOCAL TIME ZONE)'
   *
   * PARAMETROS:
@@ -725,7 +726,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   /**
   * Documentacion para la funcion F_GET_MAX_DOCUMENTO
   *
-  * La funcion retorna la m�xima factura dependiendo del puntoFacturacionId, puntoId y productoId del servicio, y el filtro que se env�e a consultar
+  * La funcion retorna la máxima factura dependiendo del puntoFacturacionId, puntoId y productoId del servicio, y el filtro que se envíe a consultar
   *
   * @param Fn_PuntoFacturacionId    IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.PUNTO_ID%TYPE
   * @param Fn_PuntoId               IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.PUNTO_ID%TYPE
@@ -736,9 +737,9 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 17-08-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 12-10-2016 - Se cambia la funci�n para que retorne el primer registro de la consulta obtenida como tabla temporal en los cursores
+  * @version 1.1 12-10-2016 - Se cambia la función para que retorne el primer registro de la consulta obtenida como tabla temporal en los cursores
   *                           'C_MaxDocumentoByMesAnioConsumo' y 'C_MaxDocumentoByRangoConsumo'
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.2 10-05-2018 - Se agrega Verificacion de que no exista NC o NCI Aplicada sobre la Factura.
   */
   FUNCTION F_GET_MAX_DOCUMENTO(
@@ -779,20 +780,20 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   *
   * @Version 1.5 10-02-2017  Ricardo Coello Quezada <rcoello@telconet.ec>
   * @Code : 5
-  * Se corrige implementaci�n de los d�as permisibles ya que se valido �nicamente cuando el mes es "12"
-  * por el tema del cambio del a�o y no se valido para cuando sea diferente de "12"
+  * Se corrige implementación de los días permisibles ya que se valido únicamente cuando el mes es "12"
+  * por el tema del cambio del año y no se valido para cuando sea diferente de "12"
   *
   * @Version 1.6 02-03-2017  Ricardo Coello Quezada <rcoello@telconet.ec>
   * @Code : 6
-  * Se corrige implementaci�n de los d�as permisibles, se realiza nueva logica para permitir anular pagos de meses atras.
+  * Se corrige implementación de los días permisibles, se realiza nueva logica para permitir anular pagos de meses atras.
   * * Costo del query Cursor: C_GetInfoPagosCabDet 15
   *
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.7 10-03-2017 - Se parametriza para TN los d�as permitidos para poder anular un pago.
+  * @version 1.7 10-03-2017 - Se parametriza para TN los días permitidos para poder anular un pago.
   *
   * @author Ricardo Coello Quezada <rcoello@telconet.ec>
   * @version 1.8 15-09-2017 - Se agrega validacion para las empresas que CONTABILIZAN, en el caso de contabilizar se anula
-  * el pago el mismo dia que se cre�.
+  * el pago el mismo dia que se creó.
   *
   * Costo del query Cursor: C_GetPagosMD: 15, C_GetPagosTN: 15, Lc_GetContabilizacionEmpresa: 5,
   *
@@ -812,7 +813,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   /**
 * Documentacion para la funcion GET_VALOR_RETENCIONBYDOC
 *
-* La funci�n retorna el valor retenido de la fuente e iva por documento.
+* La función retorna el valor retenido de la fuente e iva por documento.
 *
 * @param Pn_IdDocumento               IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE
 * @param Pv_TipoRetencion             IN VARCHAR2
@@ -846,7 +847,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 * @version 1.1 12-12-2016 - Se actualiza filtro de busqueda FE_EMISION a FE_AUTORIZACION.
 * Costo del query del cursor C_GetNumEstablecimientos 356
 *
-* @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+* @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
 * @version 1.2 28-02-2018 - Se modifica para que en los parametros de Pv_FechaInicio y Pv_FechaFin se consulte por FeEmision
 * de la Factura y ya no por FeAutorizacion.
 */
@@ -880,7 +881,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 *
 * Costo del cursor:  C_GetVentasEstab 368
 *
-* @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+* @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
 * @version 1.3 28-02-2018 - Se modifica para que en los parametros de Pv_FechaInicio y Pv_FechaFin se consulte por FeEmision
 * de la Factura y ya no por FeAutorizacion.
 */
@@ -907,7 +908,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 *                           Se agrega filtro Pais de origen del ATS, obtener total de ventas 'Ecuador'.
 * Costo del query del cursor GetTotalVentas: 635
 *
-* @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+* @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
 * @version 1.2 28-02-2018 - Se modifica para que en los parametros de Pv_FechaInicio y Pv_FechaFin se consulte por FeEmision
 * de la Factura y ya no por FeAutorizacion.
 */
@@ -955,7 +956,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 *                           a FE_AUTORIZACION.
 * Costo del query del cursor: C_GetDocsAnulados 232
 *
-* @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+* @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
 * @version 1.2 28-02-2018 - Se modifica para que en los parametros de Pv_FechaInicio y Pv_FechaFin se consulte por FeEmision
 * de la Factura y ya no por FeAutorizacion.
 */
@@ -988,7 +989,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 *                           Se actualiza procedimientos en general, se cambia filtro de busqueda de FE_EMISION a
 *                           FE_AUTORIZACION, se agrega filtro de busqueda por pais de origen del ATS Ecuador.
 *
-* @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+* @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
 * @version 1.4 28-02-2018 - Se modifica para que en los parametros de Pv_FechaInicio y Pv_FechaFin se consulte por FeEmision
 * de la Factura y ya no por FeAutorizacion.
 *
@@ -1184,7 +1185,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 
 
   /**
-  * Documentaci�n para F_GET_BANCO
+  * Documentación para F_GET_BANCO
   * Retorna descripcion del banco.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1193,7 +1194,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_BancoCtaContableId NUMBER Recibe el ID de la cuenta contable asociada al banco
   * @return VARCHAR2
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line,
+  * Se reemplaza la inserción del error por dbms_output.put_line,
   * para evitar error ORA-14551: cannot perform a DML operation inside a query.
   *
   * @author Hector Ortega <haortega@telconet.ec>
@@ -1207,7 +1208,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 
 
   /**
-  * Documentaci�n para F_GET_BANCO_EMPRESA
+  * Documentación para F_GET_BANCO_EMPRESA
 
   * Retorna descripcion y la cuenta contable del banco.
   *
@@ -1217,15 +1218,15 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_BancoCtaContableId IN DB_FINANCIERO.INFO_PAGO_DET.BANCO_CTA_CONTABLE_ID%TYPE  (Recibe el Id del banco cuenta contable asociada)
   * @param Fn_CuentaContableId   IN DB_FINANCIERO.INFO_PAGO_DET.CUENTA_CONTABLE_ID%TYPE  (Recibe el Id de la cuenta contable)
   *
-  * @return DB_FINANCIERO.ADMI_CUENTA_CONTABLE.DESCRIPCION%TYPE  (Descripci�n de la cuenta contable)
+  * @return DB_FINANCIERO.ADMI_CUENTA_CONTABLE.DESCRIPCION%TYPE  (Descripción de la cuenta contable)
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line, para evitar error ORA-14551: cannot perform a DML operation inside a query.
+  * Se reemplaza la inserción del error por dbms_output.put_line, para evitar error ORA-14551: cannot perform a DML operation inside a query.
   * @author Hector Ortega <haortega@telconet.ec>
   * @version 1.1 20-01-2017
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 03-02-2017 - Se agrega el par�metro 'Fn_CuentaContableId' a la funci�n para buscar la descripci�n de la cuenta contable en la tabla
-  *                          'DB_FINANCIERO.ADMI_CUENTA_CONTABLE'. Adicional se cambia la b�squeda del par�metro 'Fn_BancoCtaContableId' para que
-  *                          consulte la descripci�n del banco cuenta contable en la tabla 'DB_GENERAL.ADMI_BANCO_CTA_CONTABLE'.
+  * @version 1.2 03-02-2017 - Se agrega el parámetro 'Fn_CuentaContableId' a la función para buscar la descripción de la cuenta contable en la tabla
+  *                          'DB_FINANCIERO.ADMI_CUENTA_CONTABLE'. Adicional se cambia la búsqueda del parámetro 'Fn_BancoCtaContableId' para que
+  *                          consulte la descripción del banco cuenta contable en la tabla 'DB_GENERAL.ADMI_BANCO_CTA_CONTABLE'.
   */
   FUNCTION F_GET_BANCO_EMPRESA(
       Fn_BancoCtaContableId IN DB_FINANCIERO.INFO_PAGO_DET.BANCO_CTA_CONTABLE_ID%TYPE,
@@ -1233,7 +1234,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
     RETURN DB_FINANCIERO.ADMI_CUENTA_CONTABLE.DESCRIPCION%TYPE;
 
   /**
-  * Documentaci�n para F_GET_BANCO_EMPRESA_DEP
+  * Documentación para F_GET_BANCO_EMPRESA_DEP
   * Retorna descripcion y la cuenta contable del banco.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1242,7 +1243,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_DepositoCtaContableId Recibe el ID de la cuenta contable asociada a un deposito
   * @return VARCHAR2
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line,
+  * Se reemplaza la inserción del error por dbms_output.put_line,
   * para evitar error ORA-14551: cannot perform a DML operation inside a query.
   *
   * @author Hector Ortega <haortega@telconet.ec>
@@ -1255,7 +1256,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 
 
   /**
-  * Documentaci�n para F_GET_BANCO_EMPRESA_DEP_NAF
+  * Documentación para F_GET_BANCO_EMPRESA_DEP_NAF
   * Retorna descripcion y la cuenta contable del banco.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1264,7 +1265,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_DepositoBancoNafId Recibe el ID de la cuenta contable asociada a un deposito bco naf
   * @return VARCHAR2
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line,
+  * Se reemplaza la inserción del error por dbms_output.put_line,
   * para evitar error ORA-14551: cannot perform a DML operation inside a query.
   *
   * @author Hector Ortega <haortega@telconet.ec>
@@ -1275,7 +1276,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN DB_GENERAL.ADMI_BANCO_CTA_CONTABLE.DESCRIPCION%TYPE;
 
   /**
-   * Documentaci�n para GET_INFORMACION_CARACTERISTICA
+   * Documentación para GET_INFORMACION_CARACTERISTICA
    * Retorna el valor de la caracteristica asociada al documento
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1285,7 +1286,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fv_Caracteristica Recibe la descripcion de la caracteristica
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1297,8 +1298,8 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN DB_FINANCIERO.INFO_DOCUMENTO_CARACTERISTICA.VALOR%TYPE;
 
   /**
-   * Documentaci�n para F_GET_DOCUMENTO_APLICA
-   * Retorna el n�mero de documento al que aplica una NC
+   * Documentación para F_GET_DOCUMENTO_APLICA
+   * Retorna el número de documento al que aplica una NC
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
    * @version 1.0 12-09.2016
@@ -1306,14 +1307,14 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fn_ReferenciaDocumentoId NUMBER Recibe el ID del documento al cual aplica
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
    * @version 1.1 20-01-2017
    *
-   * @author Edgar Holgu�n <eholguin@telconet.ec>
-   * @version 1.2 29-06-2017 Se realiza correcci�n para que consulte por el campo ID_DOCUMENTO
+   * @author Edgar Holguín <eholguin@telconet.ec>
+   * @version 1.2 29-06-2017 Se realiza corrección para que consulte por el campo ID_DOCUMENTO
    */
   FUNCTION F_GET_DOCUMENTO_APLICA(
     Fn_ReferenciaDocumentoId NUMBER)
@@ -1321,7 +1322,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 
 
   /**
-   * Documentaci�n para F_GET_MOTIVO_DOCUMENTO
+   * Documentación para F_GET_MOTIVO_DOCUMENTO
    * Retorna el motivo asociado al documento
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1330,7 +1331,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fn_IdDocumento NUMBER Recibe el ID del documento
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1341,8 +1342,8 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para F_GET_PAGOS_APLICA_ND
-   * Retorna el n�mero de pago al que aplica una ND
+   * Documentación para F_GET_PAGOS_APLICA_ND
+   * Retorna el número de pago al que aplica una ND
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
    * @version 1.0 12-09.2016
@@ -1350,7 +1351,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fn_IdDocumento NUMBER Recibe el ID del documento (Nota de debito)
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1362,7 +1363,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 
 
   /**
-   * Documentaci�n para F_GET_VALOR_RETENCIONES
+   * Documentación para F_GET_VALOR_RETENCIONES
    * Retorna Devuelve la suma de valores de pagos que sean forma de pago Retencion 8% o 2% y esten en estado Cerrado y Activo
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1376,12 +1377,12 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fv_DescripcionFormaPago VARCHAR2 Descripcion de la forma de pago de la cual se quiere obtener la suma.
    * @return INFO_PAGO_DET.VALOR_PAGO%TYPE
    *
-   * Se agrega parametros de codigo y descripci�n de forma de pago
-   * se convierte el query de est�tico a din�mico.
+   * Se agrega parametros de codigo y descripción de forma de pago
+   * se convierte el query de estático a dinámico.
    * @author Hector Ortega <haortega@telconet.ec>
    * @version 1.2 29-12-2016 .
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1394,7 +1395,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN DB_FINANCIERO.INFO_PAGO_DET.VALOR_PAGO%TYPE;
 
   /**
-   * Documentaci�n para F_GET_COMENTARIO_ND
+   * Documentación para F_GET_COMENTARIO_ND
    * Retorna comentario de pago(s) al que aplica una ND
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1403,7 +1404,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fn_IdDocumento NUMBER Recibe el ID del documento (Nota de debito)
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1415,7 +1416,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN VARCHAR2;
 
   /**
-   * Documentaci�n para F_GET_VALOR_IMPUESTO
+   * Documentación para F_GET_VALOR_IMPUESTO
    * Retorna el valor del impuesto asociada al documento y al tipo de documento.
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1425,7 +1426,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fv_TipoImpuesto Recibe el codigo de tipo de impuesto
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1437,14 +1438,14 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_IMP.VALOR_IMPUESTO%TYPE;
 
   /**
-   * Documentaci�n para F_GET_DESCRIPCION_FACTURA
+   * Documentación para F_GET_DESCRIPCION_FACTURA
    * Retorna la observacion asociada al historial activo del  documento .
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
    * @version 1.0 12-09-2016
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
-   * @version 1.1 24-10-2016 -Se agrega par�metro de entrada Fv_UsrCreacion, se elimina discriminaci�n por estado Activo.
+   * @version 1.1 24-10-2016 -Se agrega parámetro de entrada Fv_UsrCreacion, se elimina discriminación por estado Activo.
    *
    * @param Fn_IdDocumento IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE Recibe el ID del documento
    * @return VARCHAR2
@@ -1458,7 +1459,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
 
 
   /**
-   * Documentaci�n para F_GET_FORMA_PAGO_CONTRATO
+   * Documentación para F_GET_FORMA_PAGO_CONTRATO
    * Retorna la forma de pago asociada al contrato
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1467,7 +1468,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fn_IdPersonaEmpresaRol NUMBER Recibe el ID persona empresa rol
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1479,7 +1480,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN DB_GENERAL.ADMI_FORMA_PAGO.DESCRIPCION_FORMA_PAGO%TYPE;
 
   /**
-   * Documentaci�n para F_GET_FECHA_PAGOS_APLICA_ND
+   * Documentación para F_GET_FECHA_PAGOS_APLICA_ND
    * Retorna fecha del pago al que aplica una ND
    *
    * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1488,7 +1489,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
    * @param Fn_IdDocumento NUMBER Recibe el ID del documento (Nota de debito)
    * @return VARCHAR2
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1499,7 +1500,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   RETURN VARCHAR2;
 
  /**
-  * Documentaci�n para F_GET_BANCO_TC
+  * Documentación para F_GET_BANCO_TC
   * Retorna descripcion del banco.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1508,7 +1509,7 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @param Fn_BancoTipoCtaId NUMBER Recibe el ID del tipo cuenta asociada al banco
   * @return VARCHAR2
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line,
+  * Se reemplaza la inserción del error por dbms_output.put_line,
   * para evitar error ORA-14551: cannot perform a DML operation inside a query.
   *
   * @author Hector Ortega <haortega@telconet.ec>
@@ -1533,18 +1534,18 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * Este procedimiento es recursivo debido a eso el uso de variables IN/OUT para acumular valores
   *
   * @param  Pn_IdDocumento     IN  DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  Recibe el id de la factura
-  * @param  Pv_FeConsultaHasta IN  VARCHAR2  Fecha hasta la cual se requiere consultar los detalles de las notas de d�bito
+  * @param  Pv_FeConsultaHasta IN  VARCHAR2  Fecha hasta la cual se requiere consultar los detalles de las notas de débito
   * @param  Ln_TotalPago       IN OUT NUMBER  Retorna el total acumulado de pagos
   * @param  Ln_TotalND         IN OUT NUMBER  Retorna el total acumulado de notas de debito
   * @param  Ln_TotalNC         IN OUT NUMBER  Retorna el total acumulado de notas de credito
   * @author Gina Villalba <gvillalba@telconet.ec>
   * @version 1.0 24-02-2016
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 15-09-2016 - Se modifica el m�todo para usar la funci�n 'P_DOCUMENTOS_RELACIONADOS' que est� dentro del package
+  * @version 1.1 15-09-2016 - Se modifica el método para usar la función 'P_DOCUMENTOS_RELACIONADOS' que está dentro del package
   *                           'DB_FINANCIERO.FNCK_CONSULTS'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 21-10-2016 - Se modifica l procedimiento para que reciba como par�metro la fecha hasta la cual se requiere consultar los detalles
-  *                           de la nota de d�bito
+  * @version 1.2 21-10-2016 - Se modifica l procedimiento para que reciba como parámetro la fecha hasta la cual se requiere consultar los detalles
+  *                           de la nota de débito
   */
   PROCEDURE P_DETALLE_NOTAS_DEBITO(
       Pn_IdDocumento     IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -1565,10 +1566,10 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   * @author Alexander Samaniego <awsamaniego@telconet.ec>
   * @version 1.0 09-01-2015                                                     Retorna un mensaje de error en caso de existir
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 21-10-2016 - Se agrega NULL como par�metro de 'FeConsultaHasta' a la funcion 'P_DETALLE_NOTAS_DEBITO' que es utilizada en este
+  * @version 1.1 21-10-2016 - Se agrega NULL como parámetro de 'FeConsultaHasta' a la funcion 'P_DETALLE_NOTAS_DEBITO' que es utilizada en este
   *                           procedimiento
   * @author Hector Lozano <hlozano@telconet.ec>
-  * @version 1.2 10-09-2018 - Se redondea a dos decimales los valores para el c�lculo del Saldo,obteniendo un saldo redondeado con dos decimales.
+  * @version 1.2 10-09-2018 - Se redondea a dos decimales los valores para el cálculo del Saldo,obteniendo un saldo redondeado con dos decimales.
   */
   PROCEDURE P_SALDO_X_FACTURA(
       Pn_IdDocumento  IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE,
@@ -1628,8 +1629,8 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
   --
   --
 /*
- * Documentaci�n para FUNCION 'F_GET_INFORMACION_PUNTO'.
- * Funcion que obtiene informaci�n del punto del cliente
+ * Documentación para FUNCION 'F_GET_INFORMACION_PUNTO'.
+ * Funcion que obtiene información del punto del cliente
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 14-03-2016
@@ -1639,11 +1640,11 @@ FUNCTION F_GET_HISTORIAL_PAGO_ANTICIPO(
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.2 02-09-2016 - Se agrega la columna de 'emailPtoPersona' que retorna todos los email de todos los puntos de una persona
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.4 26-07-2016 - Se cambia la forma de consultar la forma de pago, y se a�aden nuevas consultas que son: 'coordenadas', 'bancoTarjeta',
+ * @version 1.4 26-07-2016 - Se cambia la forma de consultar la forma de pago, y se añaden nuevas consultas que son: 'coordenadas', 'bancoTarjeta',
  *                           'tipoCuentaBancoTarjeta', 'retiroEquipo'
  *
- * @author Edgar Holgu�n <eholguin@telconet.ec>
- * @version 1.5 02-09-2019 - Se agrega columna CANCELACION VOLUNTARIA para indicar si cliente factur� por dicho rubro.
+ * @author Edgar Holguín <eholguin@telconet.ec>
+ * @version 1.5 02-09-2019 - Se agrega columna CANCELACION VOLUNTARIA para indicar si cliente facturó por dicho rubro.
  *
  * PARAMETROS:
  * @Param DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE          Fn_IdPersona     (id_persona del cliente)
@@ -1661,8 +1662,8 @@ RETURN VARCHAR2;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_NOMBRE_APELLIDOS_PERSONA'.
- * Funcion que obtiene informaci�n del nombre del cliente
+ * Documentación para FUNCION 'F_GET_NOMBRE_APELLIDOS_PERSONA'.
+ * Funcion que obtiene información del nombre del cliente
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 14-03-2016
@@ -1680,7 +1681,7 @@ RETURN VARCHAR2;
 --
 --
 /*
- * Documentaci�n para PROCEDURE 'P_GET_REPORTE_BURO'.
+ * Documentación para PROCEDURE 'P_GET_REPORTE_BURO'.
  * PROCEDURE que obtiene la informacion necesaria para el reporte de buro
  *
  * @author Edson Franco <efranco@telconet.ec>
@@ -1691,7 +1692,7 @@ RETURN VARCHAR2;
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.2 02-09-2016 - Se agrega la los puntos en estado 'In-Corte'
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.3 26-07-2016 - Se agregan nuevos campos que corresponden a: Coordenadas del punto, Direcci�n Cliente, Banco y Tipo de cuenta del cu�l
+ * @version 1.3 26-07-2016 - Se agregan nuevos campos que corresponden a: Coordenadas del punto, Dirección Cliente, Banco y Tipo de cuenta del cuál
  *                           se le debita al cliente en caso de que su forma de pago sea diferente de 'EFECTIVO', y finalmente se agrega el estado de
  *                           la solicitud de Retiro de Equipos
  *
@@ -1711,7 +1712,7 @@ PROCEDURE P_GET_REPORTE_BURO(
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_REEMPLAZAR_CARACTERES_ESP'.
+ * Documentación para FUNCION 'F_REEMPLAZAR_CARACTERES_ESP'.
  * Funcion que reemplaza caracteres especiales no permitidos de una cadena
  *
  * @author Edson Franco <efranco@telconet.ec>
@@ -1726,7 +1727,7 @@ RETURN VARCHAR2;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_INFO_EMPRESA'.
+ * Documentación para FUNCION 'F_GET_INFO_EMPRESA'.
  * Funcion que obtiene la informacion de la empresa
  *
  * @author Edson Franco <efranco@telconet.ec>
@@ -1734,7 +1735,7 @@ RETURN VARCHAR2;
  *
  * PARAMETROS:
  * @return VARCHAR2 Fv_CodEmpresa  (Codigo de la empresa a consultar)
- * @return VARCHAR2 Fv_Resultado   (Nombre de la empresa que est� realizando la consulta)
+ * @return VARCHAR2 Fv_Resultado   (Nombre de la empresa que está realizando la consulta)
  */
 FUNCTION F_GET_INFO_EMPRESA( Fv_CodEmpresa VARCHAR2 )
 RETURN VARCHAR2;
@@ -1744,12 +1745,12 @@ RETURN VARCHAR2;
   /**
   * Documentacion para el procedimiento P_GET_INFO_SERVICIO_A_FACTURAR
   *
-  * El procedimiento P_GET_INFO_SERVICIO_A_FACTURAR realiza la consulta de la informaci�n de un servicio que se va a facturar
+  * El procedimiento P_GET_INFO_SERVICIO_A_FACTURAR realiza la consulta de la información de un servicio que se va a facturar
   *
   * @param  Pn_IdServicio            IN  DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE         Recibe el IdServicio del cual se va a obtener la
-  *                                                                                          informaci�n para la factura
+  *                                                                                          información para la factura
   *
-  * @param  Pv_EmpresaCod            OUT DB_COMERCIAL.INFO_EMPRESA_ROL.EMPRESA_COD%TYPE      Retorna el c�digo de la empresa
+  * @param  Pv_EmpresaCod            OUT DB_COMERCIAL.INFO_EMPRESA_ROL.EMPRESA_COD%TYPE      Retorna el código de la empresa
   * @param  Pv_PrefijoEmpresa        OUT DB_COMERCIAL.INFO_EMPRESA_GRUPO.PREFIJO%TYPE        Retorna el prefijo de la empresa
   * @param  Pn_OficinaId             OUT DB_COMERCIAL.INFO_OFICINA_GRUPO.ID_OFICINA%TYPE     Retorna el id de la oficina a la cual pertenece el
   *                                                                                          cliente
@@ -1767,10 +1768,10 @@ RETURN VARCHAR2;
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 12-12-2015
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.1 21-09-2016 - Se agregan nuevos campos que debe retornar la funci�n los cuales son 'Pv_PrefijoEmpresa', 'Pv_IdPuntoFacturacion',
+  * @version 1.1 21-09-2016 - Se agregan nuevos campos que debe retornar la función los cuales son 'Pv_PrefijoEmpresa', 'Pv_IdPuntoFacturacion',
   *                           'Pv_Compensacion' y 'Pv_PagaIva'
   * @author Edson Franco <efranco@telconet.ec>
-  * @version 1.2 08-02-2017 - Se elimina la validaci�n por empresa al momento de consultar si el cliente debe compensar, para que MD tambi�n compense
+  * @version 1.2 08-02-2017 - Se elimina la validación por empresa al momento de consultar si el cliente debe compensar, para que MD también compense
   */
   PROCEDURE P_GET_INFO_SERVICIO_A_FACTURAR(
       Pn_IdServicio IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -1788,8 +1789,8 @@ RETURN VARCHAR2;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_INFORMACION_PUNTO_CLOB'.
- * Funcion que obtiene informaci�n del punto del cliente pero retorna un CLOB debido a la cantidad de informaci�n que se requiere retornar
+ * Documentación para FUNCION 'F_GET_INFORMACION_PUNTO_CLOB'.
+ * Funcion que obtiene información del punto del cliente pero retorna un CLOB debido a la cantidad de información que se requiere retornar
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 07-06-2016
@@ -1813,7 +1814,7 @@ RETURN CLOB;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_BUSCAR_CADENA_REPETIDAS'.
+ * Documentación para FUNCION 'F_BUSCAR_CADENA_REPETIDAS'.
  *
  * Funcion que busca cadenas repetidas
  *
@@ -1830,21 +1831,21 @@ RETURN VARCHAR2;
 --
 --
 /**
- * Documentaci�n para FUNCION 'P_GET_FECHAS_DIAS_PERIODO'.
+ * Documentación para FUNCION 'P_GET_FECHAS_DIAS_PERIODO'.
  *
- * Funci�n que obtiene las fechas inicial y final del periodo a facturar, y adicional retornan la cantidad de d�as entre las fechas obtenidas y la
- * fecha en que se activ� el servicio
+ * Función que obtiene las fechas inicial y final del periodo a facturar, y adicional retornan la cantidad de días entre las fechas obtenidas y la
+ * fecha en que se activó el servicio
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 19-07-2016
  *
  * PARAMETROS:
- * @param NUMBER    PIn_EmpresaCod            IN    (Contiene el c�digo de la empresa)
- * @param VARCHAR2  PIv_FechaActivacion       IN    (Contiene la fecha de activaci�n del servicio)
+ * @param NUMBER    PIn_EmpresaCod            IN    (Contiene el código de la empresa)
+ * @param VARCHAR2  PIv_FechaActivacion       IN    (Contiene la fecha de activación del servicio)
  * @param VARCHAR2  POd_FechaInicioPeriodo    OUT   (Cadena con la fecha inicial del periodo)
  * @param VARCHAR2  POd_FechaFinPeriodo       OUT   (Cadena con la fecha final del periodo)
- * @param NUMBER    POn_CantidadDiasTotalMes  OUT   (N�mero con la cantidad de d�as del periodo)
- * @param NUMBER    POn_CantidadDiasRestantes OUT   (N�mero con la cantidad de d�as a facturar)
+ * @param NUMBER    POn_CantidadDiasTotalMes  OUT   (Número con la cantidad de días del periodo)
+ * @param NUMBER    POn_CantidadDiasRestantes OUT   (Número con la cantidad de días a facturar)
  */
 PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
                                       PIv_FechaActivacion       IN  VARCHAR2,
@@ -1856,14 +1857,14 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
 
  /**
-  * Documentaci�n para F_GET_DESCRIPCION_FACTURA_DET
+  * Documentación para F_GET_DESCRIPCION_FACTURA_DET
   * Retorna la observacion asociada al primer detalle del  documento .
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 17-10-2016
   *
   * @param  Fn_IdDocumento IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE Recibe el ID del documento
-  * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.OBSERVACIONES_FACTURA_DETALLE%TYPE Retorna descripci�n del primer detalle de la factura.
+  * @return DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_DET.OBSERVACIONES_FACTURA_DETALLE%TYPE Retorna descripción del primer detalle de la factura.
   */
   FUNCTION F_GET_DESCRIPCION_FACTURA_DET(
       Fn_IdDocumento IN INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE)
@@ -1872,8 +1873,8 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
 
  /**
-  * Documentaci�n para F_GET_MOTIVO_POR_ESTADO
-  * Retorna el motivo de anulaci�n asociado al documento en estado Anulado
+  * Documentación para F_GET_MOTIVO_POR_ESTADO
+  * Retorna el motivo de anulación asociado al documento en estado Anulado
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 18-10-2016
@@ -1883,7 +1884,7 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   * @param  Fv_EstadoHistorial IN DB_FINANCIERO.INFO_DOCUMENTO_HISTORIAL.ESTADO%TYPE Recibe el estado del historial del documento
   * @return DB_COMERCIAL.ADMI_MOTIVO.NOMBRE_MOTIVO%TYPE  Retorna nombre del motivo.
   *
-  * Se reemplaza la inserci�n del error por dbms_output.put_line,
+  * Se reemplaza la inserción del error por dbms_output.put_line,
   * para evitar error ORA-14551: cannot perform a DML operation inside a query.
   *
   * @author Hector Ortega <haortega@telconet.ec>
@@ -1898,8 +1899,8 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
 
  /**
-  * Documentaci�n para F_GET_SUBTOTAL_IMPUESTO
-  * Retorna el subtotal con impuesto asociado al documento y al porcentaje de impuesto IVA enviados como par�metros.
+  * Documentación para F_GET_SUBTOTAL_IMPUESTO
+  * Retorna el subtotal con impuesto asociado al documento y al porcentaje de impuesto IVA enviados como parámetros.
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 18-10-2016
@@ -1911,7 +1912,7 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   * @param Fn_PorcentajeImpuesto DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_IMP.PORCENTAJE Recibe el porcentaje de impuesto a consultar
   * @return NUMBER
    *
-   * Se reemplaza la inserci�n del error por dbms_output.put_line,
+   * Se reemplaza la inserción del error por dbms_output.put_line,
    * para evitar error ORA-14551: cannot perform a DML operation inside a query.
    *
    * @author Hector Ortega <haortega@telconet.ec>
@@ -1943,21 +1944,21 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
   --
   /**
-  * Documentaci�n para FUNCTION 'F_GET_NUMERO_COMPROBANTE'.
+  * Documentación para FUNCTION 'F_GET_NUMERO_COMPROBANTE'.
   *
-  * Funci�n que obtiene el numero de comprobante que ayuda a realizar la cuadratura de los pagos y anticipos parte del usuario de cobranzas
+  * Función que obtiene el numero de comprobante que ayuda a realizar la cuadratura de los pagos y anticipos parte del usuario de cobranzas
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 01-12-2016
   *
   * PARAMETROS:
   * @param Fn_IdPagoDet       IN  DB_FINANCIERO.INFO_PAGO_DET.ID_PAGO_DET%TYPE  (Id del detalle del pago)
-  * @param Fv_CodigoFormaPago IN  DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_FORMA_PAGO%TYPE  (C�digo de la forma de pago)
-  * @param Fv_InsertarError   IN VARCHAR2 (Permite indicar si se desea o no insertar un error dentro de la funci�n)
+  * @param Fv_CodigoFormaPago IN  DB_GENERAL.ADMI_FORMA_PAGO.CODIGO_FORMA_PAGO%TYPE  (Código de la forma de pago)
+  * @param Fv_InsertarError   IN VARCHAR2 (Permite indicar si se desea o no insertar un error dentro de la función)
   * @return VARCHAR2
   *
-  * Se agrega el parametro FvInsertaError que permitir� ingresar o presentar el
-  * error generado dentro de la funci�n.
+  * Se agrega el parametro FvInsertaError que permitirá ingresar o presentar el
+  * error generado dentro de la función.
   *
   * @author Hector Ortega <haortega@telconet.ec>
   * @version 1.1 20-01-2017
@@ -1970,8 +1971,8 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
   --
   /**
-  * Documentaci�n para F_GET_SUBTOTAL_CERO_IMPUESTO
-  * Retorna el subtotal con cero impuesto asociado al documento enviado como par�metro.
+  * Documentación para F_GET_SUBTOTAL_CERO_IMPUESTO
+  * Retorna el subtotal con cero impuesto asociado al documento enviado como parámetro.
   * Costo: 11
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -1986,9 +1987,9 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
   --
   /*
-  * Documentaci�n para FUNCION 'F_ESTADO_PUNTO'.
+  * Documentación para FUNCION 'F_ESTADO_PUNTO'.
   *
-  * Funcion que permite obtener el estado del punto de facturaci�n
+  * Funcion que permite obtener el estado del punto de facturación
   *
   * PARAMETROS:
   * @param Fn_IdPuntoFacturacion IN  VARCHAR2  (Login del punto cliente)
@@ -2006,14 +2007,14 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
   --
   /*
-  * Documentaci�n para FUNCION 'F_GET_DESCRIPCION_PERIODO_FACT'.
+  * Documentación para FUNCION 'F_GET_DESCRIPCION_PERIODO_FACT'.
   *
-  * Funci�n que retorna la descripci�n del periodo facturado cuando la frecuencia de los servicios es mayor a 1
+  * Función que retorna la descripción del periodo facturado cuando la frecuencia de los servicios es mayor a 1
   *
   * PARAMETROS:
   * @param Fn_FrecuenciaProducto IN  DB_COMERCIAL.INFO_SERVICIO.FRECUENCIA_PRODUCTO%TYPE  Frecuencia del producto facturado.
   *
-  * @return VARCHAR2  Descripci�n del periodo facturado
+  * @return VARCHAR2  Descripción del periodo facturado
   *
   * @author Edson Franco <efranco@telconet.ec>
   * @version 1.0 15-03-2017
@@ -2025,7 +2026,7 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   --
 
   /**
-   * Funci�n que verifica si es posible ejecutar el job que crea comprobantes electr�nicos.
+   * Función que verifica si es posible ejecutar el job que crea comprobantes electrónicos.
    * Devuelve 1 si es posible ejecutar el job de comprobantes, 0 si no es posible ejecutar el job de comprobantes.
    * @param  Pv_NombreParametro IN  VARCHAR2 => Nombre del PARAMETRO a buscar.
    * @return NUMBER
@@ -2033,14 +2034,14 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 27-08-2018
-   * Versi�n inicial.
+   * Versión inicial.
    */
   FUNCTION F_GET_EJECUCION_COMPROBANTES(Pv_NombreParametro IN VARCHAR2 DEFAULT 'PROCESOS_FACTURACION_MASIVA')
   RETURN NUMBER;
 
   /**
-   * Funci�n que verifica si el Job enviado por par�metro se encuentra en el estado proporcionado por par�metro.
-   * Devuelve 1 si existe seg�n los par�metros proporcionados, 0 si no existe el registro.
+   * Función que verifica si el Job enviado por parámetro se encuentra en el estado proporcionado por parámetro.
+   * Devuelve 1 si existe según los parámetros proporcionados, 0 si no existe el registro.
    * @param  Pv_NombreJob IN  VARCHAR2 => Nombre del job a buscar.
    * @param  Pv_EstadoJob IN  VARCHAR2 => Estado del job a buscar.
    * @return NUMBER
@@ -2048,21 +2049,21 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
    * @author Luis Cabrera <lcabrera@telconet.ec>
    * @version 1.0
    * @since 21-08-2018
-   * Versi�n inicial.
+   * Versión inicial.
    */
   FUNCTION F_GET_ESTADO_EJECUCION_JOB(Pv_NombreJob IN VARCHAR2,
                                       Pv_EstadoJob IN VARCHAR2 DEFAULT 'RUNNING')
   RETURN NUMBER;
 
   /*
-  * Documentaci�n para PROCEDURE 'P_ESTADO_CTA_CLIENTE'.
-  * Procedure que me permite obtener lista de pagos por vendedor seg�n filtros enviados como par�metros.
+  * Documentación para PROCEDURE 'P_ESTADO_CTA_CLIENTE'.
+  * Procedure que me permite obtener lista de pagos por vendedor según filtros enviados como parámetros.
   *
   * PARAMETROS:
-  * @Param varchar2       Pv_EmpresaCod  C�digo de la empresa en sesion
+  * @Param varchar2       Pv_EmpresaCod  Código de la empresa en sesion
   * @Param number         Pn_PersonaId  (Id del cliente)
-  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creaci�n del documento)
-  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creaci�n del documento)
+  * @Param varchar2       Pv_FechaCreacionDesde (rango inicial para consulta por fecha de creación del documento)
+  * @Param varchar2       Pv_FechaCreacionHasta (rango final para consulta por fecha de creación del documento)
   * @param number         Pn_TotalRegistros  OUT  ( Total de registros obtenidos de la consulta )
   * @param SYS_REFCURSOR  Pr_Documentos      OUT  ( Cursor con los documentos obtenidos de la consulta )
   * @author Edgar Holguin <eholguin@telconet.ec>
@@ -2072,7 +2073,7 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   * Donde 'F_GET_PAGO_DEPENDIENTE'comprueba si un Pago o Ant depende de un Padre (tiene dependencia),
   * Donde 'F_GET_SALDO_X_FACTURA' permite obtener el saldo del documento: FAC o FACP.
   *
-  * @author Anabelle Pe�aherrera <apenaherrera@telconet.ec>
+  * @author Anabelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.2 01-03-2018 - Se cambia Filtro de FeCreacion a FeEmision y se Agregan al Grid FeEmision, FeAutorizacion
   * 
   */
@@ -2087,13 +2088,13 @@ PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
   );
 
   /**
-  * Documentacion para la funci�n 'F_GET_PAGO_DEPENDIENTE'
+  * Documentacion para la función 'F_GET_PAGO_DEPENDIENTE'
   *
-  * Funci�n que retorna TRUE si el pago tiene dependencia sobre otros documentos en la 'INFO_PAGO_HISTORIAL',
+  * Función que retorna TRUE si el pago tiene dependencia sobre otros documentos en la 'INFO_PAGO_HISTORIAL',
   * en el caso de que sea True cambia el color de fondo de la fila del pago dependiente en el grid, si solo
-  * a las empresas que CONTABILIZA. Para ello se verifica los detalles del par�metro cabecera que es
+  * a las empresas que CONTABILIZA. Para ello se verifica los detalles del parámetro cabecera que es
   * 'PROCESO CONTABILIZACION EMPRESA' en la tabla 'DB_GENERAL.ADMI_PARAMETRO_DET' y se verifica la columna
-  * 'VALOR2' si est� seteado con el valor de 'S'.
+  * 'VALOR2' si está seteado con el valor de 'S'.
   *
   * @param Fv_EmpresaId           IN  DB_FINANCIERO.INFO_PAGO_LINEA.EMPRESA_ID%TYPE, Codigo de la empresa
   * @param Fv_CodigoTipoDocumento IN  DB_FINANCIERO.ADMI_TIPO_DOCUMENTO_FINANCIERO.CODIGO_TIPO_DOCUMENTO%TYPE, Codigo del tipo de documento.
@@ -2112,7 +2113,7 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   RETURN VARCHAR2;
 
   /**
-  * Documentacion para la funci�n 'F_GET_PAGO_DEPENDIENTE'
+  * Documentacion para la función 'F_GET_PAGO_DEPENDIENTE'
   *
   * Funcion que permite obtener el saldo del documento: FAC o FACP.
   *
@@ -2129,12 +2130,12 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   RETURN NUMBER;
   --
   /**
-  * Documentacion para la funci�n 'F_GET_CUENTA_BANCARIA'
+  * Documentacion para la función 'F_GET_CUENTA_BANCARIA'
   *
   * Funcion que permite obtener el cuenta bancaria por id cuenta contable o id banco tipo cuenta
-  * @param  Pn_IdCuentaContable IN DB_FINANCIERO.ADMI_CUENTA_CONTABLE.ID_CUENTA_CONTABLE%TYPE  recibe c�digo de cuenta contable
-  * @param  Pn_IdBancoTipoCta   IN DB_GENERAL.ADMI_BANCO_TIPO_CUENTA.ID_BANCO_TIPO_CUENTA%TYPE recibe c�digo banco tipo cuenta
-  * @param  Pv_NoCia            IN DB_FINANCIERO.INFO_PAGO_LINEA.EMPRESA_ID%TYPE               recibe c�digo de la empresa
+  * @param  Pn_IdCuentaContable IN DB_FINANCIERO.ADMI_CUENTA_CONTABLE.ID_CUENTA_CONTABLE%TYPE  recibe código de cuenta contable
+  * @param  Pn_IdBancoTipoCta   IN DB_GENERAL.ADMI_BANCO_TIPO_CUENTA.ID_BANCO_TIPO_CUENTA%TYPE recibe código banco tipo cuenta
+  * @param  Pv_NoCia            IN DB_FINANCIERO.INFO_PAGO_LINEA.EMPRESA_ID%TYPE               recibe código de la empresa
   * @return                     FNKG_TRANSACTION_CONTABILIZAR.TypeCuentaContable               retorna datos de cuenta contable
   *
   * @author Luis Lindao <llindao@telconet.ec>
@@ -2151,10 +2152,10 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   --
 
   /**
-  * Documentaci�n para F_GET_CTA_CONTABLE
+  * Documentación para F_GET_CTA_CONTABLE
   *
-  * Funci�n permite obtener la descripci�n del tipo de cuenta apartir del banco cuenta contable.
-  * @param Pn_BancoCtaContableId IN DB_GENERAL.ADMI_BANCO_CTA_CONTABLE.ID_BANCO_CTA_CONTABLE%TYPE recibe c�digo banco cuenta contable
+  * Función permite obtener la descripción del tipo de cuenta apartir del banco cuenta contable.
+  * @param Pn_BancoCtaContableId IN DB_GENERAL.ADMI_BANCO_CTA_CONTABLE.ID_BANCO_CTA_CONTABLE%TYPE recibe código banco cuenta contable
   * costo 3
   * @author Angel Reina <areina@telconet.ec>
   * @version 1.0 25-06.2019
@@ -2166,10 +2167,10 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   --
 
   /**
-  * Documentaci�n para F_GET_TIPO_CUENTA
+  * Documentación para F_GET_TIPO_CUENTA
   *
-  * Funcion que permite obtener la descripci�n del tipo de cuenta apartir de banco tipo cuenta.
-  * @param Pn_BancoTipoCtaId IN DB_GENERAL.ADMI_BANCO_TIPO_CUENTA.ID_BANCO_TIPO_CUENTA%TYPE recibe c�digo banco tipo cuenta
+  * Funcion que permite obtener la descripción del tipo de cuenta apartir de banco tipo cuenta.
+  * @param Pn_BancoTipoCtaId IN DB_GENERAL.ADMI_BANCO_TIPO_CUENTA.ID_BANCO_TIPO_CUENTA%TYPE recibe código banco tipo cuenta
   * costo 2
   * @author Angel Reina <areina@telconet.ec>
   * @version 1.0 25-06.2019
@@ -2179,11 +2180,11 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
     RETURN DB_GENERAL.ADMI_TIPO_CUENTA.DESCRIPCION_CUENTA%TYPE;
   --
   /**
-  * Documentaci�n para F_GET_FORMATO_FECHA
+  * Documentación para F_GET_FORMATO_FECHA
   *
-  * Funci�n que permite convertir fecha con formato D�a-Mes-A�o a formato A�o-Mes-D�a
+  * Función que permite convertir fecha con formato Día-Mes-Año a formato Año-Mes-Día
   * @param  Fv_Fecha IN VARCHAR2  recibe string de fecha
-  * @return VARCHAR2              retorna fecha en formato A�o-Mes-D�a
+  * @return VARCHAR2              retorna fecha en formato Año-Mes-Día
   * costo 2
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 01-05-2021
@@ -2192,11 +2193,11 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   RETURN VARCHAR2;
   --
   /**
-  * Documentaci�n para F_GET_EMPRESA
+  * Documentación para F_GET_EMPRESA
   *
-  * Funci�n que permite obtener el c�digo de empresa enviando como par�metro el Id Documento Financiero.
+  * Función que permite obtener el código de empresa enviando como parámetro el Id Documento Financiero.
   * @param  Fn_IdDocumento  IN DB_FINANCIERO.INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE  recibe Id Documento Financiero
-  * @return VARCHAR2                                                                          retorna C�digo de Empresa
+  * @return VARCHAR2                                                                          retorna Código de Empresa
   * costo 4 
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.0 01-05-2021
@@ -2206,8 +2207,8 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   --
   --
  /**
-  * Documentaci�n para F_GET_USR_ULT_MOD
-  * Retorna el usuario de creaci�n del ultimo historial asociado  documento .
+  * Documentación para F_GET_USR_ULT_MOD
+  * Retorna el usuario de creación del ultimo historial asociado  documento .
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 04-10-2021
@@ -2220,8 +2221,8 @@ FUNCTION F_GET_PAGO_DEPENDIENTE(
   --
   --
  /**
-  * Documentaci�n para F_GET_FE_ULT_MOD
-  * Retorna la fecha de creaci�n del ultimo historial asociado  documento .
+  * Documentación para F_GET_FE_ULT_MOD
+  * Retorna la fecha de creación del ultimo historial asociado  documento .
   *
   * @author Edgar Holguin <eholguin@telconet.ec>
   * @version 1.0 04-10-2021
@@ -2507,7 +2508,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS3.F_GET_MAX_DOCUMENTO_SERV_PROD',
-                                          'No se encontr� documento financiero. Parametros (Punto Facturacion: '||Fn_PuntoFacturacionId||', Punto: '
+                                          'No se encontró documento financiero. Parametros (Punto Facturacion: '||Fn_PuntoFacturacionId||', Punto: '
                                           ||Fn_PuntoId||', Servicio: '||Fn_ServicioId||', Producto: '||Fn_ProductoId||', Precio: ' || Fn_PrecioVenta ||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -2753,7 +2754,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
       --
     ELSE
       --
-      Lv_MensajeError := 'No se ha enviado los par�metros adecuados para realizar la consulta - Prefijo(' || Fv_PrefijoEmpresa || '), FeInicio( '
+      Lv_MensajeError := 'No se ha enviado los parámetros adecuados para realizar la consulta - Prefijo(' || Fv_PrefijoEmpresa || '), FeInicio( '
                          || Fd_FechaInicio || '), FeFin( ' || Fd_FechaFin || ').';
       --
       RAISE Le_Exception;
@@ -3084,7 +3085,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
       --
     ELSE
       --
-      Lv_MensajeError := 'No se ha enviado todos los par�metros correspondientes para la b�squeda del historial del pago. Fv_FechaConsultaDesde('
+      Lv_MensajeError := 'No se ha enviado todos los parámetros correspondientes para la búsqueda del historial del pago. Fv_FechaConsultaDesde('
                          || Fv_FechaConsultaDesde || ') Fv_FechaConsultaHasta(' || Fv_FechaConsultaHasta || '), Fn_IdPagoCab(' || Fn_IdPagoCab
                          || '), Fv_EstadoPago(' || Fv_EstadoPago || ')';
       --
@@ -3141,7 +3142,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
     --
   BEGIN
     --
-    --Busca el dia hasta el cual se podr� ingresar pagos, anticipos y/o procesar dep�sitos
+    --Busca el dia hasta el cual se podrá ingresar pagos, anticipos y/o procesar depósitos
     Lrf_GetAdmiParamtrosDet := FNCK_CONSULTS.F_GET_ADMI_PARAMETROS_DET(Lv_NombreParametroCab,
                                                                        Lv_EstadoActivo,
                                                                        Lv_EstadoActivo,
@@ -3159,8 +3160,8 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
       --
       IF TRIM(Pv_FechaValidar) IS NOT NULL THEN
         --
-        --Se calcula hasta que fecha se podr� generar el pago, anticipo o deposito creado. Para ello se le suma un mes a la fecha enviada como
-        --par�metro 'Pv_FechaValidar'.
+        --Se calcula hasta que fecha se podrá generar el pago, anticipo o deposito creado. Para ello se le suma un mes a la fecha enviada como
+        --parámetro 'Pv_FechaValidar'.
         Ld_FechaAValidar := TO_DATE( Pv_FechaValidar, 'DD-MM-YYYY' ) + Lr_GetAdmiParamtrosDet.VALOR1;
         --
         --
@@ -3185,7 +3186,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
       --
     ELSE
       --
-      --En caso de no encontrar el par�metro de validaci�n el proceso debe continuar puesto que no aplica para todas las empresas
+      --En caso de no encontrar el parámetro de validación el proceso debe continuar puesto que no aplica para todas las empresas
       Pv_RespuestaValidacion := 'S';
       --
     END IF;
@@ -3275,7 +3276,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.F_GET_TIPO_COMPROBANTE_EXP',
-                                          'Error al obtener la informaci�n del tipo de comprobante de exportacion ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información del tipo de comprobante de exportacion ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3323,7 +3324,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.F_GET_DETALLE_EXPORTACIONES',
-                                          'Error al obtener la informaci�n del detalle de exportaciones' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información del detalle de exportaciones' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3505,7 +3506,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.F_GET_EXPORTACIONES',
-                                          'Error al obtener la informaci�n de exportaciones' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información de exportaciones' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3605,7 +3606,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.F_GET_PARTE_REL_VTAS',
-                                          'Error al obtener la informaci�n de empresas relacionadas ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información de empresas relacionadas ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3759,7 +3760,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.GET_COMPENSACIONES',
-                                          'Error al obtener la informaci�n de compensaciones ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información de compensaciones ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -3838,7 +3839,7 @@ FUNCTION F_GET_MAX_DOCUMENTO_SERV_PROD(
 
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.F_GET_FORMA_PAGO_POR_CLIENTE',
-                                          'Error al obtener la informaci�n de forma de pago por cliente ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información de forma de pago por cliente ' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -4786,7 +4787,7 @@ BEGIN
     CLOSE C_GetAdmiNumeracionGeneral;
     --
     --
-    --SI NO ENCUENTRA NUMERACION INGRESA A BUSCAR POR EL M�TODO ADICIONAL SI LA EMPRESA ES DIFERENTE DE TN
+    --SI NO ENCUENTRA NUMERACION INGRESA A BUSCAR POR EL MÉTODO ADICIONAL SI LA EMPRESA ES DIFERENTE DE TN
     IF Lr_AdmiNumeracionDocumento.ID_NUMERACION IS NULL AND TRIM(Fv_PrefijoEmpresa) <> 'TN' THEN
       --
       IF C_GetAdmiNumeracionAdicional%ISOPEN THEN
@@ -4949,7 +4950,7 @@ BEGIN
     Le_Exception            EXCEPTION;
     --
   BEGIN
-    --Obtiene Pagos en l�nea en estado Pendiente que tengan mas de 24 horas.
+    --Obtiene Pagos en línea en estado Pendiente que tengan mas de 24 horas.
     IF C_GetPagoPendiente%ISOPEN THEN
       CLOSE C_GetPagoPendiente;
     END IF;
@@ -5003,7 +5004,7 @@ BEGIN
           --
         ELSE
           --
-          Lv_MessageError  := ' Ocurri� un error al tratar de actualizar el estado del pago: ' ||
+          Lv_MessageError  := ' Ocurrió un error al tratar de actualizar el estado del pago: ' ||
                               Lr_PagoPendiente.ID_PAGO_LINEA ;
           Lb_BanderaUpdate := TRUE;
           --
@@ -5084,7 +5085,7 @@ BEGIN
             --
           ELSE
             --
-            Pv_MsnResult     := 'Se notific� por correo y se dieron de baja ' || Ln_CounterUpdate ||
+            Pv_MsnResult     := 'Se notificó por correo y se dieron de baja ' || Ln_CounterUpdate ||
                                 ' pago(s) en estado pendiente que superaron el tiempo maximo de 24 horas.';
             Ln_CounterUpdate := 0;
             --
@@ -5411,7 +5412,7 @@ BEGIN
     --
     IF Lr_GetFactura.ID_DOCUMENTO IS NOT NULL AND Lr_GetFactura.ID_DOCUMENTO > 0 THEN
       --
-      -- Obtiene el total de las notas de cr�dito y notas de cr�dito internas
+      -- Obtiene el total de las notas de crédito y notas de crédito internas
       IF C_GetSumTotalNotasCredito%ISOPEN THEN
         --
         CLOSE C_GetSumTotalNotasCredito;
@@ -5455,7 +5456,7 @@ BEGIN
         --
         IF I_GetPagos.ID_PAGO_DET IS NOT NULL AND I_GetPagos.ID_PAGO_DET > 0 THEN
           --
-          -- Obtiene el total de las notas de d�bito(ND), notas de debito internas(NDI) y devoluciones(DEV)
+          -- Obtiene el total de las notas de débito(ND), notas de debito internas(NDI) y devoluciones(DEV)
           IF C_GetSumTotalNotaDebito%ISOPEN THEN
             --
             CLOSE C_GetSumTotalNotaDebito;
@@ -6244,7 +6245,7 @@ BEGIN
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.F_GET_MAX_DOCUMENTO',
-                                          'No se encontr� documento financiero. Parametros (Punto Facturacion: '||Fn_PuntoFacturacionId||', Punto: '
+                                          'No se encontró documento financiero. Parametros (Punto Facturacion: '||Fn_PuntoFacturacionId||', Punto: '
                                           ||Fn_PuntoId||', Producto: '||Fn_ProductoId||')' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'telcos'),
                                           SYSDATE,
@@ -7123,7 +7124,7 @@ XMLELEMENT("iva" ,
                     XMLFOREST( FNCK_CONSULTS.F_GET_PARTE_REL_VTAS( TMP_GROUP.IDENTIFICACION_CLIENTE, Cn_IdEmpresa ) "parteRelVtas"  ),
                     DECODE( TMP_GROUP.CODIGO_SRI_CLI , '06' , XMLFOREST( NVL( TMP_GROUP.TIPO_TRIBUTARIO,'01') "tipoCliente" ), ''),
                     DECODE( TMP_GROUP.CODIGO_SRI_CLI , '06' , XMLFOREST( DECODE( regexp_replace( TMP_GROUP.RAZON_SOCIAL , '( *[[:punct:]])', '' ), null,
-                    replace(  REGEXP_REPLACE( regexp_replace( TMP_GROUP.NOMBRES || TMP_GROUP.APELLIDOS, '( *[[:punct:]])', '' ) , '([�|�])', 'N') , ' ', '' ), regexp_replace( TMP_GROUP.RAZON_SOCIAL , '( *[[:punct:]])', '' ) ) "denoCli" ), ''),
+                    replace(  REGEXP_REPLACE( regexp_replace( TMP_GROUP.NOMBRES || TMP_GROUP.APELLIDOS, '( *[[:punct:]])', '' ) , '([ñ|Ñ])', 'N') , ' ', '' ), regexp_replace( TMP_GROUP.RAZON_SOCIAL , '( *[[:punct:]])', '' ) ) "denoCli" ), ''),
                     XMLFOREST(TMP_GROUP.CODIGO_COMP_SRI "tipoComprobante" ),
                     XMLFOREST('E' "tipoEmision"),
                     XMLFOREST(TMP_GROUP.NUMEROS_FAC "numeroComprobantes" ),
@@ -7434,18 +7435,18 @@ END F_GET_ERROR_REPETIDO;
         LOOP
             Ln_ValorTotalxNCs := 0;
             Ln_NumeroFacturas := Ln_NumeroFacturas + 1;
-            --Si tiene al menos una factura en estado Pendiente o Activo, no es necesario crear otra factura de instalaci�n para el mismo punto.
+            --Si tiene al menos una factura en estado Pendiente o Activo, no es necesario crear otra factura de instalación para el mismo punto.
             IF Lr_FacturasInstXPunto.ESTADO_IMPRESION_FACT IN ('Pendiente','Activo') THEN
                 Lv_CreaFactura := 'N';
                 EXIT;
             --Si tiene al menos una factura en estado Cerrado
             ELSE
-                --Se obtiene el total de las notas de cr�dito para saber si est� cerrada por NC
+                --Se obtiene el total de las notas de crédito para saber si está cerrada por NC
                 OPEN  C_GetTieneNC (Cn_FacturaId  => Lr_FacturasInstXPunto.ID_DOCUMENTO);
                 FETCH C_GetTieneNC INTO Ln_ValorTotalxNCs;
                 CLOSE C_GetTieneNC;
 
-                --SI EL TOTAL DE NOTAS DE CR�DITO (NC, NCI) ES MAYOR O IGUAL AL TOTAL DE LA FACTURA, S� DEBE CREAR OTRA FACTURA.
+                --SI EL TOTAL DE NOTAS DE CRÉDITO (NC, NCI) ES MAYOR O IGUAL AL TOTAL DE LA FACTURA, SÍ DEBE CREAR OTRA FACTURA.
                 IF NVL(Ln_ValorTotalxNCs, 0) >= Lr_FacturasInstXPunto.VALOR_TOTAL THEN
                     Lv_CreaFactura := 'S';
                     CONTINUE;
@@ -7467,7 +7468,7 @@ END F_GET_ERROR_REPETIDO;
         RETURN Lv_CreaFactura;
     EXCEPTION
         WHEN OTHERS THEN
-            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('Facturas de instalaci�n',
+            DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('Facturas de instalación',
                                           'FNCK_CONSULTS.F_APLICA_CREAR_FACT_INST',
                                           'ERROR_STACK: ' || DBMS_UTILITY.FORMAT_ERROR_STACK ||
                                           ' ERROR_BACKTRACE: ' || DBMS_UTILITY.FORMAT_ERROR_BACKTRACE);
@@ -7920,7 +7921,7 @@ END F_GET_INFO_PAGO_CAB;
 * @author Alexander Samaniego <awsamaniego@telconet.ec>
 * @version 1.0 09-01-2015
 *
-* @author Jos� Candelario <jcandelario@telconet.ec>
+* @author José Candelario <jcandelario@telconet.ec>
 * @version 1.1 15-12-2020 Se recrea el query de forma dinamica para evitar costos altos al usar nvl en query anterior.
 */
 FUNCTION F_GET_INFO_PAGO_DET(
@@ -9621,11 +9622,11 @@ END P_SALDO_X_FACTURA;
 * @version 1.0 09-01-2015
 *
 * @author Luis Lindao <llindao@telconet.ec>
-* @version 1.1 02-10-2018 - Se modifica para inicializar a nulo el campo deposito_pago_id al generar ANTC porque se adhiere a la contabilizaci�n 
-*                           del dep�sito generando descuadre entre lo depositado y contabilizado.
+* @version 1.1 02-10-2018 - Se modifica para inicializar a nulo el campo deposito_pago_id al generar ANTC porque se adhiere a la contabilización 
+*                           del depósito generando descuadre entre lo depositado y contabilizado.
 *
 * @author Luis Lindao <llindao@telconet.ec>
-* @version 1.2 23-03-2021 - Se agrega proceso de contabilizaci�n de ANTC
+* @version 1.2 23-03-2021 - Se agrega proceso de contabilización de ANTC
 *
 * @param  Pn_IdDocumento            IN    INFO_DOCUMENTO_FINANCIERO_CAB.ID_DOCUMENTO%TYPE               Recibe el id documento de la nota de credito
 * @param  Pn_RefereneciaDocumentoId IN    INFO_DOCUMENTO_FINANCIERO_CAB.REFERENCIA_DOCUMENTO_ID%TYPE    Recibe el referencia documento id de la nc(FAC ID)
@@ -9726,7 +9727,7 @@ BEGIN
     Lr_InfoDocumentoHistorial.FE_CREACION               := SYSDATE;
     Lr_InfoDocumentoHistorial.USR_CREACION              := USER;
     Lr_InfoDocumentoHistorial.ESTADO                    := 'Aplicada';
-    Lr_InfoDocumentoHistorial.OBSERVACION               := 'Se aplic� la Nota de Credito a la Fact # ' || Lr_InfoDocumentoFinancieroCab.NUMERO_FACTURA_SRI;
+    Lr_InfoDocumentoHistorial.OBSERVACION               := 'Se aplicó la Nota de Credito a la Fact # ' || Lr_InfoDocumentoFinancieroCab.NUMERO_FACTURA_SRI;
     --
     --Inserta el historial de la nota de credito
     FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_HST(Lr_InfoDocumentoHistorial, Lv_MsnError);
@@ -9871,7 +9872,7 @@ BEGIN
         --Obtiene la cabecera del pago
         Lr_InfoPagoCab              := FNCK_CONSULTS.F_GET_INFO_PAGO_CAB(I_GetDetallePagosFactura.ID_PAGO);
         --
-        -- se verifica recupera parametro de contabilizaci�n de anticipo
+        -- se verifica recupera parametro de contabilización de anticipo
         IF C_VALIDA_CONTABILIZA_ANTICIPO%ISOPEN THEN
           CLOSE C_VALIDA_CONTABILIZA_ANTICIPO;
         END IF;
@@ -10007,7 +10008,7 @@ BEGIN
         ELSE
           Lr_GetInfoPagoDet.TIPO_PROCESO := 'Pago';
         END IF;
-        -- llindao: Documento generado por NDI no puede heredar el id deposito pago porque la contabilizaci�n considera como parte del dep�sito
+        -- llindao: Documento generado por NDI no puede heredar el id deposito pago porque la contabilización considera como parte del depósito
         IF Lr_GetInfoPagoDet.DEPOSITO_PAGO_ID IS NOT NULL THEN
           Lr_GetInfoPagoDet.DEPOSITO_PAGO_ID := NULL;
         END IF;
@@ -10024,7 +10025,7 @@ BEGIN
         --
         -- llindao: si esta habilitado el parametro para la empresa se contabiliza ANTC
         IF NVL(Lr_ParContable.Contabiliza_Anticipo,'NO') = 'SI' THEN
-          -- Se agrega c�digo para contabilizar ANTC.
+          -- Se agrega código para contabilizar ANTC.
           BEGIN
             fnkg_contabilizar_pago_manual.procesar_pago_anticipo_manual ( Lr_InfoPagoCab.EMPRESA_ID,
                                                                           Lr_GetInfoPagoDet.ID_PAGO_DET,
@@ -10311,12 +10312,12 @@ END P_SPLIT_CLOB;
 * @author Alexander Samaniego <awsamaniego@telconet.ec>
 * @version 1.0 09-01-2015
 * @author Edgar Holguin <eholguin@telconet.ec>
-* @version 1.0 29-09-2018 Se agrega funcionalidad para crear notas de cr�dito por medio de solicitudes.
+* @version 1.0 29-09-2018 Se agrega funcionalidad para crear notas de crédito por medio de solicitudes.
 *
 * @author Alex Arreaga <atarreaga@telconet.ec>
-* @version 1.2 29-10-2020 - Se agrega funcionalidad para crear notas de cr�dito por medio de solicitudes para proceso 
-*                           de reubicaci�n. Se valida para cambiar a estado finalizado las solicitudes por reubicaci�n y 
-*                           realize la clonaci�n de caracter�sticas de la solicitud a la Nc.
+* @version 1.2 29-10-2020 - Se agrega funcionalidad para crear notas de crédito por medio de solicitudes para proceso 
+*                           de reubicación. Se valida para cambiar a estado finalizado las solicitudes por reubicación y 
+*                           realize la clonación de características de la solicitud a la Nc.
 *
 * @author Hector Lozano <hlozano@telconet.ec>
 * @version 1.3 19-05-2023 - Se insertan logs, para monitorear el proceso de crear Notas de Crédito por Reubicación.
@@ -10784,8 +10785,8 @@ BEGIN
         IF Lv_TipoCreacion  != 'DETALLE' THEN
 
           Lv_LogNcReub := 'PROCESO CREA NC: ' || ' -ID_FACT: ' || Pn_IdDocumento || ' -Proceso por '|| Lv_TipoCreacion ;
-          DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);     
-
+          DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);   
+          
         --Busca los detalles de la factura, para crear los detalles de la NC
         Lsrf_InfoDocumentoFinanDet := FNCK_CONSULTS.F_GET_INFO_DOC_FINANCIERO_DET( NULL, Ln_IdDocumento);
         --
@@ -10967,6 +10968,7 @@ BEGIN
             --
           END IF;
           --
+
           Lv_LogNcReub := 'PROCESO CREA NC: '|| ' -ID_FACT: ' || Pn_IdDocumento ||  ' -Proceso por '|| Lv_TipoCreacion 
                           || ' -SumaSubtotal: ' || Ln_SumaSubtotal || ' -SumaDescuento: ' || Ln_SumaDescuento;
           DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
@@ -11059,7 +11061,7 @@ BEGIN
                 --
                 Ln_SumaSubtotal  := Ln_SumaSubtotal + (Lr_InfoDocumentoFinanDet.PRECIO_VENTA_FACPRO_DETALLE * Lr_InfoDocumentoFinanDet.CANTIDAD);
                 Ln_SumaDescuento := 0;
-                --Busca el impuesto seg�n el producto
+                --Busca el impuesto según el producto
 
 		IF C_GetImpuestoProducto%ISOPEN THEN
 		  CLOSE C_GetImpuestoProducto;
@@ -11223,8 +11225,8 @@ BEGIN
         --
         IF Lc_ValorParametro.VALOR3 IS NOT NULL AND Lc_ValorParametro.VALOR3 = 'telcos_reubica' THEN
             --
-            --Actualiza descripci�n de la Nota de Credito de Reubicaci�n.
-            Lr_InfoDocumentoFinanDet.OBSERVACIONES_FACTURA_DETALLE := 'Reubicaci�n';
+            --Actualiza descripción de la Nota de Credito de Reubicación.
+            Lr_InfoDocumentoFinanDet.OBSERVACIONES_FACTURA_DETALLE := 'Reubicación';
             DB_FINANCIERO.FNCK_PAGOS_DIFERIDOS.UPDATE_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinanCab.ID_DOCUMENTO,
                                                                               Lr_InfoDocumentoFinanDet,
                                                                               Lv_MsnError);
@@ -11244,7 +11246,7 @@ BEGIN
                 -- Actualizo el estado de la solicitud de Nc a Finalizado.
                 DB_COMERCIAL.COMEK_TRANSACTION.P_UPDATE_INFO_DETALLE_SOL(Lr_InfoDetSolicitudNc,Lv_MsjErrorUpd);
 
-                --Clono las caracter�sticas de la INFO_DETALLE_SOL_CARACT a la Nota de Cr�dito.
+                --Clono las características de la INFO_DETALLE_SOL_CARACT a la Nota de Crédito.
                 DB_FINANCIERO.FNCK_TRANSACTION.P_CLONAR_CARACT_NC_REUB(Lc_GetSolicitudNc.ID_DETALLE_SOLICITUD,Lr_InfoDocumentoFinanCab.ID_DOCUMENTO,Lv_MsjErrorUpd);
                 
                 Lr_InfoDetSolHistorial                        := NULL;
@@ -11258,7 +11260,7 @@ BEGIN
                 DB_COMERCIAL.COMEK_TRANSACTION.P_INSERT_DETALLE_SOL_HIST(Lr_InfoDetSolHistorial, Lv_MsjErrorUpd);
                 
             END IF;
-
+            
             Lv_LogNcReub := 'FINALIZA LA SOLICITUD Y PROCESO CREA NC' || ' -ID_FACT: ' || Pn_IdDocumento;
             DB_FINANCIERO.FNCK_TRANSACTION.INSERT_ERROR('LOGS_NC_SOLICITUDES_REUB','LOGS_NC_SOLICITUDES_REUB',Lv_LogNcReub);
 
@@ -11725,8 +11727,8 @@ END P_CREA_NOTA_CREDITO_MASIVA;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_INFORMACION_PUNTO'.
- * Funcion que obtiene informaci�n del punto del cliente
+ * Documentación para FUNCION 'F_GET_INFORMACION_PUNTO'.
+ * Funcion que obtiene información del punto del cliente
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 14-03-2016
@@ -11736,25 +11738,25 @@ END P_CREA_NOTA_CREDITO_MASIVA;
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.2 02-06-2016 - Se agrega la columna de 'emailPtoPersona' que retorna todos los email de todos los puntos de una persona
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.3 24-06-2016 - Se corrige que no se tomen en cuenta los estados de las formas de contacto al consultar los tel�fonos o emails
+ * @version 1.3 24-06-2016 - Se corrige que no se tomen en cuenta los estados de las formas de contacto al consultar los teléfonos o emails
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.4 26-07-2016 - Se cambia la forma de consultar la forma de pago, y se a�aden nuevas consultas que son: 'coordenadas', 'bancoTarjeta' y
+ * @version 1.4 26-07-2016 - Se cambia la forma de consultar la forma de pago, y se añaden nuevas consultas que son: 'coordenadas', 'bancoTarjeta' y
  *                           'tipoCuentaBancoTarjeta'
  *
  * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
  * @version 1.5 07-07-2016
- * Para data de clientes INCORTE para efecto de contabilizar los d�as vencidos se tomara en cuenta la fecha de la �ltima factura
+ * Para data de clientes INCORTE para efecto de contabilizar los días vencidos se tomara en cuenta la fecha de la última factura
  * perteneciente al Punto.
- * Para data de clientes TRASLADADO con deuda, en fecha de concesi�n y a efectos de contabilizar los d�as de vencido se debe considerar la fecha
- * de la �ltima factura.
+ * Para data de clientes TRASLADADO con deuda, en fecha de concesión y a efectos de contabilizar los días de vencido se debe considerar la fecha
+ * de la última factura.
  * Para Data de Clientes ANULADO/ELIMINADO se amplia el reporte de buro incluyendo los clientes con punto en estado eliminado, en fecha de
- * concesi�n y a efectos de contabilizar los d�as de vencido se debe considerar la fecha de la �ltima factura
- * Para Data de clientes CANCELADOS con Deuda, en fecha de concesi�n y a efectos de contabilizar los d�as de vencido se debe considerar la
- * fecha de CANCELACION  del servicio, de no registrar informaci�n de la fecha de cancelaci�n, la fecha de la �ltima factura y/o nota de debito.
+ * concesión y a efectos de contabilizar los días de vencido se debe considerar la fecha de la última factura
+ * Para Data de clientes CANCELADOS con Deuda, en fecha de concesión y a efectos de contabilizar los días de vencido se debe considerar la
+ * fecha de CANCELACION  del servicio, de no registrar información de la fecha de cancelación, la fecha de la última factura y/o nota de debito.
  *
  * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
  * @version 1.6 19-01-2017
- * Debido a los cambios en el valor a sumarizar en la fecha de concesi�n, se solicita que se cree un par�metro para el manejo de los d�as a sumar
+ * Debido a los cambios en el valor a sumarizar en la fecha de concesión, se solicita que se cree un parámetro para el manejo de los días a sumar
  * a dicha fecha por estado:
  *   Cancelado
  *   Trasladado
@@ -11766,9 +11768,9 @@ END P_CREA_NOTA_CREDITO_MASIVA;
  * @author Edgar Holguin <eholguin@telconet.ec>
  * @version 1.8 12-09-2017 Se agrega excepcion para manejar una consulta adicional para obtener fecha de concesion.
  * @author Edgar Holguin <eholguin@telconet.ec>
- * @version 1.9 23-01-2018 Se estandariza formato de campo fecha de concesi�n presentado en el reporte.
- * @author Edgar Holgu�n <eholguin@telconet.ec>
- * @version 2.0 - 07-05-2018 - Se agrega condici�n para que consulta retorne un solo ciclo de facturaci�n.
+ * @version 1.9 23-01-2018 Se estandariza formato de campo fecha de concesión presentado en el reporte.
+ * @author Edgar Holguín <eholguin@telconet.ec>
+ * @version 2.0 - 07-05-2018 - Se agrega condición para que consulta retorne un solo ciclo de facturación.
  *
  * PARAMETROS:
  * @Param DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE          Fn_IdPersona     (id_persona del cliente)
@@ -12467,8 +12469,8 @@ END;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_NOMBRE_APELLIDOS_PERSONA'.
- * Funcion que obtiene informaci�n del nombre del cliente
+ * Documentación para FUNCION 'F_GET_NOMBRE_APELLIDOS_PERSONA'.
+ * Funcion que obtiene información del nombre del cliente
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 14-03-2016
@@ -12513,7 +12515,7 @@ END;
 --
 --
 /*
- * Documentaci�n para PROCEDURE 'P_GET_REPORTE_BURO'.
+ * Documentación para PROCEDURE 'P_GET_REPORTE_BURO'.
  * PROCEDURE que obtiene la informacion necesaria para el reporte de buro
  *
  * @author Edson Franco <efranco@telconet.ec>
@@ -12524,7 +12526,7 @@ END;
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.2 02-09-2016 - Se agregan los puntos en estado 'In-Corte'
  * @author Edson Franco <efranco@telconet.ec>
- * @version 1.3 26-07-2016 - Se agregan nuevos campos que corresponden a: Coordenadas del punto, Direcci�n Cliente, Banco y Tipo de cuenta del cu�l
+ * @version 1.3 26-07-2016 - Se agregan nuevos campos que corresponden a: Coordenadas del punto, Dirección Cliente, Banco y Tipo de cuenta del cuál
  *                           se le debita al cliente en caso de que su forma de pago sea diferente de 'EFECTIVO', y finalmente se agrega el estado de
  *                           la solicitud de Retiro de Equipos
  *
@@ -12533,13 +12535,13 @@ END;
  * ACTIVOS: solicito que dentro del reporte, para los clientes activos, se tenga las siguientes consideraciones.
  * 1.- Punto activo (no debe tener adicional un punto cancelado, trasladado o in-corte con deuda)
  * 2.- Ser cliente por un periodo mayor a seis meses.
- * 3.- NO registrar suspensi�n (Masivo o Manual) de servicio en los �ltimos seis meses.
+ * 3.- NO registrar suspensión (Masivo o Manual) de servicio en los últimos seis meses.
  *
  * @author Jorge Guerrero <jguerrerop@telconet.ec>
- * @version 1.5 01-12-2017 - Se agrega la columna del Ciclo de Facturaci�n
+ * @version 1.5 01-12-2017 - Se agrega la columna del Ciclo de Facturación
  *
- * @author Edgar Holgu�n <eholguin@telconet.ec>
- * @version 1.6 02-09-2019 - Se agrega columna CANCELACION VOLUNTARIA para indicar si cliente factur� por dicho rubro.
+ * @author Edgar Holguín <eholguin@telconet.ec>
+ * @version 1.6 02-09-2019 - Se agrega columna CANCELACION VOLUNTARIA para indicar si cliente facturó por dicho rubro.
  * PARAMETROS:
  * @Param DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE   Pn_EmpresaCod            (empresa del punto del cliente)
  * @Param VARCHAR2                                           Pv_TipoClientes          (tipo de clientes)
@@ -12871,7 +12873,7 @@ END P_GET_REPORTE_BURO;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_REEMPLAZAR_CARACTERES_ESP'.
+ * Documentación para FUNCION 'F_REEMPLAZAR_CARACTERES_ESP'.
  * Funcion que reemplaza caracteres especiales no permitidos de una cadena
  *
  * @author Edson Franco <efranco@telconet.ec>
@@ -12893,39 +12895,39 @@ BEGIN
 --
     --
     Fv_Resultado := Fv_Cadena;
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','N');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','n');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','a');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','A');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','e');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','E');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','i');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','I');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','o');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','O');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','u');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','U');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','a');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','a');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','e');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','e');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','i');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','i');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','o');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','o');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','u');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','A');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','A');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','E');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','E');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','I');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','I');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','O');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','O');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','U');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','U');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','c');
-    Fv_Resultado := REPLACE(Fv_Resultado,'�','c');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ñ','N');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ñ','n');
+    Fv_Resultado := REPLACE(Fv_Resultado,'á','a');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Á','A');
+    Fv_Resultado := REPLACE(Fv_Resultado,'é','e');
+    Fv_Resultado := REPLACE(Fv_Resultado,'É','E');
+    Fv_Resultado := REPLACE(Fv_Resultado,'í','i');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Í','I');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ó','o');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ó','O');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ú','u');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ú','U');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ä','a');
+    Fv_Resultado := REPLACE(Fv_Resultado,'à','a');
+    Fv_Resultado := REPLACE(Fv_Resultado,'è','e');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ë','e');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ì','i');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ï','i');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ò','o');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ö','o');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ù','u');
+    Fv_Resultado := REPLACE(Fv_Resultado,'À','A');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ä','A');
+    Fv_Resultado := REPLACE(Fv_Resultado,'È','E');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ë','E');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ì','I');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ï','I');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ò','O');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ö','O');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ù','U');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ü','U');
+    Fv_Resultado := REPLACE(Fv_Resultado,'ç','c');
+    Fv_Resultado := REPLACE(Fv_Resultado,'Ç','c');
     Fv_Resultado := REPLACE(Fv_Resultado,'.','');
     Fv_Resultado := REPLACE(Fv_Resultado,'(','');
     Fv_Resultado := REPLACE(Fv_Resultado,')','');
@@ -12943,7 +12945,7 @@ END F_REEMPLAZAR_CARACTERES_ESP;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_GET_INFO_EMPRESA'.
+ * Documentación para FUNCION 'F_GET_INFO_EMPRESA'.
  * Funcion que obtiene la informacion de la empresa
  *
  * @author Edson Franco <efranco@telconet.ec>
@@ -12951,7 +12953,7 @@ END F_REEMPLAZAR_CARACTERES_ESP;
  *
  * PARAMETROS:
  * @return VARCHAR2 Fv_CodEmpresa  (Codigo de la empresa a consultar)
- * @return VARCHAR2 Fv_Resultado   (Nombre de la empresa que est� realizando la consulta)
+ * @return VARCHAR2 Fv_Resultado   (Nombre de la empresa que está realizando la consulta)
  */
 FUNCTION F_GET_INFO_EMPRESA( Fv_CodEmpresa VARCHAR2 )
 RETURN VARCHAR2
@@ -13056,11 +13058,11 @@ END F_GET_INFO_EMPRESA;
   EXCEPTION
   WHEN OTHERS THEN
     --
-    Pv_MessageError := 'Error al obtener la informaci�n del servicio a facturar';
+    Pv_MessageError := 'Error al obtener la información del servicio a facturar';
     --
     DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR( 'Telcos+',
                                           'FNCK_CONSULTS.P_GET_INFO_SERVICIO_A_FACTURAR',
-                                          'Error al obtener la informaci�n del servicio a facturar' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
+                                          'Error al obtener la información del servicio a facturar' || ' - ' || SQLCODE || ' -ERROR- ' || SQLERRM,
                                           NVL(SYS_CONTEXT('USERENV','HOST'), 'DB_FINANCIERO'),
                                           SYSDATE,
                                           NVL(SYS_CONTEXT('USERENV','IP_ADDRESS'), '127.0.0.1') );
@@ -13069,8 +13071,8 @@ END F_GET_INFO_EMPRESA;
   --
   --
 /*
- * Documentaci�n para FUNCION 'F_GET_INFORMACION_PUNTO_CLOB'.
- * Funcion que obtiene informaci�n del punto del cliente pero retorna un CLOB debido a la cantidad de informaci�n que se requiere retornar
+ * Documentación para FUNCION 'F_GET_INFORMACION_PUNTO_CLOB'.
+ * Funcion que obtiene información del punto del cliente pero retorna un CLOB debido a la cantidad de información que se requiere retornar
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 07-06-2016
@@ -13384,7 +13386,7 @@ END;
 --
 --
 /*
- * Documentaci�n para FUNCION 'F_BUSCAR_CADENA_REPETIDAS'.
+ * Documentación para FUNCION 'F_BUSCAR_CADENA_REPETIDAS'.
  *
  * Funcion que busca cadenas repetidas
  *
@@ -13418,21 +13420,21 @@ END F_BUSCAR_CADENA_REPETIDAS;
 --
 --
 /**
- * Documentaci�n para FUNCION 'P_GET_FECHAS_DIAS_PERIODO'.
+ * Documentación para FUNCION 'P_GET_FECHAS_DIAS_PERIODO'.
  *
- * Funci�n que obtiene las fechas inicial y final del periodo a facturar, y adicional retornan la cantidad de d�as entre las fechas obtenidas y la
- * fecha en que se activ� el servicio
+ * Función que obtiene las fechas inicial y final del periodo a facturar, y adicional retornan la cantidad de días entre las fechas obtenidas y la
+ * fecha en que se activó el servicio
  *
  * @author Edson Franco <efranco@telconet.ec>
  * @version 1.0 19-07-2016
  *
  * PARAMETROS:
- * @param NUMBER    PIn_EmpresaCod            IN    (Contiene el c�digo de la empresa)
- * @param VARCHAR2  PIv_FechaActivacion       IN    (Contiene la fecha de activaci�n del servicio)
+ * @param NUMBER    PIn_EmpresaCod            IN    (Contiene el código de la empresa)
+ * @param VARCHAR2  PIv_FechaActivacion       IN    (Contiene la fecha de activación del servicio)
  * @param VARCHAR2  POd_FechaInicioPeriodo    OUT   (Cadena con la fecha inicial del periodo)
  * @param VARCHAR2  POd_FechaFinPeriodo       OUT   (Cadena con la fecha final del periodo)
- * @param NUMBER    POn_CantidadDiasTotalMes  OUT   (N�mero con la cantidad de d�as del periodo)
- * @param NUMBER    POn_CantidadDiasRestantes OUT   (N�mero con la cantidad de d�as a facturar)
+ * @param NUMBER    POn_CantidadDiasTotalMes  OUT   (Número con la cantidad de días del periodo)
+ * @param NUMBER    POn_CantidadDiasRestantes OUT   (Número con la cantidad de días a facturar)
  */
 PROCEDURE P_GET_FECHAS_DIAS_PERIODO(  PIn_EmpresaCod            IN  NUMBER,
                                       PIv_FechaActivacion       IN  VARCHAR2,
@@ -14182,7 +14184,7 @@ BEGIN
     AND IDFC.FE_EMISION < NVL2( Pv_FeConsultaHasta, CAST(TO_DATE(Pv_FeConsultaHasta, 'DD-MM-YYYY') AS TIMESTAMP WITH LOCAL TIME ZONE)+1,
                                 CAST(SYSDATE AS TIMESTAMP WITH LOCAL TIME ZONE)+1 )
     UNION
-    --Notas de Credito y Notas de Cr�dito Internas
+    --Notas de Credito y Notas de Crédito Internas
     SELECT ATDF.codigo_tipo_documento,
       IDFC.NUMERO_FACTURA_SRI,
       IDFC.ESTADO_IMPRESION_FACT,
@@ -14642,7 +14644,7 @@ BEGIN
   * @author Anabelle Penaherrera <apenaherrera@telconet.ec>
   * @version 1.0 06-12-2016
   * @author Edgar Holguin <eholguin@telconet.ec>
-  * @version 1.1 01-09-2017 Se omite insert de error debido a que no se puede realizar operaci�n dml en una consulta.
+  * @version 1.1 01-09-2017 Se omite insert de error debido a que no se puede realizar operación dml en una consulta.
   */
   FUNCTION F_GET_DIFERENCIA_MESES_FECHAS(
     Fn_IdPersona    IN DB_COMERCIAL.INFO_PERSONA.ID_PERSONA%TYPE,
@@ -15042,15 +15044,15 @@ BEGIN
     Lr_AdmiParametroDet      DB_GENERAL.ADMI_PARAMETRO_DET%ROWTYPE;
     Ln_PuedeEjecutarse       NUMBER := 1;
   BEGIN
-    --OBTENGO LOS PAR�METROS CON LAS EMPRESAS QUE APLICAN AL PROCESO DEL JOB.
+    --OBTENGO LOS PARÁMETROS CON LAS EMPRESAS QUE APLICAN AL PROCESO DEL JOB.
         Lrf_AdmiParametroDet := DB_GENERAL.GNRLPCK_UTIL.F_GET_PARAMS_DETS(Pv_NombreParametro);
         LOOP
             FETCH Lrf_AdmiParametroDet INTO Lr_AdmiParametroDet;
             EXIT WHEN Lrf_AdmiParametroDet%NOTFOUND;
 
-            --SE VALIDA SI EXISTE UNA INSTANCIA EN EJECUCI�N DEL JOB EN EL PAR�METRO.
+            --SE VALIDA SI EXISTE UNA INSTANCIA EN EJECUCIÓN DEL JOB EN EL PARÁMETRO.
             IF DB_FINANCIERO.FNCK_CONSULTS.F_GET_ESTADO_EJECUCION_JOB(Pv_NombreJob => Lr_AdmiParametroDet.VALOR1) = 1 THEN
-                --SI EL JOB DEL PAR�METRO SE EST� EJECUTANDO, NO PUEDE EJECUTARSE EL JOB DE COMPROBANTES
+                --SI EL JOB DEL PARÁMETRO SE ESTÁ EJECUTANDO, NO PUEDE EJECUTARSE EL JOB DE COMPROBANTES
                 Ln_PuedeEjecutarse := 0;
             END IF;
         END LOOP;
@@ -15323,7 +15325,7 @@ BEGIN
       CLOSE C_GetPrefijoEmpresa;
       --
       --
-      --Busca el dia hasta el cual se podr� ingresar pagos, anticipos y/o procesar dep�sitos
+      --Busca el dia hasta el cual se podrá ingresar pagos, anticipos y/o procesar depósitos
       Lrf_GetAdmiParamtrosDet := FNCK_CONSULTS.F_GET_ADMI_PARAMETROS_DET(Lv_NombreParametroCab,
                                                                          Lv_EstadoActivo,
                                                                          Lv_EstadoActivo,
