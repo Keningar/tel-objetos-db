@@ -16,6 +16,10 @@ AS
     * Se remplazo el procedimiento para  consumo de la tentativa de promociones
     * @author Jefferson Carrillo <jacarrillo@telconet.ec>
     * @version 1.1 27-05-2022 
+    * 
+    * Se añade invocación a nuevos procesos para preplanificación de servicios CIH
+    * @author Alex Gómez <algomez@telconet.ec>
+    * @version 1.2 24-04-2023 
     */
     PROCEDURE P_AUTORIZAR_CONTRATO(Pcl_Request     IN  VARCHAR2,
                                    Pv_Mensaje      OUT VARCHAR2,
@@ -444,6 +448,10 @@ AS
    Ln_IdServicio               NUMBER := 0;
    Lv_EstadoServicio           VARCHAR2(50); 
 
+   Lc_preplanificaCIH      CLOB;
+   Lv_mensajeCIH           VARCHAR2(1000);
+   Lv_statusCIH            VARCHAR2(10);
+
 
       TYPE recordUltimaMillaServ  IS RECORD
        ( ID_TIPO_MEDIO NUMBER, 
@@ -727,6 +735,41 @@ AS
              Lv_EstadoContrato := 'Pendiente';
           END IF;
 
+          --Preplanificacion de productos CIH
+          IF Lv_EstadoContrato = 'Activo' AND Ln_ServicioFactible IS NOT NULL THEN
+            apex_json.initialize_clob_output (p_indent => 0);
+            apex_json.open_object; -- {
+            apex_json.write('ipCreacion', Lv_IpCreacion);
+            apex_json.write('codEmpresa', Lv_CodEmpresa);
+            apex_json.write('prefijoEmpresa', Lv_PrefijoEmpresa);
+            apex_json.write('usrCreacion', Lv_UsrCreacion);
+            apex_json.write('puntoId', Ln_PuntoId);
+            apex_json.write('origen', 'CONTRATO_DIGITAL');
+            apex_json.write('servicioInternetId', Ln_ServicioFactible);
+            apex_json.close_object; -- }
+            Lc_preplanificaCIH := apex_json.get_clob_output;
+
+            DB_COMERCIAL.CMKG_PRODUCTO_CIH.P_PREPLANIFICA_SERVICIOS_CIH(Lc_preplanificaCIH,
+                                                                        Lv_mensajeCIH, 
+                                                                        Lv_statusCIH);
+            IF Lv_statusCIH != 'OK' THEN
+              Pv_Mensaje := Lv_mensajeCIH;
+              Pv_Status := Lv_statusCIH;
+              RAISE Le_Errors;
+            END IF;
+
+            DB_COMERCIAL.CMKG_PRODUCTO_CIH.P_GENERAR_OTXSERVICIOS_CIH(Lc_preplanificaCIH,
+                                                                        Lv_mensajeCIH, 
+                                                                        Lv_statusCIH);
+            IF Lv_statusCIH != 'OK' THEN
+              Pv_Mensaje := Lv_mensajeCIH;
+              Pv_Status := Lv_statusCIH;
+              RAISE Le_Errors;
+            END IF;
+
+            apex_json.free_output;
+          END IF;
+
       -- Actualizar adendum y contrato
           FOR i IN C_ADENDUM_PARAMS(Ln_ContratoId, Lv_Tipo)
           LOOP 
@@ -994,6 +1037,10 @@ AS
         ROLLBACK;
         Pv_Status     := 'ERROR';
         Pn_SeAutorizo := 0;
+        IF Lc_preplanificaCIH IS NOT NULL THEN
+          DB_COMERCIAL.CMKG_PRODUCTO_CIH.P_REVERSA_PREPLANIFICACION(Lc_preplanificaCIH,Lv_mensajeCIH,Lv_statusCIH);
+        END IF;
+
     WHEN Le_ErrorRechazarContrato THEN
         ROLLBACK;
         Pcl_RechazarContrato   :='{
@@ -1025,6 +1072,10 @@ AS
                                             'telcos',
                                             SYSDATE,
                                             '127.0.0.1');
+        IF Lc_preplanificaCIH IS NOT NULL THEN
+          DB_COMERCIAL.CMKG_PRODUCTO_CIH.P_REVERSA_PREPLANIFICACION(Lc_preplanificaCIH,Lv_mensajeCIH,Lv_statusCIH);
+        END IF;
+
   END P_AUTORIZAR_CONTRATO;
 
 PROCEDURE P_GUARDAR_CONTRATO(
