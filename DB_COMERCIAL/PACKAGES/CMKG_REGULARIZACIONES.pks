@@ -287,11 +287,12 @@ BEGIN
             Lcl_WhereAndJoin := '
                                 WHERE  indo.empresa_cod in  ('''|| REPLACE(Pcl_ParamDetFirma.VALOR5, ',', ''',''') ||''') 
                                 AND indo.estado = ''Activo''
-                                AND (TRUNC(indo.fe_creacion)   BETWEEN to_date( '''|| Pcl_ParamDetFirma.VALOR3||''',''dd/mm/rrrr'') AND to_date('''|| Pcl_ParamDetFirma.VALOR4||''',''dd/mm/rrrr''))
                                 AND ico.estado in ('''|| REPLACE(Pcl_ParamDetFirma.VALOR2, ',', ''',''') ||''') 
-                                AND ((indo.USR_ULT_MOD  <> '''||Lv_usrCreacion||''' AND indo.ESTADO <> '''||  Lv_Estado ||''') OR indo.USR_CREACION  <>  '''||Lv_usrCreacion||''' )
-                              
-
+                                AND indo.fe_creacion BETWEEN TO_TIMESTAMP('''|| Pcl_ParamDetFirma.VALOR3||' 00:00:00'',''DD-MM-YYYY HH24:MI:SS'') AND TO_TIMESTAMP('''|| Pcl_ParamDetFirma.VALOR4||' 23:59:59'',''DD-MM-YYYY HH24:MI:SS'')
+                                AND ( 
+                                    select 1 from DB_COMUNICACION.info_documento indox where indox.id_documento = indo.id_documento 
+                                    AND ((indox.USR_ULT_MOD  <> '''||Lv_usrCreacion||''' AND indox.ESTADO <> '''||  Lv_Estado ||''') OR indox.USR_CREACION  <>  '''||Lv_usrCreacion||''' )                               
+                                    )= 1
                                 ';
 
 
