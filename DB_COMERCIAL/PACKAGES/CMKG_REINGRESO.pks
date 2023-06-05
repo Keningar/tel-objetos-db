@@ -25,12 +25,39 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
   * @version 1.2 27-07-2021 Se habilita Flujo de Reingreso de ordenes de servicio para servicios con tipo de orden T: Traslado, se valida que exista
   *                         el ID_SERVICIO origen del traslado.
   *
+  * @author Alex Gómez <algomez@telconet.ec>
+  * @version 1.3 30-09-2022  Se modifica añade nuevo parámetro en invocación de procedimiento P_SET_CLON_SERVICIO
+  *                          Se recibe nuevo parámetro para flujo de reingreso de servicios adicionales.
+  *                          Invocación a nuevo procedimiento para réingreso de servicios adicionales.
+  *                          Invocación a nuevo procedimiento para asignación de nuevo adendum Pendiente.
+  *
   * Costo Query C_ParametrosWs : 4
   * Costo Query C_GetIdServOrigenTraslado: 8
   */
   PROCEDURE P_REINGRESO_ORDEN_SERVICIO(Pcl_Json   IN  CLOB,
                                        Pv_Mensaje OUT VARCHAR2);
-
+  
+  /**
+  * Documentación para el Procedimiento P_REINGRESO_ORDEN_SERVICIO
+  *
+  * Método encargado de realizar el proceso automático de
+  * reingreso para servicios adicionales
+  *
+  * @param Pcl_Json    IN  CLOB     Recibe el JSON con la información a considerar en el proceso automático.
+  * @param Pv_Proceso  OUT VARCHAR2 Retorna los id de los nuevos servicios adicionales reingresados.
+  * @param Pv_Proceso  OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
+  * @param Pv_Mensaje  OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
+  *
+  * @author Alex Gómez <algomez@telconet.ec>
+  * @version 1.0 30-09-2022
+  *
+  * Costo Query C_GetParametros : 4
+  * Costo Query C_GetIdServOrigenTraslado: 8
+  */
+  PROCEDURE P_REINGRESO_SERVICIOS_ADC(Pcl_Json              IN  CLOB,
+                                      Pv_NuevosServiciosAdc OUT VARCHAR2,
+                                      Pv_Proceso            OUT VARCHAR2,
+                                      Pv_Mensaje            OUT VARCHAR2);
  /**
   * Documentación para F_GET_CARACT_SERVICIO
   * Retorna el valor de la Caracteristica del Servicio.
@@ -56,17 +83,23 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
   * @param Pn_IdServicio      IN  NUMBER   Recibe el id del servicio a clonar
   * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonación.
   * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de creación del servicio a clonar.
+  * @param Pv_EstadoNuevo     IN  VARCHAR2 Recibe la estado a asignar el servicio nuevo o clonado.
   * @param Pn_IdServicioNuevo OUT NUMBER   Retorna Id del servicio nuevo o clonado.
   * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
   * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.    
   *
   * @author Anebelle Peñaherrera <apenaherrera@telconet.ec>
   * @version 1.0 20-03-2020
+  *
+  * @author Alex Gómez <algomez@telconet.ec>
+  * @version 1.1 30-09-2022  Se añade parámetro Pv_EstadoNuevo para reutilizar proceso
+  *                          Se añade campo PRODUCTO_ID en INSERT para reutilizar proceso
   */
 
   PROCEDURE P_SET_CLON_SERVICIO(Pn_IdServicio      IN  NUMBER,
                                 Pv_UsuarioCreacion IN  VARCHAR2,
                                 Pv_IpCreacion      IN  VARCHAR2,
+                                Pv_EstadoNuevo     IN  VARCHAR2,
                                 Pn_IdServicioNuevo OUT  NUMBER,
                                 Pv_Proceso         OUT VARCHAR2,
                                 Pv_Mensaje         OUT VARCHAR2);
@@ -92,7 +125,32 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                         Pv_IpCreacion      IN  VARCHAR2,
                                         Pv_Proceso         OUT VARCHAR2,
                                         Pv_Mensaje         OUT VARCHAR2);
-
+  
+  /**
+  * Documentación para el Procedimiento P_ADD_INFO_ADENDUM
+  *
+  * Método encargado de realizar el eliminado lógico del adendum
+  * atado al servicio a clonar y genera uno nuevo con el servicio clonado.
+  *
+  * @param Pn_IdServicioClon  IN  NUMBER   Recibe el id del servicio a clonar
+  * @param Pn_IdServicioNuevo IN  NUMBER   Recibe el id del Servicio clonado.
+  * @param Pn_IdPunto         IN  NUMBER   Recibe el id del punto al que pertenecen los servicios.
+  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonación.
+  * @param Pv_IpCreacion      IN  VARCHAR2 Recibe la ip de creación del servicio a clonar.
+  * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
+  *
+  * @author Alex Gomez <algomez@telconet.ec>
+  * @version 1.0 07-10-2022
+  */
+  PROCEDURE P_ADD_INFO_ADENDUM(Pn_IdServicioClon  IN  NUMBER,
+                               Pn_IdServicioNuevo IN  NUMBER,
+                               Pn_IdPunto         IN  NUMBER,
+                               Pv_UsuarioCreacion IN  VARCHAR2,
+                               Pv_IpCreacion      IN  VARCHAR2,
+                               Pv_Proceso         OUT VARCHAR2,
+                               Pv_Mensaje         OUT VARCHAR2);
+                                        
   /**
   * Documentación para el Procedimiento P_SET_CLON_SERVICIO_PLAN
   *
@@ -115,7 +173,26 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_REINGRESO AS
                                      Pv_UsuarioCreacion IN  VARCHAR2,
                                      Pv_Proceso         OUT VARCHAR2,
                                      Pv_Mensaje         OUT VARCHAR2);
-
+  
+  /**
+  * Documentación para el Procedimiento P_SET_CLON_SERVICIO_PROD
+  *
+  * Método encargado de clonar las características de un servicio adicional.
+  *
+  * @param Pn_IdServicioClon  IN  NUMBER   Recibe el id del servicio a clonar
+  * @param Pn_IdServicioNuevo IN  NUMBER   Recibe el id del Servicio clonado.
+  * @param Pv_UsuarioCreacion IN  VARCHAR2 Recibe el usuario quien realiza la clonación.
+  * @param Pv_Proceso         OUT VARCHAR2 Retorna el nombre del proceso en caso de existir un error.
+  * @param Pv_Mensaje         OUT VARCHAR2 Retorna un mensaje de error en caso de existir.
+  *
+  * @author Alez Gómez <algomez@telconet.ec>
+  * @version 1.0 30-09-2022 
+  */
+  PROCEDURE P_SET_CLON_SERVICIO_PROD(Pn_IdServicioClon  IN  NUMBER,
+                                     Pn_IdServicioNuevo IN  NUMBER,
+                                     Pv_UsuarioCreacion IN  VARCHAR2,
+                                     Pv_Proceso         OUT VARCHAR2,
+                                     Pv_Mensaje         OUT VARCHAR2);
   /**
   * Documentación para el Procedimiento P_SET_HISTORIAL_SERVICIO
   *
@@ -381,6 +458,10 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
     Lv_TipoOrden             VARCHAR2(20);
     Lc_Json                  CLOB;
     Lc_Respuesta             CLOB;
+    
+    Lv_IdNuevosServiciosAdc  VARCHAR2(1000);
+    Lv_IdPunto               VARCHAR2(50);
+    
     BEGIN
       
       IF C_ParametrosWs%ISOPEN THEN
@@ -395,6 +476,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       Lv_TipoOrden  := apex_json.get_varchar2('strTipoOrden');
       Lv_Estado     := apex_json.get_varchar2('strEstado');
       Lv_CodEmpresa := apex_json.get_varchar2('strCodEmpresa');
+      Lv_IdPunto    := apex_json.get_varchar2('intIdPunto');
 
       IF Lv_IdServicio IS NULL THEN
         Lv_Error := 'Id del servicio Nulo';
@@ -445,6 +527,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       DB_COMERCIAL.CMKG_REINGRESO.P_SET_CLON_SERVICIO(Lv_IdServicio,
                                                       Lv_Usuario,
                                                       Lv_Ip,
+                                                      'Pre-servicio',
                                                       Ln_IdServicioNuevo,
                                                       Lv_Proceso,
                                                       Lv_Error);
@@ -460,6 +543,19 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
                                                               Lv_Ip,
                                                               Lv_Proceso,
                                                               Lv_Error);
+
+      IF Lv_Error IS NOT NULL THEN
+        RAISE Le_Exception;
+      END IF;
+      
+      --PROCESO PARA LA GENERACIÓN DE NUEVO ADENDUM
+      DB_COMERCIAL.CMKG_REINGRESO.P_ADD_INFO_ADENDUM(Lv_IdServicio,
+                                                     Ln_IdServicioNuevo,
+                                                     Lv_IdPunto,
+                                                     Lv_Usuario,
+                                                     Lv_Ip,
+                                                     Lv_Proceso,
+                                                     Lv_Error);
 
       IF Lv_Error IS NOT NULL THEN
         RAISE Le_Exception;
@@ -519,6 +615,15 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       IF Lv_Error IS NOT NULL THEN
         RAISE Le_Exception;
       END IF;
+      
+      --PROCESO QUE VERIFICA Y REALIZA LA CLONACION POR SERVICIOS ADICIONALES
+      DB_COMERCIAL.CMKG_REINGRESO.P_REINGRESO_SERVICIOS_ADC(Pcl_Json,
+                                                            Lv_IdNuevosServiciosAdc,
+                                                            Lv_Proceso,
+                                                            Lv_Error);
+      IF Lv_Error IS NOT NULL THEN
+        RAISE Le_Exception;
+      END IF;
 
       COMMIT;
       
@@ -528,7 +633,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
       Lc_Json := REPLACE(Lc_Json,'Pcl_Json'            ,Pcl_Json);
       Lc_Json := REPLACE(Lc_Json,'Ln_IdServicioNuevo'  ,Ln_IdServicioNuevo);
       Lc_Json := REPLACE(Lc_Json,'opWS'                ,Lc_ParametrosWs.VALOR2);
-                                                  
+      Lc_Json := REPLACE(Lc_Json,'"Lt_IdServiciosNuevosAdc"',Lv_IdNuevosServiciosAdc);
+            
       DB_GENERAL.GNKG_WEB_SERVICE.P_WEB_SERVICE(Pv_Url             => Lc_ParametrosWs.VALOR1,
                                                 Pcl_Mensaje        => Lc_Json,
                                                 Pv_Application     => Lc_ParametrosWs.VALOR3,
@@ -567,6 +673,249 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
                                             SYSDATE,
                                             NVL(Lv_Ip, '127.0.0.1'));           
     END P_REINGRESO_ORDEN_SERVICIO;    
+    --
+    --
+    --
+    PROCEDURE P_REINGRESO_SERVICIOS_ADC(Pcl_Json              IN  CLOB,
+                                        Pv_NuevosServiciosAdc OUT VARCHAR2,
+                                        Pv_Proceso            OUT VARCHAR2,
+                                        Pv_Mensaje            OUT VARCHAR2) IS
+      
+      Lv_ReingresaAdicionales  VARCHAR2(1);
+      Ln_TotalServicios        INTEGER;
+      
+      Ln_IdServicioActual      DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE;
+      Lv_EstadoServicio        DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE;
+      Ln_IdServicioNuevo       DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE;
+      Lv_IdServiciosNuevos     VARCHAR2(1000) := '';
+      Lv_EstadoPendiente       DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE := 'Pendiente';
+      Lv_IdServicioTraslado    VARCHAR2(20);
+      
+      Lv_Usuario               VARCHAR2(40);
+      Lv_Ip                    VARCHAR2(40);
+      Lv_CodEmpresa            VARCHAR2(2);
+      Lv_UsuarioReingreso      VARCHAR2(20)  := 'telcos_reingresos';
+      Lv_EstadoActivo          DB_COMERCIAL.INFO_SERVICIO.ESTADO%TYPE := 'Activo';
+      Lv_Proceso               VARCHAR2(100) := 'P_REINGRESO_SERVICIOS_ADC';
+      Lv_NombreParametro       DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE := 'PARAMETROS_REINGRESO_OS_AUTOMATICA'; 
+      Lv_DescripcionParametro  DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE := 'DESC_TRASLADO';
+      Lv_CaracteristicaReing   DB_COMERCIAL.ADMI_CARACTERISTICA.DESCRIPCION_CARACTERISTICA%TYPE := 'ID_SERVICIO_REINGRESO';
+      Lv_Codigo                VARCHAR2(30)  := ROUND(DBMS_RANDOM.VALUE(1000,9999))||TO_CHAR(SYSDATE,'DDMMRRRRHH24MISS');
+      Lv_TipoOrden             VARCHAR2(20);
+      Lv_Error                 VARCHAR2(3000);
+      Le_Exception             EXCEPTION;
+      
+      --Costo: 4
+      CURSOR C_GetParametros(Cv_EmpresaId       VARCHAR2,
+                             Cv_NombreParametro VARCHAR2,
+                             Cv_Descripcion     VARCHAR2,
+                             Cv_EstadoActivo    VARCHAR2) IS
+      SELECT DET.VALOR1,
+      DET.VALOR2,
+      DET.VALOR3,
+      DET.VALOR4
+      FROM DB_GENERAL.ADMI_PARAMETRO_CAB CAB,
+        DB_GENERAL.ADMI_PARAMETRO_DET DET
+      WHERE CAB.ID_PARAMETRO   = DET.PARAMETRO_ID
+      AND CAB.ESTADO           = Cv_EstadoActivo
+      AND DET.ESTADO           = Cv_EstadoActivo
+      AND CAB.MODULO           = 'COMERCIAL'
+      AND DET.EMPRESA_COD      = Cv_EmpresaId
+      AND DET.DESCRIPCION      = Cv_Descripcion
+      AND CAB.NOMBRE_PARAMETRO = Cv_NombreParametro;
+      
+      --Costo: 8
+      CURSOR C_GetIdServOrigenTraslado(Cn_IdServicio   DB_COMERCIAL.INFO_SERVICIO_HISTORIAL.SERVICIO_ID%TYPE,
+                                     Cv_Observacion  VARCHAR2,
+                                     Cv_Formato      VARCHAR2)
+        IS
+          SELECT REGEXP_SUBSTR(OBSERVACION,
+          Cv_Formato, 1, 2, '') AS ID_SERVICIO_TRASLADO
+          FROM DB_COMERCIAL.INFO_SERVICIO_HISTORIAL
+          WHERE SERVICIO_ID    = Cn_IdServicio
+          AND OBSERVACION      LIKE Cv_Observacion; 
+          
+      Lc_ParametroDetalle      C_GetParametros%ROWTYPE;
+      Lv_IdPunto               VARCHAR2(50);
+      
+    BEGIN
+    
+      APEX_JSON.PARSE(Pcl_Json);
+      
+      Lv_Usuario              := APEX_JSON.GET_VARCHAR2('strUsuario');
+      Lv_Ip                   := APEX_JSON.GET_VARCHAR2('strIp');
+      Lv_TipoOrden            := APEX_JSON.GET_VARCHAR2('strTipoOrden');
+      Lv_ReingresaAdicionales := APEX_JSON.GET_VARCHAR2('strRSAdicionales');
+      Lv_CodEmpresa           := APEX_JSON.GET_VARCHAR2('strCodEmpresa');
+      Lv_IdPunto              := APEX_JSON.GET_VARCHAR2('intIdPunto');
+      
+      IF NVL(Lv_ReingresaAdicionales, 'N') = 'S' THEN
+        BEGIN 
+          Ln_TotalServicios := APEX_JSON.GET_COUNT('arrayIdServAdicionales');
+          
+          OPEN C_GetParametros(Lv_CodEmpresa,
+                              Lv_NombreParametro,
+                              Lv_DescripcionParametro,
+                              Lv_EstadoActivo);
+          FETCH C_GetParametros 
+          INTO  Lc_ParametroDetalle;
+          CLOSE C_GetParametros;
+          
+          FOR i IN 1 .. Ln_TotalServicios LOOP
+            Ln_IdServicioActual := APEX_JSON.GET_NUMBER(P_PATH => 'arrayIdServAdicionales[%d].intIdServicioAdc',
+                                                        P0     => i);
+            Lv_EstadoServicio := APEX_JSON.GET_VARCHAR2(P_PATH => 'arrayIdServAdicionales[%d].strEstadoAdc',
+                                                        P0     => i);
+                                                                    
+            IF Lv_TipoOrden = 'Traslado' THEN
+              IF C_GetIdServOrigenTraslado%ISOPEN THEN
+                CLOSE C_GetIdServOrigenTraslado;
+              END IF;
+              --
+              OPEN C_GetIdServOrigenTraslado(Ln_IdServicioActual,
+                                             Lc_ParametroDetalle.VALOR1,
+                                             Lc_ParametroDetalle.VALOR2);
+              FETCH C_GetIdServOrigenTraslado INTO Lv_IdServicioTraslado;
+              CLOSE C_GetIdServOrigenTraslado;
+      
+              IF Lv_IdServicioTraslado IS NULL THEN
+                Lv_Error := 'OS No procede para Reingreso Automático: No se encontro servicio origen del traslado.';
+                DB_COMERCIAL.CMKG_REINGRESO.P_SET_HISTORIAL_SERVICIO(Ln_IdServicioActual,
+                                                                     Lv_UsuarioReingreso,
+                                                                     Lv_Ip,
+                                                                     Lv_EstadoServicio,
+                                                                     NULL,
+                                                                     Lv_Error,
+                                                                     'reingresoAutomatico',
+                                                                     Lv_Proceso,
+                                                                     Lv_Error);
+                RAISE Le_Exception;
+              END IF;
+            END IF;
+            
+            --PROCESO PARA CLONAR EL SERVICIO
+            DB_COMERCIAL.CMKG_REINGRESO.P_SET_CLON_SERVICIO(Ln_IdServicioActual,
+                                                            Lv_Usuario,
+                                                            Lv_Ip,
+                                                            Lv_EstadoPendiente,
+                                                            Ln_IdServicioNuevo,
+                                                            Lv_Proceso,
+                                                            Lv_Error);
+      
+            IF Ln_IdServicioNuevo IS NULL OR Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            --PROCESO PARA CLONAR EL SERVICIO TECNICO
+            DB_COMERCIAL.CMKG_REINGRESO.P_SET_CLON_SERVICIO_TECNICO(Ln_IdServicioActual,
+                                                                    Ln_IdServicioNuevo,
+                                                                    Lv_Usuario,
+                                                                    Lv_Ip,
+                                                                    Lv_Proceso,
+                                                                    Lv_Error);
+      
+            IF Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            --PROCESO PARA LA GENERACIÓN DE NUEVO ADENDUM
+            DB_COMERCIAL.CMKG_REINGRESO.P_ADD_INFO_ADENDUM(Ln_IdServicioActual,
+                                                           Ln_IdServicioNuevo,
+                                                           Lv_IdPunto,
+                                                           Lv_Usuario,
+                                                           Lv_Ip,
+                                                           Lv_Proceso,
+                                                           Lv_Error);
+      
+            IF Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            --PROCESO PARA CLONAR LAS CARACTERISTICAS DEL SERVICIO
+            DB_COMERCIAL.CMKG_REINGRESO.P_SET_CLON_SERVICIO_PROD(Ln_IdServicioActual,
+                                                                 Ln_IdServicioNuevo,
+                                                                 Lv_Usuario,
+                                                                 Lv_Proceso,
+                                                                 Lv_Error);
+      
+            IF Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            --INSERTAMOS EL HISTORIAL DEL SERVICIO EN NUEVO SERVICIO CLONADO
+            DB_COMERCIAL.CMKG_REINGRESO.P_SET_HISTORIAL_SERVICIO(Ln_IdServicioNuevo,
+                                                                 Lv_UsuarioReingreso,
+                                                                 Lv_Ip,
+                                                                 Lv_EstadoPendiente,
+                                                                 NULL,
+                                                                 'Se crea servicio por proceso de Reingreso automatico',
+                                                                 'reingresoAutomatico',
+                                                                 Lv_Proceso,
+                                                                 Lv_Error);
+      
+            IF Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            --INSERTAMOS EL HISTORIAL DEL SERVICIO EN EL SERVICIO ORIGEN DEL REINGRESO
+            DB_COMERCIAL.CMKG_REINGRESO.P_SET_HISTORIAL_SERVICIO(Ln_IdServicioActual,
+                                                                 Lv_UsuarioReingreso,
+                                                                 Lv_Ip,
+                                                                 Lv_EstadoServicio,
+                                                                 NULL,
+                                                                 'Se ejecutó proceso de reingreso de orden de servicio automático, '||
+                                                                 'por favor verificar el nuevo servicio clonado',
+                                                                 'reingresoAutomatico',
+                                                                 Lv_Proceso,
+                                                                 Lv_Error);
+      
+            IF Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            --PROCESO PARA INSERTAR CARACTERISTICA DE REINGRESO DE OS QUE RELACIONA EL ID SERVICIO ORIGEN Y DESTINO "ID_SERVICIO_REINGRESO" 
+            DB_COMERCIAL.CMKG_REINGRESO.P_SET_CARACTERISTICA_REINGRESO(Ln_IdServicioActual,
+                                                                       Ln_IdServicioNuevo,
+                                                                       Lv_CaracteristicaReing,
+                                                                       Lv_Usuario,
+                                                                       Lv_Ip, 
+                                                                       Lv_Proceso,
+                                                                       Lv_Error);
+      
+            IF Lv_Error IS NOT NULL THEN
+              RAISE Le_Exception;
+            END IF;
+            
+            Lv_IdServiciosNuevos := Lv_IdServiciosNuevos || Ln_IdServicioNuevo || ',';
+          END LOOP;
+          
+        EXCEPTION
+          WHEN OTHERS THEN
+            Ln_TotalServicios := 0;
+        END LOOP;
+        
+        IF Ln_TotalServicios = 0 THEN
+          Lv_Error := 'No se reciben servicios adicionales a reingresar.';
+          Raise Le_Exception;
+        END IF;
+        
+        Lv_IdServiciosNuevos := SUBSTR(Lv_IdServiciosNuevos,0,LENGTH(Lv_IdServiciosNuevos)-1);
+      END IF;
+
+      Pv_NuevosServiciosAdc := '[' || Lv_IdServiciosNuevos || ']';
+      
+    EXCEPTION
+      WHEN Le_Exception THEN
+        Pv_Proceso := Lv_Proceso;
+        Pv_Mensaje := Lv_Error;
+        Pv_NuevosServiciosAdc := NULL;
+         
+      WHEN OTHERS THEN
+        Pv_Proceso := Lv_Proceso;
+        Pv_Mensaje := SQLCODE || '-' || SQLERRM;
+        Pv_NuevosServiciosAdc := NULL;
+
+    END P_REINGRESO_SERVICIOS_ADC;
     --
     --
     --
@@ -725,6 +1074,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
     PROCEDURE P_SET_CLON_SERVICIO(Pn_IdServicio      IN  NUMBER,
                                   Pv_UsuarioCreacion IN  VARCHAR2,
                                   Pv_IpCreacion      IN  VARCHAR2,
+                                  Pv_EstadoNuevo     IN  VARCHAR2,
                                   Pn_IdServicioNuevo OUT  NUMBER,
                                   Pv_Proceso         OUT VARCHAR2,
                                   Pv_Mensaje         OUT VARCHAR2) IS
@@ -756,6 +1106,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
          ID_SERVICIO,
          PUNTO_ID,
          PLAN_ID,
+         PRODUCTO_ID,
          ES_VENTA,
          CANTIDAD,
          PRECIO_VENTA,
@@ -776,12 +1127,13 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
          Ln_IdServicioNuevo,
          Lc_Servicio.PUNTO_ID,
          Lc_Servicio.PLAN_ID,
+         Lc_Servicio.PRODUCTO_ID,
          Lc_Servicio.ES_VENTA,
          Lc_Servicio.CANTIDAD,
          Lc_Servicio.PRECIO_VENTA,
          Lc_Servicio.FRECUENCIA_PRODUCTO,
          Lc_Servicio.MESES_RESTANTES,
-         'Pre-servicio',
+         Pv_EstadoNuevo,
          SYSDATE,
          Lv_UsuarioReingreso,
          Pv_IpCreacion,
@@ -904,6 +1256,137 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_REINGRESO AS
         Pv_Mensaje := SQLCODE || '-' || SQLERRM;
 
     END P_SET_CLON_SERVICIO_PLAN;
+    --
+    --
+    --
+    PROCEDURE P_ADD_INFO_ADENDUM(Pn_IdServicioClon  IN  NUMBER,
+                                 Pn_IdServicioNuevo IN  NUMBER,
+                                 Pn_IdPunto         IN  NUMBER,
+                                 Pv_UsuarioCreacion IN  VARCHAR2,
+                                 Pv_IpCreacion      IN  VARCHAR2,
+                                 Pv_Proceso         OUT VARCHAR2,
+                                 Pv_Mensaje         OUT VARCHAR2)IS
+
+      --Cursores Locales
+      CURSOR Get_Adendum (Cn_IdServicio NUMBER,
+                          Cn_IdPunto NUMBER) IS
+      SELECT IA.*
+      FROM DB_COMERCIAL.INFO_ADENDUM IA
+      WHERE IA.SERVICIO_ID = Cn_IdServicio
+        AND IA.PUNTO_ID = Cn_IdPunto;
+
+      --Variables
+      Ln_IdAdendumNuevo    NUMBER := DB_COMERCIAL.SEQ_INFO_ADENDUM.NEXTVAL;
+      Lc_InfoAdendum       Get_Adendum%ROWTYPE;
+      Lv_UsuarioReingreso  VARCHAR2(20)  := 'telcos_reingresos';
+      Lv_EstadoPendiente   VARCHAR2(20)  := 'Pendiente';
+      Lv_EstadoEliminado   VARCHAR2(20)  := 'Eliminado';
+
+      BEGIN
+
+        IF Get_Adendum%ISOPEN THEN
+          CLOSE Get_Adendum;
+        END IF;
+
+        --Procedemos a la actualización del adendum anterior
+        OPEN Get_Adendum(Pn_IdServicioClon,Pn_IdPunto);
+          FETCH Get_Adendum INTO Lc_InfoAdendum;
+        CLOSE Get_Adendum;
+        
+        UPDATE DB_COMERCIAL.INFO_ADENDUM s
+           SET s.Estado = Lv_EstadoEliminado
+         WHERE s.ID_ADENDUM = Lc_InfoAdendum.ID_ADENDUM;
+        
+        --Procedemos a la generación de nuevo adendum
+        INSERT INTO DB_COMERCIAL.INFO_ADENDUM 
+        (
+         ID_ADENDUM,
+         FE_CREACION,
+         PUNTO_ID,
+         SERVICIO_ID,
+         IP_CREACION,
+         USR_CREACION,
+         ESTADO
+        ) 
+        VALUES 
+        (
+         Ln_IdAdendumNuevo,
+         SYSDATE,
+         Pn_IdPunto,
+         Pn_IdServicioNuevo,
+         Pv_IpCreacion,
+         Pv_UsuarioCreacion,
+         Lv_EstadoPendiente
+        );
+        
+      EXCEPTION
+      WHEN OTHERS THEN
+        Pv_Proceso := 'P_ADD_INFO_ADENDUM';
+        Pv_Mensaje := SQLCODE || '-' || SQLERRM;   
+
+    END P_ADD_INFO_ADENDUM;
+    --
+    --
+    --
+    PROCEDURE P_SET_CLON_SERVICIO_PROD(Pn_IdServicioClon  IN  NUMBER,
+                                       Pn_IdServicioNuevo IN  NUMBER,
+                                       Pv_UsuarioCreacion IN  VARCHAR2,
+                                       Pv_Proceso         OUT VARCHAR2,
+                                       Pv_Mensaje         OUT VARCHAR2) IS
+      
+      Lv_EstadoActivo      DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ESTADO%TYPE := 'Activo';
+      Lv_EstadoEliminado   DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT.ESTADO%TYPE := 'Eliminado';
+      
+      --CURSORES LOCALES
+      CURSOR C_ServicioProdCaract (Cv_IdServicio VARCHAR2) IS
+      SELECT ISPC.*
+      FROM DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT ISPC
+      WHERE ISPC.SERVICIO_ID = Cv_IdServicio
+      AND ISPC.ESTADO IN (Lv_EstadoActivo,Lv_EstadoEliminado);
+
+      TYPE t_CaracteristicasServ IS TABLE OF DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT%ROWTYPE;
+      Lt_CaracteristicasServ     t_CaracteristicasServ;
+      
+      BEGIN
+
+      OPEN C_ServicioProdCaract(Pn_IdServicioClon);
+      LOOP
+        FETCH C_ServicioProdCaract BULK COLLECT INTO Lt_CaracteristicasServ LIMIT 1000;
+        EXIT WHEN Lt_CaracteristicasServ.COUNT = 0;
+        FORALL Ln_Indice IN Lt_CaracteristicasServ.FIRST .. Lt_CaracteristicasServ.LAST SAVE EXCEPTIONS
+          INSERT INTO DB_COMERCIAL.INFO_SERVICIO_PROD_CARACT
+          (
+           ID_SERVICIO_PROD_CARACT,
+           SERVICIO_ID,
+           PRODUCTO_CARACTERISITICA_ID,
+           VALOR,
+           FE_CREACION,
+           USR_CREACION,
+           ESTADO
+          )
+          VALUES
+          (
+           DB_COMERCIAL.SEQ_INFO_SERVICIO_PROD_CARACT.NEXTVAL,
+           Pn_IdServicioNuevo,
+           Lt_CaracteristicasServ(Ln_Indice).PRODUCTO_CARACTERISITICA_ID,
+           Lt_CaracteristicasServ(Ln_Indice).VALOR,
+           SYSDATE,
+           Pv_UsuarioCreacion,
+           Lv_EstadoActivo
+          );
+      END LOOP;
+      CLOSE C_ServicioProdCaract;
+
+      EXCEPTION
+      WHEN OTHERS THEN
+        Pv_Proceso := 'P_SET_CLON_SERVICIO_PROD';
+        Pv_Mensaje := SQLCODE || '-' || SQLERRM;
+
+    END P_SET_CLON_SERVICIO_PROD;
+    --
+    --
+    --
+    
     --
     --
     --
