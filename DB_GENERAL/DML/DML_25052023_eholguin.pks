@@ -1,0 +1,93 @@
+/*
+ * @author Edgar Holguín <eholguin@telconet.ec>
+ * @version 1.0
+ * @since 25-05-2023
+ * Se crean las sentencias DML para creación de parametros.
+ */
+SET DEFINE OFF;
+
+INSERT
+INTO DB_GENERAL.ADMI_PARAMETRO_CAB
+  (
+    ID_PARAMETRO,
+    NOMBRE_PARAMETRO,
+    DESCRIPCION,
+    MODULO,
+    PROCESO,
+    ESTADO,
+    USR_CREACION,
+    FE_CREACION,
+    IP_CREACION
+  )
+  VALUES
+  (
+    DB_GENERAL.SEQ_ADMI_PARAMETRO_CAB.NEXTVAL,
+    'NUMERACION FACTURAS',
+    'PARAMETRO PARA CONFIGURACION DE NUMERACION DE FACTURAS',
+    'FINANCIERO',
+    'NUMERACION FACTURAS',
+    'Activo',
+    'eholguin',
+    SYSDATE,
+    '127.0.0.0'
+  );
+
+INSERT
+INTO DB_GENERAL.ADMI_PARAMETRO_DET DET VALUES
+  (
+    DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.nextval,
+    (SELECT ID_PARAMETRO
+    FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+    WHERE NOMBRE_PARAMETRO = 'NUMERACION FACTURAS' ),
+    'PROPORCIONAL',
+    '58',
+    'N',
+    'FACE',
+    NULL,
+    'Activo',
+    'eholguin',
+    SYSDATE,
+    '172.17.0.1',
+    'eholguin',
+    SYSDATE,
+    '172.17.0.1',
+    NULL,
+    (SELECT COD_EMPRESA FROM DB_COMERCIAL.INFO_EMPRESA_GRUPO WHERE NOMBRE_EMPRESA = 'MEGADATOS S.A.'),
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  );
+  
+INSERT
+INTO DB_GENERAL.ADMI_PARAMETRO_DET DET VALUES
+  (
+    DB_GENERAL.SEQ_ADMI_PARAMETRO_DET.nextval,
+    (SELECT ID_PARAMETRO
+    FROM DB_GENERAL.ADMI_PARAMETRO_CAB
+    WHERE NOMBRE_PARAMETRO = 'NUMERACION FACTURAS' ),
+    'PROPORCIONAL',
+    '240',
+    'N',
+    'FACE',
+    NULL,
+    'Activo',
+    'eholguin',
+    SYSDATE,
+    '172.17.0.1',
+    'eholguin',
+    SYSDATE,
+    '172.17.0.1',
+    NULL,
+    (SELECT COD_EMPRESA FROM DB_COMERCIAL.INFO_EMPRESA_GRUPO WHERE NOMBRE_EMPRESA = 'ECUANET'),
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  );
+  
+  COMMIT;
+/
+      
