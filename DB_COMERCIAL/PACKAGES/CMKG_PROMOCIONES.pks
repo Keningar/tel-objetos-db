@@ -310,6 +310,10 @@ CREATE OR REPLACE PACKAGE DB_COMERCIAL.CMKG_PROMOCIONES AS
   *
   * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.8 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.9 05-06-2023 - Se envía parametro empresa a proceso P_MAPEO_PROMO_MENSUAL.
+  *
   */
   PROCEDURE P_PROCESO_MAPEO_PROMOCIONES(Pv_CodigoGrupoPromocion  IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
                                         Pv_CodEmpresa            IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -1209,6 +1213,9 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
   * @version 1.2 07-01-2022 - Se modifica cursor C_GetCiclosDiaProceso y se agrega que el proceso se ejecute el dia de inicio de ciclo de Facturación
   *                           para ciclo1 y ciclo2.
   *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.3 05-06-2023 - Se envía parametro empresa al proceso P_MAPEO_PROMO_MENSUAL.
+  *
   */
   PROCEDURE P_EJECUTA_MAPEO_MENSUAL (Pv_Empresa     IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                      Pv_TipoPromo   IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE);
@@ -1239,6 +1246,9 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
   *
   * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.3 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.4 05-06-2023 - Se envía parametro empresa al proceso P_MAPEO_PROMO_MENSUAL.
   *
   */
   PROCEDURE P_MAPEO_MENSUAL_POR_CICLO (Pv_Empresa     IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -1303,6 +1313,9 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
   *
   * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.5 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.6 05-06-2023 - Se agregan parametro Pv_EmpresaCod para obtener los parametros por empresa.
   */
   PROCEDURE P_MAPEO_PROMO_MENSUAL (Pr_Punto                IN Lr_PtosClientesProcesar DEFAULT NULL,
                                    Pa_ServiciosCumplePromo IN T_ServiciosProcesar,
@@ -1313,6 +1326,7 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
                                    Pv_TipoProceso          IN VARCHAR2 DEFAULT NULL,
                                    Pv_Trama                IN VARCHAR2 DEFAULT NULL,
                                    Prf_AdmiTipoPromoRegla  IN DB_COMERCIAL.INFO_DETALLE_MAPEO_PROMO%ROWTYPE DEFAULT NULL,
+                                   Pv_EmpresaCod           IN VARCHAR2,
                                    Pv_MsjResultado         OUT VARCHAR2);
 
   /**
@@ -1571,6 +1585,10 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
   *
   * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.4 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.5 05-06-2023 - Se envía parametro empresa al proceso P_MAPEO_PROMO_MENSUAL.
+  *
   */
   PROCEDURE P_MAPEO_CAMBIO_PLAN ( Pr_Punto                 IN Lr_PtosClientesProcesar DEFAULT NULL,
                                   Pn_IdServicio            IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE DEFAULT NULL,
@@ -1761,6 +1779,10 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
   *
   * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.2 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.3 05-06-2023 - Se envía parametro empresa al proceso P_MAPEO_PROMO_MENSUAL.
+  *
   */
   PROCEDURE P_PROMOCIONES_POR_CODIGO(Pv_CodigoGrupoPromocion  IN DB_COMERCIAL.ADMI_TIPO_PROMOCION.CODIGO_TIPO_PROMOCION%TYPE,
                                      Pv_CodEmpresa            IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
@@ -1966,6 +1988,10 @@ PROCEDURE P_VALIDA_PROMO_PLAN_PROD(Pn_Id_Detalle_Mapeo     IN DB_COMERCIAL.INFO_
   *
   * @author José Candelario <jcandelario@telconet.ec>
   * @version 1.1 07-03-2023 - Se agregan validacion por proyecto Ecuanet.
+  *
+  * @author José Candelario <jcandelario@telconet.ec>
+  * @version 1.2 05-06-2023 - Se envía parametro empresa al proceso P_MAPEO_PROMO_MENSUAL.
+  *
   */
     PROCEDURE P_PIERDE_PROMO_EXISTENTE (Pv_Empresa     IN DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE,
                                         Pv_IdServicio  IN DB_COMERCIAL.INFO_SERVICIO.ID_SERVICIO%TYPE,
@@ -2555,6 +2581,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                                 Pv_TipoProceso,
                                                 Lv_Trama,
                                                 NULL,
+                                                Pv_CodEmpresa,
                                                 Lv_MsjResultado);
                           --
                           DB_GENERAL.GNRLPCK_UTIL.INSERT_ERROR('Telcos+','CMKG_PROMOCIONES.P_PROCESO_MAPEO_PROMOCIONES', 
@@ -7196,6 +7223,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                   Pr_TipoPromoRegla       => Lr_TipoPromoRegla,
                                   Prf_AdmiTipoPromoRegla  => Lr_InfoDetalleMapeoPromo,
                                   Pv_Trama                => Lv_Trama,
+                                  Pv_EmpresaCod           => Pv_Empresa,
                                   Pv_MsjResultado         => Lv_msj);   
                                   
             IF Pv_TipoPromo = 'PROM_MENS' THEN
@@ -7213,6 +7241,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                   Pr_TipoPromoRegla       => Lr_TipoPromoRegla,
                                   Prf_AdmiTipoPromoRegla  => Lr_InfoDetalleMapeoPromo,
                                   Pv_Trama                => Lv_Trama,
+                                  Pv_EmpresaCod           => Pv_Empresa,
                                   Pv_MsjResultado         => Lv_msj); 
 
           END IF;
@@ -7276,6 +7305,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                    Pv_TipoProceso          IN VARCHAR2 DEFAULT NULL,
                                    Pv_Trama                IN VARCHAR2 DEFAULT NULL,
                                    Prf_AdmiTipoPromoRegla  IN DB_COMERCIAL.INFO_DETALLE_MAPEO_PROMO%ROWTYPE DEFAULT NULL,
+                                   Pv_EmpresaCod           IN VARCHAR2,
                                    Pv_MsjResultado         OUT VARCHAR2) 
   IS
 
@@ -7376,17 +7406,6 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
        AND TO_NUMBER(TO_CHAR(IDMP.FE_MAPEO,'DD')) BETWEEN TO_NUMBER(TO_CHAR(TRUNC(SYSDATE,'MM'),'DD'))
        AND TO_NUMBER(TO_CHAR(Cd_FeCreacion,'DD'));
 
-    --Costo: 8
-    CURSOR C_GetEmpresa(Cn_IdPunto DB_COMERCIAL.INFO_PUNTO.ID_PUNTO%TYPE)
-    IS
-      SELECT IER.EMPRESA_COD
-      FROM DB_COMERCIAL.INFO_PUNTO PTO,
-        DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
-        DB_COMERCIAL.INFO_EMPRESA_ROL IER
-      WHERE PTO.ID_PUNTO      = Cn_IdPunto
-      AND IPER.ID_PERSONA_ROL = PTO.PERSONA_EMPRESA_ROL_ID
-      AND IER.ID_EMPRESA_ROL  = IPER.EMPRESA_ROL_ID;
-
     Lv_NombreParametro        DB_GENERAL.ADMI_PARAMETRO_CAB.NOMBRE_PARAMETRO%TYPE:='PROMOCIONES_PARAMETROS_EJECUCION_DE_ALCANCE';
     Lv_DescParametro          DB_GENERAL.ADMI_PARAMETRO_DET.DESCRIPCION%TYPE:='NUMERO_DIAS_FECHA_PROCESA_ALCANCE';
     Ln_NumeroDias             NUMBER := 0;
@@ -7428,10 +7447,6 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
     --
   BEGIN       
 
-    IF C_GetEmpresa%ISOPEN THEN
-      CLOSE C_GetEmpresa;
-    END IF;
-
     IF C_CicloEspecial%ISOPEN THEN
       CLOSE C_CicloEspecial;
     END IF;
@@ -7444,10 +7459,8 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
       CLOSE C_GetCantMapCicloEsp;
     END IF;
 
-    OPEN C_GetEmpresa(Pr_Punto.ID_PUNTO);
-    FETCH C_GetEmpresa INTO Lv_CodEmpresa;
-    CLOSE C_GetEmpresa;
-
+    Lv_CodEmpresa := Pv_EmpresaCod;
+    
     IF Pv_TipoProceso ='UPGRADE' OR Pv_TipoProceso ='DOWNGRADE' OR Pv_TipoProceso ='UPGRADE_CAMBIO_PRECIO' THEN
     
       Lv_TipoCliente:='EXISTENTE';
@@ -9445,6 +9458,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                                 Lv_TipoProceso,
                                                 Lv_Trama,
                                                 NULL,
+                                                Pv_CodEmpresa,
                                                 Lv_MsjResultado);                                                   
                         ELSE   
                           --                                                            
@@ -10919,6 +10933,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                                 Pv_TipoProceso,
                                                 Lv_Trama,
                                                 NULL,
+                                                Pv_CodEmpresa,
                                                 Lv_MsjResultado);                                                   
                         ELSE
                         --                                                            
@@ -13048,6 +13063,7 @@ CREATE OR REPLACE PACKAGE BODY DB_COMERCIAL.CMKG_PROMOCIONES AS
                                     Pr_TipoPromoRegla       => Lr_TipoPromoRegla,
                                     Prf_AdmiTipoPromoRegla  => Lr_InfoDetalleMapeoPromo,
                                     Pv_Trama                => Lv_Trama,
+                                    Pv_EmpresaCod           => Pv_Empresa,
                                     Pv_MsjResultado         => Lv_msj);
             END IF;
 
