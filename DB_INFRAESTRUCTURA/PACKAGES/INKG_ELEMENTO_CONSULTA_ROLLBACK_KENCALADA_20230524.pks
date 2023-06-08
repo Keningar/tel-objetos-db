@@ -1832,32 +1832,6 @@ create or replace package body DB_INFRAESTRUCTURA.INKG_ELEMENTO_CONSULTA is
                                                    WHERE ELEMENTO_ID = E.ID_ELEMENTO
                                                      AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
                                                      AND ESTADO = ''Activo'')) AS RESPONSABLE_DEPARTAMENTO,
-                     (SELECT AC.NOMBRE_CANTON
-                      FROM DB_INFRAESTRUCTURA.INFO_EMPRESA_ELEMENTO_UBICA IEEU, DB_INFRAESTRUCTURA.INFO_UBICACION IU, DB_INFRAESTRUCTURA.INFO_OFICINA_GRUPO IOG, DB_INFRAESTRUCTURA.ADMI_CANTON AC
-                      WHERE IEEU.ELEMENTO_ID = E.ID_ELEMENTO
-                            AND IU.ID_UBICACION = IEEU.UBICACION_ID
-                            AND IOG.ID_OFICINA = IU.OFICINA_ID
-                            AND AC.ID_CANTON = IOG.CANTON_ID
-                            AND ROWNUM = 1 ) AS NOMBRE_CANTON,
-                    (SELECT IP.LOGIN
-                      FROM DB_COMERCIAL.INFO_PERSONA IP, DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
-                      WHERE
-                        IP.ID_PERSONA = IPER.PERSONA_ID
-                        AND IPER.ID_PERSONA_ROL = (
-                          SELECT DETALLE_VALOR
-                          FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                          WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                AND ESTADO = ''Activo'')) AS RESPONSABLE_TABLET_LOGIN,
-                    (SELECT IP.NOMBRES || '' '' || IP.APELLIDOS
-                      FROM DB_COMERCIAL.INFO_PERSONA IP, DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER
-                      WHERE IP.ID_PERSONA = IPER.PERSONA_ID
-                            AND IPER.ID_PERSONA_ROL = (
-                              SELECT DETALLE_VALOR
-                              FROM DB_INFRAESTRUCTURA.INFO_DETALLE_ELEMENTO
-                              WHERE ELEMENTO_ID = E.ID_ELEMENTO
-                                    AND DETALLE_NOMBRE = ''RESPONSABLE_TABLET''
-                                    AND ESTADO = ''Activo'')) AS RESPONSABLE_TABLET_NOMBRE_COMPLETO,
                      E.OBSERVACION,
                      E.FE_CREACION,
                      E.USR_CREACION,

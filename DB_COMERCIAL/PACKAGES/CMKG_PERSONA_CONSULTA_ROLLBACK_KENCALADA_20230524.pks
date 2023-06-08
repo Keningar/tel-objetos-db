@@ -79,28 +79,7 @@ CREATE OR REPLACE package DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
                              Pv_Status    OUT VARCHAR2,
                              Pv_Mensaje   OUT VARCHAR2,
                              Pcl_Response OUT SYS_REFCURSOR);
-
-  /**
-  * Documentación para el procedimiento P_PERSONA_RESPONSABLE
-  *
-  * Método encargado de retornar lista de persona de rol empleado responsable de tablets.
-  *
-  * @param Pcl_Request    IN   CLOB Recibe json request
-  * [
-  *   empresaId           := Id de empresa Defaul '10'
-  * ]
-  * @param Pv_Status      OUT  VARCHAR2 Retorna estatus de la transacción
-  * @param Pv_Mensaje     OUT  VARCHAR2 Retorna mensaje de la transacción
-  * @param Pcl_Response   OUT  SYS_REFCURSOR Retorna cursor de la transacción
-  *
-  * @author Kenth Encalada <kencalada@telconet.ec>
-  * @version 1.0 24-05-2023
-  */
-  PROCEDURE P_PERSONA_RESPONSABLE(Pcl_Request  IN  CLOB,
-                                  Pv_Status    OUT VARCHAR2,
-                                  Pv_Mensaje   OUT VARCHAR2,
-                                  Pcl_Response OUT SYS_REFCURSOR);
-
+                             
   /**
   * Documentación para el procedimiento P_PERSONA_POR_DEPARTAMENTO
   *
@@ -608,72 +587,6 @@ CREATE OR REPLACE package body DB_COMERCIAL.CMKG_PERSONA_CONSULTA is
       Pv_Mensaje := SQLERRM;
   END P_PERSONA_POR_ROL;
   
-  PROCEDURE P_PERSONA_RESPONSABLE(Pcl_Request  IN  CLOB,
-                                  Pv_Status    OUT VARCHAR2,
-                                  Pv_Mensaje   OUT VARCHAR2,
-                                  Pcl_Response OUT SYS_REFCURSOR)
-  AS
-    Lcl_Query              CLOB;
-    Lcl_Select         	   CLOB;
-    Lcl_From           	   CLOB;
-    Lcl_WhereAndJoin       CLOB;
-    Lcl_OrderAnGroup   	   CLOB;
-
-    Ln_EmpresaId           NUMBER;
-  BEGIN
-
-    -- RETORNO LAS VARIABLES DEL REQUEST
-    APEX_JSON.PARSE(Pcl_Request);
-    Ln_EmpresaId          := APEX_JSON.get_number(p_path => 'empresaId');
-
-    -- VALIDACIONES
-    IF Ln_EmpresaId IS NULL THEN
-      Ln_EmpresaId := 10;
-    END IF;
-    
-    Lcl_Select       := '
-              SELECT  AC.NOMBRE_CANTON,
-                      AD.NOMBRE_DEPARTAMENTO,
-                      IP.*';
-    Lcl_From         := '
-              FROM DB_COMERCIAL.INFO_PERSONA IP,
-                   DB_COMERCIAL.INFO_PERSONA_EMPRESA_ROL IPER,
-                   DB_COMERCIAL.INFO_EMPRESA_ROL IER,
-                   DB_GENERAL.ADMI_ROL AR,
-                   DB_GENERAL.ADMI_TIPO_ROL ATR,
-                   DB_GENERAL.ADMI_DEPARTAMENTO AD,
-                   DB_INFRAESTRUCTURA.INFO_OFICINA_GRUPO IOG,
-                   DB_INFRAESTRUCTURA.ADMI_CANTON AC';
-    Lcl_WhereAndJoin := '
-              WHERE IP.ID_PERSONA = IPER.PERSONA_ID
-                AND IPER.EMPRESA_ROL_ID = IER.ID_EMPRESA_ROL
-                AND AD.ID_DEPARTAMENTO = IPER.DEPARTAMENTO_ID
-                AND IOG.ID_OFICINA = IPER.OFICINA_ID
-                AND AC.ID_CANTON = IOG.CANTON_ID
-                AND IER.ROL_ID = AR.ID_ROL
-                AND AR.TIPO_ROL_ID = ATR.ID_TIPO_ROL
-                AND IPER.ESTADO = ''Activo''
-                AND ATR.ESTADO = ''Activo''
-                AND ATR.DESCRIPCION_TIPO_ROL = ''Empleado''
-                AND IP.ESTADO IN (''Activo'',''Pendiente'')
-                AND IER.EMPRESA_COD = '||Ln_EmpresaId||'';
-    
-    Lcl_OrderAnGroup := '
-              ORDER BY
-                IP.ID_PERSONA DESC';
-    
-    Lcl_Query := Lcl_Select || Lcl_From || Lcl_WhereAndJoin || Lcl_OrderAnGroup;
-    
-    OPEN Pcl_Response FOR Lcl_Query;
-    
-    Pv_Status   := 'OK';
-    Pv_Mensaje  := 'Transacción exitosa';
-  EXCEPTION
-    WHEN OTHERS THEN
-      Pv_Status  := 'ERROR';
-      Pv_Mensaje := SQLERRM;
-  END P_PERSONA_RESPONSABLE;
-
   PROCEDURE P_PERSONA_POR_DEPARTAMENTO(Pcl_Request  IN  CLOB,
                                       Pv_Status    OUT VARCHAR2,
                                       Pv_Mensaje   OUT VARCHAR2,
