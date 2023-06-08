@@ -103,6 +103,10 @@ AS
    * @author John Vera <javera@telconet.ec>
    * @version 1.0 10/09/2018 
    *
+   * @author Jubert Goya <jgoya@telconet.ec>
+   * @version 1.1 07/06/2023 - Se modifica el formateo del año para el rango consumo, se cambia REPLACE con REGEXP_REPLACE para identificar la solo
+   *                           letra 'y' y no tenga problemas al momento de reemplazar con el mes de Mayo
+   *
    * @param Pv_Empresa
    * @param Pv_Mensaje  OUT VARCHAR2
    */
@@ -6728,10 +6732,10 @@ BEGIN
     
     Lv_FechaStringInicial := REPLACE(Lv_FormatoFechaBase,'d',TO_CHAR(Ld_FechaInicial, 'dd'));
     Lv_FechaStringInicial := REPLACE(Lv_FechaStringInicial,'m',TRIM(TO_CHAR(Ld_FechaInicial, 'Month','nls_date_language=spanish')));
-    Lv_FechaStringInicial := REPLACE(Lv_FechaStringInicial,'y',TO_CHAR(Ld_FechaInicial, 'yyyy'));
+    Lv_FechaStringInicial := REGEXP_REPLACE(Lv_FechaStringInicial, '(\W|^)y(\W|$)', ' '||TO_CHAR(Ld_FechaInicial, 'yyyy'));
     Lv_FechaStringFinal   := REPLACE(Lv_FormatoFechaBase,'d',TO_CHAR(Ld_FechaFinal, 'dd'));
     Lv_FechaStringFinal   := REPLACE(Lv_FechaStringFinal,'m',TRIM(TO_CHAR(Ld_FechaFinal, 'Month','nls_date_language=spanish')));
-    Lv_FechaStringFinal   := REPLACE(Lv_FechaStringFinal,'y',TO_CHAR(Ld_FechaFinal, 'yyyy'));
+    Lv_FechaStringFinal   := REGEXP_REPLACE(Lv_FechaStringFinal, '(\W|^)y(\W|$)', ' '||TO_CHAR(Ld_FechaFinal, 'yyyy'));
 
     Ln_servicio := NULL;
     Ln_punto    := NULL; 
