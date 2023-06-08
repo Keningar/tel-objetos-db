@@ -60,6 +60,17 @@ Type TypeSolicitudes IS RECORD (
       estado_solicitud      DB_COMERCIAL.INFO_DETALLE_SOLICITUD.ESTADO%TYPE
 );
 
+/*
+* Documentación para TYPE 'T_InfoDetalleSolicitud'.
+*
+* Tipo de datos para el retorno de la informacion correspondiente a las solicitudes.
+*
+* @author Javier Hidalgo <jihidalgo@telconet.ec>
+* @version 1.0 22-05-2023 
+* @since 1.0
+*/
+TYPE T_InfoDetalleSolicitud IS TABLE OF DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE INDEX BY PLS_INTEGER;
+
 /**
  * Documentación para PROCEDURE 'GET_SOL_DESCT_PROMOCIONAL'.
  *
@@ -177,6 +188,9 @@ PROCEDURE P_GENERAR_FECHA_EMISION(Fv_TipoFacturacion  IN VARCHAR2,
   *
   * @author Hector Lozano <hlozano@telconet.ec>
   * @version 1.5 02-03-2023  Se agrega parámetro CvEmpresaCod en el cursor C_GetValorCargoReproceso para filtrar el resultado por empresa.
+  *
+  * @author Javier Hidalgo <jihidalgo@telconet.ec>
+  * @version 1.6 22-05-2023  Se considera solicitudes de Cargo de reactivacion como detalle dee cobro para la generacion de factura.
   *
   * @since 1.0
   */
@@ -351,6 +365,7 @@ PROCEDURE P_SIMULAR_FACT_MENSUAL(Pn_IdPuntoFacturacion IN DB_COMERCIAL.INFO_PUNT
 
 END FNCK_FACTURACION_MENSUAL;
 /
+
 
 CREATE OR REPLACE PACKAGE BODY DB_FINANCIERO.FNCK_FACTURACION_MENSUAL
 AS
@@ -1122,6 +1137,16 @@ END P_GENERAR_FECHA_EMISION;
         AND    APC.ESTADO           = 'Activo'
         AND    APD.EMPRESA_COD      = Cn_EmpresaCod;
     --
+    -- C_GetValorCargoReactivacion - Costo Query: 7
+    CURSOR C_GetValorCargoReactivacion (Cn_EmpresaCod DB_COMERCIAL.INFO_EMPRESA_GRUPO.COD_EMPRESA%TYPE)
+      IS
+        SELECT TO_NUMBER(APD.VALOR1)
+        FROM   DB_GENERAL.ADMI_PARAMETRO_DET APD
+        JOIN   DB_GENERAL.ADMI_PARAMETRO_CAB APC ON   APD.PARAMETRO_ID = APC.ID_PARAMETRO
+        WHERE  APC.NOMBRE_PARAMETRO = 'CARGO REACTIVACION SERVICIO'
+        AND    APC.ESTADO           = 'Activo'
+        AND    APD.EMPRESA_COD      = Cn_EmpresaCod;
+    --
     Lr_Punto                      TypeClientesFacturar;
     Ln_SimularionPorPorcentaje    NUMBER;
     Ln_SimulacionPorValor         NUMBER;
@@ -1181,6 +1206,19 @@ END P_GENERAR_FECHA_EMISION;
     Lr_ProductoReproceso          DB_COMERCIAL.ADMI_PRODUCTO%ROWTYPE;
     Lv_TieneSolCargoReproceso     VARCHAR2(2);
     Lrf_GetSolicitudesReproceso   SYS_REFCURSOR;
+    --Cargo Reactivacion
+    Ln_PtoSolicitudReactivacionId    NUMBER := 0;
+    Lv_LoginSolicitudReactivacion    VARCHAR2(100) := '';
+    Ln_CantidadSolReactivacion       NUMBER := 0;
+    Ln_PrecioCargoReactivacion       NUMBER := 0;
+    Ln_ServicioIdCargoReactivacion   NUMBER := 0;
+    Lr_SolicitudCargoReactivacion    DB_COMERCIAL.INFO_DETALLE_SOLICITUD%ROWTYPE;
+    Lr_ProductoCargoReactivacion     DB_COMERCIAL.ADMI_PRODUCTO%ROWTYPE;
+    Lv_TieneSolCargoReactivacion     VARCHAR2(2);
+    Lrf_GetSolicitudesReactivacion   SYS_REFCURSOR;
+    Li_Cont_Solicitudes              PLS_INTEGER;
+    Le_InfoDetalleSolicitud          T_InfoDetalleSolicitud;
+    --
     Lb_ValidaFechas               BOOLEAN := TRUE;
     Lv_RangoConsumo               VARCHAR2(2000):='';
     Ld_FechInicioRango            DATE;
@@ -1230,6 +1268,19 @@ END P_GENERAR_FECHA_EMISION;
     FETCH C_GetValorCargoReproceso INTO Ln_PrecioCargoReproceso;
     --
     CLOSE C_GetValorCargoReproceso;
+    --
+    --
+    IF C_GetValorCargoReactivacion%ISOPEN THEN
+
+      CLOSE C_GetValorCargoReactivacion;
+
+    END IF;
+    --
+    OPEN C_GetValorCargoReactivacion (Lv_EmpresaCod);
+    --
+    FETCH C_GetValorCargoReactivacion INTO Ln_PrecioCargoReactivacion;
+    --
+    CLOSE C_GetValorCargoReactivacion;
     --
 
     --Se obtiene la característica por CRS para excluir los servicios.
@@ -1316,6 +1367,8 @@ END P_GENERAR_FECHA_EMISION;
         LV_BanderaPoseeDetalle:='N';
         --Inicializo la bandera que se utilizara para agregar los detalles  por reproceso de débito.
         Lv_TieneSolCargoReproceso := 'N';
+        --Inicializo la bandera que se utilizara para agregar los detalles  por reproceso de reactivacion.
+        Lv_TieneSolCargoReactivacion := 'N';
         --Con el pto de facturacion podemos obtener los servicios asociados al punto
         GET_SERVICIO_ASOCIADOS(Lr_Punto.id_punto, Ln_CaracteristicaId ,Lc_ServiciosFacturar);
         LOOP
@@ -1347,6 +1400,29 @@ END P_GENERAR_FECHA_EMISION;
               Ln_ServicioIdCargoReproceso := Lr_Servicios.id_servicio;
               Ln_PtoSolicitudReprocesoId  := Lr_Servicios.punto_id;
               Lr_ProductoReproceso        := DB_COMERCIAL.COMEK_CONSULTAS.F_GET_PRODUCTO_BY_COD('CGC');
+
+            END IF;
+          END IF;
+
+          -- Se verifica si existe solicitud de reproceso de reactivacion.
+          IF Lv_TieneSolCargoReactivacion = 'N' THEN
+
+            Ln_PtoSolicitudReactivacionId   := 0;
+            Ln_ServicioIdCargoReactivacion  := 0;
+            Lr_ProductoCargoReactivacion    := NULL;
+            Lrf_GetSolicitudesReactivacion  := NULL;
+
+            Lrf_GetSolicitudesReactivacion  := DB_COMERCIAL.COMEK_CONSULTAS.F_GET_SOL_PEND_BY_SER_ID('SOLICITUD CARGO POR REACTIVACION', 
+                                                                                                  Lr_Servicios.id_servicio);
+
+            Ln_CantidadSolReactivacion      := DB_COMERCIAL.COMEK_CONSULTAS.F_GET_SOL_BY_SERVICIO_ID(Lr_Servicios.id_servicio,
+                                                                                                  'SOLICITUD CARGO POR REACTIVACION',
+                                                                                                  'Pendiente');
+            IF Ln_CantidadSolReactivacion > 0 THEN
+              Lv_TieneSolCargoReactivacion   := 'S';
+              Ln_ServicioIdCargoReactivacion := Lr_Servicios.id_servicio;
+              Ln_PtoSolicitudReactivacionId  := Lr_Servicios.punto_id;
+              Lr_ProductoCargoReactivacion   := DB_COMERCIAL.COMEK_CONSULTAS.F_GET_PRODUCTO_BY_COD('CRS');
 
             END IF;
           END IF;
@@ -1531,6 +1607,65 @@ END P_GENERAR_FECHA_EMISION;
 
         END IF;
         --
+
+        --Se agrega detalle de Cargo Reactivacion si bandera esta en S
+        IF Lv_TieneSolCargoReactivacion = 'S' THEN
+
+          Ln_PrecioVentaFacProDetalle:=ROUND((Ln_CantidadSolReactivacion*Ln_PrecioCargoReactivacion),2);
+
+          -- Finalizamos la solicitud de cargo por reactivacion
+          FETCH Lrf_GetSolicitudesReactivacion BULK COLLECT INTO Le_InfoDetalleSolicitud LIMIT 50;
+          Li_Cont_Solicitudes := Le_InfoDetalleSolicitud.FIRST;   
+    
+          WHILE (Li_Cont_Solicitudes IS NOT NULL) LOOP
+          
+            UPD_SOL_DESCT_UNICO(Le_InfoDetalleSolicitud(Li_Cont_Solicitudes).ID_DETALLE_SOLICITUD);
+            Li_Cont_Solicitudes := Le_InfoDetalleSolicitud.NEXT(Li_Cont_Solicitudes);
+            EXIT
+            WHEN Lrf_GetSolicitudesReactivacion%NOTFOUND;
+            
+          END LOOP;
+
+          CLOSE Lrf_GetSolicitudesReactivacion;
+
+          SELECT A.LOGIN INTO Lv_LoginSolicitudReactivacion FROM DB_COMERCIAL.INFO_PUNTO A WHERE A.ID_PUNTO = Ln_PtoSolicitudReactivacionId;
+
+          -- Se agrega detalle por cargo de reactivacion.
+          Lr_InfoDocumentoFinancieroDet                                := NULL;
+          Lr_InfoDocumentoFinancieroDet.ID_DOC_DETALLE                 := SEQ_INFO_DOC_FINANCIERO_DET.NEXTVAL;
+          Lr_InfoDocumentoFinancieroDet.DOCUMENTO_ID                   := Lr_InfoDocumentoFinancieroCab.ID_DOCUMENTO;
+          Lr_InfoDocumentoFinancieroDet.PUNTO_ID                       := Ln_PtoSolicitudReactivacionId;
+          Lr_InfoDocumentoFinancieroDet.PLAN_ID                        := 0;
+          Lr_InfoDocumentoFinancieroDet.CANTIDAD                       := Ln_CantidadSolReactivacion;
+          Lr_InfoDocumentoFinancieroDet.PRECIO_VENTA_FACPRO_DETALLE    := ROUND(Ln_PrecioCargoReactivacion,2);
+          Lr_InfoDocumentoFinancieroDet.PORCETANJE_DESCUENTO_FACPRO    := 0;
+          Lr_InfoDocumentoFinancieroDet.DESCUENTO_FACPRO_DETALLE       := 0;
+          Lr_InfoDocumentoFinancieroDet.VALOR_FACPRO_DETALLE           := ROUND(Ln_PrecioCargoReactivacion,2);
+          Lr_InfoDocumentoFinancieroDet.COSTO_FACPRO_DETALLE           := ROUND(Ln_PrecioCargoReactivacion,2);
+          Lr_InfoDocumentoFinancieroDet.FE_CREACION                    := sysdate;
+          Lr_InfoDocumentoFinancieroDet.USR_CREACION                   := 'telcos';
+          Lr_InfoDocumentoFinancieroDet.PRODUCTO_ID                    := Lr_ProductoCargoReactivacion.ID_PRODUCTO;
+          Lr_InfoDocumentoFinancieroDet.OBSERVACIONES_FACTURA_DETALLE  := 'Login: ' || Lv_LoginSolicitudReactivacion;
+          DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_DET(Lr_InfoDocumentoFinancieroDet,Pv_MsnError);
+
+          --Con los valores de detalle insertado, podemos ingresar el impuesto
+
+          Ln_ValorImpuesto := (Ln_PrecioVentaFacProDetalle*Pn_Porcentaje/100);
+
+          Lr_InfoDocumentoFinancieroImp                := NULL;
+          Lr_InfoDocumentoFinancieroImp.ID_DOC_IMP     := DB_FINANCIERO.SEQ_INFO_DOC_FINANCIERO_IMP.NEXTVAL;
+          Lr_InfoDocumentoFinancieroImp.DETALLE_DOC_ID := Lr_InfoDocumentoFinancieroDet.ID_DOC_DETALLE;
+
+          Ln_IdImpuesto                                := F_CODIGO_IMPUESTO_X_PORCEN(Pn_Porcentaje);
+          --
+          Lr_InfoDocumentoFinancieroImp.IMPUESTO_ID    := Ln_IdImpuesto;
+          Lr_InfoDocumentoFinancieroImp.VALOR_IMPUESTO := Ln_ValorImpuesto;
+          Lr_InfoDocumentoFinancieroImp.PORCENTAJE     := Pn_Porcentaje;
+          Lr_InfoDocumentoFinancieroImp.FE_CREACION    := sysdate;
+          Lr_InfoDocumentoFinancieroImp.USR_CREACION   := 'telcos';
+          DB_FINANCIERO.FNCK_TRANSACTION.INSERT_INFO_DOC_FINANCIERO_IMP(Lr_InfoDocumentoFinancieroImp,Pv_MsnError);
+
+        END IF;
 
         --Se debe obtener las sumatorias de los Subtotales y se actualiza las cabeceras
         Ln_Subtotal              := 0;
